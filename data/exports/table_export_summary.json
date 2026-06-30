@@ -35,6 +35,41 @@
     "listing_fields": 581
   },
   {
+    "database": "/Users/marleneronstedt/dev/LongevityYelloPages/data/databases/bookimed_longevity_doctors_thailand.sqlite",
+    "listings": 26,
+    "images": 0,
+    "reviews": 0,
+    "listing_fields": 156
+  },
+  {
+    "database": "/Users/marleneronstedt/dev/LongevityYelloPages/data/databases/bookimed_longevity_doctors_turkey.sqlite",
+    "listings": 30,
+    "images": 0,
+    "reviews": 0,
+    "listing_fields": 176
+  },
+  {
+    "database": "/Users/marleneronstedt/dev/LongevityYelloPages/data/databases/bookimed_longevity_korea.sqlite",
+    "listings": 14,
+    "images": 139,
+    "reviews": 187,
+    "listing_fields": 0
+  },
+  {
+    "database": "/Users/marleneronstedt/dev/LongevityYelloPages/data/databases/bookimed_longevity_thailand.sqlite",
+    "listings": 33,
+    "images": 271,
+    "reviews": 84,
+    "listing_fields": 0
+  },
+  {
+    "database": "/Users/marleneronstedt/dev/LongevityYelloPages/data/databases/bookimed_longevity_turkey.sqlite",
+    "listings": 69,
+    "images": 576,
+    "reviews": 370,
+    "listing_fields": 0
+  },
+  {
     "database": "/Users/marleneronstedt/dev/LongevityYelloPages/data/databases/concierge_doctors_near_me.sqlite",
     "listings": 1290,
     "images": 11931,
@@ -56,6 +91,20 @@
     "listing_fields": 50
   },
   {
+    "database": "/Users/marleneronstedt/dev/LongevityYelloPages/data/databases/gangnam_medical_tourism.sqlite",
+    "listings": 99,
+    "images": 351,
+    "reviews": 0,
+    "listing_fields": 348
+  },
+  {
+    "database": "/Users/marleneronstedt/dev/LongevityYelloPages/data/databases/healing_harmony_thailand_pdf.sqlite",
+    "listings": 134,
+    "images": 0,
+    "reviews": 0,
+    "listing_fields": 536
+  },
+  {
     "database": "/Users/marleneronstedt/dev/LongevityYelloPages/data/databases/human_longevity.sqlite",
     "listings": 2,
     "images": 0,
@@ -68,6 +117,90 @@
     "images": 0,
     "reviews": 0,
     "listing_fields": 52
+  },
+  {
+    "database": "/Users/marleneronstedt/dev/LongevityYelloPages/data/databases/istanbul_med_assist_stem_cell_longevity.sqlite",
+    "listings": 1,
+    "images": 7,
+    "reviews": 0,
+    "listing_fields": 3
+  },
+  {
+    "database": "/Users/marleneronstedt/dev/LongevityYelloPages/data/databases/istanbul_stem_cell_aging.sqlite",
+    "listings": 1,
+    "images": 15,
+    "reviews": 0,
+    "listing_fields": 3
+  },
+  {
+    "database": "/Users/marleneronstedt/dev/LongevityYelloPages/data/databases/korea_health_pages_anti_aging_gangnam.sqlite",
+    "listings": 19,
+    "images": 431,
+    "reviews": 0,
+    "listing_fields": 39
+  },
+  {
+    "database": "/Users/marleneronstedt/dev/LongevityYelloPages/data/databases/korea_health_pages_iv_drip.sqlite",
+    "listings": 19,
+    "images": 453,
+    "reviews": 0,
+    "listing_fields": 38
+  },
+  {
+    "database": "/Users/marleneronstedt/dev/LongevityYelloPages/data/databases/korea_health_pages_medical_tourism_services.sqlite",
+    "listings": 7,
+    "images": 112,
+    "reviews": 0,
+    "listing_fields": 14
+  },
+  {
+    "database": "/Users/marleneronstedt/dev/LongevityYelloPages/data/databases/korea_health_pages_prp_skin.sqlite",
+    "listings": 18,
+    "images": 430,
+    "reviews": 0,
+    "listing_fields": 36
+  },
+  {
+    "database": "/Users/marleneronstedt/dev/LongevityYelloPages/data/databases/korea_health_pages_regenerative_medicine.sqlite",
+    "listings": 7,
+    "images": 118,
+    "reviews": 0,
+    "listing_fields": 15
+  },
+  {
+    "database": "/Users/marleneronstedt/dev/LongevityYelloPages/data/databases/korea_health_pages_rejuran.sqlite",
+    "listings": 18,
+    "images": 430,
+    "reviews": 0,
+    "listing_fields": 36
+  },
+  {
+    "database": "/Users/marleneronstedt/dev/LongevityYelloPages/data/databases/korea_health_pages_stem_cell.sqlite",
+    "listings": 9,
+    "images": 146,
+    "reviews": 0,
+    "listing_fields": 18
+  },
+  {
+    "database": "/Users/marleneronstedt/dev/LongevityYelloPages/data/databases/korea_medical_directory_pdf.sqlite",
+    "listings": 29,
+    "images": 0,
+    "reviews": 0,
+    "listing_fields": 116
+  },
+  {
+    "database": "/Users/marleneronstedt/dev/LongevityYelloPages/data/databases/longevita_clinics.sqlite",
+    "listings": 2,
+    "images": 30,
+    "reviews": 0,
+    "listing_fields": 6
+  },
+  {
+    "database": "/Users/marleneronstedt/dev/LongevityYelloPages/data/databases/longevity_suite_istanbul_biohacking.sqlite",
+    "listings": 1,
+    "images": 13,
+    "reviews": 0,
+    "listing_fields": 3
   },
   {
     "database": "/Users/marleneronstedt/dev/LongevityYelloPages/data/databases/longevity_technology_clinics.sqlite",
@@ -91,6 +224,111 @@
     "listing_fields": 8
   },
   {
+    "database": "/Users/marleneronstedt/dev/LongevityYelloPages/data/databases/medical_travel_market_longevity_programs.sqlite",
+    "listings": 24,
+    "images": 331,
+    "reviews": 0,
+    "listing_fields": 72
+  },
+  {
+    "database": "/Users/marleneronstedt/dev/LongevityYelloPages/data/databases/meditrip_seoul.sqlite",
+    "listings": 1,
+    "images": 22,
+    "reviews": 0,
+    "listing_fields": 3
+  },
+  {
+    "database": "/Users/marleneronstedt/dev/LongevityYelloPages/data/databases/mymeditravel_antiaging_stemcell_bangkok.sqlite",
+    "listings": 1,
+    "images": 10,
+    "reviews": 0,
+    "listing_fields": 4
+  },
+  {
+    "database": "/Users/marleneronstedt/dev/LongevityYelloPages/data/databases/mymeditravel_antiaging_stemcell_thailand.sqlite",
+    "listings": 1,
+    "images": 16,
+    "reviews": 0,
+    "listing_fields": 4
+  },
+  {
+    "database": "/Users/marleneronstedt/dev/LongevityYelloPages/data/databases/mymeditravel_antiaging_stemcell_turkey.sqlite",
+    "listings": 1,
+    "images": 4,
+    "reviews": 0,
+    "listing_fields": 4
+  },
+  {
+    "database": "/Users/marleneronstedt/dev/LongevityYelloPages/data/databases/mymeditravel_chaum_medical_center.sqlite",
+    "listings": 1,
+    "images": 22,
+    "reviews": 16,
+    "listing_fields": 3
+  },
+  {
+    "database": "/Users/marleneronstedt/dev/LongevityYelloPages/data/databases/mymeditravel_regenerative_southkorea.sqlite",
+    "listings": 3,
+    "images": 73,
+    "reviews": 8,
+    "listing_fields": 9
+  },
+  {
+    "database": "/Users/marleneronstedt/dev/LongevityYelloPages/data/databases/mymeditravel_regenerative_thailand.sqlite",
+    "listings": 21,
+    "images": 412,
+    "reviews": 117,
+    "listing_fields": 63
+  },
+  {
+    "database": "/Users/marleneronstedt/dev/LongevityYelloPages/data/databases/mymeditravel_regenerative_turkey.sqlite",
+    "listings": 7,
+    "images": 106,
+    "reviews": 36,
+    "listing_fields": 15
+  },
+  {
+    "database": "/Users/marleneronstedt/dev/LongevityYelloPages/data/databases/placidway_antiaging_south_korea.sqlite",
+    "listings": 20,
+    "images": 434,
+    "reviews": 1085,
+    "listing_fields": 60
+  },
+  {
+    "database": "/Users/marleneronstedt/dev/LongevityYelloPages/data/databases/placidway_antiaging_thailand.sqlite",
+    "listings": 19,
+    "images": 465,
+    "reviews": 163,
+    "listing_fields": 57
+  },
+  {
+    "database": "/Users/marleneronstedt/dev/LongevityYelloPages/data/databases/placidway_antiaging_turkey.sqlite",
+    "listings": 20,
+    "images": 510,
+    "reviews": 136,
+    "listing_fields": 60
+  },
+  {
+    "database": "/Users/marleneronstedt/dev/LongevityYelloPages/data/databases/placidway_stem_cell_south_korea.sqlite",
+    "listings": 2,
+    "images": 52,
+    "reviews": 0,
+    "listing_fields": 6
+  },
+  {
+    "database": "/Users/marleneronstedt/dev/LongevityYelloPages/data/databases/placidway_stem_cell_thailand.sqlite",
+    "listings": 12,
+    "images": 304,
+    "reviews": 105,
+    "listing_fields": 36
+  },
+  {
+    "database": "/Users/marleneronstedt/dev/LongevityYelloPages/data/databases/placidway_stem_cell_turkey.sqlite",
+    "listings": 9,
+    "images": 229,
+    "reviews": 41,
+    "listing_fields": 27
+  },
+  {
     "database": "/Users/marleneronstedt/dev/LongevityYelloPages/data/databases/spannr.sqlite",
     "listings": 65,
     "images": 0,
@@ -103,6 +341,34 @@
     "images": 6914,
     "reviews": 0,
     "listing_fields": 31034
+  },
+  {
+    "database": "/Users/marleneronstedt/dev/LongevityYelloPages/data/databases/thailand_longevity_guidebook_pdf.sqlite",
+    "listings": 83,
+    "images": 0,
+    "reviews": 0,
+    "listing_fields": 332
+  },
+  {
+    "database": "/Users/marleneronstedt/dev/LongevityYelloPages/data/databases/turkey_health_tourism_authorized_providers.sqlite",
+    "listings": 245,
+    "images": 6,
+    "reviews": 0,
+    "listing_fields": 977
+  },
+  {
+    "database": "/Users/marleneronstedt/dev/LongevityYelloPages/data/databases/turkey_healthcare_group_regenerative.sqlite",
+    "listings": 1,
+    "images": 2,
+    "reviews": 0,
+    "listing_fields": 3
+  },
+  {
+    "database": "/Users/marleneronstedt/dev/LongevityYelloPages/data/databases/uniclinics_turkey_clinics.sqlite",
+    "listings": 20,
+    "images": 117,
+    "reviews": 0,
+    "listing_fields": 60
   },
   {
     "database": "/Users/marleneronstedt/dev/LongevityYelloPages/data/databases/world_longevity_clinics.sqlite",

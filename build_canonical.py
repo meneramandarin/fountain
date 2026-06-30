@@ -39,10 +39,31 @@ EDITORIAL_ORG_SOURCES = {
 }
 PRACTITIONER_SOURCES = {
     "bookimed_longevity_doctors",
+    "bookimed_longevity_doctors_thailand",
+    "bookimed_longevity_doctors_turkey",
     "concierge_doctors_near_me",
     "longevitydocs_directory",
 }
 SERVICE_AREA_SOURCES = {"exec_health"}
+DOCUMENT_SOURCES = {
+    "healing_harmony_thailand_pdf",
+    "korea_medical_directory_pdf",
+    "thailand_longevity_guidebook_pdf",
+    "turkey_health_tourism_authorized_providers",
+}
+SINGLE_PAGE_LOCATION_SOURCES = {
+    "istanbul_med_assist_stem_cell_longevity",
+    "istanbul_stem_cell_aging",
+    "longevity_suite_istanbul_biohacking",
+    "longevita_clinics",
+    "meditrip_seoul",
+    "turkey_healthcare_group_regenerative",
+}
+MEDICAL_TRAVEL_SOURCE_PREFIXES = (
+    "mymeditravel_",
+    "placidway_",
+    "korea_health_pages_",
+)
 HIGH_VOLUME_SOURCES = {"stem_cell_authority", "bioedge_clinics"}
 SOURCE_OWNED_DOMAINS = {
     "bookimed.com",
@@ -53,6 +74,15 @@ SOURCE_OWNED_DOMAINS = {
     "bestexecutivephysicalprograms.com",
     "conciergedoctorsnearme.com",
 }
+
+
+def is_bookimed_doctor_source(source_slug: str) -> bool:
+    return source_slug == "bookimed_longevity_doctors" or source_slug.startswith("bookimed_longevity_doctors_")
+
+
+def is_bookimed_clinic_source(source_slug: str) -> bool:
+    return (source_slug == "bookimed_longevity" or source_slug.startswith("bookimed_longevity_")) and not is_bookimed_doctor_source(source_slug)
+
 
 EXTRA_COUNTRY_ALIASES = {
     "Australia": "AU",
@@ -254,6 +284,12 @@ class CanonicalBuilder:
             slug = db_path.stem
             staging = open_staging(db_path)
             rows = list(staging.execute("SELECT * FROM listings ORDER BY id"))
+            if slug in DOCUMENT_SOURCES:
+                for row in rows:
+                    fields = listing_fields(staging, int(row["id"]))
+                    self.process_document(slug, row, fields)
+                staging.close()
+                continue
             for row in rows:
                 fields = listing_fields(staging, int(row["id"]))
                 if slug in SERVICE_AREA_SOURCES:
@@ -280,6 +316,35 @@ class CanonicalBuilder:
                 self.add_entity_tag("service_area", entity_id, "service_area_service", self.treatment_names_by_id[treatment_id])
             else:
                 self.add_entity_tag("service_area", entity_id, "service_area_service", raw)
+
+    def process_document(self, slug: str, row: sqlite3.Row, fields: dict[str, Any]) -> None:
+        source_id = self.source_ids[slug]
+        page_number = parse_int(fields.get("page_number"))
+        self.conn.execute(
+            """
+            INSERT INTO documents(source_id, title, source_url, document_type, page_number, local_path, raw_text)
+            VALUES (?, ?, ?, ?, ?, ?, ?)
+            """,
+            (
+                source_id,
+                clean(row["name"]),
+                clean(row["source_url"]),
+                clean(fields.get("record_type")) or "document",
+                page_number,
+                clean(fields.get("local_pdf_path")),
+                clean(row["raw_text"]),
+            ),
+        )
+        document_id = int(self.conn.execute("SELECT last_insert_rowid()").fetchone()[0])
+        self.add_source_record(source_id, "document", document_id, row)
+        self.add_entity_tag("document", document_id, "entity_type", "document")
+        self.add_entity_tag("document", document_id, "source_record_type", clean(fields.get("record_type")) or "document")
+        for raw in scan_known_treatments(row["raw_text"]):
+            treatment_id = self.match_treatment(raw)
+            if treatment_id:
+                self.add_entity_tag("document", document_id, "mentioned_treatment", self.treatment_names_by_id[treatment_id])
+            else:
+                self.add_entity_tag("document", document_id, "mentioned_treatment", raw)
 
     def process_editorial_org(self, slug: str, row: sqlite3.Row, fields: dict[str, Any], staging: sqlite3.Connection) -> None:
         source_id = self.source_ids[slug]
@@ -334,7 +399,7 @@ class CanonicalBuilder:
                 price_currency=offer.get("price_currency"),
                 source_offer_url=offer.get("source_offer_url"),
             )
-        if slug == "bookimed_longevity":
+        if is_bookimed_clinic_source(slug):
             self.index_bookimed_clinic(row, org_id, location_id)
         self.copy_images(staging, int(row["id"]), "location", location_id, source_id)
         self.copy_reviews(staging, int(row["id"]), location_id, source_id)
@@ -387,7 +452,7 @@ class CanonicalBuilder:
             for key in ("advancedTreatments", "foundationalTreatments", "techSpecs"):
                 offer_terms.extend(extract_terms(procedures.get(key)))
             tags.extend(self.biohacking_tags(fields, procedures))
-        elif slug == "bookimed_longevity":
+        elif is_bookimed_clinic_source(slug):
             services = parse_jsonish(row["services_json"]) or {}
             for offer in services.get("offers", []) if isinstance(services, dict) else []:
                 if not isinstance(offer, dict):
@@ -461,10 +526,57 @@ class CanonicalBuilder:
             offer_terms.append("Executive Health Program")
             tags.append(("care_model", "executive health program"))
             tags.append(("entity_type", "clinic"))
+        elif slug.startswith("mymeditravel_"):
+            offer_terms.extend(extract_terms(row["services_json"]))
+            offer_terms.extend(extract_terms((parse_jsonish(row["procedures_json"]) or {}).get("procedures")))
+            offer_terms.extend(scan_known_treatments(row["raw_text"]))
+            tags.append(("care_model", "destination or medical tourism"))
+            tags.extend(tags_for_source_value(fields.get("procedure_type")))
+        elif slug.startswith("placidway_"):
+            offer_terms.extend(extract_terms(row["services_json"]))
+            procedures = parse_jsonish(row["procedures_json"]) or {}
+            offer_terms.extend(extract_terms(procedures.get("prices")))
+            offer_terms.extend(extract_terms(procedures.get("packages")))
+            offer_terms.extend(scan_known_treatments(row["raw_text"]))
+            tags.append(("care_model", "destination or medical tourism"))
+            if parse_int(row["review_count"]):
+                tags.append(("trust", "has reviews"))
+        elif slug == "medical_travel_market_longevity_programs":
+            offer_terms.extend(extract_terms(row["services_json"]))
+            offer_terms.extend(scan_known_treatments(row["raw_text"]))
+            tags.append(("care_model", "wellness retreat"))
+            tags.append(("care_model", "destination or medical tourism"))
+        elif slug == "gangnam_medical_tourism":
+            table_fields = parse_jsonish(fields.get("table_fields")) or {}
+            medical_field = table_fields.get("Medical field") if isinstance(table_fields, dict) else None
+            offer_terms.extend(extract_terms(row["services_json"]))
+            offer_terms.extend(scan_known_treatments(row["raw_text"]))
+            mixed_terms.extend(extract_terms(medical_field))
+            if isinstance(table_fields, dict) and table_fields.get("Certificate of healthcare provider for international patients"):
+                tags.append(("trust", "international health tourism certificate"))
+            tags.append(("care_model", "destination or medical tourism"))
+        elif slug.startswith("korea_health_pages_"):
+            mixed_terms.extend(extract_terms(row["services_json"]))
+            mixed_terms.extend(extract_terms((parse_jsonish(row["procedures_json"]) or {}).get("categories")))
+            offer_terms.extend(scan_known_treatments(row["raw_text"]))
+            tags.append(("care_model", "destination or medical tourism"))
+        elif slug == "uniclinics_turkey_clinics":
+            offer_terms.extend(extract_terms(row["services_json"]))
+            offer_terms.extend(scan_known_treatments(row["raw_text"]))
+            tags.append(("care_model", "destination or medical tourism"))
+            tags.append(("entity_type", "hospital"))
+        elif slug in SINGLE_PAGE_LOCATION_SOURCES:
+            offer_terms.extend(extract_terms(row["services_json"]))
+            offer_terms.extend(scan_known_treatments(row["raw_text"]))
+            tags.extend(tags_for_source_value(extract_terms(row["services_json"])))
+            if slug in {"longevita_clinics", "meditrip_seoul"}:
+                tags.append(("care_model", "destination or medical tourism"))
         else:
             offer_terms.extend(extract_terms(row["services_json"]))
             offer_terms.extend(extract_terms(row["procedures_json"]))
 
+        if fields.get("record_type"):
+            tags.append(("source_record_type", clean(fields.get("record_type")) or "unknown"))
         if row["price_text"] and re.fullmatch(r"\${1,5}", clean(row["price_text"]) or ""):
             tags.append(("price_tier", clean(row["price_text"])))
         return {
@@ -526,7 +638,7 @@ class CanonicalBuilder:
         linked_clinic = None
         specialties: list[str] = []
 
-        if slug == "bookimed_longevity_doctors":
+        if is_bookimed_doctor_source(slug):
             spec = clean(fields.get("specialization") or procedures.get("specialization"))
             primary_specialty, years_experience = parse_specialization(spec)
             languages = clean(fields.get("languages") or procedures.get("languages"))
@@ -924,6 +1036,21 @@ class CanonicalBuilder:
                 """,
                 (int(row["id"]), row["full_name"], meta.get("locality"), meta.get("country"), specialties, tags),
             )
+        for row in self.conn.execute("SELECT * FROM documents ORDER BY id"):
+            tags = self.entity_tag_text("document", int(row["id"]))
+            self.conn.execute(
+                """
+                INSERT INTO search_index(entity_type, entity_id, name, locality, country, treatments, specialties, tags)
+                VALUES ('document', ?, ?, '', '', ?, ?, ?)
+                """,
+                (
+                    int(row["id"]),
+                    row["title"],
+                    clean(row["raw_text"]) or "",
+                    clean(row["document_type"]) or "",
+                    tags,
+                ),
+            )
         self.conn.commit()
 
     def location_treatment_text(self, location_id: int) -> str:
@@ -963,7 +1090,7 @@ class CanonicalBuilder:
             )
         )
         with UNMAPPED_CSV.open("w", encoding="utf-8", newline="") as handle:
-            writer = csv.writer(handle)
+            writer = csv.writer(handle, lineterminator="\n")
             writer.writerow(["term", "source_slug", "occurrences"])
             writer.writerows((row["term"], row["source_slug"], row["occurrences"]) for row in rows)
 
@@ -1015,6 +1142,7 @@ class CanonicalBuilder:
         print(f"organizations: {count('organizations')}")
         print(f"locations: {count('locations')}")
         print(f"practitioners: {count('practitioners')}")
+        print(f"documents: {count('documents')}")
         print(f"service_area source rows: {self.service_area_count}")
         print(f"offerings: {count('offerings')} ({priced} with price, {unpriced} without price)")
         print(f"treatments: {count('treatments')}")
@@ -1038,6 +1166,10 @@ class CanonicalBuilder:
             print(f"  {row['occurrences']:>5}  {row['source_slug']:<40} {row['term']}")
         if self.skipped_practitioner_reviews:
             print(f"notes: skipped {self.skipped_practitioner_reviews} practitioner-source reviews because schema reviews table is location-scoped")
+        if self.deviation_notes:
+            print("deviation notes:")
+            for note in self.deviation_notes:
+                print(f"  - {note}")
         print("\nAcceptance checks")
         print(f"- Fountain Life collapsed to one exact-name organization with >=3 source_records: {fountain_count == 1 and fountain_sr >= 3}")
         print(f"- Every source has at least one source_records row: {not missing_sources}")

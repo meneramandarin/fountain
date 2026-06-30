@@ -62,6 +62,17 @@ CREATE TABLE practitioners (
     dedup_key         TEXT
 );
 
+CREATE TABLE documents (
+    id             INTEGER PRIMARY KEY,
+    source_id      INTEGER NOT NULL REFERENCES sources(id),
+    title          TEXT,
+    source_url     TEXT,
+    document_type  TEXT,
+    page_number    INTEGER,
+    local_path     TEXT,
+    raw_text       TEXT
+);
+
 -- a practitioner working at a location and/or organization
 CREATE TABLE affiliations (
     id              INTEGER PRIMARY KEY,
@@ -195,6 +206,7 @@ CREATE INDEX idx_entity_tags_entity  ON entity_tags(entity_type, entity_id);
 CREATE INDEX idx_source_records_ent  ON source_records(entity_type, entity_id);
 CREATE INDEX idx_affiliations_loc    ON affiliations(location_id);
 CREATE INDEX idx_affiliations_prac   ON affiliations(practitioner_id);
+CREATE INDEX idx_documents_source    ON documents(source_id);
 
 -- ----------------------------------------------------------------------
 -- serving layer: one full-text row per searchable entity.

@@ -6,7 +6,9 @@ import hashlib
 import json
 import mimetypes
 import re
+import subprocess
 import sys
+import tempfile
 from collections import deque
 from datetime import datetime, timezone
 from pathlib import Path
@@ -36,6 +38,29 @@ DATA_DIR = ROOT / "data"
 DB_DIR = DATA_DIR / "databases"
 EXPORT_DIR = DATA_DIR / "exports"
 MEDIA_DIR = DATA_DIR / "media"
+
+
+SINGLE_PAGE_SOURCE_SLUGS = {
+    "longevity_suite_istanbul_biohacking",
+    "turkey_healthcare_group_regenerative",
+    "istanbul_stem_cell_aging",
+    "istanbul_med_assist_stem_cell_longevity",
+    "longevita_clinics",
+    "seoul_guide_medical",
+    "meditrip_seoul",
+}
+
+
+def is_bookimed_source(source_slug: str) -> bool:
+    return source_slug == "bookimed_longevity" or source_slug.startswith("bookimed_longevity_")
+
+
+def is_bookimed_clinic_source(source_slug: str) -> bool:
+    return is_bookimed_source(source_slug) and not is_bookimed_doctor_source(source_slug)
+
+
+def is_bookimed_doctor_source(source_slug: str) -> bool:
+    return source_slug == "bookimed_longevity_doctors" or source_slug.startswith("bookimed_longevity_doctors_")
 
 
 def scrape_source(config: SourceConfig, force_generic: bool = False, download_images: bool = True) -> dict[str, Any]:
@@ -85,6 +110,16 @@ def scrape_source(config: SourceConfig, force_generic: bool = False, download_im
         except Exception as exc:
             errors.append({"url": url, "error": repr(exc)})
             continue
+        if is_pdf_response(result):
+            db.upsert_page(result.to_page_row())
+            if result.status_code < 400:
+                pages_ok += 1
+                try:
+                    for listing in extract_pdf_listings(result, config):
+                        db.upsert_listing(listing)
+                except Exception as exc:
+                    errors.append({"url": url, "error": f"pdf_extract_failed: {exc!r}"})
+            continue
         db.upsert_page(result.to_page_row())
         if config.slug == "realself_providers" and is_access_block_response(result.status_code, result.content_type, result.text):
             consecutive_access_blocks += 1
@@ -112,9 +147,9 @@ def scrape_source(config: SourceConfig, force_generic: bool = False, download_im
 
         if depth >= config.max_depth:
             continue
-        if config.slug == "bookimed_longevity" and urlparse(page_url).path.startswith("/clinic/"):
+        if is_bookimed_clinic_source(config.slug) and urlparse(page_url).path.startswith("/clinic/"):
             continue
-        if config.slug == "bookimed_longevity_doctors" and urlparse(page_url).path.startswith("/doctor/"):
+        if is_bookimed_doctor_source(config.slug) and urlparse(page_url).path.startswith("/doctor/"):
             continue
         if config.slug == "bioedge_clinics" and is_bioedge_detail_page(page_url):
             continue
@@ -162,11 +197,11 @@ def extract_listings_from_page(
     listings = source_specific[:]
     raw_text = visible_text(soup)
     for item in flatten_json_ld(extract_json_ld(soup)):
-        if config.slug in {"bookimed_longevity_doctors", "realself_providers"}:
+        if is_bookimed_doctor_source(config.slug) or config.slug in {"realself_providers"}:
             continue
         if not is_listing_schema(item):
             continue
-        if config.slug in {"bookimed_longevity", "bookimed_longevity_doctors"} and clean_text(item.get("name")) and clean_text(item.get("name")).lower().startswith("bookimed"):
+        if is_bookimed_source(config.slug) and clean_text(item.get("name")) and clean_text(item.get("name")).lower().startswith("bookimed"):
             continue
         listing = schema_to_listing(item, page_url, config.slug, raw_text)
         if listing.get("name"):
@@ -375,14 +410,40 @@ def is_access_block_response(status_code: int, content_type: str | None, text: s
 
 
 def source_specific_listings(soup, page_url: str, config: SourceConfig) -> list[dict[str, Any]]:
-    if config.slug == "bookimed_longevity":
+    if is_bookimed_clinic_source(config.slug):
         if urlparse(page_url).path.startswith("/clinic/"):
             return []
         return extract_bookimed_cards(soup, page_url, config.slug)
-    if config.slug == "bookimed_longevity_doctors":
+    if is_bookimed_doctor_source(config.slug):
         if urlparse(page_url).path.startswith("/doctor/"):
             return [extract_bookimed_doctor_profile(soup, page_url, config.slug)]
         return extract_bookimed_doctor_cards(soup, page_url, config.slug)
+    if config.slug.startswith("mymeditravel_"):
+        if is_mymeditravel_center_profile(page_url):
+            return [extract_mymeditravel_profile(soup, page_url, config.slug)]
+        return extract_mymeditravel_cards(soup, page_url, config.slug)
+    if config.slug.startswith("placidway_"):
+        if is_placidway_profile(page_url):
+            return [extract_single_page_listing(soup, page_url, config.slug, record_type="placidway_profile")]
+        return extract_placidway_cards(soup, page_url, config.slug)
+    if config.slug == "medical_travel_market_longevity_programs":
+        if "/wellness-package/" in urlparse(page_url).path:
+            return [extract_single_page_listing(soup, page_url, config.slug, record_type="wellness_package_profile")]
+        return extract_medical_travel_market_cards(soup, page_url, config.slug)
+    if config.slug == "uniclinics_turkey_clinics":
+        if is_uniclinics_profile(page_url):
+            return [extract_single_page_listing(soup, page_url, config.slug, record_type="uniclinics_clinic_profile")]
+        return extract_uniclinics_cards(soup, page_url, config.slug)
+    if config.slug == "gangnam_medical_tourism":
+        if "clinicDetail.do" in urlparse(page_url).path:
+            return [extract_gangnam_clinic_detail(soup, page_url, config.slug)]
+        return extract_gangnam_clinic_cards(soup, page_url, config.slug)
+    if config.slug.startswith("korea_health_pages_"):
+        if is_korea_health_pages_profile(page_url):
+            return [extract_korea_health_pages_profile(soup, page_url, config.slug)]
+        return extract_korea_health_pages_cards(soup, page_url, config.slug)
+    if config.slug in SINGLE_PAGE_SOURCE_SLUGS:
+        return [extract_single_page_listing(soup, page_url, config.slug)]
     if config.slug == "longevitydocs_directory":
         return extract_longevitydocs_cards(soup, page_url, config.slug)
     if config.slug == "bioedge_clinics":
@@ -531,6 +592,429 @@ def base_listing(
         "fields": fields or {},
         "extracted_at": datetime.now(timezone.utc).isoformat(),
     }
+
+
+def extract_single_page_listing(
+    soup,
+    page_url: str,
+    source_slug: str,
+    *,
+    record_type: str = "source_page",
+) -> dict[str, Any]:
+    text = visible_text(soup) or ""
+    title = clean_text(soup.title.get_text(" ")) if soup.title else None
+    name = _text_one(soup, "h1") or _text_one(soup, "h2") or title or page_title_from_url(page_url)
+    phone = _first_link_text(soup, lambda href, label: href.startswith("tel:")) or extract_phone(text)
+    email = _first_link_text(soup, lambda href, label: href.startswith("mailto:")) or extract_email(text)
+    address = extract_address_from_text(text, source_slug)
+    city, region, postal = parse_address_parts(address)
+    rating, review_count = extract_rating_review_count(text)
+    images = extract_images(soup, page_url, min_width_hint=120)
+    services = extract_service_terms(text)
+    sections = extract_detail_sections(soup)
+    return base_listing(
+        source_slug,
+        canonical_url(soup, page_url),
+        name,
+        description=meta_description(soup) or (text[:1200] if text else None),
+        address=address,
+        locality=city,
+        region=region,
+        postal_code=postal,
+        phone=phone,
+        email=email,
+        website=extract_external_website(soup, page_url) or canonical_url(soup, page_url),
+        price_text=extract_price_text(text),
+        rating=rating,
+        review_count=review_count,
+        images=images[:25],
+        services_json=services,
+        procedures_json={"sections": sections, "service_terms": services},
+        raw_text=text,
+        fields={
+            "record_type": record_type,
+            "canonical_url": canonical_url(soup, page_url),
+            "page_title": title,
+            "sections": sections,
+        },
+    )
+
+
+def extract_mymeditravel_cards(soup, page_url: str, source_slug: str) -> list[dict[str, Any]]:
+    listings: list[dict[str, Any]] = []
+    for card in soup.select(".mmt-hospital-list"):
+        link = card.select_one('a.hospital-list-link[href], a.btn-view-clinic[href], a[href*="/medical-centers/"]')
+        if not link or not is_mymeditravel_center_profile(_join(page_url, link["href"])):
+            continue
+        raw_text = clean_text(card.get_text(" "))
+        image_tag = card.select_one("img.hospital-list-images")
+        name = _text_one(card, ".hospital-list-name") or (clean_text(image_tag.get("alt")) if image_tag else None)
+        location = _text_one(card, ".hospital-list-location")
+        city, region = parse_city_region(location)
+        price = _text_one(card, ".hospital-list-number") or extract_price_text(raw_text)
+        procedure_type = _text_one(card, ".hospital-list-type")
+        description = _text_one(card, ".detail-description-text") or _text_one(card, ".list-detail-description") or raw_text
+        languages = _texts(card, ".detail-languages-list")
+        features = _texts(card, ".detail-features-list")
+        rating, review_count = extract_rating_review_count(raw_text)
+        images = [
+            image
+            for image in extract_images(card, page_url, min_width_hint=80)
+            if "hospital-list-location.svg" not in image.get("url", "")
+        ]
+        listings.append(
+            base_listing(
+                source_slug,
+                _join(page_url, link["href"]),
+                name,
+                description=description,
+                address=location,
+                locality=city,
+                region=region,
+                country=region if city and region and region.lower() in {"thailand", "turkey", "south korea"} else None,
+                price_text=price,
+                rating=rating,
+                review_count=review_count,
+                images=images,
+                services_json=[procedure_type] if procedure_type else None,
+                procedures_json={"procedure_type": procedure_type, "languages": languages, "features": features},
+                raw_text=raw_text,
+                fields={
+                    "record_type": "mymeditravel_center_card",
+                    "procedure_type": procedure_type,
+                    "languages": languages,
+                    "features": features,
+                    "card_source_page": page_url,
+                },
+            )
+        )
+    return [listing for listing in merge_duplicate_listings(listings) if listing.get("name")]
+
+
+def extract_mymeditravel_profile(soup, page_url: str, source_slug: str) -> dict[str, Any]:
+    text = visible_text(soup) or ""
+    name = _text_one(soup, "h1") or page_title_from_url(page_url)
+    address = _text_one(soup, ".hospital-header-model-address") or extract_labeled_value(text, "Address")
+    city, region, postal = parse_address_parts(address)
+    rating = _text_one(soup, ".mmt-highlights-review .header-model-rating-result") or _text_one(soup, ".mmt-highlights-review")
+    review_count = None
+    review_match = re.search(r"Total review:\s*([\d,]+)", text, re.I)
+    if review_match:
+        review_count = clean_text(review_match.group(1))
+    procedures = [
+        page_title_from_url(_join(page_url, link["href"]))
+        for link in soup.find_all("a", href=lambda href: href and "/medical-centers/" in href and href.count("/") >= 5)
+        if not is_mymeditravel_center_profile(_join(page_url, link["href"]))
+    ]
+    procedures = list(dict.fromkeys(procedures))[:100]
+    reviews = extract_mymeditravel_reviews(soup)
+    images = [
+        image
+        for image in extract_images(soup, page_url, min_width_hint=120)
+        if "project-features" not in image.get("url", "") and "btn-" not in image.get("url", "")
+    ]
+    return base_listing(
+        source_slug,
+        canonical_url(soup, page_url),
+        name,
+        description=meta_description(soup) or text[:1200],
+        address=address,
+        locality=city,
+        region=region,
+        postal_code=postal,
+        phone=extract_phone(text),
+        email=extract_email(text),
+        website=canonical_url(soup, page_url),
+        price_text=extract_price_text(text),
+        rating=rating,
+        review_count=review_count,
+        images=images[:50],
+        services_json=procedures,
+        procedures_json={"procedures": procedures},
+        raw_text=text,
+        reviews=reviews,
+        fields={
+            "record_type": "mymeditravel_center_profile",
+            "canonical_url": canonical_url(soup, page_url),
+            "procedures_count": len(procedures),
+        },
+    )
+
+
+def extract_mymeditravel_reviews(soup) -> list[dict[str, Any]]:
+    reviews = []
+    for item in soup.select(".patient-reviews__item, .patient-reviews_list"):
+        reviewer_date = _text_one(item, ".patient-reviews-name")
+        reviewer = reviewer_date
+        review_date = _text_one(item, ".patient-reviews-datetime")
+        if reviewer and review_date:
+            reviewer = clean_text(reviewer.replace(review_date, ""))
+        reviews.append(
+            {
+                "reviewer": reviewer,
+                "review_date": review_date,
+                "rating": _text_one(item, ".rate-patient-reviews-total-value") or _text_one(item, ".patient-reviews-detail-rating"),
+                "body": _text_one(item, ".patient-reviews-comment"),
+            }
+        )
+    return [review for review in reviews if review.get("reviewer") or review.get("body")]
+
+
+def extract_placidway_cards(soup, page_url: str, source_slug: str) -> list[dict[str, Any]]:
+    listings: list[dict[str, Any]] = []
+    for card in soup.select(".search-page-card"):
+        link = card.select_one('a.healthcare_bg_head[href*="/profile/"], a.meet-center-btn[href*="/profile/"], a[href*="/profile/"]')
+        if not link:
+            continue
+        raw_text = clean_text(card.get_text(" "))
+        name = _text_one(card, ".healthcare_bg_head") or _text_one(card, "h3.title") or clean_text(link.get_text(" ")) or page_title_from_url(link["href"])
+        location = _text_one(card, ".ctm-country-location")
+        city, region = parse_city_region(location)
+        review_count = None
+        review_text = _text_one(card, ".rating-count")
+        review_match = re.search(r"([\d,]+)\s+Reviews?", review_text or "", re.I)
+        if review_match:
+            review_count = clean_text(review_match.group(1))
+        patient_recommend = _text_one(card, ".customer-satis")
+        prices = _texts(card, ".ctm-pricing-sec li")
+        packages = _texts(card, ".ctm-packages-sec li")
+        review = {
+            "reviewer": _text_one(card, ".username"),
+            "review_date": _text_one(card, ".ctm-date"),
+            "body": _text_one(card, ".comment-text"),
+        }
+        images = [
+            image
+            for image in extract_images(card, page_url, min_width_hint=80)
+            if "frontend/images/" not in image.get("url", "")
+        ]
+        listings.append(
+            base_listing(
+                source_slug,
+                _join(page_url, link["href"]),
+                name,
+                description=_text_one(card, ".overview-desc") or raw_text,
+                address=location,
+                locality=city,
+                region=region,
+                country=region if city and region else None,
+                price_text="; ".join(prices[:8]) or extract_price_text(raw_text),
+                review_count=review_count,
+                images=images,
+                services_json=prices,
+                procedures_json={"prices": prices, "packages": packages, "patient_recommend": patient_recommend},
+                raw_text=raw_text,
+                reviews=[review] if review.get("reviewer") or review.get("body") else [],
+                fields={
+                    "record_type": "placidway_search_card",
+                    "patient_recommend": patient_recommend,
+                    "packages": packages,
+                    "card_source_page": page_url,
+                },
+            )
+        )
+    return [listing for listing in merge_duplicate_listings(listings) if listing.get("name")]
+
+
+def extract_medical_travel_market_cards(soup, page_url: str, source_slug: str) -> list[dict[str, Any]]:
+    listings: list[dict[str, Any]] = []
+    for card in soup.select("article.elementor-post, article"):
+        link = card.find("a", href=lambda href: href and "/wellness-package/" in href)
+        if not link:
+            continue
+        source_url = _join(page_url, link["href"])
+        raw_text = clean_text(card.get_text(" "))
+        title = _text_one(card, ".elementor-post__title") or clean_text(link.get_text(" ")) or page_title_from_url(source_url)
+        image = _first_image(card, page_url, source_page_url=page_url)
+        labels = [clean_text(a.get_text(" ")) for a in card.find_all("a", href=True)]
+        labels = [label for label in dict.fromkeys(labels) if label and label != title and "details" not in label.lower()]
+        location = next((label for label in labels if "," in label or label in {"Switzerland", "Thailand", "Turkey", "Korea"}), None)
+        city, region = parse_city_region(location)
+        listings.append(
+            base_listing(
+                source_slug,
+                source_url,
+                title,
+                description=raw_text,
+                address=location,
+                locality=city,
+                region=region,
+                images=[image] if image else [],
+                services_json=["Longevity Program"],
+                procedures_json={"labels": labels},
+                raw_text=raw_text,
+                fields={"record_type": "wellness_package_card", "labels": labels, "card_source_page": page_url},
+            )
+        )
+    return [listing for listing in merge_duplicate_listings(listings) if listing.get("name")]
+
+
+def extract_uniclinics_cards(soup, page_url: str, source_slug: str) -> list[dict[str, Any]]:
+    listings: list[dict[str, Any]] = []
+    seen = set()
+    for link in soup.find_all("a", href=lambda href: href and "/medical-tourism/turkey/clinics/" in href):
+        source_url = _join(page_url, link["href"]).rstrip("/")
+        if source_url in seen or source_url.rstrip("/") == "https://en.uniclinics.com/medical-tourism/turkey/clinics":
+            continue
+        seen.add(source_url)
+        card = link.find_parent(class_="t422__textwrapper") or link.find_parent(class_="t422__text") or link.parent
+        raw_text = clean_text(card.get_text(" ")) if card else clean_text(link.get_text(" "))
+        name = clean_text(link.get_text(" "))
+        if not name or "profile" in name.lower() or "clinic" in name.lower() and len(name.split()) <= 4:
+            name = page_title_from_url(source_url)
+        first_sentence = raw_text.split(". ", 1)[0] if raw_text else None
+        location = None
+        if first_sentence and "," in first_sentence and len(first_sentence) < 80:
+            location = first_sentence
+        city, region = parse_city_region(location)
+        image = _first_image(card, page_url, source_page_url=page_url) if card else None
+        listings.append(
+            base_listing(
+                source_slug,
+                source_url,
+                name,
+                description=raw_text,
+                address=location,
+                locality=city,
+                region=region,
+                images=[image] if image else [],
+                services_json=extract_service_terms(raw_text),
+                procedures_json={"source_page": page_url},
+                raw_text=raw_text,
+                fields={"record_type": "uniclinics_clinic_card", "card_source_page": page_url},
+            )
+        )
+    return [listing for listing in merge_duplicate_listings(listings) if listing.get("name")]
+
+
+def extract_gangnam_clinic_cards(soup, page_url: str, source_slug: str) -> list[dict[str, Any]]:
+    listings: list[dict[str, Any]] = []
+    seen = set()
+    pattern = re.compile(r"fnSnsUrlCheck\('([^']*)',\s*'(\d+)'\)")
+    for link in soup.find_all("a", href=lambda href: href and "fnSnsUrlCheck" in href):
+        match = pattern.search(link.get("href", ""))
+        if not match:
+            continue
+        social_url, medical_seq = match.groups()
+        source_url = _join(page_url, f"/2021/content/clinicDetail.do?medical_seq={medical_seq}")
+        name = _text_one(link, "span") or clean_text(link.get_text(" "))
+        if not name or source_url in seen:
+            continue
+        seen.add(source_url)
+        listings.append(
+            base_listing(
+                source_slug,
+                source_url,
+                name,
+                website=social_url if social_url.startswith(("http://", "https://")) else None,
+                raw_text=clean_text(link.get_text(" ")),
+                fields={"record_type": "gangnam_clinic_card", "medical_seq": medical_seq, "social_or_contact_handle": social_url, "card_source_page": page_url},
+            )
+        )
+    return listings
+
+
+def extract_gangnam_clinic_detail(soup, page_url: str, source_slug: str) -> dict[str, Any]:
+    text = visible_text(soup) or ""
+    headings = [clean_text(tag.get_text(" ")) for tag in soup.find_all("h2")]
+    name = next((heading for heading in reversed(headings) if heading and "clinic" in heading.lower() or heading and "surgery" in heading.lower()), None)
+    if name and "(" in name:
+        address_from_heading = clean_text(name[name.find("(") + 1:name.rfind(")")]) if name.rfind(")") > name.find("(") else None
+        name = clean_text(name.split("(", 1)[0])
+    else:
+        address_from_heading = None
+    fields = extract_table_key_values(soup)
+    address = fields.get("Address") or address_from_heading
+    city, region, postal = parse_address_parts(address)
+    website = fields.get("Homepage")
+    return base_listing(
+        source_slug,
+        page_url,
+        name or page_title_from_url(page_url),
+        description=text[:1200],
+        address=address,
+        locality=city,
+        region=region,
+        postal_code=postal,
+        phone=fields.get("Phone") or extract_phone(text),
+        email=fields.get("Consultation Email") or extract_email(text),
+        website=website,
+        images=extract_images(soup, page_url, min_width_hint=120)[:20],
+        services_json=[fields.get("Medical field")] if fields.get("Medical field") else None,
+        procedures_json={"table_fields": fields},
+        raw_text=text,
+        fields={"record_type": "gangnam_clinic_detail", "table_fields": fields},
+    )
+
+
+def extract_korea_health_pages_cards(soup, page_url: str, source_slug: str) -> list[dict[str, Any]]:
+    listings: list[dict[str, Any]] = []
+    for card in soup.select(".summary-item"):
+        link = card.select_one('a.heading.title[href$=".html"], a.title[href$=".html"]')
+        if not link:
+            continue
+        source_url = _join(page_url, link["href"])
+        raw_text = clean_text(card.get_text(" "))
+        name = clean_text(link.get_text(" "))
+        categories = [
+            clean_text(a.get_text(" "))
+            for a in card.select('.summary-info a[href^="/korea/"]')
+            if clean_text(a.get_text(" "))
+        ]
+        categories = list(dict.fromkeys(categories))
+        image = _first_image(card, page_url, source_page_url=page_url)
+        external = _first_link_href(card, lambda href, label: is_external_site(href, page_url))
+        rating, review_count = extract_rating_review_count(raw_text)
+        listings.append(
+            base_listing(
+                source_slug,
+                source_url,
+                name,
+                description=raw_text,
+                website=external,
+                rating=rating,
+                review_count=review_count,
+                images=[image] if image else [],
+                services_json=categories,
+                procedures_json={"categories": categories},
+                raw_text=raw_text,
+                fields={"record_type": "korea_health_pages_summary_card", "categories": categories, "card_source_page": page_url},
+            )
+        )
+    return [listing for listing in merge_duplicate_listings(listings) if listing.get("name")]
+
+
+def extract_korea_health_pages_profile(soup, page_url: str, source_slug: str) -> dict[str, Any]:
+    text = visible_text(soup) or ""
+    name = _text_one(soup, "h1") or _text_one(soup, ".detail-title") or page_title_from_url(page_url)
+    fields = extract_table_key_values(soup)
+    address = fields.get("Address") or fields.get("Location")
+    city, region, postal = parse_address_parts(address)
+    categories = [
+        clean_text(a.get_text(" "))
+        for a in soup.select('a[href^="/korea/"]')
+        if clean_text(a.get_text(" ")) and "korea" not in clean_text(a.get_text(" ")).lower()
+    ]
+    categories = list(dict.fromkeys(categories))[:100]
+    return base_listing(
+        source_slug,
+        canonical_url(soup, page_url),
+        name,
+        description=meta_description(soup) or text[:1200],
+        address=address,
+        locality=city,
+        region=region,
+        postal_code=postal,
+        phone=extract_phone(text),
+        email=extract_email(text),
+        website=extract_external_website(soup, page_url) or canonical_url(soup, page_url),
+        price_text=extract_price_text(text),
+        images=extract_images(soup, page_url, min_width_hint=120)[:40],
+        services_json=categories,
+        procedures_json={"categories": categories, "table_fields": fields},
+        raw_text=text,
+        fields={"record_type": "korea_health_pages_profile", "categories": categories, "table_fields": fields},
+    )
 
 
 def extract_longevitydocs_cards(soup, page_url: str, source_slug: str) -> list[dict[str, Any]]:
@@ -1482,6 +1966,185 @@ def _first_link_text(node, predicate) -> str | None:
     return None
 
 
+def meta_description(soup) -> str | None:
+    for key in ("description", "og:description", "twitter:description"):
+        tag = soup.find("meta", attrs={"name": key}) or soup.find("meta", attrs={"property": key})
+        if tag and tag.get("content"):
+            return clean_text(tag.get("content"))
+    return None
+
+
+def extract_email(text: str | None) -> str | None:
+    if not text:
+        return None
+    match = re.search(r"[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}", text, re.I)
+    return clean_text(match.group(0)) if match else None
+
+
+def extract_service_terms(text: str | None) -> list[str]:
+    if not text:
+        return []
+    terms = [
+        "Anti-Aging",
+        "Regenerative Medicine",
+        "Stem Cell Therapy",
+        "Exosome Therapy",
+        "PRP",
+        "IV Therapy",
+        "NAD",
+        "Peptide Therapy",
+        "Ozone Therapy",
+        "Hyperbaric Oxygen",
+        "Cryotherapy",
+        "Biohacking",
+        "Longevity",
+        "Executive Check-up",
+        "Medical Check-up",
+        "Genetic Testing",
+        "Epigenetic",
+        "Hormone Therapy",
+        "Detox",
+        "Aesthetic",
+        "Plastic Surgery",
+        "Dermatology",
+        "Wellness",
+    ]
+    return [term for term in terms if re.search(re.escape(term), text, re.I)]
+
+
+def extract_table_key_values(soup) -> dict[str, str]:
+    fields: dict[str, str] = {}
+    for row in soup.find_all("tr"):
+        cells = row.find_all(["th", "td"])
+        if len(cells) < 2:
+            continue
+        key = clean_text(cells[0].get_text(" "))
+        value = clean_text(" ".join(cell.get_text(" ") for cell in cells[1:]))
+        if key and value and len(key) < 120:
+            fields[key] = value
+    return fields
+
+
+def is_pdf_response(result) -> bool:
+    content_type = (result.content_type or "").lower()
+    final_url = (result.final_url or result.url or "").lower()
+    return "application/pdf" in content_type or final_url.endswith(".pdf")
+
+
+def extract_pdf_listings(result, config: SourceConfig) -> list[dict[str, Any]]:
+    text, local_path = extract_pdf_text(result.content, result.final_url or result.url, config.slug)
+    page_texts = split_pdf_pages(text)
+    listings: list[dict[str, Any]] = []
+    for index, page_text in enumerate(page_texts, start=1):
+        cleaned = clean_text(page_text)
+        if not cleaned or len(cleaned) < 80:
+            continue
+        heading = first_pdf_heading(cleaned) or f"{config.name} - page {index}"
+        listings.append(
+            base_listing(
+                config.slug,
+                f"{result.final_url or result.url}#page={index}",
+                heading,
+                description=cleaned[:1200],
+                website=result.final_url or result.url,
+                services_json=extract_service_terms(cleaned),
+                procedures_json={"pdf_page_number": index},
+                raw_text=cleaned,
+                fields={
+                    "record_type": "pdf_page",
+                    "page_number": index,
+                    "source_pdf_url": result.final_url or result.url,
+                    "local_pdf_path": str(local_path.relative_to(ROOT)) if local_path else None,
+                },
+            )
+        )
+    if not listings and text:
+        cleaned = clean_text(text)
+        listings.append(
+            base_listing(
+                config.slug,
+                result.final_url or result.url,
+                config.name,
+                description=cleaned[:1200] if cleaned else None,
+                website=result.final_url or result.url,
+                services_json=extract_service_terms(cleaned),
+                raw_text=cleaned,
+                fields={
+                    "record_type": "pdf_document",
+                    "source_pdf_url": result.final_url or result.url,
+                    "local_pdf_path": str(local_path.relative_to(ROOT)) if local_path else None,
+                },
+            )
+        )
+    return listings
+
+
+def extract_pdf_text(content: bytes, source_url: str, source_slug: str) -> tuple[str, Path | None]:
+    digest = hashlib.sha256(content).hexdigest()[:16]
+    filename = f"{slugify(Path(urlparse(source_url).path).stem or source_slug)}-{digest}.pdf"
+    pdf_path = MEDIA_DIR / source_slug / filename
+    pdf_path.parent.mkdir(parents=True, exist_ok=True)
+    if not pdf_path.exists():
+        pdf_path.write_bytes(content)
+    with tempfile.TemporaryDirectory() as temp_dir:
+        text_path = Path(temp_dir) / "document.txt"
+        try:
+            subprocess.run(
+                ["pdftotext", "-layout", str(pdf_path), str(text_path)],
+                check=True,
+                stdout=subprocess.DEVNULL,
+                stderr=subprocess.DEVNULL,
+                timeout=90,
+            )
+        except Exception:
+            return "", pdf_path
+        return text_path.read_text(encoding="utf-8", errors="ignore"), pdf_path
+
+
+def split_pdf_pages(text: str) -> list[str]:
+    if not text:
+        return []
+    pages = text.split("\f")
+    if len(pages) == 1:
+        return [text]
+    return pages
+
+
+def first_pdf_heading(text: str) -> str | None:
+    for line in text.splitlines():
+        line = clean_text(line)
+        if not line:
+            continue
+        if len(line) > 140:
+            continue
+        if re.search(r"^\d+\s*$", line):
+            continue
+        return line
+    return None
+
+
+def is_mymeditravel_center_profile(page_url: str) -> bool:
+    parsed = urlparse(page_url)
+    parts = [part for part in parsed.path.split("/") if part]
+    return parsed.netloc.lower().endswith("mymeditravel.com") and len(parts) == 5 and parts[0] == "medical-centers"
+
+
+def is_placidway_profile(page_url: str) -> bool:
+    parsed = urlparse(page_url)
+    return parsed.netloc.lower().endswith("placidway.com") and parsed.path.startswith("/profile/")
+
+
+def is_uniclinics_profile(page_url: str) -> bool:
+    parsed = urlparse(page_url)
+    parts = [part for part in parsed.path.split("/") if part]
+    return parsed.netloc.lower().endswith("uniclinics.com") and len(parts) == 4 and parts[:3] == ["medical-tourism", "turkey", "clinics"]
+
+
+def is_korea_health_pages_profile(page_url: str) -> bool:
+    parsed = urlparse(page_url)
+    return parsed.netloc.lower().endswith("koreahealthpages.com") and parsed.path.startswith("/korea/") and parsed.path.endswith(".html")
+
+
 def extract_phone(text: str | None) -> str | None:
     if not text:
         return None
@@ -1775,7 +2438,7 @@ def is_mayo_location_detail_page(page_url: str) -> bool:
 
 
 def enrich_listing_from_page(listing: dict[str, Any], soup, page_url: str, config: SourceConfig) -> None:
-    if config.slug == "bookimed_longevity" and "/clinics/direction=longevity-health/best" in page_url:
+    if is_bookimed_clinic_source(config.slug) and "/clinics/" in page_url and "/direction=longevity-health" in page_url:
         return
     text = listing.get("raw_text") or visible_text(soup) or ""
     if not listing.get("price_text"):
@@ -1789,7 +2452,7 @@ def enrich_listing_from_page(listing: dict[str, Any], soup, page_url: str, confi
         listing["rating"] = listing.get("rating") or rating
         listing["review_count"] = listing.get("review_count") or review_count
     fields = listing.setdefault("fields", {})
-    if config.slug != "bookimed_longevity":
+    if not is_bookimed_clinic_source(config.slug):
         for label, value in extract_detail_sections(soup).items():
             fields.setdefault(f"section_{label}", value)
 
@@ -2060,12 +2723,26 @@ def should_follow(url: str, config: SourceConfig) -> bool:
     lower = url.lower()
     if any(hint.lower() in lower for hint in config.exclude_hints):
         return False
+    parsed = urlparse(url)
     if config.slug == "stem_cell_authority":
-        parsed = urlparse(url)
         path = parsed.path.rstrip("/")
         return path == "/business-directory" or bool(re.match(r"^/business-directory/page/\d+$", path))
-    if config.slug == "bookimed_longevity" and "/direction=longevity-health" in lower and "/clinic/" in lower:
+    if is_bookimed_clinic_source(config.slug) and "/direction=longevity-health" in lower and "/clinic/" in lower:
         return False
+    if config.slug.startswith("mymeditravel_"):
+        return is_mymeditravel_center_profile(url)
+    if config.slug.startswith("placidway_"):
+        return is_placidway_profile(url)
+    if config.slug == "medical_travel_market_longevity_programs":
+        return parsed.path.startswith("/wellness-package/")
+    if config.slug == "uniclinics_turkey_clinics":
+        return is_uniclinics_profile(url)
+    if config.slug == "gangnam_medical_tourism":
+        return parsed.path.endswith("/2021/content/clinicDetail.do") and "medical_seq=" in parsed.query
+    if config.slug.startswith("korea_health_pages_"):
+        return is_korea_health_pages_profile(url) or bool(re.search(r"/p:\d+/?$", parsed.path))
+    if config.slug == "turkey_health_tourism_authorized_providers":
+        return any(token in lower for token in ("/tr-94834/", "/tr-94835/", "/tr-94836/", "/tr-94837/", "dosyamerkez.saglik.gov.tr"))
     if any(hint.lower() in lower for hint in config.follow_hints):
         return True
     return url.rstrip("/") in {seed.rstrip("/") for seed in config.seeds}
