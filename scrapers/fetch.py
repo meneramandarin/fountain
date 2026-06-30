@@ -29,12 +29,15 @@ class FetchResult:
     final_url: str
     status_code: int
     content_type: str
+    content: bytes
     text: str
     fetched_at: str
     sha256: str
 
     def to_page_row(self) -> dict[str, Any]:
-        soup = soup_from_html(self.text) if "html" in self.content_type or self.text.startswith("<") else None
+        content_type = (self.content_type or "").lower()
+        is_pdf = "application/pdf" in content_type or self.final_url.lower().endswith(".pdf")
+        soup = soup_from_html(self.text) if not is_pdf and ("html" in self.content_type or self.text.startswith("<")) else None
         return {
             "url": self.url,
             "final_url": self.final_url,
@@ -43,7 +46,7 @@ class FetchResult:
             "title": page_title(soup) if soup else None,
             "fetched_at": self.fetched_at,
             "sha256": self.sha256,
-            "html": self.text,
+            "html": None if is_pdf else self.text,
         }
 
 
@@ -61,13 +64,15 @@ class Fetcher:
             time.sleep(self.delay_seconds - elapsed)
         response = self.session.get(url, timeout=self.timeout)
         self._last_request_at = time.monotonic()
+        content = response.content
         text = response.text
         return FetchResult(
             url=url,
             final_url=response.url,
             status_code=response.status_code,
             content_type=response.headers.get("content-type", ""),
+            content=content,
             text=text,
             fetched_at=datetime.now(timezone.utc).isoformat(),
-            sha256=hashlib.sha256(text.encode("utf-8", errors="ignore")).hexdigest(),
+            sha256=hashlib.sha256(content).hexdigest(),
         )

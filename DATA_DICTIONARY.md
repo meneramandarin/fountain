@@ -545,3 +545,60 @@ Rows:
 | 10 | Longevity Center | Zurich, Switzerland, and Warsaw, Poland |
 
 Price text from the article is stored in `price_text`; extracted services are in `services_json` when the article section exposed a service list.
+
+## 2026-06-30 Medical Travel / Regional Longevity Batch
+
+This batch added separate staging databases for Bookimed country cuts, MyMediTravel, PlacidWay, Turkey/Thailand/Korea medical-tourism sources, and PDF guidebooks. The two global Bookimed URLs were not duplicated because they are already represented by `bookimed_longevity.sqlite` and `bookimed_longevity_doctors.sqlite`.
+
+The PDF sources are stored as page-level records with `listing_fields.record_type = pdf_page`; their extracted text is in `listings.raw_text` and the downloaded source PDFs are in `data/media/<source>/`. PDF page records are intentionally skipped by `build_canonical.py` so canonical clinic search is not polluted with document pages.
+
+| Database | Listings | Images | Reviews | Primary Record Types | Category / Field Signals |
+|---|---:|---:|---:|---|---|
+| `bookimed_longevity_turkey.sqlite` | 69 | 576 | 370 | Bookimed schema/cards | `services_json` aggregate offers; JSON-LD departments; prices and reviews |
+| `bookimed_longevity_thailand.sqlite` | 33 | 271 | 84 | Bookimed schema/cards | `services_json` aggregate offers; JSON-LD departments; prices and reviews |
+| `bookimed_longevity_korea.sqlite` | 14 | 139 | 187 | Bookimed schema/cards | `services_json` aggregate offers; JSON-LD departments; prices and reviews |
+| `bookimed_longevity_doctors_turkey.sqlite` | 30 | 0 | 0 | `doctor_profile` | `specialization`, `workplace`, `experience`, `linked_clinic`, `languages` |
+| `bookimed_longevity_doctors_thailand.sqlite` | 26 | 0 | 0 | `doctor_profile` | `specialization`, `workplace`, `experience`, `linked_clinic`, `languages` |
+| `mymeditravel_regenerative_thailand.sqlite` | 21 | 412 | 117 | `mymeditravel_center_profile` | procedures list, location, rating/reviews, gallery images |
+| `mymeditravel_antiaging_stemcell_thailand.sqlite` | 1 | 16 | 0 | page/schema record | procedure page text, phone, prices found |
+| `mymeditravel_antiaging_stemcell_bangkok.sqlite` | 1 | 10 | 0 | page/schema record | procedure page text, phone, prices found |
+| `mymeditravel_regenerative_southkorea.sqlite` | 3 | 73 | 8 | `mymeditravel_center_profile` | procedures list, location, rating/reviews, gallery images |
+| `mymeditravel_chaum_medical_center.sqlite` | 1 | 22 | 16 | `mymeditravel_center_profile` | procedures list, patient reviews, center metadata |
+| `mymeditravel_regenerative_turkey.sqlite` | 7 | 106 | 36 | `mymeditravel_center_profile` | procedures list, location, rating/reviews, gallery images |
+| `mymeditravel_antiaging_stemcell_turkey.sqlite` | 1 | 4 | 0 | page/schema record | procedure page text, phone, prices found |
+| `placidway_antiaging_turkey.sqlite` | 20 | 510 | 136 | `placidway_profile` | profile text, service terms, packages/prices, reviews |
+| `placidway_antiaging_thailand.sqlite` | 19 | 465 | 163 | `placidway_profile` | profile text, service terms, packages/prices, reviews |
+| `placidway_antiaging_south_korea.sqlite` | 20 | 434 | 1,085 | `placidway_profile` | profile text, service terms, packages/prices, reviews |
+| `placidway_stem_cell_turkey.sqlite` | 9 | 229 | 41 | `placidway_profile` | profile text, service terms, packages/prices, reviews |
+| `placidway_stem_cell_thailand.sqlite` | 12 | 304 | 105 | `placidway_profile` | profile text, service terms, packages/prices, reviews |
+| `placidway_stem_cell_south_korea.sqlite` | 2 | 52 | 0 | `placidway_profile` | profile text, service terms, packages/prices |
+| `medical_travel_market_longevity_programs.sqlite` | 24 | 331 | 0 | `wellness_package_profile` | package profiles, location/provider labels, service terms |
+| `turkey_health_tourism_authorized_providers.sqlite` | 245 | 6 | 0 | `pdf_page` | official linked PDF page text; `page_number`, `source_pdf_url`, `local_pdf_path` |
+| `longevity_suite_istanbul_biohacking.sqlite` | 1 | 13 | 0 | `source_page` | clinic page text; anti-aging, regenerative, IV, biohacking service terms |
+| `turkey_healthcare_group_regenerative.sqlite` | 1 | 2 | 0 | `source_page` | regenerative therapy page text and service terms |
+| `istanbul_stem_cell_aging.sqlite` | 1 | 15 | 0 | `source_page` | anti-aging/stem-cell treatment page text and service terms |
+| `istanbul_med_assist_stem_cell_longevity.sqlite` | 1 | 7 | 0 | `source_page` | longevity package page text; stem cell, PRP, IV, NAD terms |
+| `uniclinics_turkey_clinics.sqlite` | 20 | 117 | 0 | `uniclinics_clinic_profile` | clinic profile text, city/country, service terms |
+| `longevita_clinics.sqlite` | 2 | 30 | 0 | `source_page` | homepage and hospitals/clinics page text |
+| `thailand_longevity_guidebook_pdf.sqlite` | 83 | 0 | 0 | `pdf_page` | Thailand longevity guidebook text by PDF page |
+| `healing_harmony_thailand_pdf.sqlite` | 134 | 0 | 0 | `pdf_page` | Thailand wellness guidebook text by PDF page |
+| `gangnam_medical_tourism.sqlite` | 99 | 351 | 0 | `gangnam_clinic_card`, `gangnam_clinic_detail` | medical field, certificate, phone/email/homepage/address table fields |
+| `korea_health_pages_medical_tourism_services.sqlite` | 7 | 112 | 0 | `korea_health_pages_profile` | profile categories, website, images, service/category tags |
+| `korea_health_pages_anti_aging_gangnam.sqlite` | 19 | 431 | 0 | `korea_health_pages_profile`, `korea_health_pages_summary_card` | profile categories and anti-aging/Gangnam category tags |
+| `korea_health_pages_iv_drip.sqlite` | 19 | 453 | 0 | `korea_health_pages_profile` | fallback live category URL; IV drip/Gangnam profile categories |
+| `korea_health_pages_rejuran.sqlite` | 18 | 430 | 0 | `korea_health_pages_profile` | fallback live Rejuran Healer category URL; profile categories |
+| `korea_health_pages_prp_skin.sqlite` | 18 | 430 | 0 | `korea_health_pages_profile` | fallback live PRP Skin category URL; profile categories |
+| `korea_health_pages_stem_cell.sqlite` | 9 | 146 | 0 | `korea_health_pages_profile` | fallback live stem-cell Seoul/Korea category URL; profile categories |
+| `korea_health_pages_regenerative_medicine.sqlite` | 7 | 118 | 0 | `korea_health_pages_profile` | fallback live best stem-cell clinics URL used for regenerative/adjacent listings |
+| `korea_medical_directory_pdf.sqlite` | 29 | 0 | 0 | `pdf_page` | Visit Korea medical tourism directory text by PDF page |
+| `meditrip_seoul.sqlite` | 1 | 22 | 0 | `source_page` | concierge page text and service terms |
+
+Unavailable or intentionally skipped sources from this batch:
+
+- `https://us-uk.bookimed.com/clinics/direction=longevity-health/best/`: already scraped in `bookimed_longevity.sqlite`.
+- `https://us-uk.bookimed.com/doctors/direction=longevity-health/`: already scraped in `bookimed_longevity_doctors.sqlite`.
+- Bookimed Republic of Korea doctors country URL: returned 404 for all seeded pages, so the empty DB was removed.
+- BookingHealth Turkey clinics URL: returned a 404 page, so the empty DB was removed.
+- Seoul Guide Medical: returned a `Site is offline` page during the scrape, so the empty DB was removed.
+- 365 Medical Tour: DNS did not resolve for `www.365medicaltour.com` or `365medicaltour.com`, so the empty DB was removed.
+- Several Korea Health Pages URLs supplied with `...-korea` slugs returned 404. Live fallback category URLs on the same site were used for IV drip, Rejuran, PRP, stem-cell, and regenerative/adjacent stem-cell listings.

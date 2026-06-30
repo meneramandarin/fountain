@@ -11,7 +11,11 @@ __pycache__/
 *.db-shm
 
 # Raw scrape artifacts are large/generated. Rebuild or restore locally.
+# Keep only the merged root-level canonical.db in Git.
 data/databases/
+data/databases/**/*.sqlite
+data/databases/**/*.db
+data/databases/**/*.sqlite-*
+data/databases/**/*.db-*
 data/media/
 data/exports/*/
-
