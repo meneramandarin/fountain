@@ -87,6 +87,9 @@ def is_bookimed_clinic_source(source_slug: str) -> bool:
 EXTRA_COUNTRY_ALIASES = {
     "Australia": "AU",
     "AU": "AU",
+    "United States of America": "US",
+    "U.S.": "US",
+    "U.S.A.": "US",
     "Azerbaijan": "AZ",
     "AZ": "AZ",
     "Belarus": "BY",
@@ -123,6 +126,7 @@ EXTRA_COUNTRY_ALIASES = {
     "MY": "MY",
     "Panama": "PA",
     "PA": "PA",
+    "Republic of Korea": "KR",
     "South Korea": "KR",
     "Korea": "KR",
     "KR": "KR",
@@ -486,7 +490,7 @@ class CanonicalBuilder:
             cat_city, cat_region = parse_city_region(category)
             if cat_city and cat_region:
                 locality, region = cat_city, cat_region
-                country_name, country_code = "USA", "US"
+                country_name, country_code = "United States", "US"
         elif slug == "spannr":
             raw = " ".join(clean(part) or "" for part in [row["raw_text"], fields.get("card_text")])
             offer_terms.extend(scan_known_treatments(raw))
@@ -494,7 +498,7 @@ class CanonicalBuilder:
             parsed = parse_us_city_state(address or raw)
             if parsed:
                 locality, region = parsed
-                country_name, country_code = "USA", "US"
+                country_name, country_code = "United States", "US"
         elif slug == "immortality_clinic":
             raw = " ".join(clean(part) or "" for part in [row["raw_text"], fields.get("card_text")])
             offer_terms.extend(scan_known_treatments(raw))
@@ -519,6 +523,7 @@ class CanonicalBuilder:
                 region = clean(address_obj.get("addressRegion"))
                 country_name = clean(address_obj.get("addressCountry")) or country_name
                 country_code = self.normalize_country(country_name)
+                country_name = self.canonical_country_name(country_code, country_name)
                 address = format_address(address_obj) or address
         elif slug == "mayo_executive_health_locations":
             org_name = "Mayo Clinic"
@@ -588,7 +593,7 @@ class CanonicalBuilder:
             "locality": locality,
             "region": region,
             "postal_code": clean(row["postal_code"]),
-            "country_name": country_name,
+            "country_name": self.canonical_country_name(country_code, country_name),
             "country_code": country_code,
             "latitude": parse_float(row["latitude"]),
             "longitude": parse_float(row["longitude"]),
@@ -653,7 +658,7 @@ class CanonicalBuilder:
                 linked = self.resolve_bookimed_clinic(linked_clinic)
                 if linked:
                     country_code = linked.get("country_code") or country_code
-                    country_name = self.country_names.get(country_code or "", country_name)
+                    country_name = self.canonical_country_name(country_code, country_name)
                     locality = linked.get("locality") or locality
             if not country_code and workplace:
                 country_name, locality_from_workplace = parse_workplace_country_city(workplace)
@@ -669,7 +674,7 @@ class CanonicalBuilder:
             parsed = parse_city_state_from_label(region_label)
             if parsed:
                 locality, region = parsed
-            country_name, country_code = "USA", "US"
+            country_name, country_code = "United States", "US"
             if parse_float(row["rating"]):
                 tags.append(("trust", "has rating"))
             if parse_int(row["review_count"]):
@@ -682,7 +687,7 @@ class CanonicalBuilder:
             languages = None
             practice = clean(fields.get("practice") or procedures.get("practice"))
             if not country_code:
-                country_name, country_code = "USA", "US"
+                country_name, country_code = "United States", "US"
             tags.extend(tags_for_source_value(primary_specialty))
 
         if not primary_specialty and specialties:
@@ -696,7 +701,7 @@ class CanonicalBuilder:
             "specialties": dedupe_list(specialties),
             "locality": locality,
             "region": region,
-            "country_name": country_name,
+            "country_name": self.canonical_country_name(country_code, country_name),
             "country_code": country_code,
             "linked_clinic": linked_clinic,
             "practice": practice,
@@ -717,7 +722,7 @@ class CanonicalBuilder:
             if inferred:
                 country_name = inferred
                 country_code = self.normalize_country(inferred)
-        return country_name, country_code
+        return self.canonical_country_name(country_code, country_name), country_code
 
     def normalize_country(self, value: str | None) -> str | None:
         value = clean(value)
@@ -726,6 +731,17 @@ class CanonicalBuilder:
         if re.fullmatch(r"[A-Z]{2}", value):
             return value
         return self.country_aliases.get(normalize_country_key(value))
+
+    def canonical_country_name(self, country_code: str | None, fallback: str | None = None) -> str | None:
+        if country_code and country_code in self.country_names:
+            return self.country_names[country_code]
+        fallback = clean(fallback)
+        if not fallback:
+            return None
+        fallback_code = self.normalize_country(fallback)
+        if fallback_code and fallback_code in self.country_names:
+            return self.country_names[fallback_code]
+        return fallback
 
     def get_organization(
         self,
@@ -852,14 +868,14 @@ class CanonicalBuilder:
             practitioner_id,
             {
                 "locality": mapped.get("locality"),
-                "country": mapped.get("country_name") or mapped.get("country_code"),
+                "country": self.canonical_country_name(mapped.get("country_code"), mapped.get("country_name")),
                 "specialties": [],
             },
         )
         if not meta.get("locality") and mapped.get("locality"):
             meta["locality"] = mapped["locality"]
         if not meta.get("country") and (mapped.get("country_name") or mapped.get("country_code")):
-            meta["country"] = mapped.get("country_name") or mapped.get("country_code")
+            meta["country"] = self.canonical_country_name(mapped.get("country_code"), mapped.get("country_name"))
         for value in [mapped.get("primary_specialty"), mapped.get("credentials"), mapped.get("languages")]:
             if value:
                 meta["specialties"].append(value)

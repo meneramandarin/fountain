@@ -76,7 +76,7 @@ def q_stats(c):
 
 def q_facets(c):
     countries = fetch(c, """
-        SELECT country_code AS code, country_name AS name, COUNT(*) AS n
+        SELECT country_code AS code, MAX(country_name) AS name, COUNT(*) AS n
         FROM locations WHERE country_code IS NOT NULL AND country_code <> ''
         GROUP BY country_code ORDER BY n DESC, name
     """)
@@ -206,17 +206,15 @@ def search_practitioners(c, p, page):
                 SELECT 1 FROM search_index si
                 WHERE si.entity_type='practitioner' AND si.entity_id = p.id
                   AND (
-                    si.country = ?
-                    OR si.country IN (
+                    si.country IN (
                       SELECT DISTINCT country_name FROM locations
                       WHERE country_code = ? AND country_name IS NOT NULL AND country_name != ''
                     )
-                    OR (? = 'US' AND si.country IN ('USA', 'United States'))
                   )
               )
             )
         """)
-        params += [p["country"], p["country"], p["country"], p["country"]]
+        params += [p["country"], p["country"]]
     for facet, key in (("entity_type", "entity_type"), ("care_model", "care_model")):
         if p.get(key):
             where.append("EXISTS (SELECT 1 FROM entity_tags et JOIN tags tg "
@@ -237,7 +235,7 @@ def search_practitioners(c, p, page):
         marks = ",".join("?" * len(ids))
         aff = fetch(c, f"""
             SELECT a.practitioner_id AS pid, l.name AS clinic, l.locality AS locality,
-                   l.country_code AS country_code
+                   l.country_code AS country_code, l.country_name AS country_name
             FROM affiliations a JOIN locations l ON l.id = a.location_id
             WHERE a.practitioner_id IN ({marks})
         """, ids)
