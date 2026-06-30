@@ -1,0 +1,442 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Longevity Index</title>
+<style>
+  :root {
+    --paper:#FBFBF9; --surface:#FFFFFF; --ink:#1B1B17; --muted:#6B6B63;
+    --line:#E4E3DD; --line-strong:#CFCEC6; --accent:#0F6E56; --accent-soft:#E1F5EE;
+    --mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    --radius:10px;
+  }
+  * { box-sizing:border-box; }
+  html,body { margin:0; }
+  body { background:var(--paper); color:var(--ink); font-family:var(--sans);
+         font-size:15px; line-height:1.5; -webkit-font-smoothing:antialiased; }
+  a { color:var(--accent); text-decoration:none; }
+  a:hover { text-decoration:underline; }
+  button { font-family:inherit; cursor:pointer; }
+  .mono { font-family:var(--mono); }
+
+  header { border-bottom:1px solid var(--line); background:var(--surface);
+           position:sticky; top:0; z-index:5; }
+  .head-inner { max-width:1180px; margin:0 auto; padding:14px 22px;
+                display:flex; align-items:baseline; gap:18px; flex-wrap:wrap; }
+  .wordmark { font-family:var(--mono); font-weight:600; letter-spacing:.18em;
+              text-transform:uppercase; font-size:13px; }
+  .wordmark span { color:var(--accent); }
+  .stats { font-family:var(--mono); font-size:12px; color:var(--muted);
+           letter-spacing:.02em; }
+  .stats b { color:var(--ink); font-weight:600; }
+
+  .layout { max-width:1180px; margin:0 auto; padding:22px;
+            display:grid; grid-template-columns:248px 1fr; gap:28px; align-items:start; }
+
+  aside { position:sticky; top:74px; }
+  .facet { margin-bottom:20px; }
+  .facet h3 { font-family:var(--mono); font-size:11px; letter-spacing:.14em;
+              text-transform:uppercase; color:var(--muted); margin:0 0 8px; }
+  .search-box { width:100%; padding:9px 11px; border:1px solid var(--line-strong);
+                border-radius:var(--radius); font-size:14px; background:var(--surface); }
+  .search-box:focus { outline:2px solid var(--accent-soft); border-color:var(--accent); }
+  select { width:100%; padding:8px 10px; border:1px solid var(--line-strong);
+           border-radius:var(--radius); background:var(--surface); font-size:14px; }
+  .chips { display:flex; flex-wrap:wrap; gap:6px; }
+  .chip { border:1px solid var(--line-strong); background:var(--surface);
+          padding:4px 9px; border-radius:999px; font-size:12.5px; color:var(--ink); }
+  .chip .n { font-family:var(--mono); color:var(--muted); font-size:11px; margin-left:4px; }
+  .chip[aria-pressed="true"] { background:var(--ink); color:var(--paper); border-color:var(--ink); }
+  .chip[aria-pressed="true"] .n { color:var(--paper); opacity:.7; }
+  .reset { width:100%; padding:8px; border:1px solid var(--line-strong);
+           background:var(--surface); border-radius:var(--radius); color:var(--muted); font-size:13px; }
+  .reset:hover { color:var(--ink); border-color:var(--ink); }
+
+  .tabs { display:flex; gap:2px; border:1px solid var(--line-strong);
+          border-radius:var(--radius); padding:2px; width:max-content; margin-bottom:16px; }
+  .tab { border:0; background:transparent; padding:7px 14px; border-radius:8px;
+         font-size:13.5px; color:var(--muted); }
+  .tab[aria-selected="true"] { background:var(--ink); color:var(--paper); }
+  .resultbar { display:flex; justify-content:space-between; align-items:center;
+               margin-bottom:12px; font-size:13px; color:var(--muted); font-family:var(--mono); }
+
+  .card { background:var(--surface); border:1px solid var(--line); border-radius:var(--radius);
+          padding:14px 16px; margin-bottom:10px; cursor:pointer; transition:border-color .12s; }
+  .card:hover { border-color:var(--line-strong); }
+  .card-top { display:flex; justify-content:space-between; gap:12px; align-items:baseline; }
+  .card-name { font-weight:600; font-size:16px; }
+  .card-meta { font-family:var(--mono); font-size:12px; color:var(--muted); white-space:nowrap; }
+  .card-sub { color:var(--muted); font-size:13px; margin-top:2px; }
+  .badge { display:inline-block; font-family:var(--mono); font-size:11px; letter-spacing:.03em;
+           border:1px solid var(--line-strong); border-radius:5px; padding:1px 6px;
+           color:var(--muted); margin-right:6px; }
+  .tchips { display:flex; flex-wrap:wrap; gap:5px; margin-top:10px; }
+  .tchip { font-size:12px; padding:2px 8px; border-radius:6px; }
+
+  .pager { display:flex; gap:8px; align-items:center; margin-top:14px; font-family:var(--mono); font-size:13px; }
+  .pager button { border:1px solid var(--line-strong); background:var(--surface);
+                  border-radius:8px; padding:6px 12px; }
+  .pager button:disabled { opacity:.4; cursor:default; }
+  .empty { border:1px dashed var(--line-strong); border-radius:var(--radius);
+           padding:40px 20px; text-align:center; color:var(--muted); }
+
+  .legend { display:flex; flex-wrap:wrap; gap:8px 14px; margin-top:6px; font-size:11.5px; color:var(--muted); }
+  .legend i { display:inline-block; width:10px; height:10px; border-radius:3px; margin-right:5px; vertical-align:-1px; }
+
+  .overlay { position:fixed; inset:0; background:rgba(20,20,16,.32); opacity:0;
+             pointer-events:none; transition:opacity .15s; z-index:10; }
+  .overlay.on { opacity:1; pointer-events:auto; }
+  .drawer { position:fixed; top:0; right:0; height:100%; width:520px; max-width:94vw;
+            background:var(--surface); border-left:1px solid var(--line); z-index:11;
+            transform:translateX(100%); transition:transform .18s ease; overflow-y:auto; }
+  .drawer.on { transform:translateX(0); }
+  @media (prefers-reduced-motion: reduce) { .drawer, .overlay { transition:none; } }
+  .drawer-head { position:sticky; top:0; background:var(--surface); border-bottom:1px solid var(--line);
+                 padding:18px 22px; display:flex; justify-content:space-between; align-items:flex-start; gap:14px; }
+  .drawer-body { padding:6px 22px 40px; }
+  .closex { border:0; background:transparent; font-size:22px; color:var(--muted); line-height:1; }
+  .d-section { margin-top:20px; }
+  .d-section h4 { font-family:var(--mono); font-size:11px; letter-spacing:.12em; text-transform:uppercase;
+                  color:var(--muted); margin:0 0 9px; }
+  .kv { font-size:13.5px; color:var(--muted); }
+  .kv b { color:var(--ink); font-weight:500; }
+  .offer-row { display:flex; justify-content:space-between; gap:12px; padding:5px 0;
+               border-bottom:1px solid var(--line); font-size:13.5px; }
+  .offer-row:last-child { border-bottom:0; }
+  .price { font-family:var(--mono); color:var(--ink); white-space:nowrap; }
+  .src { font-family:var(--mono); font-size:12px; color:var(--muted); }
+  .link-row { display:block; padding:6px 0; border-bottom:1px solid var(--line); font-size:14px; }
+  .link-row:last-child { border-bottom:0; }
+  .link-row small { color:var(--muted); font-family:var(--mono); }
+
+  @media (max-width:820px) {
+    .layout { grid-template-columns:1fr; }
+    aside { position:static; }
+  }
+</style>
+</head>
+<body>
+<header>
+  <div class="head-inner">
+    <div class="wordmark"><span>&#9670;</span> Longevity&nbsp;Index</div>
+    <div class="stats" id="stats"></div>
+  </div>
+</header>
+
+<div class="layout">
+  <aside>
+    <div class="facet">
+      <h3>Search</h3>
+      <input id="q" class="search-box" type="search" placeholder="name, treatment, place...">
+    </div>
+    <div class="facet">
+      <h3>Country</h3>
+      <select id="country"><option value="">All countries</option></select>
+    </div>
+    <div class="facet">
+      <h3>Treatment</h3>
+      <select id="treatment"><option value="">Any treatment</option></select>
+    </div>
+    <div class="facet">
+      <h3>Type</h3>
+      <div class="chips" id="entity_types"></div>
+    </div>
+    <div class="facet">
+      <h3>Care model</h3>
+      <div class="chips" id="care_models"></div>
+    </div>
+    <div class="facet">
+      <button class="reset" id="reset">Clear all filters</button>
+    </div>
+    <div class="facet">
+      <h3>Domains</h3>
+      <div class="legend" id="legend"></div>
+    </div>
+  </aside>
+
+  <main>
+    <div class="tabs" role="tablist">
+      <button class="tab" role="tab" data-kind="locations" aria-selected="true">Clinics &amp; locations</button>
+      <button class="tab" role="tab" data-kind="practitioners" aria-selected="false">Doctors &amp; practitioners</button>
+    </div>
+    <div class="resultbar"><span id="count"></span></div>
+    <div id="results"></div>
+    <div class="pager" id="pager"></div>
+  </main>
+</div>
+
+<div class="overlay" id="overlay"></div>
+<div class="drawer" id="drawer" aria-hidden="true">
+  <div class="drawer-head">
+    <div id="drawer-title"></div>
+    <button class="closex" id="closex" aria-label="Close">&times;</button>
+  </div>
+  <div class="drawer-body" id="drawer-body"></div>
+</div>
+
+<script>
+const DOMAIN = {
+  "Diagnostics & testing":   {bg:"#E6F1FB", fg:"#0C447C"},
+  "Regenerative & cellular": {bg:"#EEEDFE", fg:"#3C3489"},
+  "IV & infusion":           {bg:"#E1F5EE", fg:"#0F6E56"},
+  "Hormone & metabolic":     {bg:"#FAEEDA", fg:"#854F0B"},
+  "Recovery & performance":  {bg:"#EAF3DE", fg:"#3B6D11"},
+  "Aesthetic":               {bg:"#FBEAF0", fg:"#993556"},
+  "Lifestyle & foundational":{bg:"#F1EFE8", fg:"#5F5E5A"},
+};
+const domStyle = d => DOMAIN[d] || {bg:"#F1EFE8", fg:"#5F5E5A"};
+const esc = s => (s==null?"":String(s)).replace(/[&<>"]/g, m =>
+  ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[m]));
+
+const state = { kind:"locations", q:"", country:"", treatment_id:"", entity_type:"", care_model:"", page:0 };
+let facets = null;
+
+async function api(path){ const r = await fetch(path); return r.json(); }
+
+function buildQuery(){
+  const p = new URLSearchParams();
+  p.set("kind", state.kind); p.set("page", state.page);
+  for (const k of ["q","country","treatment_id","entity_type","care_model"])
+    if (state[k]) p.set(k, state[k]);
+  return p.toString();
+}
+
+async function loadStats(){
+  const s = await api("/api/stats");
+  document.getElementById("stats").innerHTML =
+    `<b>${s.locations.toLocaleString()}</b> locations &middot; ` +
+    `<b>${s.practitioners.toLocaleString()}</b> practitioners &middot; ` +
+    `<b>${s.offerings.toLocaleString()}</b> offerings &middot; ` +
+    `<b>${s.organizations.toLocaleString()}</b> orgs`;
+}
+
+async function loadFacets(){
+  const f = await api("/api/facets");
+  facets = f;
+  const cs = document.getElementById("country");
+  f.countries.forEach(c => {
+    const o = document.createElement("option");
+    o.value = c.code; o.textContent = `${c.name || c.code} (${c.n})`;
+    cs.appendChild(o);
+  });
+  const ts = document.getElementById("treatment");
+  f.treatment_domains.forEach(d => {
+    const g = document.createElement("optgroup"); g.label = d.domain;
+    d.treatments.forEach(t => {
+      const o = document.createElement("option");
+      o.value = t.id; o.textContent = `${t.name}` + (t.n ? ` (${t.n})` : "");
+      g.appendChild(o);
+    });
+    ts.appendChild(g);
+  });
+  renderFacetChips();
+  const leg = document.getElementById("legend");
+  Object.keys(DOMAIN).forEach(d => {
+    const s = domStyle(d);
+    leg.insertAdjacentHTML("beforeend",
+      `<span><i style="background:${s.bg};border:1px solid ${s.fg}33"></i>${esc(d)}</span>`);
+  });
+}
+
+function renderFacetChips(){
+  if (!facets) return;
+  const entityItems = state.kind === "practitioners"
+    ? facets.practitioner_entity_types
+    : facets.location_entity_types;
+  const careItems = state.kind === "practitioners"
+    ? facets.practitioner_care_models
+    : facets.location_care_models;
+  chips("entity_types", entityItems || [], "entity_type");
+  chips("care_models", careItems || [], "care_model");
+}
+
+function chips(elId, items, key){
+  const el = document.getElementById(elId);
+  el.innerHTML = "";
+  items.forEach(it => {
+    const b = document.createElement("button");
+    b.className = "chip"; b.setAttribute("aria-pressed","false");
+    if (state[key] === it.value) b.setAttribute("aria-pressed","true");
+    b.innerHTML = `${esc(it.value)}<span class="n">${it.n}</span>`;
+    b.onclick = () => {
+      const on = state[key] === it.value;
+      el.querySelectorAll(".chip").forEach(c => c.setAttribute("aria-pressed","false"));
+      state[key] = on ? "" : it.value;
+      b.setAttribute("aria-pressed", on ? "false" : "true");
+      state.page = 0; run();
+    };
+    el.appendChild(b);
+  });
+}
+
+function run(){
+  state.kind === "locations" ? renderLocations() : renderPractitioners();
+}
+
+async function renderLocations(){
+  const data = await api("/api/search?" + buildQuery());
+  const box = document.getElementById("results");
+  document.getElementById("count").textContent =
+    data.total.toLocaleString() + " result" + (data.total === 1 ? "" : "s");
+  if (!data.results.length){ box.innerHTML = empty(); pager(data); return; }
+  box.innerHTML = data.results.map(r => {
+    const place = [r.locality, r.region].filter(Boolean).join(", ");
+    const cc = r.country_code ? `<span class="mono" title="${esc(r.country_name||"")}">${esc(r.country_code)}</span>` : "";
+    const etype = (r.tags||[]).find(t => t.facet === "entity_type");
+    const star = r.rating ? `&#9733; ${r.rating}${r.review_count?` (${r.review_count})`:""}` : "";
+    const chips = (r.treatments||[]).map(t => {
+      const s = domStyle(t.domain);
+      return `<span class="tchip" style="background:${s.bg};color:${s.fg}">${esc(t.name)}</span>`;
+    }).join("");
+    return `<div class="card" onclick="openLocation(${r.id})">
+      <div class="card-top">
+        <div class="card-name">${esc(r.name||"Unnamed")}</div>
+        <div class="card-meta">${[place, cc].filter(Boolean).join(" &middot; ")}</div>
+      </div>
+      <div class="card-sub">
+        ${etype?`<span class="badge">${esc(etype.value)}</span>`:""}
+        ${r.org_name && r.org_name!==r.name?esc(r.org_name)+" ":""}
+        ${star?`<span class="mono">${star}</span>`:""}
+      </div>
+      ${chips?`<div class="tchips">${chips}</div>`:""}
+    </div>`;
+  }).join("");
+  pager(data);
+}
+
+async function renderPractitioners(){
+  const data = await api("/api/search?" + buildQuery());
+  const box = document.getElementById("results");
+  document.getElementById("count").textContent =
+    data.total.toLocaleString() + " result" + (data.total === 1 ? "" : "s");
+  if (!data.results.length){ box.innerHTML = empty(); pager(data); return; }
+  box.innerHTML = data.results.map(r => {
+    const aff = (r.affiliations||[])[0];
+    const place = aff ? [aff.clinic, aff.locality, aff.country_code].filter(Boolean).join(", ") : "";
+    const exp = r.years_experience ? `${r.years_experience} yrs` : "";
+    return `<div class="card" onclick="openPractitioner(${r.id})">
+      <div class="card-top">
+        <div class="card-name">${esc(r.full_name)}</div>
+        <div class="card-meta">${esc(exp)}</div>
+      </div>
+      <div class="card-sub">
+        ${r.primary_specialty?`<span class="badge">${esc(r.primary_specialty)}</span>`:""}
+        ${esc(place)}
+      </div>
+    </div>`;
+  }).join("");
+  pager(data);
+}
+
+const empty = () => `<div class="empty">No matches. Try clearing a filter or broadening the search.</div>`;
+
+function pager(data){
+  const pages = Math.ceil(data.total / data.page_size) || 1;
+  const el = document.getElementById("pager");
+  if (data.total <= data.page_size){ el.innerHTML = ""; return; }
+  el.innerHTML =
+    `<button ${state.page<=0?"disabled":""} onclick="go(-1)">&larr; Prev</button>` +
+    `<span>page ${state.page+1} / ${pages}</span>` +
+    `<button ${state.page>=pages-1?"disabled":""} onclick="go(1)">Next &rarr;</button>`;
+}
+function go(d){ state.page += d; run(); window.scrollTo({top:0,behavior:"smooth"}); }
+
+// ---- detail drawer ----
+const drawer = document.getElementById("drawer");
+const overlay = document.getElementById("overlay");
+function closeDrawer(){ drawer.classList.remove("on"); overlay.classList.remove("on"); drawer.setAttribute("aria-hidden","true"); }
+document.getElementById("closex").onclick = closeDrawer;
+overlay.onclick = closeDrawer;
+document.addEventListener("keydown", e => { if (e.key === "Escape") closeDrawer(); });
+function openDrawer(){ drawer.classList.add("on"); overlay.classList.add("on"); drawer.setAttribute("aria-hidden","false"); drawer.scrollTop = 0; }
+
+async function openLocation(id){
+  const d = await api("/api/location/" + id);
+  document.getElementById("drawer-title").innerHTML =
+    `<div class="card-name">${esc(d.name||"Unnamed")}</div>
+     <div class="src">${[d.locality, d.region, d.country_name].filter(Boolean).join(", ")}</div>`;
+  const tags = (d.tags||[]).map(t => `<span class="badge">${esc(t.value)}</span>`).join(" ");
+  const byDomain = {};
+  (d.offerings||[]).forEach(o => { (byDomain[o.domain||"Other"] ||= []).push(o); });
+  const offers = Object.keys(byDomain).map(dom => {
+    const s = domStyle(dom);
+    const rows = byDomain[dom].map(o => {
+      const price = o.price_amount!=null ? `<span class="price">${o.price_amount.toLocaleString()} ${esc(o.price_currency||"")}</span>` : "";
+      return `<div class="offer-row"><span>${esc(o.treatment || o.raw_name)}</span>${price}</div>`;
+    }).join("");
+    return `<div style="margin-bottom:12px">
+      <div class="tchip" style="background:${s.bg};color:${s.fg};display:inline-block;margin-bottom:5px">${esc(dom)}</div>
+      ${rows}</div>`;
+  }).join("");
+  const docs = (d.practitioners||[]).map(p =>
+    `<a class="link-row" onclick="openPractitioner(${p.id})">${esc(p.full_name)} <small>${esc(p.primary_specialty||"")}</small></a>`).join("");
+  const revs = (d.reviews||[]).slice(0,6).map(r =>
+    `<div class="kv" style="margin-bottom:8px"><b>${esc(r.reviewer||"Anonymous")}</b> ${r.rating?`&#9733; ${esc(r.rating)}`:""}<br>${esc(r.body||"")}</div>`).join("");
+  const srcs = (d.sources||[]).map(s =>
+    s.source_url ? `<a class="src" href="${esc(s.source_url)}" target="_blank" rel="noopener">${esc(s.source)}</a>` : `<span class="src">${esc(s.source)}</span>`).join(" &middot; ");
+
+  document.getElementById("drawer-body").innerHTML =
+    `<div class="d-section">
+       <div class="kv">${d.address?esc(d.address)+"<br>":""}
+       ${d.phone?`<b>${esc(d.phone)}</b> &middot; `:""}
+       ${d.website?`<a href="${esc(d.website)}" target="_blank" rel="noopener">${esc(d.website.replace(/^https?:\/\//,""))}</a>`:""}</div>
+       ${tags?`<div style="margin-top:8px">${tags}</div>`:""}
+     </div>
+     ${offers?`<div class="d-section"><h4>Offerings</h4>${offers}</div>`:""}
+     ${docs?`<div class="d-section"><h4>Practitioners here</h4>${docs}</div>`:""}
+     ${revs?`<div class="d-section"><h4>Reviews</h4>${revs}</div>`:""}
+     ${srcs?`<div class="d-section"><h4>Listed on</h4>${srcs}</div>`:""}`;
+  openDrawer();
+}
+
+async function openPractitioner(id){
+  const d = await api("/api/practitioner/" + id);
+  document.getElementById("drawer-title").innerHTML =
+    `<div class="card-name">${esc(d.full_name)}</div>
+     <div class="src">${[d.primary_specialty, d.years_experience?d.years_experience+" yrs":""].filter(Boolean).join(" &middot; ")}</div>`;
+  const tags = (d.tags||[]).map(t => `<span class="badge">${esc(t.value)}</span>`).join(" ");
+  const aff = (d.affiliations||[]).map(a =>
+    `<a class="link-row" onclick="openLocation(${a.id})">${esc(a.clinic)} <small>${[a.locality,a.country_code].filter(Boolean).join(", ")}</small></a>`).join("");
+  const srcs = (d.sources||[]).map(s =>
+    s.source_url ? `<a class="src" href="${esc(s.source_url)}" target="_blank" rel="noopener">${esc(s.source)}</a>` : `<span class="src">${esc(s.source)}</span>`).join(" &middot; ");
+  document.getElementById("drawer-body").innerHTML =
+    `${d.languages?`<div class="d-section"><div class="kv">Languages: <b>${esc(d.languages)}</b></div></div>`:""}
+     ${tags?`<div class="d-section">${tags}</div>`:""}
+     ${aff?`<div class="d-section"><h4>Practices at</h4>${aff}</div>`:""}
+     ${srcs?`<div class="d-section"><h4>Listed on</h4>${srcs}</div>`:""}`;
+  openDrawer();
+}
+
+// ---- wiring ----
+let timer;
+document.getElementById("q").addEventListener("input", e => {
+  clearTimeout(timer);
+  timer = setTimeout(() => { state.q = e.target.value.trim(); state.page = 0; run(); }, 220);
+});
+document.getElementById("country").onchange = e => { state.country = e.target.value; state.page = 0; run(); };
+document.getElementById("treatment").onchange = e => { state.treatment_id = e.target.value; state.page = 0; run(); };
+document.getElementById("reset").onclick = () => {
+  Object.assign(state, { q:"", country:"", treatment_id:"", entity_type:"", care_model:"", page:0 });
+  document.getElementById("q").value = "";
+  document.getElementById("country").value = "";
+  document.getElementById("treatment").value = "";
+  document.querySelectorAll(".chip").forEach(c => c.setAttribute("aria-pressed","false"));
+  run();
+};
+document.querySelectorAll(".tab").forEach(t => t.onclick = () => {
+  document.querySelectorAll(".tab").forEach(x => x.setAttribute("aria-selected","false"));
+  t.setAttribute("aria-selected","true");
+  state.kind = t.dataset.kind; state.page = 0;
+  state.entity_type = ""; state.care_model = "";
+  document.getElementById("treatment").disabled = (state.kind === "practitioners");
+  renderFacetChips();
+  run();
+});
+
+loadStats();
+loadFacets().then(run);
+</script>
+</body>
+</html>

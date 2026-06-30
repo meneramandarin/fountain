@@ -1,0 +1,18 @@
+[
+  {
+    "slug": "realself_providers",
+    "db_path": "/Users/marleneronstedt/dev/LongevityYelloPages/data/databases/realself_providers.sqlite",
+    "export_path": "/Users/marleneronstedt/dev/LongevityYelloPages/data/exports/realself_providers",
+    "pages_visited": 5,
+    "pages_ok": 0,
+    "listings": 0,
+    "images": 0,
+    "reviews": 0,
+    "errors": [
+      {
+        "url": "https://www.realself.com/find/Georgia/Atlanta/Dermatologic-Surgeon",
+        "error": "stopped_after_repeated_realself_access_denied"
+      }
+    ]
+  }
+]

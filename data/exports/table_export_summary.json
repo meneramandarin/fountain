@@ -1,0 +1,114 @@
+[
+  {
+    "database": "/Users/marleneronstedt/dev/LongevityYelloPages/data/databases/best_executive_physical_programs.sqlite",
+    "listings": 10,
+    "images": 10,
+    "reviews": 0,
+    "listing_fields": 50
+  },
+  {
+    "database": "/Users/marleneronstedt/dev/LongevityYelloPages/data/databases/bioedge_clinics.sqlite",
+    "listings": 1472,
+    "images": 7744,
+    "reviews": 0,
+    "listing_fields": 5888
+  },
+  {
+    "database": "/Users/marleneronstedt/dev/LongevityYelloPages/data/databases/biohacking_map.sqlite",
+    "listings": 343,
+    "images": 0,
+    "reviews": 0,
+    "listing_fields": 2418
+  },
+  {
+    "database": "/Users/marleneronstedt/dev/LongevityYelloPages/data/databases/bookimed_longevity.sqlite",
+    "listings": 257,
+    "images": 1790,
+    "reviews": 641,
+    "listing_fields": 0
+  },
+  {
+    "database": "/Users/marleneronstedt/dev/LongevityYelloPages/data/databases/bookimed_longevity_doctors.sqlite",
+    "listings": 98,
+    "images": 0,
+    "reviews": 0,
+    "listing_fields": 581
+  },
+  {
+    "database": "/Users/marleneronstedt/dev/LongevityYelloPages/data/databases/concierge_doctors_near_me.sqlite",
+    "listings": 1290,
+    "images": 11931,
+    "reviews": 629,
+    "listing_fields": 4664
+  },
+  {
+    "database": "/Users/marleneronstedt/dev/LongevityYelloPages/data/databases/exec_health.sqlite",
+    "listings": 80,
+    "images": 0,
+    "reviews": 0,
+    "listing_fields": 160
+  },
+  {
+    "database": "/Users/marleneronstedt/dev/LongevityYelloPages/data/databases/fountain_life_best_longevity_clinics_blog.sqlite",
+    "listings": 10,
+    "images": 10,
+    "reviews": 0,
+    "listing_fields": 50
+  },
+  {
+    "database": "/Users/marleneronstedt/dev/LongevityYelloPages/data/databases/human_longevity.sqlite",
+    "listings": 2,
+    "images": 0,
+    "reviews": 0,
+    "listing_fields": 0
+  },
+  {
+    "database": "/Users/marleneronstedt/dev/LongevityYelloPages/data/databases/immortality_clinic.sqlite",
+    "listings": 26,
+    "images": 0,
+    "reviews": 0,
+    "listing_fields": 52
+  },
+  {
+    "database": "/Users/marleneronstedt/dev/LongevityYelloPages/data/databases/longevity_technology_clinics.sqlite",
+    "listings": 125,
+    "images": 275,
+    "reviews": 0,
+    "listing_fields": 928
+  },
+  {
+    "database": "/Users/marleneronstedt/dev/LongevityYelloPages/data/databases/longevitydocs_directory.sqlite",
+    "listings": 27,
+    "images": 27,
+    "reviews": 0,
+    "listing_fields": 154
+  },
+  {
+    "database": "/Users/marleneronstedt/dev/LongevityYelloPages/data/databases/mayo_executive_health_locations.sqlite",
+    "listings": 4,
+    "images": 62,
+    "reviews": 0,
+    "listing_fields": 8
+  },
+  {
+    "database": "/Users/marleneronstedt/dev/LongevityYelloPages/data/databases/spannr.sqlite",
+    "listings": 65,
+    "images": 0,
+    "reviews": 0,
+    "listing_fields": 130
+  },
+  {
+    "database": "/Users/marleneronstedt/dev/LongevityYelloPages/data/databases/stem_cell_authority.sqlite",
+    "listings": 7205,
+    "images": 6914,
+    "reviews": 0,
+    "listing_fields": 31034
+  },
+  {
+    "database": "/Users/marleneronstedt/dev/LongevityYelloPages/data/databases/world_longevity_clinics.sqlite",
+    "listings": 55,
+    "images": 54,
+    "reviews": 0,
+    "listing_fields": 164
+  }
+]

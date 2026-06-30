@@ -1,0 +1,162 @@
+[
+  {
+    "source": "best_executive_physical_programs",
+    "database": "data/databases/best_executive_physical_programs.sqlite",
+    "pages": 1,
+    "listings": 10,
+    "images": 10,
+    "reviews": 0,
+    "listing_fields": 50,
+    "local_images": 10
+  },
+  {
+    "source": "bioedge_clinics",
+    "database": "data/databases/bioedge_clinics.sqlite",
+    "pages": 1571,
+    "listings": 1472,
+    "images": 7744,
+    "reviews": 0,
+    "listing_fields": 5888,
+    "local_images": 496
+  },
+  {
+    "source": "biohacking_map",
+    "database": "data/databases/biohacking_map.sqlite",
+    "pages": 2,
+    "listings": 343,
+    "images": 0,
+    "reviews": 0,
+    "listing_fields": 2418,
+    "local_images": 0
+  },
+  {
+    "source": "bookimed_longevity",
+    "database": "data/databases/bookimed_longevity.sqlite",
+    "pages": 283,
+    "listings": 257,
+    "images": 1790,
+    "reviews": 641,
+    "listing_fields": 0,
+    "local_images": 218
+  },
+  {
+    "source": "bookimed_longevity_doctors",
+    "database": "data/databases/bookimed_longevity_doctors.sqlite",
+    "pages": 104,
+    "listings": 98,
+    "images": 0,
+    "reviews": 0,
+    "listing_fields": 581,
+    "local_images": 0
+  },
+  {
+    "source": "concierge_doctors_near_me",
+    "database": "data/databases/concierge_doctors_near_me.sqlite",
+    "pages": 1264,
+    "listings": 1290,
+    "images": 11931,
+    "reviews": 629,
+    "listing_fields": 4664,
+    "local_images": 1290
+  },
+  {
+    "source": "exec_health",
+    "database": "data/databases/exec_health.sqlite",
+    "pages": 82,
+    "listings": 80,
+    "images": 0,
+    "reviews": 0,
+    "listing_fields": 160,
+    "local_images": 0
+  },
+  {
+    "source": "fountain_life_best_longevity_clinics_blog",
+    "database": "data/databases/fountain_life_best_longevity_clinics_blog.sqlite",
+    "pages": 1,
+    "listings": 10,
+    "images": 10,
+    "reviews": 0,
+    "listing_fields": 50,
+    "local_images": 10
+  },
+  {
+    "source": "human_longevity",
+    "database": "data/databases/human_longevity.sqlite",
+    "pages": 4,
+    "listings": 2,
+    "images": 0,
+    "reviews": 0,
+    "listing_fields": 0,
+    "local_images": 0
+  },
+  {
+    "source": "immortality_clinic",
+    "database": "data/databases/immortality_clinic.sqlite",
+    "pages": 27,
+    "listings": 26,
+    "images": 0,
+    "reviews": 0,
+    "listing_fields": 52,
+    "local_images": 0
+  },
+  {
+    "source": "longevity_technology_clinics",
+    "database": "data/databases/longevity_technology_clinics.sqlite",
+    "pages": 25,
+    "listings": 125,
+    "images": 275,
+    "reviews": 0,
+    "listing_fields": 928,
+    "local_images": 119
+  },
+  {
+    "source": "longevitydocs_directory",
+    "database": "data/databases/longevitydocs_directory.sqlite",
+    "pages": 1,
+    "listings": 27,
+    "images": 27,
+    "reviews": 0,
+    "listing_fields": 154,
+    "local_images": 27
+  },
+  {
+    "source": "mayo_executive_health_locations",
+    "database": "data/databases/mayo_executive_health_locations.sqlite",
+    "pages": 5,
+    "listings": 4,
+    "images": 62,
+    "reviews": 0,
+    "listing_fields": 8,
+    "local_images": 4
+  },
+  {
+    "source": "spannr",
+    "database": "data/databases/spannr.sqlite",
+    "pages": 77,
+    "listings": 65,
+    "images": 0,
+    "reviews": 0,
+    "listing_fields": 130,
+    "local_images": 0
+  },
+  {
+    "source": "stem_cell_authority",
+    "database": "data/databases/stem_cell_authority.sqlite",
+    "pages": 801,
+    "listings": 7205,
+    "images": 6914,
+    "reviews": 0,
+    "listing_fields": 31034,
+    "local_images": 0
+  },
+  {
+    "source": "world_longevity_clinics",
+    "database": "data/databases/world_longevity_clinics.sqlite",
+    "pages": 63,
+    "listings": 55,
+    "images": 54,
+    "reviews": 0,
+    "listing_fields": 164,
+    "local_images": 54
+  }
+]

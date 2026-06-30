@@ -1,0 +1,17 @@
+.DS_Store
+__pycache__/
+*.py[cod]
+
+.venv/
+
+# SQLite runtime sidecars
+*.sqlite-wal
+*.sqlite-shm
+*.db-wal
+*.db-shm
+
+# Raw scrape artifacts are large/generated. Rebuild or restore locally.
+data/databases/
+data/media/
+data/exports/*/
+
