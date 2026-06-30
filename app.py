@@ -43,6 +43,9 @@ def resolve_db(cli):
     return None
 
 
+DB_PATH = resolve_db(os.environ.get("CANONICAL_DB_PATH"))
+
+
 def get_conn():
     c = sqlite3.connect(f"file:{DB_PATH}?mode=ro", uri=True)
     c.row_factory = sqlite3.Row
@@ -313,6 +316,21 @@ class Handler(BaseHTTPRequestHandler):
     def log_message(self, *a):
         pass
 
+    def do_HEAD(self):
+        u = urlparse(self.path)
+        if u.path in ("/", "/index.html"):
+            self.send_response(200)
+            self.send_header("Content-Type", "text/html; charset=utf-8")
+            self.end_headers()
+            return
+        if u.path.startswith("/api/"):
+            self.send_response(200 if DB_PATH else 500)
+            self.send_header("Content-Type", "application/json")
+            self.end_headers()
+            return
+        self.send_response(404)
+        self.end_headers()
+
     def _send(self, obj, status=200, ctype="application/json"):
         body = obj if isinstance(obj, bytes) else json.dumps(obj).encode("utf-8")
         self.send_response(status)
@@ -367,7 +385,7 @@ def main():
         print("Rebuilding canonical.db...", flush=True)
         subprocess.run([sys.executable, script], cwd=HERE, check=True)
 
-    DB_PATH = resolve_db(args.db)
+    DB_PATH = resolve_db(args.db or os.environ.get("CANONICAL_DB_PATH"))
     if not DB_PATH:
         print("Could not find canonical.db. Pass --db /path/to/canonical.db")
         raise SystemExit(1)
