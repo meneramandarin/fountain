@@ -283,7 +283,7 @@ async function renderLocations(){
   if (!data.results.length){ box.innerHTML = empty(); pager(data); return; }
   box.innerHTML = data.results.map(r => {
     const place = [r.locality, r.region].filter(Boolean).join(", ");
-    const cc = r.country_code ? `<span class="mono" title="${esc(r.country_name||"")}">${esc(r.country_code)}</span>` : "";
+    const country = r.country_name || r.country_code || "";
     const etype = (r.tags||[]).find(t => t.facet === "entity_type");
     const star = r.rating ? `&#9733; ${r.rating}${r.review_count?` (${r.review_count})`:""}` : "";
     const chips = (r.treatments||[]).map(t => {
@@ -293,7 +293,7 @@ async function renderLocations(){
     return `<div class="card" onclick="openLocation(${r.id})">
       <div class="card-top">
         <div class="card-name">${esc(r.name||"Unnamed")}</div>
-        <div class="card-meta">${[place, cc].filter(Boolean).join(" &middot; ")}</div>
+        <div class="card-meta">${[place, country].filter(Boolean).map(esc).join(" &middot; ")}</div>
       </div>
       <div class="card-sub">
         ${etype?`<span class="badge">${esc(etype.value)}</span>`:""}
@@ -314,7 +314,7 @@ async function renderPractitioners(){
   if (!data.results.length){ box.innerHTML = empty(); pager(data); return; }
   box.innerHTML = data.results.map(r => {
     const aff = (r.affiliations||[])[0];
-    const place = aff ? [aff.clinic, aff.locality, aff.country_code].filter(Boolean).join(", ") : "";
+    const place = aff ? [aff.clinic, aff.locality, aff.country_name || aff.country_code].filter(Boolean).join(", ") : "";
     const exp = r.years_experience ? `${r.years_experience} yrs` : "";
     return `<div class="card" onclick="openPractitioner(${r.id})">
       <div class="card-top">
@@ -398,7 +398,7 @@ async function openPractitioner(id){
      <div class="src">${[d.primary_specialty, d.years_experience?d.years_experience+" yrs":""].filter(Boolean).join(" &middot; ")}</div>`;
   const tags = (d.tags||[]).map(t => `<span class="badge">${esc(t.value)}</span>`).join(" ");
   const aff = (d.affiliations||[]).map(a =>
-    `<a class="link-row" onclick="openLocation(${a.id})">${esc(a.clinic)} <small>${[a.locality,a.country_code].filter(Boolean).join(", ")}</small></a>`).join("");
+    `<a class="link-row" onclick="openLocation(${a.id})">${esc(a.clinic)} <small>${[a.locality,a.country_name || a.country_code].filter(Boolean).join(", ")}</small></a>`).join("");
   const srcs = (d.sources||[]).map(s =>
     s.source_url ? `<a class="src" href="${esc(s.source_url)}" target="_blank" rel="noopener">${esc(s.source)}</a>` : `<span class="src">${esc(s.source)}</span>`).join(" &middot; ");
   document.getElementById("drawer-body").innerHTML =
