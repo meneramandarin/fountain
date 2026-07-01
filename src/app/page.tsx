@@ -292,9 +292,6 @@ export default function HomePage() {
             <h4>Resources</h4>
             <ul>
               <li>
-                <a href="/docs/canonical_db_overview.html">Data Model</a>
-              </li>
-              <li>
                 <a href="#">Help Center</a>
               </li>
               <li>
