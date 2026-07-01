@@ -1,7 +1,9 @@
-import { ChevronDown, Search } from "lucide-react";
+import { Search } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { CityTreatmentSearches } from "@/components/city-treatment-searches";
 import { LandingFooter } from "@/components/landing-footer";
+import { getLandingCityTreatmentSearches } from "@/lib/queries";
 
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
@@ -37,67 +39,12 @@ const domains = [
   { label: "Biological Age", image: "/domains/Biologicalage.avif" },
 ];
 
-const cities = [
-  "Los Angeles",
-  "New York",
-  "Chicago",
-  "Houston",
-  "San Diego",
-  "Las Vegas",
-  "San Francisco",
-  "Dallas",
-  "San Jose",
-  "Phoenix",
-  "Philadelphia",
-  "Atlanta",
-  "Austin",
-  "Brooklyn",
-  "Seattle",
-];
-
-const topSearches = [
-  "IV Therapy",
-  "Hyperbaric Oxygen Therapy",
-  "Full-Body MRI",
-  "Stem Cell Clinic",
-  "NAD+ Infusion",
-  "Cryotherapy",
-  "Hormone Replacement Therapy",
-  "Biological Age Test",
-  "Longevity Physician",
-  "Red Light Therapy",
-  "Functional Medicine Doctor",
-  "Peptide Therapy",
-];
-
-const trendingSearches = [
-  "Exosome Therapy",
-  "Continuous Glucose Monitor",
-  "VO2 Max Testing",
-  "Cognitive Health Screening",
-  "Ozone Therapy",
-  "Sauna & Cold Plunge",
-  "Epigenetic Clock Test",
-  "Mitochondrial Health Panel",
-  "Rapamycin Clinic",
-  "GLP-1 Clinic",
-  "Gut Microbiome Test",
-  "Telomere Testing",
-];
-
-const seasonalSearches = [
-  "Summer Detox Program",
-  "Pre-Travel Health Panel",
-  "Sports Recovery Package",
-  "Hormone Panel Check-up",
-];
-
 function searchHref(term: string) {
   return `/directory?q=${encodeURIComponent(term)}`;
 }
 
 export default function HomePage() {
-  const activeCity = "Los Angeles, CA";
+  const citySearches = getLandingCityTreatmentSearches(18, 100);
 
   return (
     <main className="landing">
@@ -189,56 +136,9 @@ export default function HomePage() {
       <section className="landing-discover">
         <div className="discover-card">
           <h2>Explore searches in popular cities</h2>
-          <p>Discover what people are searching for in each city</p>
+          <p>Browse treatments currently offered by city</p>
 
-          <div className="city-tabs" role="tablist" aria-label="Popular cities">
-            {cities.map((city) => (
-              <button key={city} type="button" role="tab" aria-selected={city === "Los Angeles"}>
-                {city}
-              </button>
-            ))}
-          </div>
-
-          <div className="search-block">
-            <h3>Top searches in {activeCity}</h3>
-            <div className="search-grid">
-              {topSearches.map((term) => (
-                <Link href={searchHref(term)} key={term}>
-                  {term}
-                </Link>
-              ))}
-            </div>
-            <span className="show-more">
-              Show more
-              <ChevronDown size={14} aria-hidden="true" />
-            </span>
-          </div>
-
-          <div className="search-block">
-            <h3>Trending searches in {activeCity}</h3>
-            <div className="search-grid">
-              {trendingSearches.map((term) => (
-                <Link href={searchHref(term)} key={term}>
-                  {term}
-                </Link>
-              ))}
-            </div>
-            <span className="show-more">
-              Show more
-              <ChevronDown size={14} aria-hidden="true" />
-            </span>
-          </div>
-
-          <div className="search-block">
-            <h3>Seasonal searches in {activeCity}</h3>
-            <div className="search-grid">
-              {seasonalSearches.map((term) => (
-                <Link href={searchHref(term)} key={term}>
-                  {term}
-                </Link>
-              ))}
-            </div>
-          </div>
+          <CityTreatmentSearches cities={citySearches} />
         </div>
       </section>
 
