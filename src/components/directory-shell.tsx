@@ -52,13 +52,11 @@ type SearchPayload = {
 type Tag = { facet: string; value: string };
 type TreatmentChip = { name: string; domain: string };
 type ImageRef = { image_url?: string | null; local_path?: string | null; alt?: string | null };
-type SourceRef = { source?: string | null; source_slug?: string | null; source_url?: string | null };
 type ReviewRef = { reviewer?: string | null; rating?: string | number | null; review_date?: string | null; body?: string | null };
 type OfferingRef = {
   raw_name?: string | null;
   price_amount?: number | null;
   price_currency?: string | null;
-  source_offer_url?: string | null;
   treatment?: string | null;
   domain?: string | null;
 };
@@ -96,7 +94,6 @@ type LocationDetailRecord = LocationResultRow & {
   offerings?: OfferingRef[];
   images?: ImageRef[];
   reviews?: ReviewRef[];
-  sources?: SourceRef[];
   practitioners?: { id: number; full_name: string; primary_specialty?: string | null; role?: string | null }[];
 };
 type PractitionerDetailRecord = PractitionerResultRow & {
@@ -104,7 +101,6 @@ type PractitionerDetailRecord = PractitionerResultRow & {
   languages?: string | null;
   tags?: Tag[];
   images?: ImageRef[];
-  sources?: SourceRef[];
 };
 type DrawerState =
   | { kind: "locations"; data: LocationDetailRecord }
@@ -573,7 +569,6 @@ function LocationDetail({ data }: { data: LocationDetailRecord }) {
       <Offerings offerings={data.offerings || []} />
       <TagList tags={data.tags || []} />
       <ReviewList reviews={data.reviews || []} />
-      <SourceList sources={data.sources || []} />
     </>
   );
 }
@@ -599,7 +594,6 @@ function PractitionerDetail({ data }: { data: PractitionerDetailRecord }) {
         )}
       </section>
       <TagList tags={data.tags || []} />
-      <SourceList sources={data.sources || []} />
     </>
   );
 }
@@ -628,7 +622,7 @@ function Offerings({ offerings }: { offerings: OfferingRef[] }) {
 }
 
 function TagList({ tags }: { tags: Tag[] }) {
-  const visible = tags.filter((tag) => ["entity_type", "care_model", "trust", "price_tier", "source_tag"].includes(tag.facet));
+  const visible = tags.filter((tag) => ["entity_type", "care_model", "trust", "price_tier"].includes(tag.facet));
   if (!visible.length) {
     return null;
   }
@@ -658,26 +652,6 @@ function ReviewList({ reviews }: { reviews: ReviewRef[] }) {
           <p>{review.body || "No review body provided."}</p>
         </blockquote>
       ))}
-    </section>
-  );
-}
-
-function SourceList({ sources }: { sources: SourceRef[] }) {
-  if (!sources.length) {
-    return null;
-  }
-  return (
-    <section className="detail-section">
-      <h3>Sources</h3>
-      {sources.map((source, index) =>
-        source.source_url ? (
-          <a href={source.source_url} target="_blank" rel="noreferrer" key={`${source.source_slug}-${index}`}>
-            {source.source} <ExternalLink size={14} aria-hidden="true" />
-          </a>
-        ) : (
-          <p key={`${source.source_slug}-${index}`}>{source.source}</p>
-        ),
-      )}
     </section>
   );
 }
