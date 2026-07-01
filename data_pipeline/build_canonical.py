@@ -119,6 +119,8 @@ EXTRA_COUNTRY_ALIASES = {
     "IN": "IN",
     "Israel": "IL",
     "IL": "IL",
+    "Ireland": "IE",
+    "IE": "IE",
     "Laos": "LA",
     "LA": "LA",
     "Latvia": "LV",
@@ -591,7 +593,7 @@ class CanonicalBuilder:
             "name": clean(row["name"]),
             "description": clean(row["description"]),
             "address": address,
-            "locality": locality,
+            "locality": canonical_place_name(locality),
             "region": region,
             "postal_code": clean(row["postal_code"]),
             "country_name": self.canonical_country_name(country_code, country_name),
@@ -700,7 +702,7 @@ class CanonicalBuilder:
             "years_experience": years_experience,
             "languages": languages,
             "specialties": dedupe_list(specialties),
-            "locality": locality,
+            "locality": canonical_place_name(locality),
             "region": region,
             "country_name": self.canonical_country_name(country_code, country_name),
             "country_code": country_code,
@@ -712,6 +714,13 @@ class CanonicalBuilder:
     def country_for(self, row: sqlite3.Row, fields: dict[str, Any]) -> tuple[str | None, str | None]:
         country_name = clean(row["country"])
         country_code = self.normalize_country(country_name)
+        if not country_code:
+            for candidate in (fields.get("country_code_scope"), fields.get("country_scope")):
+                inferred_code = self.normalize_country(candidate)
+                if inferred_code:
+                    country_name = clean(candidate)
+                    country_code = inferred_code
+                    break
         if not country_code:
             raw_json = parse_jsonish(row["raw_json"])
             inferred = country_from_json(raw_json)
@@ -729,9 +738,12 @@ class CanonicalBuilder:
         value = clean(value)
         if not value:
             return None
-        if re.fullmatch(r"[A-Z]{2}", value):
-            return value
-        return self.country_aliases.get(normalize_country_key(value))
+        alias = self.country_aliases.get(normalize_country_key(value))
+        if alias:
+            return alias
+        if re.fullmatch(r"[A-Za-z]{2}", value):
+            return value.upper()
+        return None
 
     def canonical_country_name(self, country_code: str | None, fallback: str | None = None) -> str | None:
         if country_code and country_code in self.country_names:
@@ -742,7 +754,7 @@ class CanonicalBuilder:
         fallback_code = self.normalize_country(fallback)
         if fallback_code and fallback_code in self.country_names:
             return self.country_names[fallback_code]
-        return fallback
+        return canonical_place_name(fallback)
 
     def get_organization(
         self,
@@ -1238,6 +1250,50 @@ def clean(value: Any) -> str | None:
     return text or None
 
 
+LOWERCASE_PLACE_WORDS = {
+    "al",
+    "and",
+    "da",
+    "das",
+    "de",
+    "del",
+    "do",
+    "dos",
+    "du",
+    "el",
+    "la",
+    "le",
+    "of",
+    "the",
+    "van",
+    "von",
+}
+
+
+def canonical_place_name(value: Any) -> str | None:
+    text = clean(value)
+    if not text:
+        return None
+    word_index = 0
+
+    def replace_word(match: re.Match[str]) -> str:
+        nonlocal word_index
+        word = match.group(0)
+        word_index += 1
+        lowered = word.lower()
+        if word_index > 1 and lowered in LOWERCASE_PLACE_WORDS:
+            return lowered
+        if word.isupper() and len(word) <= 3:
+            return word
+        if word[:1].isupper() and word[1:].islower():
+            return word
+        if any(char.isupper() for char in word[1:]) and not word.isupper():
+            return word
+        return lowered[:1].upper() + lowered[1:]
+
+    return re.sub(r"[^\W\d_]+", replace_word, text)
+
+
 def normalize_term(value: Any) -> str:
     text = clean(value) or ""
     text = text.lower()
@@ -1587,6 +1643,7 @@ def country_name_map() -> dict[str, str]:
         "HU": "Hungary",
         "IN": "India",
         "IL": "Israel",
+        "IE": "Ireland",
         "LA": "Laos",
         "LV": "Latvia",
         "MY": "Malaysia",
