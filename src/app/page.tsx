@@ -1,6 +1,7 @@
 import { ChevronDown, Search } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { LandingFooter } from "@/components/landing-footer";
 
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
@@ -100,20 +101,24 @@ export default function HomePage() {
 
   return (
     <main className="landing">
-      <header className="landing-header">
-        <Link className="landing-brand" href="/">
-          fountain
-        </Link>
-      </header>
+      <section className="landing-hero" aria-labelledby="landing-hero-title">
+        <div className="landing-hero-copy">
+          <Link className="landing-brand landing-hero-brand" href="/">
+            fountain
+          </Link>
+          <h1 id="landing-hero-title">Find the right Longevity Treatments close to you.</h1>
+          <p>From Stem Cell Therapy &amp; PRP to HBOT.</p>
+        </div>
 
-      <div className="landing-search-row">
-        <form className="landing-search" action="/directory" role="search">
-          <input name="q" type="search" placeholder="Search treatments, clinics, doctors..." />
-          <button type="submit" aria-label="Search">
-            <Search size={18} aria-hidden="true" />
-          </button>
-        </form>
-      </div>
+        <div className="landing-hero-search">
+          <form className="landing-search" action="/directory" role="search">
+            <input name="q" type="search" placeholder="Search treatments, clinics, doctors..." />
+            <button type="submit" aria-label="Search">
+              <Search size={18} aria-hidden="true" />
+            </button>
+          </form>
+        </div>
+      </section>
 
       <section className="landing-rail" aria-label="Explore Proven Longevity Treatments">
         <div className="rail-header">
@@ -237,74 +242,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      <footer className="landing-footer">
-        <div className="footer-wordmark">fountain</div>
-        <div className="footer-columns">
-          <div>
-            <h4>Explore Fountain</h4>
-            <ul>
-              <li>
-                <Link href="/directory?kind=locations">Clinics &amp; Med Spas</Link>
-              </li>
-              <li>
-                <Link href="/directory?kind=practitioners">Practitioners</Link>
-              </li>
-              <li>
-                <Link href="/directory">Treatments</Link>
-              </li>
-              <li>
-                <Link href="/directory">Longevity Domains</Link>
-              </li>
-            </ul>
-          </div>
-          <div>
-            <h4>For Providers</h4>
-            <ul>
-              <li>
-                <a href="#">List Your Clinic</a>
-              </li>
-              <li>
-                <a href="#">Claim Your Listing</a>
-              </li>
-              <li>
-                <a href="#">Advertise With Us</a>
-              </li>
-            </ul>
-          </div>
-          <div>
-            <h4>Company</h4>
-            <ul>
-              <li>
-                <a href="#">About Fountain</a>
-              </li>
-              <li>
-                <a href="#">Careers</a>
-              </li>
-              <li>
-                <a href="#">Press</a>
-              </li>
-              <li>
-                <a href="#">Contact</a>
-              </li>
-            </ul>
-          </div>
-          <div>
-            <h4>Resources</h4>
-            <ul>
-              <li>
-                <a href="#">Help Center</a>
-              </li>
-              <li>
-                <a href="#">Privacy Policy</a>
-              </li>
-              <li>
-                <a href="#">Terms of Service</a>
-              </li>
-            </ul>
-          </div>
-        </div>
-        <div className="footer-bottom">© 2026 Fountain. All rights reserved.</div>
-      </footer>
+      <LandingFooter />
     </main>
   );
 }
