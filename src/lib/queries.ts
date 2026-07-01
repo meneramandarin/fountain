@@ -355,7 +355,7 @@ export function getLocationDetail(id: number) {
   }
   location.offerings = rows(
     `
-    SELECT o.raw_name, o.price_amount, o.price_currency, o.source_offer_url,
+    SELECT o.raw_name, o.price_amount, o.price_currency,
            t.canonical_name AS treatment, cat.name AS domain
     FROM offerings o
     LEFT JOIN treatments t ON t.id = o.treatment_id
@@ -402,15 +402,6 @@ export function getLocationDetail(id: number) {
   `,
     [id],
   );
-  location.sources = rows(
-    `
-    SELECT s.name AS source, s.slug AS source_slug, sr.source_url
-    FROM source_records sr
-    JOIN sources s ON s.id = sr.source_id
-    WHERE sr.entity_type = 'location' AND sr.entity_id = ?
-  `,
-    [id],
-  );
   return location;
 }
 
@@ -444,15 +435,6 @@ export function getPractitionerDetail(id: number) {
     FROM images
     WHERE entity_type = 'practitioner' AND entity_id = ?
     LIMIT 8
-  `,
-    [id],
-  );
-  practitioner.sources = rows(
-    `
-    SELECT s.name AS source, s.slug AS source_slug, sr.source_url
-    FROM source_records sr
-    JOIN sources s ON s.id = sr.source_id
-    WHERE sr.entity_type = 'practitioner' AND sr.entity_id = ?
   `,
     [id],
   );
