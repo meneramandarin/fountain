@@ -190,7 +190,10 @@ export function getFacets() {
     FROM locations
     WHERE country_code IS NOT NULL AND country_code <> ''
     GROUP BY country_code
-    ORDER BY n DESC, name
+    ORDER BY
+      CASE WHEN country_code = 'US' THEN 0 ELSE 1 END,
+      name COLLATE NOCASE,
+      country_code
   `);
 
   const localities = rows<{ country_code: string; value: string; n: number }>(`
@@ -201,7 +204,7 @@ export function getFacets() {
       AND locality IS NOT NULL
       AND TRIM(locality) <> ''
     GROUP BY country_code, locality
-    ORDER BY country_code, n DESC, locality
+    ORDER BY country_code, locality COLLATE NOCASE
   `);
 
   const treatments = rows<{ domain: string; domain_id: number; id: number; name: string; n: number }>(`
