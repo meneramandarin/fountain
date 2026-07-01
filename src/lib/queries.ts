@@ -26,6 +26,22 @@ export type Stats = {
   offerings_priced: number;
 };
 
+export type LandingCityTreatment = {
+  id: number;
+  name: string;
+  location_count: number;
+};
+
+export type LandingCitySearch = {
+  locality: string;
+  country_code: string;
+  country_name: string;
+  region_code: string | null;
+  location_count: number;
+  treatment_count: number;
+  treatments: LandingCityTreatment[];
+};
+
 type AnyRow = Record<string, unknown>;
 
 function ftsMatch(query?: string | null) {
@@ -52,6 +68,120 @@ export function getStats(): Stats {
     documents: count("documents"),
     offerings_priced: priced,
   };
+}
+
+export function getLandingCityTreatmentSearches(cityLimit = 18, treatmentLimit = 6): LandingCitySearch[] {
+  const cityTreatmentRows = rows<{
+    locality: string;
+    country_code: string;
+    country_name: string;
+    region_code: string | null;
+    location_count: number;
+    treatment_count: number;
+    treatment_id: number;
+    treatment_name: string;
+    treatment_location_count: number;
+  }>(
+    `
+    WITH city_counts AS (
+      SELECT
+        l.country_code,
+        COALESCE(MAX(l.country_name), l.country_code) AS country_name,
+        l.locality,
+        MAX(
+          CASE
+            WHEN l.country_code = 'US'
+              AND LENGTH(TRIM(l.region)) = 2
+              AND TRIM(l.region) GLOB '[A-Z][A-Z]'
+            THEN TRIM(l.region)
+          END
+        ) AS region_code,
+        COUNT(DISTINCT l.id) AS location_count,
+        COUNT(DISTINCT o.treatment_id) AS treatment_count,
+        COUNT(DISTINCT o.treatment_id) * 10 + MIN(COUNT(DISTINCT l.id), 80) AS score
+      FROM locations l
+      JOIN offerings o ON o.location_id = l.id AND o.treatment_id IS NOT NULL
+      WHERE l.country_code IS NOT NULL
+        AND TRIM(l.country_code) <> ''
+        AND l.locality IS NOT NULL
+        AND TRIM(l.locality) <> ''
+        AND LENGTH(TRIM(l.locality)) BETWEEN 3 AND 40
+        AND l.locality NOT IN ('USA', 'Virtual', 'Various Virtual', 'Switzerland')
+        AND l.locality NOT GLOB '*[0-9]*'
+        AND l.locality NOT LIKE '%,%'
+        AND l.locality NOT LIKE '%Road%'
+        AND l.locality NOT LIKE '%Street%'
+        AND l.locality NOT LIKE '%Avenue%'
+        AND l.locality NOT LIKE '%Blvd%'
+        AND l.locality NOT LIKE '%Caddesi%'
+      GROUP BY l.country_code, l.locality
+      HAVING treatment_count >= 5 AND location_count >= 4
+      ORDER BY score DESC, treatment_count DESC, location_count DESC, l.locality
+      LIMIT ?
+    ),
+    ranked_treatments AS (
+      SELECT
+        c.locality,
+        c.country_code,
+        c.country_name,
+        c.region_code,
+        c.location_count,
+        c.treatment_count,
+        c.score,
+        t.id AS treatment_id,
+        t.canonical_name AS treatment_name,
+        COUNT(DISTINCT l.id) AS treatment_location_count,
+        ROW_NUMBER() OVER (
+          PARTITION BY c.country_code, c.locality
+          ORDER BY COUNT(DISTINCT l.id) DESC, t.canonical_name
+        ) AS treatment_rank
+      FROM city_counts c
+      JOIN locations l ON l.country_code = c.country_code AND l.locality = c.locality
+      JOIN offerings o ON o.location_id = l.id AND o.treatment_id IS NOT NULL
+      JOIN treatments t ON t.id = o.treatment_id
+      GROUP BY c.country_code, c.locality, t.id
+    )
+    SELECT
+      locality,
+      country_code,
+      country_name,
+      region_code,
+      location_count,
+      treatment_count,
+      treatment_id,
+      treatment_name,
+      treatment_location_count
+    FROM ranked_treatments
+    WHERE treatment_rank <= ?
+    ORDER BY score DESC, treatment_count DESC, location_count DESC, locality, treatment_rank
+  `,
+    [cityLimit, treatmentLimit],
+  );
+
+  const byCity = new Map<string, LandingCitySearch>();
+  for (const row of cityTreatmentRows) {
+    const key = `${row.country_code}:${row.locality}`;
+    let city = byCity.get(key);
+    if (!city) {
+      city = {
+        locality: row.locality,
+        country_code: row.country_code,
+        country_name: row.country_name,
+        region_code: row.region_code,
+        location_count: row.location_count,
+        treatment_count: row.treatment_count,
+        treatments: [],
+      };
+      byCity.set(key, city);
+    }
+    city.treatments.push({
+      id: row.treatment_id,
+      name: row.treatment_name,
+      location_count: row.treatment_location_count,
+    });
+  }
+
+  return Array.from(byCity.values());
 }
 
 export function getFacets() {
