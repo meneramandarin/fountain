@@ -33,7 +33,7 @@ from .sources import SOURCES, SourceConfig
 from .storage import SourceDatabase
 
 
-ROOT = Path(__file__).resolve().parents[1]
+ROOT = Path(__file__).resolve().parents[2]
 DATA_DIR = ROOT / "data"
 DB_DIR = DATA_DIR / "databases"
 EXPORT_DIR = DATA_DIR / "exports"

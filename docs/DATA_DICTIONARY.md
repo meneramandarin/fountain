@@ -550,7 +550,7 @@ Price text from the article is stored in `price_text`; extracted services are in
 
 This batch added separate staging databases for Bookimed country cuts, MyMediTravel, PlacidWay, Turkey/Thailand/Korea medical-tourism sources, and PDF guidebooks. The two global Bookimed URLs were not duplicated because they are already represented by `bookimed_longevity.sqlite` and `bookimed_longevity_doctors.sqlite`.
 
-The PDF sources are stored as page-level records with `listing_fields.record_type = pdf_page`; their extracted text is in `listings.raw_text` and the downloaded source PDFs are in `data/media/<source>/`. PDF page records are intentionally skipped by `build_canonical.py` so canonical clinic search is not polluted with document pages.
+The PDF sources are stored as page-level records with `listing_fields.record_type = pdf_page`; their extracted text is in `listings.raw_text` and the downloaded source PDFs are in `data/media/<source>/`. PDF page records are mapped into canonical `documents`, not `locations`, so clinic search is not polluted with document pages.
 
 | Database | Listings | Images | Reviews | Primary Record Types | Category / Field Signals |
 |---|---:|---:|---:|---|---|

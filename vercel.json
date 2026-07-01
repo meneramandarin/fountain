@@ -1,7 +1,5 @@
 {
-  "functions": {
-    "app.py": {
-      "includeFiles": "canonical.db"
-    }
-  }
+  "framework": "nextjs",
+  "buildCommand": "npm run build",
+  "installCommand": "npm install"
 }

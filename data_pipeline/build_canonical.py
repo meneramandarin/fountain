@@ -14,12 +14,13 @@ from urllib.parse import urlparse
 from rapidfuzz import fuzz
 
 
-ROOT = Path(__file__).resolve().parent
+PIPELINE_ROOT = Path(__file__).resolve().parent
+ROOT = PIPELINE_ROOT.parent
 DB_DIR = ROOT / "data" / "databases"
 CANONICAL_DB = ROOT / "canonical.db"
-SCHEMA_PATH = ROOT / "schema.sql"
-TAXONOMY_PATH = ROOT / "taxonomy_seed.json"
-UNMAPPED_CSV = ROOT / "unmapped_terms.csv"
+SCHEMA_PATH = PIPELINE_ROOT / "schema.sql"
+TAXONOMY_PATH = PIPELINE_ROOT / "taxonomy_seed.json"
+UNMAPPED_CSV = ROOT / "data" / "exports" / "unmapped_terms.csv"
 
 LOCATION_SOURCES = {
     "biohacking_map",
