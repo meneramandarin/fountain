@@ -1,9 +1,11 @@
 "use client";
 
+import { LandingFooter } from "@/components/landing-footer";
 import {
   ArrowLeft,
   ArrowRight,
   Building2,
+  ChevronDown,
   ExternalLink,
   Filter,
   Loader2,
@@ -18,6 +20,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 
 type Facets = {
   countries: { code: string; name: string; n: number }[];
+  localities: { country_code: string; value: string; n: number }[];
   treatment_domains: { domain: string; treatments: { id: number; name: string; n: number }[] }[];
   location_entity_types: { value: string; n: number }[];
   location_care_models: { value: string; n: number }[];
@@ -32,6 +35,7 @@ export type DirectoryState = {
   kind: Kind;
   q: string;
   country: string;
+  locality: string;
   treatment_id: string;
   entity_type: string;
   care_model: string;
@@ -133,7 +137,7 @@ export function DirectoryShell({
   const queryString = useMemo(() => {
     const params = new URLSearchParams();
     params.set("kind", state.kind);
-    for (const key of ["q", "country", "treatment_id", "entity_type", "care_model"] as const) {
+    for (const key of ["q", "country", "locality", "treatment_id", "entity_type", "care_model"] as const) {
       if (state[key]) {
         params.set(key, state[key]);
       }
@@ -170,6 +174,10 @@ export function DirectoryShell({
 
   const entityTypes = state.kind === "locations" ? initialFacets.location_entity_types : initialFacets.practitioner_entity_types;
   const careModels = state.kind === "locations" ? initialFacets.location_care_models : initialFacets.practitioner_care_models;
+  const localityOptions = useMemo(
+    () => initialFacets.localities.filter((locality) => locality.country_code === state.country),
+    [initialFacets.localities, state.country],
+  );
 
   async function openDetail(kind: Kind, id: number) {
     const endpoint = kind === "locations" ? `/api/location/${id}` : `/api/practitioner/${id}`;
@@ -186,19 +194,53 @@ export function DirectoryShell({
 
   return (
     <main className="directory-shell">
-      <header className="directory-topbar">
-        <Link className="brand" href="/">
-          <span className="brand-mark">F</span>
-          <span>Fountain</span>
-        </Link>
-        <div className="directory-stats">
-          <b>{Number(initialStats.locations).toLocaleString()}</b> clinics
-          <span />
-          <b>{Number(initialStats.practitioners).toLocaleString()}</b> practitioners
-          <span />
-          <b>{Number(initialStats.offerings).toLocaleString()}</b> offerings
+      <section className="directory-hero" aria-label="Directory search">
+        <header className="directory-topbar">
+          <Link className="landing-brand directory-brand" href="/">
+            fountain
+          </Link>
+        </header>
+
+        <div className="kind-tabs directory-kind-tabs" role="tablist" aria-label="Directory type">
+          <button
+            type="button"
+            role="tab"
+            aria-selected={state.kind === "locations"}
+            onClick={() => updateState({ kind: "locations", entity_type: "", care_model: "" })}
+          >
+            <Building2 size={17} aria-hidden="true" />
+            Clinics & locations
+          </button>
+          <button
+            type="button"
+            role="tab"
+            aria-selected={state.kind === "practitioners"}
+            onClick={() => updateState({ kind: "practitioners", entity_type: "", care_model: "" })}
+          >
+            <Stethoscope size={17} aria-hidden="true" />
+            Doctors & practitioners
+          </button>
         </div>
-      </header>
+
+        <div className="directory-search-row">
+          <form
+            className="landing-search directory-search"
+            role="search"
+            onSubmit={(event) => event.preventDefault()}
+          >
+            <input
+              name="q"
+              value={state.q}
+              onChange={(event) => updateState({ q: event.target.value })}
+              placeholder="Search treatments, clinics, doctors..."
+              type="search"
+            />
+            <button type="submit" aria-label="Search">
+              <Search size={18} aria-hidden="true" />
+            </button>
+          </form>
+        </div>
+      </section>
 
       <div className="directory-layout">
         <aside className="filter-panel">
@@ -207,42 +249,54 @@ export function DirectoryShell({
             <span>Filters</span>
           </div>
           <label className="field">
-            <span>Search</span>
-            <div className="input-wrap">
-              <Search size={16} aria-hidden="true" />
-              <input
-                value={state.q}
-                onChange={(event) => updateState({ q: event.target.value })}
-                placeholder="name, treatment, place"
-                type="search"
-              />
-            </div>
+            <span>Country</span>
+            <span className="select-wrap">
+              <select value={state.country} onChange={(event) => updateState({ country: event.target.value, locality: "" })}>
+                <option value="">All countries</option>
+                {initialFacets.countries.map((country) => (
+                  <option value={country.code} key={country.code}>
+                    {country.name} ({country.n.toLocaleString()})
+                  </option>
+                ))}
+              </select>
+              <ChevronDown size={16} aria-hidden="true" />
+            </span>
           </label>
           <label className="field">
-            <span>Country</span>
-            <select value={state.country} onChange={(event) => updateState({ country: event.target.value })}>
-              <option value="">All countries</option>
-              {initialFacets.countries.map((country) => (
-                <option value={country.code} key={country.code}>
-                  {country.name} ({country.n.toLocaleString()})
-                </option>
-              ))}
-            </select>
+            <span>City</span>
+            <span className="select-wrap">
+              <select
+                value={state.locality}
+                onChange={(event) => updateState({ locality: event.target.value })}
+                disabled={!state.country || !localityOptions.length}
+              >
+                <option value="">{state.country ? "All cities" : "Select a country first"}</option>
+                {localityOptions.map((locality) => (
+                  <option value={locality.value} key={`${locality.country_code}-${locality.value}`}>
+                    {locality.value} ({locality.n.toLocaleString()})
+                  </option>
+                ))}
+              </select>
+              <ChevronDown size={16} aria-hidden="true" />
+            </span>
           </label>
           <label className="field">
             <span>Treatment</span>
-            <select value={state.treatment_id} onChange={(event) => updateState({ treatment_id: event.target.value })}>
-              <option value="">Any treatment</option>
-              {initialFacets.treatment_domains.map((domain) => (
-                <optgroup label={domain.domain} key={domain.domain}>
-                  {domain.treatments.map((treatment) => (
-                    <option value={treatment.id} key={treatment.id}>
-                      {treatment.name} ({treatment.n.toLocaleString()})
-                    </option>
-                  ))}
-                </optgroup>
-              ))}
-            </select>
+            <span className="select-wrap">
+              <select value={state.treatment_id} onChange={(event) => updateState({ treatment_id: event.target.value })}>
+                <option value="">Any treatment</option>
+                {initialFacets.treatment_domains.map((domain) => (
+                  <optgroup label={domain.domain} key={domain.domain}>
+                    {domain.treatments.map((treatment) => (
+                      <option value={treatment.id} key={treatment.id}>
+                        {treatment.name} ({treatment.n.toLocaleString()})
+                      </option>
+                    ))}
+                  </optgroup>
+                ))}
+              </select>
+              <ChevronDown size={16} aria-hidden="true" />
+            </span>
           </label>
 
           <FacetButtons
@@ -270,27 +324,6 @@ export function DirectoryShell({
         </aside>
 
         <section className="directory-results" aria-live="polite">
-          <div className="kind-tabs" role="tablist" aria-label="Directory type">
-            <button
-              type="button"
-              role="tab"
-              aria-selected={state.kind === "locations"}
-              onClick={() => updateState({ kind: "locations", entity_type: "", care_model: "" })}
-            >
-              <Building2 size={17} aria-hidden="true" />
-              Clinics & locations
-            </button>
-            <button
-              type="button"
-              role="tab"
-              aria-selected={state.kind === "practitioners"}
-              onClick={() => updateState({ kind: "practitioners", entity_type: "", care_model: "" })}
-            >
-              <Stethoscope size={17} aria-hidden="true" />
-              Doctors & practitioners
-            </button>
-          </div>
-
           <div className="resultbar">
             <span>
               {loading ? "Searching..." : `${payload.total.toLocaleString()} result${payload.total === 1 ? "" : "s"}`}
@@ -328,13 +361,14 @@ export function DirectoryShell({
         </section>
       </div>
 
+      <LandingFooter />
       {drawer ? <DetailDrawer drawer={drawer} onClose={() => setDrawer(null)} /> : null}
     </main>
   );
 }
 
 function emptyState(): DirectoryState {
-  return { kind: "locations", q: "", country: "", treatment_id: "", entity_type: "", care_model: "", page: 0 };
+  return { kind: "locations", q: "", country: "", locality: "", treatment_id: "", entity_type: "", care_model: "", page: 0 };
 }
 
 function FacetButtons({

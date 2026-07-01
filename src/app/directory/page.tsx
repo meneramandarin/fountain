@@ -29,6 +29,7 @@ function stateFromSearchParams(params: Record<string, string | string[] | undefi
     kind: value(params, "kind") === "practitioners" ? "practitioners" : "locations",
     q: value(params, "q"),
     country: value(params, "country"),
+    locality: value(params, "locality"),
     treatment_id: value(params, "treatment_id"),
     entity_type: value(params, "entity_type"),
     care_model: value(params, "care_model"),
