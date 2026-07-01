@@ -8,6 +8,7 @@ export type DirectoryParams = {
   kind?: SearchKind;
   q?: string;
   country?: string;
+  locality?: string;
   treatment_id?: number;
   entity_type?: string;
   care_model?: string;
@@ -62,6 +63,17 @@ export function getFacets() {
     ORDER BY n DESC, name
   `);
 
+  const localities = rows<{ country_code: string; value: string; n: number }>(`
+    SELECT country_code, locality AS value, COUNT(*) AS n
+    FROM locations
+    WHERE country_code IS NOT NULL
+      AND country_code <> ''
+      AND locality IS NOT NULL
+      AND TRIM(locality) <> ''
+    GROUP BY country_code, locality
+    ORDER BY country_code, n DESC, locality
+  `);
+
   const treatments = rows<{ domain: string; domain_id: number; id: number; name: string; n: number }>(`
     SELECT c.name AS domain, c.id AS domain_id, t.id AS id,
            t.canonical_name AS name, COUNT(o.id) AS n
@@ -104,6 +116,7 @@ export function getFacets() {
 
   return {
     countries,
+    localities,
     treatment_domains: byDomain,
     entity_types: locationEntityTypes,
     care_models: locationCareModels,
@@ -125,6 +138,10 @@ function locationWhere(params: DirectoryParams) {
   if (params.country) {
     where.push("l.country_code = ?");
     values.push(params.country);
+  }
+  if (params.locality) {
+    where.push("l.locality = ? COLLATE NOCASE");
+    values.push(params.locality);
   }
   if (params.treatment_id) {
     where.push("EXISTS (SELECT 1 FROM offerings o WHERE o.location_id = l.id AND o.treatment_id = ?)");
@@ -250,6 +267,18 @@ export function searchPractitioners(params: DirectoryParams, page = 0) {
       )
     `);
     values.push(params.country, params.country);
+  }
+  if (params.locality) {
+    where.push(`
+      EXISTS (
+        SELECT 1
+        FROM affiliations a
+        JOIN locations l ON l.id = a.location_id
+        WHERE a.practitioner_id = p.id
+          AND l.locality = ? COLLATE NOCASE
+      )
+    `);
+    values.push(params.locality);
   }
   for (const [facet, key] of [
     ["entity_type", "entity_type"],
@@ -437,6 +466,7 @@ export function parseDirectoryParams(searchParams: URLSearchParams): DirectoryPa
     kind: searchParams.get("kind") === "practitioners" ? "practitioners" : "locations",
     q: searchParams.get("q") || undefined,
     country: searchParams.get("country") || undefined,
+    locality: searchParams.get("locality") || undefined,
     treatment_id: Number.isFinite(treatment) ? treatment : undefined,
     entity_type: searchParams.get("entity_type") || undefined,
     care_model: searchParams.get("care_model") || undefined,
