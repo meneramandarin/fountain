@@ -79,6 +79,10 @@ SERVICE_SEARCH_SOURCE_PREFIXES = ("dexa_", "hbot_", "vo2_max_")
 KNOWN_JUNK_PRICE_TEXT = {"$15; $99", "Not available"}
 
 
+def is_menu_enrichment_source(source_slug: str) -> bool:
+    return source_slug == "menu_enrichment" or source_slug.startswith("menu_enrichment_")
+
+
 def is_service_search_source(source_slug: str) -> bool:
     return source_slug.startswith(SERVICE_SEARCH_SOURCE_PREFIXES)
 
@@ -396,6 +400,8 @@ class CanonicalBuilder:
             description=mapped.get("description"),
         )
         location_id = self.get_location(org_id, slug, mapped)
+        if is_menu_enrichment_source(slug):
+            self.update_location_from_menu_enrichment(location_id, mapped)
         self.add_source_record(source_id, "organization", org_id, row)
         self.add_source_record(source_id, "location", location_id, row)
         for facet, value in mapped.get("tags", []):
@@ -609,6 +615,21 @@ class CanonicalBuilder:
             confidence = fields.get("confidence_score")
             if confidence is not None:
                 tags.append(("trust", f"discovery confidence {confidence}"))
+        elif is_menu_enrichment_source(slug):
+            services = parse_jsonish(row["services_json"]) or {}
+            items = services.get("menu_items", []) if isinstance(services, dict) else []
+            for item in items if isinstance(items, list) else []:
+                if not isinstance(item, dict):
+                    continue
+                offers.append(
+                    {
+                        "raw_name": item.get("raw_name") or compose_menu_raw_name(item),
+                        "price_amount": parse_float(item.get("price_amount")),
+                        "price_currency": clean(item.get("price_currency")),
+                        "source_offer_url": clean(item.get("source_url")),
+                    }
+                )
+            tags.append(("trust", "menu enriched from clinic site"))
         else:
             offer_terms.extend(extract_terms(row["services_json"]))
             offer_terms.extend(extract_terms(row["procedures_json"]))
@@ -639,6 +660,7 @@ class CanonicalBuilder:
             "offer_terms": dedupe_list(offer_terms),
             "mixed_terms": dedupe_list(mixed_terms),
             "offers": offers,
+            "record_type": clean(fields.get("record_type")),
         }
 
     def biohacking_tags(self, fields: dict[str, Any], procedures: dict[str, Any]) -> list[tuple[str, str]]:
@@ -842,11 +864,16 @@ class CanonicalBuilder:
         key_parts = [org_key, locality_key or address_key or "main"]
         if mapped.get("region"):
             key_parts.append(slugify(mapped["region"]))
-        if source_slug in HIGH_VOLUME_SOURCES and address_key:
+        if (source_slug in HIGH_VOLUME_SOURCES or mapped.get("record_type") == "discovered_location") and address_key:
             key_parts.append(address_key[:80])
         key = "|".join(key_parts)
         if key in self.locations_by_key:
             return self.locations_by_key[key]
+        if is_menu_enrichment_source(source_slug) and mapped.get("record_type") != "discovered_location":
+            existing_id = self.find_menu_enrichment_location(org_id, mapped)
+            if existing_id:
+                self.locations_by_key[key] = existing_id
+                return existing_id
         self.conn.execute(
             """
             INSERT INTO locations(
@@ -879,6 +906,55 @@ class CanonicalBuilder:
         self.locations_by_key[key] = location_id
         self.locations[location_id] = mapped | {"org_id": org_id}
         return location_id
+
+    def find_menu_enrichment_location(self, org_id: int, mapped: dict[str, Any]) -> int | None:
+        locality_key = slugify(mapped.get("locality") or "")
+        region_key = slugify(mapped.get("region") or "")
+        address_key = slugify(mapped.get("address") or "")
+        name_norm = normalize_name(mapped.get("name") or "")
+        candidates: list[tuple[int, dict[str, Any]]] = []
+        for location_id, meta in self.locations.items():
+            if meta.get("org_id") != org_id:
+                continue
+            if locality_key and slugify(meta.get("locality") or "") != locality_key:
+                continue
+            meta_region = slugify(meta.get("region") or "")
+            if region_key and meta_region and meta_region != region_key:
+                continue
+            candidates.append((location_id, meta))
+        if not candidates:
+            return None
+        if address_key:
+            for location_id, meta in candidates:
+                if slugify(meta.get("address") or "") == address_key:
+                    return location_id
+        if name_norm:
+            for location_id, meta in candidates:
+                if fuzz.token_set_ratio(name_norm, normalize_name(meta.get("name") or "")) >= 92:
+                    return location_id
+        region_matches = [(location_id, meta) for location_id, meta in candidates if region_key and slugify(meta.get("region") or "") == region_key]
+        if len(region_matches) == 1:
+            return region_matches[0][0]
+        return candidates[0][0] if len(candidates) == 1 else None
+
+    def update_location_from_menu_enrichment(self, location_id: int, mapped: dict[str, Any]) -> None:
+        self.conn.execute(
+            """
+            UPDATE locations
+            SET address = COALESCE(?, address),
+                phone = COALESCE(?, phone),
+                email = COALESCE(?, email),
+                website = COALESCE(?, website)
+            WHERE id = ?
+            """,
+            (
+                clean(mapped.get("address")),
+                clean(mapped.get("phone")),
+                clean(mapped.get("email")),
+                clean(mapped.get("website")),
+                location_id,
+            ),
+        )
 
     def get_practitioner(self, mapped: dict[str, Any]) -> int:
         full_name = clean(mapped.get("full_name")) or "Unknown practitioner"
@@ -1163,6 +1239,27 @@ class CanonicalBuilder:
 
         priced = int(self.conn.execute("SELECT COUNT(*) FROM offerings WHERE price_amount IS NOT NULL").fetchone()[0])
         unpriced = int(self.conn.execute("SELECT COUNT(*) FROM offerings WHERE price_amount IS NULL").fetchone()[0])
+        offering_histogram = {
+            row["bucket"]: int(row["location_count"])
+            for row in self.conn.execute(
+                """
+                SELECT bucket, COUNT(*) AS location_count
+                FROM (
+                    SELECT l.id,
+                           CASE
+                               WHEN COUNT(o.id) = 0 THEN '0'
+                               WHEN COUNT(o.id) = 1 THEN '1'
+                               WHEN COUNT(o.id) BETWEEN 2 AND 4 THEN '2-4'
+                               ELSE '5+'
+                           END AS bucket
+                    FROM locations l
+                    LEFT JOIN offerings o ON o.location_id = l.id
+                    GROUP BY l.id
+                )
+                GROUP BY bucket
+                """
+            )
+        }
         fountain = self.conn.execute(
             "SELECT id FROM organizations WHERE name_normalized = ? ORDER BY id", (normalize_name("Fountain Life"),)
         ).fetchall()
@@ -1223,6 +1320,13 @@ class CanonicalBuilder:
         print(f"documents: {count('documents')}")
         print(f"service_area source rows: {self.service_area_count}")
         print(f"offerings: {count('offerings')} ({priced} with price, {unpriced} without price)")
+        print(
+            "offerings/location histogram: "
+            f"0={offering_histogram.get('0', 0)}, "
+            f"1={offering_histogram.get('1', 0)}, "
+            f"2-4={offering_histogram.get('2-4', 0)}, "
+            f"5+={offering_histogram.get('5+', 0)}"
+        )
         print(f"treatments: {count('treatments')}")
         print(f"aliases: {count('treatment_aliases')}")
         print(f"tags: {count('tags')}")
@@ -1438,6 +1542,27 @@ def extract_terms(value: Any) -> list[str]:
                     terms.extend(extract_terms(value[key]))
         return dedupe_list([term for term in terms if term])
     return [clean(value)] if clean(value) else []
+
+
+def compose_menu_raw_name(item: dict[str, Any]) -> str | None:
+    name = clean(item.get("treatment_name") or item.get("name"))
+    if not name:
+        return None
+    details = []
+    for key in ("brand_or_variant", "quantity_or_dose"):
+        value = clean(item.get(key))
+        if value:
+            details.append(value)
+    if not details:
+        return strip_booking_code(name)
+    return f"{strip_booking_code(name)} - {', '.join(strip_booking_code(value) for value in details)}"
+
+
+def strip_booking_code(value: str) -> str:
+    text = clean(value) or ""
+    text = re.sub(r"\s+\b(?:bk|sku|id|code)[\s_-]*[a-z0-9]{3,}\b$", "", text, flags=re.I)
+    text = re.sub(r"\s+\b[a-z]{1,4}[\s_-]?\d{4,}\b$", "", text, flags=re.I)
+    return clean(text) or value
 
 
 def dedupe_list(values: list[Any]) -> list[str]:
