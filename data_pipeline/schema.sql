@@ -123,6 +123,9 @@ CREATE TABLE offerings (
     source_offer_url TEXT,
     source_id        INTEGER REFERENCES sources(id)
 );
+-- one row per (location, source, raw listing text): re-running a source (or a later
+-- enrichment pass) updates price/treatment data in place instead of piling up duplicates
+CREATE UNIQUE INDEX idx_offerings_dedup ON offerings(location_id, source_id, raw_name);
 
 -- ----------------------------------------------------------------------
 -- facets: care model, entity type, price tier, trust, goal, etc.
