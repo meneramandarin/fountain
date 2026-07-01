@@ -75,6 +75,12 @@ SOURCE_OWNED_DOMAINS = {
     "bestexecutivephysicalprograms.com",
     "conciergedoctorsnearme.com",
 }
+SERVICE_SEARCH_SOURCE_PREFIXES = ("dexa_", "hbot_", "vo2_max_")
+KNOWN_JUNK_PRICE_TEXT = {"$15; $99", "Not available"}
+
+
+def is_service_search_source(source_slug: str) -> bool:
+    return source_slug.startswith(SERVICE_SEARCH_SOURCE_PREFIXES)
 
 
 def is_bookimed_doctor_source(source_slug: str) -> bool:
@@ -162,6 +168,7 @@ class CanonicalBuilder:
         self.source_record_counts: Counter[str] = Counter()
         self.service_area_count = 0
         self.skipped_practitioner_reviews = 0
+        self.skipped_service_search_rows = 0
         self.deviation_notes: list[str] = []
 
     def build(self) -> None:
@@ -305,6 +312,8 @@ class CanonicalBuilder:
                     self.process_practitioner(slug, row, fields, staging)
                 elif slug in EDITORIAL_ORG_SOURCES:
                     self.process_editorial_org(slug, row, fields, staging)
+                elif is_service_search_source(slug):
+                    self.process_service_search_location(slug, row, fields, staging)
                 else:
                     self.process_location(slug, row, fields, staging)
             staging.close()
@@ -411,6 +420,22 @@ class CanonicalBuilder:
         self.copy_images(staging, int(row["id"]), "location", location_id, source_id)
         self.copy_reviews(staging, int(row["id"]), location_id, source_id)
 
+    def process_service_search_location(self, slug: str, row: sqlite3.Row, fields: dict[str, Any], staging: sqlite3.Connection) -> None:
+        if not self.is_real_provider_row(row, fields):
+            self.skipped_service_search_rows += 1
+            return
+        self.process_location(slug, row, fields, staging)
+
+    def is_real_provider_row(self, row: sqlite3.Row, fields: dict[str, Any]) -> bool:
+        # The scraper's own page_type/confidence_score labels don't cleanly separate real
+        # provider pages from directory/roundup pages (verified empirically), but a usable
+        # address or geocode reliably does, since directory pages rarely resolve to one.
+        if clean(row["address"]) or (parse_float(row["latitude"]) is not None and parse_float(row["longitude"]) is not None):
+            return True
+        if fields.get("is_directory_or_aggregator"):
+            return False
+        return False
+
     def process_practitioner(self, slug: str, row: sqlite3.Row, fields: dict[str, Any], staging: sqlite3.Connection) -> None:
         source_id = self.source_ids[slug]
         mapped = self.map_practitioner(slug, row, fields)
@@ -476,10 +501,8 @@ class CanonicalBuilder:
             for dept in raw_json.get("department", []) if isinstance(raw_json, dict) else []:
                 if isinstance(dept, dict):
                     tags.extend(tags_for_source_value(dept.get("name")))
-            tags.extend(price_tags(row["price_text"]))
         elif slug == "world_longevity_clinics":
             offer_terms.extend(extract_terms(row["services_json"]))
-            tags.extend(price_tags(row["price_text"]))
         elif slug == "bioedge_clinics":
             mixed_terms.extend(extract_terms(row["services_json"]))
             mixed_terms.extend(extract_terms((parse_jsonish(row["procedures_json"]) or {}).get("tags")))
@@ -505,7 +528,6 @@ class CanonicalBuilder:
         elif slug == "immortality_clinic":
             raw = " ".join(clean(part) or "" for part in [row["raw_text"], fields.get("card_text")])
             offer_terms.extend(scan_known_treatments(raw))
-            tags.extend(price_tags(row["price_text"]))
             tags.extend(tags_for_source_value(raw))
         elif slug == "longevity_technology_clinics":
             offer_terms.extend(extract_terms(row["services_json"]))
@@ -579,14 +601,21 @@ class CanonicalBuilder:
             tags.extend(tags_for_source_value(extract_terms(row["services_json"])))
             if slug in {"longevita_clinics", "meditrip_seoul"}:
                 tags.append(("care_model", "destination or medical tourism"))
+        elif is_service_search_source(slug):
+            procedures = parse_jsonish(row["procedures_json"]) or {}
+            service_label = clean(procedures.get("primary")) or clean(fields.get("service_label"))
+            if service_label:
+                offer_terms.append(service_label)
+            confidence = fields.get("confidence_score")
+            if confidence is not None:
+                tags.append(("trust", f"discovery confidence {confidence}"))
         else:
             offer_terms.extend(extract_terms(row["services_json"]))
             offer_terms.extend(extract_terms(row["procedures_json"]))
 
         if fields.get("record_type"):
             tags.append(("source_record_type", clean(fields.get("record_type")) or "unknown"))
-        if row["price_text"] and re.fullmatch(r"\${1,5}", clean(row["price_text"]) or ""):
-            tags.append(("price_tier", clean(row["price_text"])))
+        tags.extend(price_tags(row["price_text"]))
         return {
             "org_name": org_name,
             "org_website": org_website,
@@ -603,7 +632,7 @@ class CanonicalBuilder:
             "phone": clean(row["phone"]),
             "email": clean(row["email"]),
             "website": clean(row["website"]),
-            "price_text": clean(row["price_text"]),
+            "price_text": valid_price_text(row["price_text"]),
             "rating": parse_float(row["rating"]),
             "review_count": parse_int(row["review_count"]),
             "tags": dedupe_pairs(tags),
@@ -1164,6 +1193,21 @@ class CanonicalBuilder:
                 """
             )
         )
+        suspicious_collapses = list(
+            self.conn.execute(
+                """
+                SELECT sr.entity_id AS location_id, s.slug AS source_slug, l.name, l.locality,
+                       COUNT(DISTINCT sr.source_url) AS distinct_urls
+                FROM source_records sr
+                JOIN sources s ON s.id = sr.source_id
+                JOIN locations l ON l.id = sr.entity_id
+                WHERE sr.entity_type = 'location'
+                GROUP BY sr.entity_id, sr.source_id
+                HAVING COUNT(DISTINCT sr.source_url) >= 3
+                ORDER BY distinct_urls DESC
+                """
+            )
+        )
         print("\nCanonical build report")
         print("======================")
         print(f"canonical_db: {CANONICAL_DB}")
@@ -1195,6 +1239,13 @@ class CanonicalBuilder:
             print(f"  {row['occurrences']:>5}  {row['source_slug']:<40} {row['term']}")
         if self.skipped_practitioner_reviews:
             print(f"notes: skipped {self.skipped_practitioner_reviews} practitioner-source reviews because schema reviews table is location-scoped")
+        if self.skipped_service_search_rows:
+            print(f"notes: skipped {self.skipped_service_search_rows} service-search listings with no usable address (directory/aggregator pages)")
+        print(f"\nsuspicious location collapses (one location absorbing 3+ distinct URLs from the same source): {len(suspicious_collapses)}")
+        if suspicious_collapses:
+            print("  (possible sign of a mis-extracted shared/HQ address collapsing distinct branches - spot check these)")
+            for row in suspicious_collapses[:20]:
+                print(f"  - location {row['location_id']} '{row['name']}' ({row['locality']}) <- {row['source_slug']}: {row['distinct_urls']} distinct URLs")
         if self.deviation_notes:
             print("deviation notes:")
             for note in self.deviation_notes:
@@ -1467,6 +1518,37 @@ def price_tags(price_text: Any) -> list[tuple[str, str]]:
         return [("price_tier", text)]
     currency = re.match(r"([A-Z]{3}|[$€£])", text)
     return [("price_tier", currency.group(1))] if currency else []
+
+
+NO_PRICE_PHRASES = {"n/a", "na", "unknown", "price on request", "call for pricing", "not available"}
+
+
+def valid_price_text(price_text: Any) -> str | None:
+    text = clean(price_text)
+    if not text:
+        return None
+    if text in KNOWN_JUNK_PRICE_TEXT or text.lower() in NO_PRICE_PHRASES:
+        return None
+    if re.fullmatch(r"\${1,5}", text):
+        return text
+    if len(text) > 50:
+        # Real price displays are compact ("$119-$499", "from $3,500/day"); anything longer
+        # observed in the data is scraper bio/description text accidentally landing in this
+        # field (e.g. bioedge_clinics rows ending in a boilerplate "; $15; $99" suffix).
+        return None
+    amounts = [
+        float(m.replace(",", ""))
+        for m in re.findall(r"[\d,]+(?:\.\d{1,2})?", text)
+        if re.search(r"\d", m) and m.replace(",", "")
+    ]
+    if not amounts:
+        return None
+    if len(amounts) > 4:
+        return None
+    lo, hi = min(amounts), max(amounts)
+    if lo > 0 and hi / lo > 100:
+        return None
+    return text
 
 
 def scan_known_treatments(text: str | None) -> list[str]:

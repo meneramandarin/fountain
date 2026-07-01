@@ -1,12 +1,15 @@
 from __future__ import annotations
 
+import copy
 import json
 import re
 from html import unescape
 from typing import Any
 from urllib.parse import urljoin, urlparse
 
+import pyap
 from bs4 import BeautifulSoup
+from rapidfuzz import fuzz
 
 
 EMAIL_RE = re.compile(r"[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}", re.I)
@@ -120,8 +123,125 @@ def is_listing_schema(item: dict[str, Any]) -> bool:
     return bool(wanted.intersection(type_set))
 
 
-def schema_to_listing(item: dict[str, Any], page_url: str, source_slug: str, raw_text: str | None) -> dict[str, Any]:
-    address = item.get("address") if isinstance(item.get("address"), dict) else {}
+_GENERIC_URL_LOCALITY_TOKENS = {
+    "scan", "scan-me", "me", "dexa", "dxa", "hbot", "vo2", "vo2max", "max", "test", "tests",
+    "clinic", "clinics", "location", "locations", "provider", "providers", "homepage",
+    "index", "home", "page", "about", "contact", "services", "service", "find", "near",
+}
+
+
+def derive_locality_from_url(page_url: str) -> str | None:
+    """Best-effort city guess from a URL slug, e.g. '/dexa-scan-philadelphia' -> 'philadelphia'.
+
+    Chain-provider sites (BodySpec, DexaFit, etc.) reliably encode the branch city in the URL
+    even when their page-level schema.org markup doesn't, so this gives a cheap cross-check
+    signal without needing a full address/geocoding lookup.
+    """
+    path = urlparse(page_url).path.rstrip("/")
+    segments = [s for s in path.split("/") if s]
+    if not segments:
+        return None
+    tokens = [t for t in re.split(r"[-_]+", segments[-1].lower()) if t and not t.isdigit()]
+    tokens = [t for t in tokens if t not in _GENERIC_URL_LOCALITY_TOKENS]
+    if not tokens:
+        return None
+    candidate = " ".join(tokens[-3:])
+    return candidate if len(candidate) >= 3 else None
+
+
+def _locality_conflicts(schema_locality: str | None, url_locality: str | None) -> bool:
+    if not schema_locality or not url_locality:
+        return False
+    return fuzz.partial_ratio(schema_locality.lower(), url_locality.lower()) < 55
+
+
+def extract_address_from_main_content(soup: BeautifulSoup) -> dict[str, str] | None:
+    """Parse a real street address out of page body text, excluding header/nav/footer.
+
+    Used as a fallback when a page's schema.org address looks like site-wide org/HQ
+    boilerplate rather than this specific page's location (see _locality_conflicts).
+    AU/IE addresses aren't natively supported by pyap; the GB parser is tried as a
+    best-effort approximation for those, which is a known lower-precision case.
+    """
+    try:
+        working = copy.copy(soup)
+    except Exception:
+        working = soup
+    for tag in working.find_all(["header", "footer", "nav"]):
+        tag.decompose()
+    text = visible_text(working) or ""
+    if not text:
+        return None
+    for country in ("US", "CA", "GB"):
+        try:
+            matches = pyap.parse(text, country=country)
+        except Exception:
+            continue
+        if matches:
+            match = matches[0]
+            return {
+                "streetAddress": str(match).strip(),
+                "addressLocality": match.city,
+                "addressRegion": match.region1,
+                "postalCode": match.postal_code,
+                "addressCountry": match.country_id,
+            }
+    return None
+
+
+def schema_to_listing(
+    item: dict[str, Any],
+    page_url: str,
+    source_slug: str,
+    raw_text: str | None,
+    soup: BeautifulSoup | None = None,
+) -> dict[str, Any]:
+    raw_address = item.get("address")
+    multi_branch_address = False
+    if isinstance(raw_address, dict):
+        address = raw_address
+    elif isinstance(raw_address, list):
+        dict_addresses = [a for a in raw_address if isinstance(a, dict)]
+        if len(dict_addresses) == 1:
+            address = dict_addresses[0]
+        else:
+            # Multiple (or zero usable) PostalAddress entries: this schema block describes an
+            # organization with several branches, not one page-specific location. Using any
+            # single entry (or stringifying the whole list) would mislabel the listing, so treat
+            # the address as unknown rather than guess (see Fitnescity-style bug).
+            address = {}
+            multi_branch_address = True
+    else:
+        address = {}
+
+    if multi_branch_address:
+        address_text = None
+        locality = region = postal_code = country_field = None
+    else:
+        address_text = format_address(address)
+        if not address_text and isinstance(raw_address, str):
+            address_text = raw_address
+        locality = clean_text(address.get("addressLocality"))
+        region = clean_text(address.get("addressRegion"))
+        postal_code = clean_text(address.get("postalCode"))
+        country_field = clean_text(address.get("addressCountry"))
+
+        # Chain pages often only carry an org-wide "Organization" schema block with the HQ
+        # address; cross-check against the URL slug and, on conflict, try to recover the real
+        # per-page address from body text before falling back to dropping it (see BodySpec bug).
+        url_locality = derive_locality_from_url(page_url)
+        if locality and url_locality and _locality_conflicts(locality, url_locality):
+            recovered = extract_address_from_main_content(soup) if soup is not None else None
+            recovered_locality = recovered.get("addressLocality") if recovered else None
+            if recovered and recovered_locality and not _locality_conflicts(recovered_locality, url_locality):
+                address_text = recovered.get("streetAddress")
+                locality = clean_text(recovered_locality)
+                region = clean_text(recovered.get("addressRegion"))
+                postal_code = clean_text(recovered.get("postalCode"))
+                country_field = clean_text(recovered.get("addressCountry"))
+            else:
+                address_text = locality = region = postal_code = country_field = None
+
     geo = item.get("geo") if isinstance(item.get("geo"), dict) else {}
     aggregate = item.get("aggregateRating") if isinstance(item.get("aggregateRating"), dict) else {}
     reviews = item.get("review") or item.get("reviews") or []
@@ -140,11 +260,11 @@ def schema_to_listing(item: dict[str, Any], page_url: str, source_slug: str, raw
         "source_url": item.get("@id") if str(item.get("@id", "")).startswith("http") else page_url,
         "name": clean_text(item.get("name")),
         "description": clean_text(item.get("description")),
-        "address": clean_text(format_address(address) or item.get("address")),
-        "locality": clean_text(address.get("addressLocality")),
-        "region": clean_text(address.get("addressRegion")),
-        "postal_code": clean_text(address.get("postalCode")),
-        "country": clean_text(address.get("addressCountry")),
+        "address": clean_text(address_text),
+        "locality": locality,
+        "region": region,
+        "postal_code": postal_code,
+        "country": country_field,
         "phone": clean_text(item.get("telephone")),
         "email": clean_text(item.get("email")),
         "website": clean_text(website),

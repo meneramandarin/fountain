@@ -203,7 +203,7 @@ def extract_listings_from_page(
             continue
         if is_bookimed_source(config.slug) and clean_text(item.get("name")) and clean_text(item.get("name")).lower().startswith("bookimed"):
             continue
-        listing = schema_to_listing(item, page_url, config.slug, raw_text)
+        listing = schema_to_listing(item, page_url, config.slug, raw_text, soup=soup)
         if listing.get("name"):
             listings.append(listing)
     if not listings and config.slug not in {"biohacking_map", "stem_cell_authority"} and is_probable_listing_page(soup, page_url, config):
@@ -2701,8 +2701,22 @@ def extract_price_text(text: str | None) -> str | None:
     matches = []
     for pattern in patterns:
         matches.extend(clean_text(match.group(0)) for match in re.finditer(pattern, text, re.I))
-    matches = [match for match in dict.fromkeys(matches) if match]
-    return "; ".join(matches[:8]) if matches else None
+    matches = [match for match in dict.fromkeys(matches) if match][:3]
+    if not matches:
+        return None
+    amounts = [
+        float(m.replace(",", ""))
+        for m in re.findall(r"\d[\d,]*(?:\.\d{2})?", " ".join(matches))
+        if m.replace(",", "")
+    ]
+    if len(amounts) >= 2:
+        lo, hi = min(amounts), max(amounts)
+        # An unscoped page-wide scan can pick up unrelated numbers (other listings on a
+        # roundup page, phone digits, etc.); a wildly incoherent spread is a sign of that
+        # rather than a real price range, so drop the whole match set instead of keeping junk.
+        if lo > 0 and hi / lo > 100:
+            return None
+    return "; ".join(matches)
 
 
 def extract_rating_review_count(text: str | None) -> tuple[str | None, str | None]:
