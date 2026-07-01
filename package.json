@@ -9,6 +9,8 @@
     "typecheck": "tsc --noEmit",
     "build:canonical": "python data_pipeline/build_canonical.py",
     "scrape": "python -m data_pipeline.scrapers.scrape",
+    "scrape:dexa-us": "python -m data_pipeline.scrapers.scrape_dexa_us",
+    "scrape:service-search": "python -m data_pipeline.scrapers.scrape_service_search",
     "export:scrapes": "python -m data_pipeline.scrapers.export_tables"
   },
   "dependencies": {

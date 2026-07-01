@@ -44,6 +44,8 @@ npm run build:canonical
 - `data_pipeline/requirements.txt`: Python dependencies for scraping and canonical rebuilds.
 - `data_pipeline/scrapers/`: source configs, fetch/extract/storage helpers, scraping entrypoints, exports, and image download helpers.
 - `python -m data_pipeline.scrapers.scrape`: scrape one or more configured sources into separate local databases.
+- `python -m data_pipeline.scrapers.scrape_dexa_us`: build the isolated US DEXA scan provider database.
+- `python -m data_pipeline.scrapers.scrape_service_search`: build isolated service/country databases for DEXA, HBOT, and VO2 Max searches. Supports DuckDuckGo HTML and Yahoo Search via `--search-provider`.
 - `python -m data_pipeline.scrapers.export_tables`: export per-source SQLite tables to CSV/JSONL.
 - `data/databases/`: local per-source scrape databases. Ignored by Git.
 - `data/media/`: local downloaded scrape images. Ignored by Git; the Next app can serve this folder locally through `/media/...`.

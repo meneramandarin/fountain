@@ -45,6 +45,9 @@ Scraper code and source configuration are under `data_pipeline/scrapers/`.
 
 ```bash
 npm run scrape -- --source SOURCE_SLUG
+npm run scrape:dexa-us -- --reset --preset smoke
+npm run scrape:service-search -- --batch requested --reset --preset smoke
+npm run scrape:service-search -- --service hbot --country all --reset --preset top30 --search-provider yahoo
 npm run export:scrapes
 python -m data_pipeline.scrapers.download_images --source SOURCE_SLUG
 ```
@@ -67,5 +70,7 @@ Per-source SQLite databases, exports, and downloaded media are generated under `
 
 - `docs/PROJECT_STRUCTURE.md`
 - `docs/DATA_DICTIONARY.md`
+- `docs/DEXA_US_SCRAPER.md`
+- `docs/SERVICE_SEARCH_SCRAPER.md`
 - `/docs/canonical_db_overview.html` when the app is running
 - `/docs/schema_diagram.html` when the app is running
