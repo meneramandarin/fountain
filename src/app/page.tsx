@@ -53,8 +53,8 @@ export default function HomePage() {
           <Link className="landing-brand landing-hero-brand" href="/">
             fountain
           </Link>
-          <h1 id="landing-hero-title">Find the right Longevity Treatments close to you.</h1>
-          <p>From Stem Cell Therapy &amp; PRP to HBOT.</p>
+          <h1 id="landing-hero-title">The World’s Biggest Longevity Market Place.</h1>
+          <p>Discover treatments, find practitioners.</p>
         </div>
 
         <div className="landing-hero-search">
