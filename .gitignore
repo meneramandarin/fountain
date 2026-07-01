@@ -3,6 +3,12 @@ __pycache__/
 *.py[cod]
 
 .venv/
+node_modules/
+.next/
+out/
+.vercel/
+.env*.local
+*.tsbuildinfo
 
 # SQLite runtime sidecars
 *.sqlite-wal
@@ -18,4 +24,6 @@ data/databases/**/*.db
 data/databases/**/*.sqlite-*
 data/databases/**/*.db-*
 data/media/
-data/exports/*/
+data/exports/*
+!data/exports/
+!data/exports/unmapped_terms.csv
