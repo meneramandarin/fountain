@@ -106,6 +106,13 @@ type DrawerState =
   | { kind: "locations"; data: LocationDetailRecord }
   | { kind: "practitioners"; data: PractitionerDetailRecord };
 
+const optionCollator = new Intl.Collator("en", { sensitivity: "base" });
+const countryDividerValue = "__country-divider";
+
+function countryLabel(country: { code: string; name: string }) {
+  return country.code === "US" ? "USA" : country.name || country.code;
+}
+
 const domainTone: Record<string, { bg: string; fg: string }> = {
   "Diagnostics & testing": { bg: "#e9f1fb", fg: "#244a72" },
   "Regenerative & cellular": { bg: "#e8f4eb", fg: "#24563b" },
@@ -170,8 +177,18 @@ export function DirectoryShell({
 
   const entityTypes = state.kind === "locations" ? initialFacets.location_entity_types : initialFacets.practitioner_entity_types;
   const careModels = state.kind === "locations" ? initialFacets.location_care_models : initialFacets.practitioner_care_models;
+  const countryOptions = useMemo(() => {
+    const usCountry = initialFacets.countries.find((country) => country.code === "US");
+    const otherCountries = initialFacets.countries
+      .filter((country) => country.code !== "US")
+      .sort((a, b) => optionCollator.compare(countryLabel(a), countryLabel(b)));
+    return { usCountry, otherCountries };
+  }, [initialFacets.countries]);
   const localityOptions = useMemo(
-    () => initialFacets.localities.filter((locality) => locality.country_code === state.country),
+    () =>
+      initialFacets.localities
+        .filter((locality) => locality.country_code === state.country)
+        .sort((a, b) => optionCollator.compare(a.value, b.value)),
     [initialFacets.localities, state.country],
   );
 
@@ -205,7 +222,7 @@ export function DirectoryShell({
             onClick={() => updateState({ kind: "locations", entity_type: "", care_model: "" })}
           >
             <Building2 size={17} aria-hidden="true" />
-            Clinics & locations
+            Clinics & Med Spas
           </button>
           <button
             type="button"
@@ -249,9 +266,19 @@ export function DirectoryShell({
             <span className="select-wrap">
               <select value={state.country} onChange={(event) => updateState({ country: event.target.value, locality: "" })}>
                 <option value="">All countries</option>
-                {initialFacets.countries.map((country) => (
+                {countryOptions.usCountry ? (
+                  <option value={countryOptions.usCountry.code}>
+                    {countryLabel(countryOptions.usCountry)} ({countryOptions.usCountry.n.toLocaleString()})
+                  </option>
+                ) : null}
+                {countryOptions.usCountry && countryOptions.otherCountries.length ? (
+                  <option value={countryDividerValue} disabled>
+                    -----------
+                  </option>
+                ) : null}
+                {countryOptions.otherCountries.map((country) => (
                   <option value={country.code} key={country.code}>
-                    {country.name} ({country.n.toLocaleString()})
+                    {countryLabel(country)} ({country.n.toLocaleString()})
                   </option>
                 ))}
               </select>
