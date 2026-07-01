@@ -972,6 +972,11 @@ class CanonicalBuilder:
             """
             INSERT INTO offerings(location_id, treatment_id, raw_name, price_amount, price_currency, source_offer_url, source_id)
             VALUES (?, ?, ?, ?, ?, ?, ?)
+            ON CONFLICT(location_id, source_id, raw_name) DO UPDATE SET
+                treatment_id = excluded.treatment_id,
+                price_amount = COALESCE(excluded.price_amount, offerings.price_amount),
+                price_currency = COALESCE(excluded.price_currency, offerings.price_currency),
+                source_offer_url = COALESCE(excluded.source_offer_url, offerings.source_offer_url)
             """,
             (location_id, treatment_id, raw_name, price_amount, clean(price_currency), clean(source_offer_url), source_id),
         )
