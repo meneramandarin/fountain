@@ -11,7 +11,9 @@ const placeholderImagePathSet = new Set<string>(placeholderImagePaths as string[
 
 export type SearchKind = "locations" | "practitioners";
 
-export const MAX_TREATMENT_FILTERS = 2;
+// No UX-facing cap on how many treatments a user can combine — this only guards
+// against a pathological number of ids showing up in a crafted query string.
+export const MAX_TREATMENT_FILTERS = 25;
 
 export type DirectoryParams = {
   kind?: SearchKind;
