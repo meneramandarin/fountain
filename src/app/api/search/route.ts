@@ -2,6 +2,7 @@ import { parseDirectoryParams, searchLocations, searchPractitioners } from "@/li
 import { NextResponse } from "next/server";
 
 export const runtime = "nodejs";
+export const dynamic = "force-dynamic";
 
 export function GET(request: Request) {
   const url = new URL(request.url);

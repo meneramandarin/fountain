@@ -1,5 +1,5 @@
 import { DirectoryShell, type DirectoryState } from "@/components/directory-shell";
-import { getFacets, getStats } from "@/lib/queries";
+import { getFacets, getStats, MAX_TREATMENT_FILTERS } from "@/lib/queries";
 
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
@@ -30,7 +30,11 @@ function stateFromSearchParams(params: Record<string, string | string[] | undefi
     q: value(params, "q"),
     country: value(params, "country"),
     locality: value(params, "locality"),
-    treatment_id: value(params, "treatment_id"),
+    treatment_ids: value(params, "treatment_id")
+      .split(",")
+      .map((id) => id.trim())
+      .filter(Boolean)
+      .slice(0, MAX_TREATMENT_FILTERS),
     entity_type: value(params, "entity_type"),
     care_model: value(params, "care_model"),
     page: Math.max(0, Number.parseInt(value(params, "page") || "0", 10) || 0),

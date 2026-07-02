@@ -37,11 +37,13 @@ export type DirectoryState = {
   q: string;
   country: string;
   locality: string;
-  treatment_id: string;
+  treatment_ids: string[];
   entity_type: string;
   care_model: string;
   page: number;
 };
+
+export const MAX_TREATMENT_FILTERS = 2;
 
 type SearchPayload = {
   results: Array<LocationResultRow | PractitionerResultRow>;
@@ -83,13 +85,15 @@ type LocationResultRow = {
   min_price_currency?: string | null;
   treatments?: TreatmentChip[];
   tags?: Tag[];
+  image?: string | null;
 };
 type PractitionerResultRow = {
   id: number;
-  full_name: string;
+  full_name?: string | null;
   primary_specialty?: string | null;
   years_experience?: number | null;
   affiliations?: AffiliationRef[];
+  image?: string | null;
 };
 type LocationDetailRecord = LocationResultRow & {
   address?: string | null;
@@ -143,10 +147,13 @@ export function DirectoryShell({
   const queryString = useMemo(() => {
     const params = new URLSearchParams();
     params.set("kind", state.kind);
-    for (const key of ["q", "country", "locality", "treatment_id", "entity_type", "care_model"] as const) {
+    for (const key of ["q", "country", "locality", "entity_type", "care_model"] as const) {
       if (state[key]) {
         params.set(key, state[key]);
       }
+    }
+    if (state.treatment_ids.length) {
+      params.set("treatment_id", state.treatment_ids.join(","));
     }
     if (state.page) {
       params.set("page", String(state.page));
@@ -178,8 +185,41 @@ export function DirectoryShell({
     setState((current) => ({ ...current, ...patch, page: patch.page ?? 0 }));
   }, []);
 
+  const toggleTreatment = useCallback((id: string) => {
+    if (!id) {
+      return;
+    }
+    setLoading(true);
+    setState((current) => {
+      const selected = current.treatment_ids.includes(id)
+        ? current.treatment_ids.filter((existing) => existing !== id)
+        : current.treatment_ids.length < MAX_TREATMENT_FILTERS
+          ? [...current.treatment_ids, id]
+          : current.treatment_ids;
+      return { ...current, treatment_ids: selected, page: 0 };
+    });
+  }, []);
+
   const entityTypes = state.kind === "locations" ? initialFacets.location_entity_types : initialFacets.practitioner_entity_types;
   const careModels = state.kind === "locations" ? initialFacets.location_care_models : initialFacets.practitioner_care_models;
+  const allTreatments = useMemo(
+    () => initialFacets.treatment_domains.flatMap((domain) => domain.treatments),
+    [initialFacets.treatment_domains],
+  );
+  const treatmentNameById = useMemo(() => {
+    const map = new Map<string, string>();
+    for (const treatment of allTreatments) {
+      map.set(String(treatment.id), treatment.name);
+    }
+    return map;
+  }, [allTreatments]);
+  const popularTreatments = useMemo(
+    () =>
+      [...allTreatments]
+        .sort((a, b) => b.n - a.n)
+        .slice(0, 12),
+    [allTreatments],
+  );
   const countryOptions = useMemo(() => {
     const usCountry = initialFacets.countries.find((country) => country.code === "US");
     const otherCountries = initialFacets.countries
@@ -256,6 +296,26 @@ export function DirectoryShell({
             </button>
           </form>
         </div>
+
+        <div className="treatment-bubbles" role="group" aria-label="Popular treatments">
+          {popularTreatments.map((treatment) => {
+            const id = String(treatment.id);
+            const selected = state.treatment_ids.includes(id);
+            const capped = !selected && state.treatment_ids.length >= MAX_TREATMENT_FILTERS;
+            return (
+              <button
+                type="button"
+                className="treatment-bubble"
+                key={treatment.id}
+                aria-pressed={selected}
+                disabled={capped}
+                onClick={() => toggleTreatment(id)}
+              >
+                {treatment.name}
+              </button>
+            );
+          })}
+        </div>
       </section>
 
       <div className="directory-layout">
@@ -307,14 +367,30 @@ export function DirectoryShell({
             </span>
           </label>
           <label className="field">
-            <span>Treatment</span>
+            <span>Treatment (up to {MAX_TREATMENT_FILTERS})</span>
+            {state.treatment_ids.length ? (
+              <div className="selected-treatments">
+                {state.treatment_ids.map((id) => (
+                  <button type="button" key={id} onClick={() => toggleTreatment(id)}>
+                    {treatmentNameById.get(id) || id}
+                    <X size={12} aria-hidden="true" />
+                  </button>
+                ))}
+              </div>
+            ) : null}
             <span className="select-wrap">
-              <select value={state.treatment_id} onChange={(event) => updateState({ treatment_id: event.target.value })}>
-                <option value="">Any treatment</option>
+              <select
+                value=""
+                disabled={state.treatment_ids.length >= MAX_TREATMENT_FILTERS}
+                onChange={(event) => toggleTreatment(event.target.value)}
+              >
+                <option value="">
+                  {state.treatment_ids.length >= MAX_TREATMENT_FILTERS ? "Remove one to add another" : "Add a treatment"}
+                </option>
                 {initialFacets.treatment_domains.map((domain) => (
                   <optgroup label={domain.domain} key={domain.domain}>
                     {domain.treatments.map((treatment) => (
-                      <option value={treatment.id} key={treatment.id}>
+                      <option value={treatment.id} key={treatment.id} disabled={state.treatment_ids.includes(String(treatment.id))}>
                         {treatment.name} ({treatment.n.toLocaleString()})
                       </option>
                     ))}
@@ -394,7 +470,7 @@ export function DirectoryShell({
 }
 
 function emptyState(): DirectoryState {
-  return { kind: "locations", q: "", country: "", locality: "", treatment_id: "", entity_type: "", care_model: "", page: 0 };
+  return { kind: "locations", q: "", country: "", locality: "", treatment_ids: [], entity_type: "", care_model: "", page: 0 };
 }
 
 function FacetButtons({
@@ -434,33 +510,50 @@ function LocationResult({ result, onOpen }: { result: LocationResultRow; onOpen:
   const price = formatPrice(result.min_price_amount, result.min_price_currency);
   return (
     <button className="result-card" type="button" onClick={onOpen}>
-      <span className="result-main">
-        <b>{result.name || result.org_name || "Unnamed location"}</b>
-        <small>
-          <MapPin size={14} aria-hidden="true" />
-          {place || "Location unavailable"}
-        </small>
-      </span>
-      <span className="result-side">
-        {type ? <em>{type.value}</em> : null}
-        {price ? <small>From {price}</small> : null}
+      <span className="result-photo">
+        {result.image ? (
+          <Image
+            src={imageSource(result.image)}
+            alt=""
+            fill
+            unoptimized
+            sizes="(max-width: 640px) 92vw, (max-width: 980px) 46vw, 360px"
+          />
+        ) : (
+          <span className="result-photo-fallback" aria-hidden="true">
+            <Building2 size={26} aria-hidden="true" />
+          </span>
+        )}
         {result.rating ? (
-          <small>
-            <Star size={13} aria-hidden="true" />
+          <span className="result-rating-badge">
+            <Star size={12} aria-hidden="true" />
             {Number(result.rating).toFixed(1)}
-          </small>
+          </span>
         ) : null}
-        {result.review_count ? <small>{Number(result.review_count).toLocaleString()} reviews</small> : null}
       </span>
-      <span className="treatment-row">
-        {(result.treatments || []).slice(0, 5).map((treatment) => {
-          const tone = domainTone[treatment.domain] || { bg: "#eef2f0", fg: "#39443e" };
-          return (
-            <span key={`${result.id}-${treatment.name}`} style={{ background: tone.bg, color: tone.fg }}>
-              {treatment.name}
-            </span>
-          );
-        })}
+      <span className="result-body">
+        <span className="result-main">
+          <b>{result.name || result.org_name || "Unnamed location"}</b>
+          <small>
+            <MapPin size={14} aria-hidden="true" />
+            {place || "Location unavailable"}
+          </small>
+        </span>
+        <span className="result-side">
+          {type ? <em>{type.value}</em> : null}
+          {price ? <small>From {price}</small> : null}
+          {result.review_count ? <small>{Number(result.review_count).toLocaleString()} reviews</small> : null}
+        </span>
+        <span className="treatment-row">
+          {(result.treatments || []).slice(0, 3).map((treatment) => {
+            const tone = domainTone[treatment.domain] || { bg: "#eef2f0", fg: "#39443e" };
+            return (
+              <span key={`${result.id}-${treatment.name}`} style={{ background: tone.bg, color: tone.fg }}>
+                {treatment.name}
+              </span>
+            );
+          })}
+        </span>
       </span>
     </button>
   );
@@ -471,15 +564,39 @@ function PractitionerResult({ result, onOpen }: { result: PractitionerResultRow;
   const place = affiliation
     ? [affiliation.clinic, affiliation.locality, affiliation.country_name || affiliation.country_code].filter(Boolean).join(", ")
     : "";
+  const initials = (result.full_name || "")
+    .split(/\s+/)
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((part) => part[0]?.toUpperCase())
+    .join("");
   return (
     <button className="result-card practitioner-card" type="button" onClick={onOpen}>
-      <span className="result-main">
-        <b>{result.full_name}</b>
-        <small>{result.primary_specialty || "Specialty unavailable"}</small>
+      <span className="practitioner-avatar-band">
+        <span className="practitioner-avatar">
+          {result.image ? (
+            <Image src={imageSource(result.image)} alt="" fill unoptimized sizes="96px" />
+          ) : (
+            <span className="practitioner-avatar-fallback" aria-hidden="true">
+              {initials || <Stethoscope size={22} aria-hidden="true" />}
+            </span>
+          )}
+        </span>
       </span>
-      <span className="result-side">
-        {result.years_experience ? <em>{result.years_experience} yrs</em> : null}
-        {place ? <small>{place}</small> : null}
+      <span className="result-body">
+        <span className="result-main practitioner-main">
+          <b>{result.full_name || "Unnamed practitioner"}</b>
+          <small>{result.primary_specialty || "Specialty unavailable"}</small>
+        </span>
+        <span className="result-side practitioner-side">
+          {result.years_experience ? <em>{result.years_experience} yrs experience</em> : null}
+          {place ? (
+            <small>
+              <MapPin size={14} aria-hidden="true" />
+              {place}
+            </small>
+          ) : null}
+        </span>
       </span>
     </button>
   );

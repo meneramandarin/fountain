@@ -1,15 +1,24 @@
 import { row, rows } from "@/lib/db";
+import placeholderImagePaths from "@/lib/placeholder-image-paths.json";
 
 export const PAGE_SIZE = 25;
 
+// Some scraped sources reuse one generic banner image across every entity they cover
+// (identical file bytes under different filenames). These aren't real per-listing
+// photos, so we exclude them from `image` fields instead of showing the same stock
+// graphic on hundreds of unrelated cards.
+const placeholderImagePathSet = new Set<string>(placeholderImagePaths as string[]);
+
 export type SearchKind = "locations" | "practitioners";
+
+export const MAX_TREATMENT_FILTERS = 2;
 
 export type DirectoryParams = {
   kind?: SearchKind;
   q?: string;
   country?: string;
   locality?: string;
-  treatment_id?: number;
+  treatment_ids?: number[];
   entity_type?: string;
   care_model?: string;
 };
@@ -276,9 +285,9 @@ function locationWhere(params: DirectoryParams, options: { includeText?: boolean
     where.push("l.locality = ? COLLATE NOCASE");
     values.push(params.locality);
   }
-  if (params.treatment_id) {
+  for (const treatmentId of params.treatment_ids || []) {
     where.push("EXISTS (SELECT 1 FROM offerings o WHERE o.location_id = l.id AND o.treatment_id = ?)");
-    values.push(params.treatment_id);
+    values.push(treatmentId);
   }
   for (const [facet, key] of [
     ["entity_type", "entity_type"],
@@ -389,10 +398,26 @@ export function searchLocations(params: DirectoryParams, page = 0) {
       list.push({ facet: tag.facet, value: tag.value });
       tagMap.set(tag.lid, list);
     }
+    const images = rows<{ lid: number; local_path: string }>(
+      `
+      SELECT entity_id AS lid, local_path
+      FROM images
+      WHERE entity_type = 'location' AND entity_id IN (${marks})
+        AND local_path IS NOT NULL AND local_path != ''
+    `,
+      ids,
+    );
+    const imageMap = new Map<number, string>();
+    for (const image of images) {
+      if (!imageMap.has(image.lid) && !placeholderImagePathSet.has(image.local_path)) {
+        imageMap.set(image.lid, image.local_path);
+      }
+    }
     for (const result of results) {
       const id = result.id as number;
       result.treatments = (treatmentMap.get(id) || []).slice(0, 6);
       result.tags = tagMap.get(id) || [];
+      result.image = imageMap.get(id) || null;
     }
   }
 
@@ -447,6 +472,17 @@ export function searchPractitioners(params: DirectoryParams, page = 0) {
       )
     `);
     values.push(params.locality);
+  }
+  for (const treatmentId of params.treatment_ids || []) {
+    where.push(`
+      EXISTS (
+        SELECT 1
+        FROM affiliations a
+        JOIN offerings o ON o.location_id = a.location_id
+        WHERE a.practitioner_id = p.id AND o.treatment_id = ?
+      )
+    `);
+    values.push(treatmentId);
   }
   for (const [facet, key] of [
     ["entity_type", "entity_type"],
@@ -508,8 +544,25 @@ export function searchPractitioners(params: DirectoryParams, page = 0) {
       list.push(affiliation);
       affiliationMap.set(affiliation.pid, list);
     }
+    const images = rows<{ pid: number; local_path: string }>(
+      `
+      SELECT entity_id AS pid, local_path
+      FROM images
+      WHERE entity_type = 'practitioner' AND entity_id IN (${marks})
+        AND local_path IS NOT NULL AND local_path != ''
+    `,
+      ids,
+    );
+    const imageMap = new Map<number, string>();
+    for (const image of images) {
+      if (!imageMap.has(image.pid) && !placeholderImagePathSet.has(image.local_path)) {
+        imageMap.set(image.pid, image.local_path);
+      }
+    }
     for (const result of results) {
-      result.affiliations = affiliationMap.get(result.id as number) || [];
+      const id = result.id as number;
+      result.affiliations = affiliationMap.get(id) || [];
+      result.image = imageMap.get(id) || null;
     }
   }
 
@@ -618,14 +671,20 @@ export function getPractitionerDetail(id: number) {
 }
 
 export function parseDirectoryParams(searchParams: URLSearchParams): DirectoryParams {
-  const treatmentRaw = searchParams.get("treatment_id");
-  const treatment = treatmentRaw ? Number.parseInt(treatmentRaw, 10) : undefined;
+  const treatmentIds = Array.from(
+    new Set(
+      (searchParams.get("treatment_id") || "")
+        .split(",")
+        .map((raw) => Number.parseInt(raw.trim(), 10))
+        .filter((id) => Number.isFinite(id)),
+    ),
+  ).slice(0, MAX_TREATMENT_FILTERS);
   return {
     kind: searchParams.get("kind") === "practitioners" ? "practitioners" : "locations",
     q: searchParams.get("q") || undefined,
     country: searchParams.get("country") || undefined,
     locality: searchParams.get("locality") || undefined,
-    treatment_id: Number.isFinite(treatment) ? treatment : undefined,
+    treatment_ids: treatmentIds.length ? treatmentIds : undefined,
     entity_type: searchParams.get("entity_type") || undefined,
     care_model: searchParams.get("care_model") || undefined,
   };
