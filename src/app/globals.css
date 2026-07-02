@@ -1206,7 +1206,14 @@ input[type="search"]::-webkit-search-cancel-button:hover {
   border-bottom: 0;
 }
 
-.offer-item span {
+.offer-copy {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+}
+
+.offer-name {
   display: flex;
   align-items: center;
   gap: 9px;
@@ -1214,13 +1221,21 @@ input[type="search"]::-webkit-search-cancel-button:hover {
   overflow-wrap: anywhere;
 }
 
-.offer-item span::before {
+.offer-name::before {
   content: "";
   width: 5px;
   height: 5px;
   flex: 0 0 auto;
   border-radius: 50%;
   background: var(--landing-gold-deep);
+}
+
+.offer-copy small {
+  padding-left: 14px;
+  color: rgba(30, 26, 15, 0.52);
+  font-size: 12px;
+  line-height: 1.35;
+  overflow-wrap: anywhere;
 }
 
 .offer-item b {
