@@ -43,8 +43,6 @@ export type DirectoryState = {
   page: number;
 };
 
-export const MAX_TREATMENT_FILTERS = 2;
-
 type SearchPayload = {
   results: Array<LocationResultRow | PractitionerResultRow>;
   total: number;
@@ -131,6 +129,11 @@ const domainTone: Record<string, { bg: string; fg: string }> = {
   "Lifestyle & foundational": { bg: "#eef0e5", fg: "#4d5630" },
 };
 
+const popularTreatmentExclusions = new Set(["Botox", "Dermal fillers", "Med spa", "IV nutrient therapy", "Shockwave therapy"]);
+const popularTreatmentLabelOverrides: Record<string, string> = {
+  "Hyperbaric oxygen therapy": "HBOT",
+};
+
 export function DirectoryShell({
   initialFacets,
   initialState: seededState,
@@ -193,9 +196,7 @@ export function DirectoryShell({
     setState((current) => {
       const selected = current.treatment_ids.includes(id)
         ? current.treatment_ids.filter((existing) => existing !== id)
-        : current.treatment_ids.length < MAX_TREATMENT_FILTERS
-          ? [...current.treatment_ids, id]
-          : current.treatment_ids;
+        : [...current.treatment_ids, id];
       return { ...current, treatment_ids: selected, page: 0 };
     });
   }, []);
@@ -216,6 +217,7 @@ export function DirectoryShell({
   const popularTreatments = useMemo(
     () =>
       [...allTreatments]
+        .filter((treatment) => !popularTreatmentExclusions.has(treatment.name))
         .sort((a, b) => b.n - a.n)
         .slice(0, 12),
     [allTreatments],
@@ -301,17 +303,15 @@ export function DirectoryShell({
           {popularTreatments.map((treatment) => {
             const id = String(treatment.id);
             const selected = state.treatment_ids.includes(id);
-            const capped = !selected && state.treatment_ids.length >= MAX_TREATMENT_FILTERS;
             return (
               <button
                 type="button"
                 className="treatment-bubble"
                 key={treatment.id}
                 aria-pressed={selected}
-                disabled={capped}
                 onClick={() => toggleTreatment(id)}
               >
-                {treatment.name}
+                {popularTreatmentLabelOverrides[treatment.name] || treatment.name}
               </button>
             );
           })}
@@ -367,7 +367,7 @@ export function DirectoryShell({
             </span>
           </label>
           <label className="field">
-            <span>Treatment (up to {MAX_TREATMENT_FILTERS})</span>
+            <span>Treatment</span>
             {state.treatment_ids.length ? (
               <div className="selected-treatments">
                 {state.treatment_ids.map((id) => (
@@ -379,14 +379,8 @@ export function DirectoryShell({
               </div>
             ) : null}
             <span className="select-wrap">
-              <select
-                value=""
-                disabled={state.treatment_ids.length >= MAX_TREATMENT_FILTERS}
-                onChange={(event) => toggleTreatment(event.target.value)}
-              >
-                <option value="">
-                  {state.treatment_ids.length >= MAX_TREATMENT_FILTERS ? "Remove one to add another" : "Add a treatment"}
-                </option>
+              <select value="" onChange={(event) => toggleTreatment(event.target.value)}>
+                <option value="">Add a treatment</option>
                 {initialFacets.treatment_domains.map((domain) => (
                   <optgroup label={domain.domain} key={domain.domain}>
                     {domain.treatments.map((treatment) => (
