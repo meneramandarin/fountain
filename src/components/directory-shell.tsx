@@ -8,8 +8,10 @@ import {
   ChevronDown,
   ExternalLink,
   Filter,
+  Globe,
   Loader2,
   MapPin,
+  Phone,
   Search,
   Star,
   Stethoscope,
@@ -120,13 +122,13 @@ function countryLabel(country: { code: string; name: string }) {
 }
 
 const domainTone: Record<string, { bg: string; fg: string }> = {
-  "Diagnostics & testing": { bg: "#e9f1fb", fg: "#244a72" },
-  "Regenerative & cellular": { bg: "#e8f4eb", fg: "#24563b" },
-  "IV & infusion": { bg: "#f7ecdb", fg: "#77501c" },
-  "Hormone & metabolic": { bg: "#f4e9f4", fg: "#603b63" },
-  "Recovery & performance": { bg: "#e8f5f6", fg: "#225d64" },
-  Aesthetic: { bg: "#f8e9e6", fg: "#7b3e35" },
-  "Lifestyle & foundational": { bg: "#eef0e5", fg: "#4d5630" },
+  "Diagnostics & testing": { bg: "#e8eaf4", fg: "#33447a" },
+  "Regenerative & cellular": { bg: "#e3f0e6", fg: "#1e5c3e" },
+  "IV & infusion": { bg: "#f1e8d3", fg: "#6b4e23" },
+  "Hormone & metabolic": { bg: "#f1e6f0", fg: "#6a3568" },
+  "Recovery & performance": { bg: "#e3eff0", fg: "#1f5860" },
+  Aesthetic: { bg: "#f3e6e9", fg: "#7a2f42" },
+  "Lifestyle & foundational": { bg: "#edefe0", fg: "#4b5227" },
 };
 
 const popularTreatmentExclusions = new Set(["Botox", "Dermal fillers", "Med spa", "IV nutrient therapy", "Shockwave therapy"]);
@@ -499,19 +501,21 @@ function FacetButtons({
 }
 
 function LocationResult({ result, onOpen }: { result: LocationResultRow; onOpen: () => void }) {
+  const [imageFailed, setImageFailed] = useState(false);
   const place = [result.locality, result.region, result.country_name].filter(Boolean).join(", ");
   const type = result.tags?.find((tag) => tag.facet === "entity_type");
   const price = formatPrice(result.min_price_amount, result.min_price_currency);
   return (
     <button className="result-card" type="button" onClick={onOpen}>
       <span className="result-photo">
-        {result.image ? (
+        {result.image && !imageFailed ? (
           <Image
             src={imageSource(result.image)}
             alt=""
             fill
             unoptimized
             sizes="(max-width: 640px) 92vw, (max-width: 980px) 46vw, 360px"
+            onError={() => setImageFailed(true)}
           />
         ) : (
           <span className="result-photo-fallback" aria-hidden="true">
@@ -554,6 +558,7 @@ function LocationResult({ result, onOpen }: { result: LocationResultRow; onOpen:
 }
 
 function PractitionerResult({ result, onOpen }: { result: PractitionerResultRow; onOpen: () => void }) {
+  const [imageFailed, setImageFailed] = useState(false);
   const affiliation = result.affiliations?.[0];
   const place = affiliation
     ? [affiliation.clinic, affiliation.locality, affiliation.country_name || affiliation.country_code].filter(Boolean).join(", ")
@@ -568,8 +573,8 @@ function PractitionerResult({ result, onOpen }: { result: PractitionerResultRow;
     <button className="result-card practitioner-card" type="button" onClick={onOpen}>
       <span className="practitioner-avatar-band">
         <span className="practitioner-avatar">
-          {result.image ? (
-            <Image src={imageSource(result.image)} alt="" fill unoptimized sizes="96px" />
+          {result.image && !imageFailed ? (
+            <Image src={imageSource(result.image)} alt="" fill unoptimized sizes="96px" onError={() => setImageFailed(true)} />
           ) : (
             <span className="practitioner-avatar-fallback" aria-hidden="true">
               {initials || <Stethoscope size={22} aria-hidden="true" />}
@@ -641,7 +646,10 @@ function DetailDrawer({ drawer, onClose }: { drawer: DrawerState; onClose: () =>
           <header>
             <div>
               <h2>{title || "Directory record"}</h2>
-              <p>{subtitle}</p>
+              <p>
+                {subtitle ? <MapPin size={13} aria-hidden="true" /> : null}
+                {subtitle || "Location unavailable"}
+              </p>
             </div>
             <button type="button" aria-label="Close" onClick={onClose}>
               <X size={20} aria-hidden="true" />
@@ -666,7 +674,10 @@ function DetailDrawer({ drawer, onClose }: { drawer: DrawerState; onClose: () =>
         <header>
           <div>
             <h2>{data.full_name || "Directory record"}</h2>
-            <p>{subtitle}</p>
+            <p>
+              <Stethoscope size={13} aria-hidden="true" />
+              {subtitle || "Details unavailable"}
+            </p>
           </div>
           <button type="button" aria-label="Close" onClick={onClose}>
             <X size={20} aria-hidden="true" />
@@ -682,14 +693,24 @@ function DetailDrawer({ drawer, onClose }: { drawer: DrawerState; onClose: () =>
 }
 
 function ImageStrip({ images }: { images: ImageRef[] }) {
-  const usable = images.map((image) => image.image_url || image.local_path).filter(Boolean).slice(0, 4) as string[];
-  if (!usable.length) {
+  const [failed, setFailed] = useState<Set<string>>(new Set());
+  const usable = images.map((image) => image.local_path || image.image_url).filter(Boolean).slice(0, 4) as string[];
+  const visible = usable.filter((src) => !failed.has(src));
+  if (!visible.length) {
     return null;
   }
   return (
     <div className="image-strip">
-      {usable.map((src) => (
-        <Image src={imageSource(src)} alt="" width={180} height={156} unoptimized key={src} />
+      {visible.map((src) => (
+        <Image
+          src={imageSource(src)}
+          alt=""
+          width={180}
+          height={156}
+          unoptimized
+          key={src}
+          onError={() => setFailed((prev) => new Set(prev).add(src))}
+        />
       ))}
     </div>
   );
@@ -707,13 +728,26 @@ function LocationDetail({ data }: { data: LocationDetailRecord }) {
     <>
       <section className="detail-section">
         <h3>Contact</h3>
-        <p>{data.address || "Address unavailable"}</p>
-        {data.phone ? <p>{data.phone}</p> : null}
-        {data.website ? (
-          <a href={data.website} target="_blank" rel="noreferrer">
-            Website <ExternalLink size={14} aria-hidden="true" />
-          </a>
-        ) : null}
+        <div className="detail-rows">
+          <div className="detail-row">
+            <MapPin size={15} aria-hidden="true" />
+            <span>{data.address || "Address unavailable"}</span>
+          </div>
+          {data.phone ? (
+            <div className="detail-row">
+              <Phone size={15} aria-hidden="true" />
+              <span>{data.phone}</span>
+            </div>
+          ) : null}
+          {data.website ? (
+            <div className="detail-row">
+              <Globe size={15} aria-hidden="true" />
+              <a href={data.website} target="_blank" rel="noreferrer">
+                Visit website <ExternalLink size={13} aria-hidden="true" />
+              </a>
+            </div>
+          ) : null}
+        </div>
       </section>
       <Offerings offerings={data.offerings || []} />
       <LocationPractitioners practitioners={data.practitioners || []} />
@@ -733,16 +767,20 @@ function LocationPractitioners({
   }
   return (
     <section className="detail-section">
-      <h3>Practitioners</h3>
-      {practitioners.slice(0, 12).map((practitioner) => {
-        const detail = [practitioner.primary_specialty, practitioner.role].filter(Boolean).join(" · ");
-        return (
-          <p key={practitioner.id}>
-            <b>{practitioner.full_name}</b>
-            {detail ? <span> · {detail}</span> : null}
-          </p>
-        );
-      })}
+      <h3>
+        Practitioners <small>{practitioners.length}</small>
+      </h3>
+      <div className="detail-list">
+        {practitioners.slice(0, 12).map((practitioner) => {
+          const detail = [practitioner.primary_specialty, practitioner.role].filter(Boolean).join(" · ");
+          return (
+            <div className="detail-list-row" key={practitioner.id}>
+              <b>{practitioner.full_name}</b>
+              {detail ? <span>{detail}</span> : null}
+            </div>
+          );
+        })}
+      </div>
     </section>
   );
 }
@@ -752,17 +790,30 @@ function PractitionerDetail({ data }: { data: PractitionerDetailRecord }) {
     <>
       <section className="detail-section">
         <h3>Profile</h3>
-        <p>{data.credentials || data.primary_specialty || "Profile details unavailable"}</p>
-        {data.languages ? <p>Languages: {data.languages}</p> : null}
+        <div className="detail-rows">
+          <div className="detail-row">
+            <Stethoscope size={15} aria-hidden="true" />
+            <span>{data.credentials || data.primary_specialty || "Profile details unavailable"}</span>
+          </div>
+          {data.languages ? (
+            <div className="detail-row">
+              <Globe size={15} aria-hidden="true" />
+              <span>{data.languages}</span>
+            </div>
+          ) : null}
+        </div>
       </section>
       <section className="detail-section">
         <h3>Affiliations</h3>
         {(data.affiliations || []).length ? (
-          (data.affiliations || []).map((affiliation) => (
-            <p key={`${affiliation.id}-${affiliation.clinic}`}>
-              {affiliation.clinic} · {[affiliation.locality, affiliation.country_name].filter(Boolean).join(", ")}
-            </p>
-          ))
+          <div className="detail-list">
+            {(data.affiliations || []).map((affiliation) => (
+              <div className="detail-list-row" key={`${affiliation.id}-${affiliation.clinic}`}>
+                <b>{affiliation.clinic}</b>
+                <span>{[affiliation.locality, affiliation.country_name].filter(Boolean).join(", ")}</span>
+              </div>
+            ))}
+          </div>
         ) : (
           <p>No linked clinic in canonical data.</p>
         )}
@@ -778,7 +829,9 @@ function Offerings({ offerings }: { offerings: OfferingRef[] }) {
   }
   return (
     <section className="detail-section">
-      <h3>Offerings</h3>
+      <h3>
+        Offerings <small>{offerings.length}</small>
+      </h3>
       <div className="offer-list">
         {offerings.slice(0, 40).map((offering, index) => (
           <div className="offer-item" key={`${offering.raw_name}-${index}`}>
@@ -835,20 +888,53 @@ function TagList({ tags }: { tags: Tag[] }) {
   );
 }
 
+function reviewField(value: string | number | null | undefined, key: string): string | null {
+  if (value == null) {
+    return null;
+  }
+  const text = String(value).trim();
+  if (!text) {
+    return null;
+  }
+  if (text.startsWith("{")) {
+    try {
+      const parsed = JSON.parse(text);
+      const extracted = parsed?.[key];
+      return extracted == null ? null : String(extracted);
+    } catch {
+      return null;
+    }
+  }
+  return text;
+}
+
 function ReviewList({ reviews }: { reviews: ReviewRef[] }) {
   if (!reviews.length) {
     return null;
   }
   return (
     <section className="detail-section">
-      <h3>Reviews</h3>
-      {reviews.slice(0, 5).map((review, index) => (
-        <blockquote key={`${review.review_date}-${index}`}>
-          <b>{review.reviewer || "Anonymous"}</b>
-          {review.rating ? <span>{String(review.rating)}</span> : null}
-          <p>{review.body || "No review body provided."}</p>
-        </blockquote>
-      ))}
+      <h3>
+        Reviews <small>{reviews.length}</small>
+      </h3>
+      {reviews.slice(0, 5).map((review, index) => {
+        const reviewer = reviewField(review.reviewer, "name") || "Anonymous";
+        const rating = reviewField(review.rating, "ratingValue");
+        return (
+          <blockquote key={`${review.review_date}-${index}`}>
+            <div className="review-meta">
+              <b>{reviewer}</b>
+              {rating ? (
+                <span>
+                  <Star size={11} aria-hidden="true" />
+                  {rating}
+                </span>
+              ) : null}
+            </div>
+            <p>{review.body || "No review body provided."}</p>
+          </blockquote>
+        );
+      })}
     </section>
   );
 }
