@@ -624,15 +624,16 @@ export function getLocationDetail(id: number) {
   `,
     [id],
   );
-  location.images = rows(
+  location.images = rows<{ image_url: string | null; local_path: string; alt: string | null }>(
     `
     SELECT image_url, local_path, alt
     FROM images
     WHERE entity_type = 'location' AND entity_id = ?
+      AND local_path IS NOT NULL AND local_path != ''
     LIMIT 8
   `,
     [id],
-  );
+  ).filter((image) => !placeholderImagePathSet.has(image.local_path));
   return location;
 }
 
@@ -660,15 +661,16 @@ export function getPractitionerDetail(id: number) {
   `,
     [id],
   );
-  practitioner.images = rows(
+  practitioner.images = rows<{ image_url: string | null; local_path: string; alt: string | null }>(
     `
     SELECT image_url, local_path, alt
     FROM images
     WHERE entity_type = 'practitioner' AND entity_id = ?
+      AND local_path IS NOT NULL AND local_path != ''
     LIMIT 8
   `,
     [id],
-  );
+  ).filter((image) => !placeholderImagePathSet.has(image.local_path));
   return practitioner;
 }
 
