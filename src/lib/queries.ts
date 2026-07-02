@@ -260,11 +260,11 @@ export function getFacets() {
   };
 }
 
-function locationWhere(params: DirectoryParams) {
+function locationWhere(params: DirectoryParams, options: { includeText?: boolean } = {}) {
   const where: string[] = [];
   const values: unknown[] = [];
   const match = ftsMatch(params.q);
-  if (match) {
+  if (options.includeText !== false && match) {
     where.push("l.id IN (SELECT entity_id FROM search_index WHERE search_index MATCH ? AND entity_type = 'location')");
     values.push(match);
   }
@@ -307,19 +307,49 @@ function locationWhere(params: DirectoryParams) {
 }
 
 export function searchLocations(params: DirectoryParams, page = 0) {
-  const { clause, values } = locationWhere(params);
-  const total = row<{ count: number }>(`SELECT COUNT(*) AS count FROM locations l${clause}`, values)?.count || 0;
+  const match = ftsMatch(params.q);
+  const matchJoin = match
+    ? `
+      JOIN (
+        SELECT entity_id, bm25(search_index) AS fts_rank
+        FROM search_index
+        WHERE search_index MATCH ? AND entity_type = 'location'
+      ) search_match ON search_match.entity_id = l.id
+    `
+    : "";
+  const { clause, values } = locationWhere(params, { includeText: !match });
+  const queryValues = match ? [match, ...values] : values;
+  const orderBy = match
+    ? "search_match.fts_rank ASC, (l.rating IS NULL), l.rating DESC, (l.review_count IS NULL), l.review_count DESC, l.name"
+    : "(l.review_count IS NULL), l.review_count DESC, l.name";
+  const total = row<{ count: number }>(
+    `SELECT COUNT(*) AS count FROM locations l${matchJoin}${clause}`,
+    queryValues,
+  )?.count || 0;
   const results = rows<AnyRow>(
     `
     SELECT l.id, l.name, l.locality, l.region, l.country_code, l.country_name,
-           l.website, l.rating, l.review_count, org.canonical_name AS org_name
+           l.website, l.rating, l.review_count, org.canonical_name AS org_name,
+           (
+             SELECT MIN(o.price_amount)
+             FROM offerings o
+             WHERE o.location_id = l.id AND o.price_amount IS NOT NULL
+           ) AS min_price_amount,
+           (
+             SELECT o.price_currency
+             FROM offerings o
+             WHERE o.location_id = l.id AND o.price_amount IS NOT NULL
+             ORDER BY o.price_amount ASC
+             LIMIT 1
+           ) AS min_price_currency
     FROM locations l
     LEFT JOIN organizations org ON org.id = l.org_id
+    ${matchJoin}
     ${clause}
-    ORDER BY (l.review_count IS NULL), l.review_count DESC, l.name
+    ORDER BY ${orderBy}
     LIMIT ? OFFSET ?
   `,
-    [...values, PAGE_SIZE, page * PAGE_SIZE],
+    [...queryValues, PAGE_SIZE, page * PAGE_SIZE],
   );
 
   const ids = results.map((result) => result.id as number);
@@ -373,10 +403,15 @@ export function searchPractitioners(params: DirectoryParams, page = 0) {
   const where: string[] = [];
   const values: unknown[] = [];
   const match = ftsMatch(params.q);
-  if (match) {
-    where.push("p.id IN (SELECT entity_id FROM search_index WHERE search_index MATCH ? AND entity_type = 'practitioner')");
-    values.push(match);
-  }
+  const matchJoin = match
+    ? `
+      JOIN (
+        SELECT entity_id, bm25(search_index) AS fts_rank
+        FROM search_index
+        WHERE search_index MATCH ? AND entity_type = 'practitioner'
+      ) search_match ON search_match.entity_id = p.id
+    `
+    : "";
   if (params.country) {
     where.push(`
       (
@@ -434,16 +469,24 @@ export function searchPractitioners(params: DirectoryParams, page = 0) {
     }
   }
   const clause = where.length ? ` WHERE ${where.join(" AND ")}` : "";
-  const total = row<{ count: number }>(`SELECT COUNT(*) AS count FROM practitioners p${clause}`, values)?.count || 0;
+  const queryValues = match ? [match, ...values] : values;
+  const orderBy = match
+    ? "search_match.fts_rank ASC, (p.years_experience IS NULL), p.years_experience DESC, p.full_name"
+    : "(p.years_experience IS NULL), p.years_experience DESC, p.full_name";
+  const total = row<{ count: number }>(
+    `SELECT COUNT(*) AS count FROM practitioners p${matchJoin}${clause}`,
+    queryValues,
+  )?.count || 0;
   const results = rows<AnyRow>(
     `
     SELECT p.id, p.full_name, p.primary_specialty, p.years_experience, p.languages
     FROM practitioners p
+    ${matchJoin}
     ${clause}
-    ORDER BY (p.years_experience IS NULL), p.years_experience DESC, p.full_name
+    ORDER BY ${orderBy}
     LIMIT ? OFFSET ?
   `,
-    [...values, PAGE_SIZE, page * PAGE_SIZE],
+    [...queryValues, PAGE_SIZE, page * PAGE_SIZE],
   );
 
   const ids = results.map((result) => result.id as number);

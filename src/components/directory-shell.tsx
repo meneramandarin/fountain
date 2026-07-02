@@ -11,6 +11,7 @@ import {
   Loader2,
   MapPin,
   Search,
+  Star,
   Stethoscope,
   X,
 } from "lucide-react";
@@ -76,7 +77,10 @@ type LocationResultRow = {
   locality?: string | null;
   region?: string | null;
   country_name?: string | null;
+  rating?: number | null;
   review_count?: number | null;
+  min_price_amount?: number | null;
+  min_price_currency?: string | null;
   treatments?: TreatmentChip[];
   tags?: Tag[];
 };
@@ -125,7 +129,6 @@ const domainTone: Record<string, { bg: string; fg: string }> = {
 
 export function DirectoryShell({
   initialFacets,
-  initialStats,
   initialState: seededState,
 }: {
   initialFacets: Facets;
@@ -428,6 +431,7 @@ function FacetButtons({
 function LocationResult({ result, onOpen }: { result: LocationResultRow; onOpen: () => void }) {
   const place = [result.locality, result.region, result.country_name].filter(Boolean).join(", ");
   const type = result.tags?.find((tag) => tag.facet === "entity_type");
+  const price = formatPrice(result.min_price_amount, result.min_price_currency);
   return (
     <button className="result-card" type="button" onClick={onOpen}>
       <span className="result-main">
@@ -439,6 +443,13 @@ function LocationResult({ result, onOpen }: { result: LocationResultRow; onOpen:
       </span>
       <span className="result-side">
         {type ? <em>{type.value}</em> : null}
+        {price ? <small>From {price}</small> : null}
+        {result.rating ? (
+          <small>
+            <Star size={13} aria-hidden="true" />
+            {Number(result.rating).toFixed(1)}
+          </small>
+        ) : null}
         {result.review_count ? <small>{Number(result.review_count).toLocaleString()} reviews</small> : null}
       </span>
       <span className="treatment-row">
@@ -594,9 +605,34 @@ function LocationDetail({ data }: { data: LocationDetailRecord }) {
         ) : null}
       </section>
       <Offerings offerings={data.offerings || []} />
+      <LocationPractitioners practitioners={data.practitioners || []} />
       <TagList tags={data.tags || []} />
       <ReviewList reviews={data.reviews || []} />
     </>
+  );
+}
+
+function LocationPractitioners({
+  practitioners,
+}: {
+  practitioners: { id: number; full_name: string; primary_specialty?: string | null; role?: string | null }[];
+}) {
+  if (!practitioners.length) {
+    return null;
+  }
+  return (
+    <section className="detail-section">
+      <h3>Practitioners</h3>
+      {practitioners.slice(0, 12).map((practitioner) => {
+        const detail = [practitioner.primary_specialty, practitioner.role].filter(Boolean).join(" · ");
+        return (
+          <p key={practitioner.id}>
+            <b>{practitioner.full_name}</b>
+            {detail ? <span> · {detail}</span> : null}
+          </p>
+        );
+      })}
+    </section>
   );
 }
 
@@ -636,16 +672,39 @@ function Offerings({ offerings }: { offerings: OfferingRef[] }) {
         {offerings.slice(0, 40).map((offering, index) => (
           <div className="offer-item" key={`${offering.raw_name}-${index}`}>
             <span>{offering.treatment || offering.raw_name}</span>
-            {offering.price_amount ? (
-              <b>
-                {Number(offering.price_amount).toLocaleString()} {offering.price_currency || ""}
-              </b>
-            ) : null}
+            {offering.price_amount != null ? <b>{formatPrice(offering.price_amount, offering.price_currency)}</b> : null}
           </div>
         ))}
       </div>
     </section>
   );
+}
+
+function formatPrice(amount?: number | null, currency?: string | null) {
+  if (amount == null || !Number.isFinite(Number(amount))) {
+    return null;
+  }
+
+  const value = Number(amount);
+  const trimmedCurrency = currency?.trim();
+  const maximumFractionDigits = Number.isInteger(value) ? 0 : 2;
+
+  if (trimmedCurrency && /^[A-Z]{3}$/.test(trimmedCurrency)) {
+    return new Intl.NumberFormat("en", {
+      style: "currency",
+      currency: trimmedCurrency,
+      maximumFractionDigits,
+    }).format(value);
+  }
+
+  const formatted = value.toLocaleString("en", { maximumFractionDigits });
+  if (!trimmedCurrency) {
+    return formatted;
+  }
+  if (/^[^\dA-Za-z\s]+$/.test(trimmedCurrency)) {
+    return `${trimmedCurrency}${formatted}`;
+  }
+  return `${formatted} ${trimmedCurrency}`;
 }
 
 function TagList({ tags }: { tags: Tag[] }) {
