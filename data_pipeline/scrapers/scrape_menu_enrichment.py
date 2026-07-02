@@ -742,7 +742,8 @@ def write_discovered_locations(db: SourceDatabase, target: TargetLocation, resul
         country_code = clean_text(location.get("country_code")) or target.country_code
         if not address or not locality:
             continue
-        key_text = "|".join([target.name or "", extraction.get("website") or target.website or "", address, locality, region or "", country_code or ""])
+        website = clean_text(extraction.get("website")) or target.website
+        key_text = "|".join([domain_for(website or ""), address, locality, region or "", country_code or ""])
         digest = hashlib.sha1(key_text.encode("utf-8")).hexdigest()[:20]
         db.upsert_listing(
             {
@@ -757,7 +758,7 @@ def write_discovered_locations(db: SourceDatabase, target: TargetLocation, resul
                 "country": country_code,
                 "phone": clean_text(extraction.get("phone")),
                 "email": clean_text(extraction.get("email")),
-                "website": clean_text(extraction.get("website")) or target.website,
+                "website": website,
                 "latitude": None,
                 "longitude": None,
                 "price_text": None,
