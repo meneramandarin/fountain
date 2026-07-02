@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import hashlib
+import multiprocessing as mp
 import time
 from dataclasses import dataclass
 from datetime import datetime, timezone
@@ -21,6 +22,23 @@ DEFAULT_HEADERS = {
     "Cache-Control": "no-cache",
     "Pragma": "no-cache",
 }
+
+
+def request_worker(url: str, timeout: int, headers: dict[str, str], queue: Any) -> None:
+    try:
+        response = requests.get(url, headers=headers, timeout=timeout)
+        queue.put(
+            (
+                "ok",
+                response.url,
+                response.status_code,
+                response.headers.get("content-type", ""),
+                response.content,
+                response.text,
+            )
+        )
+    except Exception as exc:
+        queue.put(("error", repr(exc), "", "", b"", ""))
 
 
 @dataclass
@@ -62,15 +80,29 @@ class Fetcher:
         elapsed = time.monotonic() - self._last_request_at
         if elapsed < self.delay_seconds:
             time.sleep(self.delay_seconds - elapsed)
-        response = self.session.get(url, timeout=self.timeout)
+        ctx = mp.get_context("fork")
+        queue = ctx.Queue(maxsize=1)
+        process = ctx.Process(
+            target=request_worker,
+            args=(url, self.timeout, dict(self.session.headers), queue),
+        )
+        process.start()
+        process.join(self.timeout)
+        if process.is_alive():
+            process.terminate()
+            process.join(5)
+            raise requests.Timeout(f"Fetch exceeded {self.timeout}s")
+        if queue.empty():
+            raise requests.RequestException("Fetch worker exited without a response")
+        status, final_url, status_code, content_type, content, text = queue.get()
+        if status == "error":
+            raise requests.RequestException(final_url)
         self._last_request_at = time.monotonic()
-        content = response.content
-        text = response.text
         return FetchResult(
             url=url,
-            final_url=response.url,
-            status_code=response.status_code,
-            content_type=response.headers.get("content-type", ""),
+            final_url=final_url,
+            status_code=status_code,
+            content_type=content_type,
             content=content,
             text=text,
             fetched_at=datetime.now(timezone.utc).isoformat(),

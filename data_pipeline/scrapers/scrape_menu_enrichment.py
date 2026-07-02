@@ -4,6 +4,7 @@ import argparse
 import csv
 import hashlib
 import json
+import multiprocessing as mp
 import os
 import re
 import sqlite3
@@ -45,6 +46,7 @@ MENU_LINK_RE = re.compile(r"\b(price|pricing|service|services|treatment|treatmen
 KNOWN_DIRECTORY_DOMAINS = {
     "bookimed.com",
     "us-uk.bookimed.com",
+    "google.com",
     "yelp.com",
     "healthgrades.com",
     "zocdoc.com",
@@ -54,6 +56,9 @@ KNOWN_DIRECTORY_DOMAINS = {
     "tripadvisor.com",
     "fresha.com",
     "vagaro.com",
+    "whatclinic.com",
+    "mymeditravel.com",
+    "placidway.com",
 }
 COMMON_PATHS = (
     "/pricing",
@@ -145,7 +150,11 @@ def main(argv: list[str] | None = None) -> int:
     try:
         targets = load_worklist(args)
         fetcher = Fetcher(delay_seconds=args.delay, timeout=args.timeout)
-        extractor = MenuExtractor(model=args.model, max_context_chars=args.max_context_chars)
+        extractor = MenuExtractor(
+            model=args.model,
+            max_context_chars=args.max_context_chars,
+            llm_timeout=args.llm_timeout,
+        )
         stats = {
             "targets": 0,
             "written": 0,
@@ -200,10 +209,12 @@ def parse_args(argv: list[str] | None) -> argparse.Namespace:
     parser.add_argument("--offset", type=int, default=0)
     parser.add_argument("--pilot", action="store_true", help="Use a roughly even mix of 0-offering and 1-offering targets.")
     parser.add_argument("--skip-existing", action=argparse.BooleanOptionalAction, default=True)
+    parser.add_argument("--skip-review-queue", action=argparse.BooleanOptionalAction, default=True)
     parser.add_argument("--max-pages", type=int, default=4)
     parser.add_argument("--max-context-chars", type=int, default=65000)
     parser.add_argument("--delay", type=float, default=0.75)
     parser.add_argument("--timeout", type=int, default=25)
+    parser.add_argument("--llm-timeout", type=int, default=120)
     parser.add_argument("--model")
     parser.add_argument("--disable-search-fallback", action="store_true")
     parser.add_argument("--emit-discovered-locations", action=argparse.BooleanOptionalAction, default=True)
@@ -213,24 +224,36 @@ def parse_args(argv: list[str] | None) -> argparse.Namespace:
 def load_worklist(args: argparse.Namespace) -> list[TargetLocation]:
     if not args.canonical_db.exists():
         raise FileNotFoundError(f"canonical database not found: {args.canonical_db}")
+    reviewed_keys, reviewed_ids = load_reviewed_targets(args.review_queue) if args.skip_review_queue else (set(), set())
     conn = sqlite3.connect(args.canonical_db)
     conn.row_factory = sqlite3.Row
     try:
+        query_limit = max(args.limit * 5, args.limit + len(reviewed_keys) + len(reviewed_ids))
         if args.pilot:
             zero_limit = max(1, args.limit // 2)
             one_limit = max(0, args.limit - zero_limit)
-            rows = list(query_worklist(conn, where="offering_count = 0", limit=zero_limit, offset=args.offset))
-            rows.extend(query_worklist(conn, where="offering_count = 1", limit=one_limit, offset=args.offset))
+            rows = list(query_worklist(conn, where="offering_count = 0", limit=max(zero_limit * 5, zero_limit), offset=args.offset))
+            rows.extend(query_worklist(conn, where="offering_count = 1", limit=max(one_limit * 5, one_limit), offset=args.offset))
             if len(rows) < args.limit:
                 seen = {int(row["id"]) for row in rows}
-                for row in query_worklist(conn, where="1 = 1", limit=args.limit * 2, offset=args.offset):
+                for row in query_worklist(conn, where="1 = 1", limit=query_limit, offset=args.offset):
                     if int(row["id"]) not in seen:
                         rows.append(row)
                     if len(rows) >= args.limit:
                         break
         else:
-            rows = list(query_worklist(conn, where="1 = 1", limit=args.limit, offset=args.offset))
-        return [target_from_row(row) for row in rows[: args.limit]]
+            rows = list(query_worklist(conn, where="1 = 1", limit=query_limit, offset=args.offset))
+        targets: list[TargetLocation] = []
+        seen_targets: set[str] = set()
+        for row in rows:
+            target = target_from_row(row)
+            if target.key in reviewed_keys or target.id in reviewed_ids or target.key in seen_targets:
+                continue
+            targets.append(target)
+            seen_targets.add(target.key)
+            if len(targets) >= args.limit:
+                break
+        return targets
     finally:
         conn.close()
 
@@ -290,10 +313,22 @@ def process_target(
     args: argparse.Namespace,
 ) -> dict[str, Any]:
     start_url = normalize_url(target.website)
-    if not start_url and not args.disable_search_fallback:
+    tried_fallback_search = False
+    if start_url and not args.disable_search_fallback and is_known_directory_url(start_url):
+        fallback = search_official_site(target)
+        tried_fallback_search = True
+        start_url = fallback
+    if not start_url and not args.disable_search_fallback and not tried_fallback_search:
         start_url = search_official_site(target)
+        tried_fallback_search = True
     pages = fetch_candidate_pages(fetcher, db, start_url, max_pages=args.max_pages) if start_url else []
-    if not pages and target.website and not args.disable_search_fallback:
+    if (
+        not pages
+        and target.website
+        and not args.disable_search_fallback
+        and not tried_fallback_search
+        and is_known_directory_url(target.website)
+    ):
         fallback = search_official_site(target)
         if fallback and fallback != start_url:
             pages = fetch_candidate_pages(fetcher, db, fallback, max_pages=args.max_pages)
@@ -337,6 +372,8 @@ def fetch_candidate_pages(fetcher: Fetcher, db: SourceDatabase, start_url: str, 
             result = fetcher.get(url)
         except requests.RequestException as exc:
             record_error(db, "fetch", None, url, repr(exc))
+            if url == homepage:
+                return pages
             continue
         db.upsert_page(result.to_page_row())
         if result.status_code >= 400:
@@ -385,10 +422,29 @@ def likely_menu_links(soup: Any, page_url: str, allowed_domains: set[str]) -> li
     return dedupe(links)
 
 
+def openrouter_post_worker(api_key: str, body: dict[str, Any], timeout: int, queue: Any) -> None:
+    try:
+        response = requests.post(
+            OPENROUTER_CHAT_COMPLETIONS_URL,
+            headers={
+                "Authorization": f"Bearer {api_key}",
+                "Content-Type": "application/json",
+                "HTTP-Referer": "https://fountain.local",
+                "X-Title": "Fountain Menu Enrichment",
+            },
+            json=body,
+            timeout=timeout,
+        )
+        queue.put(("ok", response.status_code, response.text))
+    except Exception as exc:
+        queue.put(("error", repr(exc), ""))
+
+
 class MenuExtractor:
-    def __init__(self, *, model: str, max_context_chars: int) -> None:
+    def __init__(self, *, model: str, max_context_chars: int, llm_timeout: int) -> None:
         self.model = model
         self.max_context_chars = max_context_chars
+        self.llm_timeout = llm_timeout
 
     def extract(self, target: TargetLocation, pages: list[PageContext]) -> tuple[dict[str, Any], dict[str, int]]:
         api_key = os.environ.get("OPENROUTER_API_KEY")
@@ -434,21 +490,29 @@ class MenuExtractor:
                 else {"type": "json_object"}
             ),
         }
-        response = requests.post(
-            OPENROUTER_CHAT_COMPLETIONS_URL,
-            headers={
-                "Authorization": f"Bearer {api_key}",
-                "Content-Type": "application/json",
-                "HTTP-Referer": "https://fountain.local",
-                "X-Title": "Fountain Menu Enrichment",
-            },
-            json=body,
-            timeout=120,
+        ctx = mp.get_context("fork")
+        queue: Any = ctx.Queue(maxsize=1)
+        process = ctx.Process(
+            target=openrouter_post_worker,
+            args=(api_key, body, self.llm_timeout, queue),
         )
-        if schema_mode and response.status_code == 400:
+        process.start()
+        process.join(self.llm_timeout)
+        if process.is_alive():
+            process.terminate()
+            process.join(5)
+            raise TimeoutError(f"OpenRouter request exceeded {self.llm_timeout}s")
+        if queue.empty():
+            raise RuntimeError("OpenRouter worker exited without a response")
+        status, first, text = queue.get()
+        if status == "error":
+            raise RuntimeError(f"OpenRouter request failed: {first}")
+        status_code = int(first)
+        if schema_mode and status_code == 400:
             return {}
-        response.raise_for_status()
-        value = response.json()
+        if status_code >= 400:
+            raise RuntimeError(f"OpenRouter HTTP {status_code}: {text[:500]}")
+        value = json.loads(text)
         return value if isinstance(value, dict) else {}
 
     def build_prompt(self, target: TargetLocation, pages: list[PageContext]) -> str:
@@ -716,22 +780,59 @@ def write_discovered_locations(db: SourceDatabase, target: TargetLocation, resul
     return written
 
 
+def http_get_text_worker(url: str, params: dict[str, str], headers: dict[str, str], timeout: int, queue: Any) -> None:
+    try:
+        response = requests.get(
+            url,
+            params=params,
+            headers=headers,
+            timeout=timeout,
+        )
+        queue.put(("ok", response.status_code, response.text))
+    except Exception as exc:
+        queue.put(("error", repr(exc), ""))
+
+
+def fetch_text_with_hard_timeout(
+    url: str,
+    *,
+    params: dict[str, str],
+    headers: dict[str, str],
+    timeout: int,
+) -> tuple[int, str] | None:
+    ctx = mp.get_context("fork")
+    queue = ctx.Queue(maxsize=1)
+    process = ctx.Process(target=http_get_text_worker, args=(url, params, headers, timeout, queue))
+    process.start()
+    process.join(timeout)
+    if process.is_alive():
+        process.terminate()
+        process.join(5)
+        return None
+    if queue.empty():
+        return None
+    status, first, text = queue.get()
+    if status == "error":
+        return None
+    return int(first), text
+
+
 def search_official_site(target: TargetLocation) -> str | None:
     query = " ".join(part for part in [target.name, target.locality, target.region, "official website"] if part)
     if not query:
         return None
-    try:
-        response = requests.get(
-            "https://html.duckduckgo.com/html/",
-            params={"q": query},
-            headers=DEFAULT_HEADERS,
-            timeout=20,
-        )
-    except requests.RequestException:
+    response = fetch_text_with_hard_timeout(
+        "https://html.duckduckgo.com/html/",
+        params={"q": query},
+        headers=DEFAULT_HEADERS,
+        timeout=8,
+    )
+    if response is None:
         return None
-    if response.status_code >= 400:
+    status_code, text = response
+    if status_code >= 400:
         return None
-    soup = soup_from_html(response.text)
+    soup = soup_from_html(text)
     for tag in soup.select("a.result__a, a[href]"):
         href = tag.get("href")
         if not href:
@@ -747,10 +848,9 @@ def search_official_site(target: TargetLocation) -> str | None:
 
 def open_review_queue(path: Path, *, append: bool) -> tuple[csv.DictWriter, Any]:
     path.parent.mkdir(parents=True, exist_ok=True)
-    exists = path.exists() and append
-    handle = path.open("a" if append else "w", encoding="utf-8", newline="")
     fieldnames = [
         "created_at",
+        "target_key",
         "target_location_id",
         "name",
         "website",
@@ -763,10 +863,39 @@ def open_review_queue(path: Path, *, append: bool) -> tuple[csv.DictWriter, Any]
         "error",
         "extraction_json",
     ]
+    exists = path.exists() and append
+    if exists:
+        ensure_review_queue_header(path, fieldnames)
+    handle = path.open("a" if exists else "w", encoding="utf-8", newline="")
     writer = csv.DictWriter(handle, fieldnames=fieldnames, lineterminator="\n")
     if not exists:
         writer.writeheader()
     return writer, handle
+
+
+def ensure_review_queue_header(path: Path, fieldnames: list[str]) -> None:
+    with path.open(encoding="utf-8", newline="") as handle:
+        reader = csv.DictReader(handle)
+        if reader.fieldnames == fieldnames:
+            return
+        rows = list(reader)
+        old_fieldnames = reader.fieldnames or []
+    normalized_rows = []
+    for row in rows:
+        normalized_rows.append({field: row.get(field) for field in fieldnames})
+        extras = [row.get(None)] if None in row else []
+        if extras and old_fieldnames:
+            # If a previous append wrote the new target_key column before the header was
+            # migrated, recover the shifted values by position.
+            raw_values = [row.get(field) for field in old_fieldnames] + list(extras[0] or [])
+            normalized_rows[-1] = {
+                field: raw_values[index] if index < len(raw_values) else None
+                for index, field in enumerate(fieldnames)
+            }
+    with path.open("w", encoding="utf-8", newline="") as handle:
+        writer = csv.DictWriter(handle, fieldnames=fieldnames, lineterminator="\n")
+        writer.writeheader()
+        writer.writerows(normalized_rows)
 
 
 def write_review_row(
@@ -780,6 +909,7 @@ def write_review_row(
     writer.writerow(
         {
             "created_at": now_iso(),
+            "target_key": target.key,
             "target_location_id": target.id,
             "name": target.name,
             "website": target.website,
@@ -793,6 +923,23 @@ def write_review_row(
             "extraction_json": json.dumps(extraction or {}, ensure_ascii=True, sort_keys=True),
         }
     )
+
+
+def load_reviewed_targets(path: Path) -> tuple[set[str], set[int]]:
+    if not path.exists():
+        return set(), set()
+    keys: set[str] = set()
+    ids: set[int] = set()
+    with path.open(encoding="utf-8", newline="") as handle:
+        reader = csv.DictReader(handle)
+        for row in reader:
+            target_key = clean_text(row.get("target_key"))
+            if target_key:
+                keys.add(target_key)
+            target_id = number_or_none(row.get("target_location_id"))
+            if target_id is not None:
+                ids.add(int(target_id))
+    return keys, ids
 
 
 def record_error(db: SourceDatabase, phase: str, target_key: str | None, url: str | None, error: str) -> None:
@@ -860,6 +1007,11 @@ def domain_for(url: str) -> str:
     parsed = urlparse(normalize_url(url) or "")
     domain = parsed.netloc.lower().split("@")[-1].split(":")[0]
     return domain[4:] if domain.startswith("www.") else domain
+
+
+def is_known_directory_url(url: str) -> bool:
+    domain = domain_for(url)
+    return bool(domain and any(domain == blocked or domain.endswith("." + blocked) for blocked in KNOWN_DIRECTORY_DOMAINS))
 
 
 def strip_fragment(url: str) -> str:
