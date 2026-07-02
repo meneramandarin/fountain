@@ -129,6 +129,10 @@ def main(argv: list[str] | None = None) -> int:
     args = parse_args(argv)
     load_dotenv(ROOT / ".env")
     args.model = args.model or os.environ.get("OPENROUTER_MODEL") or DEFAULT_MODEL
+    if args.list_targets_only:
+        targets = load_worklist(args)
+        print_target_list(targets, args)
+        return 0
     if not os.environ.get("OPENROUTER_API_KEY"):
         print("OPENROUTER_API_KEY is required for menu enrichment extraction.", file=sys.stderr)
         return 2
@@ -199,6 +203,26 @@ def main(argv: list[str] | None = None) -> int:
     return 0
 
 
+def print_target_list(targets: list[TargetLocation], args: argparse.Namespace) -> None:
+    print(f"targets: {len(targets)}")
+    if args.source_slug:
+        print(f"source_slugs: {', '.join(args.source_slug)}")
+    if args.shard_count is not None:
+        print(f"shard: {args.shard_index}/{args.shard_count}")
+    for target in targets[:20]:
+        print(
+            "\t".join(
+                [
+                    str(target.id),
+                    target.name or "",
+                    target.locality or "",
+                    target.region or "",
+                    target.website or "",
+                ]
+            )
+        )
+
+
 def parse_args(argv: list[str] | None) -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Enrich canonical locations with clinic-site treatment menus.")
     parser.add_argument("--db", type=Path, default=DEFAULT_DB)
@@ -210,6 +234,12 @@ def parse_args(argv: list[str] | None) -> argparse.Namespace:
     parser.add_argument("--pilot", action="store_true", help="Use a roughly even mix of 0-offering and 1-offering targets.")
     parser.add_argument("--skip-existing", action=argparse.BooleanOptionalAction, default=True)
     parser.add_argument("--skip-review-queue", action=argparse.BooleanOptionalAction, default=True)
+    parser.add_argument("--skip-db", action="append", type=Path, default=[])
+    parser.add_argument("--skip-review-queue-path", action="append", type=Path, default=[])
+    parser.add_argument("--source-slug", action="append", default=[])
+    parser.add_argument("--shard-index", type=int)
+    parser.add_argument("--shard-count", type=int)
+    parser.add_argument("--list-targets-only", action="store_true")
     parser.add_argument("--max-pages", type=int, default=4)
     parser.add_argument("--max-context-chars", type=int, default=65000)
     parser.add_argument("--delay", type=float, default=0.75)
@@ -224,30 +254,73 @@ def parse_args(argv: list[str] | None) -> argparse.Namespace:
 def load_worklist(args: argparse.Namespace) -> list[TargetLocation]:
     if not args.canonical_db.exists():
         raise FileNotFoundError(f"canonical database not found: {args.canonical_db}")
+    if args.shard_index is not None or args.shard_count is not None:
+        if args.shard_index is None or args.shard_count is None:
+            raise ValueError("--shard-index and --shard-count must be provided together")
+        if args.shard_count < 1 or args.shard_index < 0 or args.shard_index >= args.shard_count:
+            raise ValueError("--shard-index must be between 0 and --shard-count - 1")
     reviewed_keys, reviewed_ids = load_reviewed_targets(args.review_queue) if args.skip_review_queue else (set(), set())
+    for path in args.skip_review_queue_path:
+        extra_keys, extra_ids = load_reviewed_targets(path)
+        reviewed_keys.update(extra_keys)
+        reviewed_ids.update(extra_ids)
+    reviewed_keys.update(load_listing_keys_from_dbs(args.skip_db))
     conn = sqlite3.connect(args.canonical_db)
     conn.row_factory = sqlite3.Row
     try:
         query_limit = max(args.limit * 5, args.limit + len(reviewed_keys) + len(reviewed_ids))
+        source_filter = source_where_clause(args.source_slug)
         if args.pilot:
             zero_limit = max(1, args.limit // 2)
             one_limit = max(0, args.limit - zero_limit)
-            rows = list(query_worklist(conn, where="offering_count = 0", limit=max(zero_limit * 5, zero_limit), offset=args.offset))
-            rows.extend(query_worklist(conn, where="offering_count = 1", limit=max(one_limit * 5, one_limit), offset=args.offset))
+            rows = list(
+                query_worklist(
+                    conn,
+                    where=combine_where("offering_count = 0", source_filter),
+                    source_slugs=args.source_slug,
+                    limit=max(zero_limit * 5, zero_limit),
+                    offset=args.offset,
+                )
+            )
+            rows.extend(
+                query_worklist(
+                    conn,
+                    where=combine_where("offering_count = 1", source_filter),
+                    source_slugs=args.source_slug,
+                    limit=max(one_limit * 5, one_limit),
+                    offset=args.offset,
+                )
+            )
             if len(rows) < args.limit:
                 seen = {int(row["id"]) for row in rows}
-                for row in query_worklist(conn, where="1 = 1", limit=query_limit, offset=args.offset):
+                for row in query_worklist(
+                    conn,
+                    where=combine_where("1 = 1", source_filter),
+                    source_slugs=args.source_slug,
+                    limit=query_limit,
+                    offset=args.offset,
+                ):
                     if int(row["id"]) not in seen:
                         rows.append(row)
                     if len(rows) >= args.limit:
                         break
         else:
-            rows = list(query_worklist(conn, where="1 = 1", limit=query_limit, offset=args.offset))
+            rows = list(
+                query_worklist(
+                    conn,
+                    where=combine_where("1 = 1", source_filter),
+                    source_slugs=args.source_slug,
+                    limit=query_limit,
+                    offset=args.offset,
+                )
+            )
         targets: list[TargetLocation] = []
         seen_targets: set[str] = set()
         for row in rows:
             target = target_from_row(row)
             if target.key in reviewed_keys or target.id in reviewed_ids or target.key in seen_targets:
+                continue
+            if args.shard_count and stable_shard(target.key, args.shard_count) != args.shard_index:
                 continue
             targets.append(target)
             seen_targets.add(target.key)
@@ -258,7 +331,60 @@ def load_worklist(args: argparse.Namespace) -> list[TargetLocation]:
         conn.close()
 
 
-def query_worklist(conn: sqlite3.Connection, *, where: str, limit: int, offset: int) -> list[sqlite3.Row]:
+def source_where_clause(source_slugs: list[str]) -> str:
+    if not source_slugs:
+        return ""
+    placeholders = ", ".join("?" for _ in source_slugs)
+    return (
+        "EXISTS ("
+        "SELECT 1 FROM source_records sr "
+        "JOIN sources src ON src.id = sr.source_id "
+        "WHERE sr.entity_type = 'location' "
+        "AND sr.entity_id = counts.id "
+        f"AND src.slug IN ({placeholders})"
+        ")"
+    )
+
+
+def combine_where(base: str, extra: str) -> str:
+    return f"({base}) AND ({extra})" if extra else base
+
+
+def stable_shard(value: str, shard_count: int) -> int:
+    digest = hashlib.sha1(value.encode("utf-8")).hexdigest()
+    return int(digest[:12], 16) % shard_count
+
+
+def load_listing_keys_from_dbs(paths: list[Path]) -> set[str]:
+    keys: set[str] = set()
+    for path in paths:
+        if not path.exists():
+            continue
+        conn = sqlite3.connect(path)
+        try:
+            rows = conn.execute(
+                """
+                SELECT source_url
+                FROM listings
+                WHERE source_url LIKE 'menu-enrichment://%'
+                """
+            )
+            keys.update(row[0] for row in rows if row[0])
+        finally:
+            conn.close()
+    return keys
+
+
+def query_worklist(
+    conn: sqlite3.Connection,
+    *,
+    where: str,
+    source_slugs: list[str],
+    limit: int,
+    offset: int,
+) -> list[sqlite3.Row]:
+    params: list[Any] = list(source_slugs)
+    params.extend([limit, offset])
     return list(
         conn.execute(
             f"""
@@ -284,7 +410,7 @@ def query_worklist(conn: sqlite3.Connection, *, where: str, limit: int, offset: 
                 id
             LIMIT ? OFFSET ?
             """,
-            (limit, offset),
+            params,
         )
     )
 
