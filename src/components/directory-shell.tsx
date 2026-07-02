@@ -833,15 +833,31 @@ function Offerings({ offerings }: { offerings: OfferingRef[] }) {
         Offerings <small>{offerings.length}</small>
       </h3>
       <div className="offer-list">
-        {offerings.slice(0, 40).map((offering, index) => (
-          <div className="offer-item" key={`${offering.raw_name}-${index}`}>
-            <span>{offering.treatment || offering.raw_name}</span>
-            {offering.price_amount != null ? <b>{formatPrice(offering.price_amount, offering.price_currency)}</b> : null}
-          </div>
-        ))}
+        {offerings.slice(0, 40).map((offering, index) => {
+          const { primary, secondary } = getOfferingLabels(offering);
+
+          return (
+            <div className="offer-item" key={`${offering.raw_name || offering.treatment}-${index}`}>
+              <div className="offer-copy">
+                <span className="offer-name">{primary}</span>
+                {secondary ? <small>{secondary}</small> : null}
+              </div>
+              {offering.price_amount != null ? <b>{formatPrice(offering.price_amount, offering.price_currency)}</b> : null}
+            </div>
+          );
+        })}
       </div>
     </section>
   );
+}
+
+function getOfferingLabels(offering: OfferingRef) {
+  const rawName = offering.raw_name?.trim();
+  const treatment = offering.treatment?.trim();
+  const primary = rawName || treatment || "Offering";
+  const secondary = rawName && treatment && rawName.toLocaleLowerCase() !== treatment.toLocaleLowerCase() ? treatment : null;
+
+  return { primary, secondary };
 }
 
 function formatPrice(amount?: number | null, currency?: string | null) {
