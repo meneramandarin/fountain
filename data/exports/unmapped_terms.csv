@@ -1233,6 +1233,7 @@ Oasis Express Package,menu_enrichment,2
 Oasis Renewal Package,menu_enrichment,2
 Oasis Signature Package,menu_enrichment,2
 Obagi Blue Peel RADIANCE - Obagi Blue Peel RADIANCE,menu_enrichment,2
+Occupational Medicine,menu_enrichment_stem9_00,2
 Occupational therapist,biohacking_map,2
 OmegaGenics EPA-DHA 720 - 120 Softgels,menu_enrichment,2
 On-Demand House Calls,menu_enrichment,2
@@ -1331,6 +1332,7 @@ Private Pilates Lesson - Standard,menu_enrichment,2
 "Private Pilates Lessons Package - Standard, 5 Lessons",menu_enrichment,2
 "Private Pilates Lessons Package - Standard, 50 Lessons",menu_enrichment,2
 Progesterone Therapy,menu_enrichment,2
+Prolotherapy,menu_enrichment_stem9_08,2
 Prolozone Therapy,menu_enrichment,2
 Psoriatic Arthritis Treatment,menu_enrichment,2
 Psychiatric Medication Management,menu_enrichment,2
@@ -1452,6 +1454,7 @@ Suboxone - Suboxone,menu_enrichment,2
 Substance Abuse Treatment,menu_enrichment,2
 Sunshine in a Bottle,menu_enrichment,2
 Supplement Consultation,menu_enrichment,2
+Surgical Procedures,menu_enrichment_stem9_04,2
 Sympathetic Blocks,menu_enrichment,2
 Sympathetic Ganglion Block,menu_enrichment,2
 TB-500,menu_enrichment,2
@@ -1764,6 +1767,7 @@ Achilles Tendon Treatment,menu_enrichment,1
 "Acid Repair - Acid Repair, 60 Tablets",menu_enrichment,1
 ACL Injury Prevention,menu_enrichment,1
 ACL Reconstruction,menu_enrichment,1
+ACL Reconstruction,menu_enrichment_stem9_07,1
 ACL Tear,menu_enrichment,1
 ACL/PCL Sprains,menu_enrichment,1
 ACLS Original Class,menu_enrichment,1
@@ -1787,6 +1791,7 @@ Acne Treatment Sp 359,mymeditravel_regenerative_thailand,1
 Acne-Fighting Facial,menu_enrichment,1
 Acne/Corrective Skin Facial,menu_enrichment,1
 Acne/Extraction,menu_enrichment,1
+Acoustic Compression,menu_enrichment_stem_00,1
 Acoustic Therapy,menu_enrichment,1
 Acoustic Wave Therapy,menu_enrichment,1
 Acoustic Wave Therapy (AWT) - Menspro PULSE™,menu_enrichment,1
@@ -1799,6 +1804,7 @@ ACR Women's Hoodie - ACR Women's Hoodie,menu_enrichment,1
 "Activated Charcoal Powder - Kiki Health, 70 gm",menu_enrichment,1
 "Activated Charcoal Vegicaps - Kiki Health, 50 Caps",menu_enrichment,1
 "Active Drip - Amino Acids, B-Complex",menu_enrichment,1
+Active Release,menu_enrichment_stem9_03,1
 Active Release Technique (ART) - Myofascial therapy system,menu_enrichment,1
 Active Release Technique - ART,menu_enrichment,1
 Active Release Techniques,menu_enrichment,1
@@ -1808,12 +1814,17 @@ Acu-Shiatsu Massage,menu_enrichment,1
 Acupressure,menu_enrichment,1
 Acupressure Massage - 60/90 minutes,menu_enrichment,1
 AcuPulse CO2 Laser - AcuPulse,menu_enrichment,1
+Acupuncture,menu_enrichment_stem9_06,1
 Acupuncture & Chinese Medicine,menu_enrichment,1
+Acupuncture & Herbal Therapy,menu_enrichment_stem9_02,1
 Acupuncture (MTC) - Première séance,menu_enrichment,1
 Acupuncture (MTC) - Séances suivantes,menu_enrichment,1
 Acupuncture - Acupressure and electrical therapies,menu_enrichment,1
 Acupuncture Bk 12171,mymeditravel_regenerative_thailand,1
 Acupuncture Bk 13165,mymeditravel_regenerative_thailand,1
+Acupuncture Children,menu_enrichment_stem9_06,1
+Acupuncture Follow-up,menu_enrichment_stem9_06,1
+Acupuncture Initial Intake,menu_enrichment_stem9_06,1
 Acupuncture Initial Visit / Follow Up,menu_enrichment,1
 Acupuncture Therapy,menu_enrichment,1
 Acupuncture with Electrical Stimulation,menu_enrichment,1
@@ -1825,8 +1836,11 @@ Acute illness management,menu_enrichment,1
 Acute Illness Treatment,menu_enrichment,1
 Acute Illness Visit,menu_enrichment,1
 Acute Sick New Patient Visit,menu_enrichment,1
+Acute Visits and Urgent Care,menu_enrichment_stem9_02,1
 Acutonic Sound Therapy,menu_enrichment,1
+Adaptive Fitness and Wellness Services,menu_enrichment_stem9_05,1
 Add-on Microcurrent,menu_enrichment,1
+Addiction Medicine,menu_enrichment_stem9_08,1
 Addiction treatment center,biohacking_map,1
 Additional Level Lumbar Posterior Instrumentation,bookimed_longevity,1
 Additional Level Lumbar Posterior Instrumentation,bookimed_longevity_turkey,1
@@ -1834,13 +1848,16 @@ Additional Level Lumbar Posterior Instrumentation,bookimed_longevity_turkey,1
 ADHD,menu_enrichment,1
 ADHD Diagnosis & Treatment,menu_enrichment,1
 Adhesion Therapy,menu_enrichment,1
+Adipose Derived Stem Cell Treatment - ADSC,menu_enrichment_stem9_04,1
 ADL Instruction,menu_enrichment,1
 "Admin (Portal Correspondence, Phone Call, Email)",menu_enrichment,1
 Adolescent Psychotherapy,menu_enrichment,1
 Adolescent Services,menu_enrichment,1
 Adrenal Dysfunction,menu_enrichment,1
 Adrenal Fatigue Management,menu_enrichment,1
+Adrenal Fatigue Stress Management,menu_enrichment_small_sources,1
 Adrenal Fatigue Treatment,menu_enrichment,1
+Adrenal Fatigue Treatment,menu_enrichment_stem9_01,1
 Adrenal Treatment,menu_enrichment,1
 "Adreset - Adreset, 60 Capsules",menu_enrichment,1
 Adult ADHD Program,menu_enrichment,1
@@ -1848,9 +1865,11 @@ Adult Day Care,menu_enrichment,1
 Adult HGH Therapy,menu_enrichment,1
 Adult Primary Care,menu_enrichment,1
 Adult Sports Physical,menu_enrichment,1
+Adults Allergy and Asthma,menu_enrichment_stem9_00,1
 Advance Plan - Monthly,menu_enrichment,1
 Advance Plan - Yearly,menu_enrichment,1
 Advanced Allergy Therapeutics (AAT),menu_enrichment,1
+Advanced Anesthetic Services,menu_enrichment_stem9_02,1
 Advanced Annual Health Test & Physical,menu_enrichment,1
 Advanced Arthritis Relief Protocol,menu_enrichment,1
 Advanced Assessment,menu_enrichment,1
@@ -1868,11 +1887,15 @@ Advanced Diagnostics,world_longevity_clinics,1
 "Advanced Diagnostics - BIA, HRV analysis, Glycocheck",menu_enrichment,1
 ADVANCED DISEASES PACKAGE 9 bill Exosomes with,bookimed_longevity,1
 Advanced DMK Treatment,menu_enrichment,1
+Advanced Dressings,menu_enrichment_stem9_06,1
 "Advanced exam - uninsured patient, payment at the time of service",menu_enrichment,1
 Advanced Gut Health Care,menu_enrichment,1
+Advanced Gynecologic Services,menu_enrichment_stem9_04,1
+Advanced Gynecologic Services,menu_enrichment_stem_02,1
 Advanced Health Check,menu_enrichment,1
 Advanced Longevity Protocol - 60 Sessions,menu_enrichment,1
 Advanced Manual Therapy,menu_enrichment,1
+Advanced Medication Therapy,menu_enrichment_stem9_02,1
 Advanced Nutrition,menu_enrichment,1
 Advanced Psychotherapy Fellowship Session,menu_enrichment,1
 Advanced Regeneration Stack - BPC-157 + TB-500 + Thymosin Alpha-1,menu_enrichment,1
@@ -1888,6 +1911,7 @@ After hour access for urgent matters,menu_enrichment,1
 After Hours Access,menu_enrichment,1
 Agate Gua Sha Facial Tool,menu_enrichment,1
 Age Gracefully Scultpting Treatment,menu_enrichment,1
+Age Management,menu_enrichment_stem9_08,1
 Age Management/C.A.R.E Program,menu_enrichment,1
 Age Reversal Facial,menu_enrichment,1
 Age-Defier Package,menu_enrichment,1
@@ -1930,6 +1954,7 @@ AlignRT,menu_enrichment,1
 Alkaline Hydrogen Water,menu_enrichment,1
 "All In MD Care Package Membership - Up to 5 visits with MD, Up to 6 visits with Integrative Health Advisor",menu_enrichment,1
 All Joints,menu_enrichment,1
+All On 4® Dental Implants - All On 4®,menu_enrichment_stem9_07,1
 ALL Reconstruction,menu_enrichment,1
 All Sports-Related Injuries,menu_enrichment,1
 All-Inclusive 60 Minute 'ili Facial,menu_enrichment,1
@@ -1950,8 +1975,10 @@ All-on-6 Implants with Straumann — 5★ Hotel & Airport Transfer,bookimed_long
 Allergic Conjunctivitis Treatment,menu_enrichment,1
 Allergy,menu_enrichment,1
 Allergy & Immune Disorder Management,menu_enrichment,1
+Allergy & Immunology,menu_enrichment_stem9_00,1
 Allergy Immunotherapy,menu_enrichment,1
 Allergy Screening Inhalation Allergy And Food Allergy Bk 14433,mymeditravel_regenerative_thailand,1
+Allergy Testing & Immunotherapy,menu_enrichment_stem9_04,1
 Allergy Testing (Food & Environmental),menu_enrichment,1
 Allergy Testing Bk 1904,mymeditravel_regenerative_thailand,1
 Allergy Testing Clinic,menu_enrichment,1
@@ -1993,14 +2020,17 @@ Amethyst Gua Sha Stone,menu_enrichment,1
 "Amino Acid Chelated Magnesium - Vista Natural Wellness, 250 Tablets",menu_enrichment,1
 Ammortal Chamber,menu_enrichment,1
 Ammortal Chamber - 5-Modality Recovery,menu_enrichment,1
+Amniotic Allografts,menu_enrichment_stem9_06,1
 Amniotic Fluid Treatment,menu_enrichment,1
 AMPA Receptor Modulation,menu_enrichment,1
 AmpCoil,menu_enrichment,1
 AmpCoil Package,menu_enrichment,1
+Amputees,menu_enrichment_stem9_06,1
 "Anastrozole Capsules - Anastrozole, 0.5mg, 90 Capsules",menu_enrichment,1
 "Anastrozole Capsules - Anastrozole, 1mg, 30 Capsules",menu_enrichment,1
 "Anastrozole Capsules - Anastrozole, 1mg, 90 Capsules",menu_enrichment,1
 Anatomy In Motion,menu_enrichment,1
+Anesthesia,menu_enrichment_stem9_04,1
 Anesthesia Bk 14280,mymeditravel_regenerative_thailand,1
 Anesthesia Cm 1550,mymeditravel_regenerative_thailand,1
 Anesthesiology,menu_enrichment,1
@@ -2016,11 +2046,13 @@ Anger,menu_enrichment,1
 Ankle Arthroscopy Tu3 65,mymeditravel_regenerative_turkey,1
 Ankle Arthroscopy Tu5 806,mymeditravel_regenerative_turkey,1
 Ankle Arthroscopy/Procedures,menu_enrichment,1
+Ankle Brachial Index (ABI),menu_enrichment_stem9_00,1
 Ankle Fusion Surgery Tu3 69,mymeditravel_regenerative_turkey,1
 Ankle Injuries Treatment,menu_enrichment,1
 Ankle Rejuvenation,menu_enrichment,1
 Ankle Sprains,menu_enrichment,1
 Ankle Sprains Treatment,menu_enrichment,1
+Ankle Treatment,menu_enrichment_stem_02,1
 Ankle Treatments,menu_enrichment,1
 Ankylosing Spondylitis Treatment,menu_enrichment,1
 Annual Exam / Pap,menu_enrichment,1
@@ -2030,11 +2062,14 @@ Annual Live Well Visit (Physical),menu_enrichment,1
 Annual Membership,menu_enrichment,1
 Annual Membership - Member Annual Membership Badge,menu_enrichment,1
 "Annual Membership - per year, unlimited Yoga and Mindful Strength classes",menu_enrichment,1
+Annual Physical Examination,menu_enrichment_stem9_05,1
 Annual Physical Exams,menu_enrichment,1
 Annual Physical Exams and Wellness Visits,menu_enrichment,1
 Annual Retreats,menu_enrichment,1
+Annual Screening Mammogram,menu_enrichment_stem9_00,1
 Annual well visits,menu_enrichment,1
 Annual Wellness Exams & Executive Physicals,menu_enrichment,1
+Annual Wellness Visit with Routine Yearly Lab,menu_enrichment_stem9_02,1
 "Annual, School And Immigration Physicals",menu_enrichment,1
 ANS/ABI Testing,menu_enrichment,1
 Anterior Cervical Corpectomy + Fusion + Stabilization (Single Level),bookimed_longevity,1
@@ -2060,6 +2095,9 @@ Anti-Aging for Joints,menu_enrichment,1
 Anti-Aging Formula,menu_enrichment,1
 Anti-Aging Lifestyle & Face Yoga Consultation,menu_enrichment,1
 Anti-Aging Medicine,menu_enrichment,1
+Anti-Aging Medicine,menu_enrichment_stem9_01,1
+Anti-Aging Medicine,menu_enrichment_stem9_07,1
+Anti-Aging Program,menu_enrichment_stem9_04,1
 Anti-Aging Skin Treatment,menu_enrichment,1
 Anti-Aging Stack - Peptide Stack,menu_enrichment,1
 Anti-Aging Treatment,menu_enrichment,1
@@ -2087,6 +2125,7 @@ Antioxidant Peel,menu_enrichment,1
 "Antioxidant Peel - Series of 3, 3 treatments",menu_enrichment,1
 Antiviral Kit,menu_enrichment,1
 Antiviral Kit 2,menu_enrichment,1
+Anxiety,menu_enrichment_stem9_06,1
 Anxiety & Depression Therapy,menu_enrichment,1
 Anxiety & Depression Treatment,menu_enrichment,1
 Anxiety Disorder Treatment,menu_enrichment,1
@@ -2106,6 +2145,7 @@ AQUA IONIZER,menu_enrichment,1
 Aquafirme XS - Aquafirme XS,menu_enrichment,1
 Aquagold Fine Touch,menu_enrichment,1
 Aquagold Microinjections,menu_enrichment,1
+Aquatic Therapy,menu_enrichment_stem9_04,1
 Arachnoiditis Treatment,menu_enrichment,1
 Arch Pain,menu_enrichment,1
 Areola Reduction Bk 14645,mymeditravel_regenerative_thailand,1
@@ -2146,13 +2186,16 @@ Arterial Aging Assessment,menu_enrichment,1
 Arterial Ulcers Treatment,menu_enrichment,1
 Arthritic Conditions Treatment,menu_enrichment,1
 Arthritic Foot Care,menu_enrichment,1
+Arthritis & Rheumatology,menu_enrichment_stem9_01,1
 Arthritis and Joint Pain,menu_enrichment,1
 Arthritis Center of Riverside Gift Card - Gift Card,menu_enrichment,1
 Arthritis Knee Bracing,menu_enrichment,1
 Arthritis Management,menu_enrichment,1
+Arthritis Management,menu_enrichment_stem_01,1
 Arthritis Rehabilitation,menu_enrichment,1
 Arthritis Relief,menu_enrichment,1
 Arthritis Therapy,menu_enrichment,1
+Arthro-Stim Instrument Adjusting,menu_enrichment_stem9_07,1
 Arthrogram,menu_enrichment,1
 "Arthrosamid Injection - Arthrosamid, 1 Knee",menu_enrichment,1
 "Arthrosamid Injection - Arthrosamid, Both Knees",menu_enrichment,1
@@ -2162,6 +2205,7 @@ Arthroscopic Knee Surgery,menu_enrichment,1
 Arthroscopic Meniscus Repair of the Knee,bookimed_longevity,1
 Arthroscopic Meniscus Repair of the Knee,bookimed_longevity_turkey,1
 Arthroscopic Shoulder Surgery,menu_enrichment,1
+Arthroscopic Surgery,menu_enrichment_stem_01,1
 Arthroscopic Wrist Surgery,menu_enrichment,1
 Arthrostim Adjusting - Arthrostim,menu_enrichment,1
 ARX Fit,menu_enrichment,1
@@ -2182,6 +2226,7 @@ At-home Peptide Programs,menu_enrichment,1
 Athlete Care,menu_enrichment,1
 Athlete's Foot Treatment,menu_enrichment,1
 "Athlete/Recovery IV - Contains fluids, electrolytes, magnesium, B12, B1, B2, B3, B5, & B6",menu_enrichment,1
+Athletic Muscle Growth Program,menu_enrichment_stem9_04,1
 Athletic Performance IV Treatment,menu_enrichment,1
 Athletic Performance Optimization Package - with bloodwork,menu_enrichment,1
 Athletic Performance Optimization Package - without bloodwork,menu_enrichment,1
@@ -2198,6 +2243,8 @@ Aura Cacia Essential Oils,menu_enrichment,1
 Aura Skin Analysis,menu_enrichment,1
 AuraLife Relationship Coaching,menu_enrichment,1
 AuraLife Wedding Officiant Services,menu_enrichment,1
+Auricular Acupressure (Ear Acupressure),menu_enrichment_stem9_06,1
+Auriculo-Therapy,menu_enrichment_stem9_01,1
 Auro Topical Glutathione - Better Than IV,menu_enrichment,1
 Autism,menu_enrichment,1
 Autism Hospitalization Package for 1 month,bookimed_longevity,1
@@ -2274,6 +2321,7 @@ Baikal Micro-Crystal Lip Area Rejuvenation Treatment,menu_enrichment,1
 Balance & Fall Prevention Center,menu_enrichment,1
 Balance & Gait Training,menu_enrichment,1
 Balance And Vestibular Rehabilitation Therapy Bk 14432,mymeditravel_regenerative_thailand,1
+Balance Control Program,menu_enrichment_stem9_04,1
 Balance Testing,menu_enrichment,1
 Balance Training & Falls Prevention,menu_enrichment,1
 Balance Training - Fitness and Wellness,menu_enrichment,1
@@ -2284,6 +2332,7 @@ Balayage,menu_enrichment,1
 "Ballancer Pro - Ballancer®, 6 sessions, 40 minutes each",menu_enrichment,1
 BallancerPro Lymphatic Drainage,menu_enrichment,1
 Balloon Sinuplasty,menu_enrichment,1
+Balloon Sinuplasty,menu_enrichment_stem9_04,1
 Banana bag,menu_enrichment,1
 Bang Trim,menu_enrichment,1
 Bangkok NIFTY Prenatal Screening Package,bookimed_longevity,1
@@ -2329,6 +2378,7 @@ Beauty & Cosmetic,menu_enrichment,1
 Beauty IV Drip,menu_enrichment,1
 Beauty salon,biohacking_map,1
 "Beauty with Ceramides Vegicaps - Kiki Health, 60 Caps",menu_enrichment,1
+Beauté régénérative,menu_enrichment_small_sources,1
 Bedside Wound Care,menu_enrichment,1
 Bee Venom Therapy - Apitherapy,menu_enrichment,1
 "Beetroot Powder, Organic - Kiki Health, 200 gm",menu_enrichment,1
@@ -2375,6 +2425,9 @@ Bio-D-Mulsion Forte - Biotics Research,menu_enrichment,1
 Bio-Dynamic Facial With Extracts Of Lubomirskia Sponges From Lake Baikal,menu_enrichment,1
 Bio-Identical Hormone Replacement (BHRT) Men,menu_enrichment,1
 Bio-Identical Hormone Replacement (BHRT) Women,menu_enrichment,1
+Bio-Identical Hormones,menu_enrichment_stem9_01,1
+Bio-Identical Hormones for Men,menu_enrichment_stem9_01,1
+Bio-Identical Hormones for Women,menu_enrichment_stem9_01,1
 Bio-Stacking Experience,menu_enrichment,1
 Bio-Stimulators,menu_enrichment,1
 BioCharger,menu_enrichment,1
@@ -2392,7 +2445,9 @@ Biohacking and Optimization,menu_enrichment,1
 "Bioharmonics - 6 sessions, 20 minutes each",menu_enrichment,1
 Bioidentical Hormone Treatment Plan Book,menu_enrichment,1
 Bioidentical Hormones,menu_enrichment,1
+Bioidentical Hormones for Men,menu_enrichment_stem9_06,1
 Bioidentical Hormones for Women,menu_enrichment,1
+Bioidentical Hormones for Women,menu_enrichment_stem9_06,1
 BioInsight Advanced Diagnostics Suite,menu_enrichment,1
 Biologic Infusion Therapy,menu_enrichment,1
 Biological Terrain Assessment (BTA) - Follow Up,menu_enrichment,1
@@ -2450,6 +2505,7 @@ Blood Test,menu_enrichment,1
 Blood Testing,menu_enrichment,1
 Blood Testing Kit,menu_enrichment,1
 Blood Tests,menu_enrichment,1
+Blood Tests,menu_enrichment_stem9_01,1
 Blood Tests Bk 13424,mymeditravel_regenerative_thailand,1
 Blood Tests Pa 1613,mymeditravel_regenerative_thailand,1
 Blood Tests Tu2 1252,mymeditravel_regenerative_turkey,1
@@ -2527,18 +2583,23 @@ Bond Membership,menu_enrichment,1
 Bone densitometry,menu_enrichment,1
 Bone Density Scanning,menu_enrichment,1
 Bone Density Test,menu_enrichment,1
+Bone Density Testing,menu_enrichment_stem9_00,1
 Bone Fracture Treatment Tu5 805,mymeditravel_regenerative_turkey,1
+Bone Grafting,menu_enrichment_stem9_07,1
 Bone Health,menu_enrichment,1
+Bone Health,menu_enrichment_stem9_06,1
 Bone Infection Treatment,menu_enrichment,1
 Bone Marrow (BMC Therapy),menu_enrichment,1
 Bone Marrow Concentrate,menu_enrichment,1
 Bone Marrow Concentrate Therapy - BMAC,menu_enrichment,1
+Bone Marrow Stem Cell Treatment,menu_enrichment_stem9_04,1
 Bone Marrow Transplantation,bookimed_longevity,1
 Bone Marrow Transplantation,bookimed_longevity_turkey,1
 Bone Mineral Densitometry Bmd So8 1802,mymeditravel_chaum_medical_center,1
 Bone Mineral Density Test,menu_enrichment,1
 Bone Spur Treatment,menu_enrichment,1
 "Bone Support - Bone Support, 120 Capsules",menu_enrichment,1
+Bone-Marrow-Derived Cell Procedure,menu_enrichment_stem9_03,1
 Boost IV Drip,menu_enrichment,1
 Boost Semiglutide Support,menu_enrichment,1
 Boot,menu_enrichment,1
@@ -2570,6 +2631,7 @@ Brain & Nerve Rehabilitation Package,bookimed_longevity_turkey,1
 Brain Analytics,menu_enrichment,1
 Brain Booster,menu_enrichment,1
 Brain Boot Camp,menu_enrichment,1
+Brain Degeneration,menu_enrichment_small_sources,1
 Brain EEG (WAVi),biohacking_map,1
 "Brain Focus IV - Contains fluids, electrolytes, B1, B2, B3, B5, B6, magnesium, & taurine",menu_enrichment,1
 Brain Function,menu_enrichment,1
@@ -2719,6 +2781,7 @@ Bunny Lines,menu_enrichment,1
 Burn Scar Massage,menu_enrichment,1
 Bursa Injection,menu_enrichment,1
 "Bursa, Joint, Fascial, and Ligament Injections",menu_enrichment,1
+Business Check - approx. 5-6 h,menu_enrichment_small_sources,1
 Business Development & Private Practice Growth - Professional Development & Practice Support,menu_enrichment,1
 Business management consultant,biohacking_map,1
 Business Session,menu_enrichment,1
@@ -2734,6 +2797,7 @@ Buttock Augmentation So8 3561,mymeditravel_regenerative_southkorea,1
 Buttock Implants So8 3563,mymeditravel_regenerative_southkorea,1
 Buttock Liposuction Bk 14641,mymeditravel_regenerative_thailand,1
 Buttock Liposuction So8 6014,mymeditravel_regenerative_southkorea,1
+C-ARM,menu_enrichment_stem9_03,1
 C-Reactive Protein (CRP) Test,menu_enrichment,1
 C02 Laser Treatment,menu_enrichment,1
 C15:0 - The Longevity Molecule - 3X Better than Omega-3,menu_enrichment,1
@@ -2758,6 +2822,7 @@ Cancer Care,menu_enrichment,1
 Cancer Care Support,menu_enrichment,1
 Cancer Imaging,menu_enrichment,1
 Cancer Pain Management,menu_enrichment,1
+Cancer Recovery,menu_enrichment_stem9_06,1
 Cancer Risk Assessment,world_longevity_clinics,1
 Cancer Survivorship,menu_enrichment,1
 CancerCheck Program,menu_enrichment,1
@@ -2783,6 +2848,7 @@ Cardiac Imaging w/ Cleerly AI,menu_enrichment,1
 Cardiac Scans,menu_enrichment,1
 Cardiac Testing,menu_enrichment,1
 CARDIAResQ Program,menu_enrichment,1
+Cardio Metabolic Health,menu_enrichment_small_sources,1
 Cardiological Tests,menu_enrichment,1
 Cardiologist,biohacking_map,1
 Cardiology Consultation,menu_enrichment,1
@@ -2792,7 +2858,10 @@ Cardiovascular Care,menu_enrichment,1
 Cardiovascular Evaluation,menu_enrichment,1
 Cardiovascular Imaging,world_longevity_clinics,1
 Cardiovascular Physiotherapy,menu_enrichment,1
+Cardiovascular Rehabilitation,menu_enrichment_stem9_04,1
+Cardiovascular Stress Testing,menu_enrichment_stem9_00,1
 CardioVision,menu_enrichment,1
+Care Coordination,menu_enrichment_stem9_05,1
 Care Coordination / Health Navigation,menu_enrichment,1
 Care Credit Financing Minimum Purchase,menu_enrichment,1
 Care for Chronic Conditions,menu_enrichment,1
@@ -2809,8 +2878,12 @@ Carpal Tunnel Syndrome – Diagnostic & Treatment,menu_enrichment,1
 Carpal Tunnel Treatment,menu_enrichment,1
 Cartilage Preservation Procedures,menu_enrichment,1
 Cartilage repair,menu_enrichment,1
+Cartilage Repair,menu_enrichment_stem9_07,1
+Cartilage Restoration,menu_enrichment_stem_02,1
+Cartilage Transplantation,menu_enrichment_stem9_07,1
 Case Consultation - Clinical Consultation,menu_enrichment,1
 Cash Plan,menu_enrichment,1
+Casting,menu_enrichment_stem_01,1
 Castor Oil Pack,menu_enrichment,1
 Castor Oil Pack (add-on),menu_enrichment,1
 Catalyzed Mineral Complex with Shilajit & Laminaria - Complete Mineral Support,menu_enrichment,1
@@ -2822,6 +2895,7 @@ Cataract Surgery,menu_enrichment,1
 Cataract Surgery Cr 44,mymeditravel_regenerative_thailand,1
 "Cataract Surgery with Trifocal IOL by Specialist with 1,100+ Eye Surgeries",bookimed_longevity,1
 "Cataract Surgery with Trifocal IOL by Specialist with 1,100+ Eye Surgeries",bookimed_longevity_turkey,1
+Catheterization Lab Services,menu_enrichment_stem9_04,1
 Caudal Steroid Injection,menu_enrichment,1
 Cavitation Skin Tightening,menu_enrichment,1
 Cavitation Skin Tightening - 10 Pack,menu_enrichment,1
@@ -2840,6 +2914,7 @@ Celiac Plexus Blockade / Ablation and Splanchnic Nerve Blockade / Ablation,menu_
 Cell Banking,menu_enrichment,1
 Cell Restorer Package,menu_enrichment,1
 Cell Sonic Regeneration,menu_enrichment,1
+Cell Therapies - Bone marrow or fat-derived,menu_enrichment_stem9_04,1
 Cell Therapy (Bone Marrow Aspirate),menu_enrichment,1
 Cell Therapy Injection - Bone Marrow Aspirate (BMA),menu_enrichment,1
 Cellstory Facial,menu_enrichment,1
@@ -2913,6 +2988,7 @@ Chemical Peel Ph 836,mymeditravel_regenerative_thailand,1
 Chemical Peel/Bio Peel,menu_enrichment,1
 Chemical Peels - PCA and VI Peels,menu_enrichment,1
 "Chemical Peels Package (PRX, BioRePeel, Jessner's)",menu_enrichment,1
+Chemotherapy & Biologics (Immunotherapy),menu_enrichment_stem9_01,1
 Chemotherapy Bk 13193,mymeditravel_regenerative_thailand,1
 Cherry Hemangioma/Broken Capillaries Removal,menu_enrichment,1
 Chest,menu_enrichment,1
@@ -2940,9 +3016,14 @@ Chin Waxing,menu_enrichment,1
 Chinese Herbal Medicine,menu_enrichment,1
 Chiropody - Emma Halpern,menu_enrichment,1
 Chiropractic Adjustment,menu_enrichment,1
+Chiropractic Adjustment,menu_enrichment_stem9_01,1
+Chiropractic Adjustments,menu_enrichment_stem9_07,1
 "Chiropractic Adjustments - Impulse iQ, Thompson Drop-Table, manual",menu_enrichment,1
 Chiropractic BioPhysics - CBP,menu_enrichment,1
 Chiropractic BioPhysics® Structural Correction - Chiropractic BioPhysics®,menu_enrichment,1
+Chiropractic Care,menu_enrichment_stem9_00,1
+Chiropractic Care,menu_enrichment_stem9_01,1
+Chiropractic Care - Spine and Extremities,menu_enrichment_stem9_01,1
 Chiropractic Care for Kids,menu_enrichment,1
 Chiropractic Care For Kids,menu_enrichment,1
 Chiropractic Experience,menu_enrichment,1
@@ -2960,6 +3041,10 @@ Chronic Condition Care,menu_enrichment,1
 Chronic Condition Management,menu_enrichment,1
 Chronic Conditions Management,menu_enrichment,1
 Chronic disease management,menu_enrichment,1
+Chronic Disease Management,menu_enrichment_stem9_01,1
+Chronic Disease Management,menu_enrichment_stem9_02,1
+Chronic Disease Management,menu_enrichment_stem9_04,1
+Chronic Disease Management,menu_enrichment_stem9_05,1
 Chronic Illness Management,menu_enrichment,1
 Chronic Pain Management,menu_enrichment,1
 Chronic Sinusitis Treatment,menu_enrichment,1
@@ -3002,11 +3087,13 @@ Clear + Brilliant Skin Rejuvenation,menu_enrichment,1
 Clear lift skin tightening,menu_enrichment,1
 Clearing Laser Facial,menu_enrichment,1
 Cleerly CCTA,biohacking_map,1
+Clinical Breast Exam,menu_enrichment_stem9_00,1
 Clinical Facials,menu_enrichment,1
 Clinical Naturopathy,menu_enrichment,1
 "Clinical Skincare - ZO Skin Health, Obagi, EltaMD, SkinCeuticals, Revision Skincare",menu_enrichment,1
 Clinical Supervision - Professional Development & Practice Support,menu_enrichment,1
 Clinical Trial Research,menu_enrichment,1
+Clinical Trials,menu_enrichment_stem9_01,1
 Clitoral Hood Reduction Bk 14666,mymeditravel_regenerative_thailand,1
 Clomiphene,menu_enrichment,1
 Closed Rhinoplasty,menu_enrichment,1
@@ -3089,6 +3176,7 @@ Complex Third-Party Forms / Reports,menu_enrichment,1
 Complex Trauma Treatment Planning Checklist,menu_enrichment,1
 Complexion,menu_enrichment,1
 Compliance & Audit Support,menu_enrichment,1
+Complimentary Assessment,menu_enrichment_stem9_03,1
 Complimentary Evaluation,menu_enrichment,1
 Complimentary Facial Consultation,menu_enrichment,1
 Complimentary Phone Consultation,menu_enrichment,1
@@ -3130,6 +3218,8 @@ Comprehensive Wound Care,menu_enrichment,1
 Compression Boot Therapy - Normatec Elite,menu_enrichment,1
 Compression Boots,menu_enrichment,1
 Compression Boots Recovery - Quinear Air Compression Recovery System,menu_enrichment,1
+Compression Therapy,menu_enrichment_small_sources,1
+Compression Therapy,menu_enrichment_stem9_06,1
 Compression Therapy - Advance,menu_enrichment,1
 Compression Therapy - Standard,menu_enrichment,1
 Compression/Tuina Massage - 20 Min Special,menu_enrichment,1
@@ -3166,7 +3256,9 @@ Concussion Screening and Rehabilitation - Physical Therapy,menu_enrichment,1
 Concussion treatment,menu_enrichment,1
 Cone Beam Computed Tomography Cbct So8 1804,mymeditravel_chaum_medical_center,1
 Consultant,biohacking_map,1
+Consultation,menu_enrichment_stem_00,1
 Consultation (Virtual),menu_enrichment,1
+Consultation and Treatment,menu_enrichment_stem9_06,1
 Consultation en naturopathie,menu_enrichment,1
 Consultation In Person,menu_enrichment,1
 Consultation with a psychologist | 20 years+ of Experience,bookimed_longevity,1
@@ -3176,6 +3268,7 @@ Consultations - Annual Health Maintenance Physicals,menu_enrichment,1
 Consultations - Medical Legal Evaluations,menu_enrichment,1
 Consultations - Pre-operation Medical Clearance,menu_enrichment,1
 "Consultations - School, Work, and Sports Physicals",menu_enrichment,1
+Continue Education Class,menu_enrichment_stem9_04,1
 Continuing Education Credits & Workshops,menu_enrichment,1
 Continuing Education Unit,menu_enrichment,1
 Contouring,menu_enrichment,1
@@ -3201,6 +3294,7 @@ Coolsculpting Ph 857,mymeditravel_regenerative_thailand,1
 CoolSculpting® - CoolSculpting®,menu_enrichment,1
 CoolSculpting™,menu_enrichment,1
 CoolTone,menu_enrichment,1
+Cooltouch CT3 Laser and Glycolic Facial Peel - Cooltouch CT3,menu_enrichment_stem9_03,1
 Coordination of Optimization Exams,menu_enrichment,1
 Copper Peptide (GHK-Cu),menu_enrichment,1
 Copper Peptide (GHK-Cu) - GHK-Cu,menu_enrichment,1
@@ -3233,6 +3327,8 @@ CORE,menu_enrichment,1
 Core Plan Membership,menu_enrichment,1
 Core Program,menu_enrichment,1
 Core Stabilization,menu_enrichment,1
+Core Strengthening - including plyometrics and stability ball exercises,menu_enrichment_stem9_04,1
+Core Strengthening - including plyometrics and stability ball exercises,menu_enrichment_stem9_06,1
 Core Strengthening Program - Pregnancy,menu_enrichment,1
 Core Strengthening Program - Yoga-Based,menu_enrichment,1
 Core Wellness System - 3-Month,menu_enrichment,1
@@ -3262,6 +3358,7 @@ Corporate Wellness Trauma Package 1,menu_enrichment,1
 Corpuscular Hemoglobin (MCH),menu_enrichment,1
 CORRECTIVE POST-OP Lymphatic Drainage,menu_enrichment,1
 Corrector Skin Cream,menu_enrichment,1
+Cortisone Injections,menu_enrichment_stem_01,1
 "Cortisone Injections - Cortisone, 1 area",menu_enrichment,1
 "Cortisone Injections - Cortisone, 2 areas",menu_enrichment,1
 Cortisone Joint Injections,menu_enrichment,1
@@ -3292,6 +3389,7 @@ Couples Romance,menu_enrichment,1
 Couples Therapy / Relationship Counseling,menu_enrichment,1
 Couples Therapy for Relationship Repair - Gottman,menu_enrichment,1
 Couples Therapy Session - 60 minutes,menu_enrichment,1
+COVID & Antibiotic Kits,menu_enrichment_stem9_07,1
 Covid & Strep Rapid Tests,menu_enrichment,1
 COVID 30 Minutes RT-PCR Test - 30 minutes,menu_enrichment,1
 COVID Antibody Test,menu_enrichment,1
@@ -3359,11 +3457,13 @@ Crohn's Disease Treatment,menu_enrichment,1
 Crown Calm (Asian Head Spa) - Crown Calm,menu_enrichment,1
 Crown Essence (Premium Asian Head Spa) - Crown Essence,menu_enrichment,1
 Crown Harmony (Deluxe Asian Head Spa) - Crown Harmony,menu_enrichment,1
+Crown Lengthening,menu_enrichment_stem9_07,1
 Crush Injury Treatment,menu_enrichment,1
 Crutches,menu_enrichment,1
 Cryo,menu_enrichment,1
 Cryo Concierge,menu_enrichment,1
 Cryo Facial Massage (Ice Globe Massage) Add-On,menu_enrichment,1
+Cryo Facials,menu_enrichment_small_sources,1
 Cryo T-Shock Anti-Aging Facial,menu_enrichment,1
 Cryo T-Shock Brightening Facial,menu_enrichment,1
 Cryo T-Shock Cellulite Reduction,menu_enrichment,1
@@ -3404,6 +3504,7 @@ Cupping - Add-on treatment,menu_enrichment,1
 Cupping - Multiple Body Parts,menu_enrichment,1
 Cupping - Sliding,menu_enrichment,1
 Cupping - Standard (Stationary),menu_enrichment,1
+Cupping Therapy,menu_enrichment_stem9_06,1
 Cupping Therapy - 30-60 minutes,menu_enrichment,1
 Cupping Therapy - Medical Massage,menu_enrichment,1
 Curated Care Coordination & Specialist Navigation,menu_enrichment,1
@@ -3418,6 +3519,7 @@ Custom Garment Fittings,menu_enrichment,1
 Custom Jelly Mask,menu_enrichment,1
 Custom Longevity & Performance IV Formulation,menu_enrichment,1
 Custom Longevity Plans,menu_enrichment,1
+Custom Orthotics,menu_enrichment_stem9_00,1
 Custom Orthotics - Foot Levelers,menu_enrichment,1
 "Custom Orthotics, Foot Braces and Ankle Braces",menu_enrichment,1
 Custom Rehab Programs,menu_enrichment,1
@@ -3438,9 +3540,11 @@ CVAC Package - 10 Sessions,menu_enrichment,1
 CVAC Package - 20 Sessions,menu_enrichment,1
 CVAC Package - 5 Sessions,menu_enrichment,1
 CyberScan,menu_enrichment,1
+Cycle Forward Hand Cycle Program,menu_enrichment_stem9_05,1
 Cystocele Repair So8 1826,mymeditravel_chaum_medical_center,1
 Cystoscopy and Ureteroscopy,menu_enrichment,1
 "D 5000 - D 5000, 90 Softgels",menu_enrichment,1
+D.O.T. Annual Exams,menu_enrichment_stem9_05,1
 D3+K2 - Seeking Health,menu_enrichment,1
 da Vinci Robotic Surgery - da Vinci,menu_enrichment,1
 Daily Cryo Add-On,menu_enrichment,1
@@ -3450,11 +3554,15 @@ DAXXIFY - DAXXIFY,menu_enrichment,1
 Daxxify - Daxxify®,menu_enrichment,1
 "Day of Pamper - One and a Half Hour Swedish and Reflexology Massage, a European Spa Facial, and a Full Body Wrap",menu_enrichment,1
 Day Spa Package,menu_enrichment,1
+DBC FIT,menu_enrichment_stem_00,1
+DBC Life,menu_enrichment_stem_00,1
 DBT for Children (DBT-C),menu_enrichment,1
 De-Liver-Ance,menu_enrichment,1
 Dead Sea Mud Mask Face Detox,menu_enrichment,1
 Dead Sea Salt Crystal Peel,menu_enrichment,1
 Debridement Surgery,menu_enrichment,1
+Decompression Therapy,menu_enrichment_stem9_05,1
+Decompression Therapy - Cox Flexion Distraction,menu_enrichment_stem9_01,1
 Deconditioning,menu_enrichment,1
 Deep brain stimulation,menu_enrichment,1
 Deep Brain Stimulation for Parkinson's Disease with Neuronavigation & Neuromonitoring — All-Inclusive Package,bookimed_longevity,1
@@ -3476,6 +3584,7 @@ Deep Pore Detox & Extraction Facial,menu_enrichment,1
 Deep Release,menu_enrichment,1
 Deep Sleep Head Spa,menu_enrichment,1
 Deep Sleep Patch - BioActivate Bio-frequency wellness patch,menu_enrichment,1
+Deep Tissue Massage,menu_enrichment_stem9_03,1
 Deep Tissue Massage (Deep Restore) - Deep Restore,menu_enrichment,1
 Deep Tissue Massage - 60/90 minutes,menu_enrichment,1
 Deep Tissue Massage - Medical Massage,menu_enrichment,1
@@ -3504,12 +3613,16 @@ Dental Crown Bk 13156,mymeditravel_regenerative_thailand,1
 Dental Crown Tu2 1243,mymeditravel_regenerative_turkey,1
 Dental Implant Bars Tu2 1244,mymeditravel_regenerative_turkey,1
 Dental Implant Bk 13157,mymeditravel_regenerative_thailand,1
+Dental Implant Dentures,menu_enrichment_stem9_07,1
+Dental Implant Failure and Salvage,menu_enrichment_stem9_07,1
 Dental Implant with Megagen System — 4★ Hotel & Airport Transfer,bookimed_longevity,1
+Dental Implants,menu_enrichment_stem9_07,1
 Dental Services,menu_enrichment,1
 Dental Xrays Bk 13158,mymeditravel_regenerative_thailand,1
 Denture Cr 37,mymeditravel_regenerative_thailand,1
 Dependency Treatment - Medication Assisted Treatment (MAT),menu_enrichment,1
 Depression,menu_enrichment,1
+Depression,menu_enrichment_stem9_06,1
 Depression & Anxiety,menu_enrichment,1
 Depression Treatment & Medication Management,menu_enrichment,1
 Depression Treatments,menu_enrichment,1
@@ -3528,6 +3641,7 @@ Dermaplaning Add On,menu_enrichment,1
 Dermaplanning Facial,menu_enrichment,1
 Dermatology,medical_travel_market_longevity_programs,1
 Dermatology,meditrip_seoul,1
+Dermatology,menu_enrichment_stem9_00,1
 Dermatology,turkey_healthcare_group_regenerative,1
 Dermatology Appointment,menu_enrichment,1
 Dermatology Consultation Cr 32,mymeditravel_regenerative_thailand,1
@@ -3548,11 +3662,13 @@ Detox / Hangover IV Drip - 500ml,menu_enrichment,1
 Detox Facial,menu_enrichment,1
 Detox Foot Bath,menu_enrichment,1
 Detox/Recovery Boost IV Drip - Detox/Recovery Boost,menu_enrichment,1
+Detoxification,menu_enrichment_small_sources,1
 Detoxification Juice Therapy,menu_enrichment,1
 Detoxification Program - Standard Process,menu_enrichment,1
 Detoxify Facial,menu_enrichment,1
 Deuterium Depletion,menu_enrichment,1
 Developmental Delay,menu_enrichment,1
+"Device Implants - Pacemaker, Defibrillator",menu_enrichment_stem9_04,1
 DexaFit All-in Panel - DexaFit,menu_enrichment,1
 DexaStrong Advanced Lab Panel - DexaStrong,menu_enrichment,1
 DexaStrong Core Lab Panel - DexaStrong,menu_enrichment,1
@@ -3567,9 +3683,13 @@ DIABETES,bookimed_longevity,1
 Diabetes Care,menu_enrichment,1
 Diabetes Care Management,menu_enrichment,1
 Diabetes Consultation Tu4 3160,mymeditravel_regenerative_turkey,1
+Diabetes Management,menu_enrichment_stem9_05,1
+Diabetes Program,menu_enrichment_stem9_04,1
 Diabetic Care,menu_enrichment,1
 Diabetic Eye Care,menu_enrichment,1
+Diabetic Foot Ulcer Care Coordination,menu_enrichment_stem9_06,1
 "Diabetic Foot Ulcer Treatment — Full Blood Analysis, Consultations & Hotel Stay",bookimed_longevity,1
+Diabetic Neuropathy Treatment - Anodyne,menu_enrichment_stem9_03,1
 Diabetic Shoes,menu_enrichment,1
 Diabetic Wound Care,menu_enrichment,1
 Diagnostic Blocks for Isolation of the Source of the Pain,menu_enrichment,1
@@ -3584,6 +3704,7 @@ Diagnostic Imaging,menu_enrichment,1
 Diagnostic Lab Panel Test,menu_enrichment,1
 Diagnostic mitochondrial,menu_enrichment,1
 Diagnostic Musculoskeletal Ultrasonography,menu_enrichment,1
+Diagnostic Technology,menu_enrichment_stem9_04,1
 Diagnostic Ultrasound Exam,menu_enrichment,1
 Diagnostic Xrays Cr 46,mymeditravel_regenerative_thailand,1
 Diagnostic Xrays So8 1805,mymeditravel_chaum_medical_center,1
@@ -3601,6 +3722,7 @@ Diamond STD Screening Package,bookimed_longevity_thailand,1
 DiamondGlow,menu_enrichment,1
 DiamondGlow + Dermaplane,menu_enrichment,1
 DiamondGlow - DiamondGlow,menu_enrichment,1
+Diet & Health Center,menu_enrichment_stem9_00,1
 Diet & Nutrition,menu_enrichment,1
 Diet/Lifestyle Protocol,biohacking_map,1
 Dietitian Initial Assessment,menu_enrichment,1
@@ -3610,9 +3732,12 @@ Digestive Defense - Natural products,menu_enrichment,1
 Digestive Disorder Treatment,menu_enrichment,1
 Digestive Health,menu_enrichment,1
 Digestive Health Evaluation,menu_enrichment,1
+Digestive Problems,menu_enrichment_stem9_06,1
 Digital and 3D mammography,menu_enrichment,1
 Digital Body Scan,menu_enrichment,1
 Digital Pulse Analyzer (DPA),menu_enrichment,1
+Digital X-Ray,menu_enrichment_stem_01,1
+Digital X-Rays,menu_enrichment_stem_00,1
 Dilation And Curettage So8 1827,mymeditravel_chaum_medical_center,1
 Dimple Creation Surgery Bk 14662,mymeditravel_regenerative_thailand,1
 Dimple Creation Surgery — 2 Nights at 4★ Hotel & Transfer Included,bookimed_longevity,1
@@ -3621,17 +3746,20 @@ Direct Access / Ortho Primary Care,menu_enrichment,1
 Direct Primary Care,menu_enrichment,1
 "Direct Primary Care for Adults and Children (Annual) - Fam Membership - Individual, annually",menu_enrichment,1
 "Direct Primary Care for Adults and Children - Fam Membership - Individual, per member per month",menu_enrichment,1
+Direct Primary Care Membership - Annual (discounted rate),menu_enrichment_stem9_02,1
 "Direct Primary Care Membership - Individual (Annual) - Fam Membership - Individual, annually",menu_enrichment,1
 "Direct Primary Care Membership - Individual (Annual) - Fam Membership, annually",menu_enrichment,1
 "Direct Primary Care Membership - Individual - Fam Membership - Individual, per month / annually",menu_enrichment,1
 "Direct Primary Care Membership - Individual - Fam Membership - Individual, per month, annual contract required",menu_enrichment,1
 "Direct Primary Care Membership - Individual - Fam Membership, per month",menu_enrichment,1
+Direct Primary Care Membership - Monthly,menu_enrichment_stem9_02,1
 Direct Primary Care Monthly Memberships,menu_enrichment,1
 Disc Injury,menu_enrichment,1
 Disc Injury Treatment,menu_enrichment,1
 Disc Related Injuries Treatment,menu_enrichment,1
 Discectomy by Founding Board Member of Deep Brain Stimulation Association — VIP Transfer Included,bookimed_longevity,1
 Discectomy by Founding Board Member of Deep Brain Stimulation Association — VIP Transfer Included,bookimed_longevity_turkey,1
+Discograms - lumbar and cervical,menu_enrichment_stem9_05,1
 Discovery Call - 15 minutes,menu_enrichment,1
 Discovery Call Deposit,menu_enrichment,1
 Discseel Procedure,menu_enrichment,1
@@ -3641,6 +3769,7 @@ Distal Hypospadias Repair,bookimed_longevity,1
 Distal Hypospadias Repair,bookimed_longevity_turkey,1
 Diva For A Day Package,menu_enrichment,1
 Dive Physicals,menu_enrichment,1
+Diversified Chiropractic,menu_enrichment_stem9_07,1
 Dizziness Treatment,menu_enrichment,1
 Dizziness/Vertigo Treatment,menu_enrichment,1
 DMK & NeurotriS,menu_enrichment,1
@@ -3659,6 +3788,8 @@ Doctor Follow-Up,menu_enrichment,1
 Doctor Initial Assessment,menu_enrichment,1
 Doctor to Hotel,menu_enrichment,1
 Documentary Screenings,menu_enrichment,1
+"Donor Sperm, Eggs, & Embryos",menu_enrichment_stem9_04,1
+"Donor Sperm, Eggs, & Embryos",menu_enrichment_stem_02,1
 Doppler Testing,menu_enrichment,1
 Doppler Ultrasound,menu_enrichment,1
 Dorsal Root Ganglion (DRG) Stimulation,menu_enrichment,1
@@ -3670,6 +3801,7 @@ DOT Examinations,menu_enrichment,1
 DOT Medical Review Officer (MRO),menu_enrichment,1
 DOT Physical,menu_enrichment,1
 DOT Physicals & CDL Medical Cards,menu_enrichment,1
+DOT Physicals / DOT Exams,menu_enrichment_stem9_00,1
 DOT Reasonable Suspicion Course for Supervisors,menu_enrichment,1
 DOT/CDL Physicals,menu_enrichment,1
 Double chin Lifting procedure,menu_enrichment,1
@@ -3733,6 +3865,7 @@ Duo 90 Minute Session,menu_enrichment,1
 Duo 90 Minute Sessions - 10 Sessions,menu_enrichment,1
 Duo 90 Minute Sessions - 5 Sessions,menu_enrichment,1
 DUROLANE,menu_enrichment,1
+DUTCH Hormone Test,menu_enrichment_stem9_08,1
 DXA Scan (Spine and Hip),menu_enrichment,1
 Dynamic Neuromuscular Stabilization,menu_enrichment,1
 "Dysport - Dysport, 60 Units",menu_enrichment,1
@@ -3740,6 +3873,7 @@ Dysport Injections,menu_enrichment,1
 Dystonia Treatment,menu_enrichment,1
 E-Stim,menu_enrichment,1
 E-Stim (Electrical Stimulation),menu_enrichment,1
+E-Stim Whirlpool,menu_enrichment_stem9_02,1
 Ear Candling - Add-on treatment,menu_enrichment,1
 Ear Candling Candles,menu_enrichment,1
 Ear Cleaning,menu_enrichment,1
@@ -3750,8 +3884,10 @@ Ear Piercing,menu_enrichment,1
 Ear Piercing for Kids & Teens - Ages 5+,menu_enrichment,1
 Ear Surgery,menu_enrichment,1
 Ear Surgery Tu1 708,mymeditravel_regenerative_turkey,1
+Ear Tubes for Chronic Infections,menu_enrichment_stem9_04,1
 "Ear, Nose, Throat (ENT) - Balloon Sinuplasty",menu_enrichment,1
 Earlobe Repair Surgery,menu_enrichment,1
+Early-bird School Physicals,menu_enrichment_stem9_00,1
 Ears Waxing,menu_enrichment,1
 Eastern & Western Nutrition Consultation,menu_enrichment,1
 EasyTon IOP Tonometer - EasyTon,menu_enrichment,1
@@ -3762,6 +3898,7 @@ EBO2,menu_enrichment,1
 Eboo first timer,menu_enrichment,1
 EBOO Ozone Dialysis,menu_enrichment,1
 EBOO Therapy,menu_enrichment,1
+EBOO Therapy,menu_enrichment_stem9_06,1
 EBOO Therapy - Extracorporeal Blood Oxygenation and Ozonation,menu_enrichment,1
 EBOO Therapy - Extracorporeal Blood Ozone Oxygenation,menu_enrichment,1
 ECG Testing In Clinic,menu_enrichment,1
@@ -3770,9 +3907,11 @@ Echocardiogram So8 1788,mymeditravel_chaum_medical_center,1
 Echocardiography,menu_enrichment,1
 Eclectic Therapy,menu_enrichment,1
 Eclipse Micropen,menu_enrichment,1
+Economy Check - approx. 4 h,menu_enrichment_small_sources,1
 Education,menu_enrichment,1
 Education - Health Improvement Resources,menu_enrichment,1
 Educational Remediation Therapy,menu_enrichment,1
+Educational Seminars,menu_enrichment_stem_00,1
 EE System Hourly Packages,menu_enrichment,1
 EE System Monthly Membership,menu_enrichment,1
 EE System Night Sessions,menu_enrichment,1
@@ -3796,15 +3935,19 @@ Elbow Care,menu_enrichment,1
 Elbow Rejuvenation,menu_enrichment,1
 Elbow surgery,menu_enrichment,1
 Elbow therapy,menu_enrichment,1
+Elbow Treatment,menu_enrichment_stem_02,1
 Elbow Treatments,menu_enrichment,1
 Elderberry Syrup,menu_enrichment,1
 Electric Stimulation,menu_enrichment,1
 Electric Stimulation Therapy,menu_enrichment,1
 Electrical Muscle Stimulation and Interferential Electrotherapy (EMS/IF),menu_enrichment,1
 Electrical Stimulation,menu_enrichment,1
+Electrical Stimulation,menu_enrichment_stem9_02,1
+Electrical Stimulation - CPT 97014,menu_enrichment_stem9_04,1
 Electrical Stimulation Therapy,menu_enrichment,1
 Electro Shock Therapy,menu_enrichment,1
 Electro-acupuncture,menu_enrichment,1
+Electro-Acupuncture,menu_enrichment_stem9_06,1
 Electro-Acupuncture Medicine,menu_enrichment,1
 Electro-Sonic DF Mobile - Environ,menu_enrichment,1
 Electrocardiogram,menu_enrichment,1
@@ -3813,10 +3956,13 @@ Electrocardiograms (EKGs),menu_enrichment,1
 Electrodiagnostic Testing,menu_enrichment,1
 Electroencephalogram (EEG),menu_enrichment,1
 Electroencephalography (EEG),menu_enrichment,1
+Electroencephalography (EEG),menu_enrichment_stem9_06,1
 Electroencephalography Eeg So8 1806,mymeditravel_chaum_medical_center,1
 Electromagnetic cap - Stimufield,menu_enrichment,1
+Electromyogram (EMG) & Nerve Conduction Studies,menu_enrichment_stem9_06,1
 Electromyogram Emg So8 207,mymeditravel_chaum_medical_center,1
 Electromyography (EMG),menu_enrichment,1
+Electrophysiology Lab Services,menu_enrichment_stem9_04,1
 Electrophysiology Study Eps So8 1789,mymeditravel_chaum_medical_center,1
 Electrotherapy,menu_enrichment,1
 Eletro Acupuntura Hai Hua,menu_enrichment,1
@@ -3832,6 +3978,7 @@ Elite Sports Recovery Package,menu_enrichment,1
 EltaMD Sun Care and Skin Care Products - EltaMD,menu_enrichment,1
 EM Body Sculpt,menu_enrichment,1
 Email / Secure Message Support,menu_enrichment,1
+Email Consultation,menu_enrichment_stem_00,1
 EMDR,menu_enrichment,1
 EMDR 8 Phases Overview,menu_enrichment,1
 EMDR Intensive,menu_enrichment,1
@@ -3893,6 +4040,7 @@ Endoscopic Discectomy with Neuronavigation by DBS Association Founder — VIP Tr
 Endoscopic Discectomy with Neuronavigation by DBS Association Founder — VIP Transfer,bookimed_longevity_turkey,1
 Endoscopic Retrograde Cholangiopancreatography Ercp Bk 13175,mymeditravel_regenerative_thailand,1
 Endoscopic Retrograde Cholangiopancreatography Ercp Bk 14162,mymeditravel_regenerative_thailand,1
+Endoscopic Sinus Surgery,menu_enrichment_stem9_04,1
 Endoscopy Bk 13162,mymeditravel_regenerative_thailand,1
 Endoscopy So8 1817,mymeditravel_chaum_medical_center,1
 Endovenous Laser Ablation Therapy (EVLT),menu_enrichment,1
@@ -3930,10 +4078,14 @@ Environmental Medicine & Detox,menu_enrichment,1
 Environmental Toxin Screen,menu_enrichment,1
 Environmental Toxin Screen With OAT,menu_enrichment,1
 Environmental Toxin Screening,menu_enrichment,1
+Enzymatic Debridement,menu_enrichment_stem9_06,1
 Epidural,menu_enrichment,1
 Epidural Adhesiolysis,menu_enrichment,1
 Epidural Injection,menu_enrichment,1
+"Epidural Injections - lumbar, cervical and thoracic",menu_enrichment_stem9_05,1
 Epidural Injections for spine,menu_enrichment,1
+Epidural Steroid Injections,menu_enrichment_stem9_07,1
+Epidural Steroid Injections,menu_enrichment_stem9_08,1
 Epidurals,menu_enrichment,1
 "Epigenetic Clocks (DunedinPACE, GrimAge)",world_longevity_clinics,1
 Epigenetic Profiling,biohacking_map,1
@@ -3971,6 +4123,8 @@ Erectile Dysfunction Treatment - Viagra (Sildenafil) - Viagra,menu_enrichment,1
 Erectile Dysfunction Treatment - Z Wave,menu_enrichment,1
 Erectile Dysfunction Treatment Bk 13764,mymeditravel_regenerative_thailand,1
 Ergonomic Training Programs,menu_enrichment,1
+Ergonomics and Biomechanics Training,menu_enrichment_stem9_04,1
+Ergonomics and Biomechanics Training,menu_enrichment_stem9_06,1
 Ergonomics and Postural Retraining,menu_enrichment,1
 Erweiterte Abklärung,menu_enrichment,1
 Essential Assessment,menu_enrichment,1
@@ -3982,6 +4136,7 @@ Essential Oil & Aromatherapy Scalp Care,menu_enrichment,1
 Essentials Program,menu_enrichment,1
 Established Patient Exam,menu_enrichment,1
 Esthetician's Choice,menu_enrichment,1
+Esthetics Program,menu_enrichment_stem9_04,1
 Estrogen - Hormonal Health,menu_enrichment,1
 Estrogen Therapy,menu_enrichment,1
 Estrogen Therapy (BHRT),menu_enrichment,1
@@ -4044,6 +4199,7 @@ Extra Large Laser Hair Removal,menu_enrichment,1
 Extra Medication Add-On,menu_enrichment,1
 Extra Spinal Adjustment,menu_enrichment,1
 "Extra Strength Minoxidil 5% Liquid - Extra Strength 5%, 60ml",menu_enrichment,1
+Extracellular Vesicles Therapy,menu_enrichment_stem9_02,1
 Extracorporeal Magnetic Transduction Therapy,menu_enrichment,1
 Extractions (add-on),menu_enrichment,1
 Extractions Add-on,menu_enrichment,1
@@ -4104,6 +4260,7 @@ Facelift by Surgeon with 900+ Facelifts Performed — 5★ Hotel & VIP Transfer,
 Facelift Sp 360,mymeditravel_regenerative_thailand,1
 Facelift Tu1 704,mymeditravel_regenerative_turkey,1
 Facet Injections,menu_enrichment,1
+Facet Injections and Radiofrequency Neurotomy - lumbar and cervical,menu_enrichment_stem9_05,1
 Facet Nerve Joint Block,menu_enrichment,1
 FaceTite,menu_enrichment,1
 Facial & Rejuvenation Acupuncture,menu_enrichment,1
@@ -4132,6 +4289,7 @@ Facial Peels,menu_enrichment,1
 Facial Ph 1558,mymeditravel_regenerative_thailand,1
 Facial Ph 837,mymeditravel_regenerative_thailand,1
 Facial Rejuvenation,menu_enrichment,1
+Facial Rejuvenation,menu_enrichment_stem9_02,1
 Facial Rejuvenation Acupuncture,menu_enrichment,1
 Facial Rejuvenation with 30 min Facial Massage & Hydrating Mask - Initial Visit / Follow Up,menu_enrichment,1
 Facial Rejuvenation with 30 min Facial Massage - 30 min facial massage,menu_enrichment,1
@@ -4146,6 +4304,7 @@ FactorFive Renew Dermal Solution,menu_enrichment,1
 Fainting,menu_enrichment,1
 Fair Play Coaching,menu_enrichment,1
 Faith-Based Coaching,menu_enrichment,1
+Fall Injury Prevention,menu_enrichment_stem9_04,1
 Fall Prevention & Balance Training,menu_enrichment,1
 Fall Prevention Balance Training,menu_enrichment,1
 Fall Prevention Plan,menu_enrichment,1
@@ -4156,12 +4315,14 @@ Fam Membership - Individual - Direct Primary Care for Adults and Children,menu_e
 "Fam Membership - Individual - Direct Primary Care for Adults and Children, annual contract, $150/month",menu_enrichment,1
 "Fam Membership - Individual - Direct Primary Care for Adults and Children, per month (annual contract)",menu_enrichment,1
 Family & Fertility Counseling,menu_enrichment,1
+Family & Internal Medicine,menu_enrichment_stem9_00,1
 Family Chiropractic,menu_enrichment,1
 Family Health,menu_enrichment,1
 Family Health Annual Pass,menu_enrichment,1
 Family Health Annual Pass - Rejuvenate Yourself Family Health Guard Pass,menu_enrichment,1
 Family Medicine Services,menu_enrichment,1
 Family Planning Counseling,menu_enrichment,1
+Family Practice,menu_enrichment_stem9_00,1
 Family Psychotherapy,menu_enrichment,1
 "Family Reunification Family Session - Voluntary, State-Ordered, or Court-Ordered Managed",menu_enrichment,1
 "Family Reunification Individual Session - Voluntary, State-Ordered, or Court-Ordered Managed",menu_enrichment,1
@@ -4194,6 +4355,7 @@ Fat Transfer Bk 14635,mymeditravel_regenerative_thailand,1
 Fat Transfer So8 3557,mymeditravel_regenerative_southkorea,1
 FatBurner IV,menu_enrichment,1
 Father's Day Package,menu_enrichment,1
+Fatigue / Chronic Fatigue Syndrome,menu_enrichment_stem9_06,1
 Fatty Liver Screening - FibroScan,menu_enrichment,1
 FDA Cleared Neuropathy Treatment,menu_enrichment,1
 FDA Cleared Treatment for Knee Arthritis,menu_enrichment,1
@@ -4232,11 +4394,18 @@ Femtosecond LASIK by Dr. Mones with 900+ Laser Eye Surgeries — JCI Hospital Ra
 Fertility,menu_enrichment,1
 Fertility Assessment So8 1855,mymeditravel_chaum_medical_center,1
 Fertility counseling,menu_enrichment,1
+Fertility Evaluation,menu_enrichment_stem9_04,1
+Fertility Evaluation,menu_enrichment_stem_02,1
+Fertility Preservation,menu_enrichment_stem9_04,1
+Fertility Preservation,menu_enrichment_stem_02,1
 Fertility Preservation Surgery,menu_enrichment,1
 Fertility Relaxation Massage,menu_enrichment,1
+Fertility Treatment,menu_enrichment_stem9_04,1
+Fertility Treatment,menu_enrichment_stem_02,1
 Fertility/Abdominal Tuning Massage,menu_enrichment,1
 Fetal Echocardiography So8 1831,mymeditravel_chaum_medical_center,1
 Fibroids Treatment,menu_enrichment,1
+Fibromyalgia,menu_enrichment_stem9_06,1
 Fibromyalgia & Chronic Fatigue Center,menu_enrichment,1
 Fibromyalgia treatment,menu_enrichment,1
 Fibromyalgia Treatment,menu_enrichment,1
@@ -4255,10 +4424,12 @@ Fire Cider,menu_enrichment,1
 Fire Cupping,menu_enrichment,1
 Firming Facial,menu_enrichment,1
 Firming Mask Add On,menu_enrichment,1
+First Class Check - approx. 8 h,menu_enrichment_small_sources,1
 First Follow Up Visit,menu_enrichment,1
 First Session Assessment,menu_enrichment,1
 First Time Intro Offer,menu_enrichment,1
 First Time Special,menu_enrichment,1
+First Visit,menu_enrichment_stem9_07,1
 First-time patient visit - Lumix Q Super Pulse Laser,menu_enrichment,1
 First-Time Protocol - Supernatural,menu_enrichment,1
 Fish Oil - 60sg,menu_enrichment,1
@@ -4300,13 +4471,16 @@ Flu Tests,menu_enrichment,1
 Flu vaccines,menu_enrichment,1
 "Fluids (Normal Saline) - 1,000 mL",menu_enrichment,1
 Fluids (Normal Saline) - 500 mL,menu_enrichment,1
+Fluids Only,menu_enrichment_stem9_01,1
 Fluorescein Angiography,menu_enrichment,1
+"Fluoroscopically Guided Injections - Epidural steroid, sacro-iliac, facet joint, selective nerve root blocks",menu_enrichment_stem9_04,1
 Foam Sclerotherapy,menu_enrichment,1
 Focused Shockwave,menu_enrichment,1
 Focused Tension Therapy,menu_enrichment,1
 Folix Laser Hair Growth Therapy,menu_enrichment,1
 Follistatin Gene Therapy,world_longevity_clinics,1
 Follow Up,menu_enrichment,1
+Follow Up Appointment,menu_enrichment_stem9_01,1
 Follow up consultation - 30-minutes,menu_enrichment,1
 Follow Up Visit for Established Patient,menu_enrichment,1
 Follow-up Appointment,menu_enrichment,1
@@ -4349,12 +4523,14 @@ Foot Reflexology (Eastern Reflex) - Eastern Reflex,menu_enrichment,1
 Foot Reflexology - 30min,menu_enrichment,1
 Foot Reflexology - 60min,menu_enrichment,1
 Foot Surgery Tu5 804,mymeditravel_regenerative_turkey,1
+Foot Treatment,menu_enrichment_stem_02,1
 Foot Treatment Add-On - Add On,menu_enrichment,1
 Force Plate,menu_enrichment,1
 Forehead Lift — 6 Nights at 4★ Hotel with VIP Transfer Included,bookimed_longevity,1
 Forehead Lift — 6 Nights at 4★ Hotel with VIP Transfer Included,bookimed_longevity_turkey,1
 Forehead Lifting,menu_enrichment,1
 Forehead Mini-facial,menu_enrichment,1
+Forensic Toxicology Testing - Analytical Toxicology Under Chain of Custody,menu_enrichment_stem9_04,1
 Forever Facial,menu_enrichment,1
 Formations,menu_enrichment,1
 Foundation,biohacking_map,1
@@ -4376,6 +4552,7 @@ Fraxel Dual - Fraxel Dual,menu_enrichment,1
 Fraxel Laser,menu_enrichment,1
 Fraxel Laser Resurfacing - Fraxel,menu_enrichment,1
 Fraxel Laser Treatment - Fractional Laser Resurfacing,menu_enrichment,1
+Free 15 Minute Consultation,menu_enrichment_stem9_03,1
 Free 15 Minute Phone Consultation,menu_enrichment,1
 Free 15 Minute Strategy Session,menu_enrichment,1
 Free 15-Min Consultation,menu_enrichment,1
@@ -4388,6 +4565,7 @@ Free consultation,menu_enrichment,1
 FREE Consultation,menu_enrichment,1
 Free Consultation - Medical Doctor (MD) consultation,menu_enrichment,1
 Free Digital Hair Analysis,menu_enrichment,1
+Free Discovery Call,menu_enrichment_stem9_08,1
 Free Heart Check Session,menu_enrichment,1
 Free Initial Consultation,menu_enrichment,1
 Free Initial Diagnostic Report - ALC,menu_enrichment,1
@@ -4420,6 +4598,7 @@ Full Body Scan,menu_enrichment,1
 Full Body Scans,menu_enrichment,1
 Full Body Sports Massage,menu_enrichment,1
 Full Body Waxing,menu_enrichment,1
+"Full Face and Neck Fraxel with Mixto Micro-Fraxel - Mixto Micro-Fraxel, including sedation",menu_enrichment_stem9_03,1
 Full Face Wax,menu_enrichment,1
 Full Genomic Analysis,menu_enrichment,1
 Full Set Acrylic,menu_enrichment,1
@@ -4429,6 +4608,7 @@ Full-Body Scans,menu_enrichment,1
 "Full-Size Mat - 72"" x 28""",menu_enrichment,1
 Fulvic | Humic Minerals - 1 Gallon,menu_enrichment,1
 Functional & Integrative Testing,menu_enrichment,1
+Functional and Dynamic Rehabilitation,menu_enrichment_stem9_01,1
 Functional Assessment Lab Testing - Advanced Panels,menu_enrichment,1
 Functional Capacity Evaluation,menu_enrichment,1
 Functional Capacity Evaluations - Services for Workers Comp,menu_enrichment,1
@@ -4436,6 +4616,7 @@ Functional Diabetes Therapy,menu_enrichment,1
 Functional Movement Therapy,menu_enrichment,1
 Functional Pelvic Floor Physical Therapy - Herman Wallace Level I,menu_enrichment,1
 Functional Rehabilitation,menu_enrichment,1
+Functional Rehabilitation,menu_enrichment_stem9_04,1
 Functional Training,menu_enrichment,1
 Functional Wellness,menu_enrichment,1
 Functional Wellness Transformation Program,menu_enrichment,1
@@ -4449,6 +4630,7 @@ Gait & Balance Training,menu_enrichment,1
 Gait Analysis & Custom Orthotics,menu_enrichment,1
 Gait Analysis Lab,menu_enrichment,1
 Gait Training,menu_enrichment,1
+"Gait Training - CPT 97116, per unit",menu_enrichment_stem9_04,1
 Gallbladder Remover Surgery,bookimed_longevity,1
 Gallbladder Remover Surgery,bookimed_longevity_turkey,1
 Galleri Multi-Cancer Detection,world_longevity_clinics,1
@@ -4474,11 +4656,13 @@ Gastric Sleeve To Bypass Revision,menu_enrichment,1
 Gastric Sleeve Tu2 1261,mymeditravel_regenerative_turkey,1
 Gastro-Intestinal & Gut Health,menu_enrichment,1
 Gastroenterologist,biohacking_map,1
+Gastroenterology,menu_enrichment_stem9_00,1
 Gastroenterology Consultation,menu_enrichment,1
 Gastroenterology Consultation So8 95,mymeditravel_chaum_medical_center,1
 Gastroenterology Control Check-up with Colonoscopy & Polyp Removal in Turkey,bookimed_longevity,1
 Gastroenterology Control Check-up with Colonoscopy & Polyp Removal in Turkey,bookimed_longevity_turkey,1
 Gastroenterology Services,menu_enrichment,1
+Gastrointestinal Health,menu_enrichment_small_sources,1
 "Gastroscopy & Colonoscopy Package with Lab Work, Anesthesia, Consultation — 4★ Hotel",bookimed_longevity,1
 "Gastroscopy & Colonoscopy Package with Lab Work, Anesthesia, Consultation — 4★ Hotel",bookimed_longevity_turkey,1
 Gastroscopy Bk 13153,mymeditravel_regenerative_thailand,1
@@ -4502,6 +4686,7 @@ General Occupational Therapy,menu_enrichment,1
 "General Physicals, Sick office visits, Well visits, Immunizations and School, College and Employment physicals",menu_enrichment,1
 General Strengthening Program,menu_enrichment,1
 General Surgery,menu_enrichment,1
+General Surgery,menu_enrichment_stem9_03,1
 Genesys Gift Card,menu_enrichment,1
 Genetic Analysis,world_longevity_clinics,1
 Genetic Insight Program,menu_enrichment,1
@@ -4534,6 +4719,7 @@ Geriatric Care,menu_enrichment,1
 Geriatric Foot Care,menu_enrichment,1
 Geriatric Medicine,menu_enrichment,1
 Geriatric Physical Therapy,menu_enrichment,1
+Geriatric Rehab,menu_enrichment_stem9_04,1
 Geriatric Rehabilitation,menu_enrichment,1
 Geriatric Wellness and Injury Prevention,menu_enrichment,1
 Geriatrics and elder care,menu_enrichment,1
@@ -4543,8 +4729,10 @@ Get-Up-And-Go IV Infusion - Fat Burner,menu_enrichment,1
 GHK-Cu - Longevity & Anti-Aging,menu_enrichment,1
 "GHK-Cu - Skin & Vitality, 30-Day Supply",menu_enrichment,1
 GHRP Therapy,menu_enrichment,1
+GI Health,menu_enrichment_stem9_01,1
 GI Health Panel Testing,menu_enrichment,1
 GI Issue Relief,menu_enrichment,1
+GI Map Testing,menu_enrichment_stem9_08,1
 GI-MAP Gut Health Stool Testing,menu_enrichment,1
 Gift Card - £100,menu_enrichment,1
 Gift Card - £250,menu_enrichment,1
@@ -4683,7 +4871,9 @@ Guest Add-On,menu_enrichment,1
 Guided Ice Baths,menu_enrichment,1
 Guided Imagery,menu_enrichment,1
 Guided Meditation - Mind-Body Techniques,menu_enrichment,1
+Gum Grafting,menu_enrichment_stem9_07,1
 Gummy Smile,menu_enrichment,1
+Gut Health,menu_enrichment_stem9_06,1
 Gut Health Consultation with a Functional Medical Doctor,menu_enrichment,1
 Gut Health Program,menu_enrichment,1
 Gut Health Testing Kit,menu_enrichment,1
@@ -4738,6 +4928,7 @@ Hair Renewal Program - The Infusion - HAIRGENX,menu_enrichment,1
 Hair Renewal Program - The Journey - HAIRGENX,menu_enrichment,1
 Hair replacement service,biohacking_map,1
 Hair restoration,menu_enrichment,1
+Hair Restoration,menu_enrichment_stem9_02,1
 Hair Restoration - Platelet-Rich Plasma,menu_enrichment,1
 Hair Restoration 3-Session Package - 3 sessions,menu_enrichment,1
 "Hair Restoration Single Session - 1 session, 60 minutes",menu_enrichment,1
@@ -4801,6 +4992,7 @@ HangTox + ShowTox - 600 Units,menu_enrichment,1
 "Hard Hyperbaric Chamber - Quest 36 - 2.0 ATA & 2.5 ATA, up to 22 PSI",menu_enrichment,1
 "Hard Hyperbaric Chamber - Space 60 - 2.0 ATA, up to 14.7 PSI, sitting",menu_enrichment,1
 Harm Reduction and Prevention Services,menu_enrichment,1
+Hashimoto's Thyroiditis Disease,menu_enrichment_stem9_06,1
 Hausarzt & Check-ups,menu_enrichment,1
 Hay Fever Injection,menu_enrichment,1
 HazMat Testing,menu_enrichment,1
@@ -4810,6 +5002,7 @@ HCG - Fertility hormone support,menu_enrichment,1
 "HCG - HCG 12,000 IU, 500 IU twice weekly",menu_enrichment,1
 HCG and Phentermine Diet,menu_enrichment,1
 HCG Therapy - HCG,menu_enrichment,1
+HCT/P Therapy,menu_enrichment_stem9_02,1
 HD catheter placement,menu_enrichment,1
 "Head & Neck Essential Massage - Add-on treatment, 15 min",menu_enrichment,1
 Head & Scalp Therapy - Restore Ritual,menu_enrichment,1
@@ -4832,6 +5025,7 @@ Health & Wellness Evaluation,menu_enrichment,1
 Health & Wellness Programs,menu_enrichment,1
 Health Analytics Dashboard,world_longevity_clinics,1
 Health and Wellness,menu_enrichment,1
+Health and Wellness,menu_enrichment_stem9_01,1
 "Health and Wellness Coach Visits - NBC-HWC coaching, 2 visits/month, valued at $98/month",menu_enrichment,1
 Health Coaching,world_longevity_clinics,1
 Health Guidance,menu_enrichment,1
@@ -4843,20 +5037,26 @@ Health Optimization,menu_enrichment,1
 Health Screenings and Lab Work,menu_enrichment,1
 Health Sovereignty Package,menu_enrichment,1
 Healthcare Program Management Consultation Services - Professional Development & Practice Support,menu_enrichment,1
+Healthspan & Vitality,menu_enrichment_small_sources,1
 Healthy Aging Optimization Package - with bloodwork,menu_enrichment,1
 Healthy Aging Optimization Package - without bloodwork,menu_enrichment,1
 Healthy Diet Program,menu_enrichment,1
 Healthy Living Assessment,menu_enrichment,1
 Hearing Aid Consultation,menu_enrichment,1
+Hearing Aids,menu_enrichment_stem9_04,1
+Hearing Evaluation,menu_enrichment_stem9_04,1
 Hearing Test,menu_enrichment,1
+Hearing Tests & Treatment,menu_enrichment_stem9_04,1
 Heart and Lung Scan,menu_enrichment,1
 Heart Arrhythmia Catheter Ablation So8 1792,mymeditravel_chaum_medical_center,1
+Heart Attack Prevention,menu_enrichment_stem9_05,1
 Heart Calcium Score & Low-Dose Lung Scan,menu_enrichment,1
 Heart Care Services,menu_enrichment,1
 "Heart Check-up Package in Turkey — Hotel, Transfer & Translation Included",bookimed_longevity,1
 "Heart Check-up Package in Turkey — Hotel, Transfer & Translation Included",bookimed_longevity_turkey,1
 Heart Disease,menu_enrichment,1
 Heart disease prevention,menu_enrichment,1
+Heart Disease Prevention,menu_enrichment_stem9_06,1
 Heart Disease Treatment,menu_enrichment,1
 Heart Expansion Ritual,menu_enrichment,1
 Heart Healing,menu_enrichment,1
@@ -4866,6 +5066,7 @@ Heart Scan,menu_enrichment,1
 Heart Valve Replacement Bk 13188,mymeditravel_regenerative_thailand,1
 Heart Valve Replacement by Cardiac Surgeon with 35+ Years' Experience & Patented Repair Techniques — Private Room Included,bookimed_longevity,1
 Heart-Rate Variability Testing,menu_enrichment,1
+Heat or Ice - CPT 970101,menu_enrichment_stem9_04,1
 Heat/Roller Table Therapy,menu_enrichment,1
 Heavy Metal Detox IV Infusion,menu_enrichment,1
 Heavy Metal Toxicity Testing,menu_enrichment,1
@@ -4873,6 +5074,7 @@ Heavy Metals Assessment & Detoxification,menu_enrichment,1
 Heavy Metals Screen,menu_enrichment,1
 Heel Spurs,menu_enrichment,1
 Heel Spurs Treatment,menu_enrichment,1
+Hematology,menu_enrichment_stem9_01,1
 Hematology and Oncology,menu_enrichment,1
 Hematology/Oncology,menu_enrichment,1
 Hemorrhoid Artery Embolization (HAE),menu_enrichment,1
@@ -4880,6 +5082,9 @@ Henna Brow Tint,menu_enrichment,1
 Hepatitis Vaccine,menu_enrichment,1
 Herb Pharm Tinctures,menu_enrichment,1
 Herbal C Nourisher Moisturizer,menu_enrichment,1
+Herbal Consultation Follow-up,menu_enrichment_stem9_06,1
+Herbal Consultation Initial,menu_enrichment_stem9_06,1
+Herbal Foot Baths,menu_enrichment_stem9_06,1
 Herbal Medicine Healing,menu_enrichment,1
 Herbal medicine store,biohacking_map,1
 Herbal Scalp Treatment,menu_enrichment,1
@@ -4917,6 +5122,7 @@ High Frequency (add-on),menu_enrichment,1
 High Frequency Ultra Facial,menu_enrichment,1
 "High Octane Salt Room Package of 10 Sessions - 10 sessions, non-transferable",menu_enrichment,1
 "High Octane Salt Room Private Session - 20 minutes, 1-2 people, per person",menu_enrichment,1
+High School Sports Physical Exams,menu_enrichment_stem9_01,1
 HigherDOSE Infrared Shower Head Therapy - HigherDOSE,menu_enrichment,1
 HigherDOSE PEMF Mat - HigherDOSE,menu_enrichment,1
 HigherDOSE Red Light Mask - HigherDOSE,menu_enrichment,1
@@ -4937,6 +5143,7 @@ Hip Replacement with Johnson & Johnson Implant at JCI-Accredited Hospital,bookim
 Hip Replacement with Johnson & Johnson Implant at JCI-Accredited Hospital,bookimed_longevity_turkey,1
 Hip surgery,menu_enrichment,1
 Hip treatment,menu_enrichment,1
+Hip Treatment,menu_enrichment_stem_02,1
 HIPEC Oncothermia Hyperthermia Therapy by German-Trained Oncologist,bookimed_longevity,1
 Hippophae Hydration Balm,menu_enrichment,1
 HIV Care and Treatment,menu_enrichment,1
@@ -4981,6 +5188,7 @@ Hormone Imbalance Treatment,menu_enrichment,1
 Hormone Panels & Diagnostics,menu_enrichment,1
 Hormone Replacement,menu_enrichment,1
 Hormone Tests So8 1857,mymeditravel_chaum_medical_center,1
+Hormones,menu_enrichment_stem9_06,1
 Hormones & Peptides - Weight Loss,menu_enrichment,1
 Hot Stone Foot Massage,menu_enrichment,1
 Hot Stone Massage (Volcanic Flow) - Volcanic Flow,menu_enrichment,1
@@ -5070,6 +5278,7 @@ Hydrogen O2 Drinking Bottle,menu_enrichment,1
 Hydrogen O2 Drinking bottle,menu_enrichment,1
 Hydrogen Therapy,menu_enrichment,1
 Hydromassage,menu_enrichment,1
+Hydrotherapy,menu_enrichment_stem9_02,1
 Hylauronic Knee Injections,menu_enrichment,1
 Hymenoplasty So8 1838,mymeditravel_chaum_medical_center,1
 Hymenotomy So8 1839,mymeditravel_chaum_medical_center,1
@@ -5086,12 +5295,16 @@ Hyperbaric Medicine Pa 1573,mymeditravel_regenerative_thailand,1
 Hyperhidrosis Treatment,menu_enrichment,1
 Hyperpigmentation Facial,menu_enrichment,1
 Hyperpigmentation Treatments,menu_enrichment,1
+Hypertension,menu_enrichment_stem9_06,1
+Hypertension Guidance,menu_enrichment_stem9_05,1
 Hypno-Channeling,menu_enrichment,1
 Hypnose,menu_enrichment,1
 Hypnosis & Past Life Regression,menu_enrichment,1
 Hypnosis Counseling,menu_enrichment,1
+Hypocortisolism,menu_enrichment_stem9_06,1
 Hypogastric Plexus Block,menu_enrichment,1
 Hypogastric Plexus Blockade for Chronic Pelvic Pain,menu_enrichment,1
+Hypothyroidism,menu_enrichment_stem9_06,1
 Hypothyroidism Treatment,menu_enrichment,1
 Hypoxic Training,menu_enrichment,1
 Hysterectomy So8 1840,mymeditravel_chaum_medical_center,1
@@ -5160,6 +5373,7 @@ Immunity Support,menu_enrichment,1
 Immunity Support (Mobile) - Mobile,menu_enrichment,1
 Immunity Support Package,menu_enrichment,1
 "Immunizations - Full range of newborn, children's, and adult vaccines",menu_enrichment,1
+Immunizations and Injections,menu_enrichment_stem9_04,1
 Immuno-Charge,menu_enrichment,1
 Immunoglobulin Infusions,menu_enrichment,1
 Immunologist,biohacking_map,1
@@ -5168,6 +5382,7 @@ Immunotherapy,world_longevity_clinics,1
 Immunotherapy Bk 14438,mymeditravel_regenerative_thailand,1
 Impact concussion testing - Impact™,menu_enrichment,1
 Implantable Cardioverter Defibrillator Icd Implantation So8 1794,mymeditravel_chaum_medical_center,1
+Improve Posture Program,menu_enrichment_stem9_04,1
 In Home Massage,menu_enrichment,1
 In Office Physical Therapy,menu_enrichment,1
 "In Person Shamanic Reiki Session - with asha, 2 hour",menu_enrichment,1
@@ -5180,10 +5395,13 @@ In-Office or Mobile Sick Visit,menu_enrichment,1
 In-Vitro Fertilization (IVF),menu_enrichment,1
 Inbody,menu_enrichment,1
 Inbody 770 Full Body Analysis - Inbody 770,menu_enrichment,1
+Inbody Assessment,menu_enrichment_small_sources,1
 InBody Biometric,menu_enrichment,1
 InBody Scale Analysis,menu_enrichment,1
+InBody Scan,menu_enrichment_stem_00,1
 InBody Scans,menu_enrichment,1
 Independent Living,menu_enrichment,1
+Independent Medical Exams (IME's),menu_enrichment_stem_02,1
 Indiba Tecar Therapy,menu_enrichment,1
 INDIBA Tecar Treatment,menu_enrichment,1
 Individual Assessments,menu_enrichment,1
@@ -5214,12 +5432,15 @@ Inflammation Panel - DexaFit,menu_enrichment,1
 "Inflavonoid Intensive Care - Inflavonoid Intensive Care, 120 Tablets",menu_enrichment,1
 Infrared Cocoon Fitness Pod,menu_enrichment,1
 Infrared Lamp,menu_enrichment,1
+Infrared Light Therapy,menu_enrichment_stem9_03,1
 Infrared Light Therapy - 40 Min - 40 min,menu_enrichment,1
 Infrared Light Therapy - 60 Min - 60 min,menu_enrichment,1
 Infrared Recovery Protocols,menu_enrichment,1
 Infusion & Regeneration,menu_enrichment,1
 Infusion Services,menu_enrichment,1
+Infusion Therapy,menu_enrichment_stem9_06,1
 Infusion Therapy - In-Office & At Home,menu_enrichment,1
+"Infusion Therapy - Remicade, Actemra, Orencia, Benlysta, IVIG, Cytoxan, Rituxan",menu_enrichment_stem9_01,1
 Infusion Therapy for OCD,menu_enrichment,1
 Infusions,menu_enrichment,1
 Ingrown Nail Treatment,menu_enrichment,1
@@ -5235,13 +5456,16 @@ Initial Consultation - 1 visit,menu_enrichment,1
 Initial consultation with ultrasound scan - 45mins,menu_enrichment,1
 Initial consultation without ultrasound scan - 45mins,menu_enrichment,1
 Initial Evaluation - 60 min,menu_enrichment,1
+Initial Evaluation - CPT 97161,menu_enrichment_stem9_04,1
 Initial Evaluation and Consultation - Online Registration Offer,menu_enrichment,1
 Initial Evaluation and Consultation - Regular Price,menu_enrichment,1
+Initial Health Assessment,menu_enrichment_stem_00,1
 Initial Longevity Assessment,menu_enrichment,1
 "Initial PT Evaluation - In Home, 60 minutes",menu_enrichment,1
 "Initial PT Evaluation - In Office, 60 minutes",menu_enrichment,1
 "Initial Session - In-Person, 75 minutes",menu_enrichment,1
 "Initial Session - Virtual, 75 minutes",menu_enrichment,1
+Initial Visit,menu_enrichment_stem9_01,1
 Initial Visit (Cash Pay),menu_enrichment,1
 Initial Visit (No Insurance),menu_enrichment,1
 "Initial Visit - 45 min, 45 minutes",menu_enrichment,1
@@ -5253,6 +5477,7 @@ Injectables - Memory Boost,menu_enrichment,1
 Injectables - Skin Brightening,menu_enrichment,1
 Injection,menu_enrichment,1
 Injection Therapy,menu_enrichment,1
+Injection Therapy,menu_enrichment_stem9_05,1
 Injury Prevention Programs,menu_enrichment,1
 Injury Recovery,menu_enrichment,1
 Injury Recovery & Nervous System Reset - Foundational protocol,menu_enrichment,1
@@ -5269,14 +5494,18 @@ Inner Voice Scan,menu_enrichment,1
 Inner Voice with Vitals,menu_enrichment,1
 Inner Wisdom Womb Oil,menu_enrichment,1
 Inotropic Therapy,menu_enrichment,1
+Inpatient Rehabilitation,menu_enrichment_stem9_04,1
 Inpatient Treatment,menu_enrichment,1
 "Insight - Comprehensive evaluation program, 1-3 month long program",menu_enrichment,1
 INSight Scan - INSIGHT,menu_enrichment,1
 Insoles,menu_enrichment,1
+Insomnia,menu_enrichment_stem9_06,1
 Insomnia Testing,menu_enrichment,1
 Installment Payment Processing Fee,menu_enrichment,1
+Instrument Assisted Soft Tissue Therapy - Graston/SASTM,menu_enrichment_stem9_01,1
 Instrument Assisted Soft-Tissue Mobilization,menu_enrichment,1
 Insurance forms without consultation - 15 minutes,menu_enrichment,1
+Intake,menu_enrichment_stem9_03,1
 Integrated Data Review & Optimization Planning,menu_enrichment,1
 Integrated Regenerative Program for Alzheimer’s Disease,bookimed_longevity,1
 Integrated Regenerative Program for Alzheimer’s Disease,bookimed_longevity_thailand,1
@@ -5321,6 +5550,7 @@ Intra-articular Hyaluronic Acid injection,menu_enrichment,1
 Intra-Articular Injections,menu_enrichment,1
 Intra-articular Steroid injection,menu_enrichment,1
 Intra-Osseous Injections,menu_enrichment,1
+Intracept,menu_enrichment_stem9_08,1
 Intraceutical Oxygen Facial,menu_enrichment,1
 Intradermal Test - Intradermal allergy test,menu_enrichment,1
 Intradiscal Electrothermal Therapy (IDET),menu_enrichment,1
@@ -5357,6 +5587,7 @@ Invisalign Clear Aligners by University Lecturer — 5★ Resort & VIP Transfer,
 Ionic Detox,menu_enrichment,1
 Ionic Detox Foot Bath,menu_enrichment,1
 Ionic Foot Detoxification Therapy,menu_enrichment,1
+Iontophoresis,menu_enrichment_stem9_02,1
 Iovera,menu_enrichment,1
 Ipamorelin,menu_enrichment,1
 Ipamorelin - HGH Booster,menu_enrichment,1
@@ -5434,6 +5665,8 @@ IV Phosphatidylcholine,menu_enrichment,1
 IV Quercetin,menu_enrichment,1
 IV Stem Cell (WJ) and Exosome Infusion,menu_enrichment,1
 IV/IM,menu_enrichment,1
+IVF,menu_enrichment_stem9_04,1
+IVF,menu_enrichment_stem_02,1
 Ivf Consultation So8 1858,mymeditravel_chaum_medical_center,1
 IVF Cycle,menu_enrichment,1
 IVF Cycle Optimization And Support,menu_enrichment,1
@@ -5465,9 +5698,13 @@ Joint and Muscle Injections,menu_enrichment,1
 Joint and Tendon Injections,menu_enrichment,1
 Joint Aspiration,menu_enrichment,1
 Joint Aspiration and Injection Therapy,menu_enrichment,1
+Joint Injections,menu_enrichment_stem9_07,1
+"Joint Injections, Incision/Drainage, and Other Office Based Procedures",menu_enrichment_stem9_02,1
 Joint Matrix Vitamin,menu_enrichment,1
 Joint Pain Relief,menu_enrichment,1
 Joint Radiofrequency Injections,menu_enrichment,1
+Joint Replacement,menu_enrichment_stem_01,1
+Joint Replacement Rehabilitation,menu_enrichment_stem9_04,1
 Joint replacement surgery,menu_enrichment,1
 Joint Replacement Therapy,menu_enrichment,1
 Joint Replacements Rehabilitation,menu_enrichment,1
@@ -5506,6 +5743,7 @@ Kids 8+ Therapy,menu_enrichment,1
 "Kids Check-Up Package — Blood Tests, Chest X-ray & Thyroid Ultrasound — Hotel & Transfer",bookimed_longevity,1
 "Kids Check-Up Package — Blood Tests, Chest X-ray & Thyroid Ultrasound — Hotel & Transfer",bookimed_longevity_turkey,1
 KINEO Intelligent Load and Reactive Neuromuscular Training,menu_enrichment,1
+Kinesio Tape Therapy,menu_enrichment_stem_00,1
 Kinesiology,menu_enrichment,1
 Kinesiology Tape,menu_enrichment,1
 Kinstretch Classes,menu_enrichment,1
@@ -5514,8 +5752,11 @@ KISSER Creamy Velvet Liquid Lipstick,menu_enrichment,1
 Kisspeptin,menu_enrichment,1
 "Kisspeptin - Reproductive Health, 4-Week Supply",menu_enrichment,1
 Klardie Skin Booster,menu_enrichment,1
+Kleiman Biomechanical Correction Techniques (BCT) - KLEIMAN-BCT,menu_enrichment_stem9_04,1
+Knee and Shoulder Replacements,menu_enrichment_stem_02,1
 Knee Arthroplasty Tu3 58,mymeditravel_regenerative_turkey,1
 Knee Arthroplasty Tu5 800,mymeditravel_regenerative_turkey,1
+Knee Arthroscopy,menu_enrichment_stem9_07,1
 Knee Arthroscopy Tu5 803,mymeditravel_regenerative_turkey,1
 Knee Arthroscopy/Procedures,menu_enrichment,1
 Knee Care,menu_enrichment,1
@@ -5539,6 +5780,7 @@ Knee Replacement with Zimmer Biomet Implant — Transfer Included,bookimed_longe
 Knee surgery,menu_enrichment,1
 Knee Treatment,menu_enrichment,1
 Knee treatment,menu_enrichment,1
+Knee Treatment,menu_enrichment_stem_02,1
 Knee Treatments,menu_enrichment,1
 Korean Carboxy Facial Package,menu_enrichment,1
 Korean CO2 Carboxy Facial,menu_enrichment,1
@@ -5557,6 +5799,7 @@ L-Arginine (Longevity & Circulation) - Nobel Molecule,menu_enrichment,1
 L-Theanine,menu_enrichment,1
 Lab & UTI Testing,menu_enrichment,1
 Lab Preparation - Lab Test Requisition Fee,menu_enrichment,1
+Lab Report Interpretation,menu_enrichment_stem_00,1
 Lab Services - Quest Diagnostics,menu_enrichment,1
 Lab Testing & Preventive Screenings,menu_enrichment,1
 Labiaplasty Bk 14665,mymeditravel_regenerative_thailand,1
@@ -5564,12 +5807,16 @@ Labiaplasty by EBOPRAS-Certified Surgeon — 3 Hotel Nights & VIP Transfer,booki
 Labiaplasty by EBOPRAS-Certified Surgeon — 3 Hotel Nights & VIP Transfer,bookimed_longevity_turkey,1
 Labiaplasty by ESAG-Certified Surgeon — 5★ Hotel & 24-Hour Nurse Care,bookimed_longevity,1
 Labiaplasty by ESAG-Certified Surgeon — 5★ Hotel & 24-Hour Nurse Care,bookimed_longevity_turkey,1
+Laboratory Assessments,menu_enrichment_small_sources,1
 Laboratory services,menu_enrichment,1
+"Laboratory Services - Urine Toxicology, Clinical Chemistry, Hematology",menu_enrichment_stem9_04,1
 Labral Repair,menu_enrichment,1
 Labral Tear Repair,menu_enrichment,1
 Labs,menu_enrichment,1
+Labs & Imaging,menu_enrichment_stem9_01,1
 Lactation Care,menu_enrichment,1
 Lamprobe,menu_enrichment,1
+Land Based Therapeutics,menu_enrichment_stem9_02,1
 Lani Membership,menu_enrichment,1
 Laparoscopic Cholecystectomy,bookimed_longevity,1
 Laparoscopic Cholecystectomy,bookimed_longevity_turkey,1
@@ -5663,6 +5910,7 @@ Laser Skin Tightening,menu_enrichment,1
 Laser Skin Tightening & Body Contouring,menu_enrichment,1
 Laser Spider Vein Treatment - Fotona Laser,menu_enrichment,1
 Laser Teeth Whitening,menu_enrichment,1
+Laser Therapy,menu_enrichment_stem9_02,1
 Laser Therapy - Cold Laser / Low-Level Light Therapy (LLLT),menu_enrichment,1
 Laser therapy - Lumix Q Super Pulse Laser,menu_enrichment,1
 Laser Therapy for Eye Diseases,menu_enrichment,1
@@ -5719,6 +5967,7 @@ Lesion Removal,menu_enrichment,1
 Letters to Third Parties,menu_enrichment,1
 "Level 1 Reiki Training - 1:1, 6 hours total",menu_enrichment,1
 "Level 1 Reiki Training - small group training, 6 hours total",menu_enrichment,1
+Level One Cardiac Program,menu_enrichment_stem9_04,1
 LGBTQ Couples & Throuples Counseling,menu_enrichment,1
 LGBTQ Substance Use / Addiction Therapy,menu_enrichment,1
 LGBTQ Trauma & PTSD Therapy,menu_enrichment,1
@@ -5851,8 +6100,10 @@ Living Donor Kidney Transplant at JCI-Accredited Hospital — VIP Transfer,booki
 Living Donor Kidney Transplant at JCI-Accredited Hospital — VIP Transfer,bookimed_longevity_turkey,1
 Living Donor Liver Transplant at JCI-Accredited Hospital — Individual Chamber,bookimed_longevity,1
 Living Donor Liver Transplant at JCI-Accredited Hospital — Individual Chamber,bookimed_longevity_turkey,1
+Living in Balance,menu_enrichment_stem9_04,1
 LL-37,menu_enrichment,1
 Localized Cryo,menu_enrichment,1
+Localized Cryo,menu_enrichment_small_sources,1
 Localized Injury Laser,menu_enrichment,1
 Long COVID Program,menu_enrichment,1
 Long COVID Treatment,menu_enrichment,1
@@ -5872,6 +6123,7 @@ Longevity Medicine,menu_enrichment,1
 Longevity Program - Personalized longevity program,menu_enrichment,1
 Longevity Screening,menu_enrichment,1
 Longevity-Programm,menu_enrichment,1
+Longévité,menu_enrichment_small_sources,1
 Looping/Stuck Processing Cheat Sheet,menu_enrichment,1
 Love Handle Liposuction with Tumescent Technique by Board-Certified Surgeon,bookimed_longevity,1
 Love Handle Liposuction with Tumescent Technique by Board-Certified Surgeon,bookimed_longevity_korea,1
@@ -5884,6 +6136,7 @@ Low Dose Immunotherapy - LDI,menu_enrichment,1
 Low Dose Naltrexone (LDN),menu_enrichment,1
 Low Dose Naltrexone (LDN) Therapy - LDN,menu_enrichment,1
 Low Level Laser Therapy (LLLT),menu_enrichment,1
+Low Libido,menu_enrichment_stem9_06,1
 Low Testosterone Treatment,menu_enrichment,1
 Low Testosterone Treatment - Menspro PRIME™,menu_enrichment,1
 Low-Carb Diet and Diabetes,menu_enrichment,1
@@ -5985,7 +6238,15 @@ Mangosteen Lactic Peel,menu_enrichment,1
 Manic Mondays,menu_enrichment,1
 Manicure,menu_enrichment,1
 Manipulation Under Anesthesia,menu_enrichment,1
+Manipulative Therapy,menu_enrichment_stem9_05,1
 Manual / Hands-On Therapy,menu_enrichment,1
+Manual Medicine,menu_enrichment_stem9_04,1
+"Manual Therapies - soft tissue mobilization, joint mobilization, myofascial release, deep friction massage, manual tractions",menu_enrichment_stem9_06,1
+"Manual Therapies - soft tissue mobilization, joint mobilization, myofascial release, deep friction massage, manual tractions, etc.",menu_enrichment_stem9_04,1
+Manual Therapy,menu_enrichment_stem9_02,1
+Manual Therapy,menu_enrichment_stem9_03,1
+Manual Therapy,menu_enrichment_stem9_07,1
+"Manual Therapy - CPT 97140, per unit",menu_enrichment_stem9_04,1
 Manual Therapy Package - 10 sessions,menu_enrichment,1
 Manual Therapy Package - 3 sessions,menu_enrichment,1
 Manual Therapy Package - 5 sessions,menu_enrichment,1
@@ -6025,6 +6286,7 @@ Massages,menu_enrichment,1
 Masseter,menu_enrichment,1
 Masseter Reduction,menu_enrichment,1
 Mastectomy Bk 14584,mymeditravel_regenerative_thailand,1
+Master Esthetics Program,menu_enrichment_stem9_04,1
 Mat Pilates,menu_enrichment,1
 Maternal Wellness IV Infusion,menu_enrichment,1
 Maternity Massage - 60 min,menu_enrichment,1
@@ -6040,12 +6302,15 @@ Mayan Abdominal Therapy,menu_enrichment,1
 Mayr Therapy,world_longevity_clinics,1
 McConnell Patellofemoral Taping,menu_enrichment,1
 McConnell Taping,menu_enrichment,1
+McConnell Taping,menu_enrichment_stem9_04,1
+McConnell Taping,menu_enrichment_stem9_06,1
 McKenzie Spinal Exercises,menu_enrichment,1
 McKenzie Technique,menu_enrichment,1
 MCL Reconstruction,menu_enrichment,1
 MCL/LCL Sprains,menu_enrichment,1
 MDF Fractional Resurfacing Laser,menu_enrichment,1
 Meal and Exercise Planning,menu_enrichment,1
+Mechanical Traction - CPT 97012,menu_enrichment_stem9_04,1
 MedCaps T3 Guggul Extract - 120 capsules,menu_enrichment,1
 Medial Branch Block (MBB),menu_enrichment,1
 Medial Branch Blocks,menu_enrichment,1
@@ -6083,6 +6348,7 @@ Medical Massage Therapy,menu_enrichment,1
 Medical Massage Therapy - Medical Massage,menu_enrichment,1
 Medical Microdermabrasion - Diamond Tome,menu_enrichment,1
 Medical Oncology,menu_enrichment,1
+Medical Oncology,menu_enrichment_stem9_01,1
 Medical Pain Management,menu_enrichment,1
 Medical Pain Relief,menu_enrichment,1
 Medical Pedicure,menu_enrichment,1
@@ -6113,10 +6379,12 @@ Medically Supervised Weight Loss,menu_enrichment,1
 Medically Supervised Weightloss,menu_enrichment,1
 Medicare Wellness / Nutritional Counseling,menu_enrichment,1
 Medicated Nail Polish for Toenail Fungus,menu_enrichment,1
+Medication Management,menu_enrichment_stem9_05,1
 Medication Management & DNA Testing,menu_enrichment,1
 "Medication Management, Refills & Consultations",menu_enrichment,1
 Medication refills,menu_enrichment,1
 Medication-Assisted Treatment,menu_enrichment,1
+Medicina Esportiva,menu_enrichment_small_sources,1
 Medicinal Therapy Consultation and Facilitation,menu_enrichment,1
 Medicine exporter,biohacking_map,1
 Mediscan,menu_enrichment,1
@@ -6162,6 +6430,7 @@ Men Legs Waxing (Half/Full),menu_enrichment,1
 Men Lips Waxing,menu_enrichment,1
 Men Underarms Waxing,menu_enrichment,1
 Men's & Co-ed Retreats,menu_enrichment,1
+Men's & Women's Wellness,menu_enrichment_stem9_05,1
 "Men's Enclomiphene Lab - Free Test, Estradiol, LH",menu_enrichment,1
 Men's Essential Facial,menu_enrichment,1
 Men's Follow Up Lab - Follow-up hormone monitoring,menu_enrichment,1
@@ -6176,6 +6445,7 @@ Men's Health Care,menu_enrichment,1
 Men's Health Evaluation,menu_enrichment,1
 Men's Health Panel,menu_enrichment,1
 Men's Health Panel (Baseline),menu_enrichment,1
+Men's Health Preventive Care,menu_enrichment_stem9_01,1
 Men's Hormones,menu_enrichment,1
 Men's Housing,menu_enrichment,1
 Men's Injury Treatments,menu_enrichment,1
@@ -6198,8 +6468,11 @@ MEN/WOMEN Long-hair (non-shave) transplant (1 zone) UNLIMITED GRAFTS (case revie
 Meniscal Debridement,menu_enrichment,1
 Meniscal Repair,menu_enrichment,1
 Meniscal Tears,menu_enrichment,1
+Meniscus Repair,menu_enrichment_stem9_07,1
 Meniscus Surgery Tu3 62,mymeditravel_regenerative_turkey,1
 Meniscus Tear,menu_enrichment,1
+Meniscus Transplantation,menu_enrichment_stem_02,1
+Menopause & Perimenopause,menu_enrichment_small_sources,1
 Menopause care,menu_enrichment,1
 Menopause Clinic,menu_enrichment,1
 Menopause Program,menu_enrichment,1
@@ -6320,6 +6593,7 @@ Migraine IV Drip,menu_enrichment,1
 Migraine Management,menu_enrichment,1
 Migraine Relief (Mobile) - Mobile,menu_enrichment,1
 Migraine Relief IV Treatment,menu_enrichment,1
+Migraines,menu_enrichment_stem9_06,1
 Migraines & Asthma,menu_enrichment,1
 Migraines & More - 1 Liter,menu_enrichment,1
 Migraines & More - Half Liter,menu_enrichment,1
@@ -6350,6 +6624,8 @@ Mini HydraGlow Facial,menu_enrichment,1
 "Mini Mat - 32"" x 20""",menu_enrichment,1
 Minimally Invasive Lumbar Decompression (MILD),menu_enrichment,1
 "Minimally Invasive Procedures - Cortisone Injection, Hyaluronic Acid Injection, Tenotomy, Barbotage, Nerve Hydrodissection",menu_enrichment,1
+Minor Emergency Care,menu_enrichment_stem9_04,1
+"Minor Office Procedures - EKG, Spirometry, Allergy Testing, Biopsy & Excision, Incision & Drainage, Nebulizer Treatments",menu_enrichment_stem9_01,1
 Minor Procedures,menu_enrichment,1
 Minor Surgical Procedures of the Skin - Office procedures under local anesthesia,menu_enrichment,1
 Minoxidil + Finasteride,menu_enrichment,1
@@ -6433,6 +6709,8 @@ Movement RX,menu_enrichment,1
 Moxabustão,menu_enrichment,1
 Moxi and BBL,menu_enrichment,1
 MOXI Laser Treatment,menu_enrichment,1
+Moxibustion,menu_enrichment_stem9_01,1
+Moxibustion,menu_enrichment_stem9_06,1
 Moxibustion Therapy,menu_enrichment,1
 MPFL Reconstruction,menu_enrichment,1
 MR Arthrogram,menu_enrichment,1
@@ -6442,6 +6720,7 @@ Mr. Brightside IV - 50g,menu_enrichment,1
 Mr. Brightside IV - 75g,menu_enrichment,1
 MR5 ACTIV PRO LaserStim Therapy,menu_enrichment,1
 MSC Stem Cell IV Hydration - MSC Mesenchymal IV Infusion,menu_enrichment,1
+MSC Therapy,menu_enrichment_stem9_02,1
 MSK Diagnostic Ultrasound,menu_enrichment,1
 MSK Ultrasound,menu_enrichment,1
 MSLT/MWT,menu_enrichment,1
@@ -6465,16 +6744,20 @@ Muscle Energy,menu_enrichment,1
 Muscle Energy Technique,menu_enrichment,1
 Muscle Pain Treatment,menu_enrichment,1
 Muscle Relax - Muscle Relax,menu_enrichment,1
+Muscle Response Testing - MRT,menu_enrichment_stem9_07,1
 Muscle Sculpt,menu_enrichment,1
 Muscle Soreness & Pain Relief,menu_enrichment,1
 Muscle Specific Deep Tissue Massage,menu_enrichment,1
+Muscle Stimulation,menu_enrichment_stem9_05,1
 Muscle Stimulation (E-Stim),menu_enrichment,1
 Muscle Strains Treatment,menu_enrichment,1
+Muscle Therapy,menu_enrichment_stem9_06,1
 Muscle Therapy + Foot Rub Combo,menu_enrichment,1
 Muscle Therapy With Free Cupping,menu_enrichment,1
 Musculoskeletal Balance Disorder (MSBD) Treatment,menu_enrichment,1
 Musculoskeletal Therapy,menu_enrichment,1
 Musculoskeletal Ultrasound,menu_enrichment,1
+Musculoskeletal Ultrasound,menu_enrichment_stem9_08,1
 Musculoskeletal Ultrasound (MSK US),menu_enrichment,1
 "Mushroom Extract Lion's Mane Powder, Organic - Kiki Health, 50 gm",menu_enrichment,1
 Music-Integrated Therapy,menu_enrichment,1
@@ -6499,6 +6782,8 @@ Myers' Cocktail - Myers' Cocktail,menu_enrichment,1
 Myers' Cocktail Infusion,menu_enrichment,1
 MYO CLUB for KIDS - Group class,menu_enrichment,1
 Myocardial Perfusion Imaging Mpi So8 1796,mymeditravel_chaum_medical_center,1
+Myofascial Disease Therapy,menu_enrichment_stem9_02,1
+Myofascial Release,menu_enrichment_stem9_01,1
 Myofascial Release - John Barnes Approach,menu_enrichment,1
 Myofascial Release Massage,menu_enrichment,1
 Myofascial Strategies,menu_enrichment,1
@@ -6580,6 +6865,7 @@ Natural Treatment for Woman with Fibromyalgia,menu_enrichment,1
 Natural Treatment Women with Thyroid Problems,menu_enrichment,1
 Natural Weight Loss Support,menu_enrichment,1
 Naturopathic Care,menu_enrichment,1
+Naturopathic Medicine,menu_enrichment_stem9_03,1
 Naturopathic Wellness,menu_enrichment,1
 Naturopathy,menu_enrichment,1
 Naturopathy & Holistic Health Consultation for Diabetes and Hypertension,menu_enrichment,1
@@ -6607,18 +6893,23 @@ Neck/Back Sprains and Strains,menu_enrichment,1
 Necrotizing Soft Tissue Infection Treatment,menu_enrichment,1
 Needle localization,menu_enrichment,1
 Needle-Free SPG Blocks,menu_enrichment,1
+Negative Pressure Wound Therapy,menu_enrichment_stem9_06,1
 Neighborhood Care,menu_enrichment,1
 Neogen PSR Skin Rejuvenation,menu_enrichment,1
 NeoGraft Hair Restoration (FUE),menu_enrichment,1
 NeoStrata Skin Active Products - NeoStrata Skin Active,menu_enrichment,1
 NeoStrata Skin Care Products - NeoStrata,menu_enrichment,1
 Nerve and Muscle Pain Treatment,menu_enrichment,1
+Nerve Block for Osteoarthritis,menu_enrichment_stem9_08,1
 Nerve Block Injections,menu_enrichment,1
+Nerve Blocks,menu_enrichment_stem9_07,1
 Nerve Conduction and Electromyography (NCV/EMG),menu_enrichment,1
 Nerve Conduction Studies,menu_enrichment,1
 Nerve Conduction Testing,menu_enrichment,1
 Nerve Conduction Velocity Testing,menu_enrichment,1
 Nerve Hydrodissection,menu_enrichment,1
+Nerve Hydrodissection,menu_enrichment_small_sources,1
+Nerve Hydrodissection - Nerve Entrapment Release,menu_enrichment_stem9_08,1
 Nerve Pain Injections,menu_enrichment,1
 Nerve Pain Treatment,menu_enrichment,1
 Nerve Testing,menu_enrichment,1
@@ -6633,11 +6924,15 @@ Neural Mobilization,menu_enrichment,1
 Neural Prolotherapy,menu_enrichment,1
 Neural Therapy,menu_enrichment,1
 NeuralChek + BrainTap Brain Health Assessment,menu_enrichment,1
+Neuro Emotional Technique - NET,menu_enrichment_stem9_07,1
 Neuro Rehab - Stroke,menu_enrichment,1
+"Neuro-muscular Re-education - CPT 97112, per unit",menu_enrichment_stem9_04,1
 "Neuro-Toxins - Xeomin, Letybo, Jeuveau",menu_enrichment,1
+Neurodiagnostic Testing (EMG/NCS),menu_enrichment_stem9_08,1
 Neurofeedback - NeurOptimal®,menu_enrichment,1
 NeuroFunctional Acupuncture,menu_enrichment,1
 Neurologic Rehabilitation,menu_enrichment,1
+Neurological,menu_enrichment_stem9_06,1
 Neurological Conditions,menu_enrichment,1
 Neurological Rehabilitation - Physical Therapy,menu_enrichment,1
 Neurological Rehabilitation So8 534,mymeditravel_chaum_medical_center,1
@@ -6652,16 +6947,19 @@ Neuromobilization,menu_enrichment,1
 Neuromodulation,menu_enrichment,1
 Neuromodulação não-invasiva,menu_enrichment,1
 Neuromuscular ReEducation,menu_enrichment,1
+Neuromuscular Testing,menu_enrichment_stem9_01,1
 Neuromuscular Therapy,menu_enrichment,1
 "Neuronic Light 1070nm Photobiomodulation Helmet - 1070nm near-infrared, app connectivity",menu_enrichment,1
 "Neuronic Light 1070nm Photobiomodulation Helmet - App Connectivity, Advanced Brain Health & Cognitive Support",menu_enrichment,1
 Neuropathy,menu_enrichment,1
 Neuropathy Program - 6-step program,menu_enrichment,1
 Neuropathy Relief,menu_enrichment,1
+Neuropathy Treatments,menu_enrichment_stem9_01,1
 Neuropsychological evaluation,menu_enrichment,1
 Neuropsychological Testing,menu_enrichment,1
 NeurOptimal,menu_enrichment,1
 Neuropuncture,menu_enrichment,1
+Neuroscience,menu_enrichment_stem9_04,1
 Neurosonic Harmonia,menu_enrichment,1
 Neurotoxin,menu_enrichment,1
 Neurotoxin Treatment - New Patients,menu_enrichment,1
@@ -6684,6 +6982,7 @@ New Patient Convenience Fee,menu_enrichment,1
 New Patient Exam,menu_enrichment,1
 "New Patient Exam (includes Spinal Postural Exam, X-rays & INSIGHT SCAN) - $50 off",menu_enrichment,1
 New Patient Exam and Report of Findings (regular price),menu_enrichment,1
+New Patient Health Coaching,menu_enrichment_stem_00,1
 "New Patient Matrix Repatterning Visit - Dr. Chris Bierbrauer, DC, CMRP",menu_enrichment,1
 New Patient Offer,menu_enrichment,1
 New Patient Special Offer,menu_enrichment,1
@@ -6719,6 +7018,8 @@ Non-Custom Hinge Knee Brace,menu_enrichment,1
 Non-incisional SMAS Lifting,menu_enrichment,1
 Non-Invasive BBL (Brazilian Butt Lift),menu_enrichment,1
 Non-Invasive Mommy Makeover,menu_enrichment,1
+Non-Needle Electronic Procedures,menu_enrichment_stem9_01,1
+Non-opiate Medication Management,menu_enrichment_stem9_04,1
 Non-opiate Pain Management / Acupuncture,menu_enrichment,1
 Non-profit organization,biohacking_map,1
 Non-sticky lipgloss In Lalique,menu_enrichment,1
@@ -6729,9 +7030,11 @@ Non-Surgical Orthopedics,menu_enrichment,1
 Non-Surgical Rhinoplasty,menu_enrichment,1
 Non-Surgical Rhinoplasty - Liquid Rhinoplasty,menu_enrichment,1
 Non-Surgical Spinal Decompression - Accu-SPINA,menu_enrichment,1
+Non-Surgical Treatments,menu_enrichment_stem9_07,1
 Nonsurgical Body Contouring - VelaShape III,menu_enrichment,1
 Nonsurgical Face Lift,menu_enrichment,1
 Nonsurgical Rhinoplasty,menu_enrichment,1
+"Nonsurgical Services - Angioplasty, Stent Placement",menu_enrichment_stem9_04,1
 NormaTec Compression,menu_enrichment,1
 Normatec Leg Compressions,menu_enrichment,1
 Normatec Recovery - 30 min Casual Session,menu_enrichment,1
@@ -6772,9 +7075,11 @@ Nutrigenomix DNA Testing,menu_enrichment,1
 "Nutrigenomix DNA Testing - Nutrigenomix, 70-Gene Analysis",menu_enrichment,1
 Nutrition & Diet,menu_enrichment,1
 Nutrition - SENS Solution,menu_enrichment,1
+Nutrition and Wellness Training,menu_enrichment_stem9_03,1
 Nutrition Coaching,menu_enrichment,1
 Nutrition Coaching Session,menu_enrichment,1
 Nutrition Consultation,menu_enrichment,1
+Nutrition Consultation - Standard Process Whole Food Supplements,menu_enrichment_stem9_07,1
 Nutrition Guidance Program,menu_enrichment,1
 Nutrition Guidance Program - Nine 15 minute sessions,menu_enrichment,1
 Nutrition Response Testing,menu_enrichment,1
@@ -6782,7 +7087,9 @@ Nutrition Response Testing - Nutrition Response Testing®,menu_enrichment,1
 Nutritional and Lifestyle Guidance,menu_enrichment,1
 Nutritional Blood Analysis,menu_enrichment,1
 Nutritional Consultation - 90-min consultation with Marisol Kim,menu_enrichment,1
+Nutritional Counseling,menu_enrichment_stem9_01,1
 Nutritional IV's,menu_enrichment,1
+Nutritional Program,menu_enrichment_stem9_01,1
 NYC Herbal Medicine Ceremony Retreat,menu_enrichment,1
 O-Shot®,menu_enrichment,1
 O2 Rejuvenation Facial,menu_enrichment,1
@@ -6805,15 +7112,18 @@ Occipital Nerve Stimulator Trial and Implant,menu_enrichment,1
 Occipital Neuralgia Treatment,menu_enrichment,1
 Occupational Health,menu_enrichment,1
 Occupational Medicine,menu_enrichment,1
+Occupational Therapy,menu_enrichment_stem9_04,1
 OCD Treatment,menu_enrichment,1
 OCD Treatments,menu_enrichment,1
 Oceanic Skin Restoring Facial,menu_enrichment,1
+Oculoplastic/Facial Reconstruction,menu_enrichment_stem9_03,1
 Oculoplastics Surgery,menu_enrichment,1
 Office Based Addiction Treatment (OBAT) - Medication Assisted Treatment (MAT),menu_enrichment,1
 Ombre Powder Brows + Lip Blush,menu_enrichment,1
 "OmegaGenics EPA-DHA 720 - OmegaGenics EPA-DHA 720, 120 Softgels",menu_enrichment,1
 OMG Shot,menu_enrichment,1
 OMT (Osteopathic Manipulative Treatment),menu_enrichment,1
+On-Site Blood Test,menu_enrichment_stem9_05,1
 On-Site Diagnostics,menu_enrichment,1
 On-site Laboratory and X-ray,menu_enrichment,1
 On-site Pharmacy,menu_enrichment,1
@@ -6824,6 +7134,7 @@ Oncology Control Check-up with PET-CT & Tumor Markers — All Inclusive,bookimed
 Oncology Control Check-up with PET-CT & Tumor Markers — All Inclusive,bookimed_longevity_turkey,1
 Oncology Diagnostic Package – Comprehensive Second Opinion & Advanced Testing,bookimed_longevity,1
 Oncology Facial,menu_enrichment,1
+Oncology Social Services,menu_enrichment_stem9_01,1
 Oncotherm,menu_enrichment,1
 Oncotherm Cancer Support - Oncotherm EHY-2000 Plus,menu_enrichment,1
 Ondamed Bio-Feedback,menu_enrichment,1
@@ -6835,6 +7146,7 @@ One Week Unlimited,menu_enrichment,1
 One Year Unlimited - monthly payments,menu_enrichment,1
 One Year Unlimited - paid all at once,menu_enrichment,1
 One-time enrollment fee,menu_enrichment,1
+One-time Registration Fee,menu_enrichment_stem9_02,1
 Ongoing Care Memberships,menu_enrichment,1
 Ongoing Medical Monitoring,menu_enrichment,1
 Ongoing Wellness Care,menu_enrichment,1
@@ -6844,7 +7156,9 @@ Onychomycosis Treatment,menu_enrichment,1
 Onyfix Ingrown Toenail Treatment,menu_enrichment,1
 Onyfix Ingrown Toenail Treatment - Onyfix,menu_enrichment,1
 Open Wounds Treatment,menu_enrichment,1
+Ophthalmology,menu_enrichment_stem9_03,1
 Opiate Addiction Treatment,menu_enrichment,1
+Opiate Medication Management,menu_enrichment_stem9_04,1
 Opti-Adrenal Support,menu_enrichment,1
 Optical Coherence Tomography,menu_enrichment,1
 Optimal B Awake,menu_enrichment,1
@@ -6859,8 +7173,11 @@ Oral Appetite Suppressants,menu_enrichment,1
 Oral BPC-157,menu_enrichment,1
 Oral ED Medication,menu_enrichment,1
 Oral Food Challenges,menu_enrichment,1
+Oral Sedation,menu_enrichment_stem9_07,1
+Oral Surgery,menu_enrichment_stem9_07,1
 Ordering Sperm,menu_enrichment,1
 Organic & Grass-fed Bone Broth Collagen - Functional Future,menu_enrichment,1
+Organic Acids Test (OAT),menu_enrichment_stem9_08,1
 Organic Hydra Facial,menu_enrichment,1
 Organic Lions Mane Mushroom - Mary Ruth's,menu_enrichment,1
 Organic Oil of Oregano - Mary Ruth's,menu_enrichment,1
@@ -6883,9 +7200,11 @@ Orthopedic Sports Medicine,menu_enrichment,1
 Orthopedic Supports & Bracing,menu_enrichment,1
 Orthopedic Surgeons,menu_enrichment,1
 Orthopedic Therapy,menu_enrichment,1
+Orthopedics,menu_enrichment_stem9_06,1
 Orthopedics Consultation Cr 45,mymeditravel_regenerative_thailand,1
 ORTHOVISC,menu_enrichment,1
 OSHA Physicals,menu_enrichment,1
+Osseous Surgery,menu_enrichment_stem9_07,1
 Osteoarthritis,menu_enrichment,1
 Osteoarthritis Treatments,menu_enrichment,1
 Osteomyelitis Treatment,menu_enrichment,1
@@ -6898,9 +7217,11 @@ Osteopathic Medicine / Whole Person,menu_enrichment,1
 Osteopathic Therapies,menu_enrichment,1
 Osteopathy,menu_enrichment,1
 Osteoporosis Management,menu_enrichment,1
+Osteoporosis Program,menu_enrichment_stem9_04,1
 Osteoporosis Treatment,menu_enrichment,1
 Osteoporosis treatment & prevention,menu_enrichment,1
 Osteoradionecrosis Treatment,menu_enrichment,1
+OsteoStrong Membership,menu_enrichment_stem9_04,1
 Osteotomy Tu3 76,mymeditravel_regenerative_turkey,1
 Ostéopathie,menu_enrichment,1
 Other medical services,menu_enrichment,1
@@ -6908,7 +7229,9 @@ Otoplasty Bk 14632,mymeditravel_regenerative_thailand,1
 Otoplasty for Natural Ear Proportions — 2 Nights at 5★ Hotel,bookimed_longevity,1
 Otoplasty for Natural Ear Proportions — 2 Nights at 5★ Hotel,bookimed_longevity_turkey,1
 Oura Ring 4 - Oura,menu_enrichment,1
+Outpatient Rehabilitation,menu_enrichment_stem9_04,1
 Overseas Visitors,menu_enrichment,1
+Oxigenoterapia,menu_enrichment_small_sources,1
 Oxigenoterapia Hiperbárica,menu_enrichment,1
 Oxy Four Lie-Down Steel Hard Shell Chamber - 2.0 ATA,menu_enrichment,1
 Oxy Four Lie-Down Steel Hard Shell Chamber - 2.0 ATA Lie-Down Steel Hard Shell,menu_enrichment,1
@@ -6930,6 +7253,7 @@ Oxytocin - Sexual Health,menu_enrichment,1
 Oxytocin Therapy for Erectile Dysfunction,menu_enrichment,1
 Ozempic - Wegovy,menu_enrichment,1
 Ozone Joint Rejuvenation,menu_enrichment,1
+Ozone Therapy,menu_enrichment_stem9_06,1
 Ozone Therapy,placidway_antiaging_thailand,1
 Ozone Therapy (MAH),menu_enrichment,1
 "Ozone Therapy - Rectal, Ear & Vaginal Insufflation",menu_enrichment,1
@@ -6952,6 +7276,8 @@ P-SHOT®,menu_enrichment,1
 Pachymetry,menu_enrichment,1
 Pack 11 séances (10+1) IHHT - IHHT,menu_enrichment,1
 Pack 5 séances (4+1) IHHT - IHHT,menu_enrichment,1
+Pain Management,menu_enrichment_stem9_03,1
+Pain Management,menu_enrichment_stem9_08,1
 Pain Management Pa 1611,mymeditravel_regenerative_thailand,1
 Pain Management Ph 1375,mymeditravel_regenerative_thailand,1
 Pain Management Procedures,menu_enrichment,1
@@ -6967,6 +7293,7 @@ Pain Signal Reset - Morris Method™,menu_enrichment,1
 Pain Treatment Pa 1610,mymeditravel_regenerative_thailand,1
 PainTEQ,menu_enrichment,1
 Palliative Care,menu_enrichment,1
+Palliative Care,menu_enrichment_stem9_01,1
 PALS Heart Code Part 2 (Skills Testing),menu_enrichment,1
 PALS Original Course,menu_enrichment,1
 PALS Renewal Course,menu_enrichment,1
@@ -6989,6 +7316,7 @@ Parrafin Foot Massage,menu_enrichment,1
 Pars Defect Diagnostic Injection,menu_enrichment,1
 Partial Hospitalization (PHP),menu_enrichment,1
 Partial Knee Replacement,menu_enrichment,1
+Partial Knee Replacement,menu_enrichment_stem9_07,1
 Partner Session,menu_enrichment,1
 Parts Work Graphic Organizer,menu_enrichment,1
 Party-Prep Facial,menu_enrichment,1
@@ -7003,7 +7331,9 @@ Patient Education & Health Guidance,menu_enrichment,1
 Patient Education in Maintenance & Prevention,menu_enrichment,1
 Patient Pure X™ (PPX™) Treatments,menu_enrichment,1
 Patient Rewards Credit,menu_enrichment,1
+Pawspice (Hospice),menu_enrichment_stem9_02,1
 PCL Reconstruction,menu_enrichment,1
+PCOS (Polycystic Ovarian Syndrome),menu_enrichment_stem9_06,1
 "PDE-5 Inhibitors - Viagra (sildenafil), Cialis (tadalafil), Levitra (vardenafil)",menu_enrichment,1
 PDO Mono Threads - 10 Threads,menu_enrichment,1
 PDO Mono Threads - 30 Threads,menu_enrichment,1
@@ -7022,6 +7352,7 @@ PDRN Skin Renewal,menu_enrichment,1
 Peace of Mind Package,menu_enrichment,1
 Peak Performance - Protocol,menu_enrichment,1
 Pediatric & Family Care,menu_enrichment,1
+Pediatric Allergy and Asthma,menu_enrichment_stem9_00,1
 Pediatric Allergy Care,menu_enrichment,1
 Pediatric Chiropractic,menu_enrichment,1
 Pediatric clinic,biohacking_map,1
@@ -7066,6 +7397,7 @@ Penile Girth Enhancement - Menspro MAX™,menu_enrichment,1
 "Penile implant AMS 700™ (CX, LGX and related models) with Lifetime Surgical Support",bookimed_longevity_turkey,1
 Penile implant Coloplast Titan with Lifetime Surgical Support,bookimed_longevity,1
 Penile implant Coloplast Titan with Lifetime Surgical Support,bookimed_longevity_turkey,1
+Penile Rejuvenation,menu_enrichment_stem9_02,1
 Penis Aesthetics Treatment,menu_enrichment,1
 Penis Augmentation Bk 13760,mymeditravel_regenerative_thailand,1
 Penis Enlargement,menu_enrichment,1
@@ -7076,13 +7408,16 @@ Peptide Consultation & Setup - one-time,menu_enrichment,1
 Peptide Evaluation (General),menu_enrichment,1
 Peptide Immunotherapy,menu_enrichment,1
 Peptide Treatments,menu_enrichment,1
+Peptides & Regenerative Care,menu_enrichment_small_sources,1
 "Peptides Lab - CBC, CMP14, Lipid, TSH, IGF-1",menu_enrichment,1
+Percussion Therapy - Fascia Release,menu_enrichment_stem9_07,1
 Percutaneous Disc Nucleoplasty,menu_enrichment,1
 Percutaneous Endoscopic Laser Discectomy (LASE),menu_enrichment,1
 Percutaneous Nephrolithotomy (PCNL),bookimed_longevity,1
 Percutaneous Nephrolithotomy (PCNL),bookimed_longevity_turkey,1
 Perfect Amino,menu_enrichment,1
 Perform & Recover IV Drip (Recovery & Performance),menu_enrichment,1
+Performance,menu_enrichment_small_sources,1
 Performance & Fat Burn Stack - CJC-1295 + Ipamorelin + MOTS-C,menu_enrichment,1
 Performance + Cognitive Optimization - Oxygen Chamber Protocol,menu_enrichment,1
 "Performance + Recovery IV Push - Amino Blend, Carnitine, Magnesium",menu_enrichment,1
@@ -7097,18 +7432,22 @@ Performance Recovery (Mobile) - Mobile,menu_enrichment,1
 Performance Training / Medical Fitness Coaching,menu_enrichment,1
 Perimenopause & Menopause,menu_enrichment,1
 Perimenopause and Menopause Bio-Stack Package,menu_enrichment,1
+Perimenopause/Menopause,menu_enrichment_stem9_06,1
 Perinatal and Postpartum Mood Disorders Therapy,menu_enrichment,1
 Perinatal Support Group,menu_enrichment,1
 Perineoplasty Bk 14667,mymeditravel_regenerative_thailand,1
 Perineural Injection Therapy,menu_enrichment,1
 Perineural Therapy,menu_enrichment,1
+Periodontal Therapy,menu_enrichment_stem9_07,1
 Peripheral artery disease (PAD) treatment,menu_enrichment,1
 Peripheral Artery Disease (PAD) Treatment,menu_enrichment,1
 Peripheral Artery Disease Screening,menu_enrichment,1
+Peripheral Joint Injections,menu_enrichment_stem9_08,1
 Peripheral Nerve Block,menu_enrichment,1
 Peripheral Nerve Blocks,menu_enrichment,1
 Peripheral Nerve Stimulation (PNS),menu_enrichment,1
 "Peripheral Nerve Stimulation for Occipital Neuralgia, Postherpetic Neuralgia, and Post-Hernia Repair Pain",menu_enrichment,1
+Peripheral Nerve Stimulator,menu_enrichment_stem9_08,1
 Peripheral Nerve Stimulator Trial,menu_enrichment,1
 Peripheral Nerve Surgery,menu_enrichment,1
 "Peripheral Nerve, Cranial Nerve, and Plexus Blockade",menu_enrichment,1
@@ -7154,6 +7493,7 @@ Phosphatidylcholine IV Treatment,menu_enrichment,1
 Photo Dynamic Therapy for Macular Degeneration,menu_enrichment,1
 Photo Facial,menu_enrichment,1
 Photobiomodulation,menu_enrichment,1
+Photobiomodulation,menu_enrichment_small_sources,1
 Photobiomodulation,world_longevity_clinics,1
 PhotoBioModulation 10 Session Package,menu_enrichment,1
 PhotoBioModulation 20 Session Package,menu_enrichment,1
@@ -7173,6 +7513,12 @@ Physical Equilibrium,menu_enrichment,1
 Physical Examinations,menu_enrichment,1
 Physical rehabilitation center,biohacking_map,1
 Physical Rehabilitation Therapy,menu_enrichment,1
+Physical Rehabilitation Therapy,menu_enrichment_stem9_02,1
+Physical Therapy,menu_enrichment_small_sources,1
+Physical Therapy,menu_enrichment_stem9_01,1
+Physical Therapy,menu_enrichment_stem9_04,1
+Physical Therapy,menu_enrichment_stem9_05,1
+Physical Therapy - Dynamic Rehab,menu_enrichment_stem9_07,1
 Physical Therapy / Rehabilitation,menu_enrichment,1
 Physical Therapy Bk 13195,mymeditravel_regenerative_thailand,1
 Physical Therapy Bk 14376,mymeditravel_regenerative_thailand,1
@@ -7240,7 +7586,9 @@ Plastic Surgery Consultation Bk 14411,mymeditravel_regenerative_thailand,1
 Platelet Lysate,menu_enrichment,1
 Platelet Rich Plasma Facial Rejuvenation,menu_enrichment,1
 Platelet Rich Plasma Hair Restoration,menu_enrichment,1
+Platelet Rich Plasma Therapy,menu_enrichment_stem9_02,1
 Platelet-Lysate,menu_enrichment,1
+Platelet-Rich Plasma,menu_enrichment_stem9_04,1
 Platelet-Rich Plasma For Aging Skin,menu_enrichment,1
 Platelet-Rich Plasma Therapy,menu_enrichment,1
 Platinum Body Sculpt Package,menu_enrichment,1
@@ -7256,11 +7604,13 @@ Platinum STD Screening Package,bookimed_longevity_thailand,1
 Play Therapy Approach,menu_enrichment,1
 Play Therapy for Children,menu_enrichment,1
 PLC Reconstruction,menu_enrichment,1
+PMS,menu_enrichment_stem9_06,1
 PNF,menu_enrichment,1
 PNOE Metabolic Testing,menu_enrichment,1
 PNOĒ,menu_enrichment,1
 PNOĒ Metabolic Testing,menu_enrichment,1
 Podiatric Surgery,menu_enrichment,1
+Podiatry,menu_enrichment_stem9_03,1
 Podiatry - Arthritis,menu_enrichment,1
 Podiatry - Foot Pain,menu_enrichment,1
 Podiatry - Foot Trauma,menu_enrichment,1
@@ -7315,6 +7665,7 @@ Posterior Heel Spur,menu_enrichment,1
 Postpartum Depression Treatment,menu_enrichment,1
 Postpartum Healing Session,menu_enrichment,1
 Postpartum Therapy,menu_enrichment,1
+Postsurgical Rehabilitation,menu_enrichment_stem9_04,1
 Postural Correction,menu_enrichment,1
 Postural Dysfunction Treatment,menu_enrichment,1
 Postural Reeducation and Posture Treatment,menu_enrichment,1
@@ -7333,6 +7684,7 @@ Power Plasma,menu_enrichment,1
 Power Plate Vibration Training,menu_enrichment,1
 Power Surge - 1 Liter,menu_enrichment,1
 Power Surge - Half Liter,menu_enrichment,1
+PPD Testing,menu_enrichment_stem9_05,1
 Pre & Post-Surgery Rehab,menu_enrichment,1
 Pre + Post-Op Care,menu_enrichment,1
 Pre and Post Natal Rehabilitation,menu_enrichment,1
@@ -7435,6 +7787,7 @@ Prescriptions,menu_enrichment,1
 Presidential Body Scan,menu_enrichment,1
 Pressotherapy,menu_enrichment,1
 Pressure Point Release - Medical Massage,menu_enrichment,1
+Pressure Ulcer Care Coordination,menu_enrichment_stem9_06,1
 Pressure Ulcers Treatment,menu_enrichment,1
 Prestige Membership,menu_enrichment,1
 Preventative Healthcare,menu_enrichment,1
@@ -7458,6 +7811,7 @@ PRF Platelet Rich Fibrin,menu_enrichment,1
 PRFM,menu_enrichment,1
 Priapus Shot (P-Shot),menu_enrichment,1
 Price per ingredient,menu_enrichment,1
+Primary Care,menu_enrichment_stem9_06,1
 Primary Care and Family Medicine,menu_enrichment,1
 Primary Care Appointments,menu_enrichment,1
 Primary Care Doctor,menu_enrichment,1
@@ -7477,6 +7831,7 @@ Private Prescription Renewal,menu_enrichment,1
 Private Training Session,menu_enrichment,1
 "Private Yoga Session - In Home, 60 minutes",menu_enrichment,1
 Pro Power Peel,menu_enrichment,1
+Procaine Therapy,menu_enrichment_stem9_06,1
 Procell Microchanelling,menu_enrichment,1
 Procell Microchanneling,menu_enrichment,1
 ProCell Microchanneling,menu_enrichment,1
@@ -7494,9 +7849,15 @@ Profound RF - Profound RF,menu_enrichment,1
 Progesterone - Hormonal Health,menu_enrichment,1
 Programme de coaching perte de poids par le jeûne - Bye bye surpoids par le jeûne,menu_enrichment,1
 "Programming for facilities, communities or special events",menu_enrichment,1
+Project Re(Nu),menu_enrichment_stem9_04,1
+Prolo Therapy,menu_enrichment_stem9_06,1
+Prolotherapy,menu_enrichment_small_sources,1
+Prolotherapy,menu_enrichment_stem9_02,1
+Prolotherapy - Dextrose solution,menu_enrichment_stem9_04,1
 Prolotherapy / Prolozone - 1 area,menu_enrichment,1
 Prolotherapy / Prolozone - for each additional area,menu_enrichment,1
 Proprioceptive Neuromuscular Facilitation (PNF),menu_enrichment,1
+Proprioceptive Neuromuscular Facilitation - PNF,menu_enrichment_stem9_01,1
 Prostate Artery Embolization (PAE),menu_enrichment,1
 Prostate Biopsy So8 1870,mymeditravel_chaum_medical_center,1
 Prostate Cancer Treatment Bk 14371,mymeditravel_regenerative_thailand,1
@@ -7519,8 +7880,10 @@ Psychiatry and Mental Health Services,menu_enrichment,1
 Psychodynamic Approach,menu_enrichment,1
 Psychological Services,menu_enrichment,1
 Psychological Testing,menu_enrichment,1
+Psychological Therapy,menu_enrichment_stem9_05,1
 Psychoneurological specialized clinic,biohacking_map,1
 Psychosocial and Psychological Evaluations,menu_enrichment,1
+Psychotherapy / Cognitive Behavioral Therapy,menu_enrichment_stem9_04,1
 Psychotherapy for Immigrants,menu_enrichment,1
 Psychotherapy Services,menu_enrichment,1
 PT Membership,menu_enrichment,1
@@ -7531,10 +7894,12 @@ PT141 for Male Sexual Health,menu_enrichment,1
 PTSD & Trauma Treatment,menu_enrichment,1
 PTSD Treatments,menu_enrichment,1
 Public Education Program - PEP,menu_enrichment,1
+Pulmonary Care,menu_enrichment_stem9_04,1
 Pulmonary Function Test,menu_enrichment,1
 Pulmonary Function Test (PFT),menu_enrichment,1
 Pulmonary Function Testing (Spirometry),menu_enrichment,1
 Pulmonary Testing,menu_enrichment,1
+Pulmonary Tests,menu_enrichment_stem9_04,1
 Pulmonology,menu_enrichment,1
 Pulse Electromagnetic Field Therapy,menu_enrichment,1
 Pulsed Electromagnetic Field Therapy,menu_enrichment,1
@@ -7551,6 +7916,7 @@ Péptidos: La Nueva Era de la Longevidad (Spanish edition) - Protocol Guide,menu
 Q-Switch Laser,menu_enrichment,1
 Qi Gong,menu_enrichment,1
 Qigong,menu_enrichment,1
+Qigong Treatment,menu_enrichment_stem9_06,1
 Quality Guarantee,menu_enrichment,1
 Quantum Energy Shift,menu_enrichment,1
 Quantum Healing Hypnosis Course,menu_enrichment,1
@@ -7574,6 +7940,9 @@ Radiance IV Drip (Inner Beauty),menu_enrichment,1
 Radiance Mini Facial,menu_enrichment,1
 Radiation Injury Treatment,menu_enrichment,1
 Radiation Oncology,menu_enrichment,1
+Radiation Oncology - External Beam Radiation Therapy (EBRT),menu_enrichment_stem9_06,1
+Radiation Oncology Services,menu_enrichment_stem9_01,1
+Radiation Simulation,menu_enrichment_stem9_06,1
 Radiesse Gold,menu_enrichment,1
 Radiesse Hand Injections,menu_enrichment,1
 Radiesse Jawline Contouring,menu_enrichment,1
@@ -7585,11 +7954,13 @@ Radio Frequency Microneedling,menu_enrichment,1
 Radio Frequency Rhizotomy,menu_enrichment,1
 Radio-frequency Therapy,menu_enrichment,1
 Radiofrequency,menu_enrichment,1
+Radiofrequency Ablation,menu_enrichment_stem9_07,1
 Radiofrequency Ablation (RFA),menu_enrichment,1
 Radiofrequency Ablation for spine,menu_enrichment,1
 Radiofrequency Ablation Treatment,menu_enrichment,1
 Radiofrequency Microneedling,menu_enrichment,1
 Radiofrequency Nerve Ablation,menu_enrichment,1
+Radiofrequency Neurolysis - for RSD,menu_enrichment_stem9_05,1
 Radiology - Lenox Hill Radiology,menu_enrichment,1
 Radiosurgery Cancer Treatment So8 1851,mymeditravel_chaum_medical_center,1
 Radiotherapy So8 1852,mymeditravel_chaum_medical_center,1
@@ -7610,12 +7981,15 @@ Rapid Recovery Sports Massage,menu_enrichment,1
 Rapid Release,menu_enrichment,1
 Rapé Ceremony,menu_enrichment,1
 Rashes,menu_enrichment,1
+Re-evaluation - CPT 97164,menu_enrichment_stem9_04,1
 RE:SET Frequency Therapy,menu_enrichment,1
 Reach Out and Read Program,menu_enrichment,1
+ReActiv8,menu_enrichment_stem9_08,1
 Reboot,menu_enrichment,1
 Reboot IV Infusion - Hangover Remedy,menu_enrichment,1
 Recharge Plan,menu_enrichment,1
 Records for Court,menu_enrichment,1
+Records Review,menu_enrichment_stem_02,1
 Recover & Perform,menu_enrichment,1
 Recovery & Performance,menu_enrichment,1
 Recovery & Performance IV,menu_enrichment,1
@@ -7696,7 +8070,10 @@ REHAB Velvet Liquid Lipstick,menu_enrichment,1
 Rehabilitation,menu_enrichment,1
 Rehabilitation and PT,menu_enrichment,1
 Rehabilitation Ph 846,mymeditravel_regenerative_thailand,1
+Rehabilitation Programs for all Joints and the Spine,menu_enrichment_stem9_04,1
+Rehabilitation Programs for all Joints and the Spine,menu_enrichment_stem9_06,1
 Rehabilitation Therapy,menu_enrichment,1
+Rehabilitation Therapy,menu_enrichment_stem9_07,1
 Rehabilitative Ultrasonography (RUSI),menu_enrichment,1
 Reiki & Bio-Energy Healing,menu_enrichment,1
 Reiki & Crystal Energy Healing - 75 min,menu_enrichment,1
@@ -7737,6 +8114,7 @@ RemedēMD Full Spectrum Hemp Extract,menu_enrichment,1
 Remote Mobility Exams and Programming,menu_enrichment,1
 Remote Patient Monitoring,menu_enrichment,1
 Remote Vitals Tracking,menu_enrichment,1
+Removal of Loose Bodies,menu_enrichment_stem9_07,1
 Renewed Angel Package,menu_enrichment,1
 ReOxy,menu_enrichment,1
 ReOxy Adaptive Oxygen Therapy - ReOxy,menu_enrichment,1
@@ -7751,6 +8129,7 @@ Repechage Vita Cura 5 Phase Firming Facial with Micropeel - Weekend (Fri-Sun),me
 Repetitive Stress Injuries,menu_enrichment,1
 Replacement Controller for Sparkle Mats,menu_enrichment,1
 Replenish & Relax IV Infusion - saline & B12,menu_enrichment,1
+Report of Findings,menu_enrichment_stem_00,1
 Reproductive Health,menu_enrichment,1
 Reproductive Medicine Consultation So8 1859,mymeditravel_chaum_medical_center,1
 Rescheduling Fee,menu_enrichment,1
@@ -7785,6 +8164,8 @@ Return to Play Testing,menu_enrichment,1
 Return to Sport Test,menu_enrichment,1
 Return to Sport Testing,menu_enrichment,1
 Return to Sport/Activity,menu_enrichment,1
+Return to Throw Program,menu_enrichment_stem9_04,1
+Return to Throw Program,menu_enrichment_stem9_06,1
 Return To Work,menu_enrichment,1
 Return to Work Evaluations and IME's,menu_enrichment,1
 Return to Work Screenings,menu_enrichment,1
@@ -7865,6 +8246,7 @@ Roll Shaper Single Session,menu_enrichment,1
 Root Canal Bk 13155,mymeditravel_regenerative_thailand,1
 Root Canal Cr 35,mymeditravel_regenerative_thailand,1
 Root Canal Tu2 1245,mymeditravel_regenerative_turkey,1
+Root Cause Functional Testing,menu_enrichment_stem9_08,1
 Root Touch-Up,menu_enrichment,1
 Roots,menu_enrichment,1
 Roots Touch-Up,menu_enrichment,1
@@ -7884,6 +8266,7 @@ Routine Check-ups and Physicals,menu_enrichment,1
 Routine Checkup,menu_enrichment,1
 Routine Exams & Physicals,menu_enrichment,1
 Routine Follow Up Visit,menu_enrichment,1
+Routine Gynecologic Exam and Pap Test,menu_enrichment_stem9_02,1
 Routine Gynecological Exams,menu_enrichment,1
 "Royal Eye Rejuvenation - Mesotherapy with hyaluronic acid, peptides, and antioxidants",menu_enrichment,1
 "RSC Signature Couples Yoga, Sound Healing & Guided Meditation in the Salt Cave - 1 hour",menu_enrichment,1
@@ -7897,6 +8280,7 @@ Running & Gait Analysis,menu_enrichment,1
 Running Rehab,menu_enrichment,1
 Russian Interferential,menu_enrichment,1
 Russian Lips,menu_enrichment,1
+Récupération,menu_enrichment_small_sources,1
 Réflexologie - 45 minutes,menu_enrichment,1
 Réflexologie - 60 minutes,menu_enrichment,1
 "Saccharomyces Boulardii - PURE Encapsulations, 30 capsules",menu_enrichment,1
@@ -7904,9 +8288,12 @@ Sacred Womb Oil,menu_enrichment,1
 Sacro-iliac Joint Injection,menu_enrichment,1
 Sacroiliac (SI) Joint,menu_enrichment,1
 Sacroiliac Joint (SIJ) Fusion,menu_enrichment,1
+Sacroiliac Joint Injection,menu_enrichment_stem9_05,1
 Sacroiliac Joint Injection and Radiofrequency Ablation,menu_enrichment,1
 Sacroiliac Joint Pain Treatment,menu_enrichment,1
 Sacroiliac Joint Steroid Injection,menu_enrichment,1
+Sacrosiliac Joint and Hip Injections,menu_enrichment_stem9_08,1
+Salem Physical Therapy,menu_enrichment_stem9_00,1
 Saline Infusion & Tubal Patency,menu_enrichment,1
 Saline Infusions,menu_enrichment,1
 Salmon DNA Microneedling - Salmon DNA,menu_enrichment,1
@@ -7931,6 +8318,7 @@ Satya Incense Sticks,menu_enrichment,1
 SAVOR Nutrition Program,menu_enrichment,1
 Scalar Enhanced Chakra Stone Heart,menu_enrichment,1
 Scalar Negative Ion Energy Suite (ZPPIS),menu_enrichment,1
+Scaling and Root Planing,menu_enrichment_stem9_07,1
 Scaling And Root Planing Cr 41,mymeditravel_regenerative_thailand,1
 Scalp Massage Add-On - Add On,menu_enrichment,1
 Scalp massage treatment,menu_enrichment,1
@@ -7947,6 +8335,7 @@ Scheduling Fee (cancellation within 24 hours),menu_enrichment,1
 Scheduling Fee (no-show without prior notice),menu_enrichment,1
 Schizophrenia Inpatient Treatment in Adults,bookimed_longevity,1
 Schizophrenia Inpatient Treatment in Adults,bookimed_longevity_turkey,1
+School and Sports Physicals,menu_enrichment_stem9_01,1
 School Sports Physical,menu_enrichment,1
 Sciatic Nerve Block,menu_enrichment,1
 Sclerotherapy for Spider Veins,menu_enrichment,1
@@ -7996,6 +8385,7 @@ Secret RF For Facial Rejuvenation - Secret™ RF,menu_enrichment,1
 Secret RF For Neck Tightening - Secret™ RF,menu_enrichment,1
 Secret RF Microneedling - Secret RF™,menu_enrichment,1
 Secret RF Microneedling with Exosomes - Secret RF™,menu_enrichment,1
+Sedation Dentistry,menu_enrichment_stem9_07,1
 Seizure Disorders,menu_enrichment,1
 Seizures Treatment,menu_enrichment,1
 Selank,menu_enrichment,1
@@ -8046,6 +8436,7 @@ Sermorelin - Longevity & Anti-Aging,menu_enrichment,1
 Sermorelin / GH Growth Hormone - Sermorelin,menu_enrichment,1
 Sermorelin Therapy - Sermorelin,menu_enrichment,1
 Service Add-ons,menu_enrichment,1
+Sessão Hiperbárica,menu_enrichment_small_sources,1
 SetPoint Therapy,menu_enrichment,1
 Sex Addiction,menu_enrichment,1
 Sex Therapy,menu_enrichment,1
@@ -8061,7 +8452,9 @@ Sexually-transmitted diseases treatment,menu_enrichment,1
 "Shamanic Reiki Session Package - with asha, 3 sessions",menu_enrichment,1
 SHAPEDOWN Weight Loss Program for Children - SHAPEDOWN®,menu_enrichment,1
 Sharp Debridement,menu_enrichment,1
+Sharp Debridement,menu_enrichment_stem9_06,1
 Shaving Add-On,menu_enrichment,1
+Shiatsu,menu_enrichment_stem9_01,1
 Shield IV Infusion,menu_enrichment,1
 Shiftwave,menu_enrichment,1
 Shimmer Lipgloss In Clear Shimmer,menu_enrichment,1
@@ -8087,6 +8480,7 @@ Shoulder Replacement,menu_enrichment,1
 Shoulder surgery,menu_enrichment,1
 Shoulder Tendonitis/Bursitis,menu_enrichment,1
 Shoulder treatment,menu_enrichment,1
+Shoulder Treatment,menu_enrichment_stem_02,1
 Shoulder Treatments,menu_enrichment,1
 SI Joint Fusion,menu_enrichment,1
 SI Joint Pain Treatment,menu_enrichment,1
@@ -8127,13 +8521,16 @@ Single Incision Surgery,menu_enrichment,1
 Single Ingredient High-Density Colostrum - Advanced BioCell's,menu_enrichment,1
 Single Session Red Light,menu_enrichment,1
 Sinus Infections,menu_enrichment,1
+Sinus Lift,menu_enrichment_stem9_07,1
 Sinus Lift Tu2 1247,mymeditravel_regenerative_turkey,1
 "Sinusitis, Itching, Allergies",menu_enrichment,1
 Sit up Hyperbaric Chamber with Screen - 1.5 ATA,menu_enrichment,1
 Sit up Hyperbaric Chamber with Screen Hire - 1.5 ATA,menu_enrichment,1
 Sjogren Treatment,menu_enrichment,1
 Sjogren's Syndrome Treatment,menu_enrichment,1
+Skilled Nursing & Long-term Care,menu_enrichment_stem9_04,1
 Skin & Scar Resurfacing,menu_enrichment,1
+Skin & Spa,menu_enrichment_stem9_00,1
 Skin and Hair Rejuvination,menu_enrichment,1
 Skin Boost IV Drip - Skin Boost,menu_enrichment,1
 "Skin Booster - Rejuran, Exosome",menu_enrichment,1
@@ -8167,6 +8564,7 @@ Skin Rescue Facial,menu_enrichment,1
 Skin Restoring Natural Acid Or Enzyme Peel Facial,menu_enrichment,1
 Skin Resurfacing Laser,menu_enrichment,1
 Skin Substitute,menu_enrichment,1
+Skin Substitutes,menu_enrichment_stem9_06,1
 Skin Tag and Cherry Angioma Removal,menu_enrichment,1
 Skin Testing for Allergies,menu_enrichment,1
 Skin Tightening & Body Contouring,menu_enrichment,1
@@ -8208,6 +8606,7 @@ Skull Base Tumor Surgery with Neuronavigation & Neuromonitoring — 6 Nights Sta
 Skull Base Tumor Surgery with Neuronavigation & Neuromonitoring — 6 Nights Stay,bookimed_longevity_turkey,1
 Sleep & Stress Reduction Sessions,menu_enrichment,1
 Sleep Add-On - Add On,menu_enrichment,1
+Sleep Apnea,menu_enrichment_stem9_06,1
 Sleep Apnea & Snoring,menu_enrichment,1
 Sleep Apnea Treatment,menu_enrichment,1
 Sleep Better Package,menu_enrichment,1
@@ -8231,6 +8630,7 @@ Small Group Training,menu_enrichment,1
 Small Joint Arthrodesis Surgery — JCI-Accredited Hospital with Transfer,bookimed_longevity,1
 Small Joint Arthrodesis Surgery — JCI-Accredited Hospital with Transfer,bookimed_longevity_turkey,1
 Smoking Cessation,menu_enrichment,1
+Smoking Cessation,menu_enrichment_stem9_01,1
 "Smoking Cessation Package - Includes ear seeds, 10 sessions",menu_enrichment,1
 SmoothEye,menu_enrichment,1
 Snow Bright,menu_enrichment,1
@@ -8240,6 +8640,7 @@ Sober Housing,menu_enrichment,1
 Social Skills,menu_enrichment,1
 Social welfare center,biohacking_map,1
 Socio-esthétique (ateliers),menu_enrichment,1
+Socket Preservation,menu_enrichment_stem9_07,1
 "Soft Hyperbaric Chamber - Apex 32 - 1.5 ATA, up to 7 PSI",menu_enrichment,1
 "Soft Hyperbaric Chamber - Forward 90 - 1.5 ATA, up to 7 PSI",menu_enrichment,1
 "Soft Hyperbaric Chamber - Heal 40 - 1.4 ATA, up to 5.8 PSI, wheelchair accessible",menu_enrichment,1
@@ -8247,6 +8648,7 @@ Soft Tissue & Manual Therapy,menu_enrichment,1
 Soft Tissue Infections Treatment,menu_enrichment,1
 Soft Tissue Injections,menu_enrichment,1
 Soft Tissue Mobilization,menu_enrichment,1
+Soft Tissue Mobilization,menu_enrichment_stem9_03,1
 Soft Tissue Radionecrosis Treatment,menu_enrichment,1
 Soft Tissue Therapy,menu_enrichment,1
 Soft Tissue Ultrasound,menu_enrichment,1
@@ -8320,7 +8722,9 @@ Specialized Modality Guidance - Clinical Consultation,menu_enrichment,1
 Specialty Facials,menu_enrichment,1
 Specialty Massage,menu_enrichment,1
 "Specialty Targeted Lab Panels - Gut, mold, food sensitivity, toxins",menu_enrichment,1
+Specific Exercise,menu_enrichment_stem9_07,1
 Speech & Feeding Therapy,menu_enrichment,1
+Speech Therapy,menu_enrichment_stem9_04,1
 Sperm bank,biohacking_map,1
 Spermidine,menu_enrichment,1
 Sphenopalatine Blockade and Pulsed Radiofrequency Therapy,menu_enrichment,1
@@ -8329,14 +8733,18 @@ Spider Vein Therapy - Vasculaze,menu_enrichment,1
 Spider Vein Treatment,menu_enrichment,1
 Spider Veins Treatment Tu4 3159,mymeditravel_regenerative_turkey,1
 Spinal & Postural Screenings,menu_enrichment,1
+Spinal Adjustment,menu_enrichment_stem_00,1
 Spinal Adjustments & Manipulation,menu_enrichment,1
 Spinal Column Stimulators,menu_enrichment,1
 Spinal Cord Injury Rehabilitation Program — Advanced 3D Imaging & VIP Transfer Included,bookimed_longevity,1
 Spinal Cord Injury Rehabilitation Program — Advanced 3D Imaging & VIP Transfer Included,bookimed_longevity_turkey,1
+Spinal Cord Stimulation,menu_enrichment_stem9_07,1
 Spinal Cord Stimulation (Neuromodulation),menu_enrichment,1
+"Spinal Cord Stimulation - for radiculopathy, neuropathy and vascular pain",menu_enrichment_stem9_05,1
 Spinal Cord Stimulation - SCS,menu_enrichment,1
 Spinal Cord Stimulation Trials,menu_enrichment,1
 Spinal Cord Stimulator,menu_enrichment,1
+Spinal Cord Stimulator,menu_enrichment_stem9_08,1
 Spinal Cord Stimulator Implant,menu_enrichment,1
 Spinal Cord Stimulator Implantation by Deep Brain Stimulation Expert — 5★ Hotel & VIP Transfer,bookimed_longevity,1
 Spinal Cord Stimulator Implantation by Deep Brain Stimulation Expert — 5★ Hotel & VIP Transfer,bookimed_longevity_turkey,1
@@ -8355,15 +8763,18 @@ Spinal Stenosis Treatment,menu_enrichment,1
 Spinal Stenosis Treatment Tu3 74,mymeditravel_regenerative_turkey,1
 Spinal Surgery Consultation So8 1868,mymeditravel_chaum_medical_center,1
 Spinal Traction,menu_enrichment,1
+Spine,menu_enrichment_stem9_03,1
 Spine & Joint Injections,menu_enrichment,1
 Spine Care,menu_enrichment,1
 Spine Implantation,menu_enrichment,1
 Spine Injections,menu_enrichment,1
+Spine Medicine,menu_enrichment_stem9_04,1
 Spine Pain,menu_enrichment,1
 Spine Pain Management,menu_enrichment,1
 Spine Related Back Pain,menu_enrichment,1
 Spine Surgery Bk 13172,mymeditravel_regenerative_thailand,1
 Spine Treatment,menu_enrichment,1
+Spine Treatment,menu_enrichment_stem_02,1
 Spine X-Ray,menu_enrichment,1
 SpineJack,menu_enrichment,1
 Spiritual Coaching,menu_enrichment,1
@@ -8380,12 +8791,20 @@ Sports Advantage Package,menu_enrichment,1
 Sports Assessments - Fitness and Wellness,menu_enrichment,1
 Sports club,biohacking_map,1
 Sports Concussion Care,menu_enrichment,1
+"Sports Enhancement Training - agility, coordination, strengthening specific for your individual sport whether professional, school or recreational",menu_enrichment_stem9_04,1
+"Sports Enhancement Training - agility, coordination, strengthening specific for your individual sport whether professional, school or recreational",menu_enrichment_stem9_06,1
+Sports Injuries Rehabilitation,menu_enrichment_stem9_04,1
+Sports Injury Rehabilitation,menu_enrichment_stem9_04,1
+Sports Injury Rehabilitation,menu_enrichment_stem9_06,1
 Sports Manual Therapy,menu_enrichment,1
 Sports Massage (Athlete's Rebalance) - Athlete's Rebalance,menu_enrichment,1
 Sports Massage - 60 minutes,menu_enrichment,1
 Sports Massage - 60/90 minutes,menu_enrichment,1
 Sports Massage - 90 minutes,menu_enrichment,1
 Sports medicine,menu_enrichment,1
+Sports Medicine,menu_enrichment_stem9_00,1
+Sports Medicine,menu_enrichment_stem9_04,1
+Sports Medicine,menu_enrichment_stem_01,1
 Sports Medicine & Athlete Care,menu_enrichment,1
 Sports Medicine & Orthopedics,menu_enrichment,1
 Sports Medicine & Rehabilitation,menu_enrichment,1
@@ -8395,8 +8814,11 @@ Sports Physical,menu_enrichment,1
 Sports Physical Therapy / Rehab,menu_enrichment,1
 Sports Physiotherapy,menu_enrichment,1
 Sports Recovery Package,menu_enrichment,1
+Sports Rehab,menu_enrichment_stem9_06,1
 Sports Related Injuries Treatment,menu_enrichment,1
 Sports-Specific Tissue Mobilization,menu_enrichment,1
+SportsRAC Training,menu_enrichment_stem9_04,1
+SportsRAC Training,menu_enrichment_stem9_06,1
 Spotless Peel,menu_enrichment,1
 Sprains,menu_enrichment,1
 Spravato (Esketamine) Nasal Spray - Spravato,menu_enrichment,1
@@ -8414,6 +8836,7 @@ SQT Bio-Microneedling Facial,menu_enrichment,1
 Stabilink Peripheral Nerve Stimulator,menu_enrichment,1
 Standard Follow-Up - 45 minutes,menu_enrichment,1
 Standard Microneedling (Face),menu_enrichment,1
+Standard Psychotherapy Appointment,menu_enrichment_stem9_03,1
 Standard Session - Monoplace hard shell hyperbaric chamber,menu_enrichment,1
 Standard Therapy Session - per session,menu_enrichment,1
 Starter Membership,menu_enrichment,1
@@ -8506,6 +8929,7 @@ Stomach Flu IV,menu_enrichment,1
 Stomach Flu Recovery Drip,menu_enrichment,1
 Stomach Line Waxing,menu_enrichment,1
 Strain Counterstrain,menu_enrichment,1
+Strain-Counter Strain,menu_enrichment_stem9_03,1
 "Straumann Dental Implant by ITI-Certified Dentist — 4★ Hotel, 9 Days",bookimed_longevity_korea,1
 Strength After Breast Cancer,menu_enrichment,1
 Strength and Balance Training,menu_enrichment,1
@@ -8522,6 +8946,7 @@ Stress Echocardiography,menu_enrichment,1
 Stress Electrocardiography Ecg So8 1798,mymeditravel_chaum_medical_center,1
 "Stress IV - Contains fluids, electrolytes, B1, B2, B3, B5, B6, taurine, magnesium, & B12",menu_enrichment,1
 Stress Management,menu_enrichment,1
+Stress Management,menu_enrichment_stem9_07,1
 Stress Management Consultation,menu_enrichment,1
 Stress Reduction & Mindfulness,menu_enrichment,1
 Stress Reliever - Touchless Package,menu_enrichment,1
@@ -8579,6 +9004,7 @@ Sugaring - Upper Legs (Men),menu_enrichment,1
 Sugaring - Upper Legs (Women),menu_enrichment,1
 Summer 2026 Classes,menu_enrichment,1
 Summer 6 Pack,menu_enrichment,1
+Summer Activities/Camps Physicals,menu_enrichment_stem9_00,1
 Summer Dream Facial,menu_enrichment,1
 Summer Glow Package,menu_enrichment,1
 Summer Sale - 100 credits,menu_enrichment,1
@@ -8607,6 +9033,7 @@ Supervised Visitations/Observation,menu_enrichment,1
 Supervised Weight Loss Program,menu_enrichment,1
 Supplement Protocol,world_longevity_clinics,1
 Supplement Protocols,biohacking_map,1
+Supplements,menu_enrichment_stem9_07,1
 Supplements - Pharmaceutical-grade nutritional supplements,menu_enrichment,1
 "Supplements - Vitamins A, K, D, QuickSilver Detox, OBVI, Replenza",menu_enrichment,1
 Supplements/Herbs,menu_enrichment,1
@@ -8635,6 +9062,8 @@ Swim Line Bikini,menu_enrichment,1
 Swim Line Bikini Wax,menu_enrichment,1
 Swiss Biological Medicine,menu_enrichment,1
 Sylfirm X RF Microneedling - Sylfirm X,menu_enrichment,1
+Sympathetic Blocks - Stellate Ganglion Blocks and T2-T3 Sympathetic Block,menu_enrichment_stem9_05,1
+Sympathetic Nerve Blocks,menu_enrichment_stem9_08,1
 Symphony of the Cells - 30 min,menu_enrichment,1
 Symphony of the Cells - Package of 5 treatments,menu_enrichment,1
 Synapsin - Mental Focus,menu_enrichment,1
@@ -8662,6 +9091,7 @@ Tailored Bikini,menu_enrichment,1
 Targeted IV Protocols,biohacking_map,1
 Targeted Oncothermia Hyperthermia for Stomach Cancer with Integrated Immunotherapy,bookimed_longevity,1
 Targeted Oncothermia Hyperthermia for Stomach Cancer with Integrated Immunotherapy,bookimed_longevity_thailand,1
+Targeted Therapy,menu_enrichment_stem9_01,1
 Tattoo Removal - Large,menu_enrichment,1
 Tattoo Removal - Medium,menu_enrichment,1
 Tattoo Removal - Small,menu_enrichment,1
@@ -8690,6 +9120,8 @@ Teeth Whitening Bk 13160,mymeditravel_regenerative_thailand,1
 Teeth Whitening Cr 36,mymeditravel_regenerative_thailand,1
 Tele Health,menu_enrichment,1
 Tele-Health/Virtual Therapy,menu_enrichment,1
+Tele-Med,menu_enrichment_stem9_00,1
+teleHealth Appointment,menu_enrichment_stem9_05,1
 Telehealth appointments,menu_enrichment,1
 Telehealth Appointments,menu_enrichment,1
 Telehealth Consultation,menu_enrichment,1
@@ -8722,7 +9154,9 @@ Tendonitis,menu_enrichment,1
 Tendonova,menu_enrichment,1
 Tenex Health TX® System - Tenex Health TX®,menu_enrichment,1
 Tennis/Golfers Elbow,menu_enrichment,1
+TENS,menu_enrichment_stem9_02,1
 TENS Therapy,menu_enrichment,1
+Terapias Nutricionais Injetetáveis,menu_enrichment_small_sources,1
 Tesamorelin - Peptide support,menu_enrichment,1
 "Tesamorelin - Subcutaneous, Per Month",menu_enrichment,1
 "Tesamorelin-Ipamorelin - Body Composition, 30-Day Supply",menu_enrichment,1
@@ -8805,8 +9239,11 @@ TheraLumen (Wearable Red-Light) & Allotropic Oral Methylene Blue,menu_enrichment
 Therapeutic Activities,menu_enrichment,1
 Therapeutic Activities and Exercise,menu_enrichment,1
 Therapeutic Bodywork,menu_enrichment,1
+Therapeutic Exercise,menu_enrichment_stem9_02,1
+"Therapeutic Exercise - CPT 97110, per unit",menu_enrichment_stem9_04,1
 Therapeutic Fasting,world_longevity_clinics,1
 Therapeutic Immunology Services,menu_enrichment,1
+Therapeutic Joint Mobilization,menu_enrichment_stem9_03,1
 Therapeutic Modalities / Procedures,menu_enrichment,1
 Therapeutic Plasma Exchange,biohacking_map,1
 Therapeutic Plasma Exchange,menu_enrichment,1
@@ -8882,6 +9319,7 @@ Threads (Face Lifting & Volume Booster) - PDO Thread Lift,menu_enrichment,1
 Three for Me Laser Treatment - Cynosure Icon Laser,menu_enrichment,1
 ThreeForMe (Non-Ablative Fractional) - Icon ThreeForMe,menu_enrichment,1
 Thymosin Alpha-1 (TA1),menu_enrichment,1
+Thyroid,menu_enrichment_stem9_06,1
 Thyroid + Vitamin D Mini Panel,menu_enrichment,1
 Thyroid Checkup Ph 1373,mymeditravel_regenerative_thailand,1
 Thyroid Checkup Ph 840,mymeditravel_regenerative_thailand,1
@@ -8892,6 +9330,7 @@ Thyroid Optimization (T3/T4),menu_enrichment,1
 Thyroid Panel,menu_enrichment,1
 "Thyroid Synergy - Designs For Health, 120 Capsules",menu_enrichment,1
 Thyroid Treatment,menu_enrichment,1
+Thyroid Treatment,menu_enrichment_stem9_01,1
 Thyroid Ultrasound So8 1814,mymeditravel_chaum_medical_center,1
 Thyroidectomy Bk 13190,mymeditravel_regenerative_thailand,1
 Tick bites,menu_enrichment,1
@@ -8934,10 +9373,12 @@ TOTAL HİP REPLACEMENT,bookimed_longevity,1
 TOTAL HİP REPLACEMENT,bookimed_longevity_turkey,1
 Total Joint Replacement,menu_enrichment,1
 Total Knee Replacement,menu_enrichment,1
+Total Knee Replacement,menu_enrichment_stem9_07,1
 Total Knee Replacement Surgery,menu_enrichment,1
 Total Parenteral Nutrition (TPN),menu_enrichment,1
 "Total Thyroidectomy, Bilateral (for Malignant Disease)",bookimed_longevity,1
 "Total Thyroidectomy, Bilateral (for Malignant Disease)",bookimed_longevity_turkey,1
+Total Tox Burden Test,menu_enrichment_stem9_08,1
 Total-Body Skin Cancer Exam,menu_enrichment,1
 Total-Body Skin Cancer Exams,menu_enrichment,1
 Tox,menu_enrichment,1
@@ -8945,8 +9386,12 @@ Toxic Metal Testing,menu_enrichment,1
 TPI Golf Swing Analysis - TPI Medical Level 1 & 2 Certified,menu_enrichment,1
 TPI Golf Swing Assessment,menu_enrichment,1
 TrackMan Golf Simulator,menu_enrichment,1
+Traction - Cervical or Lumbar,menu_enrichment_stem9_02,1
 Traction Therapy,menu_enrichment,1
 Traditional Acupuncture,menu_enrichment,1
+Traditional Rehabilitation,menu_enrichment_stem9_05,1
+Traditional Vacuum Cupping,menu_enrichment_stem9_01,1
+Training,menu_enrichment_stem9_07,1
 Training and Conditioning - 1-on-1 Sessions,menu_enrichment,1
 Training and Conditioning - Small Group Sessions,menu_enrichment,1
 Training and Conditioning - Team Sessions,menu_enrichment,1
@@ -8983,11 +9428,13 @@ Traumeel Specialty Infusion - Traumeel,menu_enrichment,1
 Travel Clinic Immunization,menu_enrichment,1
 Travel Discount,menu_enrichment,1
 Travel Fee (per mile beyond 30-mile radius),menu_enrichment,1
+Travel Medicine,menu_enrichment_stem9_00,1
 Travel Medicine Consults,menu_enrichment,1
 Travel Reset,menu_enrichment,1
 Travel Reset - Morris Method™,menu_enrichment,1
 Travel Testing,menu_enrichment,1
 Travel Vaccines,menu_enrichment,1
+Travel Vaccines and Counseling,menu_enrichment_stem9_01,1
 Traveler IV Drip,menu_enrichment,1
 Traveling Vaccination,menu_enrichment,1
 Treatment for Arthritis,menu_enrichment,1
@@ -9009,6 +9456,8 @@ Tribeca Essential Signature Facial - featuring Laser Genesis,menu_enrichment,1
 Trigeminal Nerve Blockade and Radiofrequency Ablation,menu_enrichment,1
 Trigger Finger Injections,menu_enrichment,1
 Trigger Point Dry Needling,menu_enrichment,1
+Trigger Point Injections,menu_enrichment_stem9_08,1
+Trigger Point Therapy,menu_enrichment_stem9_01,1
 Triloka Incense Sticks,menu_enrichment,1
 Trimix Injections,menu_enrichment,1
 Triple Blush Palette In Kandy Kiss,menu_enrichment,1
@@ -9037,6 +9486,8 @@ truSculpt iD For The Abdomen - truSculpt® iD,menu_enrichment,1
 truSculpt iD For The Flanks - truSculpt® iD,menu_enrichment,1
 Try & Buy Programme - 4 Weeks Try & Buy,menu_enrichment,1
 Tubal Reversal,menu_enrichment,1
+Tubal Reversal,menu_enrichment_stem9_04,1
+Tubal Reversal,menu_enrichment_stem_02,1
 Tummy Liposuction Bk 13206,mymeditravel_regenerative_thailand,1
 Tummy Liposuction Bk 14639,mymeditravel_regenerative_thailand,1
 Tummy Liposuction So8 5951,mymeditravel_regenerative_southkorea,1
@@ -9067,6 +9518,7 @@ Twilight Facial,menu_enrichment,1
 Two Jaw,menu_enrichment,1
 Two-Circle Analysis,menu_enrichment,1
 Two-Person Session,menu_enrichment,1
+Type 2 Diabetes,menu_enrichment_stem9_06,1
 Type 2 Diabetes Remission Program,menu_enrichment,1
 Ulnar Nerve Transposition (Ulnar Nerve Entrapment Neuropathy),bookimed_longevity,1
 Ulnar Nerve Transposition (Ulnar Nerve Entrapment Neuropathy),bookimed_longevity_turkey,1
@@ -9093,6 +9545,9 @@ Ultra Binder,menu_enrichment,1
 Ultra laser,menu_enrichment,1
 UltraShape - UltraShape,menu_enrichment,1
 Ultrasound,bookimed_longevity,1
+Ultrasound,menu_enrichment_stem9_02,1
+Ultrasound,menu_enrichment_stem_01,1
+"Ultrasound - CPT 97035, per unit",menu_enrichment_stem9_04,1
 Ultrasound Cavitation,menu_enrichment,1
 Ultrasound Guided Dry Needling,menu_enrichment,1
 Ultrasound Guided Injection Therapies,menu_enrichment,1
@@ -9105,6 +9560,7 @@ Ultrasound Therapy Ph 848,mymeditravel_regenerative_thailand,1
 Ultrasound-Guided Foam Sclerotherapy,menu_enrichment,1
 Ultrasound-Guided Imaging,biohacking_map,1
 Ultrasound-Guided Injections,menu_enrichment,1
+Ultrasound-Guided Injections,menu_enrichment_stem9_04,1
 Ultrasound-guided Nerve/Myofascial Plane Hydrodissection - Specialty Injection Services,menu_enrichment,1
 Under Eye Fat Repositioning,menu_enrichment,1
 Under-Eye Stem Cell Treatments,menu_enrichment,1
@@ -9113,6 +9569,7 @@ Underarm Bleaching,menu_enrichment,1
 Underarm Hair Removal,menu_enrichment,1
 Underarm Waxing,menu_enrichment,1
 Underarms Waxing,menu_enrichment,1
+Underwater Treadmill,menu_enrichment_stem9_02,1
 Unicondylar Knee Replacement,menu_enrichment,1
 Unisex Lightweight Hoodie,menu_enrichment,1
 Unisex Tri-Blend T-Shirt,menu_enrichment,1
@@ -9140,6 +9597,7 @@ Upper Blepharoplasty by EBOPRAS-Certified Surgeon — VIP Transfer & 6 Night at 
 Upper Extremity Lymphedema Treatment,menu_enrichment,1
 Upper/lower Eye Ptosis Correction,menu_enrichment,1
 Ureteroscopy with Laser Lithotripsy — Minimally Invasive Kidney Stone Removal,bookimed_longevity,1
+Urgent Care,menu_enrichment_stem9_00,1
 Urgent Care - Allergies & Asthma,menu_enrichment,1
 Urgent Care - Cold/Flu,menu_enrichment,1
 Urgent Care - Ear Infections,menu_enrichment,1
@@ -9174,7 +9632,9 @@ UTI Diagnosis and Treatment,menu_enrichment,1
 UTI testing,menu_enrichment,1
 UTI Testing & Treatment,menu_enrichment,1
 UTI testing and treatment,menu_enrichment,1
+Utilization Review,menu_enrichment_stem_02,1
 Uveitis Injections,menu_enrichment,1
+Vaccination,menu_enrichment_stem9_05,1
 Vaccinations & Immunizations,menu_enrichment,1
 Vaccinations & Physicals,menu_enrichment,1
 Vaccinations & Testing,menu_enrichment,1
@@ -9186,6 +9646,7 @@ Vacuum Body Therapy,menu_enrichment,1
 Vacuum Therapy,menu_enrichment,1
 Vaginal & Transvaginal Sonograms,menu_enrichment,1
 Vaginal Canal Tightening - Fotona IntimaLase,menu_enrichment,1
+Vaginal Rejuvenation,menu_enrichment_stem9_02,1
 "Vaginal Rejuvenation - FemTouch, ThermiVa, Emsella",menu_enrichment,1
 Vaginoplasty Bk 14643,mymeditravel_regenerative_thailand,1
 Vaginoplasty by EBOPRAS-Certified Surgeon— 4 Nights at 4★ Hotel with VIP Transfer,bookimed_longevity,1
@@ -9205,6 +9666,7 @@ Vascular Imaging,world_longevity_clinics,1
 Vascular Lesion Treatment,menu_enrichment,1
 Vascular Medicine Consultation So8 1875,mymeditravel_chaum_medical_center,1
 Vascular Screening,world_longevity_clinics,1
+Vascular Surgery,menu_enrichment_stem9_03,1
 Vascular Surgery Consults,menu_enrichment,1
 Vascular Testing,menu_enrichment,1
 Vasculitis Treatment,menu_enrichment,1
@@ -9228,6 +9690,7 @@ Velvet Liquid Lipstick VOODOO,menu_enrichment,1
 VenaSeal Closure,menu_enrichment,1
 Venipuncture,menu_enrichment,1
 Venous Disease Treatment,menu_enrichment,1
+Venous Leg Ulcer Care Coordination,menu_enrichment_stem9_06,1
 "Ventilation Tube (VT) Insertion, Unilateral",bookimed_longevity,1
 "Ventilation Tube (VT) Insertion, Unilateral",bookimed_longevity_turkey,1
 Ventosaterapia,menu_enrichment,1
@@ -9256,10 +9719,12 @@ Vestibular Nystagmography (VNG),menu_enrichment,1
 Vestibular Physical Therapy,menu_enrichment,1
 Vestibular Rehab,menu_enrichment,1
 Vestibular Rehab (Vertigo),menu_enrichment,1
+Vestibular Rehabilitation,menu_enrichment_stem9_04,1
 Vestibular Rehabilitation - Physical Therapy,menu_enrichment,1
 Vestibular Rehabilitation Services,menu_enrichment,1
 Vestibular Rehabilitation Therapy (VRT),menu_enrichment,1
 Vestibular Therapy & Neurological Rehabilitation,menu_enrichment,1
+Vestibular/Balance,menu_enrichment_stem9_06,1
 Veteran & First Responder Care,menu_enrichment,1
 VI Chemical Peels,menu_enrichment,1
 VI Peel,menu_enrichment,1
@@ -9300,6 +9765,7 @@ Virtual / Distant Reiki Healing,menu_enrichment,1
 Virtual Aesthetic Consultation,menu_enrichment,1
 Virtual Colonoscopy,world_longevity_clinics,1
 Virtual Consultations,menu_enrichment,1
+Virtual Fitness Coaching,menu_enrichment_small_sources,1
 Virtual Free Consultation,menu_enrichment,1
 Virtual iPhone Facetime,menu_enrichment,1
 Virtual Physical Therapy,menu_enrichment,1
@@ -9315,6 +9781,7 @@ Visceral Therapy,menu_enrichment,1
 "Viscoelastic Joint Injections - Synvisc, Hyalgan and Orthovisc",menu_enrichment,1
 Viscosupplement gel injection for OA,menu_enrichment,1
 Viscosupplementation Gel Injections,menu_enrichment,1
+Viscosupplementation Injections - Joint Lubricants,menu_enrichment_stem_01,1
 Vision Testing,menu_enrichment,1
 Visit with Dr. Maxwell,menu_enrichment,1
 Visiting Nurse,menu_enrichment,1
@@ -9407,6 +9874,8 @@ Weekly Membership - 40 credits/week,menu_enrichment,1
 Weekly Membership - 60 credits/week,menu_enrichment,1
 Weekly Membership - 80 credits/week,menu_enrichment,1
 Weight Control,menu_enrichment,1
+Weight Loss,menu_enrichment_stem9_06,1
+Weight Loss,menu_enrichment_stem9_07,1
 Weight Loss & Body Sculpting,menu_enrichment,1
 Weight Loss & Fat Reduction - Semaglutide & Tirzepatide protocols,menu_enrichment,1
 Weight Loss & Wellness,menu_enrichment,1
@@ -9424,6 +9893,8 @@ Weight Loss Fat Burner (Mobile) - Mobile,menu_enrichment,1
 "Weight Loss Lab - CBC, CMP14, Lipid",menu_enrichment,1
 Weight loss management,menu_enrichment,1
 Weight Loss Management,menu_enrichment,1
+Weight Loss Management,menu_enrichment_stem9_01,1
+Weight Loss Management,menu_enrichment_stem9_05,1
 Weight Loss Medication,menu_enrichment,1
 "Weight Loss Membership - Monthly Membership, per month",menu_enrichment,1
 Weight Loss Metabolic Safety Mini Panel,menu_enrichment,1
@@ -9442,7 +9913,9 @@ Weight Loss Program Renewal - Weigh-ins Only,menu_enrichment,1
 Weight Loss Solutions,menu_enrichment,1
 Weight Loss Therapies,menu_enrichment,1
 Weight Loss Therapy,menu_enrichment,1
+Weight Loss Therapy,menu_enrichment_small_sources,1
 Weight Loss Treatment,menu_enrichment,1
+Weight Loss Treatment,menu_enrichment_stem9_01,1
 Weight Management & HCG Programs,menu_enrichment,1
 Weight Management & Wellness Coaching,menu_enrichment,1
 Weight Management Consultation,menu_enrichment,1
@@ -9456,6 +9929,7 @@ Weight Reduction Program,menu_enrichment,1
 Weight/Obesity Management,menu_enrichment,1
 Weightloss Management,menu_enrichment,1
 Welcome Credit,menu_enrichment,1
+Well Child Care and Immunizations,menu_enrichment_stem9_01,1
 Well Child Care Visit,menu_enrichment,1
 Well Wednesdays,menu_enrichment,1
 Well Woman Exam,menu_enrichment,1
@@ -9467,20 +9941,25 @@ Wellness & Lifestyle Guidance,menu_enrichment,1
 Wellness & Longevity,menu_enrichment,1
 Wellness & Preventive Care,menu_enrichment,1
 Wellness - SENS Solution,menu_enrichment,1
+Wellness and Fitness Training - personal or group available,menu_enrichment_stem9_04,1
+Wellness and Fitness Training - personal or group available,menu_enrichment_stem9_06,1
 Wellness and Preventative Care,menu_enrichment,1
 Wellness Body Rituals,menu_enrichment,1
 Wellness care,menu_enrichment,1
 Wellness care through other ancillary services offered by the practice,menu_enrichment,1
 Wellness Coach Service,menu_enrichment,1
 Wellness Coaching,menu_enrichment,1
+Wellness Coaching,menu_enrichment_stem9_08,1
 Wellness Consult - Follow Up,menu_enrichment,1
 Wellness Consult - Initial Visit,menu_enrichment,1
+Wellness Evaluation,menu_enrichment_stem_00,1
 Wellness Exams,menu_enrichment,1
 Wellness Exercise Series - Drop-in class,menu_enrichment,1
 Wellness Exercise Series - Individual + spouse membership,menu_enrichment,1
 Wellness Exercise Series - Individual membership,menu_enrichment,1
 Wellness Experience,menu_enrichment,1
 Wellness hotel,biohacking_map,1
+Wellness Initiative,menu_enrichment_stem9_04,1
 Wellness Injections,menu_enrichment,1
 "Wellness Membership - Monthly Membership, per month",menu_enrichment,1
 Wellness Myers Cocktail - Mission Wellness,menu_enrichment,1
@@ -9491,6 +9970,8 @@ Wellness Sandwich,menu_enrichment,1
 Wellness Starter Protocol - Sermorelin or Ipamorelin + GHK-Cu,menu_enrichment,1
 Wellness Visit,menu_enrichment,1
 Wellness visits,menu_enrichment,1
+"Wellness with Aides - Specialized Equipment (E-stim bike, bodyweight support treadmill), per hour",menu_enrichment_stem9_05,1
+"Wellness with Aides - Standard, per hour",menu_enrichment_stem9_05,1
 Wellness/Physical Exams,menu_enrichment,1
 Westchester Torticollis Program,menu_enrichment,1
 Wharton's Jelly Therapy,menu_enrichment,1
@@ -9530,6 +10011,7 @@ Women's Health Check-up Ages 41-50 with Hormone Profile & Pap Smear,bookimed_lon
 Women's Health Optimization Package - with bloodwork,menu_enrichment,1
 Women's Health Optimization Package - without bloodwork,menu_enrichment,1
 Women's Health Panel (Baseline),menu_enrichment,1
+Women's Health Preventive Care,menu_enrichment_stem9_01,1
 Women's Heart Health Clinic,menu_enrichment,1
 Women's Hormones,menu_enrichment,1
 Women's Housing,menu_enrichment,1
@@ -9553,6 +10035,7 @@ Work Hardening / Work Conditioning Evaluation - Services for Workers Comp,menu_e
 Work Hardening / Work Conditioning Treatment - Services for Workers Comp,menu_enrichment,1
 Work Hardening/Conditioning,menu_enrichment,1
 Work Injuries Rehab,menu_enrichment,1
+Work Injuries Rehabilitation,menu_enrichment_stem9_04,1
 Work Injury,menu_enrichment,1
 Work Performance Evaluation/Functional Capacity Evaluation,menu_enrichment,1
 Work Related Injuries - Workers Comp,menu_enrichment,1
@@ -9563,6 +10046,7 @@ Work-Related Physicals,menu_enrichment,1
 Workbook PDF - Deep Dive Down the Rabbit Hole Into Hyper Health,menu_enrichment,1
 Workers Compensation Injuries Treatment,menu_enrichment,1
 Workers Compensation Physical Therapy,menu_enrichment,1
+Workers' Comp,menu_enrichment_stem_01,1
 Workers' Compensation Consultations,menu_enrichment,1
 Workers' Compensation Physical Therapy,menu_enrichment,1
 Workplace Injury Therapy - Workers' Comp,menu_enrichment,1
@@ -9578,8 +10062,10 @@ Wrinkle Treatment,menu_enrichment,1
 Wrinkle Treatment Bk 14656,mymeditravel_regenerative_thailand,1
 Wrinkle Treatment Pa 1559,mymeditravel_regenerative_thailand,1
 Wrinkle Treatment Sp 1388,mymeditravel_regenerative_thailand,1
+Wrist Treatment,menu_enrichment_stem_02,1
 Wrist Treatments,menu_enrichment,1
 X-Ray (ONLY),menu_enrichment,1
+X-ray Analysis,menu_enrichment_stem9_01,1
 X-Ray Imaging,menu_enrichment,1
 X-Ray Scan,menu_enrichment,1
 Xcellent - 60 capsules,menu_enrichment,1
@@ -9596,6 +10082,7 @@ XO Shot,menu_enrichment,1
 Y-Strap Adjustment,menu_enrichment,1
 Yearly Physical Exam,menu_enrichment,1
 Yearly Physical Examination,menu_enrichment,1
+Yearly Physicals,menu_enrichment_stem9_01,1
 Yeast infection treatment,menu_enrichment,1
 Yellow Fever Vaccination,menu_enrichment,1
 Yoga & Meditation Classes,menu_enrichment,1
@@ -9624,6 +10111,7 @@ Zen Detox - Half Liter,menu_enrichment,1
 Zen Mama Prenatal Massage - Massages,menu_enrichment,1
 ZenVR Retreat,menu_enrichment,1
 Zerona Laser Treatment - Zerona Z6,menu_enrichment,1
+Zilretta for Knee OA,menu_enrichment_stem9_08,1
 Zinc Add-On,menu_enrichment,1
 ZO 3-Step Peel - ZO,menu_enrichment,1
 Zofran - 4mg,menu_enrichment,1
@@ -9632,4 +10120,8 @@ Zofran Add-On,menu_enrichment,1
 Ästhetische Medizin & Longevity,menu_enrichment,1
 ÇA VA BIEN Mini Facial,menu_enrichment,1
 ÇA VA BIEN Signature Facial,menu_enrichment,1
+アビヤンガ - アーユルヴェーダ,menu_enrichment_small_sources,1
+アンチエイジング医療,menu_enrichment_small_sources,1
+シロダーラ - アーユルヴェーダ,menu_enrichment_small_sources,1
+再生医療,menu_enrichment_small_sources,1
 🧠 Premium Package – Epilepsy Surgery Program in Barcelona,bookimed_longevity,1
