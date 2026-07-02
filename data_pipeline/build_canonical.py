@@ -864,16 +864,15 @@ class CanonicalBuilder:
         key_parts = [org_key, locality_key or address_key or "main"]
         if mapped.get("region"):
             key_parts.append(slugify(mapped["region"]))
-        if (source_slug in HIGH_VOLUME_SOURCES or mapped.get("record_type") == "discovered_location") and address_key:
+        if address_key and address_key != key_parts[1]:
             key_parts.append(address_key[:80])
         key = "|".join(key_parts)
         if key in self.locations_by_key:
             return self.locations_by_key[key]
-        if is_menu_enrichment_source(source_slug) and mapped.get("record_type") != "discovered_location":
-            existing_id = self.find_menu_enrichment_location(org_id, mapped)
-            if existing_id:
-                self.locations_by_key[key] = existing_id
-                return existing_id
+        existing_id = self.find_matching_location(org_id, mapped)
+        if existing_id:
+            self.locations_by_key[key] = existing_id
+            return existing_id
         self.conn.execute(
             """
             INSERT INTO locations(
@@ -907,7 +906,7 @@ class CanonicalBuilder:
         self.locations[location_id] = mapped | {"org_id": org_id}
         return location_id
 
-    def find_menu_enrichment_location(self, org_id: int, mapped: dict[str, Any]) -> int | None:
+    def find_matching_location(self, org_id: int, mapped: dict[str, Any]) -> int | None:
         locality_key = slugify(mapped.get("locality") or "")
         region_key = slugify(mapped.get("region") or "")
         address_key = slugify(mapped.get("address") or "")
@@ -926,25 +925,29 @@ class CanonicalBuilder:
             return None
         if address_key:
             for location_id, meta in candidates:
-                if slugify(meta.get("address") or "") == address_key:
+                if addresses_match(mapped.get("address"), meta.get("address")):
                     return location_id
         if name_norm:
             for location_id, meta in candidates:
+                meta_address = meta.get("address")
+                addresses_conflict = bool(address_key and meta_address and not addresses_match(mapped.get("address"), meta_address))
+                if addresses_conflict:
+                    continue
                 if fuzz.token_set_ratio(name_norm, normalize_name(meta.get("name") or "")) >= 92:
                     return location_id
-        region_matches = [(location_id, meta) for location_id, meta in candidates if region_key and slugify(meta.get("region") or "") == region_key]
-        if len(region_matches) == 1:
-            return region_matches[0][0]
-        return candidates[0][0] if len(candidates) == 1 else None
+        return None
+
+    def find_menu_enrichment_location(self, org_id: int, mapped: dict[str, Any]) -> int | None:
+        return self.find_matching_location(org_id, mapped)
 
     def update_location_from_menu_enrichment(self, location_id: int, mapped: dict[str, Any]) -> None:
         self.conn.execute(
             """
             UPDATE locations
-            SET address = COALESCE(?, address),
-                phone = COALESCE(?, phone),
-                email = COALESCE(?, email),
-                website = COALESCE(?, website)
+            SET address = COALESCE(address, ?),
+                phone = COALESCE(phone, ?),
+                email = COALESCE(email, ?),
+                website = COALESCE(website, ?)
             WHERE id = ?
             """,
             (
@@ -1310,6 +1313,50 @@ class CanonicalBuilder:
                 """
             )
         )
+        duplicate_location_group_count = int(
+            self.conn.execute(
+                """
+                SELECT COUNT(*)
+                FROM (
+                    SELECT org_id, locality, region, COUNT(*) AS location_count
+                    FROM locations
+                    WHERE org_id IS NOT NULL
+                    GROUP BY org_id, locality, region
+                    HAVING COUNT(*) >= 2
+                )
+                """
+            ).fetchone()[0]
+        )
+        duplicate_exact_address_group_count = int(
+            self.conn.execute(
+                """
+                SELECT COUNT(*)
+                FROM (
+                    SELECT org_id, locality, region, address, COUNT(*) AS location_count
+                    FROM locations
+                    WHERE org_id IS NOT NULL AND address IS NOT NULL AND address != ''
+                    GROUP BY org_id, locality, region, address
+                    HAVING COUNT(*) >= 2
+                )
+                """
+            ).fetchone()[0]
+        )
+        duplicate_location_group_samples = list(
+            self.conn.execute(
+                """
+                SELECT o.dedup_key AS org_key, o.canonical_name AS org_name,
+                       l.locality, l.region, COUNT(*) AS location_count,
+                       GROUP_CONCAT(l.id || ':' || COALESCE(l.name, ''), ' | ') AS locations
+                FROM locations l
+                JOIN organizations o ON o.id = l.org_id
+                WHERE l.org_id IS NOT NULL
+                GROUP BY l.org_id, l.locality, l.region
+                HAVING COUNT(*) >= 2
+                ORDER BY location_count DESC, lower(o.canonical_name), lower(l.locality)
+                LIMIT 20
+                """
+            )
+        )
         print("\nCanonical build report")
         print("======================")
         print(f"canonical_db: {CANONICAL_DB}")
@@ -1350,6 +1397,16 @@ class CanonicalBuilder:
             print(f"notes: skipped {self.skipped_practitioner_reviews} practitioner-source reviews because schema reviews table is location-scoped")
         if self.skipped_service_search_rows:
             print(f"notes: skipped {self.skipped_service_search_rows} service-search listings with no usable address (directory/aggregator pages)")
+        print(f"\nduplicate org/locality location groups: {duplicate_location_group_count}")
+        print(f"duplicate exact-address location groups: {duplicate_exact_address_group_count}")
+        if duplicate_location_group_samples:
+            print("  (possible sign of under-collapsed duplicate locations - spot check these)")
+            for row in duplicate_location_group_samples:
+                print(
+                    f"  - {row['org_name']} [{row['org_key']}] "
+                    f"({row['locality'] or 'unknown'}, {row['region'] or 'unknown'}): "
+                    f"{row['location_count']} locations: {row['locations']}"
+                )
         print(f"\nsuspicious location collapses (one location absorbing 3+ distinct URLs from the same source): {len(suspicious_collapses)}")
         if suspicious_collapses:
             print("  (possible sign of a mis-extracted shared/HQ address collapsing distinct branches - spot check these)")
@@ -1473,6 +1530,18 @@ def normalize_country_key(value: Any) -> str:
 def slugify(value: Any) -> str:
     norm = normalize_term(value)
     return re.sub(r"[^a-z0-9]+", "-", norm).strip("-") or "unknown"
+
+
+def addresses_match(left: Any, right: Any) -> bool:
+    left_norm = normalize_term(left)
+    right_norm = normalize_term(right)
+    if not left_norm or not right_norm:
+        return False
+    if left_norm == right_norm:
+        return True
+    if min(len(left_norm), len(right_norm)) < 8:
+        return False
+    return fuzz.token_set_ratio(left_norm, right_norm) >= 92
 
 
 def base_url_from(url: str | None) -> str | None:
