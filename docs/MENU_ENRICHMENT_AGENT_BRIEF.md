@@ -1,6 +1,6 @@
 # Menu Enrichment Agent Brief
 
-This is a spec for another agent to build a new scraper (or set of scripts) that enriches
+This is a spec for you to build a new scraper (or set of scripts) that enriches
 existing `canonical.db` locations with complete, priced treatment menus. It assumes the
 reader has no other context on this conversation — everything needed is below or in the
 files it points to.
