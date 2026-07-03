@@ -3,10 +3,16 @@ import Image from "next/image";
 import Link from "next/link";
 import { CityTreatmentSearches } from "@/components/city-treatment-searches";
 import { LandingExploreCarousel, type LandingExploreItem } from "@/components/landing-explore-carousel";
+import { LandingFeaturedDirectoryCarousel } from "@/components/landing-featured-directory-carousel";
 import { LandingFooter } from "@/components/landing-footer";
 import { LandingScrollHeader } from "@/components/landing-scroll-header";
 import { getPopularTreatments, popularTreatmentLabel } from "@/lib/popular-treatments";
-import { getFacets, getLandingCityTreatmentSearches } from "@/lib/queries";
+import {
+  getFacets,
+  getLandingCityTreatmentSearches,
+  getLandingFeaturedDirectoryCards,
+  getLandingTreatmentDirectoryCards,
+} from "@/lib/queries";
 
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
@@ -16,28 +22,23 @@ function searchHref(term: string) {
 }
 
 const exploreItems: LandingExploreItem[] = [
-  { label: "DEXA Scan", image: "/treatments/DEXA.png", href: searchHref("DEXA Scan") },
-  { label: "Clinique La Prairie", image: "/clinics/Clinique La Prairie, Switzerland.png", href: searchHref("Clinique La Prairie") },
   { label: "Muscle Recovery", image: "/domains/musclerecovery.webp", href: searchHref("Muscle Recovery") },
   { label: "Metabolic Health", image: "/domains/nutrition.jpg", href: searchHref("Metabolic Health") },
-  { label: "Hyperbaric Oxygen Therapy (HBOT)", image: "/treatments/Hbot.png", href: searchHref("Hyperbaric Oxygen Therapy") },
-  { label: "Chi Longevity", image: "/clinics/chi longevity, singapore.jpg", href: searchHref("Chi Longevity") },
-  { label: "Stemcell Therapy", image: "/treatments/Stemcelltherapy.png", href: searchHref("Stemcell Therapy") },
   { label: "Ovarian Health", image: "/domains/ovarian health.jpg", href: searchHref("Ovarian Health") },
-  { label: "SHA Wellness Clinic", image: "/clinics/shawellness, spain.webp", href: searchHref("SHA Wellness Clinic") },
-  { label: "VO2 Max Test", image: "/treatments/VO2max.png", href: searchHref("VO2 Max Test") },
   { label: "Regenerative Medicine", image: "/domains/regenerativehealth.png", href: searchHref("Regenerative Medicine") },
-  { label: "Sheba Longevity", image: "/clinics/Sheba, Israel.jpg", href: searchHref("Sheba Longevity") },
-  { label: "Full-body MRI", image: "/treatments/MRI.png", href: searchHref("Full-body MRI") },
   { label: "Cognitive Health", image: "/domains/cognitivehealth.jpg", href: searchHref("Cognitive Health") },
-  { label: "The Hundred", image: "/clinics/the hundred, japan.webp", href: searchHref("The Hundred") },
-  { label: "IV Therapy", image: "/treatments/IV.png", href: searchHref("IV Therapy") },
   { label: "Biological Age", image: "/domains/Biologicalage.avif", href: searchHref("Biological Age") },
-  { label: "Fountain Life", image: "/clinics/fountain life, dallas.webp", href: searchHref("Fountain Life") },
 ];
 
 export default function HomePage() {
   const citySearches = getLandingCityTreatmentSearches(18, 100);
+  const featuredCards = getLandingFeaturedDirectoryCards(5);
+  const nadCards = getLandingTreatmentDirectoryCards("NAD+ IV therapy", 5, {
+    countryCode: "US",
+    localities: ["New York", "Brooklyn", "Long Island City", "Jackson Heights", "Rego Park", "Staten Island"],
+    requireImage: false,
+  });
+  const mriCards = getLandingTreatmentDirectoryCards("Full-body MRI", 5);
   const treatmentFacets = getFacets().treatment_domains.flatMap((domain) => domain.treatments);
   const popularTreatments = getPopularTreatments(treatmentFacets);
 
@@ -46,17 +47,30 @@ export default function HomePage() {
       <LandingScrollHeader />
 
       <section className="landing-hero" aria-labelledby="landing-hero-title">
-        <div className="landing-hero-copy">
+        <div className="landing-hero-topbar">
           <Link className="landing-brand landing-hero-brand" href="/">
             fountain
           </Link>
+          <button className="coming-soon-pill" type="button">
+            Coming Soon <span aria-hidden="true">|</span> Join
+          </button>
+        </div>
+
+        <div className="landing-hero-copy">
           <h1 id="landing-hero-title">The World’s Biggest Longevity Market Place.</h1>
           <p>Discover treatments, find practitioners.</p>
         </div>
 
         <div className="landing-hero-search">
           <form className="landing-search" action="/directory" role="search">
-            <input name="q" type="search" aria-label="Search treatments, clinics, doctors" />
+            <input
+              name="q"
+              type="search"
+              aria-label="Search treatments, clinics, doctors"
+              autoComplete="off"
+              autoCorrect="off"
+              spellCheck={false}
+            />
             <button type="submit" aria-label="Search">
               <Search size={18} aria-hidden="true" />
             </button>
@@ -71,7 +85,11 @@ export default function HomePage() {
         </div>
       </section>
 
-      <LandingExploreCarousel items={exploreItems} />
+      <LandingFeaturedDirectoryCarousel cards={featuredCards} title="Top Rated Longevity Clinics" />
+
+      <LandingFeaturedDirectoryCarousel cards={nadCards} title="NAD+ IV Therapy Near You" />
+
+      <LandingFeaturedDirectoryCarousel cards={mriCards} title="Where to get a full body MRI" />
 
       <section className="landing-banner" aria-hidden="true">
         <Image src="/clinics/The Fountain of Youth.jpg" alt="" fill sizes="100vw" />
@@ -83,6 +101,8 @@ export default function HomePage() {
           wealth becomes useless, and reason is powerless.” - Herophilus
         </blockquote>
       </section>
+
+      <LandingExploreCarousel items={exploreItems} />
 
       <section className="landing-discover">
         <div className="discover-card">

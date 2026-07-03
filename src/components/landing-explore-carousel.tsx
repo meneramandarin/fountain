@@ -126,7 +126,7 @@ export function LandingExploreCarousel({ items }: LandingExploreCarouselProps) {
   return (
     <section className="landing-explore" aria-labelledby="landing-explore-title">
       <div className="landing-explore-header">
-        <h2 id="landing-explore-title">Explore Treatments and Clinics</h2>
+        <h2 id="landing-explore-title">On the pursuit of a longer life</h2>
         <div className="landing-explore-controls" role="group" aria-label="Carousel controls">
           <button type="button" onClick={() => scrollRail(-1)} aria-label="Scroll left">
             <span className="landing-explore-arrow landing-explore-arrow-left" aria-hidden="true" />

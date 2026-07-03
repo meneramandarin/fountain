@@ -53,7 +53,27 @@ export type LandingCitySearch = {
   treatments: LandingCityTreatment[];
 };
 
+export type LandingFeaturedDirectoryCard = {
+  id: number;
+  name: string | null;
+  org_name: string | null;
+  locality: string | null;
+  region: string | null;
+  country_name: string | null;
+  rating: number | null;
+  review_count: number | null;
+  image: string | null;
+  tags: { facet: string; value: string }[];
+  treatments: { name: string; domain: string }[];
+};
+
 type AnyRow = Record<string, unknown>;
+
+type LandingTreatmentCardOptions = {
+  countryCode?: string;
+  localities?: string[];
+  requireImage?: boolean;
+};
 
 function ftsMatch(query?: string | null) {
   const tokens = (query || "").toLowerCase().match(/[a-z0-9]+/g);
@@ -193,6 +213,224 @@ export function getLandingCityTreatmentSearches(cityLimit = 18, treatmentLimit =
   }
 
   return Array.from(byCity.values());
+}
+
+export function getLandingFeaturedDirectoryCards(limit = 5): LandingFeaturedDirectoryCard[] {
+  const preferredCandidates = rows<AnyRow>(
+    `
+    WITH preferred(term, rank) AS (
+      VALUES
+        ('Clinique La Prairie', 1),
+        ('SHA Wellness', 2),
+        ('Chi Longevity', 3),
+        ('Fountain Life', 4),
+        ('The Hundred', 5)
+    ),
+    matches AS (
+      SELECT p.rank, l.id, l.name, l.locality, l.region, l.country_name, l.rating, l.review_count,
+             org.canonical_name AS org_name,
+             ROW_NUMBER() OVER (
+               PARTITION BY p.rank
+               ORDER BY
+                 (l.review_count IS NULL),
+                 l.review_count DESC,
+                 (l.rating IS NULL),
+                 l.rating DESC,
+                 l.name COLLATE NOCASE
+             ) AS match_rank
+      FROM preferred p
+      JOIN locations l
+        ON l.name LIKE '%' || p.term || '%'
+      LEFT JOIN organizations org ON org.id = l.org_id
+      WHERE EXISTS (
+        SELECT 1
+        FROM images img
+        WHERE img.entity_type = 'location'
+          AND img.entity_id = l.id
+          AND img.local_path IS NOT NULL
+          AND img.local_path <> ''
+      )
+    )
+    SELECT id, name, locality, region, country_name, rating, review_count, org_name
+    FROM matches
+    WHERE match_rank = 1
+    ORDER BY rank
+  `,
+  );
+  const fallbackCandidates = rows<AnyRow>(
+    `
+    SELECT l.id, l.name, l.locality, l.region, l.country_name, l.rating, l.review_count,
+           org.canonical_name AS org_name
+    FROM locations l
+    LEFT JOIN organizations org ON org.id = l.org_id
+    WHERE EXISTS (
+      SELECT 1
+      FROM images img
+      WHERE img.entity_type = 'location'
+        AND img.entity_id = l.id
+        AND img.local_path IS NOT NULL
+        AND img.local_path <> ''
+    )
+      AND COALESCE(NULLIF(TRIM(l.name), ''), NULLIF(TRIM(org.canonical_name), '')) IS NOT NULL
+    ORDER BY
+      (l.rating IS NULL),
+      l.rating DESC,
+      (l.review_count IS NULL),
+      l.review_count DESC,
+      l.name COLLATE NOCASE
+    LIMIT 600
+  `,
+  );
+  const candidateMap = new Map<number, AnyRow>();
+  for (const candidate of [...preferredCandidates, ...fallbackCandidates]) {
+    candidateMap.set(candidate.id as number, candidate);
+  }
+  const candidates = Array.from(candidateMap.values());
+
+  return hydrateLandingDirectoryCards(candidates, limit);
+}
+
+export function getLandingTreatmentDirectoryCards(
+  treatmentName: string,
+  limit = 5,
+  options: LandingTreatmentCardOptions = {},
+): LandingFeaturedDirectoryCard[] {
+  const filters: string[] = ["t.canonical_name = ?"];
+  const values: unknown[] = [treatmentName];
+
+  if (options.countryCode) {
+    filters.push("l.country_code = ?");
+    values.push(options.countryCode);
+  }
+
+  if (options.localities?.length) {
+    filters.push(`l.locality IN (${placeholders(options.localities.length)})`);
+    values.push(...options.localities);
+  }
+
+  const candidates = rows<AnyRow>(
+    `
+    SELECT l.id, l.name, l.locality, l.region, l.country_name, l.rating, l.review_count,
+           org.canonical_name AS org_name
+    FROM locations l
+    LEFT JOIN organizations org ON org.id = l.org_id
+    JOIN offerings o ON o.location_id = l.id
+    JOIN treatments t ON t.id = o.treatment_id
+    WHERE ${filters.join(" AND ")}
+      AND EXISTS (
+        SELECT 1
+        FROM images img
+        WHERE img.entity_type = 'location'
+          AND img.entity_id = l.id
+          AND img.local_path IS NOT NULL
+          AND img.local_path <> ''
+      )
+      AND COALESCE(NULLIF(TRIM(l.name), ''), NULLIF(TRIM(org.canonical_name), '')) IS NOT NULL
+    GROUP BY l.id
+    ORDER BY
+      (l.rating IS NULL),
+      l.rating DESC,
+      (l.review_count IS NULL),
+      l.review_count DESC,
+      l.name COLLATE NOCASE
+    LIMIT 80
+  `,
+    values,
+  );
+
+  return hydrateLandingDirectoryCards(candidates, limit, { requireImage: options.requireImage });
+}
+
+function hydrateLandingDirectoryCards(
+  candidates: AnyRow[],
+  limit: number,
+  options: { requireImage?: boolean } = {},
+): LandingFeaturedDirectoryCard[] {
+  const ids = candidates.map((candidate) => candidate.id as number);
+  if (!ids.length) {
+    return [];
+  }
+
+  const marks = placeholders(ids.length);
+  const images = rows<{ lid: number; local_path: string }>(
+    `
+    SELECT entity_id AS lid, local_path
+    FROM images
+    WHERE entity_type = 'location' AND entity_id IN (${marks})
+      AND local_path IS NOT NULL AND local_path != ''
+  `,
+    ids,
+  );
+  const imageMap = new Map<number, string>();
+  for (const image of images) {
+    if (!imageMap.has(image.lid) && !placeholderImagePathSet.has(image.local_path)) {
+      imageMap.set(image.lid, image.local_path);
+    }
+  }
+
+  const requireImage = options.requireImage ?? true;
+  const featured = candidates
+    .filter((candidate) => !requireImage || imageMap.has(candidate.id as number))
+    .slice(0, limit);
+  const featuredIds = featured.map((candidate) => candidate.id as number);
+  if (!featuredIds.length) {
+    return [];
+  }
+
+  const featuredMarks = placeholders(featuredIds.length);
+  const treatments = rows<{ lid: number; name: string; domain: string }>(
+    `
+    SELECT o.location_id AS lid, t.canonical_name AS name, cat.name AS domain
+    FROM offerings o
+    JOIN treatments t ON t.id = o.treatment_id
+    JOIN categories cat ON cat.id = t.category_id
+    WHERE o.location_id IN (${featuredMarks})
+    GROUP BY o.location_id, t.id
+  `,
+    featuredIds,
+  );
+  const tags = rows<{ lid: number; facet: string; value: string }>(
+    `
+    SELECT et.entity_id AS lid, tg.facet AS facet, tg.value AS value
+    FROM entity_tags et
+    JOIN tags tg ON tg.id = et.tag_id
+    WHERE et.entity_type = 'location'
+      AND et.entity_id IN (${featuredMarks})
+      AND tg.facet IN ('entity_type', 'care_model')
+  `,
+    featuredIds,
+  );
+
+  const treatmentMap = new Map<number, { name: string; domain: string }[]>();
+  for (const treatment of treatments) {
+    const list = treatmentMap.get(treatment.lid) || [];
+    list.push({ name: treatment.name, domain: treatment.domain });
+    treatmentMap.set(treatment.lid, list);
+  }
+
+  const tagMap = new Map<number, { facet: string; value: string }[]>();
+  for (const tag of tags) {
+    const list = tagMap.get(tag.lid) || [];
+    list.push({ facet: tag.facet, value: tag.value });
+    tagMap.set(tag.lid, list);
+  }
+
+  return featured.map((card) => {
+    const id = card.id as number;
+    return {
+      id,
+      name: (card.name as string | null) || null,
+      org_name: (card.org_name as string | null) || null,
+      locality: (card.locality as string | null) || null,
+      region: (card.region as string | null) || null,
+      country_name: (card.country_name as string | null) || null,
+      rating: (card.rating as number | null) || null,
+      review_count: (card.review_count as number | null) || null,
+      image: imageMap.get(id) || null,
+      tags: tagMap.get(id) || [],
+      treatments: (treatmentMap.get(id) || []).slice(0, 3),
+    };
+  });
 }
 
 export function getFacets() {
