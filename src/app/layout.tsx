@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { DM_Serif_Display, DM_Serif_Text, Geist, Geist_Mono } from "next/font/google";
+import { ogImage, siteDescription, siteName, siteUrl } from "@/lib/site";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -25,8 +26,37 @@ const dmSerifText = DM_Serif_Text({
 });
 
 export const metadata: Metadata = {
-  title: "Fountain",
-  description: "A modern directory for longevity clinics, doctors, treatments, and programs.",
+  metadataBase: siteUrl,
+  applicationName: siteName,
+  title: {
+    default: "Fountain | Longevity Clinics, Doctors & Treatments",
+    template: `%s | ${siteName}`,
+  },
+  description: siteDescription,
+  alternates: {
+    canonical: "/",
+  },
+  openGraph: {
+    type: "website",
+    url: "/",
+    siteName,
+    title: "Fountain | Longevity Clinics, Doctors & Treatments",
+    description: siteDescription,
+    images: [ogImage],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Fountain | Longevity Clinics, Doctors & Treatments",
+    description: siteDescription,
+    images: [ogImage.url],
+  },
+  icons: {
+    icon: "/icon",
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
 };
 
 export default function RootLayout({
