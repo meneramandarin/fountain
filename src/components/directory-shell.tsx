@@ -20,6 +20,7 @@ import {
 import Image from "next/image";
 import Link from "next/link";
 import { useCallback, useEffect, useMemo, useState } from "react";
+import { getPopularTreatments, popularTreatmentLabel } from "@/lib/popular-treatments";
 
 type Facets = {
   countries: { code: string; name: string; n: number }[];
@@ -131,11 +132,6 @@ const domainTone: Record<string, { bg: string; fg: string }> = {
   "Lifestyle & foundational": { bg: "#edefe0", fg: "#4b5227" },
 };
 
-const popularTreatmentExclusions = new Set(["Botox", "Dermal fillers", "Med spa", "IV nutrient therapy", "Shockwave therapy"]);
-const popularTreatmentLabelOverrides: Record<string, string> = {
-  "Hyperbaric oxygen therapy": "HBOT",
-};
-
 export function DirectoryShell({
   initialFacets,
   initialState: seededState,
@@ -218,10 +214,7 @@ export function DirectoryShell({
   }, [allTreatments]);
   const popularTreatments = useMemo(
     () =>
-      [...allTreatments]
-        .filter((treatment) => !popularTreatmentExclusions.has(treatment.name))
-        .sort((a, b) => b.n - a.n)
-        .slice(0, 12),
+      getPopularTreatments(allTreatments),
     [allTreatments],
   );
   const countryOptions = useMemo(() => {
@@ -292,7 +285,7 @@ export function DirectoryShell({
               name="q"
               value={state.q}
               onChange={(event) => updateState({ q: event.target.value })}
-              placeholder="Search treatments, clinics, doctors..."
+              aria-label="Search treatments, clinics, doctors"
               type="search"
             />
             <button type="submit" aria-label="Search">
@@ -313,7 +306,7 @@ export function DirectoryShell({
                 aria-pressed={selected}
                 onClick={() => toggleTreatment(id)}
               >
-                {popularTreatmentLabelOverrides[treatment.name] || treatment.name}
+                {popularTreatmentLabel(treatment.name)}
               </button>
             );
           })}
