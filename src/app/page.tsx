@@ -74,6 +74,13 @@ export default function HomePage() {
         <Image src="/clinics/The Fountain of Youth.jpg" alt="" fill sizes="100vw" />
       </section>
 
+      <section className="landing-quote" aria-label="Health quote">
+        <blockquote>
+          “When health is absent, wisdom cannot reveal itself, art cannot become manifest, strength cannot fight,
+          wealth becomes useless, and reason is powerless.” - Herophilus
+        </blockquote>
+      </section>
+
       <section className="landing-discover">
         <div className="discover-card">
           <h2>Explore searches in popular cities</h2>
