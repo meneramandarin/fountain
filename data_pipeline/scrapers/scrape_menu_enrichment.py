@@ -236,6 +236,7 @@ def parse_args(argv: list[str] | None) -> argparse.Namespace:
     parser.add_argument("--skip-review-queue", action=argparse.BooleanOptionalAction, default=True)
     parser.add_argument("--skip-db", action="append", type=Path, default=[])
     parser.add_argument("--skip-review-queue-path", action="append", type=Path, default=[])
+    parser.add_argument("--retry-review-queue-path", action="append", type=Path, default=[])
     parser.add_argument("--source-slug", action="append", default=[])
     parser.add_argument("--shard-index", type=int)
     parser.add_argument("--shard-count", type=int)
@@ -268,6 +269,9 @@ def load_worklist(args: argparse.Namespace) -> list[TargetLocation]:
     conn = sqlite3.connect(args.canonical_db)
     conn.row_factory = sqlite3.Row
     try:
+        if args.retry_review_queue_path:
+            rows = load_retry_rows_from_review_queues(conn, args.retry_review_queue_path)
+            return filter_target_rows(rows, reviewed_keys, reviewed_ids, args)
         query_limit = max(args.limit * 5, args.limit + len(reviewed_keys) + len(reviewed_ids))
         source_filter = source_where_clause(args.source_slug)
         if args.pilot:
@@ -314,21 +318,74 @@ def load_worklist(args: argparse.Namespace) -> list[TargetLocation]:
                     offset=args.offset,
                 )
             )
-        targets: list[TargetLocation] = []
-        seen_targets: set[str] = set()
-        for row in rows:
-            target = target_from_row(row)
-            if target.key in reviewed_keys or target.id in reviewed_ids or target.key in seen_targets:
-                continue
-            if args.shard_count and stable_shard(target.key, args.shard_count) != args.shard_index:
-                continue
-            targets.append(target)
-            seen_targets.add(target.key)
-            if len(targets) >= args.limit:
-                break
-        return targets
+        return filter_target_rows(rows, reviewed_keys, reviewed_ids, args)
     finally:
         conn.close()
+
+
+def filter_target_rows(
+    rows: list[sqlite3.Row],
+    reviewed_keys: set[str],
+    reviewed_ids: set[int],
+    args: argparse.Namespace,
+) -> list[TargetLocation]:
+    targets: list[TargetLocation] = []
+    seen_targets: set[str] = set()
+    for row in rows:
+        target = target_from_row(row)
+        if target.key in reviewed_keys or target.id in reviewed_ids or target.key in seen_targets:
+            continue
+        if args.shard_count and stable_shard(target.key, args.shard_count) != args.shard_index:
+            continue
+        targets.append(target)
+        seen_targets.add(target.key)
+        if len(targets) >= args.limit:
+            break
+    return targets
+
+
+def load_retry_rows_from_review_queues(conn: sqlite3.Connection, paths: list[Path]) -> list[sqlite3.Row]:
+    target_ids: list[int] = []
+    seen_ids: set[int] = set()
+    for path in paths:
+        if not path.exists():
+            continue
+        with path.open(encoding="utf-8", newline="") as handle:
+            reader = csv.DictReader(handle)
+            for row in reader:
+                target_id = number_or_none(row.get("target_location_id"))
+                if target_id is None:
+                    continue
+                value = int(target_id)
+                if value in seen_ids:
+                    continue
+                seen_ids.add(value)
+                target_ids.append(value)
+    if not target_ids:
+        return []
+    rows_by_id: dict[int, sqlite3.Row] = {}
+    for index in range(0, len(target_ids), 900):
+        batch = target_ids[index : index + 900]
+        placeholders = ", ".join("?" for _ in batch)
+        rows = conn.execute(
+            f"""
+            WITH counts AS (
+                SELECT l.id, l.name, l.website, l.address, l.locality, l.region, l.country_code,
+                       l.org_id, l.price_text,
+                       COUNT(o.id) AS offering_count,
+                       SUM(CASE WHEN o.price_amount IS NOT NULL THEN 1 ELSE 0 END) AS priced_count
+                FROM locations l
+                LEFT JOIN offerings o ON o.location_id = l.id
+                WHERE l.id IN ({placeholders})
+                GROUP BY l.id
+            )
+            SELECT *
+            FROM counts
+            """,
+            batch,
+        )
+        rows_by_id.update({int(row["id"]): row for row in rows})
+    return [rows_by_id[target_id] for target_id in target_ids if target_id in rows_by_id]
 
 
 def source_where_clause(source_slugs: list[str]) -> str:
