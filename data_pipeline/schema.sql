@@ -170,6 +170,8 @@ CREATE TABLE images (
     entity_id   INTEGER NOT NULL,
     image_url   TEXT,
     local_path  TEXT,
+    blob_url    TEXT,
+    content_sha256 TEXT,
     alt         TEXT,
     source_id   INTEGER REFERENCES sources(id)
 );

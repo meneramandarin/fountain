@@ -12,9 +12,14 @@
     "scrape:dexa-us": "python3 -m data_pipeline.scrapers.scrape_dexa_us",
     "scrape:service-search": "python3 -m data_pipeline.scrapers.scrape_service_search",
     "scrape:menu-enrichment": "python3 -m data_pipeline.scrapers.scrape_menu_enrichment",
-    "export:scrapes": "python3 -m data_pipeline.scrapers.export_tables"
+    "export:scrapes": "python3 -m data_pipeline.scrapers.export_tables",
+    "build:image-placeholders": "python3 -m data_pipeline.build_placeholder_image_paths",
+    "clean:image-placeholders": "python3 -m data_pipeline.clean_placeholder_image_refs",
+    "upload:blob-images": "node scripts/upload-blob-images.mjs",
+    "upload:remote-blob-images": "node scripts/upload-remote-images-to-blob.mjs"
   },
   "dependencies": {
+    "@vercel/blob": "^2.5.0",
     "better-sqlite3": "^12.11.1",
     "lucide-react": "^1.22.0",
     "next": "^16.2.9",

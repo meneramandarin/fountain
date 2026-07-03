@@ -5,6 +5,7 @@ const eslintConfig = [
   {
     ignores: [
       ".next/**",
+      ".venv/**",
       "archive/**",
       "data_pipeline/**",
       "data/**",

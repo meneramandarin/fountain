@@ -55,7 +55,7 @@ type SearchPayload = {
 
 type Tag = { facet: string; value: string };
 type TreatmentChip = { name: string; domain: string };
-type ImageRef = { image_url?: string | null; local_path?: string | null; alt?: string | null };
+type ImageRef = { image_url?: string | null; blob_url?: string | null; local_path?: string | null; alt?: string | null };
 type ReviewRef = { reviewer?: string | null; rating?: string | number | null; review_date?: string | null; body?: string | null };
 type OfferingRef = {
   raw_name?: string | null;
@@ -693,7 +693,7 @@ function DetailDrawer({ drawer, onClose }: { drawer: DrawerState; onClose: () =>
 
 function ImageStrip({ images }: { images: ImageRef[] }) {
   const [failed, setFailed] = useState<Set<string>>(new Set());
-  const usable = images.map((image) => image.local_path || image.image_url).filter(Boolean).slice(0, 4) as string[];
+  const usable = images.map((image) => image.blob_url || image.local_path || image.image_url).filter(Boolean).slice(0, 4) as string[];
   const visible = usable.filter((src) => !failed.has(src));
   if (!visible.length) {
     return null;
