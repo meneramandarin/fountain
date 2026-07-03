@@ -5,6 +5,36 @@ existing `canonical.db` locations with complete, priced treatment menus. It assu
 reader has no other context on this conversation — everything needed is below or in the
 files it points to.
 
+## Status update (read this first — parts of the brief below are now historical)
+
+The scraper described in this brief has already been built and has been running for a
+while: `data_pipeline/scrapers/scrape_menu_enrichment.py`. Some specifics below are now
+out of date relative to what actually shipped — treat the *goals and constraints* as
+authoritative, but verify current behavior against the real file before assuming anything
+mentioned below (e.g. "no LLM-calling infrastructure exists yet") is still true:
+
+- It calls an LLM via **OpenRouter** (`OPENROUTER_API_KEY`, `z-ai/glm-5.2` by default), not
+  the Anthropic SDK this brief originally suggested. That's fine — the two-tier design and
+  extraction schema below are still what it implements.
+- Tier 1 (automated sanity checks → review queue) is already implemented and has already
+  accumulated real data: `data/exports/menu_enrichment_review_queue.csv` has **2,447 rows**
+  as of this update, with structured `reasons` per row (`all_candidate_urls_failed` 646,
+  `exception` 586, `zero_menu_items` 471, `not_confirmed_own_site` combos, `website_is_known_directory`,
+  `suspiciously_short_visible_text` — JS-rendered-site detection, `currency_seen_but_all_prices_null`,
+  `llm_extraction_empty`). **Tier 2 (the actual escalation pass that reads this queue and
+  attempts recovery) has not been built yet** — see "Scaling to parallel workers" below,
+  this is now explicitly in scope.
+- A real duplicate-location bug was found and fixed (`git log` for "Fix canonical duplicate
+  location matching") — caused by inconsistent dedup-key generation across source types, see
+  `docs/CANONICAL_DUPLICATE_LOCATIONS_BRIEF.md` for the full diagnosis if you want the
+  background. Already resolved, no action needed, just noted so you don't rediscover it.
+- The scraper's actual CLI already has useful flags for what follows:
+  `--db`, `--canonical-db`, `--review-queue`, `--reset`, `--limit`, `--offset`, `--pilot`,
+  `--skip-existing`, `--skip-review-queue`, `--max-pages`, `--max-context-chars`, `--delay`,
+  `--timeout`, `--llm-timeout`, `--model`, `--disable-search-fallback`,
+  `--emit-discovered-locations`. The parallelization plan below builds on these rather than
+  inventing new ones.
+
 ## Context: what's broken today
 
 `canonical.db` is built by `data_pipeline/build_canonical.py`, which merges ~85 per-source
@@ -260,17 +290,125 @@ Agent tool with WebFetch) for cases like JS-rendered sites where a plain fetch c
 the content at all. This tier is explicitly allowed to cost more per row since it only runs
 on a small fraction of the total.
 
-## Efficiency controls
+## Scaling to parallel workers (updated: cost is not a constraint, speed is)
 
-- **Pilot before scaling.** Run ~100 locations first (mix of priority-1 and priority-2
-  targets), measure: % yielding at least one priced item, average items per successful
-  clinic, Tier 2 escalation rate, and actual $ cost. Extrapolate to the full ~8,400
-  (priority 1+2) before committing to a full run. Don't guess the cost up front — measure it.
-- **Batch + resume.** Process in chunks (e.g. 200-500 locations) and rely on
-  `SourceDatabase`'s existing `source_url`-unique upsert (`storage.py`) for idempotency — a
-  restarted run should skip/update already-processed URLs, not duplicate work.
-- **Respect the fetch layer's existing conventions** (headers, rate limiting) in `fetch.py`
-  rather than writing a second one.
+The single-process pilot worked but is too slow at ~9.5k-location scale. Cost is explicitly
+not a concern here (the run so far has cost roughly $17 for ~2,000 entries via OpenRouter/GLM)
+— optimize for wall-clock time, not $ efficiency. Run **10 Tier-1 scraper processes and,
+separately, 10 Tier-2 escalation-agent processes** concurrently. These will likely be spawned
+as plain OS processes by an external orchestrator (not necessarily Claude Code's own Agent
+tool) — keep everything below CLI-invokable so any orchestrator can drive it.
+
+### Tier 1: shard the existing scraper, don't rewrite it
+
+The CLI already has what's needed — `--db`, `--offset`, `--limit`. To run 10 in parallel:
+
+1. **Give each worker its own output database and review-queue file.** This is the one thing
+   that actually requires care: SQLite handles many concurrent *readers* fine, but 10
+   processes writing to the same file will hit lock contention, and 10 processes appending to
+   the same review-queue CSV (`open_review_queue()` in the scraper) will interleave/corrupt
+   rows — CSV files aren't safe for concurrent multi-process writes. Give worker `i`:
+   `--db data/databases/menu_enrichment_{i}.sqlite --review-queue
+   data/exports/menu_enrichment_review_queue_{i}.csv`. `build_canonical.py`'s
+   `is_menu_enrichment_source()` already accepts any `menu_enrichment_*`-prefixed slug (check
+   it — this was added when the duplicate-location fix landed), so all 10 shards get picked
+   up automatically on the next `build_canonical.py` run with zero further routing changes.
+2. **Partition the worklist by `--offset`/`--limit`, not by rebuilding the query.**
+   `load_worklist()` / `query_worklist()` in the scraper already order deterministically
+   (priority tier, then `id`) — as long as `canonical.db` itself isn't being rebuilt *while*
+   the 10 workers are mid-run, non-overlapping offset windows are race-free (SQLite supports
+   concurrent readers). Give worker `i` `--offset i*N --limit N` for some stride `N` (e.g. if
+   there are ~8,400 priority-1/2 targets remaining, `N ≈ 840`). **Don't rebuild
+   `canonical.db` mid-round** — freeze it, run all 10 workers to completion (or to whatever
+   `--limit` you gave them), then rebuild once, then start the next round with a fresh
+   worklist (which will naturally reprioritize — locations enriched in the previous round now
+   have more offerings and sort to a lower-priority tier automatically, no manual bookkeeping
+   needed).
+3. Everything else about each individual worker (fetch/extract/LLM-call/Tier-1-QA logic) is
+   unchanged — you're running 10 independent copies of the existing, working process, not
+   redesigning it.
+
+### Tier 2: needs to be built — the backlog already exists and is worth digging into
+
+There is no escalation script yet. The 2,447-row review queue (see "Status update" above) is
+real, unprocessed backlog sitting right now in `data/exports/menu_enrichment_review_queue*.csv`
+files. Build a second script (e.g. `data_pipeline/scrapers/escalate_menu_enrichment.py`) that:
+
+1. Reads review-queue rows and attempts a deeper recovery pass per row, informed by the
+   `reasons` column so each failure mode gets an appropriate strategy rather than a blind
+   retry:
+   - `website_is_known_directory` / `not_confirmed_own_site` → do the targeted web search for
+     the real official site (this is the "Also scrape real contact info" fallback-search step
+     described earlier in this brief — check whether `search_official_site()` in the scraper
+     already does this and is just not being retried hard enough, vs. needs a genuinely
+     different search strategy on retry).
+   - `suspiciously_short_visible_text` → JS-rendered site; plain `requests` won't recover
+     this. This is the case that most likely needs an actual browsing-capable agent (not just
+     another LLM-text-call) to get real content.
+   - `all_candidate_urls_failed` / `exception` → retry with a longer timeout / different
+     candidate-page selection before giving up again.
+   - `zero_menu_items` with `confirmed_own_site: true` → the site was reached successfully but
+     genuinely may not publish pricing. This is a legitimate terminal outcome for some
+     clinics, not necessarily a bug — don't force a recovery attempt into fabricating data;
+     it's fine for some fraction of the queue to resolve as "confirmed, no public pricing."
+2. Writes recovered results into their own staging output (e.g.
+   `data/databases/menu_enrichment_escalated_{i}.sqlite`), through the same shared listing
+   shape as Tier 1 — no new build_canonical.py routing needed, same prefix match covers it.
+3. Marks queue rows as handled once processed (append a `resolved_at`/`resolution` column, or
+   move handled rows out to a `*_done.csv`) so a rerun doesn't reprocess the same 2,447 rows
+   forever.
+4. To run 10 of these concurrently: split the current review-queue backlog into 10 static
+   chunks up front (by row index, or — better, since it's basically free given cost isn't a
+   concern — grouped by `reasons` so each worker specializes in one failure mode and uses the
+   matching strategy from step 1) before spawning workers, same principle as Tier 1's
+   offset-freezing: don't have 10 processes independently querying/claiming from a live,
+   shifting queue.
+
+### After a round of either tier
+
+Rebuild (`npm run build:canonical`), sanity-check the offerings-per-location histogram
+(the diagnostic added per "Deliverables" below) actually improved, and spot-check the
+duplicate-location count from `docs/CANONICAL_DUPLICATE_LOCATIONS_BRIEF.md`'s verification
+query hasn't regressed — 10x the throughput means 10x the damage if a subtle bug slips back
+in, so don't skip this just because cost isn't the constraint anymore.
+
+## Representative image capture (new requirement)
+
+Every enriched location should end up with one representative photo — of the clinic, or a
+logo if no real photo is available — so listings aren't blank in the UI. Concretely, this
+targets the `image_url` field, which already exists as a placeholder in the scraper's listing
+dict (`write_menu_enrichment_listing()` and `write_discovered_locations()` both currently
+hardcode `"image_url": None` — that's the exact spot to fill in) and is already fully wired
+downstream: `SourceDatabase.upsert_listing()` (`storage.py`) auto-wraps a bare `image_url`
+into the `images` table shape, and `build_canonical.py`'s `copy_images()` already copies any
+source's images into the canonical `images` table generically — **no schema or
+build_canonical.py changes needed**, this is purely a scraper-side extraction gap.
+
+What to actually do, using infrastructure that already exists elsewhere in this codebase
+rather than building new image-handling from scratch:
+
+1. **Reuse `extract_images()`** (`data_pipeline/scrapers/extract.py`) on each fetched page's
+   already-parsed `soup` (`fetch_candidate_pages()` in the scraper already builds a `soup` per
+   page via `soup_from_html()` — just also call `extract_images()` on it and keep the result).
+   This utility already prioritizes `og:image`/`twitter:image` meta tags and filters out
+   small/decorative/icon-looking images via `_looks_like_logo_or_icon()` — i.e. it's already
+   built to find a real representative photo, not noise. Take the first non-empty result,
+   preferring the homepage's images over a sub-page's.
+2. **Logos need a separate check**, because `extract_images()` deliberately *excludes*
+   logo-looking images (it's built for "real photo," not "logo"). The scraper already parses
+   JSON-LD per page into `PageContext.json_ld` (via `extract_json_ld()`/`flatten_json_ld()`,
+   already imported) and already passes a compacted version of it to the LLM
+   (`compact_json_ld()`) — check whether that compaction step drops the schema.org `logo`
+   property; if so, pull it separately before compaction: `item.get("logo")` on any JSON-LD
+   block, handling both the plain-URL and `{"@type": "ImageObject", "url": ...}` shapes (the
+   existing `_image_values()` helper in `extract.py` already handles both shapes, reuse it).
+3. **Priority**: real photo from step 1, else logo from step 2, else `None`. Don't fabricate
+   or guess — a location with no image is a legitimate, honest outcome, same principle as
+   leaving `price_amount` null when a site doesn't publish pricing.
+4. This doesn't need its own LLM call or schema field — it's a deterministic extraction step
+   using page data the scraper is already fetching and parsing for other reasons. Wire the
+   result into `image_url` right alongside the existing `address`/`phone`/`email` assembly in
+   both listing-writing functions.
 
 ## Deliverables
 

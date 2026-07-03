@@ -290,6 +290,9 @@ export function DirectoryShell({
               onChange={(event) => updateState({ q: event.target.value })}
               aria-label="Search treatments, clinics, doctors"
               type="search"
+              autoComplete="off"
+              autoCorrect="off"
+              spellCheck={false}
             />
             <button type="submit" aria-label="Search">
               <Search size={18} aria-hidden="true" />
