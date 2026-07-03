@@ -52,6 +52,9 @@ export function LandingScrollHeader() {
           <Search size={16} aria-hidden="true" />
         </button>
       </form>
+      <button className="coming-soon-pill landing-scroll-join" type="button">
+        Coming Soon <span aria-hidden="true">|</span> Join
+      </button>
     </header>
   );
 }

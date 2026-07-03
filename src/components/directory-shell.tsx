@@ -252,6 +252,9 @@ export function DirectoryShell({
           <Link className="landing-brand directory-brand" href="/">
             fountain
           </Link>
+          <button className="coming-soon-pill" type="button">
+            Coming Soon <span aria-hidden="true">|</span> Join
+          </button>
         </header>
 
         <div className="kind-tabs directory-kind-tabs" role="tablist" aria-label="Directory type">
