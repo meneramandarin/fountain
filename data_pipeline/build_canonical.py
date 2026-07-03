@@ -154,8 +154,9 @@ class CanonicalBuilder:
         }
         self.country_aliases.update({normalize_country_key(k): v for k, v in EXTRA_COUNTRY_ALIASES.items()})
         self.country_names = country_name_map()
-        self.conn = sqlite3.connect(CANONICAL_DB)
-        self.conn.row_factory = sqlite3.Row
+        self.target_db = CANONICAL_DB
+        self.db_path = CANONICAL_DB.with_name(f".{CANONICAL_DB.name}.build")
+        self.conn: sqlite3.Connection | None = None
         self.source_ids: dict[str, int] = {}
         self.treatment_ids: dict[str, int] = {}
         self.treatment_names_by_id: dict[int, str] = {}
@@ -180,15 +181,22 @@ class CanonicalBuilder:
         self.load_taxonomy()
         self.register_sources()
         self.process_sources()
+        self.consolidate_duplicate_locations()
         self.populate_search_index()
         self.export_unmapped_terms()
         self.print_report()
+        integrity = self.conn.execute("PRAGMA integrity_check").fetchone()[0]
+        if integrity != "ok":
+            raise RuntimeError(f"canonical build failed integrity_check: {integrity}")
         self.conn.close()
+        self.db_path.replace(self.target_db)
 
     def reset_db(self) -> None:
-        if CANONICAL_DB.exists():
-            CANONICAL_DB.unlink()
-        self.conn = sqlite3.connect(CANONICAL_DB)
+        if self.conn:
+            self.conn.close()
+        if self.db_path.exists():
+            self.db_path.unlink()
+        self.conn = sqlite3.connect(self.db_path)
         self.conn.row_factory = sqlite3.Row
         self.conn.executescript(SCHEMA_PATH.read_text(encoding="utf-8"))
         self.conn.commit()
@@ -1103,8 +1111,8 @@ class CanonicalBuilder:
         for image in staging.execute("SELECT image_url, local_path, alt FROM images WHERE listing_id = ? ORDER BY id", (listing_id,)):
             self.conn.execute(
                 """
-                INSERT INTO images(entity_type, entity_id, image_url, local_path, alt, source_id)
-                VALUES (?, ?, ?, ?, ?, ?)
+                INSERT INTO images(entity_type, entity_id, image_url, local_path, blob_url, content_sha256, alt, source_id)
+                VALUES (?, ?, ?, ?, NULL, NULL, ?, ?)
                 """,
                 (entity_type, entity_id, image["image_url"], image["local_path"], image["alt"], source_id),
             )
@@ -1120,6 +1128,379 @@ class CanonicalBuilder:
                 """,
                 (location_id, review["reviewer"], review["rating"], review["review_date"], review["body"], source_id),
             )
+
+    def consolidate_duplicate_locations(self) -> None:
+        self.consolidate_curated_duplicate_locations()
+        self.consolidate_exact_address_duplicates()
+        self.consolidate_city_country_duplicates()
+        self.conn.commit()
+
+    def consolidate_curated_duplicate_locations(self) -> None:
+        chi_ids = self.location_ids_for_source_urls(
+            [
+                "https://longevity.technology/clinics/longevity-clinics/chi-longevity-four-seasons-hotel",
+                "https://longevity.technology/clinics/longevity-clinics/chi-longevity-camden-clinic",
+                "https://worldlongevityclinics.com/clinics/chi-longevity",
+            ]
+        )
+        chi_winner = self.location_id_for_source_url(
+            "https://longevity.technology/clinics/longevity-clinics/chi-longevity-camden-clinic"
+        )
+        if chi_winner and len(chi_ids) > 1:
+            self.merge_location_rows(chi_winner, [location_id for location_id in chi_ids if location_id != chi_winner])
+            org_id = self.organization_id_by_name("Chi Longevity")
+            if org_id:
+                self.conn.execute(
+                    "UPDATE organizations SET website_domain = COALESCE(website_domain, ?) WHERE id = ?",
+                    ("chilongevity.com", org_id),
+                )
+            self.conn.execute(
+                """
+                UPDATE locations
+                SET org_id = COALESCE(?, org_id),
+                    name = ?,
+                    address = ?,
+                    locality = ?,
+                    region = NULL,
+                    postal_code = NULL,
+                    country_code = ?,
+                    country_name = ?,
+                    website = ?,
+                    dedup_key = ?
+                WHERE id = ?
+                """,
+                (
+                    org_id,
+                    "Chi Longevity",
+                    "camden clinic, four seasons hotel, sparkd by chi longevity",
+                    "Singapore",
+                    "SG",
+                    "Singapore",
+                    "https://www.chilongevity.com",
+                    "chi-longevity|SG|singapore|camden-clinic-four-seasons-hotel-sparkd-by-chi-longevity",
+                    chi_winner,
+                ),
+            )
+
+        clinique_ids = self.location_ids_for_source_urls(
+            [
+                "https://immortalityclinic.com/clinic/clinique-la-prairie",
+                "https://worldlongevityclinics.com/clinics/clinique-la-prairie",
+            ]
+        )
+        clinique_winner = self.location_id_for_source_url("https://immortalityclinic.com/clinic/clinique-la-prairie")
+        if clinique_winner and len(clinique_ids) > 1:
+            self.merge_location_rows(
+                clinique_winner, [location_id for location_id in clinique_ids if location_id != clinique_winner]
+            )
+            self.conn.execute(
+                """
+                UPDATE locations
+                SET name = ?,
+                    address = ?,
+                    locality = COALESCE(locality, ?),
+                    country_code = ?,
+                    country_name = ?,
+                    website = ?
+                WHERE id = ?
+                """,
+                (
+                    "Clinique La Prairie",
+                    "Rue du Lac 142, 1815 Clarens, Switzerland",
+                    "Montreux",
+                    "CH",
+                    "Switzerland",
+                    "https://www.cliniquelaprairie.com/",
+                    clinique_winner,
+                ),
+            )
+
+    def consolidate_exact_address_duplicates(self) -> None:
+        rows = self.location_rows()
+        groups: dict[tuple[str, str], list[sqlite3.Row]] = defaultdict(list)
+        for row in rows:
+            address_key = normalize_term(row["address"])
+            if not address_key or len(address_key) < 8:
+                continue
+            groups[(address_key, row["country_code"] or "")].append(row)
+        for group_rows in groups.values():
+            if len(group_rows) < 2:
+                continue
+            for cluster in self.duplicate_location_clusters(group_rows):
+                self.merge_location_cluster(cluster)
+
+    def consolidate_city_country_duplicates(self) -> None:
+        rows = self.location_rows()
+        groups: dict[tuple[str, str], list[sqlite3.Row]] = defaultdict(list)
+        for row in rows:
+            name_key = normalize_name(row["name"] or row["org_name"] or "")
+            country_key = row["country_code"] or ""
+            if not name_key or not country_key:
+                continue
+            groups[(name_key, country_key)].append(row)
+
+        for group_rows in groups.values():
+            if len(group_rows) != 2:
+                continue
+            first, second = group_rows
+            first_generic = is_generic_place_address(first["address"], first["locality"], first["country_name"])
+            second_generic = is_generic_place_address(second["address"], second["locality"], second["country_name"])
+            if first_generic == second_generic:
+                continue
+            generic = first if first_generic else second
+            precise = second if first_generic else first
+            if not has_precise_address(precise["address"]):
+                continue
+            if not self.locations_identity_match(generic, precise):
+                continue
+            self.merge_location_rows(int(precise["id"]), [int(generic["id"])])
+
+    def duplicate_location_clusters(self, rows: list[sqlite3.Row]) -> list[list[sqlite3.Row]]:
+        parent = {int(row["id"]): int(row["id"]) for row in rows}
+        by_id = {int(row["id"]): row for row in rows}
+
+        def find(value: int) -> int:
+            while parent[value] != value:
+                parent[value] = parent[parent[value]]
+                value = parent[value]
+            return value
+
+        def union(left: int, right: int) -> None:
+            left_root = find(left)
+            right_root = find(right)
+            if left_root != right_root:
+                parent[right_root] = left_root
+
+        for index, left in enumerate(rows):
+            for right in rows[index + 1 :]:
+                if self.locations_identity_match(left, right):
+                    union(int(left["id"]), int(right["id"]))
+
+        clusters: dict[int, list[sqlite3.Row]] = defaultdict(list)
+        for location_id, row in by_id.items():
+            clusters[find(location_id)].append(row)
+        return [cluster for cluster in clusters.values() if len(cluster) > 1]
+
+    def locations_identity_match(self, left: sqlite3.Row, right: sqlite3.Row) -> bool:
+        left_domain = left["website_domain"] or provider_domain(left["website"])
+        right_domain = right["website_domain"] or provider_domain(right["website"])
+        if left_domain and right_domain and left_domain == right_domain:
+            return True
+        left_org = normalize_name(left["org_name"] or "")
+        right_org = normalize_name(right["org_name"] or "")
+        if left_org and right_org and fuzz.token_set_ratio(left_org, right_org) >= 94:
+            return True
+        left_name = normalize_name(left["name"] or "")
+        right_name = normalize_name(right["name"] or "")
+        return bool(left_name and right_name and fuzz.token_set_ratio(left_name, right_name) >= 94)
+
+    def merge_location_cluster(self, rows: list[sqlite3.Row]) -> None:
+        winner = max(rows, key=self.location_merge_score)
+        loser_ids = [int(row["id"]) for row in rows if int(row["id"]) != int(winner["id"])]
+        self.merge_location_rows(int(winner["id"]), loser_ids)
+
+    def merge_location_rows(self, winner_id: int, loser_ids: list[int]) -> None:
+        loser_ids = [location_id for location_id in dedupe_ints(loser_ids) if location_id != winner_id]
+        if not loser_ids:
+            return
+        for loser_id in loser_ids:
+            winner = self.location_row(winner_id)
+            loser = self.location_row(loser_id)
+            if not winner or not loser:
+                continue
+            merged = self.merged_location_fields(winner, loser)
+            self.conn.execute(
+                """
+                UPDATE locations
+                SET name = ?, address = ?, locality = ?, region = ?, postal_code = ?,
+                    country_code = ?, country_name = ?, latitude = ?, longitude = ?,
+                    phone = ?, email = ?, website = ?, price_text = ?, rating = ?,
+                    review_count = ?
+                WHERE id = ?
+                """,
+                (
+                    merged["name"],
+                    merged["address"],
+                    merged["locality"],
+                    merged["region"],
+                    merged["postal_code"],
+                    merged["country_code"],
+                    merged["country_name"],
+                    merged["latitude"],
+                    merged["longitude"],
+                    merged["phone"],
+                    merged["email"],
+                    merged["website"],
+                    merged["price_text"],
+                    merged["rating"],
+                    merged["review_count"],
+                    winner_id,
+                ),
+            )
+            self.move_location_children(winner_id, loser_id)
+            self.conn.execute("DELETE FROM locations WHERE id = ?", (loser_id,))
+
+    def move_location_children(self, winner_id: int, loser_id: int) -> None:
+        self.conn.execute(
+            """
+            INSERT OR IGNORE INTO entity_tags(entity_type, entity_id, tag_id)
+            SELECT entity_type, ?, tag_id
+            FROM entity_tags
+            WHERE entity_type = 'location' AND entity_id = ?
+            """,
+            (winner_id, loser_id),
+        )
+        self.conn.execute("DELETE FROM entity_tags WHERE entity_type = 'location' AND entity_id = ?", (loser_id,))
+
+        self.conn.execute(
+            """
+            INSERT INTO offerings(location_id, treatment_id, raw_name, price_amount, price_currency, source_offer_url, source_id)
+            SELECT ?, treatment_id, raw_name, price_amount, price_currency, source_offer_url, source_id
+            FROM offerings
+            WHERE location_id = ?
+            ON CONFLICT(location_id, source_id, raw_name) DO UPDATE SET
+                treatment_id = COALESCE(excluded.treatment_id, offerings.treatment_id),
+                price_amount = COALESCE(excluded.price_amount, offerings.price_amount),
+                price_currency = COALESCE(excluded.price_currency, offerings.price_currency),
+                source_offer_url = COALESCE(excluded.source_offer_url, offerings.source_offer_url)
+            """,
+            (winner_id, loser_id),
+        )
+        self.conn.execute("DELETE FROM offerings WHERE location_id = ?", (loser_id,))
+
+        self.conn.execute(
+            """
+            INSERT OR IGNORE INTO affiliations(practitioner_id, location_id, org_id, role)
+            SELECT practitioner_id, ?, org_id, role
+            FROM affiliations
+            WHERE location_id = ?
+            """,
+            (winner_id, loser_id),
+        )
+        self.conn.execute("DELETE FROM affiliations WHERE location_id = ?", (loser_id,))
+
+        self.conn.execute("UPDATE images SET entity_id = ? WHERE entity_type = 'location' AND entity_id = ?", (winner_id, loser_id))
+        self.conn.execute("UPDATE reviews SET location_id = ? WHERE location_id = ?", (winner_id, loser_id))
+        self.conn.execute(
+            "UPDATE source_records SET entity_id = ? WHERE entity_type = 'location' AND entity_id = ?",
+            (winner_id, loser_id),
+        )
+        self.delete_duplicate_location_images(winner_id)
+
+    def delete_duplicate_location_images(self, location_id: int) -> None:
+        self.conn.execute(
+            """
+            DELETE FROM images
+            WHERE entity_type = 'location'
+              AND entity_id = ?
+              AND id NOT IN (
+                  SELECT MIN(id)
+                  FROM images
+                  WHERE entity_type = 'location'
+                    AND entity_id = ?
+                  GROUP BY
+                    COALESCE(content_sha256, ''),
+                    COALESCE(blob_url, ''),
+                    COALESCE(local_path, ''),
+                    COALESCE(image_url, '')
+              )
+            """,
+            (location_id, location_id),
+        )
+
+    def merged_location_fields(self, winner: sqlite3.Row, loser: sqlite3.Row) -> dict[str, Any]:
+        merged = dict(winner)
+        for field in ("name", "address", "locality", "region", "postal_code", "country_code", "country_name", "phone", "email", "price_text"):
+            merged[field] = choose_text(merged.get(field), loser[field])
+        if is_generic_place_address(merged.get("address"), merged.get("locality"), merged.get("country_name")) and has_precise_address(
+            loser["address"]
+        ):
+            merged["address"] = loser["address"]
+        merged["website"] = choose_website(merged.get("website"), loser["website"])
+        merged["latitude"] = merged.get("latitude") if merged.get("latitude") is not None else loser["latitude"]
+        merged["longitude"] = merged.get("longitude") if merged.get("longitude") is not None else loser["longitude"]
+        merged["rating"], merged["review_count"] = choose_rating(
+            merged.get("rating"), merged.get("review_count"), loser["rating"], loser["review_count"]
+        )
+        return merged
+
+    def location_merge_score(self, row: sqlite3.Row) -> tuple[int, int, int]:
+        image_count = int(row["image_count"] or 0)
+        source_count = int(row["source_record_count"] or 0)
+        review_count = int(row["review_count"] or 0)
+        score = 0
+        if has_precise_address(row["address"]):
+            score += 100
+        if row["country_code"]:
+            score += 20
+        if row["locality"]:
+            score += 10
+        if provider_domain(row["website"]):
+            score += 10
+        if image_count:
+            score += 8
+        if row["phone"]:
+            score += 5
+        if row["email"]:
+            score += 5
+        score += min(review_count, 100) // 10
+        score += min(source_count, 5)
+        return score, image_count, int(row["id"])
+
+    def location_rows(self) -> list[sqlite3.Row]:
+        return list(
+            self.conn.execute(
+                """
+                SELECT l.*, o.canonical_name AS org_name, o.website_domain,
+                       (SELECT COUNT(*) FROM images img WHERE img.entity_type = 'location' AND img.entity_id = l.id) AS image_count,
+                       (SELECT COUNT(*) FROM source_records sr WHERE sr.entity_type = 'location' AND sr.entity_id = l.id) AS source_record_count
+                FROM locations l
+                LEFT JOIN organizations o ON o.id = l.org_id
+                ORDER BY l.id
+                """
+            )
+        )
+
+    def location_row(self, location_id: int) -> sqlite3.Row | None:
+        return self.conn.execute(
+            """
+            SELECT l.*, o.canonical_name AS org_name, o.website_domain,
+                   (SELECT COUNT(*) FROM images img WHERE img.entity_type = 'location' AND img.entity_id = l.id) AS image_count,
+                   (SELECT COUNT(*) FROM source_records sr WHERE sr.entity_type = 'location' AND sr.entity_id = l.id) AS source_record_count
+            FROM locations l
+            LEFT JOIN organizations o ON o.id = l.org_id
+            WHERE l.id = ?
+            """,
+            (location_id,),
+        ).fetchone()
+
+    def location_ids_for_source_urls(self, urls: list[str]) -> list[int]:
+        ids = []
+        for url in urls:
+            location_id = self.location_id_for_source_url(url)
+            if location_id:
+                ids.append(location_id)
+        return dedupe_ints(ids)
+
+    def location_id_for_source_url(self, url: str) -> int | None:
+        row = self.conn.execute(
+            """
+            SELECT entity_id
+            FROM source_records
+            WHERE entity_type = 'location' AND source_url = ?
+            ORDER BY id
+            LIMIT 1
+            """,
+            (url,),
+        ).fetchone()
+        return int(row["entity_id"]) if row else None
+
+    def organization_id_by_name(self, name: str) -> int | None:
+        row = self.conn.execute(
+            "SELECT id FROM organizations WHERE name_normalized = ? ORDER BY id LIMIT 1",
+            (normalize_name(name),),
+        ).fetchone()
+        return int(row["id"]) if row else None
 
     def index_bookimed_clinic(self, row: sqlite3.Row, org_id: int, location_id: int) -> None:
         path = urlparse(row["source_url"] or "").path
@@ -1425,7 +1806,7 @@ class CanonicalBuilder:
 
 
 def open_staging(path: Path) -> sqlite3.Connection:
-    conn = sqlite3.connect(f"file:{path}?mode=ro", uri=True)
+    conn = sqlite3.connect(f"{path.resolve().as_uri()}?mode=ro&immutable=1", uri=True)
     conn.row_factory = sqlite3.Row
     return conn
 
@@ -1542,6 +1923,88 @@ def addresses_match(left: Any, right: Any) -> bool:
     if min(len(left_norm), len(right_norm)) < 8:
         return False
     return fuzz.token_set_ratio(left_norm, right_norm) >= 92
+
+
+def has_precise_address(value: Any) -> bool:
+    text = clean(value)
+    if not text:
+        return False
+    norm = normalize_term(text)
+    if len(norm) < 8:
+        return False
+    if re.search(r"\d", text):
+        return True
+    return "," in text and len(norm.split()) >= 5 and not is_generic_place_address(text, None, None)
+
+
+def is_generic_place_address(address: Any, locality: Any, country_name: Any) -> bool:
+    address_norm = normalize_term(address)
+    if not address_norm:
+        return False
+    locality_norm = normalize_term(locality)
+    country_norm = normalize_term(country_name)
+    place_parts = [part for part in (locality_norm, country_norm) if part]
+    if place_parts and address_norm == normalize_term(" ".join(place_parts)):
+        return True
+    if locality_norm and address_norm == locality_norm:
+        return True
+    if country_norm and address_norm == country_norm:
+        return True
+    if "," in (clean(address) or "") and len(address_norm.split()) <= 4 and not re.search(r"\d", clean(address) or ""):
+        return True
+    return False
+
+
+def choose_text(current: Any, candidate: Any) -> str | None:
+    current_text = clean(current)
+    candidate_text = clean(candidate)
+    if not current_text:
+        return candidate_text
+    if not candidate_text:
+        return current_text
+    return current_text
+
+
+def choose_website(current: Any, candidate: Any) -> str | None:
+    current_text = clean(current)
+    candidate_text = clean(candidate)
+    if not current_text:
+        return candidate_text
+    if not candidate_text:
+        return current_text
+    current_domain = provider_domain(current_text)
+    candidate_domain = provider_domain(candidate_text)
+    if candidate_domain and not current_domain:
+        return candidate_text
+    if candidate_text.startswith("https://") and current_text.startswith("http://"):
+        return candidate_text
+    return current_text
+
+
+def choose_rating(
+    current_rating: Any,
+    current_review_count: Any,
+    candidate_rating: Any,
+    candidate_review_count: Any,
+) -> tuple[float | None, int | None]:
+    current_count = parse_int(current_review_count) or 0
+    candidate_count = parse_int(candidate_review_count) or 0
+    if candidate_count > current_count:
+        return parse_float(candidate_rating), parse_int(candidate_review_count)
+    if current_rating is None and candidate_rating is not None:
+        return parse_float(candidate_rating), parse_int(candidate_review_count)
+    return parse_float(current_rating), parse_int(current_review_count)
+
+
+def dedupe_ints(values: list[int]) -> list[int]:
+    seen = set()
+    out = []
+    for value in values:
+        if value in seen:
+            continue
+        seen.add(value)
+        out.append(value)
+    return out
 
 
 def base_url_from(url: str | None) -> str | None:

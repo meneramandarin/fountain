@@ -1,0 +1,13 @@
+.venv/
+.next/
+node_modules/
+data/databases/
+data/media/
+data/exports/*
+!data/exports/
+!data/exports/unmapped_terms.csv
+*.sqlite
+*.sqlite-*
+*.work.db
+*.db-wal
+*.db-shm

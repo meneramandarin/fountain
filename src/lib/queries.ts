@@ -9,6 +9,18 @@ export const PAGE_SIZE = 25;
 // graphic on hundreds of unrelated cards.
 const placeholderImagePathSet = new Set<string>(placeholderImagePaths as string[]);
 
+type ImageCandidate = {
+  blob_url: string | null;
+  local_path: string | null;
+};
+
+function usableImageSource(image: ImageCandidate) {
+  if (image.local_path && placeholderImagePathSet.has(image.local_path)) {
+    return null;
+  }
+  return image.blob_url || image.local_path || null;
+}
+
 export type SearchKind = "locations" | "practitioners";
 
 // No UX-facing cap on how many treatments a user can combine — this only guards
@@ -247,8 +259,8 @@ export function getLandingFeaturedDirectoryCards(limit = 5): LandingFeaturedDire
         FROM images img
         WHERE img.entity_type = 'location'
           AND img.entity_id = l.id
-          AND img.local_path IS NOT NULL
-          AND img.local_path <> ''
+          AND COALESCE(img.blob_url, img.local_path) IS NOT NULL
+          AND COALESCE(img.blob_url, img.local_path) <> ''
       )
     )
     SELECT id, name, locality, region, country_name, rating, review_count, org_name
@@ -268,8 +280,8 @@ export function getLandingFeaturedDirectoryCards(limit = 5): LandingFeaturedDire
       FROM images img
       WHERE img.entity_type = 'location'
         AND img.entity_id = l.id
-        AND img.local_path IS NOT NULL
-        AND img.local_path <> ''
+        AND COALESCE(img.blob_url, img.local_path) IS NOT NULL
+        AND COALESCE(img.blob_url, img.local_path) <> ''
     )
       AND COALESCE(NULLIF(TRIM(l.name), ''), NULLIF(TRIM(org.canonical_name), '')) IS NOT NULL
     ORDER BY
@@ -322,8 +334,8 @@ export function getLandingTreatmentDirectoryCards(
         FROM images img
         WHERE img.entity_type = 'location'
           AND img.entity_id = l.id
-          AND img.local_path IS NOT NULL
-          AND img.local_path <> ''
+          AND COALESCE(img.blob_url, img.local_path) IS NOT NULL
+          AND COALESCE(img.blob_url, img.local_path) <> ''
       )
       AND COALESCE(NULLIF(TRIM(l.name), ''), NULLIF(TRIM(org.canonical_name), '')) IS NOT NULL
     GROUP BY l.id
@@ -352,19 +364,21 @@ function hydrateLandingDirectoryCards(
   }
 
   const marks = placeholders(ids.length);
-  const images = rows<{ lid: number; local_path: string }>(
+  const images = rows<{ lid: number } & ImageCandidate>(
     `
-    SELECT entity_id AS lid, local_path
+    SELECT entity_id AS lid, blob_url, local_path
     FROM images
     WHERE entity_type = 'location' AND entity_id IN (${marks})
-      AND local_path IS NOT NULL AND local_path != ''
+      AND COALESCE(blob_url, local_path) IS NOT NULL
+      AND COALESCE(blob_url, local_path) != ''
   `,
     ids,
   );
   const imageMap = new Map<number, string>();
   for (const image of images) {
-    if (!imageMap.has(image.lid) && !placeholderImagePathSet.has(image.local_path)) {
-      imageMap.set(image.lid, image.local_path);
+    const src = usableImageSource(image);
+    if (!imageMap.has(image.lid) && src) {
+      imageMap.set(image.lid, src);
     }
   }
 
@@ -638,19 +652,21 @@ export function searchLocations(params: DirectoryParams, page = 0) {
       list.push({ facet: tag.facet, value: tag.value });
       tagMap.set(tag.lid, list);
     }
-    const images = rows<{ lid: number; local_path: string }>(
+    const images = rows<{ lid: number } & ImageCandidate>(
       `
-      SELECT entity_id AS lid, local_path
+      SELECT entity_id AS lid, blob_url, local_path
       FROM images
       WHERE entity_type = 'location' AND entity_id IN (${marks})
-        AND local_path IS NOT NULL AND local_path != ''
+        AND COALESCE(blob_url, local_path) IS NOT NULL
+        AND COALESCE(blob_url, local_path) != ''
     `,
       ids,
     );
     const imageMap = new Map<number, string>();
     for (const image of images) {
-      if (!imageMap.has(image.lid) && !placeholderImagePathSet.has(image.local_path)) {
-        imageMap.set(image.lid, image.local_path);
+      const src = usableImageSource(image);
+      if (!imageMap.has(image.lid) && src) {
+        imageMap.set(image.lid, src);
       }
     }
     for (const result of results) {
@@ -784,19 +800,21 @@ export function searchPractitioners(params: DirectoryParams, page = 0) {
       list.push(affiliation);
       affiliationMap.set(affiliation.pid, list);
     }
-    const images = rows<{ pid: number; local_path: string }>(
+    const images = rows<{ pid: number } & ImageCandidate>(
       `
-      SELECT entity_id AS pid, local_path
+      SELECT entity_id AS pid, blob_url, local_path
       FROM images
       WHERE entity_type = 'practitioner' AND entity_id IN (${marks})
-        AND local_path IS NOT NULL AND local_path != ''
+        AND COALESCE(blob_url, local_path) IS NOT NULL
+        AND COALESCE(blob_url, local_path) != ''
     `,
       ids,
     );
     const imageMap = new Map<number, string>();
     for (const image of images) {
-      if (!imageMap.has(image.pid) && !placeholderImagePathSet.has(image.local_path)) {
-        imageMap.set(image.pid, image.local_path);
+      const src = usableImageSource(image);
+      if (!imageMap.has(image.pid) && src) {
+        imageMap.set(image.pid, src);
       }
     }
     for (const result of results) {
@@ -862,16 +880,17 @@ export function getLocationDetail(id: number) {
   `,
     [id],
   );
-  location.images = rows<{ image_url: string | null; local_path: string; alt: string | null }>(
+  location.images = rows<{ image_url: string | null; blob_url: string | null; local_path: string | null; alt: string | null }>(
     `
-    SELECT image_url, local_path, alt
+    SELECT image_url, blob_url, local_path, alt
     FROM images
     WHERE entity_type = 'location' AND entity_id = ?
-      AND local_path IS NOT NULL AND local_path != ''
+      AND COALESCE(blob_url, local_path) IS NOT NULL
+      AND COALESCE(blob_url, local_path) != ''
     LIMIT 8
   `,
     [id],
-  ).filter((image) => !placeholderImagePathSet.has(image.local_path));
+  ).filter((image) => usableImageSource(image));
   return location;
 }
 
@@ -899,16 +918,17 @@ export function getPractitionerDetail(id: number) {
   `,
     [id],
   );
-  practitioner.images = rows<{ image_url: string | null; local_path: string; alt: string | null }>(
+  practitioner.images = rows<{ image_url: string | null; blob_url: string | null; local_path: string | null; alt: string | null }>(
     `
-    SELECT image_url, local_path, alt
+    SELECT image_url, blob_url, local_path, alt
     FROM images
     WHERE entity_type = 'practitioner' AND entity_id = ?
-      AND local_path IS NOT NULL AND local_path != ''
+      AND COALESCE(blob_url, local_path) IS NOT NULL
+      AND COALESCE(blob_url, local_path) != ''
     LIMIT 8
   `,
     [id],
-  ).filter((image) => !placeholderImagePathSet.has(image.local_path));
+  ).filter((image) => usableImageSource(image));
   return practitioner;
 }
 
