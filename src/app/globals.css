@@ -110,29 +110,84 @@ input[type="search"]::-webkit-search-cancel-button:hover {
   left: clamp(10px, 1.6vw, 18px);
   right: clamp(10px, 1.6vw, 18px);
   z-index: 50;
-  display: flex;
+  display: grid;
+  grid-template-columns: minmax(120px, 1fr) minmax(260px, 470px) minmax(120px, 1fr);
   align-items: center;
-  min-height: 58px;
+  gap: 18px;
+  min-height: 62px;
   padding: 0 clamp(18px, 3vw, 34px);
   border: 1px solid rgba(255, 255, 255, 0.18);
   border-radius: 8px;
-  background: rgba(195, 157, 96, 0.94);
+  background: var(--landing-footer-bg);
   box-shadow: 0 14px 38px rgba(30, 26, 15, 0.18);
   color: white;
   opacity: 0;
   pointer-events: none;
-  transform: translateY(-12px);
-  transition: opacity 180ms ease, transform 180ms ease;
+  transform: translateY(-16px) scale(0.985);
+  transition: opacity 220ms ease, transform 220ms ease, box-shadow 220ms ease;
 }
 
 .landing-scroll-header.is-visible {
   opacity: 1;
   pointer-events: auto;
-  transform: translateY(0);
+  transform: translateY(0) scale(1);
 }
 
 .landing-scroll-brand {
   line-height: 1;
+}
+
+.landing-scroll-search {
+  position: relative;
+  width: 100%;
+  justify-self: center;
+  border-radius: 999px;
+  box-shadow: 0 8px 24px rgba(30, 26, 15, 0.15);
+  opacity: 0;
+  transform: translateY(7px) scale(0.94);
+  transform-origin: center;
+  transition: opacity 240ms ease 60ms, transform 240ms ease 60ms;
+}
+
+.landing-scroll-header.is-visible .landing-scroll-search {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+.landing-scroll-search input {
+  width: 100%;
+  min-height: 42px;
+  padding: 0 50px 0 18px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--landing-card);
+  color: var(--landing-fg);
+  font-family: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  font-size: 14px;
+  outline: none;
+}
+
+.landing-scroll-search input::placeholder {
+  color: rgba(30, 26, 15, 0.58);
+}
+
+.landing-scroll-search button {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  bottom: 5px;
+  display: inline-grid;
+  place-items: center;
+  width: 32px;
+  border: 0;
+  border-radius: 50%;
+  background: var(--landing-fg);
+  color: white;
+}
+
+.landing-scroll-search button:focus-visible {
+  outline: 2px solid white;
+  outline-offset: 3px;
 }
 
 .directory-brand {
@@ -259,7 +314,7 @@ input[type="search"]::-webkit-search-cancel-button:hover {
   border-radius: 999px;
   background: var(--landing-card);
   color: var(--landing-fg);
-  font-family: var(--font-dm-serif-text), serif;
+  font-family: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
   font-size: 15px;
   outline: none;
 }
@@ -1543,6 +1598,21 @@ blockquote p {
 }
 
 @media (max-width: 640px) {
+  .landing-scroll-header {
+    grid-template-columns: 1fr;
+    gap: 8px;
+    min-height: 94px;
+    padding-block: 12px;
+  }
+
+  .landing-scroll-brand {
+    justify-self: center;
+  }
+
+  .landing-scroll-search {
+    max-width: 100%;
+  }
+
   .directory-topbar {
     align-items: flex-start;
     flex-direction: column;
