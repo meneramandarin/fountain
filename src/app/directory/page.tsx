@@ -1,8 +1,30 @@
+import type { Metadata } from "next";
 import { DirectoryShell, type DirectoryState } from "@/components/directory-shell";
 import { getFacets, getStats, MAX_TREATMENT_FILTERS } from "@/lib/queries";
+import { ogImage, siteDescription } from "@/lib/site";
 
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
+
+export const metadata: Metadata = {
+  title: "Longevity Directory",
+  description: siteDescription,
+  alternates: {
+    canonical: "/directory",
+  },
+  openGraph: {
+    title: "Longevity Directory | Fountain",
+    description: siteDescription,
+    url: "/directory",
+    images: [ogImage],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Longevity Directory | Fountain",
+    description: siteDescription,
+    images: [ogImage.url],
+  },
+};
 
 type DirectoryPageProps = {
   searchParams: Promise<Record<string, string | string[] | undefined>>;
