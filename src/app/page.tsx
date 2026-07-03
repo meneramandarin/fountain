@@ -4,6 +4,7 @@ import Link from "next/link";
 import { CityTreatmentSearches } from "@/components/city-treatment-searches";
 import { LandingExploreCarousel, type LandingExploreItem } from "@/components/landing-explore-carousel";
 import { LandingFooter } from "@/components/landing-footer";
+import { LandingScrollHeader } from "@/components/landing-scroll-header";
 import { getPopularTreatments, popularTreatmentLabel } from "@/lib/popular-treatments";
 import { getFacets, getLandingCityTreatmentSearches } from "@/lib/queries";
 
@@ -42,6 +43,8 @@ export default function HomePage() {
 
   return (
     <main className="landing">
+      <LandingScrollHeader />
+
       <section className="landing-hero" aria-labelledby="landing-hero-title">
         <div className="landing-hero-copy">
           <Link className="landing-brand landing-hero-brand" href="/">
