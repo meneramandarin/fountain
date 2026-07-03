@@ -18,7 +18,14 @@ function usableImageSource(image: ImageCandidate) {
   if (image.local_path && placeholderImagePathSet.has(image.local_path)) {
     return null;
   }
-  return image.blob_url || image.local_path || null;
+  if (image.blob_url) {
+    return image.blob_url;
+  }
+  // Vercel deployments do not include raw scraper media; those are served from Blob.
+  if (process.env.VERCEL === "1" && image.local_path?.startsWith("data/media/")) {
+    return null;
+  }
+  return image.local_path || null;
 }
 
 export type SearchKind = "locations" | "practitioners";
@@ -320,6 +327,20 @@ export function getLandingTreatmentDirectoryCards(
     values.push(...options.localities);
   }
 
+  const requireImage = options.requireImage ?? true;
+  const imageRequirement = requireImage
+    ? `
+      AND EXISTS (
+        SELECT 1
+        FROM images img
+        WHERE img.entity_type = 'location'
+          AND img.entity_id = l.id
+          AND COALESCE(img.blob_url, img.local_path) IS NOT NULL
+          AND COALESCE(img.blob_url, img.local_path) <> ''
+      )
+    `
+    : "";
+
   const candidates = rows<AnyRow>(
     `
     SELECT l.id, l.name, l.locality, l.region, l.country_name, l.rating, l.review_count,
@@ -329,14 +350,7 @@ export function getLandingTreatmentDirectoryCards(
     JOIN offerings o ON o.location_id = l.id
     JOIN treatments t ON t.id = o.treatment_id
     WHERE ${filters.join(" AND ")}
-      AND EXISTS (
-        SELECT 1
-        FROM images img
-        WHERE img.entity_type = 'location'
-          AND img.entity_id = l.id
-          AND COALESCE(img.blob_url, img.local_path) IS NOT NULL
-          AND COALESCE(img.blob_url, img.local_path) <> ''
-      )
+      ${imageRequirement}
       AND COALESCE(NULLIF(TRIM(l.name), ''), NULLIF(TRIM(org.canonical_name), '')) IS NOT NULL
     GROUP BY l.id
     ORDER BY
@@ -383,9 +397,8 @@ function hydrateLandingDirectoryCards(
   }
 
   const requireImage = options.requireImage ?? true;
-  const featured = candidates
-    .filter((candidate) => !requireImage || imageMap.has(candidate.id as number))
-    .slice(0, limit);
+  const imageBacked = candidates.filter((candidate) => imageMap.has(candidate.id as number));
+  const featured = (requireImage && imageBacked.length ? imageBacked : candidates).slice(0, limit);
   const featuredIds = featured.map((candidate) => candidate.id as number);
   if (!featuredIds.length) {
     return [];
