@@ -72,6 +72,15 @@ export type LandingCitySearch = {
   treatments: LandingCityTreatment[];
 };
 
+export type LandingCountrySearch = {
+  country_code: string;
+  country_name: string;
+  location_count: number;
+  treatment_count: number;
+  treatments: LandingCityTreatment[];
+  cities: LandingCitySearch[];
+};
+
 export type LandingFeaturedDirectoryCard = {
   id: number;
   name: string | null;
@@ -120,7 +129,7 @@ export function getStats(): Stats {
   };
 }
 
-export function getLandingCityTreatmentSearches(cityLimit = 18, treatmentLimit = 6): LandingCitySearch[] {
+export function getLandingCityTreatmentSearches(cityLimitPerCountry = 10, treatmentLimit = 8): LandingCountrySearch[] {
   const cityTreatmentRows = rows<{
     locality: string;
     country_code: string;
@@ -133,7 +142,45 @@ export function getLandingCityTreatmentSearches(cityLimit = 18, treatmentLimit =
     treatment_location_count: number;
   }>(
     `
-    WITH city_counts AS (
+    WITH valid_locations AS (
+      SELECT
+        l.id,
+        l.country_code,
+        l.country_name,
+        l.locality,
+        l.region
+      FROM locations l
+      WHERE l.country_code IS NOT NULL
+        AND TRIM(l.country_code) <> ''
+        AND l.locality IS NOT NULL
+        AND TRIM(l.locality) <> ''
+        AND LENGTH(TRIM(l.locality)) BETWEEN 3 AND 40
+        AND l.locality NOT IN (
+          'USA',
+          'Virtual',
+          'Various Virtual',
+          'Switzerland',
+          'Connecticut',
+          'D.C. Metro Area (DMV)',
+          'Miami-Ft. Lauderdale',
+          'New Jersey',
+          'Orange County',
+          'St Miami',
+          'St N Saint Petersburg'
+        )
+        AND l.locality NOT GLOB '*[0-9]*'
+        AND l.locality NOT LIKE '%,%'
+        AND l.locality NOT LIKE '% Ave%'
+        AND l.locality NOT LIKE '%Road%'
+        AND l.locality NOT LIKE '%Street%'
+        AND l.locality NOT LIKE '%Avenue%'
+        AND l.locality NOT LIKE '%Blvd%'
+        AND l.locality NOT LIKE '%Bulvarı%'
+        AND l.locality NOT LIKE '%Caddesi%'
+        AND l.locality NOT LIKE '%Suite%'
+        AND l.locality NOT LIKE '%-Ro%'
+    ),
+    city_counts AS (
       SELECT
         l.country_code,
         COALESCE(MAX(l.country_name), l.country_code) AS country_name,
@@ -149,25 +196,18 @@ export function getLandingCityTreatmentSearches(cityLimit = 18, treatmentLimit =
         COUNT(DISTINCT l.id) AS location_count,
         COUNT(DISTINCT o.treatment_id) AS treatment_count,
         COUNT(DISTINCT o.treatment_id) * 10 + MIN(COUNT(DISTINCT l.id), 80) AS score
-      FROM locations l
+      FROM valid_locations l
       JOIN offerings o ON o.location_id = l.id AND o.treatment_id IS NOT NULL
-      WHERE l.country_code IS NOT NULL
-        AND TRIM(l.country_code) <> ''
-        AND l.locality IS NOT NULL
-        AND TRIM(l.locality) <> ''
-        AND LENGTH(TRIM(l.locality)) BETWEEN 3 AND 40
-        AND l.locality NOT IN ('USA', 'Virtual', 'Various Virtual', 'Switzerland')
-        AND l.locality NOT GLOB '*[0-9]*'
-        AND l.locality NOT LIKE '%,%'
-        AND l.locality NOT LIKE '%Road%'
-        AND l.locality NOT LIKE '%Street%'
-        AND l.locality NOT LIKE '%Avenue%'
-        AND l.locality NOT LIKE '%Blvd%'
-        AND l.locality NOT LIKE '%Caddesi%'
       GROUP BY l.country_code, l.locality
-      HAVING treatment_count >= 5 AND location_count >= 4
-      ORDER BY score DESC, treatment_count DESC, location_count DESC, l.locality
-      LIMIT ?
+    ),
+    ranked_cities AS (
+      SELECT
+        *,
+        ROW_NUMBER() OVER (
+          PARTITION BY country_code
+          ORDER BY score DESC, treatment_count DESC, location_count DESC, locality
+        ) AS city_rank
+      FROM city_counts
     ),
     ranked_treatments AS (
       SELECT
@@ -185,10 +225,11 @@ export function getLandingCityTreatmentSearches(cityLimit = 18, treatmentLimit =
           PARTITION BY c.country_code, c.locality
           ORDER BY COUNT(DISTINCT l.id) DESC, t.canonical_name
         ) AS treatment_rank
-      FROM city_counts c
-      JOIN locations l ON l.country_code = c.country_code AND l.locality = c.locality
+      FROM ranked_cities c
+      JOIN valid_locations l ON l.country_code = c.country_code AND l.locality = c.locality
       JOIN offerings o ON o.location_id = l.id AND o.treatment_id IS NOT NULL
       JOIN treatments t ON t.id = o.treatment_id
+      WHERE c.city_rank <= ?
       GROUP BY c.country_code, c.locality, t.id
     )
     SELECT
@@ -203,9 +244,100 @@ export function getLandingCityTreatmentSearches(cityLimit = 18, treatmentLimit =
       treatment_location_count
     FROM ranked_treatments
     WHERE treatment_rank <= ?
-    ORDER BY score DESC, treatment_count DESC, location_count DESC, locality, treatment_rank
+    ORDER BY country_name COLLATE NOCASE, country_code, score DESC, treatment_count DESC, location_count DESC, locality, treatment_rank
   `,
-    [cityLimit, treatmentLimit],
+    [cityLimitPerCountry, treatmentLimit],
+  );
+
+  const countryTreatmentRows = rows<{
+    country_code: string;
+    country_name: string;
+    location_count: number;
+    treatment_count: number;
+    treatment_id: number;
+    treatment_name: string;
+    treatment_location_count: number;
+  }>(
+    `
+    WITH valid_locations AS (
+      SELECT
+        l.id,
+        l.country_code,
+        l.country_name,
+        l.locality
+      FROM locations l
+      WHERE l.country_code IS NOT NULL
+        AND TRIM(l.country_code) <> ''
+        AND l.locality IS NOT NULL
+        AND TRIM(l.locality) <> ''
+        AND LENGTH(TRIM(l.locality)) BETWEEN 3 AND 40
+        AND l.locality NOT IN (
+          'USA',
+          'Virtual',
+          'Various Virtual',
+          'Switzerland',
+          'Connecticut',
+          'D.C. Metro Area (DMV)',
+          'Miami-Ft. Lauderdale',
+          'New Jersey',
+          'Orange County',
+          'St Miami',
+          'St N Saint Petersburg'
+        )
+        AND l.locality NOT GLOB '*[0-9]*'
+        AND l.locality NOT LIKE '%,%'
+        AND l.locality NOT LIKE '% Ave%'
+        AND l.locality NOT LIKE '%Road%'
+        AND l.locality NOT LIKE '%Street%'
+        AND l.locality NOT LIKE '%Avenue%'
+        AND l.locality NOT LIKE '%Blvd%'
+        AND l.locality NOT LIKE '%Bulvarı%'
+        AND l.locality NOT LIKE '%Caddesi%'
+        AND l.locality NOT LIKE '%Suite%'
+        AND l.locality NOT LIKE '%-Ro%'
+    ),
+    country_counts AS (
+      SELECT
+        l.country_code,
+        COALESCE(MAX(l.country_name), l.country_code) AS country_name,
+        COUNT(DISTINCT l.id) AS location_count,
+        COUNT(DISTINCT o.treatment_id) AS treatment_count
+      FROM valid_locations l
+      JOIN offerings o ON o.location_id = l.id AND o.treatment_id IS NOT NULL
+      GROUP BY l.country_code
+    ),
+    ranked_treatments AS (
+      SELECT
+        c.country_code,
+        c.country_name,
+        c.location_count,
+        c.treatment_count,
+        t.id AS treatment_id,
+        t.canonical_name AS treatment_name,
+        COUNT(DISTINCT l.id) AS treatment_location_count,
+        ROW_NUMBER() OVER (
+          PARTITION BY c.country_code
+          ORDER BY COUNT(DISTINCT l.id) DESC, t.canonical_name
+        ) AS treatment_rank
+      FROM country_counts c
+      JOIN valid_locations l ON l.country_code = c.country_code
+      JOIN offerings o ON o.location_id = l.id AND o.treatment_id IS NOT NULL
+      JOIN treatments t ON t.id = o.treatment_id
+      GROUP BY c.country_code, t.id
+    )
+    SELECT
+      country_code,
+      country_name,
+      location_count,
+      treatment_count,
+      treatment_id,
+      treatment_name,
+      treatment_location_count
+    FROM ranked_treatments
+    WHERE treatment_rank <= ?
+    ORDER BY country_name COLLATE NOCASE, country_code, treatment_rank
+  `,
+    [treatmentLimit],
   );
 
   const byCity = new Map<string, LandingCitySearch>();
@@ -231,7 +363,40 @@ export function getLandingCityTreatmentSearches(cityLimit = 18, treatmentLimit =
     });
   }
 
-  return Array.from(byCity.values());
+  const byCountry = new Map<string, LandingCountrySearch>();
+  for (const row of countryTreatmentRows) {
+    let country = byCountry.get(row.country_code);
+    if (!country) {
+      country = {
+        country_code: row.country_code,
+        country_name: row.country_name,
+        location_count: row.location_count,
+        treatment_count: row.treatment_count,
+        treatments: [],
+        cities: [],
+      };
+      byCountry.set(row.country_code, country);
+    }
+    country.treatments.push({
+      id: row.treatment_id,
+      name: row.treatment_name,
+      location_count: row.treatment_location_count,
+    });
+  }
+
+  for (const city of byCity.values()) {
+    const country = byCountry.get(city.country_code);
+    if (country) {
+      country.cities.push(city);
+    }
+  }
+
+  return Array.from(byCountry.values()).sort(
+    (a, b) =>
+      b.cities.length - a.cities.length ||
+      b.location_count - a.location_count ||
+      a.country_name.localeCompare(b.country_name),
+  );
 }
 
 export function getLandingFeaturedDirectoryCards(limit = 5): LandingFeaturedDirectoryCard[] {

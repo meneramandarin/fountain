@@ -1,11 +1,11 @@
 "use client";
 
-import type { LandingCitySearch, LandingCityTreatment } from "@/lib/queries";
+import type { LandingCitySearch, LandingCityTreatment, LandingCountrySearch } from "@/lib/queries";
 import Link from "next/link";
 import { useState } from "react";
 
 type CityTreatmentSearchesProps = {
-  cities: LandingCitySearch[];
+  countries: LandingCountrySearch[];
 };
 
 function cityKey(city: LandingCitySearch) {
@@ -16,61 +16,89 @@ function cityDisplayName(city: LandingCitySearch) {
   return city.region_code ? `${city.locality}, ${city.region_code}` : city.locality;
 }
 
-function directoryHref(city: LandingCitySearch, treatment?: LandingCityTreatment) {
+function citySeoName(city: LandingCitySearch) {
+  return city.locality;
+}
+
+function cityDirectoryHref(city: LandingCitySearch, treatment: LandingCityTreatment) {
   const params = new URLSearchParams({ kind: "locations" });
   params.set("country", city.country_code);
   params.set("locality", city.locality);
-
-  if (treatment) {
-    params.set("q", treatment.name);
-    params.set("treatment_id", String(treatment.id));
-  }
+  params.set("q", treatment.name);
+  params.set("treatment_id", String(treatment.id));
 
   return `/directory?${params.toString()}`;
 }
 
-export function CityTreatmentSearches({ cities }: CityTreatmentSearchesProps) {
-  const [activeCityKey, setActiveCityKey] = useState(() => (cities[0] ? cityKey(cities[0]) : ""));
-  const activeCity = cities.find((city) => cityKey(city) === activeCityKey) || cities[0];
+function countryDirectoryHref(country: LandingCountrySearch, treatment: LandingCityTreatment) {
+  const params = new URLSearchParams({ kind: "locations" });
+  params.set("country", country.country_code);
+  params.set("q", treatment.name);
+  params.set("treatment_id", String(treatment.id));
 
-  if (!activeCity) {
+  return `/directory?${params.toString()}`;
+}
+
+export function CityTreatmentSearches({ countries }: CityTreatmentSearchesProps) {
+  const [activeCountryCode, setActiveCountryCode] = useState(() => countries[0]?.country_code || "");
+
+  if (!countries[0]) {
     return null;
   }
 
-  const activeCityName = cityDisplayName(activeCity);
-
   return (
     <>
-      <div className="city-tabs" role="group" aria-label="Popular cities">
-        {cities.map((city) => {
-          const key = cityKey(city);
-          const isSelected = key === activeCityKey;
+      <div className="browse-tabs country-tabs" role="group" aria-label="Countries">
+        {countries.map((country) => {
+          const isSelected = country.country_code === activeCountryCode;
 
           return (
             <button
+              aria-label={`${country.country_name}, ${country.cities.length} cities`}
               aria-pressed={isSelected}
-              key={key}
-              onClick={() => setActiveCityKey(key)}
+              key={country.country_code}
+              onClick={() => setActiveCountryCode(country.country_code)}
               type="button"
             >
-              {cityDisplayName(city)}
+              {country.country_name}
             </button>
           );
         })}
       </div>
 
-      <div className="city-selected-searches">
-        <div className="city-selected-heading">
-          <h3>Treatments in {activeCityName}</h3>
+      {countries.map((country) => (
+        <div
+          className="location-country-panel"
+          hidden={country.country_code !== activeCountryCode}
+          key={country.country_code}
+        >
+          <div className="location-search-columns" aria-label={`Treatment searches in ${country.country_name}`}>
+            <div className="location-search-column">
+              <h3>Popular</h3>
+              <div className="location-search-links">
+                {country.treatments.map((treatment) => (
+                  <Link href={countryDirectoryHref(country, treatment)} key={`${country.country_code}-${treatment.id}`}>
+                    {treatment.name} in {country.country_name}
+                  </Link>
+                ))}
+              </div>
+            </div>
+
+            {country.cities.map((city) => (
+              <div className="location-search-column" key={cityKey(city)}>
+                <h3>{cityDisplayName(city)}</h3>
+                <div className="location-search-links">
+                  {city.treatments.map((treatment) => (
+                    <Link href={cityDirectoryHref(city, treatment)} key={`${cityKey(city)}-${treatment.id}`}>
+                      {treatment.name} in {citySeoName(city)}
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
-        <div className="city-treatment-links" aria-label={`Treatments available in ${activeCityName}`}>
-          {activeCity.treatments.map((treatment) => (
-            <Link href={directoryHref(activeCity, treatment)} key={`${activeCity.country_code}-${activeCity.locality}-${treatment.id}`}>
-              {treatment.name}
-            </Link>
-          ))}
-        </div>
-      </div>
+      ))}
     </>
   );
 }
