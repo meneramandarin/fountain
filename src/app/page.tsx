@@ -31,7 +31,7 @@ const exploreItems: LandingExploreItem[] = [
 ];
 
 export default function HomePage() {
-  const citySearches = getLandingCityTreatmentSearches(18, 100);
+  const countrySearches = getLandingCityTreatmentSearches();
   const featuredCards = getLandingFeaturedDirectoryCards(5);
   const nadCards = getLandingTreatmentDirectoryCards("NAD+ IV therapy", 5, {
     countryCode: "US",
@@ -106,10 +106,10 @@ export default function HomePage() {
 
       <section className="landing-discover">
         <div className="discover-card">
-          <h2>Explore searches in popular cities</h2>
-          <p>Browse treatments currently offered by city</p>
+          <h2>Explore searches by location</h2>
+          <p>Browse treatments by country and city</p>
 
-          <CityTreatmentSearches cities={citySearches} />
+          <CityTreatmentSearches countries={countrySearches} />
         </div>
       </section>
 
