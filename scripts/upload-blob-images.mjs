@@ -20,6 +20,7 @@ const blocklistPath = path.resolve(ROOT, options.blocklist || "src/lib/placehold
 const prefix = (options.prefix || "listing-images").replace(/^\/+|\/+$/g, "");
 const dryRun = options.dryRun;
 const limit = options.limit ? Number.parseInt(options.limit, 10) : null;
+const sqliteBusyTimeoutMs = options.sqliteBusyTimeoutMs ? Number.parseInt(options.sqliteBusyTimeoutMs, 10) : 10_000;
 
 if (!dryRun && !process.env.BLOB_READ_WRITE_TOKEN) {
   throw new Error("BLOB_READ_WRITE_TOKEN is required unless --dry-run is set.");
@@ -102,6 +103,7 @@ for (const group of groups) {
 
 function withDb(callback) {
   const database = new Database(dbPath);
+  database.pragma(`busy_timeout = ${sqliteBusyTimeoutMs}`);
   try {
     return callback(database);
   } finally {

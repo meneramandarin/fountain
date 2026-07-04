@@ -23,6 +23,9 @@ const source = options.source || null;
 const limit = options.limit ? Number.parseInt(options.limit, 10) : 100;
 const maxBytes = options.maxBytes ? Number.parseInt(options.maxBytes, 10) : 5 * 1024 * 1024;
 const delayMs = options.delayMs ? Number.parseInt(options.delayMs, 10) : 150;
+const timeoutMs = options.timeoutMs ? Number.parseInt(options.timeoutMs, 10) : 15_000;
+const sqliteBusyTimeoutMs = options.sqliteBusyTimeoutMs ? Number.parseInt(options.sqliteBusyTimeoutMs, 10) : 10_000;
+const progressEvery = options.progressEvery ? Number.parseInt(options.progressEvery, 10) : 25;
 
 if (!dryRun && !process.env.BLOB_READ_WRITE_TOKEN) {
   throw new Error("BLOB_READ_WRITE_TOKEN is required unless --dry-run is set.");
@@ -44,10 +47,11 @@ const errors = [];
 for (const row of rows) {
   let result;
   try {
-    result = await fetchImage(row.image_url, maxBytes);
+    result = await fetchImage(row.image_url, maxBytes, timeoutMs);
   } catch (error) {
     skipped += 1;
     errors.push({ id: row.id, source: row.source_slug, reason: error.message });
+    logProgress();
     continue;
   }
   fetched += 1;
@@ -66,15 +70,15 @@ for (const row of rows) {
   }
 
   if (!dryRun) {
-    withDb((db) => {
-      db.prepare("UPDATE images SET content_sha256 = ?, blob_url = ? WHERE id = ?").run(hash, blobUrl, row.id);
-    });
+    await updateImageRow(row.id, hash, blobUrl);
   }
   updatedRows += 1;
 
   if (delayMs > 0) {
     await sleep(delayMs);
   }
+
+  logProgress();
 }
 
 console.log(
@@ -85,6 +89,7 @@ console.log(
       source,
       limit,
       max_bytes: maxBytes,
+      timeout_ms: timeoutMs,
       selected_rows: rows.length,
       fetched,
       uploaded,
@@ -100,10 +105,36 @@ console.log(
 
 function withDb(callback) {
   const database = new Database(dbPath);
+  database.pragma(`busy_timeout = ${sqliteBusyTimeoutMs}`);
   try {
     return callback(database);
   } finally {
     database.close();
+  }
+}
+
+function logProgress() {
+  const processed = fetched + skipped;
+  if (progressEvery > 0 && processed > 0 && processed % progressEvery === 0) {
+    console.error(
+      `progress source=${source || "all"} processed=${processed}/${rows.length} fetched=${fetched} skipped=${skipped} uploaded=${uploaded} reused=${reused}`,
+    );
+  }
+}
+
+async function updateImageRow(id, hash, blobUrl, attempts = 5) {
+  for (let attempt = 1; attempt <= attempts; attempt += 1) {
+    try {
+      withDb((db) => {
+        db.prepare("UPDATE images SET content_sha256 = ?, blob_url = ? WHERE id = ?").run(hash, blobUrl, id);
+      });
+      return;
+    } catch (error) {
+      if (error.code !== "SQLITE_BUSY" || attempt === attempts) {
+        throw error;
+      }
+      await sleep(500 * attempt);
+    }
   }
 }
 
@@ -156,13 +187,14 @@ function loadExistingHashes(database) {
   return hashes;
 }
 
-async function fetchImage(url, maxSize) {
+async function fetchImage(url, maxSize, requestTimeoutMs) {
   const response = await fetch(url, {
     headers: {
       Accept: "image/avif,image/webp,image/png,image/jpeg,image/*,*/*;q=0.8",
       "User-Agent": USER_AGENT,
     },
     redirect: "follow",
+    signal: AbortSignal.timeout(requestTimeoutMs),
   });
 
   if (!response.ok) {
