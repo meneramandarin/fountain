@@ -1,6 +1,6 @@
 # Postgres Migration
 
-The app reads from Neon Postgres when `DATABASE_URL` or `POSTGRES_URL` is present, and falls back to `canonical.db` for local environments without those variables. This migration keeps growing production data out of Git while preserving the SQLite fallback for development and emergency rollback.
+The app reads from Neon Postgres when `DATABASE_URL` or `POSTGRES_URL` is present, and falls back to `canonical.db` only for local environments without those variables. Vercel deployments fail fast if Postgres is not configured, so production cannot silently serve stale SQLite data. This migration keeps growing production data out of Git while preserving the SQLite fallback for development and emergency rollback.
 
 ## Provision Neon
 
@@ -50,7 +50,7 @@ npm run db:import-postgres -- --no-promote
 The runtime query layer is async and supports both backends:
 
 - Postgres: used when `DATABASE_URL` or `POSTGRES_URL` exists.
-- SQLite: used when no Postgres URL exists.
+- SQLite: used only outside Vercel when no Postgres URL exists.
 
 The Neon pooled connection path does not accept `search_path` as a startup option, so the Postgres adapter wraps each read in a short transaction with `SET LOCAL search_path TO fountain, public`. Set `POSTGRES_SCHEMA` only when you intentionally need a different serving schema.
 
