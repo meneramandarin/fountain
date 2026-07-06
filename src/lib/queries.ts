@@ -14,6 +14,23 @@ type ImageCandidate = {
   local_path: string | null;
 };
 
+export type ExternalReviewGroup = {
+  provider: string;
+  provider_name: string;
+  provider_url: string | null;
+  rating: number | null;
+  review_count: number | null;
+  fetched_at: string | null;
+  expires_at: string | null;
+  reviews: {
+    reviewer: string | null;
+    rating: number | null;
+    review_date: string | null;
+    body: string | null;
+    source_url: string | null;
+  }[];
+};
+
 function usableImageSource(image: ImageCandidate) {
   if (image.local_path && placeholderImagePathSet.has(image.local_path)) {
     return null;
@@ -110,6 +127,114 @@ function ftsMatch(query?: string | null) {
 
 function placeholders(count: number) {
   return Array.from({ length: count }, () => "?").join(",");
+}
+
+let hasExternalReviewTablesCache: boolean | null = null;
+
+function hasExternalReviewTables() {
+  if (hasExternalReviewTablesCache == null) {
+    const tableCount = row<{ count: number }>(
+      `
+      SELECT COUNT(*) AS count
+      FROM sqlite_master
+      WHERE type = 'table'
+        AND name IN ('external_place_matches', 'external_reviews')
+    `,
+    )?.count || 0;
+    hasExternalReviewTablesCache = tableCount === 2;
+  }
+  return hasExternalReviewTablesCache;
+}
+
+function providerName(provider: string) {
+  switch (provider) {
+    case "google":
+      return "Google";
+    case "yelp":
+      return "Yelp";
+    case "tripadvisor":
+      return "Tripadvisor";
+    case "trustpilot":
+      return "Trustpilot";
+    default:
+      return provider;
+  }
+}
+
+function getExternalReviewGroups(locationId: number): ExternalReviewGroup[] {
+  if (!hasExternalReviewTables()) {
+    return [];
+  }
+
+  const matches = rows<{
+    provider: string;
+    provider_url: string | null;
+    rating: number | null;
+    review_count: number | null;
+    fetched_at: string | null;
+    expires_at: string | null;
+  }>(
+    `
+    SELECT provider, provider_url, rating, review_count, fetched_at, expires_at
+    FROM external_place_matches
+    WHERE location_id = ?
+      AND match_status = 'matched'
+    ORDER BY
+      CASE provider
+        WHEN 'google' THEN 1
+        WHEN 'yelp' THEN 2
+        WHEN 'tripadvisor' THEN 3
+        WHEN 'trustpilot' THEN 4
+        ELSE 5
+      END,
+      provider
+  `,
+    [locationId],
+  );
+  if (!matches.length) {
+    return [];
+  }
+
+  const reviewRows = rows<{
+    provider: string;
+    reviewer: string | null;
+    rating: number | null;
+    review_date: string | null;
+    body: string | null;
+    source_url: string | null;
+  }>(
+    `
+    SELECT provider, reviewer, rating, review_date, body, source_url
+    FROM external_reviews
+    WHERE location_id = ?
+    ORDER BY provider, review_date DESC, id DESC
+  `,
+    [locationId],
+  );
+
+  const reviewsByProvider = new Map<string, ExternalReviewGroup["reviews"]>();
+  for (const review of reviewRows) {
+    const list = reviewsByProvider.get(review.provider) || [];
+    list.push({
+      reviewer: review.reviewer,
+      rating: review.rating,
+      review_date: review.review_date,
+      body: review.body,
+      source_url: review.source_url,
+    });
+    reviewsByProvider.set(review.provider, list);
+  }
+
+  return matches.map((match) => ({
+    provider: match.provider,
+    provider_name: providerName(match.provider),
+    provider_url: match.provider_url,
+    rating: match.rating,
+    review_count: match.review_count,
+    fetched_at: match.fetched_at,
+    expires_at: match.expires_at,
+    reviews: (reviewsByProvider.get(match.provider) || []).slice(0, 5),
+  }));
 }
 
 export function getStats(): Stats {
@@ -1058,6 +1183,7 @@ export function getLocationDetail(id: number) {
   `,
     [id],
   );
+  location.external_reviews = getExternalReviewGroups(id);
   location.images = rows<{ image_url: string | null; blob_url: string | null; local_path: string | null; alt: string | null }>(
     `
     SELECT image_url, blob_url, local_path, alt

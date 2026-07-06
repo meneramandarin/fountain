@@ -57,6 +57,16 @@ type Tag = { facet: string; value: string };
 type TreatmentChip = { name: string; domain: string };
 type ImageRef = { image_url?: string | null; blob_url?: string | null; local_path?: string | null; alt?: string | null };
 type ReviewRef = { reviewer?: string | null; rating?: string | number | null; review_date?: string | null; body?: string | null };
+type ExternalReviewGroup = {
+  provider: string;
+  provider_name: string;
+  provider_url?: string | null;
+  rating?: number | null;
+  review_count?: number | null;
+  fetched_at?: string | null;
+  expires_at?: string | null;
+  reviews?: Array<ReviewRef & { source_url?: string | null }>;
+};
 type OfferingRef = {
   raw_name?: string | null;
   price_amount?: number | null;
@@ -103,6 +113,7 @@ type LocationDetailRecord = LocationResultRow & {
   offerings?: OfferingRef[];
   images?: ImageRef[];
   reviews?: ReviewRef[];
+  external_reviews?: ExternalReviewGroup[];
   practitioners?: { id: number; full_name: string; primary_specialty?: string | null; role?: string | null }[];
 };
 type PractitionerDetailRecord = PractitionerResultRow & {
@@ -752,6 +763,7 @@ function LocationDetail({ data }: { data: LocationDetailRecord }) {
       <LocationPractitioners practitioners={data.practitioners || []} />
       <TagList tags={data.tags || []} />
       <ReviewList reviews={data.reviews || []} />
+      <ExternalReviewList groups={data.external_reviews || []} />
     </>
   );
 }
@@ -950,6 +962,59 @@ function ReviewList({ reviews }: { reviews: ReviewRef[] }) {
           </blockquote>
         );
       })}
+    </section>
+  );
+}
+
+function ExternalReviewList({ groups }: { groups: ExternalReviewGroup[] }) {
+  const visible = groups.filter((group) => group.rating || group.review_count || group.reviews?.length);
+  if (!visible.length) {
+    return null;
+  }
+  return (
+    <section className="detail-section">
+      <h3>External reviews</h3>
+      <div className="external-review-groups">
+        {visible.map((group) => (
+          <div className="external-review-group" key={group.provider}>
+            <div className="external-review-source">
+              <b>{group.provider_name}</b>
+              <span>
+                {group.rating ? (
+                  <>
+                    <Star size={12} aria-hidden="true" />
+                    {Number(group.rating).toFixed(1)}
+                  </>
+                ) : null}
+                {group.review_count ? `${group.rating ? " · " : ""}${Number(group.review_count).toLocaleString()} reviews` : null}
+              </span>
+              {group.provider_url ? (
+                <a href={group.provider_url} target="_blank" rel="noreferrer">
+                  View source <ExternalLink size={12} aria-hidden="true" />
+                </a>
+              ) : null}
+            </div>
+            {(group.reviews || []).slice(0, 5).map((review, index) => {
+              const reviewer = reviewField(review.reviewer, "name") || "Anonymous";
+              const rating = reviewField(review.rating, "ratingValue");
+              return (
+                <blockquote key={`${group.provider}-${review.review_date || ""}-${index}`}>
+                  <div className="review-meta">
+                    <b>{reviewer}</b>
+                    {rating ? (
+                      <span>
+                        <Star size={11} aria-hidden="true" />
+                        {rating}
+                      </span>
+                    ) : null}
+                  </div>
+                  <p>{review.body || "No review body provided."}</p>
+                </blockquote>
+              );
+            })}
+          </div>
+        ))}
+      </div>
     </section>
   );
 }

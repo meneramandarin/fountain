@@ -186,6 +186,40 @@ CREATE TABLE reviews (
     source_id   INTEGER REFERENCES sources(id)
 );
 
+-- external review providers such as Google Places and Yelp.
+-- These are source-labelled cache rows, not first-party Fountain reviews.
+CREATE TABLE external_place_matches (
+    location_id        INTEGER NOT NULL REFERENCES locations(id),
+    provider           TEXT NOT NULL,
+    provider_place_id  TEXT NOT NULL,
+    provider_url       TEXT,
+    display_name       TEXT,
+    rating             REAL,
+    review_count       INTEGER,
+    match_confidence   REAL,
+    match_status       TEXT,
+    fetched_at         TEXT NOT NULL,
+    expires_at         TEXT,
+    raw_json           TEXT,
+    PRIMARY KEY(location_id, provider)
+);
+
+CREATE TABLE external_reviews (
+    id                 INTEGER PRIMARY KEY,
+    location_id        INTEGER NOT NULL REFERENCES locations(id),
+    provider           TEXT NOT NULL,
+    provider_review_id TEXT NOT NULL,
+    reviewer           TEXT,
+    rating             REAL,
+    review_date        TEXT,
+    body               TEXT,
+    source_url         TEXT,
+    fetched_at         TEXT NOT NULL,
+    expires_at         TEXT,
+    raw_json           TEXT,
+    UNIQUE(provider, provider_review_id)
+);
+
 -- ----------------------------------------------------------------------
 -- review queue: raw terms that did not map to a canonical treatment.
 -- Nothing gets silently dropped; it lands here for later curation.

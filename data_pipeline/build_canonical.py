@@ -21,6 +21,8 @@ CANONICAL_DB = ROOT / "canonical.db"
 SCHEMA_PATH = PIPELINE_ROOT / "schema.sql"
 TAXONOMY_PATH = PIPELINE_ROOT / "taxonomy_seed.json"
 UNMAPPED_CSV = ROOT / "data" / "exports" / "unmapped_terms.csv"
+GOOGLE_REVIEW_CACHE_DB = DB_DIR / "google_reviews.sqlite"
+BLOB_IMAGE_CACHE_DB = DB_DIR / "blob_images.sqlite"
 
 LOCATION_SOURCES = {
     "biohacking_map",
@@ -182,6 +184,8 @@ class CanonicalBuilder:
         self.register_sources()
         self.process_sources()
         self.consolidate_duplicate_locations()
+        self.import_blob_image_cache()
+        self.import_external_review_cache()
         self.populate_search_index()
         self.export_unmapped_terms()
         self.print_report()
@@ -200,6 +204,300 @@ class CanonicalBuilder:
         self.conn.row_factory = sqlite3.Row
         self.conn.executescript(SCHEMA_PATH.read_text(encoding="utf-8"))
         self.conn.commit()
+
+    def import_external_review_cache(self) -> None:
+        if not GOOGLE_REVIEW_CACHE_DB.exists():
+            return
+
+        self.conn.execute("ATTACH DATABASE ? AS review_cache", (str(GOOGLE_REVIEW_CACHE_DB),))
+        try:
+            required_tables = {
+                row["name"]
+                for row in self.conn.execute(
+                    """
+                    SELECT name
+                    FROM review_cache.sqlite_master
+                    WHERE type = 'table'
+                      AND name IN ('external_place_matches', 'external_reviews', 'external_review_location_keys')
+                    """
+                )
+            }
+            if not {"external_place_matches", "external_reviews"}.issubset(required_tables):
+                self.deviation_notes.append(f"skipped external review cache with missing tables: {GOOGLE_REVIEW_CACHE_DB}")
+                return
+
+            location_map = self.external_review_location_map("external_review_location_keys" in required_tables)
+            self.conn.execute("DROP TABLE IF EXISTS temp.review_cache_location_map")
+            self.conn.execute(
+                """
+                CREATE TEMP TABLE review_cache_location_map (
+                    cache_location_id INTEGER NOT NULL,
+                    current_location_id INTEGER NOT NULL,
+                    PRIMARY KEY(cache_location_id)
+                )
+                """
+            )
+            self.conn.executemany(
+                """
+                INSERT INTO temp.review_cache_location_map(cache_location_id, current_location_id)
+                VALUES (?, ?)
+                """,
+                sorted(location_map.items()),
+            )
+            self.conn.execute(
+                """
+                INSERT OR REPLACE INTO external_place_matches (
+                    location_id, provider, provider_place_id, provider_url, display_name, rating,
+                    review_count, match_confidence, match_status, fetched_at, expires_at, raw_json
+                )
+                SELECT
+                    map.current_location_id, cache.provider, cache.provider_place_id, cache.provider_url,
+                    cache.display_name, cache.rating, cache.review_count, cache.match_confidence,
+                    cache.match_status, cache.fetched_at, cache.expires_at, NULL
+                FROM review_cache.external_place_matches cache
+                JOIN temp.review_cache_location_map map ON map.cache_location_id = cache.location_id
+                """
+            )
+            self.conn.execute(
+                """
+                INSERT OR REPLACE INTO external_reviews (
+                    location_id, provider, provider_review_id, reviewer, rating, review_date,
+                    body, source_url, fetched_at, expires_at, raw_json
+                )
+                SELECT
+                    map.current_location_id, cache.provider, cache.provider_review_id, cache.reviewer,
+                    cache.rating, cache.review_date, cache.body, cache.source_url,
+                    cache.fetched_at, cache.expires_at, NULL
+                FROM review_cache.external_reviews cache
+                JOIN temp.review_cache_location_map map ON map.cache_location_id = cache.location_id
+                """
+            )
+            imported_matches = int(
+                self.conn.execute("SELECT COUNT(*) FROM external_place_matches").fetchone()[0]
+            )
+            imported_reviews = int(
+                self.conn.execute("SELECT COUNT(*) FROM external_reviews").fetchone()[0]
+            )
+            self.deviation_notes.append(
+                f"imported external review cache: {imported_matches} place matches, {imported_reviews} review rows, {len(location_map)} location mappings"
+            )
+            self.conn.commit()
+        finally:
+            self.conn.execute("DETACH DATABASE review_cache")
+
+    def import_blob_image_cache(self) -> None:
+        if not BLOB_IMAGE_CACHE_DB.exists():
+            return
+
+        self.conn.execute("ATTACH DATABASE ? AS blob_cache", (str(BLOB_IMAGE_CACHE_DB),))
+        try:
+            has_table = self.conn.execute(
+                """
+                SELECT 1
+                FROM blob_cache.sqlite_master
+                WHERE type = 'table'
+                  AND name = 'blob_image_mappings'
+                """
+            ).fetchone()
+            if not has_table:
+                self.deviation_notes.append(f"skipped blob image cache with missing table: {BLOB_IMAGE_CACHE_DB}")
+                return
+
+            self.conn.execute("DROP TABLE IF EXISTS temp.blob_cache_local")
+            self.conn.execute(
+                """
+                CREATE TEMP TABLE blob_cache_local AS
+                SELECT
+                    source_slug,
+                    local_path,
+                    MAX(actual_content_sha256) AS content_sha256,
+                    MAX(blob_url) AS blob_url
+                FROM blob_cache.blob_image_mappings
+                WHERE source_slug IS NOT NULL
+                  AND source_slug != ''
+                  AND local_path IS NOT NULL
+                  AND local_path != ''
+                  AND actual_content_sha256 IS NOT NULL
+                  AND actual_content_sha256 != ''
+                  AND blob_url IS NOT NULL
+                  AND blob_url != ''
+                  AND status = 'verified_local_blob'
+                GROUP BY source_slug, local_path
+                HAVING COUNT(DISTINCT blob_url) = 1
+                   AND COUNT(DISTINCT actual_content_sha256) = 1
+                """
+            )
+            self.conn.execute("CREATE INDEX temp.idx_blob_cache_local ON blob_cache_local(source_slug, local_path)")
+
+            local_before = self.conn.total_changes
+            self.conn.execute(
+                """
+                UPDATE images
+                SET
+                    content_sha256 = (
+                        SELECT cache.content_sha256
+                        FROM temp.blob_cache_local cache
+                        JOIN sources source ON source.slug = cache.source_slug
+                        WHERE source.id = images.source_id
+                          AND cache.local_path = images.local_path
+                    ),
+                    blob_url = (
+                        SELECT cache.blob_url
+                        FROM temp.blob_cache_local cache
+                        JOIN sources source ON source.slug = cache.source_slug
+                        WHERE source.id = images.source_id
+                          AND cache.local_path = images.local_path
+                    )
+                WHERE local_path IS NOT NULL
+                  AND local_path != ''
+                  AND EXISTS (
+                      SELECT 1
+                      FROM temp.blob_cache_local cache
+                      JOIN sources source ON source.slug = cache.source_slug
+                      WHERE source.id = images.source_id
+                        AND cache.local_path = images.local_path
+                  )
+                """
+            )
+            local_imported = self.conn.total_changes - local_before
+
+            self.conn.execute("DROP TABLE IF EXISTS temp.blob_cache_remote")
+            self.conn.execute(
+                """
+                CREATE TEMP TABLE blob_cache_remote AS
+                SELECT
+                    source_slug,
+                    image_url,
+                    MAX(db_content_sha256) AS content_sha256,
+                    MAX(blob_url) AS blob_url
+                FROM blob_cache.blob_image_mappings
+                WHERE source_slug IS NOT NULL
+                  AND source_slug != ''
+                  AND image_url IS NOT NULL
+                  AND image_url != ''
+                  AND (local_path IS NULL OR local_path = '')
+                  AND db_content_sha256 IS NOT NULL
+                  AND db_content_sha256 != ''
+                  AND blob_url IS NOT NULL
+                  AND blob_url != ''
+                  AND status = 'remote_blob_unverified'
+                GROUP BY source_slug, image_url
+                HAVING COUNT(DISTINCT blob_url) = 1
+                   AND COUNT(DISTINCT db_content_sha256) = 1
+                """
+            )
+            self.conn.execute("CREATE INDEX temp.idx_blob_cache_remote ON blob_cache_remote(source_slug, image_url)")
+
+            remote_before = self.conn.total_changes
+            self.conn.execute(
+                """
+                UPDATE images
+                SET
+                    content_sha256 = (
+                        SELECT cache.content_sha256
+                        FROM temp.blob_cache_remote cache
+                        JOIN sources source ON source.slug = cache.source_slug
+                        WHERE source.id = images.source_id
+                          AND cache.image_url = images.image_url
+                    ),
+                    blob_url = (
+                        SELECT cache.blob_url
+                        FROM temp.blob_cache_remote cache
+                        JOIN sources source ON source.slug = cache.source_slug
+                        WHERE source.id = images.source_id
+                          AND cache.image_url = images.image_url
+                    )
+                WHERE (local_path IS NULL OR local_path = '')
+                  AND image_url IS NOT NULL
+                  AND image_url != ''
+                  AND EXISTS (
+                      SELECT 1
+                      FROM temp.blob_cache_remote cache
+                      JOIN sources source ON source.slug = cache.source_slug
+                      WHERE source.id = images.source_id
+                        AND cache.image_url = images.image_url
+                  )
+                """
+            )
+            remote_imported = self.conn.total_changes - remote_before
+            self.deviation_notes.append(
+                f"imported blob image cache: {local_imported} local rows, {remote_imported} remote rows"
+            )
+            self.conn.commit()
+        finally:
+            self.conn.execute("DETACH DATABASE blob_cache")
+
+    def external_review_location_map(self, has_location_keys: bool) -> dict[int, int]:
+        current_locations = [
+            dict(row)
+            for row in self.conn.execute(
+                """
+                SELECT l.id, l.name, org.canonical_name AS org_name, l.address, l.locality,
+                       l.region, l.country_code, l.website
+                FROM locations l
+                LEFT JOIN organizations org ON org.id = l.org_id
+                """
+            )
+        ]
+        current_by_id = {int(row["id"]): row for row in current_locations}
+        if not has_location_keys:
+            return {
+                int(row["location_id"]): int(row["location_id"])
+                for row in self.conn.execute("SELECT DISTINCT location_id FROM review_cache.external_place_matches")
+                if int(row["location_id"]) in current_by_id
+            }
+
+        by_domain: dict[str, list[dict[str, Any]]] = defaultdict(list)
+        by_address: dict[tuple[str, str, str], list[dict[str, Any]]] = defaultdict(list)
+        by_name_place: dict[tuple[str, str, str], list[dict[str, Any]]] = defaultdict(list)
+        for row in current_locations:
+            domain = external_review_match_domain(row.get("website"))
+            if domain:
+                by_domain[domain].append(row)
+            address_key = normalize_term(row.get("address"))
+            locality_key = normalize_term(row.get("locality"))
+            country_key = clean(row.get("country_code")) or ""
+            if address_key:
+                by_address[(address_key, locality_key, country_key)].append(row)
+            name_key = normalize_term(row.get("name") or row.get("org_name"))
+            if name_key:
+                by_name_place[(name_key, locality_key, country_key)].append(row)
+
+        mapping: dict[int, int] = {}
+        used_current_ids: set[int] = set()
+        cache_rows = [dict(row) for row in self.conn.execute("SELECT * FROM review_cache.external_review_location_keys")]
+        for cache in cache_rows:
+            candidates: dict[int, dict[str, Any]] = {}
+            old_id = int(cache["location_id"])
+            if old_id in current_by_id:
+                candidates[old_id] = current_by_id[old_id]
+            domain = external_review_match_domain(cache.get("website"))
+            if domain:
+                for row in by_domain.get(domain, []):
+                    candidates[int(row["id"])] = row
+            address_key = normalize_term(cache.get("address"))
+            locality_key = normalize_term(cache.get("locality"))
+            country_key = clean(cache.get("country_code")) or ""
+            if address_key:
+                for row in by_address.get((address_key, locality_key, country_key), []):
+                    candidates[int(row["id"])] = row
+            name_key = normalize_term(cache.get("name") or cache.get("org_name"))
+            if name_key:
+                for row in by_name_place.get((name_key, locality_key, country_key), []):
+                    candidates[int(row["id"])] = row
+
+            best: tuple[float, int] | None = None
+            for current_id, candidate in candidates.items():
+                score = external_review_location_score(cache, candidate)
+                if score < 5:
+                    continue
+                ranked = (score, -abs(old_id - current_id))
+                if best is None or ranked > (best[0], -abs(old_id - best[1])):
+                    best = (score, current_id)
+            if best and best[1] not in used_current_ids:
+                mapping[old_id] = best[1]
+                used_current_ids.add(best[1])
+        return mapping
 
     def load_taxonomy(self) -> None:
         for domain in self.taxonomy["domains"]:
@@ -285,7 +583,7 @@ class CanonicalBuilder:
         )
 
     def register_sources(self) -> None:
-        for db_path in sorted(DB_DIR.glob("*.sqlite")):
+        for db_path in source_database_paths():
             slug = db_path.stem
             staging = open_staging(db_path)
             metadata = source_metadata(staging)
@@ -306,7 +604,7 @@ class CanonicalBuilder:
         self.conn.commit()
 
     def process_sources(self) -> None:
-        for db_path in sorted(DB_DIR.glob("*.sqlite")):
+        for db_path in source_database_paths():
             slug = db_path.stem
             staging = open_staging(db_path)
             rows = list(staging.execute("SELECT * FROM listings ORDER BY id"))
@@ -1811,6 +2109,11 @@ def open_staging(path: Path) -> sqlite3.Connection:
     return conn
 
 
+def source_database_paths() -> list[Path]:
+    auxiliary_dbs = {GOOGLE_REVIEW_CACHE_DB.resolve(), BLOB_IMAGE_CACHE_DB.resolve()}
+    return [path for path in sorted(DB_DIR.glob("*.sqlite")) if path.resolve() not in auxiliary_dbs]
+
+
 def source_metadata(conn: sqlite3.Connection) -> dict[str, Any]:
     return {row["key"]: parse_jsonish(row["value"]) for row in conn.execute("SELECT key, value FROM source_metadata")}
 
@@ -1923,6 +2226,50 @@ def addresses_match(left: Any, right: Any) -> bool:
     if min(len(left_norm), len(right_norm)) < 8:
         return False
     return fuzz.token_set_ratio(left_norm, right_norm) >= 92
+
+
+def external_review_location_score(cache: dict[str, Any], candidate: dict[str, Any]) -> float:
+    score = 0.0
+    cache_domain = external_review_match_domain(cache.get("website"))
+    candidate_domain = external_review_match_domain(candidate.get("website"))
+    if cache_domain and candidate_domain and cache_domain == candidate_domain:
+        score += 4.0
+    if cache.get("address") and candidate.get("address") and addresses_match(cache.get("address"), candidate.get("address")):
+        score += 4.0
+    cache_locality = normalize_term(cache.get("locality"))
+    candidate_locality = normalize_term(candidate.get("locality"))
+    if cache_locality and candidate_locality and cache_locality == candidate_locality:
+        score += 1.0
+    cache_country = clean(cache.get("country_code"))
+    candidate_country = clean(candidate.get("country_code"))
+    if cache_country and candidate_country and cache_country == candidate_country:
+        score += 1.0
+
+    name_score = 0.0
+    for cache_name in (cache.get("name"), cache.get("org_name")):
+        for candidate_name in (candidate.get("name"), candidate.get("org_name")):
+            if clean(cache_name) and clean(candidate_name):
+                name_score = max(name_score, fuzz.token_set_ratio(str(cache_name), str(candidate_name)) / 100)
+    if name_score >= 0.92:
+        score += 3.0
+    elif name_score >= 0.8:
+        score += 2.0
+    elif name_score >= 0.65:
+        score += 1.0
+    return score
+
+
+def external_review_match_domain(value: Any) -> str | None:
+    text = clean(value)
+    if not text:
+        return None
+    parsed = urlparse(text if re.match(r"^https?://", text, re.I) else f"https://{text}")
+    domain = (parsed.netloc or "").lower()
+    if domain.startswith("www."):
+        domain = domain[4:]
+    if domain in {"google.com", "maps.google.com"} and parsed.path.startswith("/maps/"):
+        return None
+    return provider_domain(text)
 
 
 def has_precise_address(value: Any) -> bool:

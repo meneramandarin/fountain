@@ -7,6 +7,8 @@ node_modules/
 .next/
 out/
 .vercel/
+.env
+.env.*
 .env*.local
 *.tsbuildinfo
 
@@ -23,6 +25,9 @@ data/databases/**/*.sqlite
 data/databases/**/*.db
 data/databases/**/*.sqlite-*
 data/databases/**/*.db-*
+!data/databases/
+!data/databases/google_reviews.sqlite
+!data/databases/blob_images.sqlite
 
 # Generated service-search scrape databases
 data/databases/dexa_*_scan_providers.sqlite*
