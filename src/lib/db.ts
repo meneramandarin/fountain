@@ -15,7 +15,7 @@ export function canonicalDbPath() {
 }
 
 function postgresConnectionString() {
-  return process.env.DATABASE_URL || process.env.POSTGRES_URL;
+  return normalizePostgresConnectionString(process.env.DATABASE_URL || process.env.POSTGRES_URL);
 }
 
 export function databaseBackend() {
@@ -63,6 +63,22 @@ function getPostgresPool() {
     });
   }
   return postgresPool;
+}
+
+function normalizePostgresConnectionString(connectionString: string | undefined) {
+  if (!connectionString) {
+    return connectionString;
+  }
+  try {
+    const url = new URL(connectionString);
+    const sslMode = url.searchParams.get("sslmode");
+    if (sslMode && ["prefer", "require", "verify-ca"].includes(sslMode)) {
+      url.searchParams.set("sslmode", "verify-full");
+    }
+    return url.toString();
+  } catch {
+    return connectionString;
+  }
 }
 
 export function isPostgres() {
