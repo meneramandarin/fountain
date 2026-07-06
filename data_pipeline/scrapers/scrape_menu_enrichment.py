@@ -7,6 +7,7 @@ import json
 import multiprocessing as mp
 import os
 import re
+import signal
 import sqlite3
 import sys
 from dataclasses import dataclass
@@ -623,6 +624,25 @@ def openrouter_post_worker(api_key: str, body: dict[str, Any], timeout: int, que
         queue.put(("error", repr(exc), ""))
 
 
+def post_openrouter_with_hard_timeout(
+    url: str,
+    *,
+    headers: dict[str, str],
+    body: dict[str, Any],
+    timeout: int,
+) -> requests.Response:
+    def handle_timeout(signum: int, frame: Any) -> None:
+        raise TimeoutError(f"OpenRouter request exceeded {timeout}s")
+
+    previous = signal.signal(signal.SIGALRM, handle_timeout)
+    signal.alarm(timeout)
+    try:
+        return requests.post(url, headers=headers, json=body, timeout=(15, timeout))
+    finally:
+        signal.alarm(0)
+        signal.signal(signal.SIGALRM, previous)
+
+
 class MenuExtractor:
     def __init__(self, *, model: str, max_context_chars: int, llm_timeout: int) -> None:
         self.model = model
@@ -673,29 +693,23 @@ class MenuExtractor:
                 else {"type": "json_object"}
             ),
         }
-        ctx = mp.get_context("fork")
-        queue: Any = ctx.Queue(maxsize=1)
-        process = ctx.Process(
-            target=openrouter_post_worker,
-            args=(api_key, body, self.llm_timeout, queue),
+        response = post_openrouter_with_hard_timeout(
+            OPENROUTER_CHAT_COMPLETIONS_URL,
+            headers={
+                "Authorization": f"Bearer {api_key}",
+                "Content-Type": "application/json",
+                "HTTP-Referer": "https://fountain.local",
+                "X-Title": "Fountain Menu Enrichment",
+            },
+            body=body,
+            timeout=self.llm_timeout,
         )
-        process.start()
-        process.join(self.llm_timeout)
-        if process.is_alive():
-            process.terminate()
-            process.join(5)
-            raise TimeoutError(f"OpenRouter request exceeded {self.llm_timeout}s")
-        if queue.empty():
-            raise RuntimeError("OpenRouter worker exited without a response")
-        status, first, text = queue.get()
-        if status == "error":
-            raise RuntimeError(f"OpenRouter request failed: {first}")
-        status_code = int(first)
+        status_code = response.status_code
         if schema_mode and status_code == 400:
             return {}
         if status_code >= 400:
-            raise RuntimeError(f"OpenRouter HTTP {status_code}: {text[:500]}")
-        value = json.loads(text)
+            raise RuntimeError(f"OpenRouter HTTP {status_code}: {response.text[:500]}")
+        value = response.json()
         return value if isinstance(value, dict) else {}
 
     def build_prompt(self, target: TargetLocation, pages: list[PageContext]) -> str:

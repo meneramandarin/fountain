@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import hashlib
-import multiprocessing as mp
+import signal
 import time
 from dataclasses import dataclass
 from datetime import datetime, timezone
@@ -80,31 +80,28 @@ class Fetcher:
         elapsed = time.monotonic() - self._last_request_at
         if elapsed < self.delay_seconds:
             time.sleep(self.delay_seconds - elapsed)
-        ctx = mp.get_context("fork")
-        queue = ctx.Queue(maxsize=1)
-        process = ctx.Process(
-            target=request_worker,
-            args=(url, self.timeout, dict(self.session.headers), queue),
-        )
-        process.start()
-        process.join(self.timeout)
-        if process.is_alive():
-            process.terminate()
-            process.join(5)
+        def handle_timeout(signum: int, frame: Any) -> None:
             raise requests.Timeout(f"Fetch exceeded {self.timeout}s")
-        if queue.empty():
-            raise requests.RequestException("Fetch worker exited without a response")
-        status, final_url, status_code, content_type, content, text = queue.get()
-        if status == "error":
-            raise requests.RequestException(final_url)
+
+        previous = signal.signal(signal.SIGALRM, handle_timeout)
+        signal.alarm(self.timeout)
+        try:
+            response = self.session.get(url, timeout=(8, self.timeout))
+        except requests.RequestException:
+            self._last_request_at = time.monotonic()
+            raise
+        finally:
+            signal.alarm(0)
+            signal.signal(signal.SIGALRM, previous)
         self._last_request_at = time.monotonic()
+        content = response.content
         return FetchResult(
             url=url,
-            final_url=final_url,
-            status_code=status_code,
-            content_type=content_type,
+            final_url=response.url,
+            status_code=response.status_code,
+            content_type=response.headers.get("content-type", ""),
             content=content,
-            text=text,
+            text=response.text,
             fetched_at=datetime.now(timezone.utc).isoformat(),
             sha256=hashlib.sha256(content).hexdigest(),
         )
