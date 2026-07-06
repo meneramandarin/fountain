@@ -14,8 +14,18 @@ export function canonicalDbPath() {
   return process.env.CANONICAL_DB_PATH || path.join(process.cwd(), "canonical.db");
 }
 
+function postgresConnectionString() {
+  return process.env.DATABASE_URL || process.env.POSTGRES_URL;
+}
+
 export function databaseBackend() {
-  return process.env.DATABASE_URL || process.env.POSTGRES_URL ? "postgres" : "sqlite";
+  if (postgresConnectionString()) {
+    return "postgres";
+  }
+  if (process.env.VERCEL === "1") {
+    throw new Error("DATABASE_URL or POSTGRES_URL is required on Vercel; refusing to fall back to canonical.db.");
+  }
+  return "sqlite";
 }
 
 function logBackend(backend: "sqlite" | "postgres") {
@@ -43,7 +53,7 @@ function postgresSchema() {
 
 function getPostgresPool() {
   if (!postgresPool) {
-    const connectionString = process.env.DATABASE_URL || process.env.POSTGRES_URL;
+    const connectionString = postgresConnectionString();
     if (!connectionString) {
       throw new Error("DATABASE_URL or POSTGRES_URL is required for Postgres database backend.");
     }
