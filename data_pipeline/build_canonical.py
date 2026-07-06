@@ -23,6 +23,7 @@ TAXONOMY_PATH = PIPELINE_ROOT / "taxonomy_seed.json"
 UNMAPPED_CSV = ROOT / "data" / "exports" / "unmapped_terms.csv"
 GOOGLE_REVIEW_CACHE_DB = DB_DIR / "google_reviews.sqlite"
 BLOB_IMAGE_CACHE_DB = DB_DIR / "blob_images.sqlite"
+LOCATION_IMAGE_BACKFILL_DB = DB_DIR / "location_image_backfill.sqlite"
 
 LOCATION_SOURCES = {
     "biohacking_map",
@@ -68,6 +69,8 @@ MEDICAL_TRAVEL_SOURCE_PREFIXES = (
     "korea_health_pages_",
 )
 HIGH_VOLUME_SOURCES = {"stem_cell_authority", "bioedge_clinics"}
+WEAK_STEM_CELL_TREATMENT_SOURCES = {"bioedge_clinics"}
+STEM_CELL_MENU_CONFIRMATION_TERMS = ("stem cell", "stem-cell", "cellular tissue")
 SOURCE_OWNED_DOMAINS = {
     "bookimed.com",
     "us-uk.bookimed.com",
@@ -237,8 +240,10 @@ class CanonicalBuilder:
         self.load_taxonomy()
         self.register_sources()
         self.process_sources()
+        self.prune_unconfirmed_weak_stem_cell_offerings()
         self.consolidate_duplicate_locations()
         self.import_blob_image_cache()
+        self.import_location_image_backfill_cache()
         self.import_external_review_cache()
         self.populate_search_index()
         self.export_unmapped_terms()
@@ -256,6 +261,10 @@ class CanonicalBuilder:
             self.db_path.unlink()
         self.conn = sqlite3.connect(self.db_path)
         self.conn.row_factory = sqlite3.Row
+        self.conn.execute("PRAGMA journal_mode = MEMORY")
+        self.conn.execute("PRAGMA synchronous = NORMAL")
+        self.conn.execute("PRAGMA temp_store = MEMORY")
+        self.conn.execute("PRAGMA busy_timeout = 10000")
         self.conn.executescript(SCHEMA_PATH.read_text(encoding="utf-8"))
         self.conn.commit()
 
@@ -300,7 +309,7 @@ class CanonicalBuilder:
             )
             self.conn.execute(
                 """
-                INSERT OR REPLACE INTO external_place_matches (
+                INSERT OR REPLACE INTO main.external_place_matches (
                     location_id, provider, provider_place_id, provider_url, display_name, rating,
                     review_count, match_confidence, match_status, fetched_at, expires_at, raw_json
                 )
@@ -314,7 +323,7 @@ class CanonicalBuilder:
             )
             self.conn.execute(
                 """
-                INSERT OR REPLACE INTO external_reviews (
+                INSERT OR REPLACE INTO main.external_reviews (
                     location_id, provider, provider_review_id, reviewer, rating, review_date,
                     body, source_url, fetched_at, expires_at, raw_json
                 )
@@ -327,10 +336,10 @@ class CanonicalBuilder:
                 """
             )
             imported_matches = int(
-                self.conn.execute("SELECT COUNT(*) FROM external_place_matches").fetchone()[0]
+                self.conn.execute("SELECT COUNT(*) FROM main.external_place_matches").fetchone()[0]
             )
             imported_reviews = int(
-                self.conn.execute("SELECT COUNT(*) FROM external_reviews").fetchone()[0]
+                self.conn.execute("SELECT COUNT(*) FROM main.external_reviews").fetchone()[0]
             )
             self.deviation_notes.append(
                 f"imported external review cache: {imported_matches} place matches, {imported_reviews} review rows, {len(location_map)} location mappings"
@@ -480,6 +489,132 @@ class CanonicalBuilder:
             self.conn.commit()
         finally:
             self.conn.execute("DETACH DATABASE blob_cache")
+
+    def import_location_image_backfill_cache(self) -> None:
+        if not LOCATION_IMAGE_BACKFILL_DB.exists():
+            return
+
+        self.conn.execute("ATTACH DATABASE ? AS image_backfill", (str(LOCATION_IMAGE_BACKFILL_DB),))
+        try:
+            has_table = self.conn.execute(
+                """
+                SELECT 1
+                FROM image_backfill.sqlite_master
+                WHERE type = 'table'
+                  AND name = 'location_image_backfill'
+                """
+            ).fetchone()
+            if not has_table:
+                self.deviation_notes.append(f"skipped location image backfill cache with missing table: {LOCATION_IMAGE_BACKFILL_DB}")
+                return
+
+            imported = 0
+            for row in self.conn.execute("SELECT * FROM image_backfill.location_image_backfill ORDER BY id"):
+                location_id = self.resolve_location_image_backfill(row)
+                if not location_id:
+                    continue
+                image_url = clean(row["image_url"])
+                blob_url = clean(row["blob_url"])
+                if not image_url and not blob_url:
+                    continue
+                duplicate = self.conn.execute(
+                    """
+                    SELECT 1
+                    FROM images
+                    WHERE entity_type = 'location'
+                      AND entity_id = ?
+                      AND (
+                        (? IS NOT NULL AND ? != '' AND image_url = ?)
+                        OR (? IS NOT NULL AND ? != '' AND blob_url = ?)
+                      )
+                    LIMIT 1
+                    """,
+                    (location_id, image_url, image_url, image_url, blob_url, blob_url, blob_url),
+                ).fetchone()
+                if duplicate:
+                    continue
+                source_id = parse_int(row["source_id"])
+                if source_id and not self.conn.execute("SELECT 1 FROM sources WHERE id = ?", (source_id,)).fetchone():
+                    source_id = None
+                self.conn.execute(
+                    """
+                    INSERT INTO images(entity_type, entity_id, image_url, local_path, blob_url, content_sha256, alt, source_id)
+                    VALUES ('location', ?, ?, NULL, ?, ?, ?, ?)
+                    """,
+                    (
+                        location_id,
+                        image_url,
+                        blob_url,
+                        clean(row["content_sha256"]),
+                        clean(row["alt"]),
+                        source_id,
+                    ),
+                )
+                imported += 1
+            self.deviation_notes.append(f"imported location image backfill cache: {imported} image rows")
+            self.conn.commit()
+        finally:
+            self.conn.execute("DETACH DATABASE image_backfill")
+
+    def resolve_location_image_backfill(self, row: sqlite3.Row) -> int | None:
+        candidates: dict[int, sqlite3.Row] = {}
+        location_id = parse_int(row["location_id"])
+        if location_id:
+            current = self.conn.execute(
+                """
+                SELECT l.*, o.website_domain
+                FROM locations l
+                LEFT JOIN organizations o ON o.id = l.org_id
+                WHERE l.id = ?
+                """,
+                (location_id,),
+            ).fetchone()
+            if current:
+                candidates[int(current["id"])] = current
+
+        domain = provider_domain(clean(row["website"]) or clean(row["website_domain"]), "location_image_backfill")
+        locality = clean(row["locality"])
+        region = clean(row["region"])
+        country_code = clean(row["country_code"])
+        if domain:
+            for candidate in self.conn.execute(
+                """
+                SELECT l.*, o.website_domain
+                FROM locations l
+                LEFT JOIN organizations o ON o.id = l.org_id
+                WHERE COALESCE(o.website_domain, '') = ?
+                  AND (? IS NULL OR ? = '' OR l.country_code = ?)
+                  AND (? IS NULL OR ? = '' OR l.locality = ?)
+                  AND (? IS NULL OR ? = '' OR l.region = ?)
+                """,
+                (domain, country_code, country_code, country_code, locality, locality, locality, region, region, region),
+            ):
+                candidates[int(candidate["id"])] = candidate
+
+        name = clean(row["location_name"])
+        if name and locality:
+            for candidate in self.conn.execute(
+                """
+                SELECT l.*, o.website_domain
+                FROM locations l
+                LEFT JOIN organizations o ON o.id = l.org_id
+                WHERE l.locality = ?
+                  AND (? IS NULL OR ? = '' OR l.region = ?)
+                  AND (? IS NULL OR ? = '' OR l.country_code = ?)
+                LIMIT 50
+                """,
+                (locality, region, region, region, country_code, country_code, country_code),
+            ):
+                candidates[int(candidate["id"])] = candidate
+
+        best: tuple[int, int] | None = None
+        for candidate_id, candidate in candidates.items():
+            score = location_image_backfill_score(row, candidate)
+            if score < 5:
+                continue
+            if best is None or score > best[0]:
+                best = (score, candidate_id)
+        return best[1] if best else None
 
     def external_review_location_map(self, has_location_keys: bool) -> dict[int, int]:
         current_locations = [
@@ -683,6 +818,53 @@ class CanonicalBuilder:
             staging.close()
             self.conn.commit()
 
+    def prune_unconfirmed_weak_stem_cell_offerings(self) -> None:
+        stem_cell_treatment_id = self.treatment_ids.get("Stem cell therapy")
+        if not stem_cell_treatment_id:
+            return
+        weak_source_ids = [
+            self.source_ids[slug]
+            for slug in WEAK_STEM_CELL_TREATMENT_SOURCES
+            if slug in self.source_ids
+        ]
+        if not weak_source_ids:
+            return
+
+        source_placeholders = ",".join("?" for _ in weak_source_ids)
+        menu_confirm_clause = " OR ".join(
+            "lower(menu_o.raw_name) LIKE ?" for _ in STEM_CELL_MENU_CONFIRMATION_TERMS
+        )
+        confirmation_params = [f"%{term}%" for term in STEM_CELL_MENU_CONFIRMATION_TERMS]
+        cur = self.conn.execute(
+            f"""
+            DELETE FROM offerings
+            WHERE treatment_id = ?
+              AND source_id IN ({source_placeholders})
+              AND EXISTS (
+                SELECT 1
+                FROM source_records menu_sr
+                JOIN sources menu_s ON menu_s.id = menu_sr.source_id
+                WHERE menu_sr.entity_type = 'location'
+                  AND menu_sr.entity_id = offerings.location_id
+                  AND menu_s.slug LIKE 'menu_enrichment%'
+              )
+              AND NOT EXISTS (
+                SELECT 1
+                FROM offerings menu_o
+                JOIN sources menu_s ON menu_s.id = menu_o.source_id
+                WHERE menu_o.location_id = offerings.location_id
+                  AND menu_s.slug LIKE 'menu_enrichment%'
+                  AND ({menu_confirm_clause})
+              )
+            """,
+            [stem_cell_treatment_id, *weak_source_ids, *confirmation_params],
+        )
+        if cur.rowcount and cur.rowcount > 0:
+            self.deviation_notes.append(
+                f"pruned {cur.rowcount} weak directory Stem Cell Therapy offerings not confirmed by provider-site menu enrichment"
+            )
+        self.conn.commit()
+
     def process_service_area(self, slug: str, row: sqlite3.Row, fields: dict[str, Any]) -> None:
         source_id = self.source_ids[slug]
         entity_id = int(row["id"])
@@ -874,9 +1056,6 @@ class CanonicalBuilder:
             mixed_terms.extend(extract_terms((parse_jsonish(row["procedures_json"]) or {}).get("tags")))
             mixed_terms.extend(extract_terms(fields.get("tags")))
         elif slug == "stem_cell_authority":
-            offer_terms.append("Stem Cell Therapy")
-            tags.append(("entity_type", "stem cell clinic"))
-            tags.extend(tags_for_source_value("stem cell clinic"))
             tags.extend(tags_for_source_value(fields.get("listing_tags")))
             category = clean(fields.get("listing_category"))
             cat_city, cat_region = parse_city_region(category)
@@ -1384,7 +1563,7 @@ class CanonicalBuilder:
     def add_source_record(self, source_id: int, entity_type: str, entity_id: int, row: sqlite3.Row) -> None:
         self.conn.execute(
             """
-            INSERT INTO source_records(source_id, entity_type, entity_id, source_listing_id, source_url, raw_ref)
+            INSERT INTO main.source_records(source_id, entity_type, entity_id, source_listing_id, source_url, raw_ref)
             VALUES (?, ?, ?, ?, ?, ?)
             """,
             (
@@ -2183,13 +2362,13 @@ class CanonicalBuilder:
 
 
 def open_staging(path: Path) -> sqlite3.Connection:
-    conn = sqlite3.connect(f"{path.resolve().as_uri()}?mode=ro&immutable=1", uri=True)
+    conn = sqlite3.connect(f"{path.resolve().as_uri()}?mode=ro", uri=True)
     conn.row_factory = sqlite3.Row
     return conn
 
 
 def source_database_paths() -> list[Path]:
-    auxiliary_dbs = {GOOGLE_REVIEW_CACHE_DB.resolve(), BLOB_IMAGE_CACHE_DB.resolve()}
+    auxiliary_dbs = {GOOGLE_REVIEW_CACHE_DB.resolve(), BLOB_IMAGE_CACHE_DB.resolve(), LOCATION_IMAGE_BACKFILL_DB.resolve()}
     return [path for path in sorted(DB_DIR.glob("*.sqlite")) if path.resolve() not in auxiliary_dbs]
 
 
@@ -2891,6 +3070,51 @@ def country_name_map() -> dict[str, str]:
 
 def countries_compatible(left: str | None, right: str | None) -> bool:
     return not left or not right or left == right
+
+
+def location_image_backfill_score(cache: sqlite3.Row, candidate: sqlite3.Row) -> int:
+    score = 0
+    cache_id = parse_int(cache["location_id"])
+    if cache_id and cache_id == int(candidate["id"]):
+        score += 5
+
+    cache_country = clean(cache["country_code"])
+    candidate_country = clean(candidate["country_code"])
+    if cache_country and candidate_country and cache_country != candidate_country:
+        return 0
+    if cache_country and candidate_country:
+        score += 1
+
+    cache_region = clean(cache["region"])
+    candidate_region = clean(candidate["region"])
+    if cache_region and candidate_region and cache_region != candidate_region:
+        return 0
+    if cache_region and candidate_region:
+        score += 1
+
+    cache_locality = clean(cache["locality"])
+    candidate_locality = clean(candidate["locality"])
+    if cache_locality and candidate_locality and slugify(cache_locality) != slugify(candidate_locality):
+        return 0
+    if cache_locality and candidate_locality:
+        score += 2
+
+    cache_domain = provider_domain(clean(cache["website"]) or clean(cache["website_domain"]), "location_image_backfill")
+    candidate_domain = clean(candidate["website_domain"]) or provider_domain(clean(candidate["website"]), "location_image_backfill")
+    if cache_domain and candidate_domain and cache_domain == candidate_domain:
+        score += 4
+
+    cache_name = normalize_name(cache["location_name"])
+    candidate_name = normalize_name(candidate["name"])
+    if cache_name and candidate_name and fuzz.token_set_ratio(cache_name, candidate_name) >= 90:
+        score += 3
+
+    cache_address = clean(cache["address"])
+    candidate_address = clean(candidate["address"])
+    if cache_address and candidate_address and addresses_match(cache_address, candidate_address):
+        score += 3
+
+    return score
 
 
 EXAMPLE_QUERIES = """

@@ -10,6 +10,7 @@ export const PAGE_SIZE = 25;
 const placeholderImagePathSet = new Set<string>(placeholderImagePaths as string[]);
 
 type ImageCandidate = {
+  image_url: string | null;
   blob_url: string | null;
   local_path: string | null;
 };
@@ -42,7 +43,7 @@ function usableImageSource(image: ImageCandidate) {
   if (process.env.VERCEL === "1" && image.local_path?.startsWith("data/media/")) {
     return null;
   }
-  return image.local_path || null;
+  return image.local_path || image.image_url || null;
 }
 
 export type SearchKind = "locations" | "practitioners";
@@ -651,8 +652,8 @@ export async function getLandingFeaturedDirectoryCards(
         FROM images img
         WHERE img.entity_type = 'location'
           AND img.entity_id = l.id
-          AND COALESCE(img.blob_url, img.local_path) IS NOT NULL
-          AND COALESCE(img.blob_url, img.local_path) <> ''
+          AND COALESCE(img.blob_url, img.local_path, img.image_url) IS NOT NULL
+          AND COALESCE(img.blob_url, img.local_path, img.image_url) <> ''
       )
     )
     SELECT id, name, locality, region, country_name, rating, review_count, org_name
@@ -672,8 +673,8 @@ export async function getLandingFeaturedDirectoryCards(
       FROM images img
       WHERE img.entity_type = 'location'
         AND img.entity_id = l.id
-        AND COALESCE(img.blob_url, img.local_path) IS NOT NULL
-        AND COALESCE(img.blob_url, img.local_path) <> ''
+        AND COALESCE(img.blob_url, img.local_path, img.image_url) IS NOT NULL
+        AND COALESCE(img.blob_url, img.local_path, img.image_url) <> ''
     )
       AND COALESCE(NULLIF(TRIM(l.name), ''), NULLIF(TRIM(org.canonical_name), '')) IS NOT NULL
     ORDER BY
@@ -720,8 +721,8 @@ export async function getLandingTreatmentDirectoryCards(
         FROM images img
         WHERE img.entity_type = 'location'
           AND img.entity_id = l.id
-          AND COALESCE(img.blob_url, img.local_path) IS NOT NULL
-          AND COALESCE(img.blob_url, img.local_path) <> ''
+          AND COALESCE(img.blob_url, img.local_path, img.image_url) IS NOT NULL
+          AND COALESCE(img.blob_url, img.local_path, img.image_url) <> ''
       )
     `
     : "";
@@ -773,11 +774,11 @@ async function hydrateLandingDirectoryCards(
   const marks = placeholders(ids.length);
   const images = await rows<{ lid: number } & ImageCandidate>(
     `
-    SELECT entity_id AS lid, blob_url, local_path
+    SELECT entity_id AS lid, image_url, blob_url, local_path
     FROM images
     WHERE entity_type = 'location' AND entity_id IN (${marks})
-      AND COALESCE(blob_url, local_path) IS NOT NULL
-      AND COALESCE(blob_url, local_path) != ''
+      AND COALESCE(blob_url, local_path, image_url) IS NOT NULL
+      AND COALESCE(blob_url, local_path, image_url) != ''
   `,
     ids,
   );
@@ -1055,11 +1056,11 @@ export async function searchLocations(params: DirectoryParams, page = 0) {
     }
     const images = await rows<{ lid: number } & ImageCandidate>(
       `
-      SELECT entity_id AS lid, blob_url, local_path
+      SELECT entity_id AS lid, image_url, blob_url, local_path
       FROM images
       WHERE entity_type = 'location' AND entity_id IN (${marks})
-        AND COALESCE(blob_url, local_path) IS NOT NULL
-        AND COALESCE(blob_url, local_path) != ''
+        AND COALESCE(blob_url, local_path, image_url) IS NOT NULL
+        AND COALESCE(blob_url, local_path, image_url) != ''
     `,
       ids,
     );
@@ -1196,11 +1197,11 @@ export async function searchPractitioners(params: DirectoryParams, page = 0) {
     }
     const images = await rows<{ pid: number } & ImageCandidate>(
       `
-      SELECT entity_id AS pid, blob_url, local_path
+      SELECT entity_id AS pid, image_url, blob_url, local_path
       FROM images
       WHERE entity_type = 'practitioner' AND entity_id IN (${marks})
-        AND COALESCE(blob_url, local_path) IS NOT NULL
-        AND COALESCE(blob_url, local_path) != ''
+        AND COALESCE(blob_url, local_path, image_url) IS NOT NULL
+        AND COALESCE(blob_url, local_path, image_url) != ''
     `,
       ids,
     );
@@ -1285,8 +1286,8 @@ export async function getLocationDetail(id: number) {
     SELECT image_url, blob_url, local_path, alt
     FROM images
     WHERE entity_type = 'location' AND entity_id = ?
-      AND COALESCE(blob_url, local_path) IS NOT NULL
-      AND COALESCE(blob_url, local_path) != ''
+      AND COALESCE(blob_url, local_path, image_url) IS NOT NULL
+      AND COALESCE(blob_url, local_path, image_url) != ''
     LIMIT 8
   `,
     [id],
@@ -1329,8 +1330,8 @@ export async function getPractitionerDetail(id: number) {
     SELECT image_url, blob_url, local_path, alt
     FROM images
     WHERE entity_type = 'practitioner' AND entity_id = ?
-      AND COALESCE(blob_url, local_path) IS NOT NULL
-      AND COALESCE(blob_url, local_path) != ''
+      AND COALESCE(blob_url, local_path, image_url) IS NOT NULL
+      AND COALESCE(blob_url, local_path, image_url) != ''
     LIMIT 8
   `,
     [id],

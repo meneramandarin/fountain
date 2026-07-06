@@ -1,6 +1,8 @@
 import { put } from "@vercel/blob";
 import Database from "better-sqlite3";
 import { createHash } from "node:crypto";
+import { existsSync, readFileSync } from "node:fs";
+import path from "node:path";
 import { setTimeout as sleep } from "node:timers/promises";
 
 const CONTENT_TYPES = {
@@ -16,6 +18,10 @@ const USER_AGENT =
   "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36";
 
 const options = parseArgs(process.argv.slice(2));
+const root = process.cwd();
+for (const envFile of options.envFile || []) {
+  loadEnvFile(path.resolve(root, envFile));
+}
 const dryRun = options.dryRun;
 const dbPath = options.db || "canonical.db";
 const prefix = (options.prefix || "listing-images/remote").replace(/^\/+|\/+$/g, "");
@@ -27,8 +33,8 @@ const timeoutMs = options.timeoutMs ? Number.parseInt(options.timeoutMs, 10) : 1
 const sqliteBusyTimeoutMs = options.sqliteBusyTimeoutMs ? Number.parseInt(options.sqliteBusyTimeoutMs, 10) : 10_000;
 const progressEvery = options.progressEvery ? Number.parseInt(options.progressEvery, 10) : 25;
 
-if (!dryRun && !process.env.BLOB_READ_WRITE_TOKEN) {
-  throw new Error("BLOB_READ_WRITE_TOKEN is required unless --dry-run is set.");
+if (!dryRun && !hasBlobAuth()) {
+  throw new Error("BLOB_READ_WRITE_TOKEN or VERCEL_OIDC_TOKEN+BLOB_STORE_ID is required unless --dry-run is set.");
 }
 
 const rows = withDb((db) => {
@@ -228,8 +234,44 @@ async function uploadBlob(pathname, bytes, contentType) {
     addRandomSuffix: false,
     allowOverwrite: true,
     contentType,
+    ...blobAuthOptions(),
   });
   return blob.url;
+}
+
+function hasBlobAuth() {
+  return Boolean(process.env.BLOB_READ_WRITE_TOKEN || (process.env.VERCEL_OIDC_TOKEN && process.env.BLOB_STORE_ID));
+}
+
+function blobAuthOptions() {
+  if (process.env.BLOB_READ_WRITE_TOKEN) {
+    return { token: process.env.BLOB_READ_WRITE_TOKEN };
+  }
+  if (process.env.VERCEL_OIDC_TOKEN && process.env.BLOB_STORE_ID) {
+    return { oidcToken: process.env.VERCEL_OIDC_TOKEN, storeId: process.env.BLOB_STORE_ID };
+  }
+  return {};
+}
+
+function loadEnvFile(filePath) {
+  if (!existsSync(filePath)) {
+    return;
+  }
+  for (const line of readFileSync(filePath, "utf8").split(/\r?\n/)) {
+    const trimmed = line.trim();
+    if (!trimmed || trimmed.startsWith("#") || !trimmed.includes("=")) {
+      continue;
+    }
+    const [key, ...rest] = trimmed.split("=");
+    if (!key || process.env[key]) {
+      continue;
+    }
+    let value = rest.join("=").trim();
+    if ((value.startsWith('"') && value.endsWith('"')) || (value.startsWith("'") && value.endsWith("'"))) {
+      value = value.slice(1, -1);
+    }
+    process.env[key] = value;
+  }
 }
 
 function ensureBlobColumns(database) {
@@ -271,7 +313,11 @@ function parseArgs(args) {
     }
     if (arg.startsWith("--")) {
       const key = arg.slice(2).replace(/-([a-z])/g, (_, letter) => letter.toUpperCase());
-      parsed[key] = args[index + 1];
+      if (key === "envFile") {
+        parsed.envFile = [...(parsed.envFile || []), args[index + 1]];
+      } else {
+        parsed[key] = args[index + 1];
+      }
       index += 1;
     }
   }
