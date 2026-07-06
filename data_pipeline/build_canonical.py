@@ -85,6 +85,14 @@ def is_menu_enrichment_source(source_slug: str) -> bool:
     return source_slug == "menu_enrichment" or source_slug.startswith("menu_enrichment_")
 
 
+def is_service_discovery_source(source_slug: str) -> bool:
+    return source_slug == "service_discovery" or source_slug.startswith("service_discovery_")
+
+
+def is_chain_source(source_slug: str) -> bool:
+    return source_slug.startswith("chain_")
+
+
 def is_service_search_source(source_slug: str) -> bool:
     return source_slug.startswith(SERVICE_SEARCH_SOURCE_PREFIXES)
 
@@ -706,7 +714,7 @@ class CanonicalBuilder:
             description=mapped.get("description"),
         )
         location_id = self.get_location(org_id, slug, mapped)
-        if is_menu_enrichment_source(slug):
+        if is_menu_enrichment_source(slug) or is_service_discovery_source(slug) or is_chain_source(slug):
             self.update_location_from_menu_enrichment(location_id, mapped)
         self.add_source_record(source_id, "organization", org_id, row)
         self.add_source_record(source_id, "location", location_id, row)
@@ -921,7 +929,7 @@ class CanonicalBuilder:
             confidence = fields.get("confidence_score")
             if confidence is not None:
                 tags.append(("trust", f"discovery confidence {confidence}"))
-        elif is_menu_enrichment_source(slug):
+        elif is_menu_enrichment_source(slug) or is_service_discovery_source(slug) or is_chain_source(slug):
             services = parse_jsonish(row["services_json"]) or {}
             items = services.get("menu_items", []) if isinstance(services, dict) else []
             for item in items if isinstance(items, list) else []:
@@ -935,7 +943,16 @@ class CanonicalBuilder:
                         "source_offer_url": clean(item.get("source_url")),
                     }
                 )
-            tags.append(("trust", "menu enriched from clinic site"))
+            categories = services.get("categories_offered", []) if isinstance(services, dict) else []
+            for category in categories if isinstance(categories, list) else []:
+                if clean(category):
+                    tags.append(("service_category", clean(category)))
+            trust_label = "menu enriched from clinic site"
+            if is_service_discovery_source(slug):
+                trust_label = "discovered from provider site"
+            elif is_chain_source(slug):
+                trust_label = "chain location scrape"
+            tags.append(("trust", trust_label))
         else:
             offer_terms.extend(extract_terms(row["services_json"]))
             offer_terms.extend(extract_terms(row["procedures_json"]))
