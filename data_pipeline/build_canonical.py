@@ -1826,6 +1826,7 @@ class CanonicalBuilder:
                 """,
                 ("OxyHealthCare", normalize_name("OxyHealthCare"), int(oxy_org["id"])),
             )
+        self.prune_oxyhealthcare_retail_offerings()
 
     def consolidate_exact_address_duplicates(self) -> None:
         rows = self.location_rows()
@@ -2109,6 +2110,36 @@ class CanonicalBuilder:
         self.conn.execute(
             "DELETE FROM offerings WHERE location_id = ? AND price_amount IS NULL",
             (location_id,),
+        )
+
+    def prune_oxyhealthcare_retail_offerings(self) -> None:
+        self.conn.execute(
+            """
+            DELETE FROM offerings
+            WHERE location_id IN (
+                SELECT id
+                FROM locations
+                WHERE lower(COALESCE(website, '')) LIKE '%oxyhealthcare.co.uk%'
+            )
+              AND (
+                lower(COALESCE(source_offer_url, '')) LIKE 'https://oxyhealthcare.co.uk/shop%'
+                OR lower(COALESCE(source_offer_url, '')) LIKE 'https://www.oxyhealthcare.co.uk/shop%'
+                OR lower(COALESCE(raw_name, '')) LIKE 'celtic salt%'
+                OR lower(COALESCE(raw_name, '')) LIKE '6 mushroom complex%'
+                OR lower(COALESCE(raw_name, '')) LIKE 'lion''s mane%'
+                OR lower(COALESCE(raw_name, '')) LIKE 'reishi%'
+                OR lower(COALESCE(raw_name, '')) LIKE 'turkey tail%'
+                OR lower(COALESCE(raw_name, '')) LIKE 'gift card%'
+                OR lower(COALESCE(raw_name, '')) LIKE 'gift voucher%'
+                OR lower(COALESCE(raw_name, '')) LIKE 'primitive total wellness%'
+                OR lower(COALESCE(raw_name, '')) LIKE 'bundle offer: primitive total wellness%'
+                OR lower(COALESCE(raw_name, '')) LIKE 'hydrogen o2 drinking bottle%'
+                OR lower(COALESCE(raw_name, '')) LIKE 'oxy one%'
+                OR lower(COALESCE(raw_name, '')) LIKE 'oxy two%'
+                OR lower(COALESCE(raw_name, '')) LIKE 'oxy three%'
+                OR lower(COALESCE(raw_name, '')) LIKE 'oxy four%'
+              )
+            """
         )
 
     def merged_location_fields(self, winner: sqlite3.Row, loser: sqlite3.Row) -> dict[str, Any]:
