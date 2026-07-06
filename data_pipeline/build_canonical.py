@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import argparse
 import ast
 import csv
 import json
@@ -206,7 +207,7 @@ EXTRA_COUNTRY_ALIASES = {
 
 
 class CanonicalBuilder:
-    def __init__(self) -> None:
+    def __init__(self, keep_unblobbed_images: bool = False) -> None:
         self.taxonomy = json.loads(TAXONOMY_PATH.read_text(encoding="utf-8"))
         self.country_aliases = {
             normalize_country_key(k): v for k, v in self.taxonomy.get("country_aliases", {}).items()
@@ -233,6 +234,7 @@ class CanonicalBuilder:
         self.service_area_count = 0
         self.skipped_practitioner_reviews = 0
         self.skipped_service_search_rows = 0
+        self.keep_unblobbed_images = keep_unblobbed_images
         self.deviation_notes: list[str] = []
 
     def build(self) -> None:
@@ -244,6 +246,10 @@ class CanonicalBuilder:
         self.consolidate_duplicate_locations()
         self.import_blob_image_cache()
         self.import_location_image_backfill_cache()
+        if self.keep_unblobbed_images:
+            self.deviation_notes.append("kept non-Blob image rows for upload staging")
+        else:
+            self.prune_non_blob_images()
         self.import_external_review_cache()
         self.populate_search_index()
         self.export_unmapped_terms()
@@ -555,6 +561,32 @@ class CanonicalBuilder:
             self.conn.commit()
         finally:
             self.conn.execute("DETACH DATABASE image_backfill")
+
+    def prune_non_blob_images(self) -> None:
+        before = self.conn.total_changes
+        self.conn.execute(
+            """
+            DELETE FROM images
+            WHERE blob_url IS NULL
+               OR blob_url = ''
+            """
+        )
+        pruned = self.conn.total_changes - before
+        if pruned:
+            self.deviation_notes.append(f"pruned non-Blob image rows: {pruned}")
+        clear_before = self.conn.total_changes
+        self.conn.execute(
+            """
+            UPDATE images
+            SET local_path = NULL
+            WHERE local_path IS NOT NULL
+              AND local_path != ''
+            """
+        )
+        cleared = self.conn.total_changes - clear_before
+        if cleared:
+            self.deviation_notes.append(f"cleared local image paths: {cleared}")
+        self.conn.commit()
 
     def resolve_location_image_backfill(self, row: sqlite3.Row) -> int | None:
         candidates: dict[int, sqlite3.Row] = {}
@@ -1648,6 +1680,9 @@ class CanonicalBuilder:
         )
 
     def copy_images(self, staging: sqlite3.Connection, listing_id: int, entity_type: str, entity_id: int, source_id: int) -> None:
+        source_slug = self.conn.execute("SELECT slug FROM sources WHERE id = ?", (source_id,)).fetchone()["slug"]
+        if source_slug == "bioedge_clinics":
+            return
         for image in staging.execute("SELECT image_url, local_path, alt FROM images WHERE listing_id = ? ORDER BY id", (listing_id,)):
             self.conn.execute(
                 """
@@ -3148,7 +3183,15 @@ EXAMPLE_QUERIES = """
 
 
 def main() -> int:
-    builder = CanonicalBuilder()
+    parser = argparse.ArgumentParser(description="Build canonical.db from source-specific SQLite databases.")
+    parser.add_argument(
+        "--keep-unblobbed-images",
+        action="store_true",
+        help="Keep image rows without blob_url so upload scripts can use canonical.db as an image ingestion queue.",
+    )
+    args = parser.parse_args()
+
+    builder = CanonicalBuilder(keep_unblobbed_images=args.keep_unblobbed_images)
     builder.build()
     return 0
 

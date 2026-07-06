@@ -141,10 +141,14 @@ CREATE TABLE images (
     entity_id      INTEGER NOT NULL,
     image_url      TEXT,
     local_path     TEXT,
-    blob_url       TEXT,
+    blob_url       TEXT NOT NULL,
     content_sha256 TEXT,
     alt            TEXT,
-    source_id      INTEGER REFERENCES sources(id)
+    source_id      INTEGER REFERENCES sources(id),
+    CONSTRAINT images_blob_backed CHECK (
+        blob_url <> ''
+        AND (local_path IS NULL OR local_path = '')
+    )
 );
 
 CREATE TABLE reviews (
@@ -231,6 +235,7 @@ CREATE INDEX idx_affiliations_loc    ON affiliations(location_id);
 CREATE INDEX idx_affiliations_prac   ON affiliations(practitioner_id);
 CREATE INDEX idx_documents_source    ON documents(source_id);
 CREATE INDEX idx_images_entity       ON images(entity_type, entity_id);
+CREATE INDEX idx_images_blob_url     ON images(blob_url);
 CREATE INDEX idx_external_place_matches_location ON external_place_matches(location_id);
 CREATE INDEX idx_external_reviews_location_provider ON external_reviews(location_id, provider);
 CREATE INDEX idx_search_index_entity ON search_index(entity_type, entity_id);
