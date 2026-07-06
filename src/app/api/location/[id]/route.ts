@@ -10,7 +10,7 @@ export async function GET(_request: Request, context: { params: Promise<{ id: st
   if (!Number.isFinite(locationId)) {
     return NextResponse.json({ error: "invalid location id" }, { status: 400 });
   }
-  const location = getLocationDetail(locationId);
+  const location = await getLocationDetail(locationId);
   return location
     ? NextResponse.json(location)
     : NextResponse.json({ error: "location not found" }, { status: 404 });

@@ -30,16 +30,19 @@ const exploreItems: LandingExploreItem[] = [
   { label: "Biological Age", image: "/domains/Biologicalage.avif", href: searchHref("Biological Age") },
 ];
 
-export default function HomePage() {
-  const countrySearches = getLandingCityTreatmentSearches();
-  const featuredCards = getLandingFeaturedDirectoryCards(5);
-  const nadCards = getLandingTreatmentDirectoryCards("NAD+ IV therapy", 5, {
-    countryCode: "US",
-    localities: ["New York", "Brooklyn", "Long Island City", "Jackson Heights", "Rego Park", "Staten Island"],
-    requireImage: false,
-  });
-  const mriCards = getLandingTreatmentDirectoryCards("Full-body MRI", 5);
-  const treatmentFacets = getFacets().treatment_domains.flatMap((domain) => domain.treatments);
+export default async function HomePage() {
+  const [countrySearches, featuredCards, nadCards, mriCards, facets] = await Promise.all([
+    getLandingCityTreatmentSearches(),
+    getLandingFeaturedDirectoryCards(5),
+    getLandingTreatmentDirectoryCards("NAD+ IV therapy", 5, {
+      countryCode: "US",
+      localities: ["New York", "Brooklyn", "Long Island City", "Jackson Heights", "Rego Park", "Staten Island"],
+      requireImage: false,
+    }),
+    getLandingTreatmentDirectoryCards("Full-body MRI", 5),
+    getFacets(),
+  ]);
+  const treatmentFacets = facets.treatment_domains.flatMap((domain) => domain.treatments);
   const popularTreatments = getPopularTreatments(treatmentFacets);
 
   return (

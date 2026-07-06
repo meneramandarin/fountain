@@ -10,7 +10,7 @@ export async function GET(_request: Request, context: { params: Promise<{ id: st
   if (!Number.isFinite(practitionerId)) {
     return NextResponse.json({ error: "invalid practitioner id" }, { status: 400 });
   }
-  const practitioner = getPractitionerDetail(practitionerId);
+  const practitioner = await getPractitionerDetail(practitionerId);
   return practitioner
     ? NextResponse.json(practitioner)
     : NextResponse.json({ error: "practitioner not found" }, { status: 404 });

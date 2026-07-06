@@ -19,19 +19,22 @@
     "upload:remote-blob-images": "node scripts/upload-remote-images-to-blob.mjs",
     "enrich:google-reviews": "node scripts/enrich-google-reviews.mjs",
     "export:google-reviews": "node scripts/export-google-review-cache.mjs",
-    "export:blob-images": "node scripts/export-blob-image-cache.mjs"
+    "export:blob-images": "node scripts/export-blob-image-cache.mjs",
+    "db:import-postgres": "node scripts/import-canonical-to-postgres.mjs"
   },
   "dependencies": {
     "@vercel/blob": "^2.5.0",
     "better-sqlite3": "^12.11.1",
     "lucide-react": "^1.22.0",
     "next": "^16.2.9",
+    "pg": "^8.22.0",
     "react": "^19.2.7",
     "react-dom": "^19.2.7"
   },
   "devDependencies": {
     "@types/better-sqlite3": "^7.6.13",
     "@types/node": "^26.0.1",
+    "@types/pg": "^8.20.0",
     "@types/react": "^19.2.17",
     "@types/react-dom": "^19.2.3",
     "eslint": "^9.39.4",
