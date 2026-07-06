@@ -1853,6 +1853,44 @@ blockquote p {
   line-height: 1.5;
 }
 
+.external-review-groups {
+  display: grid;
+  gap: 16px;
+}
+
+.external-review-group {
+  display: grid;
+  gap: 10px;
+}
+
+.external-review-source {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 10px;
+  color: rgba(30, 26, 15, 0.58);
+  font-size: 13px;
+}
+
+.external-review-source b {
+  color: var(--landing-fg);
+  font-size: 14px;
+  font-weight: 650;
+}
+
+.external-review-source span {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  color: rgba(30, 26, 15, 0.62);
+  font-weight: 600;
+}
+
+.external-review-source svg {
+  color: var(--landing-gold-deep);
+  fill: var(--landing-gold-deep);
+}
+
 @media (max-width: 980px) {
   .directory-layout {
     grid-template-columns: 1fr;

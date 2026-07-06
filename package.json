@@ -16,7 +16,10 @@
     "build:image-placeholders": "python3 -m data_pipeline.build_placeholder_image_paths",
     "clean:image-placeholders": "python3 -m data_pipeline.clean_placeholder_image_refs",
     "upload:blob-images": "node scripts/upload-blob-images.mjs",
-    "upload:remote-blob-images": "node scripts/upload-remote-images-to-blob.mjs"
+    "upload:remote-blob-images": "node scripts/upload-remote-images-to-blob.mjs",
+    "enrich:google-reviews": "node scripts/enrich-google-reviews.mjs",
+    "export:google-reviews": "node scripts/export-google-review-cache.mjs",
+    "export:blob-images": "node scripts/export-blob-image-cache.mjs"
   },
   "dependencies": {
     "@vercel/blob": "^2.5.0",
