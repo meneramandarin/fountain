@@ -61,6 +61,7 @@ const importSchema = normalizeIdentifier(
   options.importSchema ||
     `${targetSchema}_import_${new Date().toISOString().replace(/[-:TZ.]/g, "").slice(0, 14)}`,
 );
+const rawSchema = normalizeIdentifier(options.rawSchema || process.env.POSTGRES_RAW_SCHEMA || "fountain_raw");
 
 if (!existsSync(sqlitePath)) {
   throw new Error(`SQLite canonical DB not found: ${sqlitePath}`);
@@ -72,6 +73,9 @@ const client = new Client({ connectionString });
 try {
   await client.connect();
   await assertSqliteIntegrity(sqlite);
+  if (options.truncateRawBeforeImport) {
+    await truncateRawSchema(client, rawSchema);
+  }
   await resetImportSchema(client, importSchema);
   await createSchema(client, schemaSqlPath, importSchema);
   await importTables(sqlite, client, importSchema);
@@ -81,6 +85,10 @@ try {
     await promoteSchema(client, importSchema, targetSchema);
     await setDefaultSearchPath(client, targetSchema);
     console.log(`Promoted ${quoteIdent(importSchema)} to ${quoteIdent(targetSchema)}.`);
+    if (options.dropPreviousAfterPromote) {
+      await dropSchemaIfExists(client, `${targetSchema}_previous`);
+      console.log(`Dropped ${quoteIdent(`${targetSchema}_previous`)} after promotion.`);
+    }
   } else {
     console.log(`Imported into ${quoteIdent(importSchema)} without promotion.`);
   }
@@ -98,6 +106,25 @@ async function assertSqliteIntegrity(sqliteDb) {
 
 async function resetImportSchema(pgClient, schemaName) {
   await pgClient.query(`DROP SCHEMA IF EXISTS ${quoteIdent(schemaName)} CASCADE`);
+}
+
+async function truncateRawSchema(pgClient, schemaName) {
+  const result = await pgClient.query("SELECT to_regclass($1) AS table_name", [`${schemaName}.source_databases`]);
+  if (!result.rows[0].table_name) {
+    console.log(`Skipped raw staging truncate; ${quoteIdent(schemaName)} is not installed.`);
+    return;
+  }
+  await pgClient.query(`
+    TRUNCATE TABLE
+      ${quoteIdent(schemaName)}.source_reviews,
+      ${quoteIdent(schemaName)}.source_images,
+      ${quoteIdent(schemaName)}.source_listing_fields,
+      ${quoteIdent(schemaName)}.source_listings,
+      ${quoteIdent(schemaName)}.import_runs,
+      ${quoteIdent(schemaName)}.source_databases
+    RESTART IDENTITY CASCADE
+  `);
+  console.log(`Truncated raw staging schema ${quoteIdent(schemaName)} before import.`);
 }
 
 async function createSchema(pgClient, schemaSqlFile, schemaName) {
@@ -219,6 +246,10 @@ async function setDefaultSearchPath(pgClient, schemaName) {
   console.log(`Set default search_path for ${quoteIdent(userName)} on ${quoteIdent(databaseName)}.`);
 }
 
+async function dropSchemaIfExists(pgClient, schemaName) {
+  await pgClient.query(`DROP SCHEMA IF EXISTS ${quoteIdent(schemaName)} CASCADE`);
+}
+
 function quoteIdent(identifier) {
   return `"${String(identifier).replaceAll('"', '""')}"`;
 }
@@ -256,8 +287,10 @@ function loadEnvFile(filePath) {
 function parseArgs(args) {
   const parsed = {
     chunkSize: 400,
+    dropPreviousAfterPromote: false,
     noPromote: false,
     help: false,
+    truncateRawBeforeImport: false,
   };
   for (let index = 0; index < args.length; index += 1) {
     const arg = args[index];
@@ -266,6 +299,10 @@ function parseArgs(args) {
       parsed.help = true;
     } else if (arg === "--no-promote") {
       parsed.noPromote = true;
+    } else if (arg === "--drop-previous-after-promote") {
+      parsed.dropPreviousAfterPromote = true;
+    } else if (arg === "--truncate-raw-before-import") {
+      parsed.truncateRawBeforeImport = true;
     } else if (arg === "--sqlite" && next) {
       parsed.sqlite = next;
       index += 1;
@@ -280,6 +317,9 @@ function parseArgs(args) {
       index += 1;
     } else if (arg === "--schema-sql" && next) {
       parsed.schemaSql = next;
+      index += 1;
+    } else if (arg === "--raw-schema" && next) {
+      parsed.rawSchema = next;
       index += 1;
     } else if (arg === "--env-file" && next) {
       parsed.envFile = next;
@@ -303,6 +343,11 @@ Options:
   --target-schema <name>   Schema the app will read from. Defaults to fountain.
   --import-schema <name>   Temporary schema name. Defaults to fountain_import_<timestamp>.
   --no-promote             Import and validate, but do not swap into target schema.
+  --drop-previous-after-promote
+                           Drop <target>_previous after a successful swap to stay under small Neon size caps.
+  --truncate-raw-before-import
+                           Temporarily empty durable raw staging tables before import. Refill with db:sync-raw-sources.
+  --raw-schema <name>      Raw staging schema to truncate. Defaults to fountain_raw.
   --chunk-size <n>         Insert batch size. Defaults to 400.
   --env-file <path>        Extra env file to load, e.g. .env.production.local.
 

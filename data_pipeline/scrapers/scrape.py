@@ -63,7 +63,7 @@ def is_bookimed_doctor_source(source_slug: str) -> bool:
     return source_slug == "bookimed_longevity_doctors" or source_slug.startswith("bookimed_longevity_doctors_")
 
 
-def scrape_source(config: SourceConfig, force_generic: bool = False, download_images: bool = True) -> dict[str, Any]:
+def scrape_source(config: SourceConfig, force_generic: bool = False, download_images: bool = False) -> dict[str, Any]:
     db_path = DB_DIR / f"{config.slug}.sqlite"
     if db_path.exists():
         db_path.unlink()
@@ -2264,23 +2264,7 @@ def extract_bioedge_clinic_website(soup, page_url: str) -> str | None:
 
 
 def extract_bioedge_profile_images(soup, page_url: str, name: str | None) -> list[dict[str, Any]]:
-    images: list[dict[str, Any]] = []
-    lowered_name = (name or "").lower()
-    for img in soup.find_all("img"):
-        src = img.get("src") or img.get("data-src")
-        if not src or src.startswith("data:"):
-            continue
-        alt = clean_text(img.get("alt"))
-        src_lower = src.lower()
-        if "bioedge-book" in src_lower or "book-cover" in src_lower:
-            continue
-        if src.startswith("places/") or (alt and alt.lower() in lowered_name + " " + lowered_name.replace(" ", "")):
-            images.append({"url": _join(page_url, src), "alt": alt, "source_page_url": page_url})
-    return images or [
-        image
-        for image in extract_images(soup, page_url, min_width_hint=80)
-        if "bioedge-book" not in image.get("url", "").lower() and "book-cover" not in image.get("url", "").lower()
-    ]
+    return []
 
 
 def extract_bioedge_about(text: str | None) -> str | None:
@@ -2870,7 +2854,12 @@ def parse_args(argv: list[str]) -> argparse.Namespace:
         help="Source slug to scrape. Repeatable. Defaults to all sources.",
     )
     parser.add_argument("--force-generic", action="store_true", help="Disable source-specific card extractors.")
-    parser.add_argument("--skip-images", action="store_true", help="Do not download listing images locally.")
+    parser.add_argument(
+        "--download-images",
+        action="store_true",
+        help="Download listing images to data/media as transient local processing files.",
+    )
+    parser.add_argument("--skip-images", action="store_true", help=argparse.SUPPRESS)
     return parser.parse_args(argv)
 
 
@@ -2881,7 +2870,11 @@ def main(argv: list[str] | None = None) -> int:
     for slug in slugs:
         config = SOURCES[slug]
         print(f"==> scraping {config.name} ({slug})", flush=True)
-        summary = scrape_source(config, force_generic=args.force_generic, download_images=not args.skip_images)
+        summary = scrape_source(
+            config,
+            force_generic=args.force_generic,
+            download_images=args.download_images and not args.skip_images,
+        )
         summaries.append(summary)
         print(json.dumps(summary, indent=2), flush=True)
     summary_path = EXPORT_DIR / "scrape_summary.json"
