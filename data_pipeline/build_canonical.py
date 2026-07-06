@@ -1812,6 +1812,20 @@ class CanonicalBuilder:
                 "menu-enrichment://4f2b1d430dc4663fa760",
             ],
         )
+        oxy_org = self.conn.execute(
+            "SELECT id FROM organizations WHERE website_domain = ? ORDER BY id LIMIT 1",
+            ("oxyhealthcare.co.uk",),
+        ).fetchone()
+        if oxy_org:
+            self.conn.execute(
+                """
+                UPDATE organizations
+                SET canonical_name = ?,
+                    name_normalized = ?
+                WHERE id = ?
+                """,
+                ("OxyHealthCare", normalize_name("OxyHealthCare"), int(oxy_org["id"])),
+            )
 
     def consolidate_exact_address_duplicates(self) -> None:
         rows = self.location_rows()
