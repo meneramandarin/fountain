@@ -79,6 +79,52 @@ SOURCE_OWNED_DOMAINS = {
 }
 SERVICE_SEARCH_SOURCE_PREFIXES = ("dexa_", "hbot_", "vo2_max_")
 KNOWN_JUNK_PRICE_TEXT = {"$15; $99", "Not available"}
+ADDRESS_DIRECTION_ALIASES = {
+    "north": "n",
+    "south": "s",
+    "east": "e",
+    "west": "w",
+    "northeast": "ne",
+    "northwest": "nw",
+    "southeast": "se",
+    "southwest": "sw",
+}
+ADDRESS_STREET_SUFFIX_ALIASES = {
+    "avenue": "ave",
+    "boulevard": "blvd",
+    "circle": "cir",
+    "court": "ct",
+    "drive": "dr",
+    "expressway": "expy",
+    "highway": "hwy",
+    "lane": "ln",
+    "parkway": "pkwy",
+    "place": "pl",
+    "plaza": "plz",
+    "road": "rd",
+    "square": "sq",
+    "street": "st",
+    "terrace": "ter",
+    "trail": "trl",
+}
+ADDRESS_UNIT_TOKENS = {
+    "apartment",
+    "apt",
+    "bldg",
+    "building",
+    "clinic",
+    "dept",
+    "department",
+    "floor",
+    "fl",
+    "level",
+    "reception",
+    "room",
+    "rm",
+    "ste",
+    "suite",
+    "unit",
+}
 
 
 def is_menu_enrichment_source(source_slug: str) -> bool:
@@ -1534,10 +1580,28 @@ class CanonicalBuilder:
         rows = self.location_rows()
         groups: dict[tuple[str, str], list[sqlite3.Row]] = defaultdict(list)
         for row in rows:
-            address_key = normalize_term(row["address"])
+            if is_generic_place_address(row["address"], row["locality"], row["country_name"]):
+                continue
+            address_key = canonical_address_key(row["address"], row["country_code"])
+            if not address_key:
+                address_key = normalize_term(row["address"])
             if not address_key or len(address_key) < 8:
                 continue
-            groups[(address_key, row["country_code"] or "")].append(row)
+            postal_key = canonical_postal_key(row["postal_code"], row["country_code"]) or canonical_postal_key(
+                row["address"], row["country_code"]
+            )
+            place_key = postal_key or "|".join(
+                part
+                for part in (
+                    normalize_term(row["locality"]),
+                    normalize_term(row["region"]),
+                    row["country_code"] or "",
+                )
+                if part
+            )
+            if not place_key:
+                continue
+            groups[(address_key, place_key)].append(row)
         for group_rows in groups.values():
             if len(group_rows) < 2:
                 continue
@@ -1571,43 +1635,41 @@ class CanonicalBuilder:
             self.merge_location_rows(int(precise["id"]), [int(generic["id"])])
 
     def duplicate_location_clusters(self, rows: list[sqlite3.Row]) -> list[list[sqlite3.Row]]:
-        parent = {int(row["id"]): int(row["id"]) for row in rows}
-        by_id = {int(row["id"]): row for row in rows}
-
-        def find(value: int) -> int:
-            while parent[value] != value:
-                parent[value] = parent[parent[value]]
-                value = parent[value]
-            return value
-
-        def union(left: int, right: int) -> None:
-            left_root = find(left)
-            right_root = find(right)
-            if left_root != right_root:
-                parent[right_root] = left_root
-
-        for index, left in enumerate(rows):
-            for right in rows[index + 1 :]:
-                if self.locations_identity_match(left, right):
-                    union(int(left["id"]), int(right["id"]))
-
-        clusters: dict[int, list[sqlite3.Row]] = defaultdict(list)
-        for location_id, row in by_id.items():
-            clusters[find(location_id)].append(row)
-        return [cluster for cluster in clusters.values() if len(cluster) > 1]
+        clusters: list[list[sqlite3.Row]] = []
+        for row in rows:
+            for cluster in clusters:
+                if all(self.locations_identity_match(row, member) for member in cluster):
+                    cluster.append(row)
+                    break
+            else:
+                clusters.append([row])
+        return [cluster for cluster in clusters if len(cluster) > 1]
 
     def locations_identity_match(self, left: sqlite3.Row, right: sqlite3.Row) -> bool:
+        if self.location_names_match(left["name"], right["name"]):
+            return True
         left_domain = left["website_domain"] or provider_domain(left["website"])
         right_domain = right["website_domain"] or provider_domain(right["website"])
-        if left_domain and right_domain and left_domain == right_domain:
+        if left_domain and right_domain and left_domain == right_domain and self.location_names_match(
+            left["name"] or left["org_name"], right["name"] or right["org_name"]
+        ):
             return True
-        left_org = normalize_name(left["org_name"] or "")
-        right_org = normalize_name(right["org_name"] or "")
-        if left_org and right_org and fuzz.token_set_ratio(left_org, right_org) >= 94:
+        if (not clean(left["name"]) or not clean(right["name"])) and self.location_names_match(left["org_name"], right["org_name"]):
             return True
-        left_name = normalize_name(left["name"] or "")
-        right_name = normalize_name(right["name"] or "")
-        return bool(left_name and right_name and fuzz.token_set_ratio(left_name, right_name) >= 94)
+        return False
+
+    def location_names_match(self, left: Any, right: Any) -> bool:
+        left_name = normalize_name(left)
+        right_name = normalize_name(right)
+        if not left_name or not right_name:
+            return False
+        if left_name == right_name:
+            return True
+        ratio = fuzz.ratio(left_name, right_name)
+        token_ratio = fuzz.token_set_ratio(left_name, right_name)
+        if set(left_name.split()) == set(right_name.split()) and token_ratio == 100:
+            return True
+        return ratio >= 90 or (ratio >= 80 and token_ratio >= 96)
 
     def merge_location_cluster(self, rows: list[sqlite3.Row]) -> None:
         winner = max(rows, key=self.location_merge_score)
@@ -2233,7 +2295,74 @@ def slugify(value: Any) -> str:
     return re.sub(r"[^a-z0-9]+", "-", norm).strip("-") or "unknown"
 
 
+def canonical_address_token(token: str) -> str:
+    token = ADDRESS_DIRECTION_ALIASES.get(token, token)
+    return ADDRESS_STREET_SUFFIX_ALIASES.get(token, token)
+
+
+def canonical_postal_key(value: Any, country_code: Any = None) -> str | None:
+    text = clean(value)
+    if not text:
+        return None
+    country = (clean(country_code) or "").upper()
+    if country == "CA":
+        match = re.search(r"\b([A-Z]\d[A-Z])\s?(\d[A-Z]\d)\b", text.upper())
+        return f"CA:{match.group(1)}{match.group(2)}" if match else None
+    if country == "US":
+        match = re.search(r"\b(\d{5})(?:-\d{4})?\b", text)
+        return f"US:{match.group(1)}" if match else None
+    if country:
+        match = re.search(r"\b(\d{4,6})\b", text)
+        return f"{country}:{match.group(1)}" if match else None
+    match = re.search(r"\b(\d{5})(?:-\d{4})?\b", text)
+    return f"US:{match.group(1)}" if match else None
+
+
+def canonical_address_key(value: Any, country_code: Any = None) -> str | None:
+    text = clean(value)
+    if not text or not re.search(r"\d", text):
+        return None
+    tokens = normalize_term(text).split()
+    start_index = next((idx for idx, token in enumerate(tokens) if re.match(r"^\d+[a-z]?$", token)), None)
+    if start_index is None:
+        return None
+    country = (clean(country_code) or "").upper()
+    house_number = tokens[start_index]
+    street_tokens: list[str] = []
+    suffix_values = set(ADDRESS_STREET_SUFFIX_ALIASES.values())
+
+    index = start_index + 1
+    while index < len(tokens):
+        token = tokens[index]
+        if token in ADDRESS_UNIT_TOKENS:
+            break
+        if canonical_postal_key(token, country):
+            break
+        normalized = canonical_address_token(token)
+        if normalized in {"usa", "united", "states", "america"}:
+            break
+        street_tokens.append(normalized)
+        if normalized in suffix_values:
+            if index + 1 < len(tokens):
+                next_token = canonical_address_token(tokens[index + 1])
+                if next_token in {"n", "s", "e", "w", "ne", "nw", "se", "sw"}:
+                    street_tokens.append(next_token)
+            break
+        index += 1
+
+    if not street_tokens:
+        return None
+    return "|".join([country, house_number, *street_tokens])
+
+
 def addresses_match(left: Any, right: Any) -> bool:
+    left_key = canonical_address_key(left)
+    right_key = canonical_address_key(right)
+    if left_key and right_key and left_key == right_key:
+        left_postal = canonical_postal_key(left)
+        right_postal = canonical_postal_key(right)
+        if not left_postal or not right_postal or left_postal == right_postal:
+            return True
     left_norm = normalize_term(left)
     right_norm = normalize_term(right)
     if not left_norm or not right_norm:

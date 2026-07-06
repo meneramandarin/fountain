@@ -37,6 +37,7 @@ data/databases/vo2*_providers.sqlite*
 data/databases/vo2_max_*_providers.sqlite*
 
 data/media/
+data/backups/
 data/exports/*
 !data/exports/
 !data/exports/unmapped_terms.csv
