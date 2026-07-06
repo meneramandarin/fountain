@@ -1,4 +1,4 @@
-import { row, rows } from "@/lib/db";
+import { hasTable, isPostgres, row, rows } from "@/lib/db";
 import placeholderImagePaths from "@/lib/placeholder-image-paths.json";
 
 export const PAGE_SIZE = 25;
@@ -129,19 +129,71 @@ function placeholders(count: number) {
   return Array.from({ length: count }, () => "?").join(",");
 }
 
+function noDigitsCondition(expression: string) {
+  return isPostgres() ? `${expression} !~ '[0-9]'` : `${expression} NOT GLOB '*[0-9]*'`;
+}
+
+function twoUpperLettersCondition(expression: string) {
+  return isPostgres() ? `${expression} ~ '^[A-Z][A-Z]$'` : `${expression} GLOB '[A-Z][A-Z]'`;
+}
+
+function orderNoCase(expression: string) {
+  return isPostgres() ? `lower(${expression})` : `${expression} COLLATE NOCASE`;
+}
+
+function equalsNoCase(expression: string) {
+  return isPostgres() ? `lower(${expression}) = lower(?)` : `${expression} = ? COLLATE NOCASE`;
+}
+
+function capAt(expression: string, cap: number) {
+  return isPostgres() ? `LEAST(${expression}, ${cap})` : `MIN(${expression}, ${cap})`;
+}
+
+function containsNoCase(expression: string, termExpression: string) {
+  return isPostgres()
+    ? `${expression} ILIKE '%' || ${termExpression} || '%'`
+    : `${expression} LIKE '%' || ${termExpression} || '%'`;
+}
+
+function searchIndexMatchCondition(entityType: "location" | "practitioner") {
+  return isPostgres()
+    ? `search_text @@ websearch_to_tsquery('simple', ?) AND entity_type = '${entityType}'`
+    : `search_index MATCH ? AND entity_type = '${entityType}'`;
+}
+
+function searchMatchJoin(tableAlias: string, entityType: "location" | "practitioner") {
+  if (!isPostgres()) {
+    return `
+      JOIN (
+        SELECT entity_id, bm25(search_index) AS fts_rank
+        FROM search_index
+        WHERE ${searchIndexMatchCondition(entityType)}
+      ) search_match ON search_match.entity_id = ${tableAlias}.id
+    `;
+  }
+
+  return `
+    JOIN (
+      SELECT entity_id, -ts_rank_cd(search_text, websearch_to_tsquery('simple', ?)) AS fts_rank
+      FROM search_index
+      WHERE ${searchIndexMatchCondition(entityType)}
+    ) search_match ON search_match.entity_id = ${tableAlias}.id
+  `;
+}
+
+function searchMatchValues(match: string, values: unknown[]) {
+  return isPostgres() ? [match, match, ...values] : [match, ...values];
+}
+
 let hasExternalReviewTablesCache: boolean | null = null;
 
-function hasExternalReviewTables() {
+async function hasExternalReviewTables() {
   if (hasExternalReviewTablesCache == null) {
-    const tableCount = row<{ count: number }>(
-      `
-      SELECT COUNT(*) AS count
-      FROM sqlite_master
-      WHERE type = 'table'
-        AND name IN ('external_place_matches', 'external_reviews')
-    `,
-    )?.count || 0;
-    hasExternalReviewTablesCache = tableCount === 2;
+    const [hasMatches, hasReviews] = await Promise.all([
+      hasTable("external_place_matches"),
+      hasTable("external_reviews"),
+    ]);
+    hasExternalReviewTablesCache = hasMatches && hasReviews;
   }
   return hasExternalReviewTablesCache;
 }
@@ -161,12 +213,12 @@ function providerName(provider: string) {
   }
 }
 
-function getExternalReviewGroups(locationId: number): ExternalReviewGroup[] {
-  if (!hasExternalReviewTables()) {
+async function getExternalReviewGroups(locationId: number): Promise<ExternalReviewGroup[]> {
+  if (!(await hasExternalReviewTables())) {
     return [];
   }
 
-  const matches = rows<{
+  const matches = await rows<{
     provider: string;
     provider_url: string | null;
     rating: number | null;
@@ -195,7 +247,7 @@ function getExternalReviewGroups(locationId: number): ExternalReviewGroup[] {
     return [];
   }
 
-  const reviewRows = rows<{
+  const reviewRows = await rows<{
     provider: string;
     reviewer: string | null;
     rating: number | null;
@@ -237,25 +289,51 @@ function getExternalReviewGroups(locationId: number): ExternalReviewGroup[] {
   }));
 }
 
-export function getStats(): Stats {
-  const count = (table: keyof Omit<Stats, "offerings_priced">) =>
-    row<{ count: number }>(`SELECT COUNT(*) AS count FROM ${table}`)?.count || 0;
-  const priced = row<{ count: number }>("SELECT COUNT(*) AS count FROM offerings WHERE price_amount IS NOT NULL")?.count || 0;
+export async function getStats(): Promise<Stats> {
+  const count = async (table: keyof Omit<Stats, "offerings_priced">) =>
+    (await row<{ count: number }>(`SELECT COUNT(*) AS count FROM ${table}`))?.count || 0;
+  const [
+    sources,
+    organizations,
+    locations,
+    practitioners,
+    offerings,
+    treatments,
+    sourceRecords,
+    documents,
+    priced,
+  ] = await Promise.all([
+    count("sources"),
+    count("organizations"),
+    count("locations"),
+    count("practitioners"),
+    count("offerings"),
+    count("treatments"),
+    count("source_records"),
+    count("documents"),
+    (async () =>
+      (await row<{ count: number }>(
+        "SELECT COUNT(*) AS count FROM offerings WHERE price_amount IS NOT NULL",
+      ))?.count || 0)(),
+  ]);
   return {
-    sources: count("sources"),
-    organizations: count("organizations"),
-    locations: count("locations"),
-    practitioners: count("practitioners"),
-    offerings: count("offerings"),
-    treatments: count("treatments"),
-    source_records: count("source_records"),
-    documents: count("documents"),
+    sources,
+    organizations,
+    locations,
+    practitioners,
+    offerings,
+    treatments,
+    source_records: sourceRecords,
+    documents,
     offerings_priced: priced,
   };
 }
 
-export function getLandingCityTreatmentSearches(cityLimitPerCountry = 10, treatmentLimit = 8): LandingCountrySearch[] {
-  const cityTreatmentRows = rows<{
+export async function getLandingCityTreatmentSearches(
+  cityLimitPerCountry = 10,
+  treatmentLimit = 8,
+): Promise<LandingCountrySearch[]> {
+  const cityTreatmentRows = await rows<{
     locality: string;
     country_code: string;
     country_name: string;
@@ -293,7 +371,7 @@ export function getLandingCityTreatmentSearches(cityLimitPerCountry = 10, treatm
           'St Miami',
           'St N Saint Petersburg'
         )
-        AND l.locality NOT GLOB '*[0-9]*'
+        AND ${noDigitsCondition("l.locality")}
         AND l.locality NOT LIKE '%,%'
         AND l.locality NOT LIKE '% Ave%'
         AND l.locality NOT LIKE '%Road%'
@@ -314,13 +392,13 @@ export function getLandingCityTreatmentSearches(cityLimitPerCountry = 10, treatm
           CASE
             WHEN l.country_code = 'US'
               AND LENGTH(TRIM(l.region)) = 2
-              AND TRIM(l.region) GLOB '[A-Z][A-Z]'
+              AND ${twoUpperLettersCondition("TRIM(l.region)")}
             THEN TRIM(l.region)
           END
         ) AS region_code,
         COUNT(DISTINCT l.id) AS location_count,
         COUNT(DISTINCT o.treatment_id) AS treatment_count,
-        COUNT(DISTINCT o.treatment_id) * 10 + MIN(COUNT(DISTINCT l.id), 80) AS score
+        COUNT(DISTINCT o.treatment_id) * 10 + ${capAt("COUNT(DISTINCT l.id)", 80)} AS score
       FROM valid_locations l
       JOIN offerings o ON o.location_id = l.id AND o.treatment_id IS NOT NULL
       GROUP BY l.country_code, l.locality
@@ -355,7 +433,16 @@ export function getLandingCityTreatmentSearches(cityLimitPerCountry = 10, treatm
       JOIN offerings o ON o.location_id = l.id AND o.treatment_id IS NOT NULL
       JOIN treatments t ON t.id = o.treatment_id
       WHERE c.city_rank <= ?
-      GROUP BY c.country_code, c.locality, t.id
+      GROUP BY
+        c.country_code,
+        c.locality,
+        c.country_name,
+        c.region_code,
+        c.location_count,
+        c.treatment_count,
+        c.score,
+        t.id,
+        t.canonical_name
     )
     SELECT
       locality,
@@ -369,12 +456,12 @@ export function getLandingCityTreatmentSearches(cityLimitPerCountry = 10, treatm
       treatment_location_count
     FROM ranked_treatments
     WHERE treatment_rank <= ?
-    ORDER BY country_name COLLATE NOCASE, country_code, score DESC, treatment_count DESC, location_count DESC, locality, treatment_rank
+    ORDER BY ${orderNoCase("country_name")}, country_code, score DESC, treatment_count DESC, location_count DESC, locality, treatment_rank
   `,
     [cityLimitPerCountry, treatmentLimit],
   );
 
-  const countryTreatmentRows = rows<{
+  const countryTreatmentRows = await rows<{
     country_code: string;
     country_name: string;
     location_count: number;
@@ -409,7 +496,7 @@ export function getLandingCityTreatmentSearches(cityLimitPerCountry = 10, treatm
           'St Miami',
           'St N Saint Petersburg'
         )
-        AND l.locality NOT GLOB '*[0-9]*'
+        AND ${noDigitsCondition("l.locality")}
         AND l.locality NOT LIKE '%,%'
         AND l.locality NOT LIKE '% Ave%'
         AND l.locality NOT LIKE '%Road%'
@@ -448,7 +535,13 @@ export function getLandingCityTreatmentSearches(cityLimitPerCountry = 10, treatm
       JOIN valid_locations l ON l.country_code = c.country_code
       JOIN offerings o ON o.location_id = l.id AND o.treatment_id IS NOT NULL
       JOIN treatments t ON t.id = o.treatment_id
-      GROUP BY c.country_code, t.id
+      GROUP BY
+        c.country_code,
+        c.country_name,
+        c.location_count,
+        c.treatment_count,
+        t.id,
+        t.canonical_name
     )
     SELECT
       country_code,
@@ -460,7 +553,7 @@ export function getLandingCityTreatmentSearches(cityLimitPerCountry = 10, treatm
       treatment_location_count
     FROM ranked_treatments
     WHERE treatment_rank <= ?
-    ORDER BY country_name COLLATE NOCASE, country_code, treatment_rank
+    ORDER BY ${orderNoCase("country_name")}, country_code, treatment_rank
   `,
     [treatmentLimit],
   );
@@ -524,8 +617,10 @@ export function getLandingCityTreatmentSearches(cityLimitPerCountry = 10, treatm
   );
 }
 
-export function getLandingFeaturedDirectoryCards(limit = 5): LandingFeaturedDirectoryCard[] {
-  const preferredCandidates = rows<AnyRow>(
+export async function getLandingFeaturedDirectoryCards(
+  limit = 5,
+): Promise<LandingFeaturedDirectoryCard[]> {
+  const preferredCandidates = await rows<AnyRow>(
     `
     WITH preferred(term, rank) AS (
       VALUES
@@ -545,11 +640,11 @@ export function getLandingFeaturedDirectoryCards(limit = 5): LandingFeaturedDire
                  l.review_count DESC,
                  (l.rating IS NULL),
                  l.rating DESC,
-                 l.name COLLATE NOCASE
+                 ${orderNoCase("l.name")}
              ) AS match_rank
       FROM preferred p
       JOIN locations l
-        ON l.name LIKE '%' || p.term || '%'
+        ON ${containsNoCase("l.name", "p.term")}
       LEFT JOIN organizations org ON org.id = l.org_id
       WHERE EXISTS (
         SELECT 1
@@ -566,7 +661,7 @@ export function getLandingFeaturedDirectoryCards(limit = 5): LandingFeaturedDire
     ORDER BY rank
   `,
   );
-  const fallbackCandidates = rows<AnyRow>(
+  const fallbackCandidates = await rows<AnyRow>(
     `
     SELECT l.id, l.name, l.locality, l.region, l.country_name, l.rating, l.review_count,
            org.canonical_name AS org_name
@@ -586,7 +681,7 @@ export function getLandingFeaturedDirectoryCards(limit = 5): LandingFeaturedDire
       l.rating DESC,
       (l.review_count IS NULL),
       l.review_count DESC,
-      l.name COLLATE NOCASE
+      ${orderNoCase("l.name")}
     LIMIT 600
   `,
   );
@@ -596,14 +691,14 @@ export function getLandingFeaturedDirectoryCards(limit = 5): LandingFeaturedDire
   }
   const candidates = Array.from(candidateMap.values());
 
-  return hydrateLandingDirectoryCards(candidates, limit);
+  return await hydrateLandingDirectoryCards(candidates, limit);
 }
 
-export function getLandingTreatmentDirectoryCards(
+export async function getLandingTreatmentDirectoryCards(
   treatmentName: string,
   limit = 5,
   options: LandingTreatmentCardOptions = {},
-): LandingFeaturedDirectoryCard[] {
+): Promise<LandingFeaturedDirectoryCard[]> {
   const filters: string[] = ["t.canonical_name = ?"];
   const values: unknown[] = [treatmentName];
 
@@ -631,7 +726,7 @@ export function getLandingTreatmentDirectoryCards(
     `
     : "";
 
-  const candidates = rows<AnyRow>(
+  const candidates = await rows<AnyRow>(
     `
     SELECT l.id, l.name, l.locality, l.region, l.country_name, l.rating, l.review_count,
            org.canonical_name AS org_name
@@ -642,33 +737,41 @@ export function getLandingTreatmentDirectoryCards(
     WHERE ${filters.join(" AND ")}
       ${imageRequirement}
       AND COALESCE(NULLIF(TRIM(l.name), ''), NULLIF(TRIM(org.canonical_name), '')) IS NOT NULL
-    GROUP BY l.id
+    GROUP BY
+      l.id,
+      l.name,
+      l.locality,
+      l.region,
+      l.country_name,
+      l.rating,
+      l.review_count,
+      org.canonical_name
     ORDER BY
       (l.rating IS NULL),
       l.rating DESC,
       (l.review_count IS NULL),
       l.review_count DESC,
-      l.name COLLATE NOCASE
+      ${orderNoCase("l.name")}
     LIMIT 80
   `,
     values,
   );
 
-  return hydrateLandingDirectoryCards(candidates, limit, { requireImage: options.requireImage });
+  return await hydrateLandingDirectoryCards(candidates, limit, { requireImage: options.requireImage });
 }
 
-function hydrateLandingDirectoryCards(
+async function hydrateLandingDirectoryCards(
   candidates: AnyRow[],
   limit: number,
   options: { requireImage?: boolean } = {},
-): LandingFeaturedDirectoryCard[] {
+): Promise<LandingFeaturedDirectoryCard[]> {
   const ids = candidates.map((candidate) => candidate.id as number);
   if (!ids.length) {
     return [];
   }
 
   const marks = placeholders(ids.length);
-  const images = rows<{ lid: number } & ImageCandidate>(
+  const images = await rows<{ lid: number } & ImageCandidate>(
     `
     SELECT entity_id AS lid, blob_url, local_path
     FROM images
@@ -695,18 +798,18 @@ function hydrateLandingDirectoryCards(
   }
 
   const featuredMarks = placeholders(featuredIds.length);
-  const treatments = rows<{ lid: number; name: string; domain: string }>(
+  const treatments = await rows<{ lid: number; name: string; domain: string }>(
     `
     SELECT o.location_id AS lid, t.canonical_name AS name, cat.name AS domain
     FROM offerings o
     JOIN treatments t ON t.id = o.treatment_id
     JOIN categories cat ON cat.id = t.category_id
     WHERE o.location_id IN (${featuredMarks})
-    GROUP BY o.location_id, t.id
+    GROUP BY o.location_id, t.id, t.canonical_name, cat.name
   `,
     featuredIds,
   );
-  const tags = rows<{ lid: number; facet: string; value: string }>(
+  const tags = await rows<{ lid: number; facet: string; value: string }>(
     `
     SELECT et.entity_id AS lid, tg.facet AS facet, tg.value AS value
     FROM entity_tags et
@@ -750,19 +853,19 @@ function hydrateLandingDirectoryCards(
   });
 }
 
-export function getFacets() {
-  const countries = rows<{ code: string; name: string; n: number }>(`
+export async function getFacets() {
+  const countries = await rows<{ code: string; name: string; n: number }>(`
     SELECT country_code AS code, MAX(country_name) AS name, COUNT(*) AS n
     FROM locations
     WHERE country_code IS NOT NULL AND country_code <> ''
     GROUP BY country_code
     ORDER BY
       CASE WHEN country_code = 'US' THEN 0 ELSE 1 END,
-      name COLLATE NOCASE,
+      ${isPostgres() ? "lower(MAX(country_name))" : "name COLLATE NOCASE"},
       country_code
   `);
 
-  const localities = rows<{ country_code: string; value: string; n: number }>(`
+  const localities = await rows<{ country_code: string; value: string; n: number }>(`
     SELECT country_code, locality AS value, COUNT(*) AS n
     FROM locations
     WHERE country_code IS NOT NULL
@@ -770,16 +873,16 @@ export function getFacets() {
       AND locality IS NOT NULL
       AND TRIM(locality) <> ''
     GROUP BY country_code, locality
-    ORDER BY country_code, locality COLLATE NOCASE
+    ORDER BY country_code, ${orderNoCase("locality")}
   `);
 
-  const treatments = rows<{ domain: string; domain_id: number; id: number; name: string; n: number }>(`
+  const treatments = await rows<{ domain: string; domain_id: number; id: number; name: string; n: number }>(`
     SELECT c.name AS domain, c.id AS domain_id, t.id AS id,
            t.canonical_name AS name, COUNT(o.id) AS n
     FROM categories c
     JOIN treatments t ON t.category_id = c.id
     LEFT JOIN offerings o ON o.treatment_id = t.id
-    GROUP BY t.id
+    GROUP BY c.name, c.id, t.id, t.canonical_name
     ORDER BY c.id, t.canonical_name
   `);
 
@@ -808,10 +911,12 @@ export function getFacets() {
       [facet, entityType],
     );
 
-  const locationEntityTypes = tagFacet("entity_type", "location");
-  const locationCareModels = tagFacet("care_model", "location");
-  const practitionerEntityTypes = tagFacet("entity_type", "practitioner");
-  const practitionerCareModels = tagFacet("care_model", "practitioner");
+  const [locationEntityTypes, locationCareModels, practitionerEntityTypes, practitionerCareModels] = await Promise.all([
+    tagFacet("entity_type", "location"),
+    tagFacet("care_model", "location"),
+    tagFacet("entity_type", "practitioner"),
+    tagFacet("care_model", "practitioner"),
+  ]);
 
   return {
     countries,
@@ -831,7 +936,7 @@ function locationWhere(params: DirectoryParams, options: { includeText?: boolean
   const values: unknown[] = [];
   const match = ftsMatch(params.q);
   if (options.includeText !== false && match) {
-    where.push("l.id IN (SELECT entity_id FROM search_index WHERE search_index MATCH ? AND entity_type = 'location')");
+    where.push(`l.id IN (SELECT entity_id FROM search_index WHERE ${searchIndexMatchCondition("location")})`);
     values.push(match);
   }
   if (params.country) {
@@ -839,7 +944,7 @@ function locationWhere(params: DirectoryParams, options: { includeText?: boolean
     values.push(params.country);
   }
   if (params.locality) {
-    where.push("l.locality = ? COLLATE NOCASE");
+    where.push(equalsNoCase("l.locality"));
     values.push(params.locality);
   }
   for (const treatmentId of params.treatment_ids || []) {
@@ -872,27 +977,20 @@ function locationWhere(params: DirectoryParams, options: { includeText?: boolean
   };
 }
 
-export function searchLocations(params: DirectoryParams, page = 0) {
+export async function searchLocations(params: DirectoryParams, page = 0) {
   const match = ftsMatch(params.q);
-  const matchJoin = match
-    ? `
-      JOIN (
-        SELECT entity_id, bm25(search_index) AS fts_rank
-        FROM search_index
-        WHERE search_index MATCH ? AND entity_type = 'location'
-      ) search_match ON search_match.entity_id = l.id
-    `
-    : "";
+  const matchJoin = match ? searchMatchJoin("l", "location") : "";
   const { clause, values } = locationWhere(params, { includeText: !match });
-  const queryValues = match ? [match, ...values] : values;
+  const queryValues = match ? searchMatchValues(match, values) : values;
   const orderBy = match
-    ? "search_match.fts_rank ASC, (l.rating IS NULL), l.rating DESC, (l.review_count IS NULL), l.review_count DESC, l.name"
-    : "(l.review_count IS NULL), l.review_count DESC, l.name";
-  const total = row<{ count: number }>(
+    ? `search_match.fts_rank ASC, (l.rating IS NULL), l.rating DESC, (l.review_count IS NULL), l.review_count DESC, ${orderNoCase("l.name")}`
+    : `(l.review_count IS NULL), l.review_count DESC, ${orderNoCase("l.name")}`;
+  const total =
+    (await row<{ count: number }>(
     `SELECT COUNT(*) AS count FROM locations l${matchJoin}${clause}`,
     queryValues,
-  )?.count || 0;
-  const results = rows<AnyRow>(
+    ))?.count || 0;
+  const results = await rows<AnyRow>(
     `
     SELECT l.id, l.name, l.locality, l.region, l.country_code, l.country_name,
            l.website, l.rating, l.review_count, org.canonical_name AS org_name,
@@ -921,18 +1019,18 @@ export function searchLocations(params: DirectoryParams, page = 0) {
   const ids = results.map((result) => result.id as number);
   if (ids.length) {
     const marks = placeholders(ids.length);
-    const treatments = rows<{ lid: number; name: string; domain: string }>(
+    const treatments = await rows<{ lid: number; name: string; domain: string }>(
       `
       SELECT o.location_id AS lid, t.canonical_name AS name, cat.name AS domain
       FROM offerings o
       JOIN treatments t ON t.id = o.treatment_id
       JOIN categories cat ON cat.id = t.category_id
       WHERE o.location_id IN (${marks})
-      GROUP BY o.location_id, t.id
+      GROUP BY o.location_id, t.id, t.canonical_name, cat.name
     `,
       ids,
     );
-    const tags = rows<{ lid: number; facet: string; value: string }>(
+    const tags = await rows<{ lid: number; facet: string; value: string }>(
       `
       SELECT et.entity_id AS lid, tg.facet AS facet, tg.value AS value
       FROM entity_tags et
@@ -955,7 +1053,7 @@ export function searchLocations(params: DirectoryParams, page = 0) {
       list.push({ facet: tag.facet, value: tag.value });
       tagMap.set(tag.lid, list);
     }
-    const images = rows<{ lid: number } & ImageCandidate>(
+    const images = await rows<{ lid: number } & ImageCandidate>(
       `
       SELECT entity_id AS lid, blob_url, local_path
       FROM images
@@ -983,19 +1081,11 @@ export function searchLocations(params: DirectoryParams, page = 0) {
   return { results, total, page, page_size: PAGE_SIZE };
 }
 
-export function searchPractitioners(params: DirectoryParams, page = 0) {
+export async function searchPractitioners(params: DirectoryParams, page = 0) {
   const where: string[] = [];
   const values: unknown[] = [];
   const match = ftsMatch(params.q);
-  const matchJoin = match
-    ? `
-      JOIN (
-        SELECT entity_id, bm25(search_index) AS fts_rank
-        FROM search_index
-        WHERE search_index MATCH ? AND entity_type = 'practitioner'
-      ) search_match ON search_match.entity_id = p.id
-    `
-    : "";
+  const matchJoin = match ? searchMatchJoin("p", "practitioner") : "";
   if (params.country) {
     where.push(`
       (
@@ -1027,7 +1117,7 @@ export function searchPractitioners(params: DirectoryParams, page = 0) {
         FROM affiliations a
         JOIN locations l ON l.id = a.location_id
         WHERE a.practitioner_id = p.id
-          AND l.locality = ? COLLATE NOCASE
+          AND ${equalsNoCase("l.locality")}
       )
     `);
     values.push(params.locality);
@@ -1064,15 +1154,16 @@ export function searchPractitioners(params: DirectoryParams, page = 0) {
     }
   }
   const clause = where.length ? ` WHERE ${where.join(" AND ")}` : "";
-  const queryValues = match ? [match, ...values] : values;
+  const queryValues = match ? searchMatchValues(match, values) : values;
   const orderBy = match
-    ? "search_match.fts_rank ASC, (p.years_experience IS NULL), p.years_experience DESC, p.full_name"
-    : "(p.years_experience IS NULL), p.years_experience DESC, p.full_name";
-  const total = row<{ count: number }>(
+    ? `search_match.fts_rank ASC, (p.years_experience IS NULL), p.years_experience DESC, ${orderNoCase("p.full_name")}`
+    : `(p.years_experience IS NULL), p.years_experience DESC, ${orderNoCase("p.full_name")}`;
+  const total =
+    (await row<{ count: number }>(
     `SELECT COUNT(*) AS count FROM practitioners p${matchJoin}${clause}`,
     queryValues,
-  )?.count || 0;
-  const results = rows<AnyRow>(
+    ))?.count || 0;
+  const results = await rows<AnyRow>(
     `
     SELECT p.id, p.full_name, p.primary_specialty, p.years_experience, p.languages
     FROM practitioners p
@@ -1087,7 +1178,7 @@ export function searchPractitioners(params: DirectoryParams, page = 0) {
   const ids = results.map((result) => result.id as number);
   if (ids.length) {
     const marks = placeholders(ids.length);
-    const affiliations = rows<{ pid: number; clinic: string | null; locality: string | null; country_code: string | null; country_name: string | null }>(
+    const affiliations = await rows<{ pid: number; clinic: string | null; locality: string | null; country_code: string | null; country_name: string | null }>(
       `
       SELECT a.practitioner_id AS pid, l.name AS clinic, l.locality AS locality,
              l.country_code AS country_code, l.country_name AS country_name
@@ -1103,7 +1194,7 @@ export function searchPractitioners(params: DirectoryParams, page = 0) {
       list.push(affiliation);
       affiliationMap.set(affiliation.pid, list);
     }
-    const images = rows<{ pid: number } & ImageCandidate>(
+    const images = await rows<{ pid: number } & ImageCandidate>(
       `
       SELECT entity_id AS pid, blob_url, local_path
       FROM images
@@ -1130,8 +1221,8 @@ export function searchPractitioners(params: DirectoryParams, page = 0) {
   return { results, total, page, page_size: PAGE_SIZE };
 }
 
-export function getLocationDetail(id: number) {
-  const location = row<AnyRow>(
+export async function getLocationDetail(id: number) {
+  const location = await row<AnyRow>(
     `
     SELECT l.*, org.canonical_name AS org_name, org.website_domain AS org_domain
     FROM locations l
@@ -1143,7 +1234,7 @@ export function getLocationDetail(id: number) {
   if (!location) {
     return null;
   }
-  location.offerings = rows(
+  location.offerings = await rows(
     `
     SELECT o.raw_name, o.price_amount, o.price_currency,
            t.canonical_name AS treatment, cat.name AS domain
@@ -1155,7 +1246,7 @@ export function getLocationDetail(id: number) {
   `,
     [id],
   );
-  location.tags = rows(
+  location.tags = await rows(
     `
     SELECT tg.facet, tg.value
     FROM entity_tags et
@@ -1165,7 +1256,7 @@ export function getLocationDetail(id: number) {
   `,
     [id],
   );
-  location.practitioners = rows(
+  location.practitioners = await rows(
     `
     SELECT p.id, p.full_name, p.primary_specialty, a.role
     FROM affiliations a
@@ -1174,7 +1265,7 @@ export function getLocationDetail(id: number) {
   `,
     [id],
   );
-  location.reviews = rows(
+  location.reviews = await rows(
     `
     SELECT reviewer, rating, review_date, body
     FROM reviews
@@ -1183,8 +1274,13 @@ export function getLocationDetail(id: number) {
   `,
     [id],
   );
-  location.external_reviews = getExternalReviewGroups(id);
-  location.images = rows<{ image_url: string | null; blob_url: string | null; local_path: string | null; alt: string | null }>(
+  location.external_reviews = await getExternalReviewGroups(id);
+  const locationImages = await rows<{
+    image_url: string | null;
+    blob_url: string | null;
+    local_path: string | null;
+    alt: string | null;
+  }>(
     `
     SELECT image_url, blob_url, local_path, alt
     FROM images
@@ -1194,16 +1290,17 @@ export function getLocationDetail(id: number) {
     LIMIT 8
   `,
     [id],
-  ).filter((image) => usableImageSource(image));
+  );
+  location.images = locationImages.filter((image) => usableImageSource(image));
   return location;
 }
 
-export function getPractitionerDetail(id: number) {
-  const practitioner = row<AnyRow>("SELECT * FROM practitioners WHERE id = ?", [id]);
+export async function getPractitionerDetail(id: number) {
+  const practitioner = await row<AnyRow>("SELECT * FROM practitioners WHERE id = ?", [id]);
   if (!practitioner) {
     return null;
   }
-  practitioner.tags = rows(
+  practitioner.tags = await rows(
     `
     SELECT tg.facet, tg.value
     FROM entity_tags et
@@ -1213,7 +1310,7 @@ export function getPractitionerDetail(id: number) {
   `,
     [id],
   );
-  practitioner.affiliations = rows(
+  practitioner.affiliations = await rows(
     `
     SELECT l.id, l.name AS clinic, l.locality, l.country_code, l.country_name, a.role
     FROM affiliations a
@@ -1222,7 +1319,12 @@ export function getPractitionerDetail(id: number) {
   `,
     [id],
   );
-  practitioner.images = rows<{ image_url: string | null; blob_url: string | null; local_path: string | null; alt: string | null }>(
+  const practitionerImages = await rows<{
+    image_url: string | null;
+    blob_url: string | null;
+    local_path: string | null;
+    alt: string | null;
+  }>(
     `
     SELECT image_url, blob_url, local_path, alt
     FROM images
@@ -1232,7 +1334,8 @@ export function getPractitionerDetail(id: number) {
     LIMIT 8
   `,
     [id],
-  ).filter((image) => usableImageSource(image));
+  );
+  practitioner.images = practitionerImages.filter((image) => usableImageSource(image));
   return practitioner;
 }
 

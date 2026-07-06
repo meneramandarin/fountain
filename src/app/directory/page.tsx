@@ -32,10 +32,11 @@ type DirectoryPageProps = {
 
 export default async function DirectoryPage({ searchParams }: DirectoryPageProps) {
   const params = await searchParams;
+  const [facets, stats] = await Promise.all([getFacets(), getStats()]);
   return (
     <DirectoryShell
-      initialFacets={getFacets()}
-      initialStats={getStats()}
+      initialFacets={facets}
+      initialStats={stats}
       initialState={stateFromSearchParams(params)}
     />
   );
