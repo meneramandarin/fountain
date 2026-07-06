@@ -1790,6 +1790,29 @@ class CanonicalBuilder:
                 ),
             )
 
+        self.merge_location_group_by_source_urls(
+            "https://hyperbaric.app/clinic/oxyhealthcare-leeds",
+            [
+                "https://hyperbaric.app/clinic/oxyhealthcare-leeds",
+                "menu-enrichment://0f7f3298de8f2a7442ee",
+                "https://www.yorkshire.com/leeds/services/doctors/oxyhealthcare-leeds",
+            ],
+        )
+        self.merge_location_group_by_source_urls(
+            "https://hyperbaric.app/clinic/oxyhealthcare-sheffield",
+            [
+                "https://hyperbaric.app/clinic/oxyhealthcare-sheffield",
+                "menu-enrichment://e8e99177a28884017e73",
+            ],
+        )
+        self.merge_location_group_by_source_urls(
+            "https://hyperbaric.app/clinic/oxyhealthcare-glasgow",
+            [
+                "https://hyperbaric.app/clinic/oxyhealthcare-glasgow",
+                "menu-enrichment://4f2b1d430dc4663fa760",
+            ],
+        )
+
     def consolidate_exact_address_duplicates(self) -> None:
         rows = self.location_rows()
         groups: dict[tuple[str, str], list[sqlite3.Row]] = defaultdict(list)
@@ -1973,10 +1996,36 @@ class CanonicalBuilder:
         self.conn.execute("UPDATE images SET entity_id = ? WHERE entity_type = 'location' AND entity_id = ?", (winner_id, loser_id))
         self.conn.execute("UPDATE reviews SET location_id = ? WHERE location_id = ?", (winner_id, loser_id))
         self.conn.execute(
+            """
+            INSERT OR IGNORE INTO external_place_matches (
+                location_id, provider, provider_place_id, provider_url, display_name,
+                rating, review_count, match_confidence, match_status, fetched_at,
+                expires_at, raw_json
+            )
+            SELECT ?, provider, provider_place_id, provider_url, display_name,
+                   rating, review_count, match_confidence, match_status, fetched_at,
+                   expires_at, raw_json
+            FROM external_place_matches
+            WHERE location_id = ?
+            """,
+            (winner_id, loser_id),
+        )
+        self.conn.execute("DELETE FROM external_place_matches WHERE location_id = ?", (loser_id,))
+        self.conn.execute(
+            """
+            UPDATE OR IGNORE external_reviews
+            SET location_id = ?
+            WHERE location_id = ?
+            """,
+            (winner_id, loser_id),
+        )
+        self.conn.execute("DELETE FROM external_reviews WHERE location_id = ?", (loser_id,))
+        self.conn.execute(
             "UPDATE source_records SET entity_id = ? WHERE entity_type = 'location' AND entity_id = ?",
             (winner_id, loser_id),
         )
         self.delete_duplicate_location_images(winner_id)
+        self.prune_unpriced_duplicate_offerings(winner_id)
 
     def delete_duplicate_location_images(self, location_id: int) -> None:
         self.conn.execute(
@@ -1997,6 +2046,55 @@ class CanonicalBuilder:
               )
             """,
             (location_id, location_id),
+        )
+
+    def prune_unpriced_duplicate_offerings(self, location_id: int) -> None:
+        rows = list(
+            self.conn.execute(
+                """
+                SELECT id, treatment_id, raw_name, price_amount
+                FROM offerings
+                WHERE location_id = ?
+                """,
+                (location_id,),
+            )
+        )
+        priced_treatment_ids = {
+            int(row["treatment_id"])
+            for row in rows
+            if row["price_amount"] is not None and row["treatment_id"] is not None
+        }
+        priced_names = {
+            normalize_term(row["raw_name"])
+            for row in rows
+            if row["price_amount"] is not None and normalize_term(row["raw_name"])
+        }
+        delete_ids = [
+            int(row["id"])
+            for row in rows
+            if row["price_amount"] is None
+            and (
+                (row["treatment_id"] is not None and int(row["treatment_id"]) in priced_treatment_ids)
+                or normalize_term(row["raw_name"]) in priced_names
+            )
+        ]
+        if not delete_ids:
+            return
+        placeholders = ",".join("?" for _ in delete_ids)
+        self.conn.execute(f"DELETE FROM offerings WHERE id IN ({placeholders})", delete_ids)
+
+    def prune_unpriced_offerings_when_location_has_prices(self, location_id: int) -> None:
+        priced_count = int(
+            self.conn.execute(
+                "SELECT COUNT(*) FROM offerings WHERE location_id = ? AND price_amount IS NOT NULL",
+                (location_id,),
+            ).fetchone()[0]
+        )
+        if not priced_count:
+            return
+        self.conn.execute(
+            "DELETE FROM offerings WHERE location_id = ? AND price_amount IS NULL",
+            (location_id,),
         )
 
     def merged_location_fields(self, winner: sqlite3.Row, loser: sqlite3.Row) -> dict[str, Any]:
@@ -2072,6 +2170,13 @@ class CanonicalBuilder:
             if location_id:
                 ids.append(location_id)
         return dedupe_ints(ids)
+
+    def merge_location_group_by_source_urls(self, winner_source_url: str, source_urls: list[str]) -> None:
+        winner = self.location_id_for_source_url(winner_source_url)
+        ids = self.location_ids_for_source_urls(source_urls)
+        if winner and len(ids) > 1:
+            self.merge_location_rows(winner, [location_id for location_id in ids if location_id != winner])
+            self.prune_unpriced_offerings_when_location_has_prices(winner)
 
     def location_id_for_source_url(self, url: str) -> int | None:
         row = self.conn.execute(
