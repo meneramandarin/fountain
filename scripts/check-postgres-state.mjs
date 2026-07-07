@@ -203,7 +203,7 @@ async function checkRefreshToolingRemoved() {
 
   const packageJson = JSON.parse(readFileSync(packagePath, "utf8"));
   const scripts = packageJson.scripts || {};
-  for (const scriptName of ["db:refresh-postgres", "db:import-postgres"]) {
+  for (const scriptName of ["build:canonical", "db:refresh-postgres", "db:import-postgres", "db:sync-raw-sources"]) {
     if (scripts[scriptName]) {
       failures.push(`legacy canonical import script is still exposed: ${scriptName}`);
     }

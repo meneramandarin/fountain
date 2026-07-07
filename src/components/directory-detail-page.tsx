@@ -16,7 +16,7 @@ import Link from "next/link";
 import { locationHref, practitionerHref } from "@/lib/directory-urls";
 
 type Tag = { facet: string; value: string };
-type ImageRef = { image_url?: string | null; blob_url?: string | null; local_path?: string | null; alt?: string | null };
+type ImageRef = { blob_url?: string | null; alt?: string | null };
 type ReviewRef = { reviewer?: string | null; rating?: string | number | null; review_date?: string | null; body?: string | null };
 type ExternalReviewGroup = {
   provider: string;
@@ -512,15 +512,12 @@ function TagPills({ tags }: { tags: Tag[] }) {
 
 function getImageSources(images: ImageRef[]) {
   return images
-    .map((image) => image.blob_url || image.local_path || image.image_url)
+    .map((image) => image.blob_url)
     .filter((src): src is string => Boolean(src))
     .slice(0, 5);
 }
 
 function imageSource(src: string) {
-  if (src.startsWith("data/media/")) {
-    return `/media/${src.replace(/^data\/media\//, "")}`;
-  }
   return src;
 }
 

@@ -19,16 +19,16 @@ out/
 *.db-wal
 *.db-shm
 
-# Raw scrape artifacts are large/generated. Rebuild or restore locally.
-# Keep only the merged root-level canonical.db in Git.
+# Local SQLite archives and generated scrape artifacts are not active app data.
+canonical.db
+archive/*
+!archive/.gitignore
+!archive/README.md
 data/databases/
 data/databases/**/*.sqlite
 data/databases/**/*.db
 data/databases/**/*.sqlite-*
 data/databases/**/*.db-*
-!data/databases/
-!data/databases/google_reviews.sqlite
-!data/databases/blob_images.sqlite
 
 # Generated service-search scrape databases
 data/databases/dexa_*_scan_providers.sqlite*

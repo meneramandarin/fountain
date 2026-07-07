@@ -1,8 +1,8 @@
 # Postgres Operations
 
-Neon Postgres is the production source of truth. `canonical.db` remains in Git as an archival/local fallback only; production is no longer rebuilt or refreshed from it.
+Neon Postgres is the source of truth for production and local app runtime. The app no longer falls back to `canonical.db` in any environment.
 
-The app reads from Neon when `DATABASE_URL` or `POSTGRES_URL` is present. Vercel deployments fail fast if Postgres is missing, so production cannot silently serve stale SQLite data.
+The app requires `DATABASE_URL` or `POSTGRES_URL`. Local development uses Neon through `.env.local`; Vercel uses the same Postgres-backed runtime path. Missing Postgres configuration is a hard error.
 
 ## Production Deploy
 
@@ -16,8 +16,11 @@ npm run db:deploy -- --env-file .env.production.local
 
 The old full-refresh bridge has been removed on purpose:
 
+- no local `canonical.db` runtime fallback
+- no `build:canonical` npm script
 - no `db:refresh-postgres` script
 - no `db:import-postgres` script
+- no `db:sync-raw-sources` npm script
 - no `scripts/import-canonical-to-postgres.mjs`
 
 If production data must change, write a targeted migration or use the installed Postgres mutation helpers.
@@ -54,7 +57,7 @@ npm run db:check -- --env-file .env.production.local
 ## Durable Schemas
 
 - `fountain`: production serving schema and direct write target.
-- `fountain_raw`: durable source-level staging tables synced from `data/databases/*.sqlite`.
+- `fountain_raw`: legacy/raw source-level staging tables retained for provenance and inspection. It is not an active serving path.
 
 Migrations are tracked in `public.fountain_schema_migrations`. Migration files are immutable after application; changing an applied file causes a checksum failure.
 
@@ -82,18 +85,6 @@ Search stays in Postgres. The serving table `fountain.search_index` uses a gener
 
 This is the least moving-parts option at the current scale: no external search cluster, no rebuild step, and no stale manual search table after direct edits. If search later outgrows Postgres, the trigger-maintained search table becomes the clean source for streaming to a dedicated search system.
 
-## Sync Raw Source Data
-
-Sync raw source SQLite databases incrementally:
-
-```bash
-npm run db:sync-raw-sources -- --env-file .env.production.local --all --chunk-size 1000
-```
-
-The raw sync checks source DB file size and mtime, so unchanged sources are skipped on later runs. Pass `--force` only when intentionally reloading every source.
-
-Raw staging is not the serving source of truth. Ingestion into `fountain` should be incremental upserts/merge reviews, not a wholesale production rebuild.
-
 ## Image Contract
 
 Production images are Blob-backed:
@@ -103,15 +94,12 @@ Production images are Blob-backed:
 - image bytes are stored in Vercel Blob, not Neon.
 - Neon stores only URL strings/hashes required to associate a Blob object with a clinic/practitioner/source row.
 - local files under `data/media/` are transient processing artifacts only.
-- source image candidates can exist as remote URLs in source SQLite databases and `fountain_raw.source_images`.
+- source image candidates can exist as remote URLs in `fountain_raw.source_images`.
 
 This is enforced in Postgres by the `images_blob_backed` constraint and checked by `npm run db:check`.
 
 ## Runtime
 
-The runtime query layer supports both backends:
-
-- Postgres: used when `DATABASE_URL` or `POSTGRES_URL` exists.
-- SQLite: used only outside Vercel when no Postgres URL exists.
+The runtime query layer is Postgres-only. `canonical.db` can live under `archive/` as a local ignored artifact, but the app does not read it.
 
 The Neon pooled connection path does not accept `search_path` as a startup option, so the Postgres adapter wraps reads in a short transaction with `SET LOCAL search_path TO fountain, public`. Set `POSTGRES_SCHEMA` only when intentionally targeting a different serving schema.

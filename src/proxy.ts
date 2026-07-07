@@ -1,6 +1,6 @@
 import { NextResponse, type NextRequest } from "next/server";
 
-type RouteKind = "page" | "docs" | "media" | "api" | "api-search" | "api-detail";
+type RouteKind = "page" | "docs" | "api" | "api-search" | "api-detail";
 type RateBucket = {
   count: number;
   resetAt: number;
@@ -12,7 +12,6 @@ const MAX_BUCKETS = 5_000;
 const RATE_LIMITS: Record<RouteKind, number> = {
   page: 120,
   docs: 30,
-  media: 180,
   api: 90,
   "api-search": 45,
   "api-detail": 80,
@@ -68,7 +67,7 @@ export function proxy(request: NextRequest) {
   response.headers.set("X-Content-Type-Options", "nosniff");
   response.headers.set("Referrer-Policy", "strict-origin-when-cross-origin");
 
-  if (routeKind === "docs" || routeKind === "media" || routeKind.startsWith("api")) {
+  if (routeKind === "docs" || routeKind.startsWith("api")) {
     response.headers.set("X-Robots-Tag", "noindex, nofollow, noarchive");
   }
 
@@ -84,9 +83,6 @@ function getRouteKind(pathname: string): RouteKind {
   }
   if (pathname.startsWith("/api/")) {
     return "api";
-  }
-  if (pathname.startsWith("/media/")) {
-    return "media";
   }
   if (pathname.startsWith("/docs/")) {
     return "docs";
