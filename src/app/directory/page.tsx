@@ -33,11 +33,13 @@ type DirectoryPageProps = {
 export default async function DirectoryPage({ searchParams }: DirectoryPageProps) {
   const params = await searchParams;
   const [facets, stats] = await Promise.all([getFacets(), getStats()]);
+  const initialState = stateFromSearchParams(params);
   return (
     <DirectoryShell
+      key={stateKey(initialState)}
       initialFacets={facets}
       initialStats={stats}
-      initialState={stateFromSearchParams(params)}
+      initialState={initialState}
     />
   );
 }
@@ -62,4 +64,17 @@ function stateFromSearchParams(params: Record<string, string | string[] | undefi
     care_model: value(params, "care_model"),
     page: Math.max(0, Number.parseInt(value(params, "page") || "0", 10) || 0),
   };
+}
+
+function stateKey(state: DirectoryState) {
+  return JSON.stringify([
+    state.kind,
+    state.q,
+    state.country,
+    state.locality,
+    state.treatment_ids.join(","),
+    state.entity_type,
+    state.care_model,
+    state.page,
+  ]);
 }
