@@ -27,9 +27,7 @@
     "export:blob-images": "node scripts/export-blob-image-cache.mjs",
     "db:check": "node scripts/check-postgres-state.mjs",
     "db:deploy": "node scripts/deploy-postgres.mjs",
-    "db:import-postgres": "node scripts/import-canonical-to-postgres.mjs",
     "db:migrate": "node scripts/run-postgres-migrations.mjs",
-    "db:refresh-postgres": "node scripts/deploy-postgres.mjs --refresh-canonical",
     "db:sync-raw-sources": "node scripts/sync-source-sqlite-to-postgres.mjs"
   },
   "dependencies": {

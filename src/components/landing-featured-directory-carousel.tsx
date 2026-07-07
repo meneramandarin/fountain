@@ -4,6 +4,7 @@ import { ArrowLeft, ArrowRight, Building2, MapPin, Star } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useId, useRef } from "react";
+import { locationHref } from "@/lib/directory-urls";
 import type { LandingFeaturedDirectoryCard } from "@/lib/queries";
 
 type LandingFeaturedDirectoryCarouselProps = {
@@ -26,10 +27,6 @@ function imageSource(src: string) {
     return `/media/${src.replace(/^data\/media\//, "")}`;
   }
   return src;
-}
-
-function directoryHref(card: LandingFeaturedDirectoryCard) {
-  return `/directory?kind=locations&q=${encodeURIComponent(card.name || card.org_name || "")}`;
 }
 
 export function LandingFeaturedDirectoryCarousel({ cards, title }: LandingFeaturedDirectoryCarouselProps) {
@@ -73,7 +70,7 @@ export function LandingFeaturedDirectoryCarousel({ cards, title }: LandingFeatur
           const type = card.tags.find((tag) => tag.facet === "entity_type");
 
           return (
-            <Link className="landing-featured-card" href={directoryHref(card)} key={card.id}>
+            <Link className="landing-featured-card" href={locationHref(card)} key={card.id}>
               <span className="landing-featured-photo">
                 {card.image ? (
                   <Image

@@ -50,7 +50,7 @@ const migrations = readdirSync(migrationsDir)
     };
   });
 
-const client = new Client({ connectionString });
+const client = new Client({ connectionString: normalizePostgresConnectionString(connectionString) });
 
 try {
   await client.connect();
@@ -135,6 +135,19 @@ function normalizeIdentifier(identifier) {
     throw new Error(`Unsafe Postgres identifier: ${identifier}`);
   }
   return value;
+}
+
+function normalizePostgresConnectionString(rawConnectionString) {
+  try {
+    const url = new URL(rawConnectionString);
+    const sslMode = url.searchParams.get("sslmode");
+    if (sslMode && ["prefer", "require", "verify-ca"].includes(sslMode)) {
+      url.searchParams.set("sslmode", "verify-full");
+    }
+    return url.toString();
+  } catch {
+    return rawConnectionString;
+  }
 }
 
 function loadEnvFile(filePath) {

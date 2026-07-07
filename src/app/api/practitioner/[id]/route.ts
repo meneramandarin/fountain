@@ -6,11 +6,7 @@ export const dynamic = "force-dynamic";
 
 export async function GET(_request: Request, context: { params: Promise<{ id: string }> }) {
   const { id } = await context.params;
-  const practitionerId = Number.parseInt(id, 10);
-  if (!Number.isFinite(practitionerId)) {
-    return NextResponse.json({ error: "invalid practitioner id" }, { status: 400 });
-  }
-  const practitioner = await getPractitionerDetail(practitionerId);
+  const practitioner = await getPractitionerDetail(id);
   return practitioner
     ? NextResponse.json(practitioner)
     : NextResponse.json({ error: "practitioner not found" }, { status: 404 });

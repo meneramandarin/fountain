@@ -1,5 +1,5 @@
--- Postgres serving schema for the Fountain canonical directory.
--- Import with scripts/import-canonical-to-postgres.mjs.
+-- Legacy Postgres bootstrap schema for the Fountain canonical directory.
+-- Production now evolves through data_pipeline/postgres_migrations.
 
 CREATE SCHEMA IF NOT EXISTS __SCHEMA__;
 SET search_path TO __SCHEMA__;
