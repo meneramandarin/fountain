@@ -7,7 +7,6 @@ const eslintConfig = [
       ".next/**",
       ".venv/**",
       "archive/**",
-      "data_pipeline/**",
       "data/**",
       "node_modules/**",
       "out/**",

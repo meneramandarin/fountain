@@ -1,7 +1,6 @@
 #!/usr/bin/env node
 
-import crypto from "node:crypto";
-import { existsSync, readFileSync, readdirSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import path from "node:path";
 import process from "node:process";
 import pg from "pg";
@@ -27,7 +26,6 @@ if (!connectionString) {
   throw new Error("Missing DATABASE_URL or POSTGRES_URL.");
 }
 
-const migrationsDir = path.resolve(ROOT, options.dir || "data_pipeline/postgres_migrations");
 const canonicalSchema = normalizeIdentifier(options.canonicalSchema || process.env.POSTGRES_SCHEMA || "fountain");
 const rawSchema = normalizeIdentifier(options.rawSchema || process.env.POSTGRES_RAW_SCHEMA || "fountain_raw");
 const client = new Client({ connectionString: normalizePostgresConnectionString(connectionString) });
@@ -37,7 +35,6 @@ const summary = {};
 
 try {
   await client.connect();
-  await checkMigrationFiles(client);
   await checkSchemaObjects(client);
   await checkImageContract(client);
   await checkRawStaging(client);
@@ -66,30 +63,6 @@ if (options.json) {
 
 if (failures.length) {
   process.exit(1);
-}
-
-async function checkMigrationFiles(pgClient) {
-  if (!existsSync(migrationsDir)) {
-    failures.push(`missing migration directory: ${migrationsDir}`);
-    return;
-  }
-
-  const files = readdirSync(migrationsDir).filter((file) => file.endsWith(".sql")).sort();
-  const result = await pgClient.query("SELECT id, checksum FROM public.fountain_schema_migrations");
-  const applied = new Map(result.rows.map((row) => [row.id, row.checksum]));
-  summary.migration_files = files.length;
-
-  for (const file of files) {
-    const id = file.replace(/\.sql$/, "");
-    const checksum = crypto.createHash("sha256").update(readFileSync(path.join(migrationsDir, file), "utf8")).digest("hex");
-    if (!applied.has(id)) {
-      failures.push(`pending migration ${file}`);
-      continue;
-    }
-    if (applied.get(id) !== checksum) {
-      failures.push(`checksum mismatch for migration ${file}`);
-    }
-  }
 }
 
 async function checkSchemaObjects(pgClient) {
@@ -203,14 +176,17 @@ async function checkRefreshToolingRemoved() {
 
   const packageJson = JSON.parse(readFileSync(packagePath, "utf8"));
   const scripts = packageJson.scripts || {};
-  for (const scriptName of ["build:canonical", "db:refresh-postgres", "db:import-postgres", "db:sync-raw-sources"]) {
+  for (const scriptName of ["build:canonical", "db:refresh-postgres", "db:import-postgres", "db:sync-raw-sources", "db:migrate", "db:deploy"]) {
     if (scripts[scriptName]) {
-      failures.push(`legacy canonical import script is still exposed: ${scriptName}`);
+      failures.push(`removed database pipeline script is still exposed: ${scriptName}`);
     }
   }
 
-  if (existsSync(path.join(ROOT, "scripts/import-canonical-to-postgres.mjs"))) {
-    failures.push("legacy canonical importer still exists at scripts/import-canonical-to-postgres.mjs");
+  for (const fileName of ["import-canonical-to-postgres.mjs", "run-postgres-migrations.mjs", "deploy-postgres.mjs"]) {
+    const filePath = path.join(ROOT, "scripts", fileName);
+    if (existsSync(filePath)) {
+      failures.push(`removed database pipeline script still exists at scripts/${fileName}`);
+    }
   }
 }
 
