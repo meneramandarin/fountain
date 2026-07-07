@@ -9,7 +9,6 @@ out/
 .vercel/
 .env
 .env.*
-!.env.example
 .env*.local
 *.tsbuildinfo
 
@@ -19,29 +18,6 @@ out/
 *.db-wal
 *.db-shm
 
-# Local SQLite archives and generated scrape artifacts are not active app data.
-canonical.db
 archive/*
 !archive/.gitignore
 !archive/README.md
-data/databases/
-data/databases/**/*.sqlite
-data/databases/**/*.db
-data/databases/**/*.sqlite-*
-data/databases/**/*.db-*
-
-# Generated service-search scrape databases
-data/databases/dexa_*_scan_providers.sqlite*
-data/databases/hbot_*_providers.sqlite*
-data/databases/vo2*_providers.sqlite*
-data/databases/vo2_max_*_providers.sqlite*
-
-data/media/
-data/backups/
-data/exports/*
-!data/exports/
-!data/exports/unmapped_terms.csv
-
-# Generated database docs
-public/docs/schema_diagram.html
-public/docs/canonical_db_overview.html
