@@ -16,6 +16,7 @@ import {
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { locationHref, practitionerHref } from "@/lib/directory-urls";
 import { getPopularTreatments, popularTreatmentLabel } from "@/lib/popular-treatments";
@@ -114,7 +115,9 @@ export function DirectoryShell({
   initialStats: Stats;
   initialState: DirectoryState;
 }) {
+  const router = useRouter();
   const [state, setState] = useState<DirectoryState>(seededState);
+  const [searchDraft, setSearchDraft] = useState(seededState.q);
   const [payload, setPayload] = useState<SearchPayload>({ results: [], total: 0, page: 0, page_size: 25 });
   const [loading, setLoading] = useState(true);
 
@@ -158,6 +161,26 @@ export function DirectoryShell({
     setLoading(true);
     setState((current) => ({ ...current, ...patch, page: patch.page ?? 0 }));
   }, []);
+
+  const submitSearch = useCallback((event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    const nextState = {
+      ...emptyState(),
+      kind: state.kind,
+      q: searchDraft.trim(),
+    };
+    const params = new URLSearchParams();
+    params.set("kind", nextState.kind);
+    if (nextState.q) {
+      params.set("q", nextState.q);
+    }
+
+    setLoading(true);
+    setSearchDraft(nextState.q);
+    setState(nextState);
+    router.push(`/directory?${params.toString()}`);
+  }, [router, searchDraft, state.kind]);
 
   const toggleTreatment = useCallback((id: string) => {
     if (!id) {
@@ -242,12 +265,12 @@ export function DirectoryShell({
           <form
             className="landing-search directory-search"
             role="search"
-            onSubmit={(event) => event.preventDefault()}
+            onSubmit={submitSearch}
           >
             <input
               name="q"
-              value={state.q}
-              onChange={(event) => updateState({ q: event.target.value })}
+              value={searchDraft}
+              onChange={(event) => setSearchDraft(event.target.value)}
               aria-label="Search treatments, clinics, doctors"
               type="search"
               autoComplete="off"
@@ -373,6 +396,7 @@ export function DirectoryShell({
             type="button"
             onClick={() => {
               setLoading(true);
+              setSearchDraft("");
               setState({ ...emptyState(), kind: state.kind });
             }}
           >
