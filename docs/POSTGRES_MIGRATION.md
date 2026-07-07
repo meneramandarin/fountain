@@ -4,15 +4,15 @@ Neon Postgres is the source of truth for production and local app runtime. The a
 
 The app requires `DATABASE_URL` or `POSTGRES_URL`. Local development uses Neon through `.env.local`; Vercel uses the same Postgres-backed runtime path. Missing Postgres configuration is a hard error.
 
-## Production Deploy
+## Production Checks
 
-Use the migration-only path:
+Use the live database check:
 
 ```bash
-npm run db:deploy -- --env-file .env.production.local
+npm run db:check -- --env-file .env.production.local
 ```
 
-`db:deploy` applies pending SQL migrations from `data_pipeline/postgres_migrations/` and then runs `db:check`. It does not rebuild `canonical.db`, does not import a full serving schema, and does not touch raw source staging.
+`db:check` inspects the live Neon database. It does not rebuild `canonical.db`, does not import a full serving schema, and does not touch raw source staging.
 
 The old full-refresh bridge has been removed on purpose:
 
@@ -20,18 +20,14 @@ The old full-refresh bridge has been removed on purpose:
 - no `build:canonical` npm script
 - no `db:refresh-postgres` script
 - no `db:import-postgres` script
+- no `db:migrate` script
+- no `db:deploy` script
 - no `db:sync-raw-sources` npm script
 - no `scripts/import-canonical-to-postgres.mjs`
 
-If production data must change, write a targeted migration or use the installed Postgres mutation helpers.
+If production data must change, use the installed Postgres mutation helpers or direct SQL against Neon.
 
 ## Direct Commands
-
-Run only pending migrations:
-
-```bash
-npm run db:migrate -- --env-file .env.production.local
-```
 
 Check production invariants:
 
@@ -41,7 +37,6 @@ npm run db:check -- --env-file .env.production.local
 
 `db:check` verifies:
 
-- all migration files are applied with matching checksums.
 - the legacy canonical import/refresh tooling is not exposed.
 - `fountain.images` satisfies the Blob-only image contract.
 - the removed `fountain_assets` registry is absent.
@@ -59,11 +54,11 @@ npm run db:check -- --env-file .env.production.local
 - `fountain`: production serving schema and direct write target.
 - `fountain_raw`: legacy/raw source-level staging tables retained for provenance and inspection. It is not an active serving path.
 
-Migrations are tracked in `public.fountain_schema_migrations`. Migration files are immutable after application; changing an applied file causes a checksum failure.
+Historical migration files are no longer part of the active repo workflow. Neon is the source of truth, and `db:check` validates the live schema/data invariants the app depends on.
 
 ## Direct Write Helpers
 
-The hardening migration installs database-side helpers for common admin operations:
+The database has helper functions for common admin operations:
 
 ```sql
 SELECT fountain.create_location($json_payload);

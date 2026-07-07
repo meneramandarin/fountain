@@ -7,9 +7,7 @@
     "start": "next start",
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
-    "db:check": "node scripts/check-postgres-state.mjs",
-    "db:deploy": "node scripts/deploy-postgres.mjs",
-    "db:migrate": "node scripts/run-postgres-migrations.mjs"
+    "db:check": "node scripts/check-postgres-state.mjs"
   },
   "dependencies": {
     "lucide-react": "^1.22.0",
