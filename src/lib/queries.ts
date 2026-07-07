@@ -184,6 +184,15 @@ function activeTableClause(table: string) {
     : "";
 }
 
+function googleReviewMatchJoin(alias = "google_reviews") {
+  return `
+    LEFT JOIN external_place_matches ${alias}
+      ON ${alias}.location_id = l.id
+     AND ${alias}.provider = 'google'
+     AND ${alias}.match_status = 'matched'
+  `;
+}
+
 function locationSlugSelect(alias: string) {
   return isPostgres() ? `${alias}.slug` : `CAST(${alias}.id AS TEXT)`;
 }
@@ -810,21 +819,23 @@ export async function getLandingFeaturedDirectoryCards(
         ('The Hundred', 5)
     ),
     matches AS (
-      SELECT p.rank, l.id, ${locationSlugSelect("l")} AS slug, l.name, l.locality, l.region, l.country_name, l.rating, l.review_count,
+      SELECT p.rank, l.id, ${locationSlugSelect("l")} AS slug, l.name, l.locality, l.region, l.country_name,
+             google_reviews.rating, google_reviews.review_count,
              org.canonical_name AS org_name,
              ROW_NUMBER() OVER (
                PARTITION BY p.rank
                ORDER BY
-                 (l.review_count IS NULL),
-                 l.review_count DESC,
-                 (l.rating IS NULL),
-                 l.rating DESC,
+                 (google_reviews.review_count IS NULL),
+                 google_reviews.review_count DESC,
+                 (google_reviews.rating IS NULL),
+                 google_reviews.rating DESC,
                  ${orderNoCase("l.name")}
              ) AS match_rank
       FROM preferred p
       JOIN locations l
         ON ${containsNoCase("l.name", "p.term")}
       LEFT JOIN organizations org ON org.id = l.org_id
+      ${googleReviewMatchJoin()}
       WHERE ${activeEntityCondition("l")}
         AND EXISTS (
         SELECT 1
@@ -844,10 +855,12 @@ export async function getLandingFeaturedDirectoryCards(
   );
   const fallbackCandidates = await rows<AnyRow>(
     `
-    SELECT l.id, ${locationSlugSelect("l")} AS slug, l.name, l.locality, l.region, l.country_name, l.rating, l.review_count,
+    SELECT l.id, ${locationSlugSelect("l")} AS slug, l.name, l.locality, l.region, l.country_name,
+           google_reviews.rating, google_reviews.review_count,
            org.canonical_name AS org_name
     FROM locations l
     LEFT JOIN organizations org ON org.id = l.org_id
+    ${googleReviewMatchJoin()}
     WHERE ${activeEntityCondition("l")}
       AND EXISTS (
       SELECT 1
@@ -860,10 +873,10 @@ export async function getLandingFeaturedDirectoryCards(
     )
       AND COALESCE(NULLIF(TRIM(l.name), ''), NULLIF(TRIM(org.canonical_name), '')) IS NOT NULL
     ORDER BY
-      (l.rating IS NULL),
-      l.rating DESC,
-      (l.review_count IS NULL),
-      l.review_count DESC,
+      (google_reviews.rating IS NULL),
+      google_reviews.rating DESC,
+      (google_reviews.review_count IS NULL),
+      google_reviews.review_count DESC,
       ${orderNoCase("l.name")}
     LIMIT 600
   `,
@@ -912,10 +925,12 @@ export async function getLandingTreatmentDirectoryCards(
 
   const candidates = await rows<AnyRow>(
     `
-    SELECT l.id, ${locationSlugSelect("l")} AS slug, l.name, l.locality, l.region, l.country_name, l.rating, l.review_count,
+    SELECT l.id, ${locationSlugSelect("l")} AS slug, l.name, l.locality, l.region, l.country_name,
+           google_reviews.rating, google_reviews.review_count,
            org.canonical_name AS org_name
     FROM locations l
     LEFT JOIN organizations org ON org.id = l.org_id
+    ${googleReviewMatchJoin()}
     JOIN offerings o ON o.location_id = l.id AND ${activeOfferingCondition("o")}
     JOIN treatments t ON t.id = o.treatment_id
     WHERE ${activeEntityCondition("l")}
@@ -928,14 +943,14 @@ export async function getLandingTreatmentDirectoryCards(
       l.locality,
       l.region,
       l.country_name,
-      l.rating,
-      l.review_count,
+      google_reviews.rating,
+      google_reviews.review_count,
       org.canonical_name
     ORDER BY
-      (l.rating IS NULL),
-      l.rating DESC,
-      (l.review_count IS NULL),
-      l.review_count DESC,
+      (google_reviews.rating IS NULL),
+      google_reviews.rating DESC,
+      (google_reviews.review_count IS NULL),
+      google_reviews.review_count DESC,
       ${orderNoCase("l.name")}
     LIMIT 80
   `,
@@ -1184,8 +1199,8 @@ export async function searchLocations(params: DirectoryParams, page = 0) {
   const { clause, values } = locationWhere(params, { includeText: !match });
   const queryValues = match ? searchMatchValues(match, values) : values;
   const orderBy = match
-    ? `search_match.fts_rank ASC, (l.rating IS NULL), l.rating DESC, (l.review_count IS NULL), l.review_count DESC, ${orderNoCase("l.name")}`
-    : `(l.review_count IS NULL), l.review_count DESC, ${orderNoCase("l.name")}`;
+    ? `search_match.fts_rank ASC, (google_reviews.rating IS NULL), google_reviews.rating DESC, (google_reviews.review_count IS NULL), google_reviews.review_count DESC, ${orderNoCase("l.name")}`
+    : `(google_reviews.review_count IS NULL), google_reviews.review_count DESC, ${orderNoCase("l.name")}`;
   const total =
     (await row<{ count: number }>(
     `SELECT COUNT(*) AS count FROM locations l${matchJoin}${clause}`,
@@ -1194,7 +1209,7 @@ export async function searchLocations(params: DirectoryParams, page = 0) {
   const results = await rows<AnyRow>(
     `
     SELECT l.id, ${locationSlugSelect("l")} AS slug, l.name, l.locality, l.region, l.country_code, l.country_name,
-           l.website, l.rating, l.review_count, org.canonical_name AS org_name,
+           l.website, google_reviews.rating, google_reviews.review_count, org.canonical_name AS org_name,
            (
              SELECT MIN(o.price_amount)
              FROM offerings o
@@ -1209,6 +1224,7 @@ export async function searchLocations(params: DirectoryParams, page = 0) {
            ) AS min_price_currency
     FROM locations l
     LEFT JOIN organizations org ON org.id = l.org_id
+    ${googleReviewMatchJoin()}
     ${matchJoin}
     ${clause}
     ORDER BY ${orderBy}
@@ -1442,9 +1458,12 @@ export async function getLocationDetail(ref: number | string) {
   const lookup = entityLookup("l", ref);
   const location = await row<AnyRow>(
     `
-    SELECT l.*, org.canonical_name AS org_name, org.website_domain AS org_domain
+    SELECT l.*, org.canonical_name AS org_name, org.website_domain AS org_domain,
+           google_reviews.rating AS google_rating,
+           google_reviews.review_count AS google_review_count
     FROM locations l
     LEFT JOIN organizations org ON org.id = l.org_id
+    ${googleReviewMatchJoin()}
     WHERE ${lookup.clause}
       AND ${activeEntityCondition("l")}
   `,
@@ -1454,6 +1473,8 @@ export async function getLocationDetail(ref: number | string) {
     return null;
   }
   const id = location.id as number;
+  location.rating = (location.google_rating as number | null) || null;
+  location.review_count = (location.google_review_count as number | null) || null;
   location.offerings = await rows(
     `
     SELECT o.raw_name, o.price_amount, o.price_currency,
