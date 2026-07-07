@@ -6,12 +6,9 @@ import {
   ArrowRight,
   Building2,
   ChevronDown,
-  ExternalLink,
   Filter,
-  Globe,
   Loader2,
   MapPin,
-  Phone,
   Search,
   Star,
   Stethoscope,
@@ -20,6 +17,7 @@ import {
 import Image from "next/image";
 import Link from "next/link";
 import { useCallback, useEffect, useMemo, useState } from "react";
+import { locationHref, practitionerHref } from "@/lib/directory-urls";
 import { getPopularTreatments, popularTreatmentLabel } from "@/lib/popular-treatments";
 
 type Facets = {
@@ -55,27 +53,9 @@ type SearchPayload = {
 
 type Tag = { facet: string; value: string };
 type TreatmentChip = { name: string; domain: string };
-type ImageRef = { image_url?: string | null; blob_url?: string | null; local_path?: string | null; alt?: string | null };
-type ReviewRef = { reviewer?: string | null; rating?: string | number | null; review_date?: string | null; body?: string | null };
-type ExternalReviewGroup = {
-  provider: string;
-  provider_name: string;
-  provider_url?: string | null;
-  rating?: number | null;
-  review_count?: number | null;
-  fetched_at?: string | null;
-  expires_at?: string | null;
-  reviews?: Array<ReviewRef & { source_url?: string | null }>;
-};
-type OfferingRef = {
-  raw_name?: string | null;
-  price_amount?: number | null;
-  price_currency?: string | null;
-  treatment?: string | null;
-  domain?: string | null;
-};
 type AffiliationRef = {
   id?: number;
+  slug?: string | null;
   pid?: number;
   clinic?: string | null;
   locality?: string | null;
@@ -85,6 +65,7 @@ type AffiliationRef = {
 };
 type LocationResultRow = {
   id: number;
+  slug?: string | null;
   name?: string | null;
   org_name?: string | null;
   locality?: string | null;
@@ -100,31 +81,13 @@ type LocationResultRow = {
 };
 type PractitionerResultRow = {
   id: number;
+  slug?: string | null;
   full_name?: string | null;
   primary_specialty?: string | null;
   years_experience?: number | null;
   affiliations?: AffiliationRef[];
   image?: string | null;
 };
-type LocationDetailRecord = LocationResultRow & {
-  address?: string | null;
-  phone?: string | null;
-  website?: string | null;
-  offerings?: OfferingRef[];
-  images?: ImageRef[];
-  reviews?: ReviewRef[];
-  external_reviews?: ExternalReviewGroup[];
-  practitioners?: { id: number; full_name: string; primary_specialty?: string | null; role?: string | null }[];
-};
-type PractitionerDetailRecord = PractitionerResultRow & {
-  credentials?: string | null;
-  languages?: string | null;
-  tags?: Tag[];
-  images?: ImageRef[];
-};
-type DrawerState =
-  | { kind: "locations"; data: LocationDetailRecord }
-  | { kind: "practitioners"; data: PractitionerDetailRecord };
 
 const optionCollator = new Intl.Collator("en", { sensitivity: "base" });
 const countryDividerValue = "__country-divider";
@@ -154,7 +117,6 @@ export function DirectoryShell({
   const [state, setState] = useState<DirectoryState>(seededState);
   const [payload, setPayload] = useState<SearchPayload>({ results: [], total: 0, page: 0, page_size: 25 });
   const [loading, setLoading] = useState(true);
-  const [drawer, setDrawer] = useState<DrawerState | null>(null);
 
   const queryString = useMemo(() => {
     const params = new URLSearchParams();
@@ -242,19 +204,6 @@ export function DirectoryShell({
         .sort((a, b) => optionCollator.compare(a.value, b.value)),
     [initialFacets.localities, state.country],
   );
-
-  async function openDetail(kind: Kind, id: number) {
-    const endpoint = kind === "locations" ? `/api/location/${id}` : `/api/practitioner/${id}`;
-    const response = await fetch(endpoint);
-    if (response.ok) {
-      const data = await response.json();
-      setDrawer(
-        kind === "locations"
-          ? { kind, data: data as LocationDetailRecord }
-          : { kind, data: data as PractitionerDetailRecord },
-      );
-    }
-  }
 
   return (
     <main className="directory-shell">
@@ -448,14 +397,12 @@ export function DirectoryShell({
                   <LocationResult
                     key={result.id}
                     result={result as LocationResultRow}
-                    onOpen={() => openDetail("locations", result.id)}
                   />
                 ))
               : payload.results.map((result) => (
                   <PractitionerResult
                     key={result.id}
                     result={result as PractitionerResultRow}
-                    onOpen={() => openDetail("practitioners", result.id)}
                   />
                 ))}
           </div>
@@ -470,7 +417,6 @@ export function DirectoryShell({
       </div>
 
       <LandingFooter />
-      {drawer ? <DetailDrawer drawer={drawer} onClose={() => setDrawer(null)} /> : null}
     </main>
   );
 }
@@ -510,13 +456,13 @@ function FacetButtons({
   );
 }
 
-function LocationResult({ result, onOpen }: { result: LocationResultRow; onOpen: () => void }) {
+function LocationResult({ result }: { result: LocationResultRow }) {
   const [imageFailed, setImageFailed] = useState(false);
   const place = [result.locality, result.region, result.country_name].filter(Boolean).join(", ");
   const type = result.tags?.find((tag) => tag.facet === "entity_type");
   const price = formatPrice(result.min_price_amount, result.min_price_currency);
   return (
-    <button className="result-card" type="button" onClick={onOpen}>
+    <Link className="result-card" href={`${locationHref(result)}?from=search`}>
       <span className="result-photo">
         {result.image && !imageFailed ? (
           <Image
@@ -563,11 +509,11 @@ function LocationResult({ result, onOpen }: { result: LocationResultRow; onOpen:
           })}
         </span>
       </span>
-    </button>
+    </Link>
   );
 }
 
-function PractitionerResult({ result, onOpen }: { result: PractitionerResultRow; onOpen: () => void }) {
+function PractitionerResult({ result }: { result: PractitionerResultRow }) {
   const [imageFailed, setImageFailed] = useState(false);
   const affiliation = result.affiliations?.[0];
   const place = affiliation
@@ -580,7 +526,7 @@ function PractitionerResult({ result, onOpen }: { result: PractitionerResultRow;
     .map((part) => part[0]?.toUpperCase())
     .join("");
   return (
-    <button className="result-card practitioner-card" type="button" onClick={onOpen}>
+    <Link className="result-card practitioner-card" href={`${practitionerHref(result)}?from=search`}>
       <span className="practitioner-avatar-band">
         <span className="practitioner-avatar">
           {result.image && !imageFailed ? (
@@ -607,7 +553,7 @@ function PractitionerResult({ result, onOpen }: { result: PractitionerResultRow;
           ) : null}
         </span>
       </span>
-    </button>
+    </Link>
   );
 }
 
@@ -643,232 +589,11 @@ function Pager({
   );
 }
 
-function DetailDrawer({ drawer, onClose }: { drawer: DrawerState; onClose: () => void }) {
-  if (drawer.kind === "locations") {
-    const data = drawer.data;
-    const title = data.name || data.org_name;
-    const subtitle = [data.locality, data.region, data.country_name].filter(Boolean).join(", ");
-
-    return (
-      <>
-        <button className="drawer-overlay" type="button" aria-label="Close detail drawer" onClick={onClose} />
-        <aside className="detail-drawer" aria-label="Directory detail">
-          <header>
-            <div>
-              <h2>{title || "Directory record"}</h2>
-              <p>
-                {subtitle ? <MapPin size={13} aria-hidden="true" /> : null}
-                {subtitle || "Location unavailable"}
-              </p>
-            </div>
-            <button type="button" aria-label="Close" onClick={onClose}>
-              <X size={20} aria-hidden="true" />
-            </button>
-          </header>
-          <div className="drawer-content">
-            <ImageStrip images={data.images || []} />
-            <LocationDetail data={data} />
-          </div>
-        </aside>
-      </>
-    );
-  }
-
-  const data = drawer.data;
-  const subtitle = [data.primary_specialty, data.years_experience ? `${data.years_experience} yrs` : ""].filter(Boolean).join(" · ");
-
-  return (
-    <>
-      <button className="drawer-overlay" type="button" aria-label="Close detail drawer" onClick={onClose} />
-      <aside className="detail-drawer" aria-label="Directory detail">
-        <header>
-          <div>
-            <h2>{data.full_name || "Directory record"}</h2>
-            <p>
-              <Stethoscope size={13} aria-hidden="true" />
-              {subtitle || "Details unavailable"}
-            </p>
-          </div>
-          <button type="button" aria-label="Close" onClick={onClose}>
-            <X size={20} aria-hidden="true" />
-          </button>
-        </header>
-        <div className="drawer-content">
-          <ImageStrip images={data.images || []} />
-          <PractitionerDetail data={data} />
-        </div>
-      </aside>
-    </>
-  );
-}
-
-function ImageStrip({ images }: { images: ImageRef[] }) {
-  const [failed, setFailed] = useState<Set<string>>(new Set());
-  const usable = images.map((image) => image.blob_url || image.local_path || image.image_url).filter(Boolean).slice(0, 4) as string[];
-  const visible = usable.filter((src) => !failed.has(src));
-  if (!visible.length) {
-    return null;
-  }
-  return (
-    <div className="image-strip">
-      {visible.map((src) => (
-        <Image
-          src={imageSource(src)}
-          alt=""
-          width={180}
-          height={156}
-          unoptimized
-          key={src}
-          onError={() => setFailed((prev) => new Set(prev).add(src))}
-        />
-      ))}
-    </div>
-  );
-}
-
 function imageSource(src: string) {
   if (src.startsWith("data/media/")) {
     return `/media/${src.replace(/^data\/media\//, "")}`;
   }
   return src;
-}
-
-function LocationDetail({ data }: { data: LocationDetailRecord }) {
-  return (
-    <>
-      <section className="detail-section">
-        <h3>Contact</h3>
-        <div className="detail-rows">
-          <div className="detail-row">
-            <MapPin size={15} aria-hidden="true" />
-            <span>{data.address || "Address unavailable"}</span>
-          </div>
-          {data.phone ? (
-            <div className="detail-row">
-              <Phone size={15} aria-hidden="true" />
-              <span>{data.phone}</span>
-            </div>
-          ) : null}
-          {data.website ? (
-            <div className="detail-row">
-              <Globe size={15} aria-hidden="true" />
-              <a href={data.website} target="_blank" rel="noreferrer">
-                Visit website <ExternalLink size={13} aria-hidden="true" />
-              </a>
-            </div>
-          ) : null}
-        </div>
-      </section>
-      <Offerings offerings={data.offerings || []} />
-      <LocationPractitioners practitioners={data.practitioners || []} />
-      <TagList tags={data.tags || []} />
-      <ReviewList reviews={data.reviews || []} />
-      <ExternalReviewList groups={data.external_reviews || []} />
-    </>
-  );
-}
-
-function LocationPractitioners({
-  practitioners,
-}: {
-  practitioners: { id: number; full_name: string; primary_specialty?: string | null; role?: string | null }[];
-}) {
-  if (!practitioners.length) {
-    return null;
-  }
-  return (
-    <section className="detail-section">
-      <h3>
-        Practitioners <small>{practitioners.length}</small>
-      </h3>
-      <div className="detail-list">
-        {practitioners.slice(0, 12).map((practitioner) => {
-          const detail = [practitioner.primary_specialty, practitioner.role].filter(Boolean).join(" · ");
-          return (
-            <div className="detail-list-row" key={practitioner.id}>
-              <b>{practitioner.full_name}</b>
-              {detail ? <span>{detail}</span> : null}
-            </div>
-          );
-        })}
-      </div>
-    </section>
-  );
-}
-
-function PractitionerDetail({ data }: { data: PractitionerDetailRecord }) {
-  return (
-    <>
-      <section className="detail-section">
-        <h3>Profile</h3>
-        <div className="detail-rows">
-          <div className="detail-row">
-            <Stethoscope size={15} aria-hidden="true" />
-            <span>{data.credentials || data.primary_specialty || "Profile details unavailable"}</span>
-          </div>
-          {data.languages ? (
-            <div className="detail-row">
-              <Globe size={15} aria-hidden="true" />
-              <span>{data.languages}</span>
-            </div>
-          ) : null}
-        </div>
-      </section>
-      <section className="detail-section">
-        <h3>Affiliations</h3>
-        {(data.affiliations || []).length ? (
-          <div className="detail-list">
-            {(data.affiliations || []).map((affiliation) => (
-              <div className="detail-list-row" key={`${affiliation.id}-${affiliation.clinic}`}>
-                <b>{affiliation.clinic}</b>
-                <span>{[affiliation.locality, affiliation.country_name].filter(Boolean).join(", ")}</span>
-              </div>
-            ))}
-          </div>
-        ) : (
-          <p>No linked clinic in canonical data.</p>
-        )}
-      </section>
-      <TagList tags={data.tags || []} />
-    </>
-  );
-}
-
-function Offerings({ offerings }: { offerings: OfferingRef[] }) {
-  if (!offerings.length) {
-    return null;
-  }
-  return (
-    <section className="detail-section">
-      <h3>
-        Offerings <small>{offerings.length}</small>
-      </h3>
-      <div className="offer-list">
-        {offerings.slice(0, 40).map((offering, index) => {
-          const { primary, secondary } = getOfferingLabels(offering);
-
-          return (
-            <div className="offer-item" key={`${offering.raw_name || offering.treatment}-${index}`}>
-              <div className="offer-copy">
-                <span className="offer-name">{primary}</span>
-                {secondary ? <small>{secondary}</small> : null}
-              </div>
-              {offering.price_amount != null ? <b>{formatPrice(offering.price_amount, offering.price_currency)}</b> : null}
-            </div>
-          );
-        })}
-      </div>
-    </section>
-  );
-}
-
-function getOfferingLabels(offering: OfferingRef) {
-  const rawName = offering.raw_name?.trim();
-  const treatment = offering.treatment?.trim();
-  const primary = rawName || treatment || "Offering";
-  const secondary = rawName && treatment && rawName.toLocaleLowerCase() !== treatment.toLocaleLowerCase() ? treatment : null;
-
-  return { primary, secondary };
 }
 
 function formatPrice(amount?: number | null, currency?: string | null) {
@@ -896,125 +621,4 @@ function formatPrice(amount?: number | null, currency?: string | null) {
     return `${trimmedCurrency}${formatted}`;
   }
   return `${formatted} ${trimmedCurrency}`;
-}
-
-function TagList({ tags }: { tags: Tag[] }) {
-  const visible = tags.filter((tag) => ["entity_type", "care_model", "trust", "price_tier"].includes(tag.facet));
-  if (!visible.length) {
-    return null;
-  }
-  return (
-    <section className="detail-section">
-      <h3>Tags</h3>
-      <div className="drawer-tags">
-        {visible.slice(0, 30).map((tag) => (
-          <span key={`${tag.facet}-${tag.value}`}>{tag.value}</span>
-        ))}
-      </div>
-    </section>
-  );
-}
-
-function reviewField(value: string | number | null | undefined, key: string): string | null {
-  if (value == null) {
-    return null;
-  }
-  const text = String(value).trim();
-  if (!text) {
-    return null;
-  }
-  if (text.startsWith("{")) {
-    try {
-      const parsed = JSON.parse(text);
-      const extracted = parsed?.[key];
-      return extracted == null ? null : String(extracted);
-    } catch {
-      return null;
-    }
-  }
-  return text;
-}
-
-function ReviewList({ reviews }: { reviews: ReviewRef[] }) {
-  if (!reviews.length) {
-    return null;
-  }
-  return (
-    <section className="detail-section">
-      <h3>
-        Reviews <small>{reviews.length}</small>
-      </h3>
-      {reviews.slice(0, 5).map((review, index) => {
-        const reviewer = reviewField(review.reviewer, "name") || "Anonymous";
-        const rating = reviewField(review.rating, "ratingValue");
-        return (
-          <blockquote key={`${review.review_date}-${index}`}>
-            <div className="review-meta">
-              <b>{reviewer}</b>
-              {rating ? (
-                <span>
-                  <Star size={11} aria-hidden="true" />
-                  {rating}
-                </span>
-              ) : null}
-            </div>
-            <p>{review.body || "No review body provided."}</p>
-          </blockquote>
-        );
-      })}
-    </section>
-  );
-}
-
-function ExternalReviewList({ groups }: { groups: ExternalReviewGroup[] }) {
-  const visible = groups.filter((group) => group.rating || group.review_count || group.reviews?.length);
-  if (!visible.length) {
-    return null;
-  }
-  return (
-    <section className="detail-section">
-      <h3>External reviews</h3>
-      <div className="external-review-groups">
-        {visible.map((group) => (
-          <div className="external-review-group" key={group.provider}>
-            <div className="external-review-source">
-              <b>{group.provider_name}</b>
-              <span>
-                {group.rating ? (
-                  <>
-                    <Star size={12} aria-hidden="true" />
-                    {Number(group.rating).toFixed(1)}
-                  </>
-                ) : null}
-                {group.review_count ? `${group.rating ? " · " : ""}${Number(group.review_count).toLocaleString()} reviews` : null}
-              </span>
-              {group.provider_url ? (
-                <a href={group.provider_url} target="_blank" rel="noreferrer">
-                  View source <ExternalLink size={12} aria-hidden="true" />
-                </a>
-              ) : null}
-            </div>
-            {(group.reviews || []).slice(0, 5).map((review, index) => {
-              const reviewer = reviewField(review.reviewer, "name") || "Anonymous";
-              const rating = reviewField(review.rating, "ratingValue");
-              return (
-                <blockquote key={`${group.provider}-${review.review_date || ""}-${index}`}>
-                  <div className="review-meta">
-                    <b>{reviewer}</b>
-                    {rating ? (
-                      <span>
-                        <Star size={11} aria-hidden="true" />
-                        {rating}
-                      </span>
-                    ) : null}
-                  </div>
-                  <p>{review.body || "No review body provided."}</p>
-                </blockquote>
-              );
-            })}
-          </div>
-        ))}
-      </div>
-    </section>
-  );
 }

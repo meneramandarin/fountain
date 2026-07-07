@@ -16,39 +16,30 @@ npm run dev
 
 Open `http://localhost:3000`.
 
-The app reads Neon Postgres when `DATABASE_URL`/`POSTGRES_URL` is configured, and falls back to the checked-in root database for local backup/dev use:
+The app reads Neon Postgres when `DATABASE_URL`/`POSTGRES_URL` is configured. On Vercel, Postgres is required. Local development can fall back to the checked-in archival SQLite backup:
 
 ```text
 canonical.db
 ```
 
-## Rebuild The Canonical Database
+## Database Operations
 
-The source-specific scrape databases live locally in `data/databases/` and are ignored by Git. The merged `canonical.db` is the database that ships with the app.
-
-```bash
-python -m venv .venv
-source .venv/bin/activate
-pip install -r data_pipeline/requirements.txt
-npm run build:canonical
-```
-
-The build also writes the treatment curation backlog to:
-
-```text
-data/exports/unmapped_terms.csv
-```
-
-Normal builds keep canonical image rows Blob-backed. For a one-off image ingestion queue, use `npm run build:canonical -- --keep-unblobbed-images`, upload to Vercel Blob, export `data/databases/blob_images.sqlite`, then rebuild normally.
-
-## Sync Postgres
+Production data lives in Neon Postgres. `canonical.db` is kept in Git as an archival/local fallback only; it is not imported into production and should not be used as the normal data-editing path.
 
 ```bash
 npm run db:deploy -- --env-file .env.production.local
-npm run db:refresh-postgres -- --env-file .env.production.local
+npm run db:check -- --env-file .env.production.local
 ```
 
-Use `db:deploy` for normal schema-only production changes. Use `db:refresh-postgres` only when intentionally refreshing production data from `canonical.db`. See `docs/POSTGRES_MIGRATION.md` for the full workflow and Neon size-cap notes.
+Schema and data fixes are made with SQL migrations in `data_pipeline/postgres_migrations/`. Direct write workflows should use the Postgres helper functions installed in the `fountain` schema, such as `create_location`, `merge_locations`, `delete_location_cascade`, `replace_location_offerings`, and `attach_location_image`.
+
+The old full refresh/import path from `canonical.db` has been removed on purpose. There is no `db:refresh-postgres` command.
+
+## Archival Canonical Backup
+
+The source-specific scrape databases live locally in `data/databases/` and are ignored by Git. `npm run build:canonical` can still rebuild the archival SQLite database for local inspection/fallback, but production should not be refreshed from it.
+
+The build also writes the treatment curation backlog to `data/exports/unmapped_terms.csv`.
 
 ## Scrape Sources
 
