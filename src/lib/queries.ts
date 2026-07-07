@@ -1,13 +1,7 @@
 import { hasTable, isPostgres, row, rows } from "@/lib/db";
-import placeholderImagePaths from "@/lib/placeholder-image-paths.json";
 
 export const PAGE_SIZE = 25;
 
-// Some scraped sources reuse one generic banner image across every entity they cover
-// (identical file bytes under different filenames). These aren't real per-listing
-// photos, so we exclude them from `image` fields instead of showing the same stock
-// graphic on hundreds of unrelated cards.
-const placeholderImagePathSet = new Set<string>(placeholderImagePaths as string[]);
 const invalidRelatedSearchLocalities = new Set([
   "USA",
   "Virtual",
@@ -24,7 +18,6 @@ const invalidRelatedSearchLocalities = new Set([
 
 type ImageCandidate = {
   blob_url: string | null;
-  local_path: string | null;
 };
 
 export type ExternalReviewGroup = {
@@ -45,17 +38,7 @@ export type ExternalReviewGroup = {
 };
 
 function usableImageSource(image: ImageCandidate) {
-  if (image.local_path && placeholderImagePathSet.has(image.local_path)) {
-    return null;
-  }
-  if (image.blob_url) {
-    return image.blob_url;
-  }
-  // Vercel deployments do not include raw scraper media; those are served from Blob.
-  if (process.env.VERCEL === "1" && image.local_path?.startsWith("data/media/")) {
-    return null;
-  }
-  return image.local_path || null;
+  return image.blob_url || null;
 }
 
 export type SearchKind = "locations" | "practitioners";
@@ -849,8 +832,8 @@ export async function getLandingFeaturedDirectoryCards(
         WHERE img.entity_type = 'location'
           AND img.entity_id = l.id
           AND ${activeImageCondition("img")}
-          AND COALESCE(img.blob_url, img.local_path) IS NOT NULL
-          AND COALESCE(img.blob_url, img.local_path) <> ''
+          AND img.blob_url IS NOT NULL
+          AND img.blob_url <> ''
       )
     )
     SELECT id, slug, name, locality, region, country_name, rating, review_count, org_name
@@ -872,8 +855,8 @@ export async function getLandingFeaturedDirectoryCards(
       WHERE img.entity_type = 'location'
         AND img.entity_id = l.id
         AND ${activeImageCondition("img")}
-        AND COALESCE(img.blob_url, img.local_path) IS NOT NULL
-        AND COALESCE(img.blob_url, img.local_path) <> ''
+        AND img.blob_url IS NOT NULL
+        AND img.blob_url <> ''
     )
       AND COALESCE(NULLIF(TRIM(l.name), ''), NULLIF(TRIM(org.canonical_name), '')) IS NOT NULL
     ORDER BY
@@ -921,8 +904,8 @@ export async function getLandingTreatmentDirectoryCards(
         WHERE img.entity_type = 'location'
           AND img.entity_id = l.id
           AND ${activeImageCondition("img")}
-          AND COALESCE(img.blob_url, img.local_path) IS NOT NULL
-          AND COALESCE(img.blob_url, img.local_path) <> ''
+          AND img.blob_url IS NOT NULL
+          AND img.blob_url <> ''
       )
     `
     : "";
@@ -975,12 +958,12 @@ async function hydrateLandingDirectoryCards(
   const marks = placeholders(ids.length);
   const images = await rows<{ lid: number } & ImageCandidate>(
     `
-    SELECT entity_id AS lid, blob_url, local_path
+    SELECT entity_id AS lid, blob_url
     FROM images
     WHERE entity_type = 'location' AND entity_id IN (${marks})
       AND ${activeImageCondition("images")}
-      AND COALESCE(blob_url, local_path) IS NOT NULL
-      AND COALESCE(blob_url, local_path) != ''
+      AND blob_url IS NOT NULL
+      AND blob_url != ''
   `,
     ids,
   );
@@ -1274,12 +1257,12 @@ export async function searchLocations(params: DirectoryParams, page = 0) {
     }
     const images = await rows<{ lid: number } & ImageCandidate>(
       `
-      SELECT entity_id AS lid, blob_url, local_path
+      SELECT entity_id AS lid, blob_url
       FROM images
       WHERE entity_type = 'location' AND entity_id IN (${marks})
         AND ${activeImageCondition("images")}
-        AND COALESCE(blob_url, local_path) IS NOT NULL
-        AND COALESCE(blob_url, local_path) != ''
+        AND blob_url IS NOT NULL
+        AND blob_url != ''
     `,
       ids,
     );
@@ -1429,12 +1412,12 @@ export async function searchPractitioners(params: DirectoryParams, page = 0) {
     }
     const images = await rows<{ pid: number } & ImageCandidate>(
       `
-      SELECT entity_id AS pid, blob_url, local_path
+      SELECT entity_id AS pid, blob_url
       FROM images
       WHERE entity_type = 'practitioner' AND entity_id IN (${marks})
         AND ${activeImageCondition("images")}
-        AND COALESCE(blob_url, local_path) IS NOT NULL
-        AND COALESCE(blob_url, local_path) != ''
+        AND blob_url IS NOT NULL
+        AND blob_url != ''
     `,
       ids,
     );
@@ -1518,16 +1501,15 @@ export async function getLocationDetail(ref: number | string) {
   location.external_reviews = await getExternalReviewGroups(id);
   const locationImages = await rows<{
     blob_url: string | null;
-    local_path: string | null;
     alt: string | null;
   }>(
     `
-    SELECT blob_url, local_path, alt
+    SELECT blob_url, alt
     FROM images
     WHERE entity_type = 'location' AND entity_id = ?
       AND ${activeImageCondition("images")}
-      AND COALESCE(blob_url, local_path) IS NOT NULL
-      AND COALESCE(blob_url, local_path) != ''
+      AND blob_url IS NOT NULL
+      AND blob_url != ''
     LIMIT 8
   `,
     [id],
@@ -1569,16 +1551,15 @@ export async function getPractitionerDetail(ref: number | string) {
   );
   const practitionerImages = await rows<{
     blob_url: string | null;
-    local_path: string | null;
     alt: string | null;
   }>(
     `
-    SELECT blob_url, local_path, alt
+    SELECT blob_url, alt
     FROM images
     WHERE entity_type = 'practitioner' AND entity_id = ?
       AND ${activeImageCondition("images")}
-      AND COALESCE(blob_url, local_path) IS NOT NULL
-      AND COALESCE(blob_url, local_path) != ''
+      AND blob_url IS NOT NULL
+      AND blob_url != ''
     LIMIT 8
   `,
     [id],

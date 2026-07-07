@@ -590,9 +590,6 @@ function Pager({
 }
 
 function imageSource(src: string) {
-  if (src.startsWith("data/media/")) {
-    return `/media/${src.replace(/^data\/media\//, "")}`;
-  }
   return src;
 }
 

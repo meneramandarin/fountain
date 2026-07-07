@@ -95,7 +95,7 @@ export default async function HomePage() {
       <LandingFeaturedDirectoryCarousel cards={mriCards} title="Where to get a full body MRI" />
 
       <section className="landing-banner" aria-hidden="true">
-        <Image src="/clinics/The Fountain of Youth.jpg" alt="" fill sizes="100vw" />
+        <Image src="/fountainofyouth.jpg" alt="" fill sizes="100vw" />
       </section>
 
       <section className="landing-quote" aria-label="Health quote">

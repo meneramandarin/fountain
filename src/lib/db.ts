@@ -1,46 +1,28 @@
-import Database from "better-sqlite3";
-import path from "node:path";
 import pg from "pg";
 
 const { Pool, types } = pg;
 
 types.setTypeParser(20, (value) => Number(value));
 
-let sqliteConnection: Database.Database | null = null;
 let postgresPool: pg.Pool | null = null;
-let loggedBackend: "sqlite" | "postgres" | null = null;
-
-export function canonicalDbPath() {
-  return process.env.CANONICAL_DB_PATH || path.join(process.cwd(), "canonical.db");
-}
+let loggedBackend = false;
 
 function postgresConnectionString() {
   return normalizePostgresConnectionString(process.env.DATABASE_URL || process.env.POSTGRES_URL);
 }
 
 export function databaseBackend() {
-  if (postgresConnectionString()) {
-    return "postgres";
+  if (!postgresConnectionString()) {
+    throw new Error("DATABASE_URL or POSTGRES_URL is required. The app no longer falls back to canonical.db.");
   }
-  if (process.env.VERCEL === "1") {
-    throw new Error("DATABASE_URL or POSTGRES_URL is required on Vercel; refusing to fall back to canonical.db.");
-  }
-  return "sqlite";
+  return "postgres";
 }
 
-function logBackend(backend: "sqlite" | "postgres") {
-  if (loggedBackend !== backend) {
-    loggedBackend = backend;
-    console.log(`Using ${backend} directory database`);
+function logBackend() {
+  if (!loggedBackend) {
+    loggedBackend = true;
+    console.log("Using postgres directory database");
   }
-}
-
-function getSqliteDb() {
-  if (!sqliteConnection) {
-    sqliteConnection = new Database(canonicalDbPath(), { readonly: true, fileMustExist: true });
-    sqliteConnection.pragma("query_only = ON");
-  }
-  return sqliteConnection;
 }
 
 function postgresSchema() {
@@ -82,59 +64,37 @@ function normalizePostgresConnectionString(connectionString: string | undefined)
 }
 
 export function isPostgres() {
-  return databaseBackend() === "postgres";
+  databaseBackend();
+  return true;
 }
 
 export async function hasTable(tableName: string) {
-  if (isPostgres()) {
-    const result = await rows<{ exists: boolean }>(
-      `
-      SELECT EXISTS (
-        SELECT 1
-        FROM information_schema.tables
-        WHERE table_schema = current_schema()
-          AND table_name = ?
-      ) AS exists
-    `,
-      [tableName],
-    );
-    return Boolean(result[0]?.exists);
-  }
-
-  const result = await row<{ count: number }>(
+  const result = await rows<{ exists: boolean }>(
     `
-    SELECT COUNT(*) AS count
-    FROM sqlite_master
-    WHERE type = 'table'
-      AND name = ?
+    SELECT EXISTS (
+      SELECT 1
+      FROM information_schema.tables
+      WHERE table_schema = current_schema()
+        AND table_name = ?
+    ) AS exists
   `,
     [tableName],
   );
-  return Boolean(result?.count);
+  return Boolean(result[0]?.exists);
 }
 
 export async function rows<T extends Record<string, unknown>>(sql: string, params: unknown[] = []) {
-  if (isPostgres()) {
-    logBackend("postgres");
-    const query = toPostgresQuery(sql);
-    const result = await queryPostgres(query, params);
-    return result.rows as T[];
-  }
-
-  logBackend("sqlite");
-  return getSqliteDb().prepare(sql).all(...params) as T[];
+  logBackend();
+  const query = toPostgresQuery(sql);
+  const result = await queryPostgres(query, params);
+  return result.rows as T[];
 }
 
 export async function row<T extends Record<string, unknown>>(sql: string, params: unknown[] = []) {
-  if (isPostgres()) {
-    logBackend("postgres");
-    const query = toPostgresQuery(sql);
-    const result = await queryPostgres(query, params);
-    return result.rows[0] as T | undefined;
-  }
-
-  logBackend("sqlite");
-  return getSqliteDb().prepare(sql).get(...params) as T | undefined;
+  logBackend();
+  const query = toPostgresQuery(sql);
+  const result = await queryPostgres(query, params);
+  return result.rows[0] as T | undefined;
 }
 
 async function queryPostgres(sql: string, params: unknown[]) {

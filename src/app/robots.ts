@@ -17,7 +17,7 @@ export default function robots(): MetadataRoute.Robots {
       { userAgent: "PetalBot", disallow: "/" },
       {
         userAgent: "*",
-        disallow: ["/api/", "/media/", "/docs/"],
+        disallow: ["/api/", "/docs/"],
         crawlDelay: 10,
       },
     ],
