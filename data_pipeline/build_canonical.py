@@ -1827,6 +1827,7 @@ class CanonicalBuilder:
                 ("OxyHealthCare", normalize_name("OxyHealthCare"), int(oxy_org["id"])),
             )
         self.prune_oxyhealthcare_retail_offerings()
+        self.prune_oxyhealthcare_leeds_taster_offerings()
 
     def consolidate_exact_address_duplicates(self) -> None:
         rows = self.location_rows()
@@ -2140,6 +2141,22 @@ class CanonicalBuilder:
                 OR lower(COALESCE(raw_name, '')) LIKE 'oxy four%'
               )
             """
+        )
+
+    def prune_oxyhealthcare_leeds_taster_offerings(self) -> None:
+        location_id = self.location_id_for_source_url("https://hyperbaric.app/clinic/oxyhealthcare-leeds")
+        if not location_id:
+            return
+        self.conn.execute(
+            """
+            DELETE FROM offerings
+            WHERE location_id = ?
+              AND (
+                lower(COALESCE(raw_name, '')) = 'taster session'
+                OR lower(COALESCE(raw_name, '')) LIKE 'taster session - 1 session with consultation%'
+              )
+            """,
+            (location_id,),
         )
 
     def merged_location_fields(self, winner: sqlite3.Row, loser: sqlite3.Row) -> dict[str, Any]:
