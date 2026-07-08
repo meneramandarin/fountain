@@ -1,5 +1,6 @@
 export type EditorialProviderRail = {
   title: string;
+  cardFrom?: string;
   cards?: Array<{
     name: string;
     location: string;
@@ -11,6 +12,7 @@ export type EditorialProviderRail = {
   dynamicTreatmentIds?: number[];
   dynamicTreatmentNames?: string[];
   dynamicSearchQuery?: string;
+  locationSlugs?: string[];
   cta: {
     label: string;
     href: string;
@@ -75,6 +77,36 @@ export const editorialArticles: EditorialArticle[] = [
         cta: {
           label: "Browse GLP-1 weight management providers on Fountain →",
           href: "/directory?kind=locations&treatment_id=25",
+        },
+      },
+    },
+  },
+  {
+    slug: "biological-age.html",
+    bodySource: "04-biological-age.html",
+    title: "Your Biological Age Is a Marketing Number",
+    heroImage: "/domains/epigeneticage.jpg",
+    standfirst:
+      "The finger-prick test says you're seven years younger than your birthday. Take it again next week and the number moves. Here is what epigenetic clocks actually measure, why two of them can disagree by a decade, and how to read the result without being sold to.",
+    description:
+      "Epigenetic clocks are real tools, but the consumer biological-age number is noisier than the dashboard suggests.",
+    byline: "The Fountain Editors",
+    updated: "2026-07-07",
+    updatedLabel: "7 July 2026",
+    providerRails: {
+      "biological-age-providers": {
+        title: "Biological age & advanced diagnostics",
+        cardFrom: "search",
+        locationSlugs: [
+          "craft-body-scan-nashville",
+          "bodyspec-chicago",
+          "austin-medical-partners",
+          "human-longevity-inc-san-diego-2",
+        ],
+        dynamicTreatmentNames: ["Epigenetic age clock"],
+        cta: {
+          label: "Compare biological age providers on Fountain →",
+          href: "/directory?kind=locations&treatment_id=5",
         },
       },
     },

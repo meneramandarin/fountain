@@ -8,7 +8,7 @@ import { EditorialProviderRail } from "@/components/editorial-provider-rail";
 import { EditorialShareButton } from "@/components/editorial-share-button";
 import { MenopauseDelayCalculator } from "@/components/menopause-delay-calculator";
 import type { EditorialArticle } from "@/lib/editorial-articles";
-import { searchLocations } from "@/lib/queries";
+import { getLocationDetail, searchLocations } from "@/lib/queries";
 import { siteUrl } from "@/lib/site";
 
 const CONTENT_ROOT = path.join(process.cwd(), "src/content/editorial");
@@ -36,6 +36,51 @@ function prioritizeTreatments(card: DirectoryLocationCardData, treatmentNames: s
   };
 }
 
+type LocationDetailCardSource = DirectoryLocationCardData & {
+  images?: { blob_url?: string | null }[];
+  offerings?: {
+    domain?: string | null;
+    price_amount?: number | null;
+    price_currency?: string | null;
+    treatment?: string | null;
+  }[];
+};
+
+function locationDetailToDirectoryCard(location: LocationDetailCardSource): DirectoryLocationCardData {
+  const pricedOfferings = (location.offerings || []).filter((offering) => offering.price_amount != null);
+  const minPrice = pricedOfferings.reduce<(typeof pricedOfferings)[number] | null>((lowest, offering) => {
+    if (!lowest) {
+      return offering;
+    }
+
+    return Number(offering.price_amount) < Number(lowest.price_amount) ? offering : lowest;
+  }, null);
+  const treatmentMap = new Map<string, { name: string; domain: string }>();
+
+  for (const offering of location.offerings || []) {
+    if (offering.treatment && offering.domain && !treatmentMap.has(offering.treatment)) {
+      treatmentMap.set(offering.treatment, { name: offering.treatment, domain: offering.domain });
+    }
+  }
+
+  return {
+    id: location.id,
+    slug: location.slug,
+    name: location.name,
+    org_name: location.org_name,
+    locality: location.locality,
+    region: location.region,
+    country_name: location.country_name,
+    rating: location.rating,
+    review_count: location.review_count,
+    min_price_amount: minPrice?.price_amount ?? null,
+    min_price_currency: minPrice?.price_currency ?? null,
+    treatments: Array.from(treatmentMap.values()),
+    tags: location.tags || [],
+    image: location.images?.[0]?.blob_url || null,
+  };
+}
+
 async function loadArticleBodyHtml(source: string) {
   const file = await readFile(path.join(CONTENT_ROOT, source), "utf8");
   return file.replaceAll(' target="_blank"', ' target="_blank" rel="noopener noreferrer"');
@@ -49,10 +94,20 @@ type DynamicRailCards = Record<string, DirectoryLocationCardData[]>;
 
 async function loadDynamicRailCards(article: EditorialArticle): Promise<DynamicRailCards> {
   const railEntries = Object.entries(article.providerRails || {}).filter(
-    ([, rail]) => rail.dynamicTreatmentId || rail.dynamicTreatmentIds?.length || rail.dynamicSearchQuery,
+    ([, rail]) => rail.locationSlugs?.length || rail.dynamicTreatmentId || rail.dynamicTreatmentIds?.length || rail.dynamicSearchQuery,
   );
   const resolved = await Promise.all(
     railEntries.map(async ([id, rail]) => {
+      if (rail.locationSlugs?.length) {
+        const locations = await Promise.all(rail.locationSlugs.map((slug) => getLocationDetail(slug)));
+        const cards = locations
+          .filter((location): location is LocationDetailCardSource => Boolean(location))
+          .map(locationDetailToDirectoryCard)
+          .map((card) => prioritizeTreatments(card, rail.dynamicTreatmentNames));
+
+        return [id, cards] as const;
+      }
+
       const treatmentIds = [...(rail.dynamicTreatmentIds || []), ...(rail.dynamicTreatmentId ? [rail.dynamicTreatmentId] : [])];
       const payload = await searchLocations(
         {
