@@ -6,6 +6,7 @@ import { LandingExploreCarousel, type LandingExploreItem } from "@/components/la
 import { LandingFeaturedDirectoryCarousel } from "@/components/landing-featured-directory-carousel";
 import { LandingFooter } from "@/components/landing-footer";
 import { LandingScrollHeader } from "@/components/landing-scroll-header";
+import { LandingTopbar } from "@/components/landing-topbar";
 import { getPopularTreatments, popularTreatmentLabel } from "@/lib/popular-treatments";
 import {
   getFacets,
@@ -22,9 +23,11 @@ function searchHref(term: string) {
 }
 
 const exploreItems: LandingExploreItem[] = [
+  { label: "The Grey Zone - Peptides, Reclassified", image: "/domains/peptides.webp", href: "/peptide-regulation.html" },
+  { label: "On Microdosing GLP-1s", image: "/domains/microdosing.png", href: "/glp1-microdosing.html" },
+  { label: "Explore Metabolic Health", image: "/domains/nutrition.jpg", href: searchHref("Metabolic Health") },
+  { label: "Menopause, Optional", image: "/domains/ovarian health.jpg", href: "/ovarian-longevity.html" },
   { label: "Muscle Recovery", image: "/domains/musclerecovery.webp", href: searchHref("Muscle Recovery") },
-  { label: "Metabolic Health", image: "/domains/nutrition.jpg", href: searchHref("Metabolic Health") },
-  { label: "Ovarian Health", image: "/domains/ovarian health.jpg", href: searchHref("Ovarian Health") },
   { label: "Regenerative Medicine", image: "/domains/regenerativehealth.png", href: searchHref("Regenerative Medicine") },
   { label: "Cognitive Health", image: "/domains/cognitivehealth.jpg", href: searchHref("Cognitive Health") },
   { label: "Biological Age", image: "/domains/Biologicalage.avif", href: searchHref("Biological Age") },
@@ -50,14 +53,7 @@ export default async function HomePage() {
       <LandingScrollHeader />
 
       <section className="landing-hero" aria-labelledby="landing-hero-title">
-        <div className="landing-hero-topbar">
-          <Link className="landing-brand landing-hero-brand" href="/">
-            fountain
-          </Link>
-          <button className="coming-soon-pill" type="button">
-            Coming Soon <span aria-hidden="true">|</span> Join
-          </button>
-        </div>
+        <LandingTopbar />
 
         <div className="landing-hero-copy">
           <h1 id="landing-hero-title">The World’s Biggest Longevity Market Place.</h1>

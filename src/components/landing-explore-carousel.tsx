@@ -38,18 +38,6 @@ export function LandingExploreCarousel({ items }: LandingExploreCarouselProps) {
       );
     }
 
-    function getTileAdvance() {
-      const firstTile = railElement.querySelector<HTMLElement>(
-        `[data-loop-copy="${MIDDLE_COPY_INDEX}"][data-loop-index="0"]`
-      );
-      const secondTile = railElement.querySelector<HTMLElement>(
-        `[data-loop-copy="${MIDDLE_COPY_INDEX}"][data-loop-index="1"]`
-      );
-      const gap = Number.parseFloat(getComputedStyle(railElement).columnGap) || 0;
-
-      return secondTile && firstTile ? secondTile.offsetLeft - firstTile.offsetLeft : (firstTile?.offsetWidth || 0) + gap;
-    }
-
     function getLoopMetrics() {
       const leadingOffset = getCopyStart(0);
       const middleStart = getCopyStart(MIDDLE_COPY_INDEX);
@@ -99,7 +87,7 @@ export function LandingExploreCarousel({ items }: LandingExploreCarouselProps) {
     const initialScrollFrame = requestAnimationFrame(() => {
       const { lowerBoundary } = getLoopMetrics();
 
-      setScrollLeftInstant(lowerBoundary + getTileAdvance());
+      setScrollLeftInstant(lowerBoundary);
     });
 
     railElement.addEventListener("scroll", keepScrollInMiddleCopy, { passive: true });
