@@ -4,10 +4,15 @@ import { Search } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
-export function LandingScrollHeader() {
+export function LandingScrollHeader({ alwaysVisible = false }: { alwaysVisible?: boolean }) {
   const [isVisible, setIsVisible] = useState(false);
+  const headerIsVisible = alwaysVisible || isVisible;
 
   useEffect(() => {
+    if (alwaysVisible) {
+      return;
+    }
+
     let animationFrame = 0;
 
     function updateVisibility() {
@@ -32,10 +37,10 @@ export function LandingScrollHeader() {
       window.removeEventListener("scroll", requestVisibilityUpdate);
       window.removeEventListener("resize", requestVisibilityUpdate);
     };
-  }, []);
+  }, [alwaysVisible]);
 
   return (
-    <header className={`landing-scroll-header${isVisible ? " is-visible" : ""}`} aria-label="Site header">
+    <header className={`landing-scroll-header${headerIsVisible ? " is-visible" : ""}`} aria-label="Site header">
       <Link className="landing-brand landing-scroll-brand" href="/">
         fountain
       </Link>
