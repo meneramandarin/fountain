@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import { locationHref } from "@/lib/directory-urls";
+import { formatLocationPlace } from "@/lib/location-display";
 
 export type DirectoryLocationCardData = {
   id: number;
@@ -66,7 +67,11 @@ function formatPrice(amount?: number | null, currency?: string | null) {
 
 export function DirectoryLocationCard({ result, from = "search" }: { result: DirectoryLocationCardData; from?: string }) {
   const [imageFailed, setImageFailed] = useState(false);
-  const place = [result.locality, result.region, result.country_name].filter(Boolean).join(", ");
+  const place = formatLocationPlace({
+    locality: result.locality,
+    region: result.region,
+    countryName: result.country_name,
+  });
   const type = result.tags?.find((tag) => tag.facet === "entity_type");
   const price = formatPrice(result.min_price_amount, result.min_price_currency);
 

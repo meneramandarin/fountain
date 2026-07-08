@@ -1,0 +1,52 @@
+{
+  "generated_at": "2026-07-08T06:04:07.362Z",
+  "mode": "inventory_only",
+  "dry_run": false,
+  "schema": "fountain",
+  "raw_schema": "fountain_raw",
+  "checkpoint": "location-geocode-backfill-checkpoint-20260707.json",
+  "backup_table": "fountain_raw.location_geocode_coordinate_backup_20260707",
+  "audit_table": "fountain_raw.location_geocode_backfill_audit_20260707",
+  "low_confidence_table": "fountain_raw.location_geocode_low_confidence_20260707",
+  "locality_audit_table": "fountain_raw.location_geocode_locality_audit_20260707",
+  "summary": {
+    "candidates_all_before": 1265,
+    "candidates_with_country_before": 1265,
+    "locality_review_rows_before": 395,
+    "locality_review_geocodable_before": 324,
+    "total_google_targets": 1481,
+    "estimated_cost_usd": 7.41,
+    "coordinate_coverage_before": 10714,
+    "coordinate_coverage_after": 10714,
+    "coordinates_written": 0,
+    "low_confidence_or_skipped": 0,
+    "locality_conflicts_resolved": 0,
+    "locality_conflicts_remaining_or_unresolved": 0
+  },
+  "before": {
+    "total_locations": 13118,
+    "coordinate_coverage": 10714,
+    "geocode_candidates_all": 1265,
+    "geocode_candidates_with_country": 1265,
+    "locality_review_rows": 395,
+    "geocode_locality_review_candidates": 324,
+    "estimated_cost_usd": 7.405
+  },
+  "after": {
+    "total_locations": 13118,
+    "coordinate_coverage": 10714,
+    "geocode_candidates_all": 1265,
+    "geocode_candidates_with_country": 1265,
+    "locality_review_rows": 395,
+    "geocode_locality_review_candidates": 324,
+    "estimated_cost_usd": 7.405
+  },
+  "review_by_status": {},
+  "locality_by_status": {
+    "resolved": 0
+  },
+  "accepted_sample": [],
+  "low_confidence_sample": [],
+  "locality_resolved_sample": [],
+  "locality_conflict_sample": []
+}

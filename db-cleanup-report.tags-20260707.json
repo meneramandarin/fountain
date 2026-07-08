@@ -1,0 +1,326 @@
+{
+  "startedAt": "2026-07-07T21:32:58.523Z",
+  "before": {
+    "facetCounts": [
+      {
+        "facet": "care_model",
+        "tags": "8"
+      },
+      {
+        "facet": "entity_type",
+        "tags": "9"
+      },
+      {
+        "facet": "goal",
+        "tags": "11"
+      },
+      {
+        "facet": "mentioned_treatment",
+        "tags": "6"
+      },
+      {
+        "facet": "price_tier",
+        "tags": "13"
+      },
+      {
+        "facet": "service_area_city",
+        "tags": "80"
+      },
+      {
+        "facet": "service_area_service",
+        "tags": "388"
+      },
+      {
+        "facet": "service_category",
+        "tags": "11"
+      },
+      {
+        "facet": "source_record_type",
+        "tags": "33"
+      },
+      {
+        "facet": "source_tag",
+        "tags": "365"
+      },
+      {
+        "facet": "trust",
+        "tags": "41"
+      }
+    ],
+    "entityFacetCounts": [
+      {
+        "facet": "care_model",
+        "entity_tags": "2627"
+      },
+      {
+        "facet": "entity_type",
+        "entity_tags": "23404"
+      },
+      {
+        "facet": "goal",
+        "entity_tags": "11"
+      },
+      {
+        "facet": "mentioned_treatment",
+        "entity_tags": "61"
+      },
+      {
+        "facet": "price_tier",
+        "entity_tags": "2400"
+      },
+      {
+        "facet": "service_area_city",
+        "entity_tags": "80"
+      },
+      {
+        "facet": "service_area_service",
+        "entity_tags": "1031"
+      },
+      {
+        "facet": "service_category",
+        "entity_tags": "1346"
+      },
+      {
+        "facet": "source_record_type",
+        "entity_tags": "16860"
+      },
+      {
+        "facet": "source_tag",
+        "entity_tags": "11502"
+      },
+      {
+        "facet": "trust",
+        "entity_tags": "14619"
+      }
+    ]
+  },
+  "backups": [
+    {
+      "table_name": "entity_tags_backup_20260707",
+      "rows": "73941"
+    },
+    {
+      "table_name": "tags_backup_20260707",
+      "rows": "965"
+    }
+  ],
+  "serviceCategoryOfferingPreview": [
+    {
+      "canonical_name": "Cardiac screening",
+      "offerings_to_create": "116"
+    },
+    {
+      "canonical_name": "Cold plunge",
+      "offerings_to_create": "39"
+    },
+    {
+      "canonical_name": "Cryotherapy",
+      "offerings_to_create": "23"
+    },
+    {
+      "canonical_name": "DEXA scan",
+      "offerings_to_create": "16"
+    },
+    {
+      "canonical_name": "Full-body MRI",
+      "offerings_to_create": "54"
+    },
+    {
+      "canonical_name": "Hyperbaric oxygen therapy",
+      "offerings_to_create": "18"
+    },
+    {
+      "canonical_name": "IV nutrient therapy",
+      "offerings_to_create": "85"
+    },
+    {
+      "canonical_name": "NAD+ IV therapy",
+      "offerings_to_create": "29"
+    },
+    {
+      "canonical_name": "Red light therapy",
+      "offerings_to_create": "69"
+    },
+    {
+      "canonical_name": "Sauna and infrared",
+      "offerings_to_create": "58"
+    },
+    {
+      "canonical_name": "VO2 max test",
+      "offerings_to_create": "13"
+    }
+  ],
+  "serviceCategoryOfferingsCreated": [
+    {
+      "canonical_name": "Cardiac screening",
+      "inserted": "116"
+    },
+    {
+      "canonical_name": "Cold plunge",
+      "inserted": "39"
+    },
+    {
+      "canonical_name": "Cryotherapy",
+      "inserted": "23"
+    },
+    {
+      "canonical_name": "DEXA scan",
+      "inserted": "16"
+    },
+    {
+      "canonical_name": "Full-body MRI",
+      "inserted": "54"
+    },
+    {
+      "canonical_name": "Hyperbaric oxygen therapy",
+      "inserted": "18"
+    },
+    {
+      "canonical_name": "IV nutrient therapy",
+      "inserted": "85"
+    },
+    {
+      "canonical_name": "NAD+ IV therapy",
+      "inserted": "29"
+    },
+    {
+      "canonical_name": "Red light therapy",
+      "inserted": "69"
+    },
+    {
+      "canonical_name": "Sauna and infrared",
+      "inserted": "58"
+    },
+    {
+      "canonical_name": "VO2 max test",
+      "inserted": "13"
+    }
+  ],
+  "deletedByReason": [
+    {
+      "reason": "entity_type",
+      "facet": "entity_type",
+      "tags_deleted": "9",
+      "entity_tags_deleted": "23404"
+    },
+    {
+      "reason": "mentioned_treatment",
+      "facet": "mentioned_treatment",
+      "tags_deleted": "6",
+      "entity_tags_deleted": "61"
+    },
+    {
+      "reason": "price_tier_currency",
+      "facet": "price_tier",
+      "tags_deleted": "9",
+      "entity_tags_deleted": "91"
+    },
+    {
+      "reason": "service_category",
+      "facet": "service_category",
+      "tags_deleted": "11",
+      "entity_tags_deleted": "1346"
+    },
+    {
+      "reason": "source_record_type",
+      "facet": "source_record_type",
+      "tags_deleted": "33",
+      "entity_tags_deleted": "16860"
+    },
+    {
+      "reason": "source_tag",
+      "facet": "source_tag",
+      "tags_deleted": "365",
+      "entity_tags_deleted": "11502"
+    },
+    {
+      "reason": "trust_provenance",
+      "facet": "trust",
+      "tags_deleted": "28",
+      "entity_tags_deleted": "14068"
+    }
+  ],
+  "after": {
+    "facetCounts": [
+      {
+        "facet": "care_model",
+        "tags": "8"
+      },
+      {
+        "facet": "goal",
+        "tags": "11"
+      },
+      {
+        "facet": "price_tier",
+        "tags": "4"
+      },
+      {
+        "facet": "service_area_city",
+        "tags": "80"
+      },
+      {
+        "facet": "service_area_service",
+        "tags": "388"
+      },
+      {
+        "facet": "trust",
+        "tags": "13"
+      }
+    ],
+    "entityFacetCounts": [
+      {
+        "facet": "care_model",
+        "entity_tags": "2627"
+      },
+      {
+        "facet": "goal",
+        "entity_tags": "11"
+      },
+      {
+        "facet": "price_tier",
+        "entity_tags": "2309"
+      },
+      {
+        "facet": "service_area_city",
+        "entity_tags": "80"
+      },
+      {
+        "facet": "service_area_service",
+        "entity_tags": "1031"
+      },
+      {
+        "facet": "trust",
+        "entity_tags": "551"
+      }
+    ]
+  },
+  "acceptance": {
+    "searchNoise": [],
+    "remainingDeletedFacets": [],
+    "remainingBadPriceTier": [],
+    "remainingProvenanceTrust": [],
+    "lionheartTags": [
+      {
+        "facet": "price_tier",
+        "value": "$"
+      },
+      {
+        "facet": "trust",
+        "value": "medical oversight"
+      }
+    ]
+  },
+  "ambiguousTrustValuesKeptForReview": [
+    {
+      "id": 65,
+      "value": "research-backed (dr. kara fitzgerald protocol)",
+      "entity_tags": "2"
+    },
+    {
+      "id": 63,
+      "value": "research-validated, peer-reviewed testing",
+      "entity_tags": "2"
+    }
+  ],
+  "finishedAt": "2026-07-07T21:33:08.136Z"
+}

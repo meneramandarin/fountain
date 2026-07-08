@@ -1,0 +1,4962 @@
+{
+  "8:ChIJ10_aSxlawokRZZm6EuNuwVw": {
+    "location_id": 8,
+    "place_id": "ChIJ10_aSxlawokRZZm6EuNuwVw",
+    "fetched_at": "2026-07-08T00:46:05.191Z",
+    "payload": {
+      "id": "ChIJ10_aSxlawokRZZm6EuNuwVw",
+      "nationalPhoneNumber": "(888) 202-0128",
+      "websiteUri": "http://www.elitrahealth.com/",
+      "displayName": {
+        "text": "Elitra Health",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "10:ChIJGUUuHmxbwokR6akjpHe4FBY": {
+    "location_id": 10,
+    "place_id": "ChIJGUUuHmxbwokR6akjpHe4FBY",
+    "fetched_at": "2026-07-08T00:46:05.556Z",
+    "payload": {
+      "id": "ChIJGUUuHmxbwokR6akjpHe4FBY",
+      "nationalPhoneNumber": "(888) 800-0752",
+      "websiteUri": "http://www.princetonlongevitycenter.com/",
+      "displayName": {
+        "text": "Princeton Longevity Center",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "13:ChIJ63NebSBawokRnDuPylB7t38": {
+    "location_id": 13,
+    "place_id": "ChIJ63NebSBawokRnDuPylB7t38",
+    "fetched_at": "2026-07-08T00:46:05.916Z",
+    "payload": {
+      "id": "ChIJ63NebSBawokRnDuPylB7t38",
+      "nationalPhoneNumber": "(917) 563-4542",
+      "websiteUri": "https://beaire.com/en/aire-ancient-baths-newyork-tribeca",
+      "displayName": {
+        "text": "AIRE Ancient Baths New York · Tribeca",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "15:ChIJbwsKYcZbwokRpiaJ6WfJ6Uc": {
+    "location_id": 15,
+    "place_id": "ChIJbwsKYcZbwokRpiaJ6WfJ6Uc",
+    "fetched_at": "2026-07-08T00:46:06.272Z",
+    "payload": {
+      "id": "ChIJbwsKYcZbwokRpiaJ6WfJ6Uc",
+      "nationalPhoneNumber": "(646) 669-7270",
+      "websiteUri": "https://cleanmarket.com/",
+      "displayName": {
+        "text": "Clean Market",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "18:ChIJq6qqqhFawokRUkNWY7wcr18": {
+    "location_id": 18,
+    "place_id": "ChIJq6qqqhFawokRUkNWY7wcr18",
+    "fetched_at": "2026-07-08T00:46:06.638Z",
+    "payload": {
+      "id": "ChIJq6qqqhFawokRUkNWY7wcr18",
+      "nationalPhoneNumber": "(212) 379-6414",
+      "websiteUri": "https://advancedholisticcenter.com/?utm_source=google&utm_medium=GBP_NYC",
+      "displayName": {
+        "text": "Advanced Holistic Center",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "19:ChIJszn3Co9ZwokRcevhgY036w8": {
+    "location_id": 19,
+    "place_id": "ChIJszn3Co9ZwokRcevhgY036w8",
+    "fetched_at": "2026-07-08T00:46:06.995Z",
+    "payload": {
+      "id": "ChIJszn3Co9ZwokRcevhgY036w8",
+      "nationalPhoneNumber": "(646) 998-4952",
+      "websiteUri": "https://invitacryonyc.com/",
+      "displayName": {
+        "text": "InVita Wellness",
+        "languageCode": "ru"
+      }
+    },
+    "error": null
+  },
+  "25:ChIJQabf9f9ZwokRYa1_h9uB-JA": {
+    "location_id": 25,
+    "place_id": "ChIJQabf9f9ZwokRYa1_h9uB-JA",
+    "fetched_at": "2026-07-08T00:46:07.345Z",
+    "payload": {
+      "id": "ChIJQabf9f9ZwokRYa1_h9uB-JA",
+      "nationalPhoneNumber": "(607) 601-1096",
+      "websiteUri": "https://ivdrips.com/?utm_source=gbp&utm_medium=organic&utm_campaign=gbp-listing&utm_content=224-mulberry-st-new-york-ny-10012",
+      "displayName": {
+        "text": "IV DRIPS",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "26:ChIJXy_rYhFZwokRpTBdxmRmz1Q": {
+    "location_id": 26,
+    "place_id": "ChIJXy_rYhFZwokRpTBdxmRmz1Q",
+    "fetched_at": "2026-07-08T00:46:07.692Z",
+    "payload": {
+      "id": "ChIJXy_rYhFZwokRpTBdxmRmz1Q",
+      "nationalPhoneNumber": "(212) 226-4141",
+      "websiteUri": "http://www.tribecaspanyc.com/",
+      "displayName": {
+        "text": "Tribeca Spa of Tranquility",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "28:ChIJex7FHI9ZwokR3NkJeC5rhSo": {
+    "location_id": 28,
+    "place_id": "ChIJex7FHI9ZwokR3NkJeC5rhSo",
+    "fetched_at": "2026-07-08T00:46:08.047Z",
+    "payload": {
+      "id": "ChIJex7FHI9ZwokR3NkJeC5rhSo",
+      "nationalPhoneNumber": "(212) 334-4631",
+      "websiteUri": "https://www.equinox.com/clubs/new-york/downtown/soho?cid=gmb",
+      "displayName": {
+        "text": "Equinox SoHo",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "31:ChIJxdcY7Y9ZwokRdRZiT5GZ-wg": {
+    "location_id": 31,
+    "place_id": "ChIJxdcY7Y9ZwokRdRZiT5GZ-wg",
+    "fetched_at": "2026-07-08T00:46:08.395Z",
+    "payload": {
+      "id": "ChIJxdcY7Y9ZwokRdRZiT5GZ-wg",
+      "nationalPhoneNumber": "(212) 995-8880",
+      "websiteUri": "http://www.serenitynaturalhealth.com/",
+      "displayName": {
+        "text": "Serenity Natural Health",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "35:ChIJAQBw-IRZwokRhDN-b7dtdU4": {
+    "location_id": 35,
+    "place_id": "ChIJAQBw-IRZwokRhDN-b7dtdU4",
+    "fetched_at": "2026-07-08T00:46:08.743Z",
+    "payload": {
+      "id": "ChIJAQBw-IRZwokRhDN-b7dtdU4",
+      "nationalPhoneNumber": "(212) 228-5909",
+      "websiteUri": "https://kollectivnyc.com/",
+      "displayName": {
+        "text": "Kollectiv | Sauna, Cryotherapy, Massage, CRYOSKIN, Energy Healing, Spa in New York",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "36:ChIJa0Vh7INZwokRzsHq2nsE2kE": {
+    "location_id": 36,
+    "place_id": "ChIJa0Vh7INZwokRzsHq2nsE2kE",
+    "fetched_at": "2026-07-08T00:46:09.085Z",
+    "payload": {
+      "id": "ChIJa0Vh7INZwokRzsHq2nsE2kE",
+      "nationalPhoneNumber": "(212) 501-1450",
+      "websiteUri": "https://www.equinox.com/clubs/new-york/downtown/orchardst?cid=gmb",
+      "displayName": {
+        "text": "Equinox Orchard Street",
+        "languageCode": "usa"
+      }
+    },
+    "error": null
+  },
+  "37:ChIJtxFuAJBZwokRwaNFoBv6Jtc": {
+    "location_id": 37,
+    "place_id": "ChIJtxFuAJBZwokRwaNFoBv6Jtc",
+    "fetched_at": "2026-07-08T00:46:09.433Z",
+    "payload": {
+      "id": "ChIJtxFuAJBZwokRwaNFoBv6Jtc",
+      "nationalPhoneNumber": "(212) 419-3273",
+      "websiteUri": "https://www.equinox.com/clubs/new-york/downtown/bondst?cid=gmb",
+      "displayName": {
+        "text": "Equinox Bond Street",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "39:ChIJrQ9YOvlbwokRsX5wGa5e62A": {
+    "location_id": 39,
+    "place_id": "ChIJrQ9YOvlbwokRsX5wGa5e62A",
+    "fetched_at": "2026-07-08T00:46:09.791Z",
+    "payload": {
+      "id": "ChIJrQ9YOvlbwokRsX5wGa5e62A",
+      "nationalPhoneNumber": "(646) 668-2771",
+      "websiteUri": "https://www.downtownpainphysicians.com/cortisone-injections/",
+      "displayName": {
+        "text": "Cortisone Shot Specialists Brooklyn",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "41:ChIJLdRBmdUXuC0R2IkUMYoAnhg": {
+    "location_id": 41,
+    "place_id": "ChIJLdRBmdUXuC0R2IkUMYoAnhg",
+    "fetched_at": "2026-07-08T00:46:10.136Z",
+    "payload": {
+      "id": "ChIJLdRBmdUXuC0R2IkUMYoAnhg",
+      "nationalPhoneNumber": "(347) 457-5380",
+      "websiteUri": "https://www.recoverienyc.com/",
+      "displayName": {
+        "text": "Recoverie - Wellness Club",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "43:ChIJ6QzFjltbwokRhjgdHc01agI": {
+    "location_id": 43,
+    "place_id": "ChIJ6QzFjltbwokRhjgdHc01agI",
+    "fetched_at": "2026-07-08T00:46:10.476Z",
+    "payload": {
+      "id": "ChIJ6QzFjltbwokRhjgdHc01agI",
+      "nationalPhoneNumber": "(646) 402-9647",
+      "websiteUri": "https://www.qcny.com/?utm_source=google&utm_medium=organic&utm_campaign=google_business_profile",
+      "displayName": {
+        "text": "QC Spa New York",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "46:ChIJxaP-pmhZwokR0WW9r2wXbM0": {
+    "location_id": 46,
+    "place_id": "ChIJxaP-pmhZwokR0WW9r2wXbM0",
+    "fetched_at": "2026-07-08T00:46:10.831Z",
+    "payload": {
+      "id": "ChIJxaP-pmhZwokR0WW9r2wXbM0",
+      "nationalPhoneNumber": "(917) 938-7867",
+      "websiteUri": "https://ject.us/",
+      "displayName": {
+        "text": "JECT",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "49:ChIJQZyLopRZwokRi8c_Pwmg1ck": {
+    "location_id": 49,
+    "place_id": "ChIJQZyLopRZwokRi8c_Pwmg1ck",
+    "fetched_at": "2026-07-08T00:46:11.179Z",
+    "payload": {
+      "id": "ChIJQZyLopRZwokRi8c_Pwmg1ck",
+      "nationalPhoneNumber": "(212) 255-8023",
+      "websiteUri": "https://www.cliniqueyft.com/",
+      "displayName": {
+        "text": "Clinique YFT",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "50:ChIJsSO_OpdZwokRLRXn79xWHxo": {
+    "location_id": 50,
+    "place_id": "ChIJsSO_OpdZwokRLRXn79xWHxo",
+    "fetched_at": "2026-07-08T00:46:11.507Z",
+    "payload": {
+      "id": "ChIJsSO_OpdZwokRLRXn79xWHxo",
+      "nationalPhoneNumber": "(212) 620-7076",
+      "websiteUri": "https://healingcannabisdeliverynewyork.godaddysites.com/",
+      "displayName": {
+        "text": "Integrative Health NYC",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "52:ChIJI6ar2eRRwokR_NHwFPKwEfU": {
+    "location_id": 52,
+    "place_id": "ChIJI6ar2eRRwokR_NHwFPKwEfU",
+    "fetched_at": "2026-07-08T00:46:11.828Z",
+    "payload": {
+      "id": "ChIJI6ar2eRRwokR_NHwFPKwEfU",
+      "nationalPhoneNumber": "(551) 230-4300",
+      "websiteUri": "https://glowbar.com/?utm_source=GoogleBusinessProfile&utm_medium=Organic&utm_campaign=Website&utm_content=Jersey%20City",
+      "displayName": {
+        "text": "Glowbar Jersey City",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "56:ChIJm6OyKhFawokR0xKKZqHwvrg": {
+    "location_id": 56,
+    "place_id": "ChIJm6OyKhFawokR0xKKZqHwvrg",
+    "fetched_at": "2026-07-08T00:46:12.159Z",
+    "payload": {
+      "id": "ChIJm6OyKhFawokR0xKKZqHwvrg",
+      "nationalPhoneNumber": "(212) 430-6677",
+      "websiteUri": "https://www.agelessmenshealth.com/locations/newyork-brooklyn-testosterone-replacement-therapy-clinic/",
+      "displayName": {
+        "text": "Ageless Men's Health",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "58:ChIJT6uag51ZwokRBV2vUMM3FWQ": {
+    "location_id": 58,
+    "place_id": "ChIJT6uag51ZwokRBV2vUMM3FWQ",
+    "fetched_at": "2026-07-08T00:46:12.485Z",
+    "payload": {
+      "id": "ChIJT6uag51ZwokRBV2vUMM3FWQ",
+      "nationalPhoneNumber": "(212) 674-9250",
+      "websiteUri": "http://www.russianturkishbaths.com/",
+      "displayName": {
+        "text": "Russian & Turkish Baths",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "59:ChIJPZD3RAdZwokR5ICeNjOqgwM": {
+    "location_id": 59,
+    "place_id": "ChIJPZD3RAdZwokR5ICeNjOqgwM",
+    "fetched_at": "2026-07-08T00:46:12.827Z",
+    "payload": {
+      "id": "ChIJPZD3RAdZwokR5ICeNjOqgwM",
+      "nationalPhoneNumber": "(929) 556-6647",
+      "websiteUri": "https://extension.health/",
+      "displayName": {
+        "text": "Extension Health",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "68:ChIJ2-blwIVbwokRWwYbodkCxrw": {
+    "location_id": 68,
+    "place_id": "ChIJ2-blwIVbwokRWwYbodkCxrw",
+    "fetched_at": "2026-07-08T00:46:13.161Z",
+    "payload": {
+      "id": "ChIJ2-blwIVbwokRWwYbodkCxrw",
+      "nationalPhoneNumber": "(347) 514-9311",
+      "websiteUri": "https://lovmedspa.com/brooklyn/",
+      "displayName": {
+        "text": "Lov MedSpa Brooklyn",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "69:ChIJVXPdScRbwokRmaVNZPPrZCU": {
+    "location_id": 69,
+    "place_id": "ChIJVXPdScRbwokRmaVNZPPrZCU",
+    "fetched_at": "2026-07-08T00:46:13.484Z",
+    "payload": {
+      "id": "ChIJVXPdScRbwokRmaVNZPPrZCU",
+      "nationalPhoneNumber": "(646) 779-0995",
+      "websiteUri": "https://motionis.health/",
+      "displayName": {
+        "text": "Tanuj P. Palvia, MD",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "72:ChIJj1oEvRkgI2ARSWnY38yLVC0": {
+    "location_id": 72,
+    "place_id": "ChIJj1oEvRkgI2ARSWnY38yLVC0",
+    "fetched_at": "2026-07-08T00:46:13.816Z",
+    "payload": {
+      "id": "ChIJj1oEvRkgI2ARSWnY38yLVC0",
+      "nationalPhoneNumber": "(718) 500-4133",
+      "websiteUri": "http://agelessskinbody.com/",
+      "displayName": {
+        "text": "Ageless Skin & Body Solutions",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "76:ChIJGwOHBwlRwokRl9ps0as-Wn8": {
+    "location_id": 76,
+    "place_id": "ChIJGwOHBwlRwokRl9ps0as-Wn8",
+    "fetched_at": "2026-07-08T00:46:14.157Z",
+    "payload": {
+      "id": "ChIJGwOHBwlRwokRl9ps0as-Wn8",
+      "nationalPhoneNumber": "(201) 273-9694",
+      "websiteUri": "https://gamedaymenshealth.com/jersey-city",
+      "displayName": {
+        "text": "Gameday Men's Health Jersey City, NJ",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "77:ChIJH-Nw8RbvMSERB9CNA0iW4nY": {
+    "location_id": 77,
+    "place_id": "ChIJH-Nw8RbvMSERB9CNA0iW4nY",
+    "fetched_at": "2026-07-08T00:46:14.488Z",
+    "payload": {
+      "id": "ChIJH-Nw8RbvMSERB9CNA0iW4nY",
+      "nationalPhoneNumber": "(646) 912-8020",
+      "websiteUri": "https://syraaesthetics.com/",
+      "displayName": {
+        "text": "Dr. Syra Aesthetics & Longevity Institute",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "78:ChIJEW1XrphZwokR8qq-qdXerww": {
+    "location_id": 78,
+    "place_id": "ChIJEW1XrphZwokR8qq-qdXerww",
+    "fetched_at": "2026-07-08T00:46:14.838Z",
+    "payload": {
+      "id": "ChIJEW1XrphZwokR8qq-qdXerww",
+      "nationalPhoneNumber": "(917) 613-8810",
+      "websiteUri": "https://www.newyorkacupuncturecenter.com/",
+      "displayName": {
+        "text": "Tree of Life Acupuncture | Union Square, NYC | Bioresonance, Frequency, PEMF, Ozone therapy| Lyme Disease & Cancer Care",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "79:ChIJP4SH2O1ZwokRr7quxoopWKY": {
+    "location_id": 79,
+    "place_id": "ChIJP4SH2O1ZwokRr7quxoopWKY",
+    "fetched_at": "2026-07-08T00:46:15.180Z",
+    "payload": {
+      "id": "ChIJP4SH2O1ZwokRr7quxoopWKY",
+      "nationalPhoneNumber": "(603) 665-0843",
+      "websiteUri": "https://advancedtrtclinic.com/locations/college-point-ny/?utm_source=google&utm_medium=organic&utm_campaign=gmb&utm_content=college-point-ny",
+      "displayName": {
+        "text": "Advanced TRT Clinic",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "80:ChIJMdJzuA1XwokR5l-d8OTjAHg": {
+    "location_id": 80,
+    "place_id": "ChIJMdJzuA1XwokR5l-d8OTjAHg",
+    "fetched_at": "2026-07-08T00:46:15.526Z",
+    "payload": {
+      "id": "ChIJMdJzuA1XwokR5l-d8OTjAHg",
+      "nationalPhoneNumber": "(814) 830-3581",
+      "websiteUri": "http://clearlaserskin.com/",
+      "displayName": {
+        "text": "Clear Laser Skin Clinic Jersey City",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "83:ChIJ042Og-xRwokRHFXk6iu4Z9g": {
+    "location_id": 83,
+    "place_id": "ChIJ042Og-xRwokRHFXk6iu4Z9g",
+    "fetched_at": "2026-07-08T00:46:15.853Z",
+    "payload": {
+      "id": "ChIJ042Og-xRwokRHFXk6iu4Z9g",
+      "nationalPhoneNumber": "(855) 710-5433",
+      "websiteUri": "https://www.lifedripsiv.com/",
+      "displayName": {
+        "text": "LIFEDRIPS.IV",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "89:ChIJASDm4KNZwokR5RIC__vZHkw": {
+    "location_id": 89,
+    "place_id": "ChIJASDm4KNZwokR5RIC__vZHkw",
+    "fetched_at": "2026-07-08T00:46:16.178Z",
+    "payload": {
+      "id": "ChIJASDm4KNZwokR5RIC__vZHkw",
+      "nationalPhoneNumber": "(646) 470-8458",
+      "websiteUri": "https://www.simplicityhealthassociates.com/",
+      "displayName": {
+        "text": "Simplicity Health Associates",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "93:ChIJBS_u3XRZwokR27lMuWEnUn8": {
+    "location_id": 93,
+    "place_id": "ChIJBS_u3XRZwokR27lMuWEnUn8",
+    "fetched_at": "2026-07-08T00:46:16.502Z",
+    "payload": {
+      "id": "ChIJBS_u3XRZwokR27lMuWEnUn8",
+      "nationalPhoneNumber": "(212) 233-5999",
+      "websiteUri": "http://www.prtl.com/",
+      "displayName": {
+        "text": "FICS by PRTL",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "97:ChIJ_9sXuj9ZwokRwgmRUtoDAn0": {
+    "location_id": 97,
+    "place_id": "ChIJ_9sXuj9ZwokRwgmRUtoDAn0",
+    "fetched_at": "2026-07-08T00:46:16.827Z",
+    "payload": {
+      "id": "ChIJ_9sXuj9ZwokRwgmRUtoDAn0",
+      "nationalPhoneNumber": "(718) 954-7590",
+      "websiteUri": "http://maharose.com/",
+      "displayName": {
+        "text": "Maha Rose",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "103:ChIJKxPbBwBZwokRkGZEW6k9FsU": {
+    "location_id": 103,
+    "place_id": "ChIJKxPbBwBZwokRkGZEW6k9FsU",
+    "fetched_at": "2026-07-08T00:46:17.147Z",
+    "payload": {
+      "id": "ChIJKxPbBwBZwokRkGZEW6k9FsU",
+      "nationalPhoneNumber": "(212) 381-1699",
+      "websiteUri": "http://othership.us/",
+      "displayName": {
+        "text": "Othership Flatiron",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "110:ChIJ-wVzPbJQwokRKOzTjcwyuQA": {
+    "location_id": 110,
+    "place_id": "ChIJ-wVzPbJQwokRKOzTjcwyuQA",
+    "fetched_at": "2026-07-08T00:46:17.470Z",
+    "payload": {
+      "id": "ChIJ-wVzPbJQwokRKOzTjcwyuQA",
+      "nationalPhoneNumber": "(201) 855-5743",
+      "websiteUri": "http://www.chi4life.org/contact-us",
+      "displayName": {
+        "text": "chi4life",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "111:ChIJR-i0HPNRwokRy1GSU8FnZZw": {
+    "location_id": 111,
+    "place_id": "ChIJR-i0HPNRwokRy1GSU8FnZZw",
+    "fetched_at": "2026-07-08T00:46:17.796Z",
+    "payload": {
+      "id": "ChIJR-i0HPNRwokRy1GSU8FnZZw",
+      "nationalPhoneNumber": "(201) 360-2384",
+      "websiteUri": "http://rainenriver.com/",
+      "displayName": {
+        "text": "Raine n River Apothecary",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "113:ChIJgcl18u9bwokRzhMUt-v-Nak": {
+    "location_id": 113,
+    "place_id": "ChIJgcl18u9bwokRzhMUt-v-Nak",
+    "fetched_at": "2026-07-08T00:46:18.119Z",
+    "payload": {
+      "id": "ChIJgcl18u9bwokRzhMUt-v-Nak",
+      "nationalPhoneNumber": "(929) 998-4330",
+      "websiteUri": "https://glowbar.com/?utm_source=GoogleBusinessProfile&utm_medium=Organic&utm_campaign=Website&utm_content=Cobble%20Hill",
+      "displayName": {
+        "text": "Glowbar Cobble Hill",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "115:ChIJwdIy4C5ZwokR37EQLj651lw": {
+    "location_id": 115,
+    "place_id": "ChIJwdIy4C5ZwokR37EQLj651lw",
+    "fetched_at": "2026-07-08T00:46:18.444Z",
+    "payload": {
+      "id": "ChIJwdIy4C5ZwokR37EQLj651lw",
+      "nationalPhoneNumber": "(973) 755-0924",
+      "websiteUri": "https://vitalivinfusion.com/hoboken-contact-us/?utm_source=google-my-business&utm_medium=organic&utm_campaign=gbp-listing",
+      "displayName": {
+        "text": "Vital IV - Ketamine Therapy & IV Infusions",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "116:ChIJX_pnmLpQwokRrlyyzTc6hl4": {
+    "location_id": 116,
+    "place_id": "ChIJX_pnmLpQwokRrlyyzTc6hl4",
+    "fetched_at": "2026-07-08T00:46:18.775Z",
+    "payload": {
+      "id": "ChIJX_pnmLpQwokRrlyyzTc6hl4",
+      "nationalPhoneNumber": "(201) 333-8116",
+      "websiteUri": "https://www.om.life/",
+      "displayName": {
+        "text": "om.life Wellness * Modern Recovery Spa",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "123:ChIJ6SjBU41ZwokRPz-gC-x9b1E": {
+    "location_id": 123,
+    "place_id": "ChIJ6SjBU41ZwokRPz-gC-x9b1E",
+    "fetched_at": "2026-07-08T00:46:19.107Z",
+    "payload": {
+      "id": "ChIJ6SjBU41ZwokRPz-gC-x9b1E",
+      "nationalPhoneNumber": "(646) 568-6636",
+      "websiteUri": "http://www.doctork.nyc/",
+      "displayName": {
+        "text": "Doctor K Private Medicine",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "125:ChIJJ64vrBtZwokRsiIMWjc0hOo": {
+    "location_id": 125,
+    "place_id": "ChIJJ64vrBtZwokRsiIMWjc0hOo",
+    "fetched_at": "2026-07-08T00:46:19.437Z",
+    "payload": {
+      "id": "ChIJJ64vrBtZwokRsiIMWjc0hOo",
+      "nationalPhoneNumber": "(917) 540-3914",
+      "websiteUri": "https://manhattanbonehealth.com/",
+      "displayName": {
+        "text": "OsteoStrong NYC Flatiron",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "129:ChIJY-A5jixZwokR-Lc6CqfPpZo": {
+    "location_id": 129,
+    "place_id": "ChIJY-A5jixZwokR-Lc6CqfPpZo",
+    "fetched_at": "2026-07-08T00:46:19.760Z",
+    "payload": {
+      "id": "ChIJY-A5jixZwokR-Lc6CqfPpZo",
+      "nationalPhoneNumber": "(646) 567-2885",
+      "websiteUri": "https://www.dripalchemynyc.com/",
+      "displayName": {
+        "text": "Drip Alchemy NYC",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "132:ChIJFVpmZE1awokRYn-LSLbNrto": {
+    "location_id": 132,
+    "place_id": "ChIJFVpmZE1awokRYn-LSLbNrto",
+    "fetched_at": "2026-07-08T00:46:20.086Z",
+    "payload": {
+      "id": "ChIJFVpmZE1awokRYn-LSLbNrto",
+      "nationalPhoneNumber": "(718) 797-0789",
+      "websiteUri": "http://emellemd.com/",
+      "displayName": {
+        "text": "Emèlle Restorative Medicine, P.C.",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "140:ChIJ8YYlzLNQwokRgAWLvOEVg3c": {
+    "location_id": 140,
+    "place_id": "ChIJ8YYlzLNQwokRgAWLvOEVg3c",
+    "fetched_at": "2026-07-08T00:46:20.424Z",
+    "payload": {
+      "id": "ChIJ8YYlzLNQwokRgAWLvOEVg3c",
+      "nationalPhoneNumber": "(201) 309-0909",
+      "websiteUri": "https://metaphysicaljc.square.site/",
+      "displayName": {
+        "text": "The Metaphysical Shoppe & Botanica",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "145:ChIJlW6oA-JZwokR9xDoRfnQFJc": {
+    "location_id": 145,
+    "place_id": "ChIJlW6oA-JZwokR9xDoRfnQFJc",
+    "fetched_at": "2026-07-08T00:46:20.753Z",
+    "payload": {
+      "id": "ChIJlW6oA-JZwokR9xDoRfnQFJc",
+      "nationalPhoneNumber": "(201) 754-0104",
+      "websiteUri": "http://www.riverpointwellness.com/",
+      "displayName": {
+        "text": "Riverpoint Wellness Group: Dr. Chang",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "152:ChIJkTyq0SlZwokRdtbwK-vZxLw": {
+    "location_id": 152,
+    "place_id": "ChIJkTyq0SlZwokRdtbwK-vZxLw",
+    "fetched_at": "2026-07-08T00:46:21.082Z",
+    "payload": {
+      "id": "ChIJkTyq0SlZwokRdtbwK-vZxLw",
+      "nationalPhoneNumber": "(646) 891-1315",
+      "websiteUri": "https://www.abathhouse.com/flatiron?utm_source=google&utm_medium=organic&utm_campaign=gbp-website-flatiron",
+      "displayName": {
+        "text": "Bathhouse Flatiron",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "153:ChIJ2aH3GlpawokRfa2yhNPeWyw": {
+    "location_id": 153,
+    "place_id": "ChIJ2aH3GlpawokRfa2yhNPeWyw",
+    "fetched_at": "2026-07-08T00:46:21.447Z",
+    "payload": {
+      "id": "ChIJ2aH3GlpawokRfa2yhNPeWyw",
+      "nationalPhoneNumber": "(718) 701-0808",
+      "websiteUri": "http://www.liftfloats.com/",
+      "displayName": {
+        "text": "Lift / Next Level Floats",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "157:ChIJyzSQ5eJXwokRcNvPjTUB0tA": {
+    "location_id": 157,
+    "place_id": "ChIJyzSQ5eJXwokRcNvPjTUB0tA",
+    "fetched_at": "2026-07-08T00:46:21.831Z",
+    "payload": {
+      "id": "ChIJyzSQ5eJXwokRcNvPjTUB0tA",
+      "nationalPhoneNumber": "(551) 465-7083",
+      "websiteUri": "https://hellohydrationnj.com/",
+      "displayName": {
+        "text": "Hello Hydration",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "159:ChIJWQEQ5oVXwokR-GEhY87a7po": {
+    "location_id": 159,
+    "place_id": "ChIJWQEQ5oVXwokR-GEhY87a7po",
+    "fetched_at": "2026-07-08T00:46:22.170Z",
+    "payload": {
+      "id": "ChIJWQEQ5oVXwokR-GEhY87a7po",
+      "nationalPhoneNumber": "(551) 239-9205",
+      "websiteUri": "https://zenomstudio.com/",
+      "displayName": {
+        "text": "Zen Om Studio",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "160:ChIJYc8bbXhbwokRkGNnY3rlkjc": {
+    "location_id": 160,
+    "place_id": "ChIJYc8bbXhbwokRkGNnY3rlkjc",
+    "fetched_at": "2026-07-08T00:46:22.496Z",
+    "payload": {
+      "id": "ChIJYc8bbXhbwokRkGNnY3rlkjc",
+      "nationalPhoneNumber": "(917) 383-1069",
+      "websiteUri": "https://elevate-holistics.com/get-a-medical-marijuana-card/new-york/?utm_source=gmb+brooklyn&utm_medium=google&utm_campaign=general",
+      "displayName": {
+        "text": "Elevate Holistics",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "172:ChIJyRRuU5hZwokR-JiXery3l6M": {
+    "location_id": 172,
+    "place_id": "ChIJyRRuU5hZwokR-JiXery3l6M",
+    "fetched_at": "2026-07-08T00:46:22.829Z",
+    "payload": {
+      "id": "ChIJyRRuU5hZwokR-JiXery3l6M",
+      "nationalPhoneNumber": "(212) 647-1930",
+      "websiteUri": "https://eliteaestheticsnyc.com/?utm_source=GMBlisting&utm_medium=organic&utm_campaign=elite-aesthetics",
+      "displayName": {
+        "text": "Elite Aesthetics",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "180:ChIJMzTM1gFg6KoRR8kNZTGd3_0": {
+    "location_id": 180,
+    "place_id": "ChIJMzTM1gFg6KoRR8kNZTGd3_0",
+    "fetched_at": "2026-07-08T00:46:23.162Z",
+    "payload": {
+      "id": "ChIJMzTM1gFg6KoRR8kNZTGd3_0",
+      "nationalPhoneNumber": "(973) 500-2524",
+      "websiteUri": "https://peakbymd.com/",
+      "displayName": {
+        "text": "Peak By MD",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "181:ChIJc6snzvxZwokR0rl9hrHVFG8": {
+    "location_id": 181,
+    "place_id": "ChIJc6snzvxZwokR0rl9hrHVFG8",
+    "fetched_at": "2026-07-08T00:46:23.498Z",
+    "payload": {
+      "id": "ChIJc6snzvxZwokR0rl9hrHVFG8",
+      "nationalPhoneNumber": "(917) 694-8625",
+      "websiteUri": "https://peachystudio.com/pages/williamsburg?y_source=1_MjYyMjMxMzQtNzE1LWxvY2F0aW9uLndlYnNpdGU%3D",
+      "displayName": {
+        "text": "Peachy Williamsburg",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "182:ChIJwwCwwWZZwokR7DHOfOa1B5A": {
+    "location_id": 182,
+    "place_id": "ChIJwwCwwWZZwokR7DHOfOa1B5A",
+    "fetched_at": "2026-07-08T00:46:23.836Z",
+    "payload": {
+      "id": "ChIJwwCwwWZZwokR7DHOfOa1B5A",
+      "nationalPhoneNumber": "(718) 246-4772",
+      "websiteUri": "http://n4estheticclinic.com/",
+      "displayName": {
+        "text": "N4 Esthetic Clinic",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "188:ChIJV3oF2aNZwokRUFWiSUJkRR4": {
+    "location_id": 188,
+    "place_id": "ChIJV3oF2aNZwokRUFWiSUJkRR4",
+    "fetched_at": "2026-07-08T00:46:24.175Z",
+    "payload": {
+      "id": "ChIJV3oF2aNZwokRUFWiSUJkRR4",
+      "nationalPhoneNumber": "(646) 245-9994",
+      "displayName": {
+        "text": "Alive New York - Mobile IV Therapy | Peptides",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "190:ChIJwxVKpyhbwokRboUTbsxT8E0": {
+    "location_id": 190,
+    "place_id": "ChIJwxVKpyhbwokRboUTbsxT8E0",
+    "fetched_at": "2026-07-08T00:46:24.501Z",
+    "payload": {
+      "id": "ChIJwxVKpyhbwokRboUTbsxT8E0",
+      "nationalPhoneNumber": "(212) 379-6412",
+      "websiteUri": "https://advancedholisticcenter.com/acupuncture-brooklyn/?utm_source=google&utm_medium=GBP_BKN",
+      "displayName": {
+        "text": "Advanced Holistic Center",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "193:ChIJs5Cx1KVZwokRUn3Y1g_cAqI": {
+    "location_id": 193,
+    "place_id": "ChIJs5Cx1KVZwokRUn3Y1g_cAqI",
+    "fetched_at": "2026-07-08T00:46:24.837Z",
+    "payload": {
+      "id": "ChIJs5Cx1KVZwokRUn3Y1g_cAqI",
+      "nationalPhoneNumber": "(646) 791-2850",
+      "websiteUri": "https://floranaturopathics.com/?utm_source=gmb",
+      "displayName": {
+        "text": "Flora Naturopathics - Holistic Medicine",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "194:ChIJnVpl2LlQwokR7bK6pkKhvxU": {
+    "location_id": 194,
+    "place_id": "ChIJnVpl2LlQwokR7bK6pkKhvxU",
+    "fetched_at": "2026-07-08T00:46:25.167Z",
+    "payload": {
+      "id": "ChIJnVpl2LlQwokR7bK6pkKhvxU",
+      "nationalPhoneNumber": "(201) 915-2000",
+      "websiteUri": "https://www.rwjbh.org/jersey-city-medical-center/",
+      "displayName": {
+        "text": "Jersey City Medical Center",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "199:ChIJFaAOmzJZwokRPo2sekeXLLI": {
+    "location_id": 199,
+    "place_id": "ChIJFaAOmzJZwokRPo2sekeXLLI",
+    "fetched_at": "2026-07-08T00:46:25.494Z",
+    "payload": {
+      "id": "ChIJFaAOmzJZwokRPo2sekeXLLI",
+      "nationalPhoneNumber": "(929) 374-8990",
+      "websiteUri": "https://www.shemayahholistichealth.com/",
+      "displayName": {
+        "text": "ShemaYah Holistic Health",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "208:ChIJj6ViLFpZwokRsPMRAgWx6jI": {
+    "location_id": 208,
+    "place_id": "ChIJj6ViLFpZwokRsPMRAgWx6jI",
+    "fetched_at": "2026-07-08T00:46:25.818Z",
+    "payload": {
+      "id": "ChIJj6ViLFpZwokRsPMRAgWx6jI",
+      "nationalPhoneNumber": "(347) 980-1480",
+      "websiteUri": "http://nyfunctionalmed.org/",
+      "displayName": {
+        "text": "NY Center for Functional Medicine",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "209:ChIJfQd-fKNZwokRHjLp449VYpU": {
+    "location_id": 209,
+    "place_id": "ChIJfQd-fKNZwokRHjLp449VYpU",
+    "fetched_at": "2026-07-08T00:46:26.152Z",
+    "payload": {
+      "id": "ChIJfQd-fKNZwokRHjLp449VYpU",
+      "nationalPhoneNumber": "(212) 337-0511",
+      "websiteUri": "http://olympuscenter.com/",
+      "displayName": {
+        "text": "Olympus Center for Holistic Integrative Medicine",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "217:ChIJv-BxfahZwokRBaIrb1HMiC4": {
+    "location_id": 217,
+    "place_id": "ChIJv-BxfahZwokRBaIrb1HMiC4",
+    "fetched_at": "2026-07-08T00:46:26.483Z",
+    "payload": {
+      "id": "ChIJv-BxfahZwokRBaIrb1HMiC4",
+      "nationalPhoneNumber": "(917) 477-3538",
+      "websiteUri": "https://www.nycintegrative.com/",
+      "displayName": {
+        "text": "NY Center For Integrative Health",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "222:ChIJMzT8wJVYwokRJbE7tmJngyM": {
+    "location_id": 222,
+    "place_id": "ChIJMzT8wJVYwokRJbE7tmJngyM",
+    "fetched_at": "2026-07-08T00:46:26.809Z",
+    "payload": {
+      "id": "ChIJMzT8wJVYwokRJbE7tmJngyM",
+      "nationalPhoneNumber": "(212) 472-1900",
+      "websiteUri": "https://www.drwilliamgael.com/",
+      "displayName": {
+        "text": "The Gael Center: William Gael, MD",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "225:ChIJn4xA4EpXwokRAstXuenJtCQ": {
+    "location_id": 225,
+    "place_id": "ChIJn4xA4EpXwokRAstXuenJtCQ",
+    "fetched_at": "2026-07-08T00:46:27.138Z",
+    "payload": {
+      "id": "ChIJn4xA4EpXwokRAstXuenJtCQ",
+      "nationalPhoneNumber": "(201) 565-3447",
+      "websiteUri": "http://www.doodyfreegirl.com/",
+      "displayName": {
+        "text": "Doody Free Girl",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "231:ChIJO4aV_0RZwokRUtpXiyAtr-U": {
+    "location_id": 231,
+    "place_id": "ChIJO4aV_0RZwokRUtpXiyAtr-U",
+    "fetched_at": "2026-07-08T00:46:27.462Z",
+    "payload": {
+      "id": "ChIJO4aV_0RZwokRUtpXiyAtr-U",
+      "nationalPhoneNumber": "(929) 397-0049",
+      "websiteUri": "http://animamundiherbals.com/",
+      "displayName": {
+        "text": "Anima Mundi Apothecary",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "232:ChIJMz2se2hZwokRpYyk1kLC21Q": {
+    "location_id": 232,
+    "place_id": "ChIJMz2se2hZwokRpYyk1kLC21Q",
+    "fetched_at": "2026-07-08T00:46:27.790Z",
+    "payload": {
+      "id": "ChIJMz2se2hZwokRpYyk1kLC21Q",
+      "nationalPhoneNumber": "(212) 502-4185",
+      "websiteUri": "https://thespaclub.com/",
+      "displayName": {
+        "text": "The SPA Club",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "235:ChIJiXx0SZRbwokRwmTws70kjbg": {
+    "location_id": 235,
+    "place_id": "ChIJiXx0SZRbwokRwmTws70kjbg",
+    "fetched_at": "2026-07-08T00:46:28.142Z",
+    "payload": {
+      "id": "ChIJiXx0SZRbwokRwmTws70kjbg",
+      "nationalPhoneNumber": "(201) 632-3060",
+      "websiteUri": "https://blossompediatrics.com/hoboken-nj-pediatrician/",
+      "displayName": {
+        "text": "Blossom Pediatrics - Hoboken",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "236:ChIJvSpYN81ZwokR0PqfuPKUN4M": {
+    "location_id": 236,
+    "place_id": "ChIJvSpYN81ZwokR0PqfuPKUN4M",
+    "fetched_at": "2026-07-08T00:46:28.468Z",
+    "payload": {
+      "id": "ChIJvSpYN81ZwokR0PqfuPKUN4M",
+      "nationalPhoneNumber": "(718) 536-5304",
+      "websiteUri": "https://www.perspiresaunastudio.com/locations/williamsburg/",
+      "displayName": {
+        "text": "Perspire Sauna Studio Williamsburg",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "237:ChIJG5lkUhhZwokRCBnYSmv5wLw": {
+    "location_id": 237,
+    "place_id": "ChIJG5lkUhhZwokRCBnYSmv5wLw",
+    "fetched_at": "2026-07-08T00:46:28.793Z",
+    "payload": {
+      "id": "ChIJG5lkUhhZwokRCBnYSmv5wLw",
+      "nationalPhoneNumber": "(646) 398-7556",
+      "websiteUri": "https://kahunaskinclinic.com/",
+      "displayName": {
+        "text": "Kahuna Skin Clinic",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "241:ChIJp1PzA8hZwokRakaEmrslZ4E": {
+    "location_id": 241,
+    "place_id": "ChIJp1PzA8hZwokRakaEmrslZ4E",
+    "fetched_at": "2026-07-08T00:46:29.118Z",
+    "payload": {
+      "id": "ChIJp1PzA8hZwokRakaEmrslZ4E",
+      "nationalPhoneNumber": "(310) 620-8372",
+      "websiteUri": "https://www.next-health.com/pages/locations-new-york-city",
+      "displayName": {
+        "text": "Next Health",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "244:ChIJBTF_ACxZwokRk8y1ICME3F4": {
+    "location_id": 244,
+    "place_id": "ChIJBTF_ACxZwokRk8y1ICME3F4",
+    "fetched_at": "2026-07-08T00:46:29.446Z",
+    "payload": {
+      "id": "ChIJBTF_ACxZwokRk8y1ICME3F4",
+      "nationalPhoneNumber": "(929) 489-2284",
+      "websiteUri": "https://www.abathhouse.com/williamsburg?utm_source=google&utm_medium=organic&utm_campaign=gbp-website-williamsburg",
+      "displayName": {
+        "text": "Bathhouse Williamsburg",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "246:ChIJ0cKEvVVawokRpgRnrnuR1LQ": {
+    "location_id": 246,
+    "place_id": "ChIJ0cKEvVVawokRpgRnrnuR1LQ",
+    "fetched_at": "2026-07-08T00:46:29.789Z",
+    "payload": {
+      "id": "ChIJ0cKEvVVawokRpgRnrnuR1LQ",
+      "nationalPhoneNumber": "(347) 294-0100",
+      "websiteUri": "http://citywellbrooklyn.com/",
+      "displayName": {
+        "text": "cityWell brooklyn",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "248:ChIJMwkz1aNZwokRs4WuAp9OxKc": {
+    "location_id": 248,
+    "place_id": "ChIJMwkz1aNZwokRs4WuAp9OxKc",
+    "fetched_at": "2026-07-08T00:46:30.119Z",
+    "payload": {
+      "id": "ChIJMwkz1aNZwokRs4WuAp9OxKc",
+      "nationalPhoneNumber": "(646) 992-2122",
+      "websiteUri": "https://www.berejuved.com/",
+      "displayName": {
+        "text": "BeRejuved Medical Spa & Wellness Studio - NYC",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "249:ChIJyW53Bl1ZwokRMJ5RrP5LNDE": {
+    "location_id": 249,
+    "place_id": "ChIJyW53Bl1ZwokRMJ5RrP5LNDE",
+    "fetched_at": "2026-07-08T00:46:30.460Z",
+    "payload": {
+      "id": "ChIJyW53Bl1ZwokRMJ5RrP5LNDE",
+      "nationalPhoneNumber": "(347) 599-1364",
+      "websiteUri": "http://www.purelynaturalspa.com/",
+      "displayName": {
+        "text": "Purely Natural Medical Spa",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "257:ChIJL21Bvh1ZwokRedkWL7NIsGY": {
+    "location_id": 257,
+    "place_id": "ChIJL21Bvh1ZwokRedkWL7NIsGY",
+    "fetched_at": "2026-07-08T00:46:30.789Z",
+    "payload": {
+      "id": "ChIJL21Bvh1ZwokRedkWL7NIsGY",
+      "nationalPhoneNumber": "(315) 544-3614",
+      "websiteUri": "https://vitalbalancehormone.com/locations/new-york-ny/?utm_source=google&utm_medium=organic&utm_campaign=gmb&utm_content=new-york-ny",
+      "displayName": {
+        "text": "VitalBalance Hormone Center",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "260:ChIJ2bJAGKlZwokRtEeAc6RQNH8": {
+    "location_id": 260,
+    "place_id": "ChIJ2bJAGKlZwokRtEeAc6RQNH8",
+    "fetched_at": "2026-07-08T00:46:31.121Z",
+    "payload": {
+      "id": "ChIJ2bJAGKlZwokRtEeAc6RQNH8",
+      "nationalPhoneNumber": "(212) 695-9559",
+      "websiteUri": "https://www.spa-aura.com/",
+      "displayName": {
+        "text": "Aura Wellness Spa | Best Sauna & Body Scrub, Day Spa in NYC",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "262:ChIJyemEH1pZwokRhVGIqoPonpk": {
+    "location_id": 262,
+    "place_id": "ChIJyemEH1pZwokRhVGIqoPonpk",
+    "fetched_at": "2026-07-08T00:46:31.444Z",
+    "payload": {
+      "id": "ChIJyemEH1pZwokRhVGIqoPonpk",
+      "nationalPhoneNumber": "(718) 383-2701",
+      "websiteUri": "http://vesselfloats.com/",
+      "displayName": {
+        "text": "Vessel Floats",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "265:ChIJKQs3CqlZwokReQtmlHg3ZBU": {
+    "location_id": 265,
+    "place_id": "ChIJKQs3CqlZwokReQtmlHg3ZBU",
+    "fetched_at": "2026-07-08T00:46:31.766Z",
+    "payload": {
+      "id": "ChIJKQs3CqlZwokReQtmlHg3ZBU",
+      "nationalPhoneNumber": "(646) 234-2918",
+      "websiteUri": "http://www.drsarahcimperman.com/",
+      "displayName": {
+        "text": "Dr. Sarah Cimperman, ND",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "271:ChIJIZ6GKWJZwokRI_wXEEudlp8": {
+    "location_id": 271,
+    "place_id": "ChIJIZ6GKWJZwokRI_wXEEudlp8",
+    "fetched_at": "2026-07-08T00:46:32.093Z",
+    "payload": {
+      "id": "ChIJIZ6GKWJZwokRI_wXEEudlp8",
+      "nationalPhoneNumber": "(551) 220-1430",
+      "websiteUri": "https://4everyoungantiaging.com/hoboken/?utm_source=gbp&utm_medium=organic&utm_campaign=gbp-hoboken&y_source=1_MjA2MTUzMTA2Ni03MTUtbG9jYXRpb24ud2Vic2l0ZQ%3D%3D",
+      "displayName": {
+        "text": "4Ever Young Med Spa & Wellness Center - Hoboken",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "275:ChIJUcaVeVIGw4kRnHnD2mDK_ZQ": {
+    "location_id": 275,
+    "place_id": "ChIJUcaVeVIGw4kRnHnD2mDK_ZQ",
+    "fetched_at": "2026-07-08T00:46:32.426Z",
+    "payload": {
+      "id": "ChIJUcaVeVIGw4kRnHnD2mDK_ZQ",
+      "nationalPhoneNumber": "(212) 213-2273",
+      "websiteUri": "https://www.drsusaneisen.com/",
+      "displayName": {
+        "text": "Dr. Susan Eisen, D.C.",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "280:ChIJ-_jAezZXwokRBpsB2KU8GZ4": {
+    "location_id": 280,
+    "place_id": "ChIJ-_jAezZXwokRBpsB2KU8GZ4",
+    "fetched_at": "2026-07-08T00:46:32.749Z",
+    "payload": {
+      "id": "ChIJ-_jAezZXwokRBpsB2KU8GZ4",
+      "nationalPhoneNumber": "(201) 386-9800",
+      "websiteUri": "https://www.njallcarepain.com/?utm_source=google&utm_medium=gmb&utm_campaign=jersey-city",
+      "displayName": {
+        "text": "AllCare Health & Pain",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "288:ChIJKylnGIFZwokRtpZp0G8MR40": {
+    "location_id": 288,
+    "place_id": "ChIJKylnGIFZwokRtpZp0G8MR40",
+    "fetched_at": "2026-07-08T00:46:33.078Z",
+    "payload": {
+      "id": "ChIJKylnGIFZwokRtpZp0G8MR40",
+      "nationalPhoneNumber": "(212) 328-9050",
+      "websiteUri": "https://www.equinox.com/clubs/new-york/midtown/hudsonyards?cid=gmb",
+      "displayName": {
+        "text": "Equinox Hudson Yards",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "297:ChIJ3eHJaWpXwokR1fbKRaXWkF4": {
+    "location_id": 297,
+    "place_id": "ChIJ3eHJaWpXwokR1fbKRaXWkF4",
+    "fetched_at": "2026-07-08T00:46:33.409Z",
+    "payload": {
+      "id": "ChIJ3eHJaWpXwokR1fbKRaXWkF4",
+      "nationalPhoneNumber": "(201) 338-0552",
+      "websiteUri": "http://www.ekahlife.com/",
+      "displayName": {
+        "text": "EKAH - Erin Kumpf Acupuncture & Herbs",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "298:ChIJT7k2HhFZwokR0j_jsBQQl58": {
+    "location_id": 298,
+    "place_id": "ChIJT7k2HhFZwokR0j_jsBQQl58",
+    "fetched_at": "2026-07-08T00:46:33.738Z",
+    "payload": {
+      "id": "ChIJT7k2HhFZwokR0j_jsBQQl58",
+      "nationalPhoneNumber": "(347) 419-0604",
+      "websiteUri": "http://brooklyn-spa.com/",
+      "displayName": {
+        "text": "overture spa",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "302:ChIJ7VruQQdZwokRe7G9KsdWN9s": {
+    "location_id": 302,
+    "place_id": "ChIJ7VruQQdZwokRe7G9KsdWN9s",
+    "fetched_at": "2026-07-08T00:46:34.101Z",
+    "payload": {
+      "id": "ChIJ7VruQQdZwokRe7G9KsdWN9s",
+      "nationalPhoneNumber": "(646) 828-7844",
+      "websiteUri": "https://www.doctorpaulvin.com/",
+      "displayName": {
+        "text": "Dr. Paulvin",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "305:ChIJuYTkEc_LXmkRE83wkOVBD9w": {
+    "location_id": 305,
+    "place_id": "ChIJuYTkEc_LXmkRE83wkOVBD9w",
+    "fetched_at": "2026-07-08T00:46:34.424Z",
+    "payload": {
+      "id": "ChIJuYTkEc_LXmkRE83wkOVBD9w",
+      "nationalPhoneNumber": "(203) 293-5483",
+      "websiteUri": "https://birchwell.clinic/",
+      "displayName": {
+        "text": "Birchwell Functional Medicine - Integrative Health & Holistic Nutrition",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "309:ChIJ8_ad3qVZwokR3Z5NV2wDSd4": {
+    "location_id": 309,
+    "place_id": "ChIJ8_ad3qVZwokR3Z5NV2wDSd4",
+    "fetched_at": "2026-07-08T00:46:34.748Z",
+    "payload": {
+      "id": "ChIJ8_ad3qVZwokR3Z5NV2wDSd4",
+      "nationalPhoneNumber": "(212) 696-4325",
+      "websiteUri": "https://www.drelenaklimenko.com/",
+      "displayName": {
+        "text": "Elena Klimenko, MD - Functional Medicine",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "310:ChIJT-FJAmNXwokRXMYyJebwgRg": {
+    "location_id": 310,
+    "place_id": "ChIJT-FJAmNXwokRXMYyJebwgRg",
+    "fetched_at": "2026-07-08T00:46:35.070Z",
+    "payload": {
+      "id": "ChIJT-FJAmNXwokRXMYyJebwgRg",
+      "nationalPhoneNumber": "(732) 795-2103",
+      "websiteUri": "http://studio17cw.com/",
+      "displayName": {
+        "text": "Studio 17 Cosmetics & Wellness",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "313:ChIJ3XlxIh9ZwokRLzTGYzxXDmM": {
+    "location_id": 313,
+    "place_id": "ChIJ3XlxIh9ZwokRLzTGYzxXDmM",
+    "fetched_at": "2026-07-08T00:46:35.394Z",
+    "payload": {
+      "id": "ChIJ3XlxIh9ZwokRLzTGYzxXDmM",
+      "nationalPhoneNumber": "(718) 383-0028",
+      "displayName": {
+        "text": "CryoBodyBK - Brooklyn Cryotherapy Spa",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "316:ChIJG6DtckpZwokROz8_KyBHVSM": {
+    "location_id": 316,
+    "place_id": "ChIJG6DtckpZwokROz8_KyBHVSM",
+    "fetched_at": "2026-07-08T00:46:35.725Z",
+    "payload": {
+      "id": "ChIJG6DtckpZwokROz8_KyBHVSM",
+      "nationalPhoneNumber": "(347) 369-4349",
+      "websiteUri": "https://skinlongevityclinic.com/",
+      "displayName": {
+        "text": "Skin30.co / Skin Longevity Clinic",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "318:ChIJWdv_gwhbwokRhQmzKKjolhY": {
+    "location_id": 318,
+    "place_id": "ChIJWdv_gwhbwokRhQmzKKjolhY",
+    "fetched_at": "2026-07-08T00:46:36.059Z",
+    "payload": {
+      "id": "ChIJWdv_gwhbwokRhQmzKKjolhY",
+      "nationalPhoneNumber": "(845) 252-1152",
+      "websiteUri": "https://www.yourhealthsuccess.com/",
+      "displayName": {
+        "text": "Your Health Success (YHS)",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "321:ChIJWb2EmeJbwokRROUGVDylZK8": {
+    "location_id": 321,
+    "place_id": "ChIJWb2EmeJbwokRROUGVDylZK8",
+    "fetched_at": "2026-07-08T00:46:36.391Z",
+    "payload": {
+      "id": "ChIJWb2EmeJbwokRROUGVDylZK8",
+      "nationalPhoneNumber": "(914) 257-7042",
+      "websiteUri": "http://www.neighborhoodnaturalmedicine.com/?utm_source=gmb",
+      "displayName": {
+        "text": "Neighborhood Natural Medicine",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "334:ChIJny67pKNZwokR3SJ4ztX3dNA": {
+    "location_id": 334,
+    "place_id": "ChIJny67pKNZwokR3SJ4ztX3dNA",
+    "fetched_at": "2026-07-08T00:46:36.725Z",
+    "payload": {
+      "id": "ChIJny67pKNZwokR3SJ4ztX3dNA",
+      "nationalPhoneNumber": "(212) 661-4432",
+      "websiteUri": "https://vitalitymedny.com/",
+      "displayName": {
+        "text": "Vitality Medicine of New York",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "335:ChIJr0xfoAFZwokR5FvspKTz6O0": {
+    "location_id": 335,
+    "place_id": "ChIJr0xfoAFZwokR5FvspKTz6O0",
+    "fetched_at": "2026-07-08T00:46:37.045Z",
+    "payload": {
+      "id": "ChIJr0xfoAFZwokR5FvspKTz6O0",
+      "nationalPhoneNumber": "(212) 324-1715",
+      "websiteUri": "https://www.antiagingmedicalgroup.com/",
+      "displayName": {
+        "text": "Anti-Aging Medical Group",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "336:ChIJk4CbH2JbwokR-yKF5w4_L38": {
+    "location_id": 336,
+    "place_id": "ChIJk4CbH2JbwokR-yKF5w4_L38",
+    "fetched_at": "2026-07-08T00:46:37.378Z",
+    "payload": {
+      "id": "ChIJk4CbH2JbwokR-yKF5w4_L38",
+      "nationalPhoneNumber": "(845) 276-3155",
+      "websiteUri": "http://drchiniwala.com/",
+      "displayName": {
+        "text": "Park Slope Integrative Medicine PLLC",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "342:ChIJ9aC8TVRbwokR68rb0GLMbQs": {
+    "location_id": 342,
+    "place_id": "ChIJ9aC8TVRbwokR68rb0GLMbQs",
+    "fetched_at": "2026-07-08T00:46:37.699Z",
+    "payload": {
+      "id": "ChIJ9aC8TVRbwokR68rb0GLMbQs",
+      "nationalPhoneNumber": "(718) 689-3737",
+      "websiteUri": "http://www.acuherbnewyork.com/",
+      "displayName": {
+        "text": "Grand Army Plaza Acupuncture",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "344:ChIJxWILM3RZwokRv5WJ-dXpiSQ": {
+    "location_id": 344,
+    "place_id": "ChIJxWILM3RZwokRv5WJ-dXpiSQ",
+    "fetched_at": "2026-07-08T00:46:38.043Z",
+    "payload": {
+      "id": "ChIJxWILM3RZwokRv5WJ-dXpiSQ",
+      "nationalPhoneNumber": "(732) 915-8814",
+      "websiteUri": "https://santhigramwellnessjc.zoca.com/?utm_source=googlemaps&utm_medium=googlemaps&utm_campaign=googlemaps",
+      "displayName": {
+        "text": "Santhigram Wellness",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "346:ChIJFyL_P3pZwokRx8U7J14HLzo": {
+    "location_id": 346,
+    "place_id": "ChIJFyL_P3pZwokRx8U7J14HLzo",
+    "fetched_at": "2026-07-08T00:46:38.379Z",
+    "payload": {
+      "id": "ChIJFyL_P3pZwokRx8U7J14HLzo",
+      "nationalPhoneNumber": "(332) 223-5778",
+      "websiteUri": "https://www.thedripbar.com/manhattan/?utm_source=manhattan-ny-google-listing&utm_medium=organic&utm_campaign=profile-link",
+      "displayName": {
+        "text": "The DRIPBaR Manhattan",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "348:ChIJpVbKC6NZwokRWcB-5yaBKGQ": {
+    "location_id": 348,
+    "place_id": "ChIJpVbKC6NZwokRWcB-5yaBKGQ",
+    "fetched_at": "2026-07-08T00:46:38.709Z",
+    "payload": {
+      "id": "ChIJpVbKC6NZwokRWcB-5yaBKGQ",
+      "nationalPhoneNumber": "(212) 920-0499",
+      "websiteUri": "https://www.myadvitam.com/?utm_source=GMBlisting&utm_medium=organic&utm_campaign=advitam",
+      "displayName": {
+        "text": "+advitam®",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "349:ChIJ9b4wTcJbwokRHqXJkwUOfog": {
+    "location_id": 349,
+    "place_id": "ChIJ9b4wTcJbwokRHqXJkwUOfog",
+    "fetched_at": "2026-07-08T00:46:39.031Z",
+    "payload": {
+      "id": "ChIJ9b4wTcJbwokRHqXJkwUOfog",
+      "nationalPhoneNumber": "(718) 400-8840",
+      "websiteUri": "https://balancebklyn.com/?utm_source=google&utm_medium=wix_google_business_profile&utm_campaign=6247393323488106954",
+      "displayName": {
+        "text": "Balance Regenerative, Sports, and Rehabilitation Medicine",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "352:ChIJ--tPetZQwokRqYX58j95bw4": {
+    "location_id": 352,
+    "place_id": "ChIJ--tPetZQwokRqYX58j95bw4",
+    "fetched_at": "2026-07-08T00:46:39.364Z",
+    "payload": {
+      "id": "ChIJ--tPetZQwokRqYX58j95bw4",
+      "nationalPhoneNumber": "(201) 942-4555",
+      "websiteUri": "https://www.jerseyintegrative.com/",
+      "displayName": {
+        "text": "Jersey Integrative Health and Wellness",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "355:ChIJoc0eEv5YwokRk8WCjLkF4yI": {
+    "location_id": 355,
+    "place_id": "ChIJoc0eEv5YwokRk8WCjLkF4yI",
+    "fetched_at": "2026-07-08T00:46:39.692Z",
+    "payload": {
+      "id": "ChIJoc0eEv5YwokRk8WCjLkF4yI",
+      "nationalPhoneNumber": "(212) 685-3640",
+      "websiteUri": "http://www.hormonereplacementdoctor.com/?utm_source=gmb&utm_medium=organic&utm_campaign=gmb",
+      "displayName": {
+        "text": "NYC Hormone Replacement Therapy Doctor",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "364:ChIJR8B-Rt9ZwokRSpdJgiityGE": {
+    "location_id": 364,
+    "place_id": "ChIJR8B-Rt9ZwokRSpdJgiityGE",
+    "fetched_at": "2026-07-08T00:46:40.018Z",
+    "payload": {
+      "id": "ChIJR8B-Rt9ZwokRSpdJgiityGE",
+      "nationalPhoneNumber": "(201) 535-2474",
+      "websiteUri": "https://www.viscospineandjoint.com/jersey-city?utm_source=google&utm_medium=organic&utm_campaign=jersey_city_gbp",
+      "displayName": {
+        "text": "Visco Spine & Joint Center",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "370:ChIJH7s1c0P3WgERCRwOXGGJzPM": {
+    "location_id": 370,
+    "place_id": "ChIJH7s1c0P3WgERCRwOXGGJzPM",
+    "fetched_at": "2026-07-08T00:46:40.349Z",
+    "payload": {
+      "id": "ChIJH7s1c0P3WgERCRwOXGGJzPM",
+      "nationalPhoneNumber": "(855) 483-7471",
+      "websiteUri": "https://mobileivdrip.com/",
+      "displayName": {
+        "text": "Mobile IV Drip",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "371:ChIJv3oKl6hXwokRmt1-HJBWysg": {
+    "location_id": 371,
+    "place_id": "ChIJv3oKl6hXwokRmt1-HJBWysg",
+    "fetched_at": "2026-07-08T00:46:40.683Z",
+    "payload": {
+      "id": "ChIJv3oKl6hXwokRmt1-HJBWysg",
+      "nationalPhoneNumber": "(201) 656-9300",
+      "websiteUri": "https://www.onlinehomeopathyusa.com/",
+      "displayName": {
+        "text": "BNC Homeopathy Vitamins & Herbals",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "377:ChIJ32dxrgVZwokReQsCU1OEwbQ": {
+    "location_id": 377,
+    "place_id": "ChIJ32dxrgVZwokReQsCU1OEwbQ",
+    "fetched_at": "2026-07-08T00:46:41.013Z",
+    "payload": {
+      "id": "ChIJ32dxrgVZwokReQsCU1OEwbQ",
+      "nationalPhoneNumber": "(516) 900-2091",
+      "websiteUri": "https://www.madisonhealthny.com/",
+      "displayName": {
+        "text": "Madison Health NY - NY Health & Wellness Clinic Specializing in Testosterone Replacement Therapy",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "379:ChIJ5fvR41VYwokRLByC5tX5HtE": {
+    "location_id": 379,
+    "place_id": "ChIJ5fvR41VYwokRLByC5tX5HtE",
+    "fetched_at": "2026-07-08T00:46:41.341Z",
+    "payload": {
+      "id": "ChIJ5fvR41VYwokRLByC5tX5HtE",
+      "nationalPhoneNumber": "(212) 470-0360",
+      "websiteUri": "http://acuptnyc.com/",
+      "displayName": {
+        "text": "Holistic Medical Five - Times Square",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "380:ChIJlQH_ohpXwokReKhBigjJ4C8": {
+    "location_id": 380,
+    "place_id": "ChIJlQH_ohpXwokReKhBigjJ4C8",
+    "fetched_at": "2026-07-08T00:46:41.675Z",
+    "payload": {
+      "id": "ChIJlQH_ohpXwokReKhBigjJ4C8",
+      "nationalPhoneNumber": "(201) 422-2556",
+      "websiteUri": "https://sixthboroughmedical.com/",
+      "displayName": {
+        "text": "Sixth Borough Medical - Dr. Manish Patel",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "385:ChIJq3HeG7lbwokRIk5eh_ioJ9E": {
+    "location_id": 385,
+    "place_id": "ChIJq3HeG7lbwokRIk5eh_ioJ9E",
+    "fetched_at": "2026-07-08T00:46:42.008Z",
+    "payload": {
+      "id": "ChIJq3HeG7lbwokRIk5eh_ioJ9E",
+      "nationalPhoneNumber": "(929) 322-0145",
+      "websiteUri": "http://www.chateauglowskin.com/",
+      "displayName": {
+        "text": "Château Glow East Williamsburg",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "386:ChIJLco9RT5XwokRu2p_zDLZphQ": {
+    "location_id": 386,
+    "place_id": "ChIJLco9RT5XwokRu2p_zDLZphQ",
+    "fetched_at": "2026-07-08T00:46:42.344Z",
+    "payload": {
+      "id": "ChIJLco9RT5XwokRu2p_zDLZphQ",
+      "nationalPhoneNumber": "(201) 207-5783",
+      "websiteUri": "http://www.tsmhealingcenter.com/",
+      "displayName": {
+        "text": "TSM Healing Center",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "387:ChIJITOOYExXwokRLaRUgQN_1a0": {
+    "location_id": 387,
+    "place_id": "ChIJITOOYExXwokRLaRUgQN_1a0",
+    "fetched_at": "2026-07-08T00:46:42.680Z",
+    "payload": {
+      "id": "ChIJITOOYExXwokRLaRUgQN_1a0",
+      "nationalPhoneNumber": "(201) 614-4661",
+      "websiteUri": "http://www.e-motionpt.com/",
+      "displayName": {
+        "text": "E-MOTION PHYSICAL THERAPY & WELLNESS",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "392:ChIJZ3oXOVZYwokRqDQmAB96PTU": {
+    "location_id": 392,
+    "place_id": "ChIJZ3oXOVZYwokRqDQmAB96PTU",
+    "fetched_at": "2026-07-08T00:46:43.000Z",
+    "payload": {
+      "id": "ChIJZ3oXOVZYwokRqDQmAB96PTU",
+      "nationalPhoneNumber": "(212) 541-7000",
+      "websiteUri": "https://www.equinox.com/clubs/new-york/midtown/west50th?cid=gmb",
+      "displayName": {
+        "text": "Equinox West 50th Street",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "393:ChIJiz7NAUBZwokRuqKlDmQJMn4": {
+    "location_id": 393,
+    "place_id": "ChIJiz7NAUBZwokRuqKlDmQJMn4",
+    "fetched_at": "2026-07-08T00:46:43.330Z",
+    "payload": {
+      "id": "ChIJiz7NAUBZwokRuqKlDmQJMn4",
+      "nationalPhoneNumber": "(929) 630-5447",
+      "websiteUri": "https://dripdocwellness.com/",
+      "displayName": {
+        "text": "Drip Doc IV Infusion & Wellness",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "395:ChIJYzTVbuNYwokRMS-BhvCfDhs": {
+    "location_id": 395,
+    "place_id": "ChIJYzTVbuNYwokRMS-BhvCfDhs",
+    "fetched_at": "2026-07-08T00:46:43.670Z",
+    "payload": {
+      "id": "ChIJYzTVbuNYwokRMS-BhvCfDhs",
+      "nationalPhoneNumber": "(212) 951-0488",
+      "websiteUri": "https://kurskinlab.com/",
+      "displayName": {
+        "text": "KUR Skin Lab",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "396:ChIJ6ywvZ_pYwokRjv2s_lQ6ViE": {
+    "location_id": 396,
+    "place_id": "ChIJ6ywvZ_pYwokRjv2s_lQ6ViE",
+    "fetched_at": "2026-07-08T00:46:43.994Z",
+    "payload": {
+      "id": "ChIJ6ywvZ_pYwokRjv2s_lQ6ViE",
+      "nationalPhoneNumber": "(212) 873-3420",
+      "websiteUri": "http://www.eshealth.com/",
+      "displayName": {
+        "text": "Evolved Science",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "397:ChIJl5NDPuNYwokR5DbsqYFiJG4": {
+    "location_id": 397,
+    "place_id": "ChIJl5NDPuNYwokR5DbsqYFiJG4",
+    "fetched_at": "2026-07-08T00:46:44.317Z",
+    "payload": {
+      "id": "ChIJl5NDPuNYwokR5DbsqYFiJG4",
+      "nationalPhoneNumber": "(212) 888-0520",
+      "websiteUri": "https://atlantchiropractic.com/chiropractic/",
+      "displayName": {
+        "text": "Atlant Chiropractic - Aleksander Kanevsky, DC",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "401:ChIJrxLUE7lRwokR12cqVzWpHXs": {
+    "location_id": 401,
+    "place_id": "ChIJrxLUE7lRwokR12cqVzWpHXs",
+    "fetched_at": "2026-07-08T00:46:44.646Z",
+    "payload": {
+      "id": "ChIJrxLUE7lRwokR12cqVzWpHXs",
+      "nationalPhoneNumber": "(201) 984-9055",
+      "websiteUri": "http://www.functionalchirojc.com/",
+      "displayName": {
+        "text": "Functional Chiropractic and Nutrition Associates, Inc.",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "408:ChIJ19gmrKdZwokRqgfIsXYo8kQ": {
+    "location_id": 408,
+    "place_id": "ChIJ19gmrKdZwokRqgfIsXYo8kQ",
+    "fetched_at": "2026-07-08T00:46:44.971Z",
+    "payload": {
+      "id": "ChIJ19gmrKdZwokRqgfIsXYo8kQ",
+      "nationalPhoneNumber": "(718) 361-5483",
+      "websiteUri": "https://locations.livehydrationspa.com/ny/longislandcity/long-island-city.html",
+      "displayName": {
+        "text": "LIVE Hydration Spa Long Island City",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "410:ChIJ6dZeeflZwokR136RtwGf7zw": {
+    "location_id": 410,
+    "place_id": "ChIJ6dZeeflZwokR136RtwGf7zw",
+    "fetched_at": "2026-07-08T00:46:45.301Z",
+    "payload": {
+      "id": "ChIJ6dZeeflZwokR136RtwGf7zw",
+      "nationalPhoneNumber": "(212) 652-2240",
+      "websiteUri": "https://naturallysue.com/",
+      "displayName": {
+        "text": "Dr. Susan Cucchiara, Naturopathic Doctor NYC",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "413:ChIJAU_gJGFZwokRrpmmuzVrIm8": {
+    "location_id": 413,
+    "place_id": "ChIJAU_gJGFZwokRrpmmuzVrIm8",
+    "fetched_at": "2026-07-08T00:46:45.632Z",
+    "payload": {
+      "id": "ChIJAU_gJGFZwokRrpmmuzVrIm8",
+      "nationalPhoneNumber": "(551) 274-4424",
+      "websiteUri": "https://agemanagment.com/",
+      "displayName": {
+        "text": "Age Management and Skin care",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "414:ChIJ6__fayBRwokRAMc0AQQKPI0": {
+    "location_id": 414,
+    "place_id": "ChIJ6__fayBRwokRAMc0AQQKPI0",
+    "fetched_at": "2026-07-08T00:46:45.965Z",
+    "payload": {
+      "id": "ChIJ6__fayBRwokRAMc0AQQKPI0",
+      "nationalPhoneNumber": "(201) 547-5535",
+      "websiteUri": "https://jerseycitynj.gov/cityhall/health/preventativehealth",
+      "displayName": {
+        "text": "The Jersey City Clinic",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "417:ChIJKfPI_xZawokRZuyVkCf8Lmc": {
+    "location_id": 417,
+    "place_id": "ChIJKfPI_xZawokRZuyVkCf8Lmc",
+    "fetched_at": "2026-07-08T00:46:46.296Z",
+    "payload": {
+      "id": "ChIJKfPI_xZawokRZuyVkCf8Lmc",
+      "nationalPhoneNumber": "(212) 419-5257",
+      "websiteUri": "https://cenegenics.com/new-york",
+      "displayName": {
+        "text": "Cenegenics New York",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "426:ChIJra13dJVYwokRc5Fg21SDucs": {
+    "location_id": 426,
+    "place_id": "ChIJra13dJVYwokRc5Fg21SDucs",
+    "fetched_at": "2026-07-08T00:46:46.624Z",
+    "payload": {
+      "id": "ChIJra13dJVYwokRc5Fg21SDucs",
+      "nationalPhoneNumber": "(212) 600-1938",
+      "websiteUri": "http://www.freshmednyc.com/",
+      "displayName": {
+        "text": "FRESH Medicine Dr. Robert Graham, MD",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "430:ChIJYXF-mfdYwokREe89Utdcho0": {
+    "location_id": 430,
+    "place_id": "ChIJYXF-mfdYwokREe89Utdcho0",
+    "fetched_at": "2026-07-08T00:46:46.946Z",
+    "payload": {
+      "id": "ChIJYXF-mfdYwokREe89Utdcho0",
+      "nationalPhoneNumber": "(212) 581-0101",
+      "websiteUri": "https://www.ozonedoctor.net/?utm_source=gmb_auth",
+      "displayName": {
+        "text": "Dr. Howard Robins, DPM",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "436:ChIJb2XBfaZZwokReaw0gQOE8pw": {
+    "location_id": 436,
+    "place_id": "ChIJb2XBfaZZwokReaw0gQOE8pw",
+    "fetched_at": "2026-07-08T00:46:47.273Z",
+    "payload": {
+      "id": "ChIJb2XBfaZZwokReaw0gQOE8pw",
+      "nationalPhoneNumber": "(646) 906-8003",
+      "websiteUri": "https://gamedaymenshealth.com/manhattan-upper-east-side",
+      "displayName": {
+        "text": "Gameday Men's Health Manhattan, NY - Upper East Side",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "441:ChIJk5Ew2V9ZwokRaKq42vPMMug": {
+    "location_id": 441,
+    "place_id": "ChIJk5Ew2V9ZwokRaKq42vPMMug",
+    "fetched_at": "2026-07-08T00:46:47.611Z",
+    "payload": {
+      "id": "ChIJk5Ew2V9ZwokRaKq42vPMMug",
+      "nationalPhoneNumber": "(347) 344-5760",
+      "websiteUri": "https://rebalancenyc.com/revitadrip-iv-therapy/",
+      "displayName": {
+        "text": "IV Drip Therapy",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "442:ChIJ59rEANVZwokRrT_ekWfpVAY": {
+    "location_id": 442,
+    "place_id": "ChIJ59rEANVZwokRrT_ekWfpVAY",
+    "fetched_at": "2026-07-08T00:46:47.937Z",
+    "payload": {
+      "id": "ChIJ59rEANVZwokRrT_ekWfpVAY",
+      "nationalPhoneNumber": "(917) 451-3183",
+      "websiteUri": "https://osteonewyorkcity.com/",
+      "displayName": {
+        "text": "OsteoStrong Park Ave",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "445:ChIJ_VfyOt5bwokRMu-HwijphAM": {
+    "location_id": 445,
+    "place_id": "ChIJ_VfyOt5bwokRMu-HwijphAM",
+    "fetched_at": "2026-07-08T00:46:48.275Z",
+    "payload": {
+      "id": "ChIJ_VfyOt5bwokRMu-HwijphAM",
+      "nationalPhoneNumber": "(347) 627-3374",
+      "websiteUri": "https://lelitemedispa.com/",
+      "displayName": {
+        "text": "L'Elite MediSpa and Wellness BK",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "447:ChIJD2-wOvdYwokRTi_8WdRA_6I": {
+    "location_id": 447,
+    "place_id": "ChIJD2-wOvdYwokRTi_8WdRA_6I",
+    "fetched_at": "2026-07-08T00:46:48.600Z",
+    "payload": {
+      "id": "ChIJD2-wOvdYwokRTi_8WdRA_6I",
+      "nationalPhoneNumber": "(212) 288-8123",
+      "websiteUri": "https://comitemd.com/",
+      "displayName": {
+        "text": "Comite Center for Precision Medicine & Healthy Longevity",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "448:ChIJtV2JMEhZwokRK4D3RnVo434": {
+    "location_id": 448,
+    "place_id": "ChIJtV2JMEhZwokRK4D3RnVo434",
+    "fetched_at": "2026-07-08T00:46:48.928Z",
+    "payload": {
+      "id": "ChIJtV2JMEhZwokRK4D3RnVo434",
+      "nationalPhoneNumber": "(800) 658-8858",
+      "websiteUri": "https://www.ehormones.com/",
+      "displayName": {
+        "text": "EHormones MD",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "450:ChIJFSX-8QdbwokRVF1I0nAjbe4": {
+    "location_id": 450,
+    "place_id": "ChIJFSX-8QdbwokRVF1I0nAjbe4",
+    "fetched_at": "2026-07-08T00:46:49.259Z",
+    "payload": {
+      "id": "ChIJFSX-8QdbwokRVF1I0nAjbe4",
+      "nationalPhoneNumber": "(718) 501-6045",
+      "websiteUri": "http://www.gebhetep.com/",
+      "displayName": {
+        "text": "Geb Hetep Wholistic Center",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "468:ChIJs4HVMSxZwokRyz9YMc7cNhg": {
+    "location_id": 468,
+    "place_id": "ChIJs4HVMSxZwokRyz9YMc7cNhg",
+    "fetched_at": "2026-07-08T00:46:49.592Z",
+    "payload": {
+      "id": "ChIJs4HVMSxZwokRyz9YMc7cNhg",
+      "nationalPhoneNumber": "(718) 784-2240",
+      "websiteUri": "http://www.thefloatinghospital.org/",
+      "displayName": {
+        "text": "The Floating Hospital",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "469:ChIJQ7BzFhtZwokRuWivMIN8WBw": {
+    "location_id": 469,
+    "place_id": "ChIJQ7BzFhtZwokRuWivMIN8WBw",
+    "fetched_at": "2026-07-08T00:46:49.936Z",
+    "payload": {
+      "id": "ChIJQ7BzFhtZwokRuWivMIN8WBw",
+      "nationalPhoneNumber": "(212) 988-1880",
+      "websiteUri": "https://www.restore.com/locations/ny-new-york-upper-east-side-ny002?utm_source=gmb&utm_medium=Yext&y_source=1_MzE2Mjk4OTQtNzE1LWxvY2F0aW9uLndlYnNpdGU%3D",
+      "displayName": {
+        "text": "Restore Hyper Wellness",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "475:ChIJZ5ZxgOtYwokRkkFK7B6LT-g": {
+    "location_id": 475,
+    "place_id": "ChIJZ5ZxgOtYwokRkkFK7B6LT-g",
+    "fetched_at": "2026-07-08T00:46:50.274Z",
+    "payload": {
+      "id": "ChIJZ5ZxgOtYwokRkkFK7B6LT-g",
+      "nationalPhoneNumber": "(212) 249-4369",
+      "websiteUri": "https://drrobinunger.com/",
+      "displayName": {
+        "text": "Unger Medical",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "480:ChIJ3dave_NZwokR06dqEsenw8k": {
+    "location_id": 480,
+    "place_id": "ChIJ3dave_NZwokR06dqEsenw8k",
+    "fetched_at": "2026-07-08T00:46:50.605Z",
+    "payload": {
+      "id": "ChIJ3dave_NZwokR06dqEsenw8k",
+      "nationalPhoneNumber": "(347) 460-0295",
+      "websiteUri": "https://bestivdrips.com/",
+      "displayName": {
+        "text": "Best IV Drips- Mobile IV Therapy NYC",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "484:ChIJpSiB-otZwokR47gdAyxIPr0": {
+    "location_id": 484,
+    "place_id": "ChIJpSiB-otZwokR47gdAyxIPr0",
+    "fetched_at": "2026-07-08T00:46:50.942Z",
+    "payload": {
+      "id": "ChIJpSiB-otZwokR47gdAyxIPr0",
+      "nationalPhoneNumber": "(913) 343-5299",
+      "websiteUri": "http://www.drjboss.com/",
+      "displayName": {
+        "text": "East Coast Health and Longevity",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "489:ChIJLfGMb8BYwokRuRgJ274zXas": {
+    "location_id": 489,
+    "place_id": "ChIJLfGMb8BYwokRuRgJ274zXas",
+    "fetched_at": "2026-07-08T00:46:51.269Z",
+    "payload": {
+      "id": "ChIJLfGMb8BYwokRuRgJ274zXas",
+      "nationalPhoneNumber": "(212) 249-3917",
+      "websiteUri": "https://www.equinox.com/clubs/new-york/uptown/east74th?cid=gmb",
+      "displayName": {
+        "text": "Equinox East 74th Street",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "492:ChIJcX7MZwBbwokRxlktDQLDP1I": {
+    "location_id": 492,
+    "place_id": "ChIJcX7MZwBbwokRxlktDQLDP1I",
+    "fetched_at": "2026-07-08T00:46:51.616Z",
+    "payload": {
+      "id": "ChIJcX7MZwBbwokRxlktDQLDP1I",
+      "nationalPhoneNumber": "(718) 874-6550",
+      "websiteUri": "https://www.brooklynbathhouse.nyc/",
+      "displayName": {
+        "text": "Brooklyn Bathhouse",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "494:ChIJCa5Y8L9YwokRw8uuzYOaJBA": {
+    "location_id": 494,
+    "place_id": "ChIJCa5Y8L9YwokRw8uuzYOaJBA",
+    "fetched_at": "2026-07-08T00:46:51.943Z",
+    "payload": {
+      "id": "ChIJCa5Y8L9YwokRw8uuzYOaJBA",
+      "nationalPhoneNumber": "(830) 254-5941",
+      "websiteUri": "http://www.drzilberstein.com/",
+      "displayName": {
+        "text": "Inga Zilberstein, MD",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "497:ChIJVSxXFIxYwokRsfnXPQbYHLM": {
+    "location_id": 497,
+    "place_id": "ChIJVSxXFIxYwokRsfnXPQbYHLM",
+    "fetched_at": "2026-07-08T00:46:52.271Z",
+    "payload": {
+      "id": "ChIJVSxXFIxYwokRsfnXPQbYHLM",
+      "nationalPhoneNumber": "(212) 579-9136",
+      "websiteUri": "http://www.liondalemedical.com/",
+      "displayName": {
+        "text": "Liondale Medical",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "498:ChIJcVXNV_pZwokRE_pny48PYtg": {
+    "location_id": 498,
+    "place_id": "ChIJcVXNV_pZwokRE_pny48PYtg",
+    "fetched_at": "2026-07-08T00:46:52.604Z",
+    "payload": {
+      "id": "ChIJcVXNV_pZwokRE_pny48PYtg",
+      "nationalPhoneNumber": "(917) 451-3184",
+      "websiteUri": "https://www.osteonewyork.com/",
+      "displayName": {
+        "text": "OsteoStrong Upper West",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "517:ChIJP9gGqdzBw4kR6Mg3lQ4VTUc": {
+    "location_id": 517,
+    "place_id": "ChIJP9gGqdzBw4kR6Mg3lQ4VTUc",
+    "fetched_at": "2026-07-08T00:46:52.935Z",
+    "payload": {
+      "id": "ChIJP9gGqdzBw4kR6Mg3lQ4VTUc",
+      "nationalPhoneNumber": "(609) 481-8814",
+      "websiteUri": "http://drzute.com/",
+      "displayName": {
+        "text": "Dr.JayZute,Ridgewood NY-BLS CPR ACLS PALS EKG Phleb,NCLEX,Naturopathy,Medical Weight Loss,Hair Loss,Erectile Dysfunction,DM 2",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "522:ChIJx-fKwi5bwokRvus3Znl8flg": {
+    "location_id": 522,
+    "place_id": "ChIJx-fKwi5bwokRvus3Znl8flg",
+    "fetched_at": "2026-07-08T00:46:53.324Z",
+    "payload": {
+      "id": "ChIJx-fKwi5bwokRvus3Znl8flg",
+      "nationalPhoneNumber": "(212) 803-3339",
+      "websiteUri": "http://www.thrivewellinfusion.com/",
+      "displayName": {
+        "text": "Thrivewell Infusion - Borough Park",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "539:ChIJu857eGaZmWURrOEge0mDdJk": {
+    "location_id": 539,
+    "place_id": "ChIJu857eGaZmWURrOEge0mDdJk",
+    "fetched_at": "2026-07-08T00:46:53.664Z",
+    "payload": {
+      "id": "ChIJu857eGaZmWURrOEge0mDdJk",
+      "nationalPhoneNumber": "(718) 450-3948",
+      "websiteUri": "http://generationalhealthbyadulthealth.org/",
+      "displayName": {
+        "text": "Generational Health by Adult Health",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "543:ChIJBXAc91pbwokRzMA5eF8hZqY": {
+    "location_id": 543,
+    "place_id": "ChIJBXAc91pbwokRzMA5eF8hZqY",
+    "fetched_at": "2026-07-08T00:46:53.996Z",
+    "payload": {
+      "id": "ChIJBXAc91pbwokRzMA5eF8hZqY",
+      "nationalPhoneNumber": "(718) 618-0058",
+      "websiteUri": "https://uniquecliniqueaesthetics.com/",
+      "displayName": {
+        "text": "Unique Clinique Aesthetics | Med Spa Brooklyn",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "545:ChIJ5ypEy-RYwokRVYMgKJbCyRA": {
+    "location_id": 545,
+    "place_id": "ChIJ5ypEy-RYwokRVYMgKJbCyRA",
+    "fetched_at": "2026-07-08T00:46:54.331Z",
+    "payload": {
+      "id": "ChIJ5ypEy-RYwokRVYMgKJbCyRA",
+      "nationalPhoneNumber": "(646) 397-7927",
+      "websiteUri": "https://www.mdlongevity.com/",
+      "displayName": {
+        "text": "MD Longevity",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "546:ChIJbw2mL1dFwokR_nQYPRWlb5M": {
+    "location_id": 546,
+    "place_id": "ChIJbw2mL1dFwokR_nQYPRWlb5M",
+    "fetched_at": "2026-07-08T00:46:54.658Z",
+    "payload": {
+      "id": "ChIJbw2mL1dFwokR_nQYPRWlb5M",
+      "nationalPhoneNumber": "(718) 759-0108",
+      "websiteUri": "https://sites.google.com/cryohealnyc.com/home",
+      "displayName": {
+        "text": "CryoHealLLC - Whole Body Cryotherapy",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "550:ChIJsXNTk6RYwokRRadk2R0KgPk": {
+    "location_id": 550,
+    "place_id": "ChIJsXNTk6RYwokRRadk2R0KgPk",
+    "fetched_at": "2026-07-08T00:46:55.002Z",
+    "payload": {
+      "id": "ChIJsXNTk6RYwokRRadk2R0KgPk",
+      "nationalPhoneNumber": "(212) 671-1884",
+      "websiteUri": "https://www.equinox.com/clubs/new-york/uptown/east92nd?cid=gmb",
+      "displayName": {
+        "text": "Equinox East 92nd Street",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "560:ChIJwzshOANZwokR1R1YHD_fE40": {
+    "location_id": 560,
+    "place_id": "ChIJwzshOANZwokR1R1YHD_fE40",
+    "fetched_at": "2026-07-08T00:46:55.331Z",
+    "payload": {
+      "id": "ChIJwzshOANZwokR1R1YHD_fE40",
+      "nationalPhoneNumber": "(212) 794-8800",
+      "websiteUri": "https://www.patientsmedical.com/",
+      "displayName": {
+        "text": "Patients Medical PC, Functional and Holistic Medicine",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "562:ChIJbU36KlpFwokR6dXRRgKD4dE": {
+    "location_id": 562,
+    "place_id": "ChIJbU36KlpFwokR6dXRRgKD4dE",
+    "fetched_at": "2026-07-08T00:46:55.672Z",
+    "payload": {
+      "id": "ChIJbU36KlpFwokR6dXRRgKD4dE",
+      "nationalPhoneNumber": "(718) 921-5483",
+      "websiteUri": "http://www.liveholistic.net/page/doctor.html",
+      "displayName": {
+        "text": "Live Holistic",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "565:ChIJeY6mWAxZwokR6EY60gwf3Rc": {
+    "location_id": 565,
+    "place_id": "ChIJeY6mWAxZwokR6EY60gwf3Rc",
+    "fetched_at": "2026-07-08T00:46:56.004Z",
+    "payload": {
+      "id": "ChIJeY6mWAxZwokR6EY60gwf3Rc",
+      "nationalPhoneNumber": "(212) 794-8800",
+      "websiteUri": "https://bioidenticalhormones.nyc/",
+      "displayName": {
+        "text": "Bioidentical Hormones NYC",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "585:ChIJucqGte9FwokRpEOaL5rEbWE": {
+    "location_id": 585,
+    "place_id": "ChIJucqGte9FwokRpEOaL5rEbWE",
+    "fetched_at": "2026-07-08T00:46:56.334Z",
+    "payload": {
+      "id": "ChIJucqGte9FwokRpEOaL5rEbWE",
+      "nationalPhoneNumber": "(347) 909-7020",
+      "websiteUri": "https://www.artisansaesthetics.com/",
+      "displayName": {
+        "text": "Artisans Aesthetics",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "590:ChIJoXq20kFRwokRuKlFnaCV4EI": {
+    "location_id": 590,
+    "place_id": "ChIJoXq20kFRwokRuKlFnaCV4EI",
+    "fetched_at": "2026-07-08T00:46:56.714Z",
+    "payload": {
+      "id": "ChIJoXq20kFRwokRuKlFnaCV4EI",
+      "nationalPhoneNumber": "(201) 778-2020",
+      "websiteUri": "https://www.raphaphysicaltherapybayonne.com/",
+      "displayName": {
+        "text": "Rapha Wellness Center",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "594:ChIJNbeVJdxFwokRCenKdU2gMXQ": {
+    "location_id": 594,
+    "place_id": "ChIJNbeVJdxFwokRCenKdU2gMXQ",
+    "fetched_at": "2026-07-08T00:46:57.045Z",
+    "payload": {
+      "id": "ChIJNbeVJdxFwokRCenKdU2gMXQ",
+      "nationalPhoneNumber": "(607) 638-3525",
+      "websiteUri": "https://ivdrips.com/manhattan-iv-therapy/?utm_source=gbp&utm_medium=organic&utm_campaign=gbp-listing&utm_content=980-e-12th-st-brooklyn-ny-11230",
+      "displayName": {
+        "text": "IV DRIPS",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "600:ChIJF3x4HEZdwokRJiflzib6F9s": {
+    "location_id": 600,
+    "place_id": "ChIJF3x4HEZdwokRJiflzib6F9s",
+    "fetched_at": "2026-07-08T00:46:57.369Z",
+    "payload": {
+      "id": "ChIJF3x4HEZdwokRJiflzib6F9s",
+      "nationalPhoneNumber": "(718) 443-4000",
+      "websiteUri": "https://www.primeinfusions.com/",
+      "displayName": {
+        "text": "Prime Infusions - Brooklyn Infusion Center",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "601:ChIJmzTznpRfwokRdBH5tGG-esk": {
+    "location_id": 601,
+    "place_id": "ChIJmzTznpRfwokRdBH5tGG-esk",
+    "fetched_at": "2026-07-08T00:46:57.698Z",
+    "payload": {
+      "id": "ChIJmzTznpRfwokRdBH5tGG-esk",
+      "nationalPhoneNumber": "(516) 445-7191",
+      "websiteUri": "http://dripgym.com/?utm_source=google&utm_medium=organic&utm_campaign=gmb",
+      "displayName": {
+        "text": "Drip Gym - Jackson Heights",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "602:ChIJMUdkNk1cwokRVuXDvQzuYDU": {
+    "location_id": 602,
+    "place_id": "ChIJMUdkNk1cwokRVuXDvQzuYDU",
+    "fetched_at": "2026-07-08T00:46:58.023Z",
+    "payload": {
+      "id": "ChIJMUdkNk1cwokRVuXDvQzuYDU",
+      "nationalPhoneNumber": "(888) 228-2126",
+      "websiteUri": "http://doctorselassie.com/",
+      "displayName": {
+        "text": "Doctor Selassie at the New Flower Center for Naturopathic Medicine",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "608:ChIJw93cCPZRwokR8ifUex_bD2o": {
+    "location_id": 608,
+    "place_id": "ChIJw93cCPZRwokR8ifUex_bD2o",
+    "fetched_at": "2026-07-08T00:46:58.351Z",
+    "payload": {
+      "id": "ChIJw93cCPZRwokR8ifUex_bD2o",
+      "nationalPhoneNumber": "(201) 471-7111",
+      "websiteUri": "http://www.arcticcryotherapybayonne.com/",
+      "displayName": {
+        "text": "Arctic Cryotherapy Bayonne",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "611:ChIJC6m1dgZFwokRuDUWl0Ru8us": {
+    "location_id": 611,
+    "place_id": "ChIJC6m1dgZFwokRuDUWl0Ru8us",
+    "fetched_at": "2026-07-08T00:46:58.688Z",
+    "payload": {
+      "id": "ChIJC6m1dgZFwokRuDUWl0Ru8us",
+      "nationalPhoneNumber": "(718) 259-0199",
+      "websiteUri": "http://www.drlikver.com/",
+      "displayName": {
+        "text": "Larisa N. Likver, MD",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "612:ChIJedQnsMlfwokR1JENG1nSukw": {
+    "location_id": 612,
+    "place_id": "ChIJedQnsMlfwokR1JENG1nSukw",
+    "fetched_at": "2026-07-08T00:46:59.018Z",
+    "payload": {
+      "id": "ChIJedQnsMlfwokR1JENG1nSukw",
+      "nationalPhoneNumber": "(347) 785-8780",
+      "websiteUri": "http://vanudencenter.com/",
+      "displayName": {
+        "text": "Van Uden Center Holistic Health",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "618:ChIJlTAAft1EwokR3acGnzJxmY8": {
+    "location_id": 618,
+    "place_id": "ChIJlTAAft1EwokR3acGnzJxmY8",
+    "fetched_at": "2026-07-08T00:46:59.359Z",
+    "payload": {
+      "id": "ChIJlTAAft1EwokR3acGnzJxmY8",
+      "nationalPhoneNumber": "(718) 500-3772",
+      "websiteUri": "http://worldspa.com/",
+      "displayName": {
+        "text": "WORLD SPA",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "621:ChIJW7uH43r3wokRhzvtDkWnNy0": {
+    "location_id": 621,
+    "place_id": "ChIJW7uH43r3wokRhzvtDkWnNy0",
+    "fetched_at": "2026-07-08T00:46:59.688Z",
+    "payload": {
+      "id": "ChIJW7uH43r3wokRhzvtDkWnNy0",
+      "nationalPhoneNumber": "(201) 402-7802",
+      "websiteUri": "https://www.sprinstitute.com/?utm_source=gmb_auth",
+      "displayName": {
+        "text": "SPR Institute",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "622:ChIJC9v33JNdwokROUKoLVwdsM4": {
+    "location_id": 622,
+    "place_id": "ChIJC9v33JNdwokROUKoLVwdsM4",
+    "fetched_at": "2026-07-08T00:47:00.024Z",
+    "payload": {
+      "id": "ChIJC9v33JNdwokROUKoLVwdsM4",
+      "nationalPhoneNumber": "(718) 255-9955",
+      "websiteUri": "https://oxygenclinicny.com/",
+      "displayName": {
+        "text": "Oxygen Clinic - Hyperbaric Oxygen Therapy Facility",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "623:ChIJj1IpGRT3wokRcK0CZ4wW2XE": {
+    "location_id": 623,
+    "place_id": "ChIJj1IpGRT3wokRcK0CZ4wW2XE",
+    "fetched_at": "2026-07-08T00:47:00.385Z",
+    "payload": {
+      "id": "ChIJj1IpGRT3wokRcK0CZ4wW2XE",
+      "nationalPhoneNumber": "(551) 212-8920",
+      "websiteUri": "https://unaaesthetics.com/?utm_source=google&utm_medium=organic&utm_campaign=gbp",
+      "displayName": {
+        "text": "Una Aesthetics",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "631:ChIJRePwEc1FwokRLelQtTuqgAc": {
+    "location_id": 631,
+    "place_id": "ChIJRePwEc1FwokRLelQtTuqgAc",
+    "fetched_at": "2026-07-08T00:47:00.724Z",
+    "payload": {
+      "id": "ChIJRePwEc1FwokRLelQtTuqgAc",
+      "nationalPhoneNumber": "(347) 988-0666",
+      "websiteUri": "http://www.sylkmedspa.com/",
+      "displayName": {
+        "text": "SYLK MEDSPA",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "637:ChIJeeGUYI1TwokRNTkzUktP13U": {
+    "location_id": 637,
+    "place_id": "ChIJeeGUYI1TwokRNTkzUktP13U",
+    "fetched_at": "2026-07-08T00:47:01.064Z",
+    "payload": {
+      "id": "ChIJeeGUYI1TwokRNTkzUktP13U",
+      "nationalPhoneNumber": "(973) 589-2171",
+      "websiteUri": "https://www.newarkchiro.com/",
+      "displayName": {
+        "text": "Ironbound Spine & Rehabilitation Center",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "638:ChIJoZHvw0NEwokRsp82dDoj-3E": {
+    "location_id": 638,
+    "place_id": "ChIJoZHvw0NEwokRsp82dDoj-3E",
+    "fetched_at": "2026-07-08T00:47:01.398Z",
+    "payload": {
+      "id": "ChIJoZHvw0NEwokRsp82dDoj-3E",
+      "nationalPhoneNumber": "(718) 375-1144",
+      "websiteUri": "https://amitausa.com/",
+      "displayName": {
+        "text": "Amita Holistic Healing Center",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "640:ChIJIxLCHRH3wokR6od5A3KZ3vc": {
+    "location_id": 640,
+    "place_id": "ChIJIxLCHRH3wokR6od5A3KZ3vc",
+    "fetched_at": "2026-07-08T00:47:01.745Z",
+    "payload": {
+      "id": "ChIJIxLCHRH3wokR6od5A3KZ3vc",
+      "nationalPhoneNumber": "(201) 496-6491",
+      "websiteUri": "https://www.agelessmenshealth.com/locations/nj-new-jersey-edgewater/",
+      "displayName": {
+        "text": "Ageless Men's Health",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "641:ChIJH64qU-tEwokRhPqQpuE8Wto": {
+    "location_id": 641,
+    "place_id": "ChIJH64qU-tEwokRhPqQpuE8Wto",
+    "fetched_at": "2026-07-08T00:47:02.083Z",
+    "payload": {
+      "id": "ChIJH64qU-tEwokRhPqQpuE8Wto",
+      "nationalPhoneNumber": "(718) 747-4302",
+      "websiteUri": "https://www.acuptnyc.com/",
+      "displayName": {
+        "text": "Holistic Medical Five - Brooklyn",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "646:ChIJA8Ji_uxEwokR0Sh09QOL1QU": {
+    "location_id": 646,
+    "place_id": "ChIJA8Ji_uxEwokR0Sh09QOL1QU",
+    "fetched_at": "2026-07-08T00:47:02.417Z",
+    "payload": {
+      "id": "ChIJA8Ji_uxEwokR0Sh09QOL1QU",
+      "nationalPhoneNumber": "(718) 627-1300",
+      "websiteUri": "http://phrost-cryo.com/",
+      "displayName": {
+        "text": "Phrost Cryo, Tanning & Wellness Spa",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "648:ChIJJ3-TBZREwokR7Rg_xoncPVU": {
+    "location_id": 648,
+    "place_id": "ChIJJ3-TBZREwokR7Rg_xoncPVU",
+    "fetched_at": "2026-07-08T00:47:02.745Z",
+    "payload": {
+      "id": "ChIJJ3-TBZREwokR7Rg_xoncPVU",
+      "nationalPhoneNumber": "(347) 495-8489",
+      "websiteUri": "http://www.templeofwellness.com/",
+      "displayName": {
+        "text": "Temple of Wellness",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "657:ChIJaddllmpUwokRA3IOkkdQbdU": {
+    "location_id": 657,
+    "place_id": "ChIJaddllmpUwokRA3IOkkdQbdU",
+    "fetched_at": "2026-07-08T00:47:03.079Z",
+    "payload": {
+      "id": "ChIJaddllmpUwokRA3IOkkdQbdU",
+      "nationalPhoneNumber": "(888) 485-0001",
+      "websiteUri": "http://www.thecenterformedicalhealing.com/",
+      "displayName": {
+        "text": "The Center for Medical Healing",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "659:ChIJxVQRvw5fwokRpZ_wZl1xnHI": {
+    "location_id": 659,
+    "place_id": "ChIJxVQRvw5fwokRpZ_wZl1xnHI",
+    "fetched_at": "2026-07-08T00:47:03.469Z",
+    "payload": {
+      "id": "ChIJxVQRvw5fwokRpZ_wZl1xnHI",
+      "nationalPhoneNumber": "(646) 760-4943",
+      "websiteUri": "http://bestivdrips.com/?utm_campaign=gmb",
+      "displayName": {
+        "text": "Best IV Drips- Mobile IV Therapy",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "662:ChIJnUONVelTwokRD4hgeeVwuFI": {
+    "location_id": 662,
+    "place_id": "ChIJnUONVelTwokRD4hgeeVwuFI",
+    "fetched_at": "2026-07-08T00:47:03.803Z",
+    "payload": {
+      "id": "ChIJnUONVelTwokRD4hgeeVwuFI",
+      "nationalPhoneNumber": "(862) 348-9515",
+      "websiteUri": "http://www.ironboundptwellness.com/",
+      "displayName": {
+        "text": "Ironbound Physical Therapy LLC",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "663:ChIJ69ZghqL3wokRc3JS4Z9XRoo": {
+    "location_id": 663,
+    "place_id": "ChIJ69ZghqL3wokRc3JS4Z9XRoo",
+    "fetched_at": "2026-07-08T00:47:04.129Z",
+    "payload": {
+      "id": "ChIJ69ZghqL3wokRc3JS4Z9XRoo",
+      "nationalPhoneNumber": "(551) 313-8204",
+      "websiteUri": "https://4everyoungantiaging.com/edgewater/?utm_source=gbp&utm_medium=organic&utm_campaign=gbp-edgewater&y_source=1_MjA2MTUzMTA2NS03MTUtbG9jYXRpb24ud2Vic2l0ZQ%3D%3D",
+      "displayName": {
+        "text": "4Ever Young Med Spa & Wellness Center - Edgewater",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "672:ChIJ1wixOxlTwokRGKvYzK40v2w": {
+    "location_id": 672,
+    "place_id": "ChIJ1wixOxlTwokRGKvYzK40v2w",
+    "fetched_at": "2026-07-08T00:47:04.464Z",
+    "payload": {
+      "id": "ChIJ1wixOxlTwokRGKvYzK40v2w",
+      "nationalPhoneNumber": "(973) 672-8573",
+      "websiteUri": "https://nirvanahealthcare.com/?utm_source=GMBSocialClimb&utm_medium=ArmentiMedicalGroup",
+      "displayName": {
+        "text": "Armenti Medical Group",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "676:ChIJ0czlT4FEwokRcbcAf5lqSeI": {
+    "location_id": 676,
+    "place_id": "ChIJ0czlT4FEwokRcbcAf5lqSeI",
+    "fetched_at": "2026-07-08T00:47:04.885Z",
+    "payload": {
+      "id": "ChIJ0czlT4FEwokRcbcAf5lqSeI",
+      "nationalPhoneNumber": "(646) 436-5311",
+      "websiteUri": "http://www.liveharmoniouslife.com/",
+      "displayName": {
+        "text": "Harmonious Life with FNP Marina Moiseyeva",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "682:ChIJ--Kw7ppTwokRiNvkqV581r0": {
+    "location_id": 682,
+    "place_id": "ChIJ--Kw7ppTwokRiNvkqV581r0",
+    "fetched_at": "2026-07-08T00:47:05.219Z",
+    "payload": {
+      "id": "ChIJ--Kw7ppTwokRiNvkqV581r0",
+      "nationalPhoneNumber": "(201) 279-6062",
+      "websiteUri": "http://time2drip.com/",
+      "displayName": {
+        "text": "Time2Drip - MedSpa",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "683:ChIJA74BhFVEwokRxiVr6vfDhlU": {
+    "location_id": 683,
+    "place_id": "ChIJA74BhFVEwokRxiVr6vfDhlU",
+    "fetched_at": "2026-07-08T00:47:05.545Z",
+    "payload": {
+      "id": "ChIJA74BhFVEwokRxiVr6vfDhlU",
+      "nationalPhoneNumber": "(718) 375-4355",
+      "websiteUri": "https://www.healthieruny.com/",
+      "displayName": {
+        "text": "HealthierU Natural Nutritionist Brooklyn",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "685:ChIJQempQBZDwokR__FV8y_tqz8": {
+    "location_id": 685,
+    "place_id": "ChIJQempQBZDwokR__FV8y_tqz8",
+    "fetched_at": "2026-07-08T00:47:05.873Z",
+    "payload": {
+      "id": "ChIJQempQBZDwokR__FV8y_tqz8",
+      "nationalPhoneNumber": "(929) 295-4700",
+      "websiteUri": "https://www.vitalityhealthgroup.com/",
+      "displayName": {
+        "text": "Vitality Health Group",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "686:ChIJWbH4zKVFwokRKRXPLfz-hFI": {
+    "location_id": 686,
+    "place_id": "ChIJWbH4zKVFwokRKRXPLfz-hFI",
+    "fetched_at": "2026-07-08T00:47:06.203Z",
+    "payload": {
+      "id": "ChIJWbH4zKVFwokRKRXPLfz-hFI",
+      "nationalPhoneNumber": "(718) 372-1031",
+      "websiteUri": "http://www.shoreparkwaywellness.net/",
+      "displayName": {
+        "text": "Shore Parkway Wellness",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "693:ChIJC-XM4CfLBwERPMKXrhJgxS4": {
+    "location_id": 693,
+    "place_id": "ChIJC-XM4CfLBwERPMKXrhJgxS4",
+    "fetched_at": "2026-07-08T00:47:06.535Z",
+    "payload": {
+      "id": "ChIJC-XM4CfLBwERPMKXrhJgxS4",
+      "nationalPhoneNumber": "(833) 633-5687",
+      "websiteUri": "https://medloucare.com/",
+      "displayName": {
+        "text": "MedLou Drips | Mobile IV Drips Therapy & Medical Weight Loss",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "703:ChIJ_0Z8N8xVwokRfOjaa4BfHqk": {
+    "location_id": 703,
+    "place_id": "ChIJ_0Z8N8xVwokRfOjaa4BfHqk",
+    "fetched_at": "2026-07-08T00:47:06.865Z",
+    "payload": {
+      "id": "ChIJ_0Z8N8xVwokRfOjaa4BfHqk",
+      "nationalPhoneNumber": "(201) 565-3995",
+      "websiteUri": "http://www.kearnywellness.com/",
+      "displayName": {
+        "text": "Kearny Wellness",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "715:ChIJf7_nNkpTwokR0QqFdu7-SgI": {
+    "location_id": 715,
+    "place_id": "ChIJf7_nNkpTwokR0QqFdu7-SgI",
+    "fetched_at": "2026-07-08T00:47:07.196Z",
+    "payload": {
+      "id": "ChIJf7_nNkpTwokR0QqFdu7-SgI",
+      "nationalPhoneNumber": "(973) 368-4327",
+      "websiteUri": "http://www.ironboundacu.com/",
+      "displayName": {
+        "text": "Ironbound Acupuncture and Wellness",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "720:ChIJ35I2KOlTwokRWzDUDPYWRhY": {
+    "location_id": 720,
+    "place_id": "ChIJ35I2KOlTwokRWzDUDPYWRhY",
+    "fetched_at": "2026-07-08T00:47:07.528Z",
+    "payload": {
+      "id": "ChIJ35I2KOlTwokRWzDUDPYWRhY",
+      "nationalPhoneNumber": "(973) 508-6781",
+      "websiteUri": "https://bodyluxdayspa.com/",
+      "displayName": {
+        "text": "Body Luxe Day Spa | Women's Only Spa",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "725:ChIJoQcGn3ZTwokRLSwMEdsLE6Q": {
+    "location_id": 725,
+    "place_id": "ChIJoQcGn3ZTwokRLSwMEdsLE6Q",
+    "fetched_at": "2026-07-08T00:47:07.859Z",
+    "payload": {
+      "id": "ChIJoQcGn3ZTwokRLSwMEdsLE6Q",
+      "nationalPhoneNumber": "(973) 718-7234",
+      "websiteUri": "https://spineandsportsmed.com/location/physical-therapy-newark-nj/",
+      "displayName": {
+        "text": "SportsMed Physical Therapy - Newark NJ",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "726:ChIJO-1px9JFwokR_iZv3_3iulE": {
+    "location_id": 726,
+    "place_id": "ChIJO-1px9JFwokR_iZv3_3iulE",
+    "fetched_at": "2026-07-08T00:47:08.189Z",
+    "payload": {
+      "id": "ChIJO-1px9JFwokR_iZv3_3iulE",
+      "nationalPhoneNumber": "(646) 693-0898",
+      "websiteUri": "https://drgolberg.nyc/",
+      "displayName": {
+        "text": "Chelation Therapy",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "729:ChIJpwWQu4FTwokRTIPvkWbEIOQ": {
+    "location_id": 729,
+    "place_id": "ChIJpwWQu4FTwokRTIPvkWbEIOQ",
+    "fetched_at": "2026-07-08T00:47:08.522Z",
+    "payload": {
+      "id": "ChIJpwWQu4FTwokRTIPvkWbEIOQ",
+      "nationalPhoneNumber": "(973) 803-8130",
+      "websiteUri": "https://www.careacu.com/",
+      "displayName": {
+        "text": "CareAcu Acupuncture & Herb",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "730:ChIJg2idFOVFwokRG05R-iik-bo": {
+    "location_id": 730,
+    "place_id": "ChIJg2idFOVFwokRG05R-iik-bo",
+    "fetched_at": "2026-07-08T00:47:08.848Z",
+    "payload": {
+      "id": "ChIJg2idFOVFwokRG05R-iik-bo",
+      "nationalPhoneNumber": "(212) 336-1555",
+      "websiteUri": "https://www.paukmanbioageclinic.com/",
+      "displayName": {
+        "text": "Paukman Bioage Clinic",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "740:ChIJD5NhA7RVwokR9H0lrQ6Id_s": {
+    "location_id": 740,
+    "place_id": "ChIJD5NhA7RVwokR9H0lrQ6Id_s",
+    "fetched_at": "2026-07-08T00:47:09.176Z",
+    "payload": {
+      "id": "ChIJD5NhA7RVwokR9H0lrQ6Id_s",
+      "nationalPhoneNumber": "(973) 319-8527",
+      "websiteUri": "https://advancedtrtclinic.com/locations/newark-nj/?utm_source=google&utm_medium=organic&utm_campaign=gmb&utm_content=newark-nj",
+      "displayName": {
+        "text": "Advanced TRT Clinic",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "741:ChIJ_ZnlX2dTwokRZO39emYDWA8": {
+    "location_id": 741,
+    "place_id": "ChIJ_ZnlX2dTwokRZO39emYDWA8",
+    "fetched_at": "2026-07-08T00:47:09.504Z",
+    "payload": {
+      "id": "ChIJ_ZnlX2dTwokRZO39emYDWA8",
+      "nationalPhoneNumber": "(551) 338-0674",
+      "displayName": {
+        "text": "Bare Aesthetics NJ",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "748:ChIJf-gna1BJwokRbJaMrA9W8vg": {
+    "location_id": 748,
+    "place_id": "ChIJf-gna1BJwokRbJaMrA9W8vg",
+    "fetched_at": "2026-07-08T00:47:09.835Z",
+    "payload": {
+      "id": "ChIJf-gna1BJwokRbJaMrA9W8vg",
+      "nationalPhoneNumber": "(718) 682-5250",
+      "websiteUri": "https://borisbobyrnp.com/",
+      "displayName": {
+        "text": "Boris Bobyr ANP - Hormone Replacement Therapy Center",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "757:ChIJtyUcUJdhwokRatMVgm0_5Zs": {
+    "location_id": 757,
+    "place_id": "ChIJtyUcUJdhwokRatMVgm0_5Zs",
+    "fetched_at": "2026-07-08T00:47:10.167Z",
+    "payload": {
+      "id": "ChIJtyUcUJdhwokRatMVgm0_5Zs",
+      "nationalPhoneNumber": "(347) 836-5824",
+      "websiteUri": "http://meraclinicny.com/",
+      "displayName": {
+        "text": "Mera Clinic: Pain and Regenerative Therapy (PRP, Stem Cells, Weight Loss, Testosterone)",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "766:ChIJu97A5PZEwokRq3JX_pv8ElI": {
+    "location_id": 766,
+    "place_id": "ChIJu97A5PZEwokRq3JX_pv8ElI",
+    "fetched_at": "2026-07-08T00:47:10.504Z",
+    "payload": {
+      "id": "ChIJu97A5PZEwokRq3JX_pv8ElI",
+      "nationalPhoneNumber": "(718) 614-9511",
+      "websiteUri": "http://www.drolgaz.com/",
+      "displayName": {
+        "text": "Dr. Olga Zilberstein Medical Aesthetics Brooklyn",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "769:ChIJty8iGHpTwokRCvKv_lnKTNE": {
+    "location_id": 769,
+    "place_id": "ChIJty8iGHpTwokRCvKv_lnKTNE",
+    "fetched_at": "2026-07-08T00:47:10.845Z",
+    "payload": {
+      "id": "ChIJty8iGHpTwokRCvKv_lnKTNE",
+      "nationalPhoneNumber": "(800) 734-7083",
+      "websiteUri": "https://www.newarknj.gov/departments/healthcommunitywellness",
+      "displayName": {
+        "text": "Mary Eliza Mahoney Health Center",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "770:ChIJIZNxhl9XwokRzG-rnbuaG04": {
+    "location_id": 770,
+    "place_id": "ChIJIZNxhl9XwokRzG-rnbuaG04",
+    "fetched_at": "2026-07-08T00:47:11.175Z",
+    "payload": {
+      "id": "ChIJIZNxhl9XwokRzG-rnbuaG04",
+      "nationalPhoneNumber": "(713) 373-5607",
+      "websiteUri": "http://www.cellgenemedix.com/",
+      "displayName": {
+        "text": "cellgenemedix",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "772:ChIJraiN7T5VwokROcxZUNKzDBc": {
+    "location_id": 772,
+    "place_id": "ChIJraiN7T5VwokROcxZUNKzDBc",
+    "fetched_at": "2026-07-08T00:47:11.503Z",
+    "payload": {
+      "id": "ChIJraiN7T5VwokROcxZUNKzDBc",
+      "nationalPhoneNumber": "(347) 522-2127",
+      "websiteUri": "http://www.naturalessentialwellness.net/",
+      "displayName": {
+        "text": "Natural Essential Wellness, LLC",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "774:ChIJzbYQQnf5wokRr9ujLofCOdc": {
+    "location_id": 774,
+    "place_id": "ChIJzbYQQnf5wokRr9ujLofCOdc",
+    "fetched_at": "2026-07-08T00:47:11.835Z",
+    "payload": {
+      "id": "ChIJzbYQQnf5wokRr9ujLofCOdc",
+      "nationalPhoneNumber": "(201) 266-0269",
+      "websiteUri": "https://relivehealth.com/east-rutherford/",
+      "displayName": {
+        "text": "Relive Health",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "775:ChIJswLYKWREwokRsblkiqTsFRU": {
+    "location_id": 775,
+    "place_id": "ChIJswLYKWREwokRsblkiqTsFRU",
+    "fetched_at": "2026-07-08T00:47:12.167Z",
+    "payload": {
+      "id": "ChIJswLYKWREwokRsblkiqTsFRU",
+      "nationalPhoneNumber": "(718) 676-4607",
+      "websiteUri": "https://www.brooklynintegrativemedicine.com/",
+      "displayName": {
+        "text": "Brooklyn Integrative Medicine (Functional Medicine Specialist)",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "777:ChIJ3SAwXXpTwokR9tFlLed-Ny4": {
+    "location_id": 777,
+    "place_id": "ChIJ3SAwXXpTwokR9tFlLed-Ny4",
+    "fetched_at": "2026-07-08T00:47:12.496Z",
+    "payload": {
+      "id": "ChIJ3SAwXXpTwokR9tFlLed-Ny4",
+      "nationalPhoneNumber": "(973) 733-7600",
+      "websiteUri": "https://www.newarknj.gov/departments/healthcommunitywellness",
+      "displayName": {
+        "text": "Newark Department of Health & Community Wellness",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "784:ChIJAbzCOC5FwokR-IuWM2BDytg": {
+    "location_id": 784,
+    "place_id": "ChIJAbzCOC5FwokR-IuWM2BDytg",
+    "fetched_at": "2026-07-08T00:47:12.821Z",
+    "payload": {
+      "id": "ChIJAbzCOC5FwokR-IuWM2BDytg",
+      "nationalPhoneNumber": "(646) 623-9607",
+      "websiteUri": "http://www.inspirehealthpro.com/",
+      "displayName": {
+        "text": "Inspire Health",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "785:ChIJyzOU9PtVwokRIeJ-vj4b--w": {
+    "location_id": 785,
+    "place_id": "ChIJyzOU9PtVwokRIeJ-vj4b--w",
+    "fetched_at": "2026-07-08T00:47:13.152Z",
+    "payload": {
+      "id": "ChIJyzOU9PtVwokRIeJ-vj4b--w",
+      "nationalPhoneNumber": "(551) 383-3918",
+      "websiteUri": "http://www.inspiremedspa.com/",
+      "displayName": {
+        "text": "Inspire Med Spa",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "788:ChIJa_zn6b34wokR6-IvZXuERHk": {
+    "location_id": 788,
+    "place_id": "ChIJa_zn6b34wokR6-IvZXuERHk",
+    "fetched_at": "2026-07-08T00:47:13.500Z",
+    "payload": {
+      "id": "ChIJa_zn6b34wokR6-IvZXuERHk",
+      "nationalPhoneNumber": "(201) 623-8000",
+      "websiteUri": "https://www.geriadermatology.com/",
+      "displayName": {
+        "text": "Geria Dermatology - Rutherford",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "792:ChIJrznM-9dFwokRIcIZQiJc8y0": {
+    "location_id": 792,
+    "place_id": "ChIJrznM-9dFwokRIcIZQiJc8y0",
+    "fetched_at": "2026-07-08T00:47:13.827Z",
+    "payload": {
+      "id": "ChIJrznM-9dFwokRIcIZQiJc8y0",
+      "nationalPhoneNumber": "(718) 942-4047",
+      "websiteUri": "https://www.healingtouchiv.com/",
+      "displayName": {
+        "text": "Healing Touch IV",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "806:ChIJ3WISxPr3wokRauzxQwMMfgk": {
+    "location_id": 806,
+    "place_id": "ChIJ3WISxPr3wokRauzxQwMMfgk",
+    "fetched_at": "2026-07-08T00:47:14.154Z",
+    "payload": {
+      "id": "ChIJ3WISxPr3wokRauzxQwMMfgk",
+      "nationalPhoneNumber": "(845) 415-6920",
+      "websiteUri": "http://www.natureshum.net/",
+      "displayName": {
+        "text": "Humaira Quraishi, ND, MS",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "808:ChIJAQBAqLTS6YkRqkWqQY2IKds": {
+    "location_id": 808,
+    "place_id": "ChIJAQBAqLTS6YkRqkWqQY2IKds",
+    "fetched_at": "2026-07-08T00:47:14.493Z",
+    "payload": {
+      "id": "ChIJAQBAqLTS6YkRqkWqQY2IKds",
+      "nationalPhoneNumber": "(718) 210-4738",
+      "websiteUri": "https://www.drhamzajalal.com/",
+      "displayName": {
+        "text": "Functional Wellness Medical Care",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "813:ChIJl3IlyHz3wokRDHUDbJDOtBs": {
+    "location_id": 813,
+    "place_id": "ChIJl3IlyHz3wokRDHUDbJDOtBs",
+    "fetched_at": "2026-07-08T00:47:14.819Z",
+    "payload": {
+      "id": "ChIJl3IlyHz3wokRDHUDbJDOtBs",
+      "nationalPhoneNumber": "(201) 292-1590",
+      "websiteUri": "https://juventee.com/",
+      "displayName": {
+        "text": "Juventee",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "824:ChIJAeQiPIFHlG0Rpt-wtZrM7_s": {
+    "location_id": 824,
+    "place_id": "ChIJAeQiPIFHlG0Rpt-wtZrM7_s",
+    "fetched_at": "2026-07-08T00:47:15.148Z",
+    "payload": {
+      "id": "ChIJAeQiPIFHlG0Rpt-wtZrM7_s",
+      "nationalPhoneNumber": "(774) 699-1763",
+      "websiteUri": "https://www.vacuactivus.com/",
+      "displayName": {
+        "text": "Zia Communications, Sales of cryotherapy chambers, fitness and spa equipment",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "829:ChIJERPhDuBSwokRqNVwCQfV6-8": {
+    "location_id": 829,
+    "place_id": "ChIJERPhDuBSwokRqNVwCQfV6-8",
+    "fetched_at": "2026-07-08T00:47:15.478Z",
+    "payload": {
+      "id": "ChIJERPhDuBSwokRqNVwCQfV6-8",
+      "nationalPhoneNumber": "(973) 596-2850",
+      "websiteUri": "http://www.thelennardclinic.org/",
+      "displayName": {
+        "text": "The Lennard Clinic",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "830:ChIJF4AQlRFhwokRjOAmcfdb-LM": {
+    "location_id": 830,
+    "place_id": "ChIJF4AQlRFhwokRjOAmcfdb-LM",
+    "fetched_at": "2026-07-08T00:47:15.808Z",
+    "payload": {
+      "id": "ChIJF4AQlRFhwokRjOAmcfdb-LM",
+      "nationalPhoneNumber": "(929) 415-9781",
+      "websiteUri": "http://www.multivitaiv.com/",
+      "displayName": {
+        "text": "MULTIVITA IV",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "841:ChIJ9z5s7LOKwokR7QoN7ANnoHU": {
+    "location_id": 841,
+    "place_id": "ChIJ9z5s7LOKwokR7QoN7ANnoHU",
+    "fetched_at": "2026-07-08T00:47:16.135Z",
+    "payload": {
+      "id": "ChIJ9z5s7LOKwokR7QoN7ANnoHU",
+      "nationalPhoneNumber": "(718) 939-6300",
+      "websiteUri": "https://ny.spacastleusa.com/",
+      "displayName": {
+        "text": "Spa Castle New York",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "844:ChIJ59TJVgJVwokRS7Y7Is39elA": {
+    "location_id": 844,
+    "place_id": "ChIJ59TJVgJVwokRS7Y7Is39elA",
+    "fetched_at": "2026-07-08T00:47:16.461Z",
+    "payload": {
+      "id": "ChIJ59TJVgJVwokRS7Y7Is39elA",
+      "nationalPhoneNumber": "(973) 844-9220",
+      "websiteUri": "https://jerseyrehab.com/",
+      "displayName": {
+        "text": "Jersey Rehab & Pain Management: Belleville",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "847:ChIJnbVBgOVUwokRkc5mqsgnbks": {
+    "location_id": 847,
+    "place_id": "ChIJnbVBgOVUwokRkc5mqsgnbks",
+    "fetched_at": "2026-07-08T00:47:16.803Z",
+    "payload": {
+      "id": "ChIJnbVBgOVUwokRkc5mqsgnbks",
+      "nationalPhoneNumber": "(973) 483-1500",
+      "websiteUri": "http://www.astramdhealth.com/",
+      "displayName": {
+        "text": "Dr. Natasha Fuksina AstraMDhealth Functional, Internal And Obesity Medicine Bioidentical Hormones",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "855:ChIJTTUrPSJgwokRA5GNq_8dxJI": {
+    "location_id": 855,
+    "place_id": "ChIJTTUrPSJgwokRA5GNq_8dxJI",
+    "fetched_at": "2026-07-08T00:47:17.128Z",
+    "payload": {
+      "id": "ChIJTTUrPSJgwokRA5GNq_8dxJI",
+      "nationalPhoneNumber": "(718) 463-0001",
+      "websiteUri": "http://www.nyspasauna.com/",
+      "displayName": {
+        "text": "New York Spa & Sauna",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "856:ChIJWTzG_mH_wokRbPdQBTqfYKw": {
+    "location_id": 856,
+    "place_id": "ChIJWTzG_mH_wokRbPdQBTqfYKw",
+    "fetched_at": "2026-07-08T00:47:17.486Z",
+    "payload": {
+      "id": "ChIJWTzG_mH_wokRbPdQBTqfYKw",
+      "nationalPhoneNumber": "(201) 757-5558",
+      "websiteUri": "https://www.njnaturopath.com/",
+      "displayName": {
+        "text": "Your Natural Path to Health Clinic",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "864:ChIJVQ2I2jJVwokRDjRs0DVTsgY": {
+    "location_id": 864,
+    "place_id": "ChIJVQ2I2jJVwokRDjRs0DVTsgY",
+    "fetched_at": "2026-07-08T00:47:17.815Z",
+    "payload": {
+      "id": "ChIJVQ2I2jJVwokRDjRs0DVTsgY",
+      "nationalPhoneNumber": "(973) 791-5558",
+      "websiteUri": "http://healthnwellnessrx.com/",
+      "displayName": {
+        "text": "Health N Wellness Rx",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "867:ChIJFYciRypTwokRu9KJwL7vHVU": {
+    "location_id": 867,
+    "place_id": "ChIJFYciRypTwokRu9KJwL7vHVU",
+    "fetched_at": "2026-07-08T00:47:18.143Z",
+    "payload": {
+      "id": "ChIJFYciRypTwokRu9KJwL7vHVU",
+      "nationalPhoneNumber": "(973) 926-7000",
+      "websiteUri": "https://www.rwjbh.org/newark-beth-israel-medical-center/",
+      "displayName": {
+        "text": "Newark Beth Israel Medical Center",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "888:ChIJH2IKXV5VwokRNH33Yg_WlWU": {
+    "location_id": 888,
+    "place_id": "ChIJH2IKXV5VwokRNH33Yg_WlWU",
+    "fetched_at": "2026-07-08T00:47:18.468Z",
+    "payload": {
+      "id": "ChIJH2IKXV5VwokRNH33Yg_WlWU",
+      "nationalPhoneNumber": "(973) 672-8573",
+      "websiteUri": "https://nirvanahealthcare.com/pure-integrated-medicine/?utm_campaign=gmb&utm_medium=pureintegratedmedicine&utm_source=gmbsocialclimb",
+      "displayName": {
+        "text": "Pure Integrated Medicine",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "901:ChIJm67VKt9VwokR_OqfyDT550w": {
+    "location_id": 901,
+    "place_id": "ChIJm67VKt9VwokR_OqfyDT550w",
+    "fetched_at": "2026-07-08T00:47:18.793Z",
+    "payload": {
+      "id": "ChIJm67VKt9VwokR_OqfyDT550w",
+      "nationalPhoneNumber": "(908) 504-0493",
+      "websiteUri": "http://herboganic.com/",
+      "displayName": {
+        "text": "Herboganic Retail",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "902:ChIJpQTLWSNJwokR4rGCYiiJCYA": {
+    "location_id": 902,
+    "place_id": "ChIJpQTLWSNJwokR4rGCYiiJCYA",
+    "fetched_at": "2026-07-08T00:47:19.122Z",
+    "payload": {
+      "id": "ChIJpQTLWSNJwokR4rGCYiiJCYA",
+      "nationalPhoneNumber": "(718) 682-5250",
+      "websiteUri": "https://borisbobyrnp.com/",
+      "displayName": {
+        "text": "Boris Bobyr NP - Hormone Replacement Therapy Center",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "912:ChIJXxn0hUyrw4kR8d93GpcrM7c": {
+    "location_id": 912,
+    "place_id": "ChIJXxn0hUyrw4kR8d93GpcrM7c",
+    "fetched_at": "2026-07-08T00:47:19.455Z",
+    "payload": {
+      "id": "ChIJXxn0hUyrw4kR8d93GpcrM7c",
+      "nationalPhoneNumber": "(973) 675-1000",
+      "websiteUri": "http://alternativehealthcenter.com/",
+      "displayName": {
+        "text": "Alternative Health Center PC",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "928:ChIJd04NGWGtw4kRbNvbxuFFlSo": {
+    "location_id": 928,
+    "place_id": "ChIJd04NGWGtw4kRbNvbxuFFlSo",
+    "fetched_at": "2026-07-08T00:47:19.782Z",
+    "payload": {
+      "id": "ChIJd04NGWGtw4kRbNvbxuFFlSo",
+      "nationalPhoneNumber": "(908) 450-0005",
+      "websiteUri": "http://stunningmedspas.com/",
+      "displayName": {
+        "text": "Stunning Med Spa",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "954:ChIJEyqdsEBZwokRepwNSR-YeBI": {
+    "location_id": 954,
+    "place_id": "ChIJEyqdsEBZwokRepwNSR-YeBI",
+    "fetched_at": "2026-07-08T00:47:20.118Z",
+    "payload": {
+      "id": "ChIJEyqdsEBZwokRepwNSR-YeBI",
+      "nationalPhoneNumber": "(646) 342-7705",
+      "websiteUri": "https://www.pearlwellnessdetox.com/",
+      "displayName": {
+        "text": "Pearl Wellness and Detox",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "955:ChIJ9-np5bmtw4kR4YE2n2szZ6w": {
+    "location_id": 955,
+    "place_id": "ChIJ9-np5bmtw4kR4YE2n2szZ6w",
+    "fetched_at": "2026-07-08T00:47:20.449Z",
+    "payload": {
+      "id": "ChIJ9-np5bmtw4kR4YE2n2szZ6w",
+      "nationalPhoneNumber": "(908) 755-0200",
+      "websiteUri": "https://www.quantumintegrativemed.com/",
+      "displayName": {
+        "text": "Quantum Integrative Medicine, LLC - Monica J Johnson, DC, NP-C, L.Ac",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "957:ChIJ4bL-GCfxwokRSBXaGrM3dG0": {
+    "location_id": 957,
+    "place_id": "ChIJ4bL-GCfxwokRSBXaGrM3dG0",
+    "fetched_at": "2026-07-08T00:47:20.774Z",
+    "payload": {
+      "id": "ChIJ4bL-GCfxwokRSBXaGrM3dG0",
+      "nationalPhoneNumber": "(201) 569-8033",
+      "websiteUri": "http://www.longevitynj.com/",
+      "displayName": {
+        "text": "Longevity",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "967:ChIJ0SL9oUZVwokROFYX4lWYLfc": {
+    "location_id": 967,
+    "place_id": "ChIJ0SL9oUZVwokROFYX4lWYLfc",
+    "fetched_at": "2026-07-08T00:47:21.098Z",
+    "payload": {
+      "id": "ChIJ0SL9oUZVwokROFYX4lWYLfc",
+      "nationalPhoneNumber": "(862) 347-4058",
+      "websiteUri": "http://alivedripmedical.com/",
+      "displayName": {
+        "text": "AliveDrip Montclair - IV Therapy | Peptides | Longevity Medicine",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "978:ChIJkUoCUderw4kRjkoIrNxa5TM": {
+    "location_id": 978,
+    "place_id": "ChIJkUoCUderw4kRjkoIrNxa5TM",
+    "fetched_at": "2026-07-08T00:47:21.420Z",
+    "payload": {
+      "id": "ChIJkUoCUderw4kRjkoIrNxa5TM",
+      "nationalPhoneNumber": "(973) 673-3522",
+      "websiteUri": "http://aamhclinic.com/",
+      "displayName": {
+        "text": "Anti-Aging and Metabolic Health Clinic",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "987:ChIJr5WfQZStw4kRCPXA_p8iOS4": {
+    "location_id": 987,
+    "place_id": "ChIJr5WfQZStw4kRCPXA_p8iOS4",
+    "fetched_at": "2026-07-08T00:47:21.751Z",
+    "payload": {
+      "id": "ChIJr5WfQZStw4kRCPXA_p8iOS4",
+      "nationalPhoneNumber": "(973) 986-7592",
+      "websiteUri": "http://www.shicaresmedspa.com/",
+      "displayName": {
+        "text": "ShiCares MedSpa",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "992:ChIJT4-dsUxVwokROuP1FmTxwQU": {
+    "location_id": 992,
+    "place_id": "ChIJT4-dsUxVwokROuP1FmTxwQU",
+    "fetched_at": "2026-07-08T00:47:22.080Z",
+    "payload": {
+      "id": "ChIJT4-dsUxVwokROuP1FmTxwQU",
+      "nationalPhoneNumber": "(973) 486-0148",
+      "websiteUri": "https://drlisalewis.com/",
+      "displayName": {
+        "text": "Lewis Holistic Healing Institute",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "994:ChIJC2QBdT_zwokRryV9rz71eGE": {
+    "location_id": 994,
+    "place_id": "ChIJC2QBdT_zwokRryV9rz71eGE",
+    "fetched_at": "2026-07-08T00:47:22.418Z",
+    "payload": {
+      "id": "ChIJC2QBdT_zwokRryV9rz71eGE",
+      "nationalPhoneNumber": "(475) 231-0510",
+      "websiteUri": "https://www.drs2health.com/",
+      "displayName": {
+        "text": "DRS2Health Naturopathic Doctors",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "997:ChIJQ8ByRdL7wokR0RwafWuteGs": {
+    "location_id": 997,
+    "place_id": "ChIJQ8ByRdL7wokR0RwafWuteGs",
+    "fetched_at": "2026-07-08T00:47:22.756Z",
+    "payload": {
+      "id": "ChIJQ8ByRdL7wokR0RwafWuteGs",
+      "nationalPhoneNumber": "(201) 881-9563",
+      "websiteUri": "https://www.drchante.com/",
+      "displayName": {
+        "text": "Whole Body Natural Wellness Center, LLC",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "1002:ChIJzY8YJOX-wokRAqzat7escTk": {
+    "location_id": 1002,
+    "place_id": "ChIJzY8YJOX-wokRAqzat7escTk",
+    "fetched_at": "2026-07-08T00:47:23.083Z",
+    "payload": {
+      "id": "ChIJzY8YJOX-wokRAqzat7escTk",
+      "nationalPhoneNumber": "(973) 272-6220",
+      "websiteUri": "https://www.infusioncenterofnj.com/",
+      "displayName": {
+        "text": "Infusion Center of NJ",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "1005:ChIJqSxAv1P5wokRKEOYh7US1i0": {
+    "location_id": 1005,
+    "place_id": "ChIJqSxAv1P5wokRKEOYh7US1i0",
+    "fetched_at": "2026-07-08T00:47:23.411Z",
+    "payload": {
+      "id": "ChIJqSxAv1P5wokRKEOYh7US1i0",
+      "nationalPhoneNumber": "(973) 845-2222",
+      "websiteUri": "https://www.revivebodymind.com/",
+      "displayName": {
+        "text": "REVIVE Body Mind Cryotherapy & Halotherapy",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "1010:ChIJv9l6drGtw4kRnvOJS2IT1E0": {
+    "location_id": 1010,
+    "place_id": "ChIJv9l6drGtw4kRnvOJS2IT1E0",
+    "fetched_at": "2026-07-08T00:47:23.738Z",
+    "payload": {
+      "id": "ChIJv9l6drGtw4kRnvOJS2IT1E0",
+      "nationalPhoneNumber": "(908) 373-1124",
+      "websiteUri": "https://endure-health.com/",
+      "displayName": {
+        "text": "Endure Health Direct Primary Care, LLC",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "1011:ChIJCc8vWauqw4kRtU5fQVfmP0M": {
+    "location_id": 1011,
+    "place_id": "ChIJCc8vWauqw4kRtU5fQVfmP0M",
+    "fetched_at": "2026-07-08T00:47:24.066Z",
+    "payload": {
+      "id": "ChIJCc8vWauqw4kRtU5fQVfmP0M",
+      "nationalPhoneNumber": "(973) 744-7258",
+      "websiteUri": "http://www.saltfloatcenter.com/",
+      "displayName": {
+        "text": "Salt Float Center",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "1012:ChIJG5MTEfD-wokRFcGGKahOlZI": {
+    "location_id": 1012,
+    "place_id": "ChIJG5MTEfD-wokRFcGGKahOlZI",
+    "fetched_at": "2026-07-08T00:47:24.403Z",
+    "payload": {
+      "id": "ChIJG5MTEfD-wokRFcGGKahOlZI",
+      "nationalPhoneNumber": "(973) 471-5758",
+      "websiteUri": "http://www.holisticnaturopath.com/",
+      "displayName": {
+        "text": "Holistic Naturopathic Center",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "1017:ChIJa27Pthj7wokRAy_TfntlH4Y": {
+    "location_id": 1017,
+    "place_id": "ChIJa27Pthj7wokRAy_TfntlH4Y",
+    "fetched_at": "2026-07-08T00:47:24.734Z",
+    "payload": {
+      "id": "ChIJa27Pthj7wokRAy_TfntlH4Y",
+      "nationalPhoneNumber": "(201) 880-1400",
+      "websiteUri": "https://stemcellofnj.com/",
+      "displayName": {
+        "text": "Stem Cell Therapy of NJ",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "1018:ChIJj-D2vPisw4kR0sUCehSZrf0": {
+    "location_id": 1018,
+    "place_id": "ChIJj-D2vPisw4kR0sUCehSZrf0",
+    "fetched_at": "2026-07-08T00:47:25.056Z",
+    "payload": {
+      "id": "ChIJj-D2vPisw4kR0sUCehSZrf0",
+      "nationalPhoneNumber": "(973) 761-5060",
+      "websiteUri": "http://www.holisticpainreliefandweightlosscenter.com/",
+      "displayName": {
+        "text": "Holistic Pain Relief and Weight Loss Center",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "1020:ChIJVzM-xg7_wokR_KY1z7VmANY": {
+    "location_id": 1020,
+    "place_id": "ChIJVzM-xg7_wokR_KY1z7VmANY",
+    "fetched_at": "2026-07-08T00:47:25.386Z",
+    "payload": {
+      "id": "ChIJVzM-xg7_wokR_KY1z7VmANY",
+      "nationalPhoneNumber": "(973) 337-6416",
+      "websiteUri": "https://montclair.chillcryo.net/",
+      "displayName": {
+        "text": "ChillRx Cryotherapy Montclair",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "1028:ChIJxejqLVqrw4kR93quTdW230s": {
+    "location_id": 1028,
+    "place_id": "ChIJxejqLVqrw4kR93quTdW230s",
+    "fetched_at": "2026-07-08T00:47:25.718Z",
+    "payload": {
+      "id": "ChIJxejqLVqrw4kR93quTdW230s",
+      "nationalPhoneNumber": "(973) 520-0302",
+      "websiteUri": "https://www.onyxaasm.com/",
+      "displayName": {
+        "text": "Onyx Aesthetics & Sports Medicine",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "1029:ChIJ9doFC6aqw4kRTIMrzvkV8b0": {
+    "location_id": 1029,
+    "place_id": "ChIJ9doFC6aqw4kRTIMrzvkV8b0",
+    "fetched_at": "2026-07-08T00:47:26.048Z",
+    "payload": {
+      "id": "ChIJ9doFC6aqw4kRTIMrzvkV8b0",
+      "nationalPhoneNumber": "(973) 650-3204",
+      "websiteUri": "https://www.montclairrejuvenationcenter.com/",
+      "displayName": {
+        "text": "Montclair Rejuvenation Center",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "1030:ChIJ__-vg02sw4kRwIWAlzXXkYs": {
+    "location_id": 1030,
+    "place_id": "ChIJ__-vg02sw4kRwIWAlzXXkYs",
+    "fetched_at": "2026-07-08T00:47:26.375Z",
+    "payload": {
+      "id": "ChIJ__-vg02sw4kRwIWAlzXXkYs",
+      "nationalPhoneNumber": "(973) 572-3264",
+      "websiteUri": "https://feelnaturalwellnesscenter.com/",
+      "displayName": {
+        "text": "Feel Natural Wellness Center",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "1031:ChIJY7PywoGrw4kR8JAAA53bSAs": {
+    "location_id": 1031,
+    "place_id": "ChIJY7PywoGrw4kR8JAAA53bSAs",
+    "fetched_at": "2026-07-08T00:47:26.703Z",
+    "payload": {
+      "id": "ChIJY7PywoGrw4kR8JAAA53bSAs",
+      "nationalPhoneNumber": "(973) 498-8908",
+      "websiteUri": "https://www.trueblissmedical.com/",
+      "displayName": {
+        "text": "True Bliss Medical Aesthetics and Wellness",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "1037:ChIJcdkjuaNZwokRnTsSesWhWzw": {
+    "location_id": 1037,
+    "place_id": "ChIJcdkjuaNZwokRnTsSesWhWzw",
+    "fetched_at": "2026-07-08T00:47:27.043Z",
+    "payload": {
+      "id": "ChIJcdkjuaNZwokRnTsSesWhWzw",
+      "nationalPhoneNumber": "(646) 377-0448",
+      "websiteUri": "http://inharmonyholistic.com/",
+      "displayName": {
+        "text": "In Harmony Holistic",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "1038:ChIJn7W6dp77wokRgwlfMHFuqpM": {
+    "location_id": 1038,
+    "place_id": "ChIJn7W6dp77wokRgwlfMHFuqpM",
+    "fetched_at": "2026-07-08T00:47:27.386Z",
+    "payload": {
+      "id": "ChIJn7W6dp77wokRgwlfMHFuqpM",
+      "nationalPhoneNumber": "(201) 880-1400",
+      "websiteUri": "https://refreshclinic.com/?utm_source=GMB&utm_medium=Paramus&utm_campaign=Website",
+      "displayName": {
+        "text": "Refresh Clinic",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "1046:ChIJzXbkM6jzwokRwsKZzwNQAo4": {
+    "location_id": 1046,
+    "place_id": "ChIJzXbkM6jzwokRwsKZzwNQAo4",
+    "fetched_at": "2026-07-08T00:47:27.725Z",
+    "payload": {
+      "id": "ChIJzXbkM6jzwokRwsKZzwNQAo4",
+      "nationalPhoneNumber": "(347) 429-7177",
+      "websiteUri": "http://ivhydratecafe.com/",
+      "displayName": {
+        "text": "IV Hydrate Cafe",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "1047:ChIJ0cE1Qr6tw4kRLP5FaHxizKk": {
+    "location_id": 1047,
+    "place_id": "ChIJ0cE1Qr6tw4kRLP5FaHxizKk",
+    "fetched_at": "2026-07-08T00:47:28.056Z",
+    "payload": {
+      "id": "ChIJ0cE1Qr6tw4kRLP5FaHxizKk",
+      "nationalPhoneNumber": "(908) 372-5555",
+      "websiteUri": "http://www.sunwellness.info/",
+      "displayName": {
+        "text": "Anti-aging and Weight loss",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "1058:ChIJ8QuXYXz7wokRehZg5vMqcs0": {
+    "location_id": 1058,
+    "place_id": "ChIJ8QuXYXz7wokRehZg5vMqcs0",
+    "fetched_at": "2026-07-08T00:47:28.386Z",
+    "payload": {
+      "id": "ChIJ8QuXYXz7wokRehZg5vMqcs0",
+      "nationalPhoneNumber": "(551) 367-0271",
+      "websiteUri": "https://stemregenmedical.com/?utm_source=gbp&utm_medium=website_btn&utm_campaign=pmp",
+      "displayName": {
+        "text": "Stem Regen Medical",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "1059:ChIJk4azZQ2rw4kR7ap6ySVV2J8": {
+    "location_id": 1059,
+    "place_id": "ChIJk4azZQ2rw4kR7ap6ySVV2J8",
+    "fetched_at": "2026-07-08T00:47:28.714Z",
+    "payload": {
+      "id": "ChIJk4azZQ2rw4kR7ap6ySVV2J8",
+      "nationalPhoneNumber": "(973) 447-3664",
+      "websiteUri": "https://www.trtspecialistnj.com/",
+      "displayName": {
+        "text": "Testosterone Replacement Therapy Specialists",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "1061:ChIJpz3Qh1vywokRkDV1L1udjNY": {
+    "location_id": 1061,
+    "place_id": "ChIJpz3Qh1vywokRkDV1L1udjNY",
+    "fetched_at": "2026-07-08T00:47:29.045Z",
+    "payload": {
+      "id": "ChIJpz3Qh1vywokRkDV1L1udjNY",
+      "nationalPhoneNumber": "(329) 208-9190",
+      "websiteUri": "https://www.vitalisthealingtraditions.com/",
+      "displayName": {
+        "text": "VHT Society",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "1067:ChIJl3BR-VpjwokREo_u8olFnzA": {
+    "location_id": 1067,
+    "place_id": "ChIJl3BR-VpjwokREo_u8olFnzA",
+    "fetched_at": "2026-07-08T00:47:29.372Z",
+    "payload": {
+      "id": "ChIJl3BR-VpjwokREo_u8olFnzA",
+      "nationalPhoneNumber": "(516) 233-1020",
+      "websiteUri": "https://www.vitamineralivtherapy.com/",
+      "displayName": {
+        "text": "VitaMineral IV Therapy",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "1072:ChIJBcLP-6T7wokRuKVIC84zIIY": {
+    "location_id": 1072,
+    "place_id": "ChIJBcLP-6T7wokRuKVIC84zIIY",
+    "fetched_at": "2026-07-08T00:47:29.698Z",
+    "payload": {
+      "id": "ChIJBcLP-6T7wokRuKVIC84zIIY",
+      "nationalPhoneNumber": "(201) 254-0604",
+      "websiteUri": "http://brc-spa.com/",
+      "displayName": {
+        "text": "BRC Day Spa & Sauna Resort",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "1083:ChIJcxkd3OfxwokR4xBgZnO7jis": {
+    "location_id": 1083,
+    "place_id": "ChIJcxkd3OfxwokR4xBgZnO7jis",
+    "fetched_at": "2026-07-08T00:47:30.030Z",
+    "payload": {
+      "id": "ChIJcxkd3OfxwokR4xBgZnO7jis",
+      "nationalPhoneNumber": "(201) 569-0500",
+      "websiteUri": "https://bergentotalhealth.com/",
+      "displayName": {
+        "text": "Bergen Total Health",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "1084:ChIJ_U1FPrzzwokR7Mr6O_m_J_k": {
+    "location_id": 1084,
+    "place_id": "ChIJ_U1FPrzzwokR7Mr6O_m_J_k",
+    "fetched_at": "2026-07-08T00:47:30.365Z",
+    "payload": {
+      "id": "ChIJ_U1FPrzzwokR7Mr6O_m_J_k",
+      "nationalPhoneNumber": "(914) 635-2639",
+      "websiteUri": "https://advancedtrtclinic.com/locations/mount-vernon-ny/?utm_source=google&utm_medium=organic&utm_campaign=gmb&utm_content=mount-vernon-ny",
+      "displayName": {
+        "text": "Advanced TRT Clinic",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "1087:ChIJ347-E-Wrw4kR-sTm_33uwHE": {
+    "location_id": 1087,
+    "place_id": "ChIJ347-E-Wrw4kR-sTm_33uwHE",
+    "fetched_at": "2026-07-08T00:47:30.698Z",
+    "payload": {
+      "id": "ChIJ347-E-Wrw4kR-sTm_33uwHE",
+      "nationalPhoneNumber": "(973) 736-5300",
+      "websiteUri": "http://www.integrativemedicineofnj.com/",
+      "displayName": {
+        "text": "Integrative Medicine of New Jersey",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "1095:ChIJZ_zzulj7wokRF2IMe4I1OHg": {
+    "location_id": 1095,
+    "place_id": "ChIJZ_zzulj7wokRF2IMe4I1OHg",
+    "fetched_at": "2026-07-08T00:47:31.028Z",
+    "payload": {
+      "id": "ChIJZ_zzulj7wokRF2IMe4I1OHg",
+      "nationalPhoneNumber": "(201) 273-7608",
+      "websiteUri": "http://www.restore.com/locations/nj-paramus-nj018?utm_source=gmb&utm_medium=Yext&y_source=1_NDkxNDUwOTMtNzE1LWxvY2F0aW9uLndlYnNpdGU%3D",
+      "displayName": {
+        "text": "Restore Hyper Wellness",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "1097:ChIJkafkMIBiwokRM6HPMLfGkrs": {
+    "location_id": 1097,
+    "place_id": "ChIJkafkMIBiwokRM6HPMLfGkrs",
+    "fetched_at": "2026-07-08T00:47:31.359Z",
+    "payload": {
+      "id": "ChIJkafkMIBiwokRM6HPMLfGkrs",
+      "nationalPhoneNumber": "(516) 265-0878",
+      "websiteUri": "https://www.cryonrg.com/",
+      "displayName": {
+        "text": "Cryo Energy",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "1101:ChIJiZrAOHquw4kRUOQzSQiViTc": {
+    "location_id": 1101,
+    "place_id": "ChIJiZrAOHquw4kRUOQzSQiViTc",
+    "fetched_at": "2026-07-08T00:47:31.690Z",
+    "payload": {
+      "id": "ChIJiZrAOHquw4kRUOQzSQiViTc",
+      "nationalPhoneNumber": "(973) 346-9086",
+      "websiteUri": "https://www.advancedintegratedhealth.com/new-jersey-functional-medicine/",
+      "displayName": {
+        "text": "Advanced Integrated Health - Holistic & Functional Medicine",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "1111:ChIJW0-QkYQAw4kRRN3npO6rlPQ": {
+    "location_id": 1111,
+    "place_id": "ChIJW0-QkYQAw4kRRN3npO6rlPQ",
+    "fetched_at": "2026-07-08T00:47:32.024Z",
+    "payload": {
+      "id": "ChIJW0-QkYQAw4kRRN3npO6rlPQ",
+      "displayName": {
+        "text": "Warren J. Bleiweiss, MD",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "1122:ChIJKam2sqGJwokR4W-6ZlNE5Bg": {
+    "location_id": 1122,
+    "place_id": "ChIJKam2sqGJwokR4W-6ZlNE5Bg",
+    "fetched_at": "2026-07-08T00:47:32.358Z",
+    "payload": {
+      "id": "ChIJKam2sqGJwokR4W-6ZlNE5Bg",
+      "nationalPhoneNumber": "(516) 833-1301",
+      "websiteUri": "https://tidelinehealth.net/",
+      "displayName": {
+        "text": "Tideline Center for Health & Aesthetics",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "1124:ChIJ5UgGw-nkwokRLJr-Qb9hW88": {
+    "location_id": 1124,
+    "place_id": "ChIJ5UgGw-nkwokRLJr-Qb9hW88",
+    "fetched_at": "2026-07-08T00:47:32.688Z",
+    "payload": {
+      "id": "ChIJ5UgGw-nkwokRLJr-Qb9hW88",
+      "nationalPhoneNumber": "(201) 201-1593",
+      "websiteUri": "https://elysiumveincare.com/?utm_source=google&utm_medium=organic&utm_campaign=gbp",
+      "displayName": {
+        "text": "Elysium Aesthetics and Vein Care",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "1125:ChIJRV5pxhZjwokRyG4cvwkExto": {
+    "location_id": 1125,
+    "place_id": "ChIJRV5pxhZjwokRyG4cvwkExto",
+    "fetched_at": "2026-07-08T00:47:33.025Z",
+    "payload": {
+      "id": "ChIJRV5pxhZjwokRyG4cvwkExto",
+      "nationalPhoneNumber": "(516) 519-8065",
+      "websiteUri": "http://www.resetfloat.com/",
+      "displayName": {
+        "text": "Reset Float",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "1131:ChIJTR3hWYaNwokRgh33dNsYNtY": {
+    "location_id": 1131,
+    "place_id": "ChIJTR3hWYaNwokRgh33dNsYNtY",
+    "fetched_at": "2026-07-08T00:47:33.352Z",
+    "payload": {
+      "id": "ChIJTR3hWYaNwokRgh33dNsYNtY",
+      "nationalPhoneNumber": "(646) 301-1334",
+      "websiteUri": "https://www.bouncebackiv.com/",
+      "displayName": {
+        "text": "BouncebackIV Hydration and Medspa",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "1137:ChIJn7XDbnL_wokRsnIGgT-Sc-M": {
+    "location_id": 1137,
+    "place_id": "ChIJn7XDbnL_wokRsnIGgT-Sc-M",
+    "fetched_at": "2026-07-08T00:47:33.694Z",
+    "payload": {
+      "id": "ChIJn7XDbnL_wokRsnIGgT-Sc-M",
+      "nationalPhoneNumber": "(646) 398-2089",
+      "websiteUri": "https://www.regenpainnynj.com/",
+      "displayName": {
+        "text": "Regenerative Pain & Sports Medicine - Oradell, NJ",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "1143:ChIJfbLA89n6wokRkcWOk2nHTtw": {
+    "location_id": 1143,
+    "place_id": "ChIJfbLA89n6wokRkcWOk2nHTtw",
+    "fetched_at": "2026-07-08T00:47:34.021Z",
+    "payload": {
+      "id": "ChIJfbLA89n6wokRkcWOk2nHTtw",
+      "nationalPhoneNumber": "(201) 967-0800",
+      "websiteUri": "https://www.comprehensivehealingmd.com/",
+      "displayName": {
+        "text": "Dr Radu Kramer MD - Integrative Medicine Associates - Comprehensive Healing",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "1147:ChIJqQCrMehhwokRHoliw6XWjGo": {
+    "location_id": 1147,
+    "place_id": "ChIJqQCrMehhwokRHoliw6XWjGo",
+    "fetched_at": "2026-07-08T00:47:34.409Z",
+    "payload": {
+      "id": "ChIJqQCrMehhwokRHoliw6XWjGo",
+      "nationalPhoneNumber": "(914) 825-4620",
+      "websiteUri": "http://yastheticsnyc.square.site/",
+      "displayName": {
+        "text": "Yasthetics and Wellness",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "1149:ChIJ4ffJwSzlwokR4sELJMUzYNA": {
+    "location_id": 1149,
+    "place_id": "ChIJ4ffJwSzlwokR4sELJMUzYNA",
+    "fetched_at": "2026-07-08T00:47:34.735Z",
+    "payload": {
+      "id": "ChIJ4ffJwSzlwokR4sELJMUzYNA",
+      "nationalPhoneNumber": "(201) 225-2525",
+      "websiteUri": "https://advancedhormonesolutions.com/?utm_source=google&utm_medium=organic&utm_campaign=gmb_listing",
+      "displayName": {
+        "text": "Advanced Hormone Solutions",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "1158:ChIJKZUU_Eu1w4kR3bG3oE01OL0": {
+    "location_id": 1158,
+    "place_id": "ChIJKZUU_Eu1w4kR3bG3oE01OL0",
+    "fetched_at": "2026-07-08T00:47:35.075Z",
+    "payload": {
+      "id": "ChIJKZUU_Eu1w4kR3bG3oE01OL0",
+      "nationalPhoneNumber": "(929) 624-2227",
+      "websiteUri": "https://heavenleefloatspa.com/",
+      "displayName": {
+        "text": "HeavenLee Float Spa",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "1164:ChIJ0dfvbH2NwokRpDEvYafD5cc": {
+    "location_id": 1164,
+    "place_id": "ChIJ0dfvbH2NwokRpDEvYafD5cc",
+    "fetched_at": "2026-07-08T00:47:35.410Z",
+    "payload": {
+      "id": "ChIJ0dfvbH2NwokRpDEvYafD5cc",
+      "nationalPhoneNumber": "(914) 837-3135",
+      "websiteUri": "https://jaygoldmanacupuncture.com/",
+      "displayName": {
+        "text": "Martin P. Goldman, MD & Jay A. Goldman, LAc.",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "1171:ChIJe_EowhljwokR8XYE_kCEACY": {
+    "location_id": 1171,
+    "place_id": "ChIJe_EowhljwokR8XYE_kCEACY",
+    "fetched_at": "2026-07-08T00:47:35.742Z",
+    "payload": {
+      "id": "ChIJe_EowhljwokR8XYE_kCEACY",
+      "nationalPhoneNumber": "(516) 979-3684",
+      "websiteUri": "https://longevityptperformance.com/",
+      "displayName": {
+        "text": "Longevity Physical Therapy & Performance",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "1174:ChIJZT17aQ97wokRlgTsTghMbrk": {
+    "location_id": 1174,
+    "place_id": "ChIJZT17aQ97wokRlgTsTghMbrk",
+    "fetched_at": "2026-07-08T00:47:36.069Z",
+    "payload": {
+      "id": "ChIJZT17aQ97wokRlgTsTghMbrk",
+      "nationalPhoneNumber": "(516) 545-0809",
+      "websiteUri": "https://www.rxivinfusions.com/?utm_source=google&utm_medium=organic&utm_campaign=gbp-website-link",
+      "displayName": {
+        "text": "RxIV Infusions",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "1175:ChIJhfrTDqixw4kRSrDL0ey9RP4": {
+    "location_id": 1175,
+    "place_id": "ChIJhfrTDqixw4kRSrDL0ey9RP4",
+    "fetched_at": "2026-07-08T00:47:36.400Z",
+    "payload": {
+      "id": "ChIJhfrTDqixw4kRSrDL0ey9RP4",
+      "nationalPhoneNumber": "(908) 228-5711",
+      "websiteUri": "https://westfield.chillcryo.net/?utm_source=google&utm_medium=my_business",
+      "displayName": {
+        "text": "ChillRx Cryotherapy",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "1176:ChIJo0FXV1Gxw4kRgRF-WMzdEtY": {
+    "location_id": 1176,
+    "place_id": "ChIJo0FXV1Gxw4kRgRF-WMzdEtY",
+    "fetched_at": "2026-07-08T00:47:36.724Z",
+    "payload": {
+      "id": "ChIJo0FXV1Gxw4kRgRF-WMzdEtY",
+      "nationalPhoneNumber": "(908) 913-8687",
+      "websiteUri": "http://www.osteostrongwestfield.com/",
+      "displayName": {
+        "text": "OsteoStrong Westfield NJ",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "1178:ChIJCbSoV9bkwokR-NXYY5N-3W4": {
+    "location_id": 1178,
+    "place_id": "ChIJCbSoV9bkwokR-NXYY5N-3W4",
+    "fetched_at": "2026-07-08T00:47:37.050Z",
+    "payload": {
+      "id": "ChIJCbSoV9bkwokR-NXYY5N-3W4",
+      "nationalPhoneNumber": "(201) 518-7999",
+      "websiteUri": "https://www.equinox.com/clubs/new-jersey/paramus?cid=gmb",
+      "displayName": {
+        "text": "Equinox Paramus",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "1185:ChIJlwd2tzpvwokRDdzgy3CE68I": {
+    "location_id": 1185,
+    "place_id": "ChIJlwd2tzpvwokRDdzgy3CE68I",
+    "fetched_at": "2026-07-08T00:47:37.386Z",
+    "payload": {
+      "id": "ChIJlwd2tzpvwokRDdzgy3CE68I",
+      "nationalPhoneNumber": "(516) 689-7580",
+      "websiteUri": "https://www.balancedhealthlb.com/",
+      "displayName": {
+        "text": "Balanced Health & Wellness Long Beach",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "1195:ChIJ-6LnqeqSwokRCAGCQ0TXpN0": {
+    "location_id": 1195,
+    "place_id": "ChIJ-6LnqeqSwokRCAGCQ0TXpN0",
+    "fetched_at": "2026-07-08T00:47:37.723Z",
+    "payload": {
+      "id": "ChIJ-6LnqeqSwokRCAGCQ0TXpN0",
+      "nationalPhoneNumber": "(914) 337-2980",
+      "websiteUri": "https://www.intmedsolutions.com/",
+      "displayName": {
+        "text": "Integrative Med Solutions, Dr. Fred Lisanti",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "1197:ChIJVVaXAF6RwokRnnzt8b0bZJw": {
+    "location_id": 1197,
+    "place_id": "ChIJVVaXAF6RwokRnnzt8b0bZJw",
+    "fetched_at": "2026-07-08T00:47:38.048Z",
+    "payload": {
+      "id": "ChIJVVaXAF6RwokRnnzt8b0bZJw",
+      "nationalPhoneNumber": "(914) 202-0620",
+      "websiteUri": "http://www.westchesterwellnessmedicine.com/",
+      "displayName": {
+        "text": "Westchester Wellness Medicine",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "1202:ChIJk-IQU6XkwokRYbYX41gcIRk": {
+    "location_id": 1202,
+    "place_id": "ChIJk-IQU6XkwokRYbYX41gcIRk",
+    "fetched_at": "2026-07-08T00:47:38.374Z",
+    "payload": {
+      "id": "ChIJk-IQU6XkwokRYbYX41gcIRk",
+      "nationalPhoneNumber": "(201) 882-1500",
+      "websiteUri": "http://regenerativehealingcenter.com/",
+      "displayName": {
+        "text": "Regenerative Healing Center",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "1208:ChIJb2nlXyrWzWoRGw2eMVWnQAQ": {
+    "location_id": 1208,
+    "place_id": "ChIJb2nlXyrWzWoRGw2eMVWnQAQ",
+    "fetched_at": "2026-07-08T00:47:38.701Z",
+    "payload": {
+      "id": "ChIJb2nlXyrWzWoRGw2eMVWnQAQ",
+      "nationalPhoneNumber": "(516) 514-3746",
+      "websiteUri": "http://www.kcperformanceny.com/",
+      "displayName": {
+        "text": "KC Performance",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "1209:ChIJnzncb-vlwokRQdKu2gifXXE": {
+    "location_id": 1209,
+    "place_id": "ChIJnzncb-vlwokRQdKu2gifXXE",
+    "fetched_at": "2026-07-08T00:47:39.038Z",
+    "payload": {
+      "id": "ChIJnzncb-vlwokRQdKu2gifXXE",
+      "nationalPhoneNumber": "(201) 614-4047",
+      "websiteUri": "https://4everyoungantiaging.com/ridgewood-nj-anti-aging-clinic/?utm_source=gbp&utm_medium=organic&utm_campaign=gbp-ridgewood-nj-anti-aging-clinic&y_source=1_MjA2MTUzMTA3MS03MTUtbG9jYXRpb24ud2Vic2l0ZQ%3D%3D",
+      "displayName": {
+        "text": "4Ever Young Med Spa & Wellness Center - Ridgewood",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "1210:ChIJt8HAQ2x9wokRwQHv9Q6S60w": {
+    "location_id": 1210,
+    "place_id": "ChIJt8HAQ2x9wokRwQHv9Q6S60w",
+    "fetched_at": "2026-07-08T00:47:39.369Z",
+    "payload": {
+      "id": "ChIJt8HAQ2x9wokRwQHv9Q6S60w",
+      "nationalPhoneNumber": "(516) 464-7800",
+      "websiteUri": "https://www.vitalityhrt.com/location/testosterone-clinic-of-garden-city-ny/?utm_source=google&utm_medium=organic&utm_campaign=gmb&utm_term=vitalityhrt&utm_content=garden-city-ny",
+      "displayName": {
+        "text": "Renew Vitality Testosterone Clinic of Garden City",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "1211:ChIJPfJ3X4uHwokRGi167ELTjLQ": {
+    "location_id": 1211,
+    "place_id": "ChIJPfJ3X4uHwokRGi167ELTjLQ",
+    "fetched_at": "2026-07-08T00:47:39.703Z",
+    "payload": {
+      "id": "ChIJPfJ3X4uHwokRGi167ELTjLQ",
+      "nationalPhoneNumber": "(516) 636-2131",
+      "websiteUri": "https://www.drmichnd.com/",
+      "displayName": {
+        "text": "Dr. Michelle S. Yusupov",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "1213:ChIJucxPDQeTwokR5SG2OsOrrls": {
+    "location_id": 1213,
+    "place_id": "ChIJucxPDQeTwokR5SG2OsOrrls",
+    "fetched_at": "2026-07-08T00:47:40.041Z",
+    "payload": {
+      "id": "ChIJucxPDQeTwokR5SG2OsOrrls",
+      "nationalPhoneNumber": "(914) 401-8324",
+      "websiteUri": "http://theprosperiv.com/?utm_source=GMBlisting&utm_medium=organic&utm_campaign=gmb-yonkers/",
+      "displayName": {
+        "text": "prosperIV Yonkers",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "1215:ChIJmb2qu6CJwokRer53t5BMXaU": {
+    "location_id": 1215,
+    "place_id": "ChIJmb2qu6CJwokRer53t5BMXaU",
+    "fetched_at": "2026-07-08T00:47:40.376Z",
+    "payload": {
+      "id": "ChIJmb2qu6CJwokRer53t5BMXaU",
+      "nationalPhoneNumber": "(516) 861-9300",
+      "websiteUri": "https://www.iv-revive.com/",
+      "displayName": {
+        "text": "IVRevive",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "1218:ChIJ7X84bF59wokRnQxmY4oaLbs": {
+    "location_id": 1218,
+    "place_id": "ChIJ7X84bF59wokRnQxmY4oaLbs",
+    "fetched_at": "2026-07-08T00:47:40.711Z",
+    "payload": {
+      "id": "ChIJ7X84bF59wokRnQxmY4oaLbs",
+      "nationalPhoneNumber": "(516) 279-6578",
+      "websiteUri": "http://www.restorationmenshealth.com/",
+      "displayName": {
+        "text": "Restoration Men's Health",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "1223:ChIJSw_lSIKTwokRdMq5op0Wq-E": {
+    "location_id": 1223,
+    "place_id": "ChIJSw_lSIKTwokRdMq5op0Wq-E",
+    "fetched_at": "2026-07-08T00:47:41.042Z",
+    "payload": {
+      "id": "ChIJSw_lSIKTwokRdMq5op0Wq-E",
+      "nationalPhoneNumber": "(718) 551-4165",
+      "websiteUri": "https://www.zetaaestheticsnyc.com/",
+      "displayName": {
+        "text": "Zeta Aesthetics NYC Westchester",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "1225:ChIJkUpaLECHwokRUeXbqTAEgok": {
+    "location_id": 1225,
+    "place_id": "ChIJkUpaLECHwokRUeXbqTAEgok",
+    "fetched_at": "2026-07-08T00:47:41.370Z",
+    "payload": {
+      "id": "ChIJkUpaLECHwokRUeXbqTAEgok",
+      "nationalPhoneNumber": "(516) 682-2458",
+      "websiteUri": "https://osteostrongroslyn.com/",
+      "displayName": {
+        "text": "OsteoStrong Roslyn",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "1230:ChIJ9wXWO3d7wokRD0oABedhI3g": {
+    "location_id": 1230,
+    "place_id": "ChIJ9wXWO3d7wokRD0oABedhI3g",
+    "fetched_at": "2026-07-08T00:47:41.704Z",
+    "payload": {
+      "id": "ChIJ9wXWO3d7wokRD0oABedhI3g",
+      "nationalPhoneNumber": "(516) 868-8100",
+      "websiteUri": "https://www.withinnaturalhealth.com/",
+      "displayName": {
+        "text": "Within Natural Health",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "1231:ChIJxwDyx-eHwokRDu7CgVhU344": {
+    "location_id": 1231,
+    "place_id": "ChIJxwDyx-eHwokRDu7CgVhU344",
+    "fetched_at": "2026-07-08T00:47:42.032Z",
+    "payload": {
+      "id": "ChIJxwDyx-eHwokRDu7CgVhU344",
+      "nationalPhoneNumber": "(516) 382-9111",
+      "websiteUri": "https://nycryogen.com/",
+      "displayName": {
+        "text": "New York Cryogen, Inc",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "1235:ChIJI-z4uOtl4IIRdbPOCBCvVz4": {
+    "location_id": 1235,
+    "place_id": "ChIJI-z4uOtl4IIRdbPOCBCvVz4",
+    "fetched_at": "2026-07-08T00:47:42.367Z",
+    "payload": {
+      "id": "ChIJI-z4uOtl4IIRdbPOCBCvVz4",
+      "nationalPhoneNumber": "(551) 404-4105",
+      "websiteUri": "http://www.drericlandi.com/",
+      "displayName": {
+        "text": "Dr. Eric Landi Functional Medicine",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "1236:ChIJ94jrxj2HwokRQJq1CQbL_Bw": {
+    "location_id": 1236,
+    "place_id": "ChIJ94jrxj2HwokRQJq1CQbL_Bw",
+    "fetched_at": "2026-07-08T00:47:42.691Z",
+    "payload": {
+      "id": "ChIJ94jrxj2HwokRQJq1CQbL_Bw",
+      "nationalPhoneNumber": "(516) 907-2127",
+      "websiteUri": "https://www.infiniteyouclinic.com/",
+      "displayName": {
+        "text": "Infinite You Wellness Clinic",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "1237:ChIJ_aPkKVxvwokRSwGBqThVmIw": {
+    "location_id": 1237,
+    "place_id": "ChIJ_aPkKVxvwokRSwGBqThVmIw",
+    "fetched_at": "2026-07-08T00:47:43.018Z",
+    "payload": {
+      "id": "ChIJ_aPkKVxvwokRSwGBqThVmIw",
+      "nationalPhoneNumber": "(516) 544-2312",
+      "websiteUri": "https://www.podspas.com/",
+      "displayName": {
+        "text": "Pod Spa and Wellness",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "1247:ChIJdZH3g9mHwokRShi4SYd5rEk": {
+    "location_id": 1247,
+    "place_id": "ChIJdZH3g9mHwokRShi4SYd5rEk",
+    "fetched_at": "2026-07-08T00:47:43.346Z",
+    "payload": {
+      "id": "ChIJdZH3g9mHwokRShi4SYd5rEk",
+      "nationalPhoneNumber": "(516) 243-9256",
+      "websiteUri": "https://centers.osteostrong.me/new-york-garden-city/",
+      "displayName": {
+        "text": "OsteoStrong Garden City",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "1251:ChIJ9W2o5vGz8KYRaP-BZY5Nv8Q": {
+    "location_id": 1251,
+    "place_id": "ChIJ9W2o5vGz8KYRaP-BZY5Nv8Q",
+    "fetched_at": "2026-07-08T00:47:43.681Z",
+    "payload": {
+      "id": "ChIJ9W2o5vGz8KYRaP-BZY5Nv8Q",
+      "nationalPhoneNumber": "(646) 863-5394",
+      "websiteUri": "http://www.drpoonamdesai.com/",
+      "displayName": {
+        "text": "Dr. Desai",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "1252:ChIJY2KyVb6ow4kREdeq20-uZdk": {
+    "location_id": 1252,
+    "place_id": "ChIJY2KyVb6ow4kREdeq20-uZdk",
+    "fetched_at": "2026-07-08T00:47:44.007Z",
+    "payload": {
+      "id": "ChIJY2KyVb6ow4kREdeq20-uZdk",
+      "nationalPhoneNumber": "(973) 240-7251",
+      "websiteUri": "https://www.oxygennj.com/",
+      "displayName": {
+        "text": "New Jersey HBOT",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "1256:ChIJSePz7Vt7wokR5gaxzllWABs": {
+    "location_id": 1256,
+    "place_id": "ChIJSePz7Vt7wokR5gaxzllWABs",
+    "fetched_at": "2026-07-08T00:47:44.336Z",
+    "payload": {
+      "id": "ChIJSePz7Vt7wokR5gaxzllWABs",
+      "nationalPhoneNumber": "(516) 806-9062",
+      "websiteUri": "http://infusedhealthwellness.com/",
+      "displayName": {
+        "text": "Infused Health and Wellness",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "1258:ChIJSUtqwbhnTIURVo8EHkQkxhg": {
+    "location_id": 1258,
+    "place_id": "ChIJSUtqwbhnTIURVo8EHkQkxhg",
+    "fetched_at": "2026-07-08T00:47:44.670Z",
+    "payload": {
+      "id": "ChIJSUtqwbhnTIURVo8EHkQkxhg",
+      "nationalPhoneNumber": "(347) 774-0747",
+      "websiteUri": "https://vitalitytkhealth.com/",
+      "displayName": {
+        "text": "Vitality TK Health",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "1263:ChIJGTEvCwWTwokRyYpWORImkx4": {
+    "location_id": 1263,
+    "place_id": "ChIJGTEvCwWTwokRyYpWORImkx4",
+    "fetched_at": "2026-07-08T00:47:45.008Z",
+    "payload": {
+      "id": "ChIJGTEvCwWTwokRyYpWORImkx4",
+      "nationalPhoneNumber": "(914) 713-0000",
+      "websiteUri": "http://www.restore.com/locations/ny-eastchester-scarsdale-ny069?utm_source=gmb&utm_medium=Yext&y_source=1_MTAwMDk2MjU4NC03MTUtbG9jYXRpb24ud2Vic2l0ZQ%3D%3D",
+      "displayName": {
+        "text": "Restore Hyper Wellness",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "1269:ChIJKVuRDV7jwokR8AD6Z_k_ERQ": {
+    "location_id": 1269,
+    "place_id": "ChIJKVuRDV7jwokR8AD6Z_k_ERQ",
+    "fetched_at": "2026-07-08T00:47:45.335Z",
+    "payload": {
+      "id": "ChIJKVuRDV7jwokR8AD6Z_k_ERQ",
+      "nationalPhoneNumber": "(201) 848-8000",
+      "websiteUri": "https://www.medwellnj.com/",
+      "displayName": {
+        "text": "Medwell Family Practice & Functional Medicine of Bergen County NJ",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "1270:ChIJvWxv4g-TwokRt5dLSqeuu4o": {
+    "location_id": 1270,
+    "place_id": "ChIJvWxv4g-TwokRt5dLSqeuu4o",
+    "fetched_at": "2026-07-08T00:47:45.665Z",
+    "payload": {
+      "id": "ChIJvWxv4g-TwokRt5dLSqeuu4o",
+      "nationalPhoneNumber": "(914) 401-8552",
+      "websiteUri": "http://www.rescu.life/",
+      "displayName": {
+        "text": "Rescu Wellness",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "1273:ChIJSe7Mcu3vwokRIyCjFvnGZMc": {
+    "location_id": 1273,
+    "place_id": "ChIJSe7Mcu3vwokRIyCjFvnGZMc",
+    "fetched_at": "2026-07-08T00:47:46.000Z",
+    "payload": {
+      "id": "ChIJSe7Mcu3vwokRIyCjFvnGZMc",
+      "nationalPhoneNumber": "(201) 367-1733",
+      "websiteUri": "https://mindfulwaters.com/",
+      "displayName": {
+        "text": "Mindful Waters",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "1280:ChIJFZ45sTiTwokRXHjR7u0_ZfM": {
+    "location_id": 1280,
+    "place_id": "ChIJFZ45sTiTwokRXHjR7u0_ZfM",
+    "fetched_at": "2026-07-08T00:47:46.327Z",
+    "payload": {
+      "id": "ChIJFZ45sTiTwokRXHjR7u0_ZfM",
+      "nationalPhoneNumber": "(914) 722-3000",
+      "websiteUri": "http://www.amarihealth.com/",
+      "displayName": {
+        "text": "Amari Health Functional & Integrative Medicine",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "1281:ChIJUYtLi3KFwokRonmlrDJW6aM": {
+    "location_id": 1281,
+    "place_id": "ChIJUYtLi3KFwokRonmlrDJW6aM",
+    "fetched_at": "2026-07-08T00:47:46.660Z",
+    "payload": {
+      "id": "ChIJUYtLi3KFwokRonmlrDJW6aM",
+      "nationalPhoneNumber": "(516) 613-0288",
+      "websiteUri": "https://ivtherapydemand.com/",
+      "displayName": {
+        "text": "NeuroGlow Wellness and Aesthetics Center / IV Therapy Long Island At Home On Demand",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "1282:ChIJay_Kp4DkwokRh4tyLXfFmn4": {
+    "location_id": 1282,
+    "place_id": "ChIJay_Kp4DkwokRh4tyLXfFmn4",
+    "fetched_at": "2026-07-08T00:47:46.988Z",
+    "payload": {
+      "id": "ChIJay_Kp4DkwokRh4tyLXfFmn4",
+      "nationalPhoneNumber": "(201) 389-6285",
+      "websiteUri": "http://www.cloudaquatic.com/",
+      "displayName": {
+        "text": "Cloud Aquatic Float Parlor",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "1288:ChIJ6wN4ubGTwokRVIEtFldzyF4": {
+    "location_id": 1288,
+    "place_id": "ChIJ6wN4ubGTwokRVIEtFldzyF4",
+    "fetched_at": "2026-07-08T00:47:47.320Z",
+    "payload": {
+      "id": "ChIJ6wN4ubGTwokRVIEtFldzyF4",
+      "nationalPhoneNumber": "(914) 786-6607",
+      "websiteUri": "https://bodybar-ny.com/home-1",
+      "displayName": {
+        "text": "thebodybar",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "1290:ChIJQdpf2oc1wokRwTACuYY0UOM": {
+    "location_id": 1290,
+    "place_id": "ChIJQdpf2oc1wokRwTACuYY0UOM",
+    "fetched_at": "2026-07-08T00:47:47.652Z",
+    "payload": {
+      "id": "ChIJQdpf2oc1wokRwTACuYY0UOM",
+      "nationalPhoneNumber": "(973) 435-0433",
+      "websiteUri": "https://newjerseyantiaging.com/",
+      "displayName": {
+        "text": "Healthy Aging Medical Centers",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "1291:ChIJ372Nb22TwokRscixDwH7cPo": {
+    "location_id": 1291,
+    "place_id": "ChIJ372Nb22TwokRscixDwH7cPo",
+    "fetched_at": "2026-07-08T00:47:47.981Z",
+    "payload": {
+      "id": "ChIJ372Nb22TwokRscixDwH7cPo",
+      "nationalPhoneNumber": "(914) 722-9440",
+      "websiteUri": "https://seebeyondmedicine.com/locations/scarsdale-ny/",
+      "displayName": {
+        "text": "SeeBeyond Medicine - Scarsdale Integrative Medicine",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "1295:ChIJIzjwgHI1wokR-AmbnSXtF0M": {
+    "location_id": 1295,
+    "place_id": "ChIJIzjwgHI1wokR-AmbnSXtF0M",
+    "fetched_at": "2026-07-08T00:47:48.305Z",
+    "payload": {
+      "id": "ChIJIzjwgHI1wokR-AmbnSXtF0M",
+      "nationalPhoneNumber": "(732) 264-2233",
+      "websiteUri": "https://stemcellofnj.com/",
+      "displayName": {
+        "text": "Stem Cell of NJ",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "1306:ChIJD7lcCtKTwokRqVRcMvBG0Es": {
+    "location_id": 1306,
+    "place_id": "ChIJD7lcCtKTwokRqVRcMvBG0Es",
+    "fetched_at": "2026-07-08T00:47:48.638Z",
+    "payload": {
+      "id": "ChIJD7lcCtKTwokRqVRcMvBG0Es",
+      "nationalPhoneNumber": "(914) 752-8773",
+      "websiteUri": "http://www.jillweintraubmd.com/",
+      "displayName": {
+        "text": "Jill Weintraub, MD | Integrative Rheumatology Consultants",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "1316:ChIJS0EkImTrwokRGs4WUmhKKDA": {
+    "location_id": 1316,
+    "place_id": "ChIJS0EkImTrwokRGs4WUmhKKDA",
+    "fetched_at": "2026-07-08T00:47:48.966Z",
+    "payload": {
+      "id": "ChIJS0EkImTrwokRGs4WUmhKKDA",
+      "nationalPhoneNumber": "(914) 488-5763",
+      "websiteUri": "https://www.ironhealth.co/locations/ardsley-ny",
+      "displayName": {
+        "text": "Iron Health Ardsley",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "1317:ChIJI998084Dw4kRMDcgUy7tQgs": {
+    "location_id": 1317,
+    "place_id": "ChIJI998084Dw4kRMDcgUy7tQgs",
+    "fetched_at": "2026-07-08T00:47:49.305Z",
+    "payload": {
+      "id": "ChIJI998084Dw4kRMDcgUy7tQgs",
+      "nationalPhoneNumber": "(973) 314-2905",
+      "websiteUri": "https://www.hormoneweightlossdoctorsnj.com/",
+      "displayName": {
+        "text": "Hormone and Weight Loss Doctors of NJ",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "1324:ChIJ170l5HTlwokRYAaDRBq5VbQ": {
+    "location_id": 1324,
+    "place_id": "ChIJ170l5HTlwokRYAaDRBq5VbQ",
+    "fetched_at": "2026-07-08T00:47:49.641Z",
+    "payload": {
+      "id": "ChIJ170l5HTlwokRYAaDRBq5VbQ",
+      "nationalPhoneNumber": "(833) 362-6365",
+      "websiteUri": "http://www.fmcofnj.com/",
+      "displayName": {
+        "text": "The Functional Medicine Center of New Jersey",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "1329:ChIJU1jjxEpN3YkRzOmGdoLSlP0": {
+    "location_id": 1329,
+    "place_id": "ChIJU1jjxEpN3YkRzOmGdoLSlP0",
+    "fetched_at": "2026-07-08T00:47:49.973Z",
+    "payload": {
+      "id": "ChIJU1jjxEpN3YkRzOmGdoLSlP0",
+      "nationalPhoneNumber": "(914) 902-8996",
+      "websiteUri": "https://www.cryobeautybar.online/?utm_source=google&utm_medium=wix_google_business_profile&utm_campaign=7338521638081637222",
+      "displayName": {
+        "text": "Cryo.BeautyBar",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "1332:ChIJHbeTQe4Cw4kR5aTdmNPV_ho": {
+    "location_id": 1332,
+    "place_id": "ChIJHbeTQe4Cw4kR5aTdmNPV_ho",
+    "fetched_at": "2026-07-08T00:47:50.301Z",
+    "payload": {
+      "id": "ChIJHbeTQe4Cw4kR5aTdmNPV_ho",
+      "nationalPhoneNumber": "(973) 628-1870",
+      "websiteUri": "http://www.integrativeholisticcenter.com/",
+      "displayName": {
+        "text": "Integrative Holistic Center",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "1338:ChIJdQseI1p9wokRiZKXrnN6TbM": {
+    "location_id": 1338,
+    "place_id": "ChIJdQseI1p9wokRiZKXrnN6TbM",
+    "fetched_at": "2026-07-08T00:47:50.645Z",
+    "payload": {
+      "id": "ChIJdQseI1p9wokRiZKXrnN6TbM",
+      "nationalPhoneNumber": "(516) 201-2818",
+      "websiteUri": "https://www.atlasmenshealth.com/",
+      "displayName": {
+        "text": "Atlas Mens Health Clinic - Long Island | TRT | Peptides | Weight Loss Clinic",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "1339:ChIJP_I1wRORwokRxGZq_2qd4lI": {
+    "location_id": 1339,
+    "place_id": "ChIJP_I1wRORwokRxGZq_2qd4lI",
+    "fetched_at": "2026-07-08T00:47:50.971Z",
+    "payload": {
+      "id": "ChIJP_I1wRORwokRxGZq_2qd4lI",
+      "nationalPhoneNumber": "(518) 675-3564",
+      "websiteUri": "https://www.agelessmenshealth.com/locations/ny-white-plains/",
+      "displayName": {
+        "text": "Ageless Men's Health",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "1340:ChIJp-ZcSe2VwokR3o6h0Dhixj4": {
+    "location_id": 1340,
+    "place_id": "ChIJp-ZcSe2VwokR3o6h0Dhixj4",
+    "fetched_at": "2026-07-08T00:47:51.311Z",
+    "payload": {
+      "id": "ChIJp-ZcSe2VwokR3o6h0Dhixj4",
+      "nationalPhoneNumber": "(914) 496-2960",
+      "websiteUri": "https://hydrationmedicny.com/",
+      "displayName": {
+        "text": "Hydration Medic Mobile and IV Spa",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "1341:ChIJnVwLcAvpwokR52iRrrnyn_Q": {
+    "location_id": 1341,
+    "place_id": "ChIJnVwLcAvpwokR52iRrrnyn_Q",
+    "fetched_at": "2026-07-08T00:47:51.671Z",
+    "payload": {
+      "id": "ChIJnVwLcAvpwokR52iRrrnyn_Q",
+      "nationalPhoneNumber": "(845) 203-0333",
+      "websiteUri": "https://www.vitalityhrt.com/location/testosterone-clinic-of-pearl-river-ny/?utm_source=google&utm_medium=organic&utm_campaign=gmb&utm_term=vitalityhrt&utm_content=pearl-river-ny",
+      "displayName": {
+        "text": "Renew Vitality Testosterone Clinic of Pearl River",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "1342:ChIJ2ZoGQGPrwokRjNrmT_poQAs": {
+    "location_id": 1342,
+    "place_id": "ChIJ2ZoGQGPrwokRjNrmT_poQAs",
+    "fetched_at": "2026-07-08T00:47:52.005Z",
+    "payload": {
+      "id": "ChIJ2ZoGQGPrwokRjNrmT_poQAs",
+      "nationalPhoneNumber": "(914) 219-4305",
+      "websiteUri": "http://aestheticsbykm.com/",
+      "displayName": {
+        "text": "Aesthetics By KM",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "1343:ChIJ__8PgNOGwokRU9ERM7rm6l8": {
+    "location_id": 1343,
+    "place_id": "ChIJ__8PgNOGwokRU9ERM7rm6l8",
+    "fetched_at": "2026-07-08T00:47:52.336Z",
+    "payload": {
+      "id": "ChIJ__8PgNOGwokRU9ERM7rm6l8",
+      "nationalPhoneNumber": "(516) 544-8877",
+      "websiteUri": "https://www.newyorkstemcell.com/",
+      "displayName": {
+        "text": "New York Stem Cell & PRP Therapy - Knee Pain - Elbow Pain",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "1344:ChIJ03-lfaSnw4kRlCErVxgvErI": {
+    "location_id": 1344,
+    "place_id": "ChIJ03-lfaSnw4kRlCErVxgvErI",
+    "fetched_at": "2026-07-08T00:47:52.668Z",
+    "payload": {
+      "id": "ChIJ03-lfaSnw4kRlCErVxgvErI",
+      "nationalPhoneNumber": "(551) 239-1644",
+      "websiteUri": "https://www.newjerseyantiaging.com/",
+      "displayName": {
+        "text": "Healthy Aging Medical Centers",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "1355:ChIJxfXpaPuUwokRhz1gJmwAch8": {
+    "location_id": 1355,
+    "place_id": "ChIJxfXpaPuUwokRhz1gJmwAch8",
+    "fetched_at": "2026-07-08T00:47:52.999Z",
+    "payload": {
+      "id": "ChIJxfXpaPuUwokRhz1gJmwAch8",
+      "nationalPhoneNumber": "(914) 287-6464",
+      "websiteUri": "https://drrobertsilverman.com/",
+      "displayName": {
+        "text": "Dr Robert G. Silverman, DC. Westchester Integrative Health",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "1375:ChIJs8Uia1MDw4kRxTTV-rHxLfk": {
+    "location_id": 1375,
+    "place_id": "ChIJs8Uia1MDw4kRxTTV-rHxLfk",
+    "fetched_at": "2026-07-08T00:47:53.328Z",
+    "payload": {
+      "id": "ChIJs8Uia1MDw4kRxTTV-rHxLfk",
+      "nationalPhoneNumber": "(973) 998-7770",
+      "websiteUri": "http://advancedantiaging.com/",
+      "displayName": {
+        "text": "Advanced Anti-Aging",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "1377:ChIJKZ5VUFCVwokRm4acK6Vpxk8": {
+    "location_id": 1377,
+    "place_id": "ChIJKZ5VUFCVwokRm4acK6Vpxk8",
+    "fetched_at": "2026-07-08T00:47:53.655Z",
+    "payload": {
+      "id": "ChIJKZ5VUFCVwokRm4acK6Vpxk8",
+      "nationalPhoneNumber": "(914) 252-8800",
+      "websiteUri": "https://www.vitalityhrt.com/location/testosterone-clinic-of-white-plains-ny/?utm_source=google&utm_medium=organic&utm_campaign=gmb&utm_term=vitalityhrt&utm_content=white-plains-ny",
+      "displayName": {
+        "text": "Renew Vitality Testosterone Clinic of White Plains",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "1397:ChIJpR80Sw5gwokRLNFS5FX8y4s": {
+    "location_id": 1397,
+    "place_id": "ChIJpR80Sw5gwokRLNFS5FX8y4s",
+    "fetched_at": "2026-07-08T00:47:53.988Z",
+    "payload": {
+      "id": "ChIJpR80Sw5gwokRLNFS5FX8y4s",
+      "nationalPhoneNumber": "(718) 618-4428",
+      "websiteUri": "http://longevityny.com/",
+      "displayName": {
+        "text": "Longevity Health Services",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "1398:ChIJwxZiK4ZYwokRyQtxfBv-hYk": {
+    "location_id": 1398,
+    "place_id": "ChIJwxZiK4ZYwokRyQtxfBv-hYk",
+    "fetched_at": "2026-07-08T00:47:54.315Z",
+    "payload": {
+      "id": "ChIJwxZiK4ZYwokRyQtxfBv-hYk",
+      "nationalPhoneNumber": "(914) 506-1155",
+      "websiteUri": "http://longevitylabnyc.com/",
+      "displayName": {
+        "text": "LONGEVITY LAB NYC",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "11432:ChIJj2hwXEJZwokRND0RdiQddIk": {
+    "location_id": 11432,
+    "place_id": "ChIJj2hwXEJZwokRND0RdiQddIk",
+    "fetched_at": "2026-07-08T00:47:54.647Z",
+    "payload": {
+      "id": "ChIJj2hwXEJZwokRND0RdiQddIk",
+      "nationalPhoneNumber": "(646) 398-2089",
+      "websiteUri": "http://www.regenpainnynj.com/",
+      "displayName": {
+        "text": "Regenerative Pain & Sports Medicine - New York, NY",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "11437:ChIJORcM0KJYwokR70rdZ9qCBCw": {
+    "location_id": 11437,
+    "place_id": "ChIJORcM0KJYwokR70rdZ9qCBCw",
+    "fetched_at": "2026-07-08T00:47:54.973Z",
+    "payload": {
+      "id": "ChIJORcM0KJYwokR70rdZ9qCBCw",
+      "nationalPhoneNumber": "(646) 870-7997",
+      "websiteUri": "http://www.regensportscare.com/",
+      "displayName": {
+        "text": "Regenerative SportsCare Institute (RSI+)",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  },
+  "12230:ChIJZzhEm9BZwokRQgUt8UJ_PGs": {
+    "location_id": 12230,
+    "place_id": "ChIJZzhEm9BZwokRQgUt8UJ_PGs",
+    "fetched_at": "2026-07-08T00:47:55.304Z",
+    "payload": {
+      "id": "ChIJZzhEm9BZwokRQgUt8UJ_PGs",
+      "nationalPhoneNumber": "(332) 248-2985",
+      "websiteUri": "https://stemregenmedical.com/?utm_source=gbp&utm_medium=website_btn&utm_campaign=pmp",
+      "displayName": {
+        "text": "Stem Regen Medical",
+        "languageCode": "en"
+      }
+    },
+    "error": null
+  }
+}

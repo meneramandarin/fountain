@@ -91,6 +91,19 @@ async function checkSchemaObjects(pgClient) {
   if (row.old_asset_table || row.old_entity_asset_table) {
     failures.push("redundant fountain_assets registry still exists");
   }
+  const removedServingTables = await pgClient.query(
+    `
+    SELECT table_name
+    FROM information_schema.tables
+    WHERE table_schema = $1
+      AND table_name = ANY($2::text[])
+    ORDER BY table_name
+    `,
+    [canonicalSchema, ["categories", "documents", "external_reviews", "import_metadata", "treatment_aliases", "unmapped_terms"]],
+  );
+  for (const table of removedServingTables.rows) {
+    failures.push(`${canonicalSchema}.${table.table_name} should not be a serving table`);
+  }
   summary.serving_schema = canonicalSchema;
   summary.raw_schema = rawSchema;
 }
@@ -100,20 +113,15 @@ async function checkImageContract(pgClient) {
     `
     SELECT
       COUNT(*)::bigint AS total,
-      COUNT(*) FILTER (WHERE COALESCE(blob_url, '') = '')::bigint AS without_blob,
-      COUNT(*) FILTER (WHERE COALESCE(local_path, '') <> '')::bigint AS with_local_path
+      COUNT(*) FILTER (WHERE COALESCE(blob_url, '') = '')::bigint AS without_blob
     FROM ${quoteIdent(canonicalSchema)}.images
     `,
   );
   const row = counts.rows[0];
   summary.images = row.total;
   summary.images_without_blob = row.without_blob;
-  summary.images_with_local_path = row.with_local_path;
   if (Number(row.without_blob) !== 0) {
     failures.push(`${canonicalSchema}.images has ${row.without_blob} rows without Blob URLs`);
-  }
-  if (Number(row.with_local_path) !== 0) {
-    failures.push(`${canonicalSchema}.images has ${row.with_local_path} local_path rows`);
   }
 
   const constraint = await pgClient.query(
@@ -140,13 +148,35 @@ async function checkRawStaging(pgClient) {
     `
     SELECT
       (SELECT COUNT(*)::bigint FROM ${quoteIdent(rawSchema)}.source_databases) AS source_databases,
-      (SELECT COUNT(*)::bigint FROM ${quoteIdent(rawSchema)}.source_images) AS source_images
+      (SELECT COUNT(*)::bigint FROM ${quoteIdent(rawSchema)}.source_images) AS source_images,
+      to_regclass($1) AS raw_unmapped_terms,
+      to_regclass($2) AS raw_treatment_aliases,
+      to_regclass($3) AS raw_import_metadata,
+      to_regclass($4) AS serving_unmapped_terms,
+      to_regclass($5) AS serving_treatment_aliases,
+      to_regclass($6) AS serving_import_metadata
     `,
+    [
+      `${rawSchema}.unmapped_terms`,
+      `${rawSchema}.treatment_aliases`,
+      `${rawSchema}.import_metadata`,
+      `${canonicalSchema}.unmapped_terms`,
+      `${canonicalSchema}.treatment_aliases`,
+      `${canonicalSchema}.import_metadata`,
+    ],
   );
   summary.raw_source_databases = counts.rows[0].source_databases;
   summary.raw_source_images = counts.rows[0].source_images;
   if (Number(counts.rows[0].source_databases) === 0) {
     warnings.push(`${rawSchema}.source_databases is empty`);
+  }
+  for (const table of ["unmapped_terms", "treatment_aliases", "import_metadata"]) {
+    if (!counts.rows[0][`raw_${table}`]) {
+      failures.push(`missing ${rawSchema}.${table}`);
+    }
+    if (counts.rows[0][`serving_${table}`]) {
+      failures.push(`${canonicalSchema}.${table} should live in ${rawSchema}`);
+    }
   }
 }
 
@@ -196,19 +226,14 @@ async function checkWriteReadiness(pgClient) {
     "organizations",
     "locations",
     "practitioners",
-    "documents",
-    "categories",
     "treatments",
     "affiliations",
-    "treatment_aliases",
     "offerings",
     "tags",
     "entity_tags",
     "source_records",
     "images",
     "reviews",
-    "external_reviews",
-    "unmapped_terms",
   ];
   const idColumns = await pgClient.query(
     `
@@ -234,7 +259,7 @@ async function checkWriteReadiness(pgClient) {
 
   const publicIdTables = ["organizations", "locations", "practitioners"];
   const slugTables = ["locations", "practitioners"];
-  const lifecycleTables = ["organizations", "locations", "practitioners", "documents", "affiliations", "offerings", "images", "reviews"];
+  const lifecycleTables = ["organizations", "locations", "practitioners", "affiliations", "offerings", "images", "reviews"];
   const requiredLifecycleColumns = ["status", "data_origin", "verification_status", "created_at", "updated_at", "deleted_at", "owner_account_id"];
   const columns = await pgClient.query(
     `
@@ -363,7 +388,6 @@ async function checkSearchMaintenance(pgClient) {
       [
         "trg_refresh_location_search_index",
         "trg_refresh_practitioner_search_index",
-        "trg_refresh_document_search_index",
         "trg_refresh_offering_search_index",
         "trg_refresh_affiliation_search_index",
         "trg_refresh_entity_tag_search_index",
@@ -375,7 +399,6 @@ async function checkSearchMaintenance(pgClient) {
   for (const trigger of [
     "trg_refresh_location_search_index",
     "trg_refresh_practitioner_search_index",
-    "trg_refresh_document_search_index",
     "trg_refresh_offering_search_index",
     "trg_refresh_affiliation_search_index",
     "trg_refresh_entity_tag_search_index",
@@ -470,8 +493,8 @@ async function checkPolymorphicReferences(pgClient) {
       FROM ${quoteIdent(canonicalSchema)}.source_records sr LEFT JOIN ${quoteIdent(canonicalSchema)}.organizations o ON o.id = sr.entity_id
       WHERE sr.entity_type = 'organization' AND o.id IS NULL
       UNION ALL SELECT 'source_records.document', COUNT(*)::bigint
-      FROM ${quoteIdent(canonicalSchema)}.source_records sr LEFT JOIN ${quoteIdent(canonicalSchema)}.documents d ON d.id = sr.entity_id
-      WHERE sr.entity_type = 'document' AND d.id IS NULL
+      FROM ${quoteIdent(canonicalSchema)}.source_records sr
+      WHERE sr.entity_type = 'document'
       UNION ALL SELECT 'entity_tags.location', COUNT(*)::bigint
       FROM ${quoteIdent(canonicalSchema)}.entity_tags et LEFT JOIN ${quoteIdent(canonicalSchema)}.locations l ON l.id = et.entity_id
       WHERE et.entity_type = 'location' AND l.id IS NULL
@@ -482,8 +505,8 @@ async function checkPolymorphicReferences(pgClient) {
       FROM ${quoteIdent(canonicalSchema)}.entity_tags et LEFT JOIN ${quoteIdent(canonicalSchema)}.organizations o ON o.id = et.entity_id
       WHERE et.entity_type = 'organization' AND o.id IS NULL
       UNION ALL SELECT 'entity_tags.document', COUNT(*)::bigint
-      FROM ${quoteIdent(canonicalSchema)}.entity_tags et LEFT JOIN ${quoteIdent(canonicalSchema)}.documents d ON d.id = et.entity_id
-      WHERE et.entity_type = 'document' AND d.id IS NULL
+      FROM ${quoteIdent(canonicalSchema)}.entity_tags et
+      WHERE et.entity_type = 'document'
       UNION ALL SELECT 'search_index.location', COUNT(*)::bigint
       FROM ${quoteIdent(canonicalSchema)}.search_index si LEFT JOIN ${quoteIdent(canonicalSchema)}.locations l ON l.id = si.entity_id
       WHERE si.entity_type = 'location' AND l.id IS NULL
@@ -491,8 +514,8 @@ async function checkPolymorphicReferences(pgClient) {
       FROM ${quoteIdent(canonicalSchema)}.search_index si LEFT JOIN ${quoteIdent(canonicalSchema)}.practitioners p ON p.id = si.entity_id
       WHERE si.entity_type = 'practitioner' AND p.id IS NULL
       UNION ALL SELECT 'search_index.document', COUNT(*)::bigint
-      FROM ${quoteIdent(canonicalSchema)}.search_index si LEFT JOIN ${quoteIdent(canonicalSchema)}.documents d ON d.id = si.entity_id
-      WHERE si.entity_type = 'document' AND d.id IS NULL
+      FROM ${quoteIdent(canonicalSchema)}.search_index si
+      WHERE si.entity_type = 'document'
     )
     SELECT check_name, count
     FROM checks

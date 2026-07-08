@@ -29,11 +29,10 @@ export type ExternalReviewGroup = {
   fetched_at: string | null;
   expires_at: string | null;
   reviews: {
-    reviewer: string | null;
+    author: string | null;
     rating: number | null;
     review_date: string | null;
-    body: string | null;
-    source_url: string | null;
+    text: string | null;
   }[];
 };
 
@@ -65,7 +64,6 @@ export type Stats = {
   offerings: number;
   treatments: number;
   source_records: number;
-  documents: number;
   offerings_priced: number;
 };
 
@@ -178,8 +176,12 @@ function activeReviewCondition(alias: string) {
   return isPostgres() ? `${alias}.status = 'active' AND ${alias}.deleted_at IS NULL` : "1=1";
 }
 
+function consumerTagFacetCondition(alias: string) {
+  return `${alias}.facet IN ('care_model', 'goal', 'price_tier', 'trust')`;
+}
+
 function activeTableClause(table: string) {
-  return isPostgres() && ["locations", "practitioners", "offerings", "documents"].includes(table)
+  return isPostgres() && ["locations", "practitioners", "offerings"].includes(table)
     ? ` WHERE ${table}.status = 'active' AND ${table}.deleted_at IS NULL`
     : "";
 }
@@ -249,11 +251,7 @@ let hasExternalReviewTablesCache: boolean | null = null;
 
 async function hasExternalReviewTables() {
   if (hasExternalReviewTablesCache == null) {
-    const [hasMatches, hasReviews] = await Promise.all([
-      hasTable("external_place_matches"),
-      hasTable("external_reviews"),
-    ]);
-    hasExternalReviewTablesCache = hasMatches && hasReviews;
+    hasExternalReviewTablesCache = await hasTable("external_place_matches");
   }
   return hasExternalReviewTablesCache;
 }
@@ -309,16 +307,17 @@ async function getExternalReviewGroups(locationId: number): Promise<ExternalRevi
 
   const reviewRows = await rows<{
     provider: string;
-    reviewer: string | null;
+    author: string | null;
     rating: number | null;
     review_date: string | null;
-    body: string | null;
-    source_url: string | null;
+    text: string | null;
   }>(
     `
-    SELECT provider, reviewer, rating, review_date, body, source_url
-    FROM external_reviews
+    SELECT provider, author, rating, review_date, text
+    FROM reviews r
     WHERE location_id = ?
+      AND provider <> 'scrape'
+      AND ${activeReviewCondition("r")}
     ORDER BY provider, review_date DESC, id DESC
   `,
     [locationId],
@@ -328,11 +327,10 @@ async function getExternalReviewGroups(locationId: number): Promise<ExternalRevi
   for (const review of reviewRows) {
     const list = reviewsByProvider.get(review.provider) || [];
     list.push({
-      reviewer: review.reviewer,
+      author: review.author,
       rating: review.rating,
       review_date: review.review_date,
-      body: review.body,
-      source_url: review.source_url,
+      text: review.text,
     });
     reviewsByProvider.set(review.provider, list);
   }
@@ -360,7 +358,6 @@ export async function getStats(): Promise<Stats> {
     offerings,
     treatments,
     sourceRecords,
-    documents,
     priced,
   ] = await Promise.all([
     count("sources"),
@@ -370,7 +367,6 @@ export async function getStats(): Promise<Stats> {
     count("offerings"),
     count("treatments"),
     count("source_records"),
-    count("documents"),
     (async () =>
       (await row<{ count: number }>(
         `SELECT COUNT(*) AS count FROM offerings WHERE price_amount IS NOT NULL AND ${activeOfferingCondition("offerings")}`,
@@ -384,7 +380,6 @@ export async function getStats(): Promise<Stats> {
     offerings,
     treatments,
     source_records: sourceRecords,
-    documents,
     offerings_priced: priced,
   };
 }
@@ -414,6 +409,7 @@ export async function getLandingCityTreatmentSearches(
         l.region
       FROM locations l
       WHERE ${activeEntityCondition("l")}
+        AND COALESCE(l.is_virtual, false) = false
         AND l.country_code IS NOT NULL
         AND TRIM(l.country_code) <> ''
         AND l.locality IS NOT NULL
@@ -540,6 +536,7 @@ export async function getLandingCityTreatmentSearches(
         l.locality
       FROM locations l
       WHERE ${activeEntityCondition("l")}
+        AND COALESCE(l.is_virtual, false) = false
         AND l.country_code IS NOT NULL
         AND TRIM(l.country_code) <> ''
         AND l.locality IS NOT NULL
@@ -706,6 +703,7 @@ export async function getRelatedTreatmentSearches(
         FROM locations l
         JOIN offerings o ON o.location_id = l.id AND o.treatment_id IS NOT NULL AND ${activeOfferingCondition("o")}
         WHERE ${activeEntityCondition("l")}
+          AND COALESCE(l.is_virtual, false) = false
           AND l.country_code = ?
           AND ${equalsNoCase("l.locality")}
       `,
@@ -716,6 +714,7 @@ export async function getRelatedTreatmentSearches(
       const treatments = await relatedTreatmentRows(
         `
         l.country_code = ?
+          AND COALESCE(l.is_virtual, false) = false
           AND ${equalsNoCase("l.locality")}
       `,
         cityValues,
@@ -743,11 +742,16 @@ export async function getRelatedTreatmentSearches(
       FROM locations l
       JOIN offerings o ON o.location_id = l.id AND o.treatment_id IS NOT NULL AND ${activeOfferingCondition("o")}
       WHERE ${activeEntityCondition("l")}
+        AND COALESCE(l.is_virtual, false) = false
         AND l.country_code = ?
     `,
       [countryCode],
     ))?.count || 0;
-  const treatments = await relatedTreatmentRows("l.country_code = ?", [countryCode], treatmentLimit);
+  const treatments = await relatedTreatmentRows(
+    "l.country_code = ? AND COALESCE(l.is_virtual, false) = false",
+    [countryCode],
+    treatmentLimit,
+  );
 
   if (!treatments.length) {
     return null;
@@ -1001,13 +1005,12 @@ async function hydrateLandingDirectoryCards(
   const featuredMarks = placeholders(featuredIds.length);
   const treatments = await rows<{ lid: number; name: string; domain: string }>(
     `
-    SELECT o.location_id AS lid, t.canonical_name AS name, cat.name AS domain
+    SELECT o.location_id AS lid, t.canonical_name AS name, t.category AS domain
     FROM offerings o
     JOIN treatments t ON t.id = o.treatment_id
-    JOIN categories cat ON cat.id = t.category_id
     WHERE o.location_id IN (${featuredMarks})
       AND ${activeOfferingCondition("o")}
-    GROUP BY o.location_id, t.id, t.canonical_name, cat.name
+    GROUP BY o.location_id, t.id, t.canonical_name, t.category
   `,
     featuredIds,
   );
@@ -1018,7 +1021,7 @@ async function hydrateLandingDirectoryCards(
     JOIN tags tg ON tg.id = et.tag_id
     WHERE et.entity_type = 'location'
       AND et.entity_id IN (${featuredMarks})
-      AND tg.facet IN ('entity_type', 'care_model')
+      AND ${consumerTagFacetCondition("tg")}
   `,
     featuredIds,
   );
@@ -1073,6 +1076,7 @@ export async function getFacets() {
     SELECT country_code, locality AS value, COUNT(*) AS n
     FROM locations l
     WHERE ${activeEntityCondition("l")}
+      AND COALESCE(l.is_virtual, false) = false
       AND country_code IS NOT NULL
       AND country_code <> ''
       AND locality IS NOT NULL
@@ -1081,15 +1085,14 @@ export async function getFacets() {
     ORDER BY country_code, ${orderNoCase("locality")}
   `);
 
-  const treatments = await rows<{ domain: string; domain_id: number; id: number; name: string; n: number }>(`
-    SELECT c.name AS domain, c.id AS domain_id, t.id AS id,
+  const treatments = await rows<{ domain: string; id: number; name: string; n: number }>(`
+    SELECT t.category AS domain, t.id AS id,
            t.canonical_name AS name, COUNT(l.id) AS n
-    FROM categories c
-    JOIN treatments t ON t.category_id = c.id
+    FROM treatments t
     LEFT JOIN offerings o ON o.treatment_id = t.id AND ${activeOfferingCondition("o")}
     LEFT JOIN locations l ON l.id = o.location_id AND ${activeEntityCondition("l")}
-    GROUP BY c.name, c.id, t.id, t.canonical_name
-    ORDER BY c.id, t.canonical_name
+    GROUP BY t.category, t.id, t.canonical_name
+    ORDER BY t.category, t.canonical_name
   `);
 
   const byDomain: { domain: string; treatments: { id: number; name: string; n: number }[] }[] = [];
@@ -1238,13 +1241,12 @@ export async function searchLocations(params: DirectoryParams, page = 0) {
     const marks = placeholders(ids.length);
     const treatments = await rows<{ lid: number; name: string; domain: string }>(
       `
-      SELECT o.location_id AS lid, t.canonical_name AS name, cat.name AS domain
+      SELECT o.location_id AS lid, t.canonical_name AS name, t.category AS domain
       FROM offerings o
       JOIN treatments t ON t.id = o.treatment_id
-      JOIN categories cat ON cat.id = t.category_id
       WHERE o.location_id IN (${marks})
         AND ${activeOfferingCondition("o")}
-      GROUP BY o.location_id, t.id, t.canonical_name, cat.name
+      GROUP BY o.location_id, t.id, t.canonical_name, t.category
     `,
       ids,
     );
@@ -1255,7 +1257,7 @@ export async function searchLocations(params: DirectoryParams, page = 0) {
       JOIN tags tg ON tg.id = et.tag_id
       WHERE et.entity_type = 'location'
         AND et.entity_id IN (${marks})
-        AND tg.facet IN ('entity_type', 'care_model')
+        AND ${consumerTagFacetCondition("tg")}
     `,
       ids,
     );
@@ -1478,13 +1480,12 @@ export async function getLocationDetail(ref: number | string) {
   location.offerings = await rows(
     `
     SELECT o.raw_name, o.price_amount, o.price_currency,
-           t.canonical_name AS treatment, cat.name AS domain
+           t.canonical_name AS treatment, t.category AS domain
     FROM offerings o
     LEFT JOIN treatments t ON t.id = o.treatment_id
-    LEFT JOIN categories cat ON cat.id = t.category_id
     WHERE o.location_id = ?
       AND ${activeOfferingCondition("o")}
-    ORDER BY (cat.name IS NULL), cat.name, t.canonical_name, o.raw_name
+    ORDER BY (t.category IS NULL), t.category, t.canonical_name, o.raw_name
   `,
     [id],
   );
@@ -1494,6 +1495,7 @@ export async function getLocationDetail(ref: number | string) {
     FROM entity_tags et
     JOIN tags tg ON tg.id = et.tag_id
     WHERE et.entity_type = 'location' AND et.entity_id = ?
+      AND ${consumerTagFacetCondition("tg")}
     ORDER BY tg.facet, tg.value
   `,
     [id],
@@ -1511,10 +1513,12 @@ export async function getLocationDetail(ref: number | string) {
   );
   location.reviews = await rows(
     `
-    SELECT reviewer, rating, review_date, body
+    SELECT author, rating, review_date, text
     FROM reviews r
     WHERE location_id = ?
+      AND provider = 'scrape'
       AND ${activeReviewCondition("r")}
+    ORDER BY review_date DESC NULLS LAST, id DESC
     LIMIT 10
   `,
     [id],
@@ -1555,6 +1559,7 @@ export async function getPractitionerDetail(ref: number | string) {
     FROM entity_tags et
     JOIN tags tg ON tg.id = et.tag_id
     WHERE et.entity_type = 'practitioner' AND et.entity_id = ?
+      AND ${consumerTagFacetCondition("tg")}
     ORDER BY tg.facet, tg.value
   `,
     [id],

@@ -11,6 +11,7 @@ out/
 .env.*
 .env*.local
 *.tsbuildinfo
+blob-cleanup-report*.json
 
 # SQLite runtime sidecars
 *.sqlite-wal
