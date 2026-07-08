@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useId, useRef } from "react";
 import { locationHref } from "@/lib/directory-urls";
+import { formatLocationPlace } from "@/lib/location-display";
 import type { LandingFeaturedDirectoryCard } from "@/lib/queries";
 
 type LandingFeaturedDirectoryCarouselProps = {
@@ -63,7 +64,11 @@ export function LandingFeaturedDirectoryCarousel({ cards, title }: LandingFeatur
 
       <div className="landing-featured-rail" ref={railRef}>
         {cards.map((card) => {
-          const place = [card.locality, card.region, card.country_name].filter(Boolean).join(", ");
+          const place = formatLocationPlace({
+            locality: card.locality,
+            region: card.region,
+            countryName: card.country_name,
+          });
           const type = card.tags.find((tag) => tag.facet === "entity_type");
 
           return (

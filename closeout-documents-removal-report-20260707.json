@@ -1,0 +1,2803 @@
+{
+  "generated_at": "2026-07-08T01:03:42.778Z",
+  "mode": "EXECUTED",
+  "prompt": "docs/closeout-and-documents-removal-prompt.md",
+  "backup_tables": [
+    "fountain_raw.closeout_organizations_backup_20260707",
+    "fountain_raw.closeout_locations_backup_20260707",
+    "fountain_raw.closeout_source_records_org_backup_20260707",
+    "fountain_raw.closeout_documents_backup_20260707",
+    "fountain_raw.closeout_document_source_records_backup_20260707",
+    "fountain_raw.closeout_document_search_index_backup_20260707",
+    "fountain_raw.closeout_approved_website_matches_20260707",
+    "fountain_raw.closeout_org_merges_20260707",
+    "fountain_raw.closeout_duplicate_domain_review_20260707",
+    "fountain_raw.closeout_hidden_locations_20260707",
+    "fountain_raw.closeout_documents_deleted_20260707"
+  ],
+  "profile_platform_domains_added": [
+    "acuityscheduling.com",
+    "as.me",
+    "booksy.com",
+    "calendly.com",
+    "clientsecure.me",
+    "facebook.com",
+    "fresha.com",
+    "glossgenius.com",
+    "google.com",
+    "instagram.com",
+    "mindbody.io",
+    "mindbodyonline.com",
+    "myshopify.com",
+    "onbuildhealth.com",
+    "patientnow.com",
+    "rymaps.xyz",
+    "square.site",
+    "squarespace.com",
+    "vagaro.com",
+    "webflow.io",
+    "wixsite.com",
+    "yelp.com",
+    "zenoti.com",
+    "zoca.com",
+    "zocdoc.com"
+  ],
+  "raw_pdf_source_retention": [
+    {
+      "source_slug": "healing_harmony_thailand_pdf",
+      "listing_count": 134,
+      "field_count": 536,
+      "page_count": 1,
+      "sync_status": "complete",
+      "last_synced_at": "2026-07-06T22:53:32.134Z"
+    },
+    {
+      "source_slug": "korea_medical_directory_pdf",
+      "listing_count": 29,
+      "field_count": 116,
+      "page_count": 1,
+      "sync_status": "complete",
+      "last_synced_at": "2026-07-06T22:53:42.466Z"
+    },
+    {
+      "source_slug": "thailand_longevity_guidebook_pdf",
+      "listing_count": 83,
+      "field_count": 332,
+      "page_count": 1,
+      "sync_status": "complete",
+      "last_synced_at": "2026-07-06T22:56:29.204Z"
+    }
+  ],
+  "serving_pdf_sources_before": [
+    {
+      "id": 37,
+      "slug": "healing_harmony_thailand_pdf",
+      "documents": 134,
+      "document_source_records": 134
+    },
+    {
+      "id": 49,
+      "slug": "korea_medical_directory_pdf",
+      "documents": 29,
+      "document_source_records": 29
+    },
+    {
+      "id": 245,
+      "slug": "thailand_longevity_guidebook_pdf",
+      "documents": 83,
+      "document_source_records": 83
+    }
+  ],
+  "duplicate_domains_before": [
+    {
+      "domain": "dexafit.com",
+      "org_count": 12,
+      "orgs": [
+        {
+          "id": 1489,
+          "canonical_name": "DexaFit Vancouver",
+          "website_domain": "vancouver.dexafit.com"
+        },
+        {
+          "id": 1507,
+          "canonical_name": "DexaFit",
+          "website_domain": "dexafit.com"
+        },
+        {
+          "id": 1514,
+          "canonical_name": "DEXAFIT Denver",
+          "website_domain": "denver.dexafit.com"
+        },
+        {
+          "id": 1516,
+          "canonical_name": "DexaFit Tampa",
+          "website_domain": "tampa.dexafit.com"
+        },
+        {
+          "id": 1518,
+          "canonical_name": "DexaFit Round Rock",
+          "website_domain": "roundrock.dexafit.com"
+        },
+        {
+          "id": 1521,
+          "canonical_name": "DexaFit Seattle",
+          "website_domain": "seattle.dexafit.com"
+        },
+        {
+          "id": 1526,
+          "canonical_name": "DexaFit Cleveland",
+          "website_domain": "cleveland.dexafit.com"
+        },
+        {
+          "id": 1528,
+          "canonical_name": "DexaFit Tempe",
+          "website_domain": "phoenix.dexafit.com"
+        },
+        {
+          "id": 4139,
+          "canonical_name": "DexaFit Scottsdale",
+          "website_domain": "scottsdale.dexafit.com"
+        },
+        {
+          "id": 4276,
+          "canonical_name": "DexaFit The Woodlands",
+          "website_domain": "woodlands.dexafit.com"
+        },
+        {
+          "id": 6464,
+          "canonical_name": "DexaFit SF Bay Area",
+          "website_domain": "sfbayarea.dexafit.com"
+        },
+        {
+          "id": 6465,
+          "canonical_name": "DexaFit Orlando",
+          "website_domain": "orlando.dexafit.com"
+        }
+      ]
+    },
+    {
+      "domain": "glossgenius.com",
+      "org_count": 10,
+      "orgs": [
+        {
+          "id": 27,
+          "canonical_name": "Dari Esthetics",
+          "website_domain": "dariesthetics.glossgenius.com"
+        },
+        {
+          "id": 383,
+          "canonical_name": "ProSkin Aesthetics Co.",
+          "website_domain": "proskinaestheticsco.glossgenius.com"
+        },
+        {
+          "id": 401,
+          "canonical_name": "Akimat Wellness",
+          "website_domain": "akimatwellness.glossgenius.com"
+        },
+        {
+          "id": 568,
+          "canonical_name": "Soul Remedy Wellness",
+          "website_domain": "soulremedywellness.glossgenius.com"
+        },
+        {
+          "id": 607,
+          "canonical_name": "Mimi’s Massage and Wellness Spa",
+          "website_domain": "massagewellness.glossgenius.com"
+        },
+        {
+          "id": 659,
+          "canonical_name": "Red Light Therapy Long Island",
+          "website_domain": "redlight.glossgenius.com"
+        },
+        {
+          "id": 864,
+          "canonical_name": "Esthetic Therapy",
+          "website_domain": "esthetictherapy.glossgenius.com"
+        },
+        {
+          "id": 2195,
+          "canonical_name": "Healthy Hair Solutions Corp",
+          "website_domain": "healthyhairsolutionscorp.glossgenius.com"
+        },
+        {
+          "id": 2198,
+          "canonical_name": "Holistic Essentials",
+          "website_domain": "holisticessential.glossgenius.com"
+        },
+        {
+          "id": 4747,
+          "canonical_name": "Heavenly Skyy Head Spa",
+          "website_domain": "heavenlyskyy.glossgenius.com"
+        }
+      ]
+    },
+    {
+      "domain": "va.gov",
+      "org_count": 9,
+      "orgs": [
+        {
+          "id": 2385,
+          "canonical_name": "Chesapeake VA Clinic",
+          "website_domain": "va.gov"
+        },
+        {
+          "id": 4390,
+          "canonical_name": "Alexandria VA Medical Center",
+          "website_domain": "alexandria.va.gov"
+        },
+        {
+          "id": 4469,
+          "canonical_name": "Birmingham VA Health Care System",
+          "website_domain": "birmingham.va.gov"
+        },
+        {
+          "id": 4481,
+          "canonical_name": "Bristol VA Clinic",
+          "website_domain": "mountainhome.va.gov"
+        },
+        {
+          "id": 4597,
+          "canonical_name": "Danville VA Clinic",
+          "website_domain": "danville.va.gov"
+        },
+        {
+          "id": 4734,
+          "canonical_name": "Hampton VA Medical Center",
+          "website_domain": "hampton.va.gov"
+        },
+        {
+          "id": 5505,
+          "canonical_name": "Salem VA Clinic",
+          "website_domain": "portland.va.gov"
+        },
+        {
+          "id": 5506,
+          "canonical_name": "Salem VA Medical Center",
+          "website_domain": "salem.va.gov"
+        },
+        {
+          "id": 6203,
+          "canonical_name": "VA Hospital",
+          "website_domain": "richmond.va.gov"
+        }
+      ]
+    },
+    {
+      "domain": "wixsite.com",
+      "org_count": 9,
+      "orgs": [
+        {
+          "id": 435,
+          "canonical_name": "Relaxing Spa",
+          "website_domain": "relaxingspany.wixsite.com"
+        },
+        {
+          "id": 445,
+          "canonical_name": "All Seasons Spa (Queens)",
+          "website_domain": "fourseasonsbeautyspa.wixsite.com"
+        },
+        {
+          "id": 577,
+          "canonical_name": "Island Medical Specialists",
+          "website_domain": "islandmedical.wixsite.com"
+        },
+        {
+          "id": 680,
+          "canonical_name": "K Physical Therapy (통증 병원, Manual Therapy, Massage, Ultra sound Therapy, Cold laser Therapy)",
+          "website_domain": "windphysicaltherap.wixsite.com"
+        },
+        {
+          "id": 839,
+          "canonical_name": "Island Spa Club",
+          "website_domain": "islandspaclub.wixsite.com"
+        },
+        {
+          "id": 856,
+          "canonical_name": "Healthy Aroma & Reflexology Inc",
+          "website_domain": "healthyaromaspa.wixsite.com"
+        },
+        {
+          "id": 1093,
+          "canonical_name": "Sozo Integrative Healthcare",
+          "website_domain": "sozoihc.wixsite.com"
+        },
+        {
+          "id": 3678,
+          "canonical_name": "Lotus Spa",
+          "website_domain": "lotusspa8037.wixsite.com"
+        },
+        {
+          "id": 3924,
+          "canonical_name": "Healing Sensation",
+          "website_domain": "healingsensationus.wixsite.com"
+        }
+      ]
+    },
+    {
+      "domain": "zoca.com",
+      "org_count": 5,
+      "orgs": [
+        {
+          "id": 162,
+          "canonical_name": "Ommmango Wellness",
+          "website_domain": "ommmangowellnessbrooklyn.zoca.com"
+        },
+        {
+          "id": 318,
+          "canonical_name": "Wellness Spa 71",
+          "website_domain": "wellnessspa71.zoca.com"
+        },
+        {
+          "id": 551,
+          "canonical_name": "Saged NYC Beauty & Wellness",
+          "website_domain": "sagednycwellness.zoca.com"
+        },
+        {
+          "id": 794,
+          "canonical_name": "Bel0 Cryotherapy LLC",
+          "website_domain": "bel0cryotherapy.zoca.com"
+        },
+        {
+          "id": 3204,
+          "canonical_name": "Healthydermis MedSpa and Laser Clinic – Oakton",
+          "website_domain": "healthydermisoakton.zoca.com"
+        }
+      ]
+    },
+    {
+      "domain": "square.site",
+      "org_count": 4,
+      "orgs": [
+        {
+          "id": 4474,
+          "canonical_name": "Blu Spa and Wellness",
+          "website_domain": "blu-spa-wellness.square.site"
+        },
+        {
+          "id": 4934,
+          "canonical_name": "Mend and Kure Wellness Center",
+          "website_domain": "mendandkurewellness.square.site"
+        },
+        {
+          "id": 5632,
+          "canonical_name": "Smash It Rage Room",
+          "website_domain": "yousmashedit.square.site"
+        },
+        {
+          "id": 5799,
+          "canonical_name": "Sublime Aesthetics & Wellness",
+          "website_domain": "sublime-aesthetics-wellness.square.site"
+        }
+      ]
+    },
+    {
+      "domain": "wisc.edu",
+      "org_count": 4,
+      "orgs": [
+        {
+          "id": 4602,
+          "canonical_name": "Department of Cell and Regenerative Biology",
+          "website_domain": "crb.wisc.edu"
+        },
+        {
+          "id": 5017,
+          "canonical_name": "NIRS Waisman Center",
+          "website_domain": "waisman.wisc.edu"
+        },
+        {
+          "id": 6187,
+          "canonical_name": "University of Wisconsin School of Medicine and Public Health",
+          "website_domain": "med.wisc.edu"
+        },
+        {
+          "id": 6404,
+          "canonical_name": "Wisconsin Institute for Discovery",
+          "website_domain": "wid.wisc.edu"
+        }
+      ]
+    },
+    {
+      "domain": "clevelandclinic.org",
+      "org_count": 3,
+      "orgs": [
+        {
+          "id": 1898,
+          "canonical_name": "Akron General Health and Wellness Center, Green & Medical Office Pavilion",
+          "website_domain": "my.clevelandclinic.org"
+        },
+        {
+          "id": 2404,
+          "canonical_name": "Dr. J. Paul Mahfood, MD & Rheumatology Services of Florida",
+          "website_domain": "providers.clevelandclinic.org"
+        },
+        {
+          "id": 4553,
+          "canonical_name": "Cleveland Clinic Lerner College of Medicine",
+          "website_domain": "clevelandclinic.org"
+        }
+      ]
+    },
+    {
+      "domain": "cuanschutz.edu",
+      "org_count": 3,
+      "orgs": [
+        {
+          "id": 2719,
+          "canonical_name": "Colorado Sickle Cell Center",
+          "website_domain": "medschool.cuanschutz.edu"
+        },
+        {
+          "id": 4406,
+          "canonical_name": "Anschutz Health Sciences Building",
+          "website_domain": "news.cuanschutz.edu"
+        },
+        {
+          "id": 6177,
+          "canonical_name": "University of Colorado Anschutz",
+          "website_domain": "cuanschutz.edu"
+        }
+      ]
+    },
+    {
+      "domain": "hughston.com",
+      "org_count": 3,
+      "orgs": [
+        {
+          "id": 2069,
+          "canonical_name": "Hughston Clinic Montgomery (Lomac)",
+          "website_domain": "al.hughston.com"
+        },
+        {
+          "id": 3581,
+          "canonical_name": "Hughston Clinic Columbus",
+          "website_domain": "ga.hughston.com"
+        },
+        {
+          "id": 3582,
+          "canonical_name": "Hughston Rehabilitation",
+          "website_domain": "hughston.com"
+        }
+      ]
+    },
+    {
+      "domain": "onbuildhealth.com",
+      "org_count": 3,
+      "orgs": [
+        {
+          "id": 134,
+          "canonical_name": "Chelsea Wellness",
+          "website_domain": "chelseawellness.onbuildhealth.com"
+        },
+        {
+          "id": 139,
+          "canonical_name": "Refresh Body Wellness Spa",
+          "website_domain": "refreshbodywellness.onbuildhealth.com"
+        },
+        {
+          "id": 305,
+          "canonical_name": "Wellness Bodywork Spa",
+          "website_domain": "wellnessbodyworkspa.onbuildhealth.com"
+        }
+      ]
+    },
+    {
+      "domain": "sanfordhealth.org",
+      "org_count": 3,
+      "orgs": [
+        {
+          "id": 2409,
+          "canonical_name": "Dr. Steven F. Powell",
+          "website_domain": "sanfordhealth.org"
+        },
+        {
+          "id": 5523,
+          "canonical_name": "Sanford Imagenetics",
+          "website_domain": "imagenetics.sanfordhealth.org"
+        },
+        {
+          "id": 5524,
+          "canonical_name": "Sanford Research",
+          "website_domain": "research.sanfordhealth.org"
+        }
+      ]
+    },
+    {
+      "domain": "thedripbar.com",
+      "org_count": 3,
+      "orgs": [
+        {
+          "id": 711,
+          "canonical_name": "The DRIPBaR Cranford",
+          "website_domain": "cranford-nj.thedripbar.com"
+        },
+        {
+          "id": 4105,
+          "canonical_name": "The DRIPBaR Austin The Domain",
+          "website_domain": "austin-the-domain.thedripbar.com"
+        },
+        {
+          "id": 5923,
+          "canonical_name": "The DRIPBaR Winchester",
+          "website_domain": "winchester.thedripbar.com"
+        }
+      ]
+    },
+    {
+      "domain": "tulane.edu",
+      "org_count": 3,
+      "orgs": [
+        {
+          "id": 5587,
+          "canonical_name": "Sickle Cell Center-Southern La",
+          "website_domain": "medicine.tulane.edu"
+        },
+        {
+          "id": 6125,
+          "canonical_name": "Tulane School of Professional Advancement",
+          "website_domain": "sopa.tulane.edu"
+        },
+        {
+          "id": 6126,
+          "canonical_name": "Tulane University",
+          "website_domain": "tulane.edu"
+        }
+      ]
+    },
+    {
+      "domain": "adventisthealth.org",
+      "org_count": 2,
+      "orgs": [
+        {
+          "id": 1893,
+          "canonical_name": "AIS Cancer Center: Adventist Health Bakersfield",
+          "website_domain": "adventisthealth.org"
+        },
+        {
+          "id": 2822,
+          "canonical_name": "Dr. Sarkis Kiramijyan, MD, FACC, FSCAI",
+          "website_domain": "doctors.adventisthealth.org"
+        }
+      ]
+    },
+    {
+      "domain": "advocatehealth.com",
+      "org_count": 2,
+      "orgs": [
+        {
+          "id": 2474,
+          "canonical_name": "Advocate Medical Group Immediate Care Center",
+          "website_domain": "advocatehealth.com"
+        },
+        {
+          "id": 4377,
+          "canonical_name": "Advocate Infusion Center",
+          "website_domain": "care.advocatehealth.com"
+        }
+      ]
+    },
+    {
+      "domain": "alabama.gov",
+      "org_count": 2,
+      "orgs": [
+        {
+          "id": 2688,
+          "canonical_name": "Alabama Department of Rehabilitation Services",
+          "website_domain": "rehab.alabama.gov"
+        },
+        {
+          "id": 5252,
+          "canonical_name": "Reclamation Center of Alabama",
+          "website_domain": "mh.alabama.gov"
+        }
+      ]
+    },
+    {
+      "domain": "allinahealth.org",
+      "org_count": 2,
+      "orgs": [
+        {
+          "id": 1921,
+          "canonical_name": "Allina Health Orthopedics – St. Paul",
+          "website_domain": "account.allinahealth.org"
+        },
+        {
+          "id": 4022,
+          "canonical_name": "United Hospital – Nasseff Heart Center",
+          "website_domain": "allinahealth.org"
+        }
+      ]
+    },
+    {
+      "domain": "arizona.edu",
+      "org_count": 2,
+      "orgs": [
+        {
+          "id": 6174,
+          "canonical_name": "University of Arizona Health Sciences",
+          "website_domain": "uahs.arizona.edu"
+        },
+        {
+          "id": 6216,
+          "canonical_name": "Valley Fever Center for Excellence",
+          "website_domain": "vfce.arizona.edu"
+        }
+      ]
+    },
+    {
+      "domain": "as.me",
+      "org_count": 2,
+      "orgs": [
+        {
+          "id": 807,
+          "canonical_name": "Saunalicious",
+          "website_domain": "saunalicious.as.me"
+        },
+        {
+          "id": 4755,
+          "canonical_name": "House of Hair Norfolk",
+          "website_domain": "houseofhair2.as.me"
+        }
+      ]
+    },
+    {
+      "domain": "atlantichealth.org",
+      "org_count": 2,
+      "orgs": [
+        {
+          "id": 434,
+          "canonical_name": "Healthfirst Associates",
+          "website_domain": "ahs.atlantichealth.org"
+        },
+        {
+          "id": 2791,
+          "canonical_name": "Atlantic Health Urgent Care at Bloomfield",
+          "website_domain": "atlantichealth.org"
+        }
+      ]
+    },
+    {
+      "domain": "buffalo.edu",
+      "org_count": 2,
+      "orgs": [
+        {
+          "id": 4804,
+          "canonical_name": "Jacobs School Of Medicine And Biomedical Sciences",
+          "website_domain": "medicine.buffalo.edu"
+        },
+        {
+          "id": 6170,
+          "canonical_name": "University at Buffalo (North Campus)",
+          "website_domain": "buffalo.edu"
+        }
+      ]
+    },
+    {
+      "domain": "chillcryo.net",
+      "org_count": 2,
+      "orgs": [
+        {
+          "id": 769,
+          "canonical_name": "ChillRx Franchising LLC",
+          "website_domain": "westfield.chillcryo.net"
+        },
+        {
+          "id": 3552,
+          "canonical_name": "ChillRx Cryotherapy",
+          "website_domain": "cincinnati.chillcryo.net"
+        }
+      ]
+    },
+    {
+      "domain": "clientsecure.me",
+      "org_count": 2,
+      "orgs": [
+        {
+          "id": 43,
+          "canonical_name": "[Intuitive Touch Physiotherapy]:[Vilma Wong, PT, DPT, OCS, FFMT, FAAOMPT]",
+          "website_domain": "vilma-wong.clientsecure.me"
+        },
+        {
+          "id": 2145,
+          "canonical_name": "Balanced Recovery PLLC",
+          "website_domain": "balancedrecovery.clientsecure.me"
+        }
+      ]
+    },
+    {
+      "domain": "corewellhealth.org",
+      "org_count": 2,
+      "orgs": [
+        {
+          "id": 2270,
+          "canonical_name": "Corewell Health Grand Rapids Hospitals Wound Healing & Hyperbaric Medicine – Barclay",
+          "website_domain": "corewellhealth.org"
+        },
+        {
+          "id": 2308,
+          "canonical_name": "Jenna Schierbeek, FNP",
+          "website_domain": "providers.corewellhealth.org"
+        }
+      ]
+    },
+    {
+      "domain": "dignityhealth.org",
+      "org_count": 2,
+      "orgs": [
+        {
+          "id": 4499,
+          "canonical_name": "Cancer Institute at Dignity Health – St. Joseph’s Medical Center",
+          "website_domain": "locations.dignityhealth.org"
+        },
+        {
+          "id": 4610,
+          "canonical_name": "Dignity Health – St. Joseph’s Behavioral Health Center",
+          "website_domain": "dignityhealth.org"
+        }
+      ]
+    },
+    {
+      "domain": "duke.edu",
+      "org_count": 2,
+      "orgs": [
+        {
+          "id": 3192,
+          "canonical_name": "Duke Comprehensive Sickle Cell",
+          "website_domain": "medicine.duke.edu"
+        },
+        {
+          "id": 4649,
+          "canonical_name": "Duke University",
+          "website_domain": "duke.edu"
+        }
+      ]
+    },
+    {
+      "domain": "ernesthealth.com",
+      "org_count": 2,
+      "orgs": [
+        {
+          "id": 3820,
+          "canonical_name": "Central California Rehabilitation Hospital",
+          "website_domain": "ccarh.ernesthealth.com"
+        },
+        {
+          "id": 3827,
+          "canonical_name": "Corpus Christi Rehabilitation Hospital",
+          "website_domain": "ccrh.ernesthealth.com"
+        }
+      ]
+    },
+    {
+      "domain": "facebook.com",
+      "org_count": 2,
+      "orgs": [
+        {
+          "id": 38,
+          "canonical_name": "The Singing Bowl Sound Bath Studio LLC",
+          "website_domain": "facebook.com"
+        },
+        {
+          "id": 4401,
+          "canonical_name": "American Med",
+          "website_domain": "web.facebook.com"
+        }
+      ]
+    },
+    {
+      "domain": "fcps.net",
+      "org_count": 2,
+      "orgs": [
+        {
+          "id": 3104,
+          "canonical_name": "Fayette County Public Schools",
+          "website_domain": "fcps.net"
+        },
+        {
+          "id": 4883,
+          "canonical_name": "Locust Trace AgriScience Center",
+          "website_domain": "locusttrace.fcps.net"
+        }
+      ]
+    },
+    {
+      "domain": "healthpartners.com",
+      "org_count": 2,
+      "orgs": [
+        {
+          "id": 2834,
+          "canonical_name": "HealthPartners Home Medical St. Paul",
+          "website_domain": "homemedical.healthpartners.com"
+        },
+        {
+          "id": 2919,
+          "canonical_name": "HealthPartners Orthopedics St. Paul",
+          "website_domain": "healthpartners.com"
+        }
+      ]
+    },
+    {
+      "domain": "mountsinai.org",
+      "org_count": 2,
+      "orgs": [
+        {
+          "id": 178,
+          "canonical_name": "Mount Sinai Doctors - Virtual Primary Care",
+          "website_domain": "mountsinai.org"
+        },
+        {
+          "id": 531,
+          "canonical_name": "Shye Wortman, MD",
+          "website_domain": "profiles.mountsinai.org"
+        }
+      ]
+    },
+    {
+      "domain": "muschealth.org",
+      "org_count": 2,
+      "orgs": [
+        {
+          "id": 2223,
+          "canonical_name": "MUSC Health University Medical Center",
+          "website_domain": "getcare.muschealth.org"
+        },
+        {
+          "id": 4970,
+          "canonical_name": "MUSC Health – Wound Care and Hyperbaric Medicine – Charleston",
+          "website_domain": "locations.muschealth.org"
+        }
+      ]
+    },
+    {
+      "domain": "mymeditravel.com",
+      "org_count": 2,
+      "orgs": [
+        {
+          "id": 4028,
+          "canonical_name": "Anti-Aging Stem Cell Treatment in Bangkok",
+          "website_domain": "articles.mymeditravel.com"
+        },
+        {
+          "id": 4029,
+          "canonical_name": "Chaum Medical Center",
+          "website_domain": "mymeditravel.com"
+        }
+      ]
+    },
+    {
+      "domain": "myshopify.com",
+      "org_count": 2,
+      "orgs": [
+        {
+          "id": 431,
+          "canonical_name": "Glam Glow Med Spa",
+          "website_domain": "glam-glow-med-spa.myshopify.com"
+        },
+        {
+          "id": 5263,
+          "canonical_name": "ReFuelVa",
+          "website_domain": "refuelva.myshopify.com"
+        }
+      ]
+    },
+    {
+      "domain": "nyp.org",
+      "org_count": 2,
+      "orgs": [
+        {
+          "id": 309,
+          "canonical_name": "Integrative Health and Wellbeing - NewYork-Presbyterian & Weill Cornell Medicine",
+          "website_domain": "nyp.org"
+        },
+        {
+          "id": 478,
+          "canonical_name": "Demetrios M Paidoussis, MD",
+          "website_domain": "doctors.nyp.org"
+        }
+      ]
+    },
+    {
+      "domain": "providence.org",
+      "org_count": 2,
+      "orgs": [
+        {
+          "id": 2041,
+          "canonical_name": "Covenant Home Infusion",
+          "website_domain": "providence.org"
+        },
+        {
+          "id": 5197,
+          "canonical_name": "Providence Cancer Center: Blom James G MD",
+          "website_domain": "alaska.providence.org"
+        }
+      ]
+    },
+    {
+      "domain": "rochester.edu",
+      "org_count": 2,
+      "orgs": [
+        {
+          "id": 3359,
+          "canonical_name": "Center for Advanced Research Technologies",
+          "website_domain": "urmc.rochester.edu"
+        },
+        {
+          "id": 6185,
+          "canonical_name": "University of Rochester",
+          "website_domain": "rochester.edu"
+        }
+      ]
+    },
+    {
+      "domain": "rush.edu",
+      "org_count": 2,
+      "orgs": [
+        {
+          "id": 3330,
+          "canonical_name": "Midwest Center Advanced Imaging",
+          "website_domain": "rush.edu"
+        },
+        {
+          "id": 5776,
+          "canonical_name": "Stephen M. Kelanic, MD",
+          "website_domain": "doctors.rush.edu"
+        }
+      ]
+    },
+    {
+      "domain": "rutgers.edu",
+      "org_count": 2,
+      "orgs": [
+        {
+          "id": 534,
+          "canonical_name": "New Jersey Family Practice Center",
+          "website_domain": "njms.rutgers.edu"
+        },
+        {
+          "id": 6171,
+          "canonical_name": "University Behavioral Health Care at Newark (Rutgers Health)",
+          "website_domain": "ubhc.rutgers.edu"
+        }
+      ]
+    },
+    {
+      "domain": "stem-wave.com",
+      "org_count": 2,
+      "orgs": [
+        {
+          "id": 5773,
+          "canonical_name": "StemWave of Idaho",
+          "website_domain": "stemwaveofidaho.stem-wave.com"
+        },
+        {
+          "id": 5774,
+          "canonical_name": "StemWave Ventura",
+          "website_domain": "stemwaveventura.stem-wave.com"
+        }
+      ]
+    },
+    {
+      "domain": "tricare.mil",
+      "org_count": 2,
+      "orgs": [
+        {
+          "id": 4477,
+          "canonical_name": "Branch Health Clinic Northwest",
+          "website_domain": "portsmouth.tricare.mil"
+        },
+        {
+          "id": 4729,
+          "canonical_name": "Guthrie Army Health Clinic",
+          "website_domain": "guthrie.tricare.mil"
+        }
+      ]
+    },
+    {
+      "domain": "uams.edu",
+      "org_count": 2,
+      "orgs": [
+        {
+          "id": 6139,
+          "canonical_name": "UAMS Northwest Regional Campus",
+          "website_domain": "nwa.uams.edu"
+        },
+        {
+          "id": 6140,
+          "canonical_name": "UAMS Winthrop P. Rockefeller Cancer Institute",
+          "website_domain": "cancer.uams.edu"
+        }
+      ]
+    },
+    {
+      "domain": "ucdavis.edu",
+      "org_count": 2,
+      "orgs": [
+        {
+          "id": 6142,
+          "canonical_name": "UC Davis Dermatology",
+          "website_domain": "health.ucdavis.edu"
+        },
+        {
+          "id": 6143,
+          "canonical_name": "UC Davis Institute for Regenerative Cures",
+          "website_domain": "ucdmc.ucdavis.edu"
+        }
+      ]
+    },
+    {
+      "domain": "ucr.edu",
+      "org_count": 2,
+      "orgs": [
+        {
+          "id": 4565,
+          "canonical_name": "College of Natural & Agricultural Sciences",
+          "website_domain": "cnas.ucr.edu"
+        },
+        {
+          "id": 6176,
+          "canonical_name": "University of California, Riverside",
+          "website_domain": "ucr.edu"
+        }
+      ]
+    },
+    {
+      "domain": "ucsd.edu",
+      "org_count": 2,
+      "orgs": [
+        {
+          "id": 1622,
+          "canonical_name": "UC San Diego Health",
+          "website_domain": "health.ucsd.edu"
+        },
+        {
+          "id": 6146,
+          "canonical_name": "UCSD Stem Cell Program",
+          "website_domain": "stemcellprogram.ucsd.edu"
+        }
+      ]
+    },
+    {
+      "domain": "ucsf.edu",
+      "org_count": 2,
+      "orgs": [
+        {
+          "id": 4661,
+          "canonical_name": "Eli and Edythe Broad Center of Regeneration Medicine and Stem Cell Research",
+          "website_domain": "stemcell.ucsf.edu"
+        },
+        {
+          "id": 6148,
+          "canonical_name": "UCSF Fresno",
+          "website_domain": "fresno.ucsf.edu"
+        }
+      ]
+    },
+    {
+      "domain": "uky.edu",
+      "org_count": 2,
+      "orgs": [
+        {
+          "id": 2709,
+          "canonical_name": "Cardinal Hill Outpatient Clinic",
+          "website_domain": "ukhealthcare.uky.edu"
+        },
+        {
+          "id": 6179,
+          "canonical_name": "University of Kentucky College of Arts and Sciences",
+          "website_domain": "as.uky.edu"
+        }
+      ]
+    },
+    {
+      "domain": "ummhealth.org",
+      "org_count": 2,
+      "orgs": [
+        {
+          "id": 6155,
+          "canonical_name": "UMass Memorial Center for Spine Health",
+          "website_domain": "center.ummhealth.org"
+        },
+        {
+          "id": 6156,
+          "canonical_name": "UMass Memorial Medical Center Colon and Rectal Surgery",
+          "website_domain": "ummhealth.org"
+        }
+      ]
+    },
+    {
+      "domain": "umn.edu",
+      "org_count": 2,
+      "orgs": [
+        {
+          "id": 4951,
+          "canonical_name": "Molecular and Cellular Therapeutics",
+          "website_domain": "researchservices.umn.edu"
+        },
+        {
+          "id": 6182,
+          "canonical_name": "University of Minnesota",
+          "website_domain": "twin-cities.umn.edu"
+        }
+      ]
+    },
+    {
+      "domain": "upmc.com",
+      "org_count": 2,
+      "orgs": [
+        {
+          "id": 3860,
+          "canonical_name": "Mario Lemieux Center for Blood Cancers (Medical Oncology)",
+          "website_domain": "hillman.upmc.com"
+        },
+        {
+          "id": 4683,
+          "canonical_name": "Eye & Ear Institute",
+          "website_domain": "upmc.com"
+        }
+      ]
+    },
+    {
+      "domain": "utexas.edu",
+      "org_count": 2,
+      "orgs": [
+        {
+          "id": 962,
+          "canonical_name": "UT Austin Texas Aging and Longevity Consortium (TALC)",
+          "website_domain": "liberalarts.utexas.edu"
+        },
+        {
+          "id": 4262,
+          "canonical_name": "Fitness Institute of Texas",
+          "website_domain": "sites.edb.utexas.edu"
+        }
+      ]
+    },
+    {
+      "domain": "wakehealth.edu",
+      "org_count": 2,
+      "orgs": [
+        {
+          "id": 2250,
+          "canonical_name": "Atrium Health Wake Forest Baptist Pain Center – North Elm",
+          "website_domain": "wakehealth.edu"
+        },
+        {
+          "id": 6316,
+          "canonical_name": "Wake Forest Biotech Place",
+          "website_domain": "school.wakehealth.edu"
+        }
+      ]
+    },
+    {
+      "domain": "weillcornell.org",
+      "org_count": 2,
+      "orgs": [
+        {
+          "id": 306,
+          "canonical_name": "Weill Cornell Medicine Peripheral Neuropathy Center",
+          "website_domain": "neuropathy.weillcornell.org"
+        },
+        {
+          "id": 307,
+          "canonical_name": "Chiti Parikh, M.D.",
+          "website_domain": "weillcornell.org"
+        }
+      ]
+    },
+    {
+      "domain": "wellmedhealthcare.com",
+      "org_count": 2,
+      "orgs": [
+        {
+          "id": 6348,
+          "canonical_name": "WellMed at Central Brownsville",
+          "website_domain": "doctors.wellmedhealthcare.com"
+        },
+        {
+          "id": 6349,
+          "canonical_name": "WellMed at Coria",
+          "website_domain": "wellmedhealthcare.com"
+        }
+      ]
+    },
+    {
+      "domain": "wkhs.com",
+      "org_count": 2,
+      "orgs": [
+        {
+          "id": 3298,
+          "canonical_name": "Dr. Tyler Lash, MD",
+          "website_domain": "directory.wkhs.com"
+        },
+        {
+          "id": 6398,
+          "canonical_name": "Willis Knighton Cancer Center",
+          "website_domain": "wkhs.com"
+        }
+      ]
+    }
+  ],
+  "merged_orgs": [
+    {
+      "domain": "dexafit.com",
+      "canonical_name": "DexaFit",
+      "keeper_org_id": 1489,
+      "loser_org_ids": [
+        1507,
+        1514,
+        1516,
+        1518,
+        1521,
+        1526,
+        1528,
+        4139,
+        4276,
+        6464,
+        6465
+      ],
+      "orgs": [
+        {
+          "id": 1489,
+          "canonical_name": "DexaFit Vancouver",
+          "website_domain": "vancouver.dexafit.com"
+        },
+        {
+          "id": 1507,
+          "canonical_name": "DexaFit",
+          "website_domain": "dexafit.com"
+        },
+        {
+          "id": 1514,
+          "canonical_name": "DEXAFIT Denver",
+          "website_domain": "denver.dexafit.com"
+        },
+        {
+          "id": 1516,
+          "canonical_name": "DexaFit Tampa",
+          "website_domain": "tampa.dexafit.com"
+        },
+        {
+          "id": 1518,
+          "canonical_name": "DexaFit Round Rock",
+          "website_domain": "roundrock.dexafit.com"
+        },
+        {
+          "id": 1521,
+          "canonical_name": "DexaFit Seattle",
+          "website_domain": "seattle.dexafit.com"
+        },
+        {
+          "id": 1526,
+          "canonical_name": "DexaFit Cleveland",
+          "website_domain": "cleveland.dexafit.com"
+        },
+        {
+          "id": 1528,
+          "canonical_name": "DexaFit Tempe",
+          "website_domain": "phoenix.dexafit.com"
+        },
+        {
+          "id": 4139,
+          "canonical_name": "DexaFit Scottsdale",
+          "website_domain": "scottsdale.dexafit.com"
+        },
+        {
+          "id": 4276,
+          "canonical_name": "DexaFit The Woodlands",
+          "website_domain": "woodlands.dexafit.com"
+        },
+        {
+          "id": 6464,
+          "canonical_name": "DexaFit SF Bay Area",
+          "website_domain": "sfbayarea.dexafit.com"
+        },
+        {
+          "id": 6465,
+          "canonical_name": "DexaFit Orlando",
+          "website_domain": "orlando.dexafit.com"
+        }
+      ],
+      "reason": "approved_same_brand_duplicate_domain",
+      "location_ids": [
+        2155,
+        2181,
+        2190,
+        2192,
+        2196,
+        2199,
+        2204,
+        3196,
+        9166,
+        9339,
+        9346,
+        9361,
+        13398,
+        13400
+      ],
+      "all_org_ids": [
+        1489,
+        1507,
+        1514,
+        1516,
+        1518,
+        1521,
+        1526,
+        1528,
+        4139,
+        4276,
+        6464,
+        6465
+      ]
+    },
+    {
+      "domain": "hughston.com",
+      "canonical_name": "Hughston",
+      "keeper_org_id": 2069,
+      "loser_org_ids": [
+        3581,
+        3582
+      ],
+      "orgs": [
+        {
+          "id": 2069,
+          "canonical_name": "Hughston Clinic Montgomery (Lomac)",
+          "website_domain": "al.hughston.com"
+        },
+        {
+          "id": 3581,
+          "canonical_name": "Hughston Clinic Columbus",
+          "website_domain": "ga.hughston.com"
+        },
+        {
+          "id": 3582,
+          "canonical_name": "Hughston Rehabilitation",
+          "website_domain": "hughston.com"
+        }
+      ],
+      "reason": "approved_same_brand_duplicate_domain",
+      "location_ids": [
+        3854,
+        3855,
+        7826,
+        7828,
+        7829,
+        7830,
+        7831,
+        7832,
+        7833,
+        7834,
+        7835,
+        7836,
+        7837,
+        7838,
+        7839,
+        7840,
+        10393
+      ],
+      "all_org_ids": [
+        2069,
+        3581,
+        3582
+      ]
+    },
+    {
+      "domain": "thedripbar.com",
+      "canonical_name": "The DRIPBaR",
+      "keeper_org_id": 711,
+      "loser_org_ids": [
+        4105,
+        5923
+      ],
+      "orgs": [
+        {
+          "id": 711,
+          "canonical_name": "The DRIPBaR Cranford",
+          "website_domain": "cranford-nj.thedripbar.com"
+        },
+        {
+          "id": 4105,
+          "canonical_name": "The DRIPBaR Austin The Domain",
+          "website_domain": "austin-the-domain.thedripbar.com"
+        },
+        {
+          "id": 5923,
+          "canonical_name": "The DRIPBaR Winchester",
+          "website_domain": "winchester.thedripbar.com"
+        }
+      ],
+      "reason": "prompt_explicit_merge",
+      "location_ids": [
+        1091,
+        9114,
+        9115,
+        12472,
+        12473,
+        12474,
+        12475
+      ],
+      "all_org_ids": [
+        711,
+        4105,
+        5923
+      ]
+    },
+    {
+      "domain": "advocatehealth.com",
+      "canonical_name": "Advocate Health",
+      "keeper_org_id": 2474,
+      "loser_org_ids": [
+        4377
+      ],
+      "orgs": [
+        {
+          "id": 2474,
+          "canonical_name": "Advocate Medical Group Immediate Care Center",
+          "website_domain": "advocatehealth.com"
+        },
+        {
+          "id": 4377,
+          "canonical_name": "Advocate Infusion Center",
+          "website_domain": "care.advocatehealth.com"
+        }
+      ],
+      "reason": "approved_same_brand_duplicate_domain",
+      "location_ids": [
+        4772,
+        4773,
+        9507,
+        9508,
+        9509,
+        9985
+      ],
+      "all_org_ids": [
+        2474,
+        4377
+      ]
+    },
+    {
+      "domain": "chillcryo.net",
+      "canonical_name": "ChillRx Cryotherapy",
+      "keeper_org_id": 769,
+      "loser_org_ids": [
+        3552
+      ],
+      "orgs": [
+        {
+          "id": 769,
+          "canonical_name": "ChillRx Franchising LLC",
+          "website_domain": "westfield.chillcryo.net"
+        },
+        {
+          "id": 3552,
+          "canonical_name": "ChillRx Cryotherapy",
+          "website_domain": "cincinnati.chillcryo.net"
+        }
+      ],
+      "reason": "approved_same_brand_duplicate_domain",
+      "location_ids": [
+        1179,
+        3107,
+        7739
+      ],
+      "all_org_ids": [
+        769,
+        3552
+      ]
+    },
+    {
+      "domain": "dignityhealth.org",
+      "canonical_name": "Dignity Health",
+      "keeper_org_id": 4499,
+      "loser_org_ids": [
+        4610
+      ],
+      "orgs": [
+        {
+          "id": 4499,
+          "canonical_name": "Cancer Institute at Dignity Health – St. Joseph’s Medical Center",
+          "website_domain": "locations.dignityhealth.org"
+        },
+        {
+          "id": 4610,
+          "canonical_name": "Dignity Health – St. Joseph’s Behavioral Health Center",
+          "website_domain": "dignityhealth.org"
+        }
+      ],
+      "reason": "approved_same_brand_duplicate_domain",
+      "location_ids": [
+        9789,
+        9867,
+        9884,
+        10046,
+        10047,
+        10048,
+        10049,
+        10050,
+        10051,
+        10052,
+        10053,
+        10239,
+        10672,
+        10673,
+        10676,
+        11175,
+        11821
+      ],
+      "all_org_ids": [
+        4499,
+        4610
+      ]
+    },
+    {
+      "domain": "muschealth.org",
+      "canonical_name": "MUSC Health",
+      "keeper_org_id": 2223,
+      "loser_org_ids": [
+        4970
+      ],
+      "orgs": [
+        {
+          "id": 2223,
+          "canonical_name": "MUSC Health University Medical Center",
+          "website_domain": "getcare.muschealth.org"
+        },
+        {
+          "id": 4970,
+          "canonical_name": "MUSC Health – Wound Care and Hyperbaric Medicine – Charleston",
+          "website_domain": "locations.muschealth.org"
+        }
+      ],
+      "reason": "approved_same_brand_duplicate_domain",
+      "location_ids": [
+        5248,
+        5249,
+        10810,
+        10811,
+        10812,
+        10813
+      ],
+      "all_org_ids": [
+        2223,
+        4970
+      ]
+    },
+    {
+      "domain": "stem-wave.com",
+      "canonical_name": "StemWave",
+      "keeper_org_id": 5773,
+      "loser_org_ids": [
+        5774
+      ],
+      "orgs": [
+        {
+          "id": 5773,
+          "canonical_name": "StemWave of Idaho",
+          "website_domain": "stemwaveofidaho.stem-wave.com"
+        },
+        {
+          "id": 5774,
+          "canonical_name": "StemWave Ventura",
+          "website_domain": "stemwaveventura.stem-wave.com"
+        }
+      ],
+      "reason": "approved_same_brand_duplicate_domain",
+      "location_ids": [
+        12236,
+        12238
+      ],
+      "all_org_ids": [
+        5773,
+        5774
+      ]
+    },
+    {
+      "domain": "wellmedhealthcare.com",
+      "canonical_name": "WellMed",
+      "keeper_org_id": 6348,
+      "loser_org_ids": [
+        6349
+      ],
+      "orgs": [
+        {
+          "id": 6348,
+          "canonical_name": "WellMed at Central Brownsville",
+          "website_domain": "doctors.wellmedhealthcare.com"
+        },
+        {
+          "id": 6349,
+          "canonical_name": "WellMed at Coria",
+          "website_domain": "wellmedhealthcare.com"
+        }
+      ],
+      "reason": "approved_same_brand_duplicate_domain",
+      "location_ids": [
+        13242,
+        13243,
+        13244
+      ],
+      "all_org_ids": [
+        6348,
+        6349
+      ]
+    }
+  ],
+  "duplicate_domains_flagged_for_review": [
+    {
+      "domain": "glossgenius.com",
+      "org_count": 10,
+      "orgs": [
+        {
+          "id": 27,
+          "canonical_name": "Dari Esthetics",
+          "website_domain": "dariesthetics.glossgenius.com"
+        },
+        {
+          "id": 383,
+          "canonical_name": "ProSkin Aesthetics Co.",
+          "website_domain": "proskinaestheticsco.glossgenius.com"
+        },
+        {
+          "id": 401,
+          "canonical_name": "Akimat Wellness",
+          "website_domain": "akimatwellness.glossgenius.com"
+        },
+        {
+          "id": 568,
+          "canonical_name": "Soul Remedy Wellness",
+          "website_domain": "soulremedywellness.glossgenius.com"
+        },
+        {
+          "id": 607,
+          "canonical_name": "Mimi’s Massage and Wellness Spa",
+          "website_domain": "massagewellness.glossgenius.com"
+        },
+        {
+          "id": 659,
+          "canonical_name": "Red Light Therapy Long Island",
+          "website_domain": "redlight.glossgenius.com"
+        },
+        {
+          "id": 864,
+          "canonical_name": "Esthetic Therapy",
+          "website_domain": "esthetictherapy.glossgenius.com"
+        },
+        {
+          "id": 2195,
+          "canonical_name": "Healthy Hair Solutions Corp",
+          "website_domain": "healthyhairsolutionscorp.glossgenius.com"
+        },
+        {
+          "id": 2198,
+          "canonical_name": "Holistic Essentials",
+          "website_domain": "holisticessential.glossgenius.com"
+        },
+        {
+          "id": 4747,
+          "canonical_name": "Heavenly Skyy Head Spa",
+          "website_domain": "heavenlyskyy.glossgenius.com"
+        }
+      ],
+      "reason": "profile_platform_domain_no_org_merge"
+    },
+    {
+      "domain": "va.gov",
+      "org_count": 9,
+      "orgs": [
+        {
+          "id": 2385,
+          "canonical_name": "Chesapeake VA Clinic",
+          "website_domain": "va.gov"
+        },
+        {
+          "id": 4390,
+          "canonical_name": "Alexandria VA Medical Center",
+          "website_domain": "alexandria.va.gov"
+        },
+        {
+          "id": 4469,
+          "canonical_name": "Birmingham VA Health Care System",
+          "website_domain": "birmingham.va.gov"
+        },
+        {
+          "id": 4481,
+          "canonical_name": "Bristol VA Clinic",
+          "website_domain": "mountainhome.va.gov"
+        },
+        {
+          "id": 4597,
+          "canonical_name": "Danville VA Clinic",
+          "website_domain": "danville.va.gov"
+        },
+        {
+          "id": 4734,
+          "canonical_name": "Hampton VA Medical Center",
+          "website_domain": "hampton.va.gov"
+        },
+        {
+          "id": 5505,
+          "canonical_name": "Salem VA Clinic",
+          "website_domain": "portland.va.gov"
+        },
+        {
+          "id": 5506,
+          "canonical_name": "Salem VA Medical Center",
+          "website_domain": "salem.va.gov"
+        },
+        {
+          "id": 6203,
+          "canonical_name": "VA Hospital",
+          "website_domain": "richmond.va.gov"
+        }
+      ],
+      "reason": "material_name_review_needed"
+    },
+    {
+      "domain": "wixsite.com",
+      "org_count": 9,
+      "orgs": [
+        {
+          "id": 435,
+          "canonical_name": "Relaxing Spa",
+          "website_domain": "relaxingspany.wixsite.com"
+        },
+        {
+          "id": 445,
+          "canonical_name": "All Seasons Spa (Queens)",
+          "website_domain": "fourseasonsbeautyspa.wixsite.com"
+        },
+        {
+          "id": 577,
+          "canonical_name": "Island Medical Specialists",
+          "website_domain": "islandmedical.wixsite.com"
+        },
+        {
+          "id": 680,
+          "canonical_name": "K Physical Therapy (통증 병원, Manual Therapy, Massage, Ultra sound Therapy, Cold laser Therapy)",
+          "website_domain": "windphysicaltherap.wixsite.com"
+        },
+        {
+          "id": 839,
+          "canonical_name": "Island Spa Club",
+          "website_domain": "islandspaclub.wixsite.com"
+        },
+        {
+          "id": 856,
+          "canonical_name": "Healthy Aroma & Reflexology Inc",
+          "website_domain": "healthyaromaspa.wixsite.com"
+        },
+        {
+          "id": 1093,
+          "canonical_name": "Sozo Integrative Healthcare",
+          "website_domain": "sozoihc.wixsite.com"
+        },
+        {
+          "id": 3678,
+          "canonical_name": "Lotus Spa",
+          "website_domain": "lotusspa8037.wixsite.com"
+        },
+        {
+          "id": 3924,
+          "canonical_name": "Healing Sensation",
+          "website_domain": "healingsensationus.wixsite.com"
+        }
+      ],
+      "reason": "profile_platform_domain_no_org_merge"
+    },
+    {
+      "domain": "zoca.com",
+      "org_count": 5,
+      "orgs": [
+        {
+          "id": 162,
+          "canonical_name": "Ommmango Wellness",
+          "website_domain": "ommmangowellnessbrooklyn.zoca.com"
+        },
+        {
+          "id": 318,
+          "canonical_name": "Wellness Spa 71",
+          "website_domain": "wellnessspa71.zoca.com"
+        },
+        {
+          "id": 551,
+          "canonical_name": "Saged NYC Beauty & Wellness",
+          "website_domain": "sagednycwellness.zoca.com"
+        },
+        {
+          "id": 794,
+          "canonical_name": "Bel0 Cryotherapy LLC",
+          "website_domain": "bel0cryotherapy.zoca.com"
+        },
+        {
+          "id": 3204,
+          "canonical_name": "Healthydermis MedSpa and Laser Clinic – Oakton",
+          "website_domain": "healthydermisoakton.zoca.com"
+        }
+      ],
+      "reason": "profile_platform_domain_no_org_merge"
+    },
+    {
+      "domain": "square.site",
+      "org_count": 4,
+      "orgs": [
+        {
+          "id": 4474,
+          "canonical_name": "Blu Spa and Wellness",
+          "website_domain": "blu-spa-wellness.square.site"
+        },
+        {
+          "id": 4934,
+          "canonical_name": "Mend and Kure Wellness Center",
+          "website_domain": "mendandkurewellness.square.site"
+        },
+        {
+          "id": 5632,
+          "canonical_name": "Smash It Rage Room",
+          "website_domain": "yousmashedit.square.site"
+        },
+        {
+          "id": 5799,
+          "canonical_name": "Sublime Aesthetics & Wellness",
+          "website_domain": "sublime-aesthetics-wellness.square.site"
+        }
+      ],
+      "reason": "profile_platform_domain_no_org_merge"
+    },
+    {
+      "domain": "wisc.edu",
+      "org_count": 4,
+      "orgs": [
+        {
+          "id": 4602,
+          "canonical_name": "Department of Cell and Regenerative Biology",
+          "website_domain": "crb.wisc.edu"
+        },
+        {
+          "id": 5017,
+          "canonical_name": "NIRS Waisman Center",
+          "website_domain": "waisman.wisc.edu"
+        },
+        {
+          "id": 6187,
+          "canonical_name": "University of Wisconsin School of Medicine and Public Health",
+          "website_domain": "med.wisc.edu"
+        },
+        {
+          "id": 6404,
+          "canonical_name": "Wisconsin Institute for Discovery",
+          "website_domain": "wid.wisc.edu"
+        }
+      ],
+      "reason": "material_name_review_needed"
+    },
+    {
+      "domain": "clevelandclinic.org",
+      "org_count": 3,
+      "orgs": [
+        {
+          "id": 1898,
+          "canonical_name": "Akron General Health and Wellness Center, Green & Medical Office Pavilion",
+          "website_domain": "my.clevelandclinic.org"
+        },
+        {
+          "id": 2404,
+          "canonical_name": "Dr. J. Paul Mahfood, MD & Rheumatology Services of Florida",
+          "website_domain": "providers.clevelandclinic.org"
+        },
+        {
+          "id": 4553,
+          "canonical_name": "Cleveland Clinic Lerner College of Medicine",
+          "website_domain": "clevelandclinic.org"
+        }
+      ],
+      "reason": "material_name_review_needed"
+    },
+    {
+      "domain": "cuanschutz.edu",
+      "org_count": 3,
+      "orgs": [
+        {
+          "id": 2719,
+          "canonical_name": "Colorado Sickle Cell Center",
+          "website_domain": "medschool.cuanschutz.edu"
+        },
+        {
+          "id": 4406,
+          "canonical_name": "Anschutz Health Sciences Building",
+          "website_domain": "news.cuanschutz.edu"
+        },
+        {
+          "id": 6177,
+          "canonical_name": "University of Colorado Anschutz",
+          "website_domain": "cuanschutz.edu"
+        }
+      ],
+      "reason": "material_name_review_needed"
+    },
+    {
+      "domain": "onbuildhealth.com",
+      "org_count": 3,
+      "orgs": [
+        {
+          "id": 134,
+          "canonical_name": "Chelsea Wellness",
+          "website_domain": "chelseawellness.onbuildhealth.com"
+        },
+        {
+          "id": 139,
+          "canonical_name": "Refresh Body Wellness Spa",
+          "website_domain": "refreshbodywellness.onbuildhealth.com"
+        },
+        {
+          "id": 305,
+          "canonical_name": "Wellness Bodywork Spa",
+          "website_domain": "wellnessbodyworkspa.onbuildhealth.com"
+        }
+      ],
+      "reason": "profile_platform_domain_no_org_merge"
+    },
+    {
+      "domain": "sanfordhealth.org",
+      "org_count": 3,
+      "orgs": [
+        {
+          "id": 2409,
+          "canonical_name": "Dr. Steven F. Powell",
+          "website_domain": "sanfordhealth.org"
+        },
+        {
+          "id": 5523,
+          "canonical_name": "Sanford Imagenetics",
+          "website_domain": "imagenetics.sanfordhealth.org"
+        },
+        {
+          "id": 5524,
+          "canonical_name": "Sanford Research",
+          "website_domain": "research.sanfordhealth.org"
+        }
+      ],
+      "reason": "material_name_review_needed"
+    },
+    {
+      "domain": "tulane.edu",
+      "org_count": 3,
+      "orgs": [
+        {
+          "id": 5587,
+          "canonical_name": "Sickle Cell Center-Southern La",
+          "website_domain": "medicine.tulane.edu"
+        },
+        {
+          "id": 6125,
+          "canonical_name": "Tulane School of Professional Advancement",
+          "website_domain": "sopa.tulane.edu"
+        },
+        {
+          "id": 6126,
+          "canonical_name": "Tulane University",
+          "website_domain": "tulane.edu"
+        }
+      ],
+      "reason": "material_name_review_needed"
+    },
+    {
+      "domain": "adventisthealth.org",
+      "org_count": 2,
+      "orgs": [
+        {
+          "id": 1893,
+          "canonical_name": "AIS Cancer Center: Adventist Health Bakersfield",
+          "website_domain": "adventisthealth.org"
+        },
+        {
+          "id": 2822,
+          "canonical_name": "Dr. Sarkis Kiramijyan, MD, FACC, FSCAI",
+          "website_domain": "doctors.adventisthealth.org"
+        }
+      ],
+      "reason": "material_name_review_needed"
+    },
+    {
+      "domain": "alabama.gov",
+      "org_count": 2,
+      "orgs": [
+        {
+          "id": 2688,
+          "canonical_name": "Alabama Department of Rehabilitation Services",
+          "website_domain": "rehab.alabama.gov"
+        },
+        {
+          "id": 5252,
+          "canonical_name": "Reclamation Center of Alabama",
+          "website_domain": "mh.alabama.gov"
+        }
+      ],
+      "reason": "material_name_review_needed"
+    },
+    {
+      "domain": "allinahealth.org",
+      "org_count": 2,
+      "orgs": [
+        {
+          "id": 1921,
+          "canonical_name": "Allina Health Orthopedics – St. Paul",
+          "website_domain": "account.allinahealth.org"
+        },
+        {
+          "id": 4022,
+          "canonical_name": "United Hospital – Nasseff Heart Center",
+          "website_domain": "allinahealth.org"
+        }
+      ],
+      "reason": "material_name_review_needed"
+    },
+    {
+      "domain": "arizona.edu",
+      "org_count": 2,
+      "orgs": [
+        {
+          "id": 6174,
+          "canonical_name": "University of Arizona Health Sciences",
+          "website_domain": "uahs.arizona.edu"
+        },
+        {
+          "id": 6216,
+          "canonical_name": "Valley Fever Center for Excellence",
+          "website_domain": "vfce.arizona.edu"
+        }
+      ],
+      "reason": "material_name_review_needed"
+    },
+    {
+      "domain": "as.me",
+      "org_count": 2,
+      "orgs": [
+        {
+          "id": 807,
+          "canonical_name": "Saunalicious",
+          "website_domain": "saunalicious.as.me"
+        },
+        {
+          "id": 4755,
+          "canonical_name": "House of Hair Norfolk",
+          "website_domain": "houseofhair2.as.me"
+        }
+      ],
+      "reason": "profile_platform_domain_no_org_merge"
+    },
+    {
+      "domain": "atlantichealth.org",
+      "org_count": 2,
+      "orgs": [
+        {
+          "id": 434,
+          "canonical_name": "Healthfirst Associates",
+          "website_domain": "ahs.atlantichealth.org"
+        },
+        {
+          "id": 2791,
+          "canonical_name": "Atlantic Health Urgent Care at Bloomfield",
+          "website_domain": "atlantichealth.org"
+        }
+      ],
+      "reason": "material_name_review_needed"
+    },
+    {
+      "domain": "buffalo.edu",
+      "org_count": 2,
+      "orgs": [
+        {
+          "id": 4804,
+          "canonical_name": "Jacobs School Of Medicine And Biomedical Sciences",
+          "website_domain": "medicine.buffalo.edu"
+        },
+        {
+          "id": 6170,
+          "canonical_name": "University at Buffalo (North Campus)",
+          "website_domain": "buffalo.edu"
+        }
+      ],
+      "reason": "material_name_review_needed"
+    },
+    {
+      "domain": "clientsecure.me",
+      "org_count": 2,
+      "orgs": [
+        {
+          "id": 43,
+          "canonical_name": "[Intuitive Touch Physiotherapy]:[Vilma Wong, PT, DPT, OCS, FFMT, FAAOMPT]",
+          "website_domain": "vilma-wong.clientsecure.me"
+        },
+        {
+          "id": 2145,
+          "canonical_name": "Balanced Recovery PLLC",
+          "website_domain": "balancedrecovery.clientsecure.me"
+        }
+      ],
+      "reason": "profile_platform_domain_no_org_merge"
+    },
+    {
+      "domain": "corewellhealth.org",
+      "org_count": 2,
+      "orgs": [
+        {
+          "id": 2270,
+          "canonical_name": "Corewell Health Grand Rapids Hospitals Wound Healing & Hyperbaric Medicine – Barclay",
+          "website_domain": "corewellhealth.org"
+        },
+        {
+          "id": 2308,
+          "canonical_name": "Jenna Schierbeek, FNP",
+          "website_domain": "providers.corewellhealth.org"
+        }
+      ],
+      "reason": "material_name_review_needed"
+    },
+    {
+      "domain": "duke.edu",
+      "org_count": 2,
+      "orgs": [
+        {
+          "id": 3192,
+          "canonical_name": "Duke Comprehensive Sickle Cell",
+          "website_domain": "medicine.duke.edu"
+        },
+        {
+          "id": 4649,
+          "canonical_name": "Duke University",
+          "website_domain": "duke.edu"
+        }
+      ],
+      "reason": "material_name_review_needed"
+    },
+    {
+      "domain": "ernesthealth.com",
+      "org_count": 2,
+      "orgs": [
+        {
+          "id": 3820,
+          "canonical_name": "Central California Rehabilitation Hospital",
+          "website_domain": "ccarh.ernesthealth.com"
+        },
+        {
+          "id": 3827,
+          "canonical_name": "Corpus Christi Rehabilitation Hospital",
+          "website_domain": "ccrh.ernesthealth.com"
+        }
+      ],
+      "reason": "material_name_review_needed"
+    },
+    {
+      "domain": "facebook.com",
+      "org_count": 2,
+      "orgs": [
+        {
+          "id": 38,
+          "canonical_name": "The Singing Bowl Sound Bath Studio LLC",
+          "website_domain": "facebook.com"
+        },
+        {
+          "id": 4401,
+          "canonical_name": "American Med",
+          "website_domain": "web.facebook.com"
+        }
+      ],
+      "reason": "profile_platform_domain_no_org_merge"
+    },
+    {
+      "domain": "fcps.net",
+      "org_count": 2,
+      "orgs": [
+        {
+          "id": 3104,
+          "canonical_name": "Fayette County Public Schools",
+          "website_domain": "fcps.net"
+        },
+        {
+          "id": 4883,
+          "canonical_name": "Locust Trace AgriScience Center",
+          "website_domain": "locusttrace.fcps.net"
+        }
+      ],
+      "reason": "material_name_review_needed"
+    },
+    {
+      "domain": "healthpartners.com",
+      "org_count": 2,
+      "orgs": [
+        {
+          "id": 2834,
+          "canonical_name": "HealthPartners Home Medical St. Paul",
+          "website_domain": "homemedical.healthpartners.com"
+        },
+        {
+          "id": 2919,
+          "canonical_name": "HealthPartners Orthopedics St. Paul",
+          "website_domain": "healthpartners.com"
+        }
+      ],
+      "reason": "material_name_review_needed"
+    },
+    {
+      "domain": "mountsinai.org",
+      "org_count": 2,
+      "orgs": [
+        {
+          "id": 178,
+          "canonical_name": "Mount Sinai Doctors - Virtual Primary Care",
+          "website_domain": "mountsinai.org"
+        },
+        {
+          "id": 531,
+          "canonical_name": "Shye Wortman, MD",
+          "website_domain": "profiles.mountsinai.org"
+        }
+      ],
+      "reason": "material_name_review_needed"
+    },
+    {
+      "domain": "mymeditravel.com",
+      "org_count": 2,
+      "orgs": [
+        {
+          "id": 4028,
+          "canonical_name": "Anti-Aging Stem Cell Treatment in Bangkok",
+          "website_domain": "articles.mymeditravel.com"
+        },
+        {
+          "id": 4029,
+          "canonical_name": "Chaum Medical Center",
+          "website_domain": "mymeditravel.com"
+        }
+      ],
+      "reason": "material_name_review_needed"
+    },
+    {
+      "domain": "myshopify.com",
+      "org_count": 2,
+      "orgs": [
+        {
+          "id": 431,
+          "canonical_name": "Glam Glow Med Spa",
+          "website_domain": "glam-glow-med-spa.myshopify.com"
+        },
+        {
+          "id": 5263,
+          "canonical_name": "ReFuelVa",
+          "website_domain": "refuelva.myshopify.com"
+        }
+      ],
+      "reason": "profile_platform_domain_no_org_merge"
+    },
+    {
+      "domain": "nyp.org",
+      "org_count": 2,
+      "orgs": [
+        {
+          "id": 309,
+          "canonical_name": "Integrative Health and Wellbeing - NewYork-Presbyterian & Weill Cornell Medicine",
+          "website_domain": "nyp.org"
+        },
+        {
+          "id": 478,
+          "canonical_name": "Demetrios M Paidoussis, MD",
+          "website_domain": "doctors.nyp.org"
+        }
+      ],
+      "reason": "material_name_review_needed"
+    },
+    {
+      "domain": "providence.org",
+      "org_count": 2,
+      "orgs": [
+        {
+          "id": 2041,
+          "canonical_name": "Covenant Home Infusion",
+          "website_domain": "providence.org"
+        },
+        {
+          "id": 5197,
+          "canonical_name": "Providence Cancer Center: Blom James G MD",
+          "website_domain": "alaska.providence.org"
+        }
+      ],
+      "reason": "material_name_review_needed"
+    },
+    {
+      "domain": "rochester.edu",
+      "org_count": 2,
+      "orgs": [
+        {
+          "id": 3359,
+          "canonical_name": "Center for Advanced Research Technologies",
+          "website_domain": "urmc.rochester.edu"
+        },
+        {
+          "id": 6185,
+          "canonical_name": "University of Rochester",
+          "website_domain": "rochester.edu"
+        }
+      ],
+      "reason": "material_name_review_needed"
+    },
+    {
+      "domain": "rush.edu",
+      "org_count": 2,
+      "orgs": [
+        {
+          "id": 3330,
+          "canonical_name": "Midwest Center Advanced Imaging",
+          "website_domain": "rush.edu"
+        },
+        {
+          "id": 5776,
+          "canonical_name": "Stephen M. Kelanic, MD",
+          "website_domain": "doctors.rush.edu"
+        }
+      ],
+      "reason": "material_name_review_needed"
+    },
+    {
+      "domain": "rutgers.edu",
+      "org_count": 2,
+      "orgs": [
+        {
+          "id": 534,
+          "canonical_name": "New Jersey Family Practice Center",
+          "website_domain": "njms.rutgers.edu"
+        },
+        {
+          "id": 6171,
+          "canonical_name": "University Behavioral Health Care at Newark (Rutgers Health)",
+          "website_domain": "ubhc.rutgers.edu"
+        }
+      ],
+      "reason": "material_name_review_needed"
+    },
+    {
+      "domain": "tricare.mil",
+      "org_count": 2,
+      "orgs": [
+        {
+          "id": 4477,
+          "canonical_name": "Branch Health Clinic Northwest",
+          "website_domain": "portsmouth.tricare.mil"
+        },
+        {
+          "id": 4729,
+          "canonical_name": "Guthrie Army Health Clinic",
+          "website_domain": "guthrie.tricare.mil"
+        }
+      ],
+      "reason": "material_name_review_needed"
+    },
+    {
+      "domain": "uams.edu",
+      "org_count": 2,
+      "orgs": [
+        {
+          "id": 6139,
+          "canonical_name": "UAMS Northwest Regional Campus",
+          "website_domain": "nwa.uams.edu"
+        },
+        {
+          "id": 6140,
+          "canonical_name": "UAMS Winthrop P. Rockefeller Cancer Institute",
+          "website_domain": "cancer.uams.edu"
+        }
+      ],
+      "reason": "material_name_review_needed"
+    },
+    {
+      "domain": "ucdavis.edu",
+      "org_count": 2,
+      "orgs": [
+        {
+          "id": 6142,
+          "canonical_name": "UC Davis Dermatology",
+          "website_domain": "health.ucdavis.edu"
+        },
+        {
+          "id": 6143,
+          "canonical_name": "UC Davis Institute for Regenerative Cures",
+          "website_domain": "ucdmc.ucdavis.edu"
+        }
+      ],
+      "reason": "material_name_review_needed"
+    },
+    {
+      "domain": "ucr.edu",
+      "org_count": 2,
+      "orgs": [
+        {
+          "id": 4565,
+          "canonical_name": "College of Natural & Agricultural Sciences",
+          "website_domain": "cnas.ucr.edu"
+        },
+        {
+          "id": 6176,
+          "canonical_name": "University of California, Riverside",
+          "website_domain": "ucr.edu"
+        }
+      ],
+      "reason": "material_name_review_needed"
+    },
+    {
+      "domain": "ucsd.edu",
+      "org_count": 2,
+      "orgs": [
+        {
+          "id": 1622,
+          "canonical_name": "UC San Diego Health",
+          "website_domain": "health.ucsd.edu"
+        },
+        {
+          "id": 6146,
+          "canonical_name": "UCSD Stem Cell Program",
+          "website_domain": "stemcellprogram.ucsd.edu"
+        }
+      ],
+      "reason": "material_name_review_needed"
+    },
+    {
+      "domain": "ucsf.edu",
+      "org_count": 2,
+      "orgs": [
+        {
+          "id": 4661,
+          "canonical_name": "Eli and Edythe Broad Center of Regeneration Medicine and Stem Cell Research",
+          "website_domain": "stemcell.ucsf.edu"
+        },
+        {
+          "id": 6148,
+          "canonical_name": "UCSF Fresno",
+          "website_domain": "fresno.ucsf.edu"
+        }
+      ],
+      "reason": "material_name_review_needed"
+    },
+    {
+      "domain": "uky.edu",
+      "org_count": 2,
+      "orgs": [
+        {
+          "id": 2709,
+          "canonical_name": "Cardinal Hill Outpatient Clinic",
+          "website_domain": "ukhealthcare.uky.edu"
+        },
+        {
+          "id": 6179,
+          "canonical_name": "University of Kentucky College of Arts and Sciences",
+          "website_domain": "as.uky.edu"
+        }
+      ],
+      "reason": "material_name_review_needed"
+    },
+    {
+      "domain": "ummhealth.org",
+      "org_count": 2,
+      "orgs": [
+        {
+          "id": 6155,
+          "canonical_name": "UMass Memorial Center for Spine Health",
+          "website_domain": "center.ummhealth.org"
+        },
+        {
+          "id": 6156,
+          "canonical_name": "UMass Memorial Medical Center Colon and Rectal Surgery",
+          "website_domain": "ummhealth.org"
+        }
+      ],
+      "reason": "material_name_review_needed"
+    },
+    {
+      "domain": "umn.edu",
+      "org_count": 2,
+      "orgs": [
+        {
+          "id": 4951,
+          "canonical_name": "Molecular and Cellular Therapeutics",
+          "website_domain": "researchservices.umn.edu"
+        },
+        {
+          "id": 6182,
+          "canonical_name": "University of Minnesota",
+          "website_domain": "twin-cities.umn.edu"
+        }
+      ],
+      "reason": "material_name_review_needed"
+    },
+    {
+      "domain": "upmc.com",
+      "org_count": 2,
+      "orgs": [
+        {
+          "id": 3860,
+          "canonical_name": "Mario Lemieux Center for Blood Cancers (Medical Oncology)",
+          "website_domain": "hillman.upmc.com"
+        },
+        {
+          "id": 4683,
+          "canonical_name": "Eye & Ear Institute",
+          "website_domain": "upmc.com"
+        }
+      ],
+      "reason": "material_name_review_needed"
+    },
+    {
+      "domain": "utexas.edu",
+      "org_count": 2,
+      "orgs": [
+        {
+          "id": 962,
+          "canonical_name": "UT Austin Texas Aging and Longevity Consortium (TALC)",
+          "website_domain": "liberalarts.utexas.edu"
+        },
+        {
+          "id": 4262,
+          "canonical_name": "Fitness Institute of Texas",
+          "website_domain": "sites.edb.utexas.edu"
+        }
+      ],
+      "reason": "material_name_review_needed"
+    },
+    {
+      "domain": "wakehealth.edu",
+      "org_count": 2,
+      "orgs": [
+        {
+          "id": 2250,
+          "canonical_name": "Atrium Health Wake Forest Baptist Pain Center – North Elm",
+          "website_domain": "wakehealth.edu"
+        },
+        {
+          "id": 6316,
+          "canonical_name": "Wake Forest Biotech Place",
+          "website_domain": "school.wakehealth.edu"
+        }
+      ],
+      "reason": "material_name_review_needed"
+    },
+    {
+      "domain": "weillcornell.org",
+      "org_count": 2,
+      "orgs": [
+        {
+          "id": 306,
+          "canonical_name": "Weill Cornell Medicine Peripheral Neuropathy Center",
+          "website_domain": "neuropathy.weillcornell.org"
+        },
+        {
+          "id": 307,
+          "canonical_name": "Chiti Parikh, M.D.",
+          "website_domain": "weillcornell.org"
+        }
+      ],
+      "reason": "material_name_review_needed"
+    },
+    {
+      "domain": "wkhs.com",
+      "org_count": 2,
+      "orgs": [
+        {
+          "id": 3298,
+          "canonical_name": "Dr. Tyler Lash, MD",
+          "website_domain": "directory.wkhs.com"
+        },
+        {
+          "id": 6398,
+          "canonical_name": "Willis Knighton Cancer Center",
+          "website_domain": "wkhs.com"
+        }
+      ],
+      "reason": "material_name_review_needed"
+    }
+  ],
+  "approved_website_matches": [
+    {
+      "location_id": 43,
+      "location_name": "QC NY SPA",
+      "old_website": "https://www.google.com/maps/place/?q=place_id:ChIJ6QzFjltbwokRhjgdHc01agI",
+      "new_website": "https://www.qcny.com/",
+      "old_phone": "(646) 402-9647",
+      "new_phone": "(646) 402-9647",
+      "provider_place_id": "ChIJ6QzFjltbwokRhjgdHc01agI",
+      "api_display_name": "QC Spa New York",
+      "raw_payload": {
+        "id": "ChIJ6QzFjltbwokRhjgdHc01agI",
+        "nationalPhoneNumber": "(646) 402-9647",
+        "websiteUri": "https://www.qcny.com/?utm_source=google&utm_medium=organic&utm_campaign=google_business_profile",
+        "displayName": {
+          "text": "QC Spa New York",
+          "languageCode": "en"
+        }
+      },
+      "domain": "qcny.com"
+    },
+    {
+      "location_id": 621,
+      "location_name": "Sports, Pain​ & Regenerative Institute - Fairview",
+      "old_website": "https://www.google.com/maps/place/?q=place_id:ChIJW7uH43r3wokRhzvtDkWnNy0",
+      "new_website": "https://www.sprinstitute.com/",
+      "old_phone": "(201) 402-7802",
+      "new_phone": "(201) 402-7802",
+      "provider_place_id": "ChIJW7uH43r3wokRhzvtDkWnNy0",
+      "api_display_name": "SPR Institute",
+      "raw_payload": {
+        "id": "ChIJW7uH43r3wokRhzvtDkWnNy0",
+        "nationalPhoneNumber": "(201) 402-7802",
+        "websiteUri": "https://www.sprinstitute.com/?utm_source=gmb_auth",
+        "displayName": {
+          "text": "SPR Institute",
+          "languageCode": "en"
+        }
+      },
+      "domain": "sprinstitute.com"
+    },
+    {
+      "location_id": 1010,
+      "location_name": "Endure Health and Wellness: Weight Loss, Testosterone, ED, PE, Vitamin Shot, NAD+",
+      "old_website": "https://www.google.com/maps/place/?q=place_id:ChIJv9l6drGtw4kRnvOJS2IT1E0",
+      "new_website": "https://endure-health.com/",
+      "old_phone": "(908) 373-1124",
+      "new_phone": "(908) 373-1124",
+      "provider_place_id": "ChIJv9l6drGtw4kRnvOJS2IT1E0",
+      "api_display_name": "Endure Health Direct Primary Care, LLC",
+      "raw_payload": {
+        "id": "ChIJv9l6drGtw4kRnvOJS2IT1E0",
+        "nationalPhoneNumber": "(908) 373-1124",
+        "websiteUri": "https://endure-health.com/",
+        "displayName": {
+          "text": "Endure Health Direct Primary Care, LLC",
+          "languageCode": "en"
+        }
+      },
+      "domain": "endure-health.com"
+    },
+    {
+      "location_id": 1061,
+      "location_name": "Vitalist Healing Traditions - Dr. Carina Lopez - Your 'Holistic Doctor Near Me' - Naturopathic Doctor NYC",
+      "old_website": "https://www.google.com/maps/place/?q=place_id:ChIJpz3Qh1vywokRkDV1L1udjNY",
+      "new_website": "https://www.vitalisthealingtraditions.com/",
+      "old_phone": "(917) 701-8549",
+      "new_phone": "(329) 208-9190",
+      "provider_place_id": "ChIJpz3Qh1vywokRkDV1L1udjNY",
+      "api_display_name": "VHT Society",
+      "raw_payload": {
+        "id": "ChIJpz3Qh1vywokRkDV1L1udjNY",
+        "nationalPhoneNumber": "(329) 208-9190",
+        "websiteUri": "https://www.vitalisthealingtraditions.com/",
+        "displayName": {
+          "text": "VHT Society",
+          "languageCode": "en"
+        }
+      },
+      "domain": "vitalisthealingtraditions.com"
+    }
+  ],
+  "approved_website_orgs_created": [
+    {
+      "id": 8564,
+      "canonical_name": "QC NY SPA",
+      "website_domain": "qcny.com",
+      "dedup_key": "qcny.com"
+    },
+    {
+      "id": 8565,
+      "canonical_name": "Sports, Pain​ & Regenerative Institute",
+      "website_domain": "sprinstitute.com",
+      "dedup_key": "sprinstitute.com"
+    },
+    {
+      "id": 8566,
+      "canonical_name": "Endure Health and Wellness: Weight Loss, Testosterone, ED, PE, Vitamin Shot, NAD+",
+      "website_domain": "endure-health.com",
+      "dedup_key": "endure-health.com"
+    },
+    {
+      "id": 8567,
+      "canonical_name": "Vitalist Healing Traditions",
+      "website_domain": "vitalisthealingtraditions.com",
+      "dedup_key": "vitalisthealingtraditions.com"
+    }
+  ],
+  "chillrx_relinks": [
+    {
+      "location_id": 1020,
+      "old_org_id": null,
+      "new_org_id": 769,
+      "action": "RELINK_CHILLRX",
+      "domain": "chillcryo.net"
+    },
+    {
+      "location_id": 1175,
+      "old_org_id": null,
+      "new_org_id": 769,
+      "action": "RELINK_CHILLRX",
+      "domain": "chillcryo.net"
+    }
+  ],
+  "hidden_locations": [
+    {
+      "location_id": 546,
+      "location_name": "CryoHealLLC - Whole Body Cryotherapy",
+      "old_status": "active",
+      "new_status": "hidden",
+      "reason": "google_listed_website_is_google_com"
+    },
+    {
+      "location_id": 769,
+      "location_name": "Mary Eliza Mahoney Health Center",
+      "old_status": "active",
+      "new_status": "hidden",
+      "reason": "newark_city_health_department_facility"
+    },
+    {
+      "location_id": 777,
+      "location_name": "Newark Department of Health & Community Wellness",
+      "old_status": "active",
+      "new_status": "hidden",
+      "reason": "newark_city_health_department_facility"
+    }
+  ],
+  "documents_before": {
+    "documents": 491,
+    "document_source_records": 491,
+    "document_search_rows": 491,
+    "search_index_total": 14910
+  },
+  "search_index_before": [
+    {
+      "entity_type": "document",
+      "count": 491
+    },
+    {
+      "entity_type": "location",
+      "count": 13116
+    },
+    {
+      "entity_type": "practitioner",
+      "count": 1303
+    }
+  ],
+  "summary": {
+    "approved_websites_written": 4,
+    "approved_orgs_created": 4,
+    "org_merge_groups": 9,
+    "orgs_merged_away": 21,
+    "duplicate_domain_groups_flagged": 47,
+    "chillrx_locations_relinked": 2,
+    "hidden_locations": 3,
+    "documents_deleted": 491,
+    "document_source_records_deleted": 491,
+    "document_search_rows_deleted": 491,
+    "search_index_before_total": 14910,
+    "search_index_after_total": 14416,
+    "active_maps_place_id_websites": 0,
+    "koh_samui_document_search_matches": 0,
+    "koh_samui_all_search_matches": 1
+  },
+  "acceptance": {
+    "documents": 0,
+    "document_source_records": 0,
+    "document_search_rows": 0,
+    "search_index_total": 14416,
+    "search_index_by_type": {
+      "location": 13113,
+      "practitioner": 1303
+    },
+    "active_maps_place_id_websites": 0,
+    "koh_samui_document_search_matches": 0,
+    "koh_samui_all_search_matches": 1,
+    "koh_samui_non_document_matches": [
+      {
+        "name": "Enriched Gut",
+        "country": "Switzerland",
+        "locality": "Koh Samui",
+        "entity_id": 2562,
+        "entity_type": "location"
+      }
+    ],
+    "named_hidden_locations": 3,
+    "has_refresh_document_function": false,
+    "has_document_refresh_trigger": false
+  }
+}

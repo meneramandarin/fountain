@@ -1,0 +1,5414 @@
+{
+  "generated_at": "2026-07-08T06:17:12.113Z",
+  "mode": "dry_run",
+  "schema": "fountain",
+  "raw_schema": "fountain_raw",
+  "summary": {
+    "logged_low_confidence_rows": 1264,
+    "coordinates_recovered_from_geometric_center": 313,
+    "countries_fixed_from_geocoder": 40,
+    "wrong_branch_address_rows": 110,
+    "updated_coordinate_rows": 353,
+    "recovered_table_rows": 313,
+    "country_fix_table_rows": 40,
+    "wrong_branch_rows": 110,
+    "audit_rows": 845
+  },
+  "tables": {
+    "backup": "fountain_raw.location_geocode_addendum_backup_20260707",
+    "audit": "fountain_raw.location_geocode_addendum_audit_20260707",
+    "recovered": "fountain_raw.location_geocode_addendum_recovered_20260707",
+    "country_fix": "fountain_raw.location_geocode_addendum_country_fix_20260707",
+    "wrong_branch_address": "fountain_raw.location_geocode_wrong_branch_address_20260707"
+  },
+  "wrong_branch_address": [
+    {
+      "location_id": 1389,
+      "location_name": "Reviv",
+      "current_locality": "UAE",
+      "current_region": "Remote / Global",
+      "current_country_code": "AU",
+      "formatted_address": "United Arab Emirates",
+      "result_country_code": "AE",
+      "location_type": "APPROXIMATE",
+      "result_types": [
+        "country",
+        "political"
+      ],
+      "reason": "country_mismatch_approximate",
+      "claimed_place": null,
+      "detail": {
+        "logged_country_code": "AU",
+        "logged_address": "Global (US, UK, UAE, Australia)",
+        "latitude": 23.424076,
+        "longitude": 53.847818,
+        "result_types": [
+          "country",
+          "political"
+        ]
+      }
+    },
+    {
+      "location_id": 2385,
+      "location_name": "The Mobile Wellness Group (TMWG)",
+      "current_locality": "Los Angeles",
+      "current_region": null,
+      "current_country_code": "CA",
+      "formatted_address": "Los Angeles, CA 90001, USA",
+      "result_country_code": "US",
+      "location_type": "APPROXIMATE",
+      "result_types": [
+        "postal_code"
+      ],
+      "reason": "country_mismatch_approximate",
+      "claimed_place": null,
+      "detail": {
+        "logged_country_code": "CA",
+        "logged_address": "Southern California, Los Angeles, CA, 90001",
+        "latitude": 33.9697897,
+        "longitude": -118.2468148,
+        "result_types": [
+          "postal_code"
+        ]
+      }
+    },
+    {
+      "location_id": 2472,
+      "location_name": "LV8 Health",
+      "current_locality": "London",
+      "current_region": null,
+      "current_country_code": "GB",
+      "formatted_address": "Schaumburg, IL, USA",
+      "result_country_code": "US",
+      "location_type": "APPROXIMATE",
+      "result_types": [
+        "locality",
+        "political"
+      ],
+      "reason": "country_mismatch_approximate",
+      "claimed_place": null,
+      "detail": {
+        "logged_country_code": "GB",
+        "logged_address": "london, schaumburg",
+        "latitude": 42.0262377,
+        "longitude": -88.06970799999999,
+        "result_types": [
+          "locality",
+          "political"
+        ]
+      }
+    },
+    {
+      "location_id": 2479,
+      "location_name": "Body Brilliant",
+      "current_locality": "Barcelona",
+      "current_region": null,
+      "current_country_code": "GB",
+      "formatted_address": "Dubai - United Arab Emirates",
+      "result_country_code": "AE",
+      "location_type": "APPROXIMATE",
+      "result_types": [
+        "locality",
+        "political"
+      ],
+      "reason": "country_mismatch_approximate",
+      "claimed_place": null,
+      "detail": {
+        "logged_country_code": "GB",
+        "logged_address": "barcelona, dubai, ibiza, london, manchester",
+        "latitude": 25.2048493,
+        "longitude": 55.2707828,
+        "result_types": [
+          "locality",
+          "political"
+        ]
+      }
+    },
+    {
+      "location_id": 2488,
+      "location_name": "The Longevity Suite",
+      "current_locality": "Arzignano",
+      "current_region": null,
+      "current_country_code": "SG",
+      "formatted_address": "62012 Civitanova Marche, Province of Macerata, Italy",
+      "result_country_code": "IT",
+      "location_type": "APPROXIMATE",
+      "result_types": [
+        "locality",
+        "political"
+      ],
+      "reason": "country_mismatch_approximate",
+      "claimed_place": null,
+      "detail": {
+        "logged_country_code": "SG",
+        "logged_address": "arzignano, bologna, brescia, civitanova marche, como, conegliano, florence, forte dei marmi, ibiza, istanbul, lago dorta, lugano, milan, modena, monza, olbia, parma, porto cervo, porto rotondo, prato, rome, singapore coming soon, the longevity spa milano, torino, treviso, turin, varese, verona",
+        "latitude": 43.3071211,
+        "longitude": 13.7282453,
+        "result_types": [
+          "locality",
+          "political"
+        ]
+      }
+    },
+    {
+      "location_id": 2507,
+      "location_name": "Executive Health",
+      "current_locality": "Lund",
+      "current_region": null,
+      "current_country_code": "SE",
+      "formatted_address": "Marbella, Province of Málaga, Spain",
+      "result_country_code": "ES",
+      "location_type": "APPROXIMATE",
+      "result_types": [
+        "locality",
+        "political"
+      ],
+      "reason": "country_mismatch_approximate",
+      "claimed_place": null,
+      "detail": {
+        "logged_country_code": "SE",
+        "logged_address": "lund, marbella, stockholm",
+        "latitude": 36.5102831,
+        "longitude": -4.8852579,
+        "result_types": [
+          "locality",
+          "political"
+        ]
+      }
+    },
+    {
+      "location_id": 2523,
+      "location_name": "Fountain Life New York",
+      "current_locality": "Orlando",
+      "current_region": null,
+      "current_country_code": "US",
+      "formatted_address": "Orlando, FL, USA",
+      "result_country_code": "US",
+      "location_type": "APPROXIMATE",
+      "result_types": [
+        "locality",
+        "political"
+      ],
+      "reason": "name_claim_differs_from_geocoded_address",
+      "claimed_place": "New York",
+      "detail": {
+        "logged_country_code": "US",
+        "logged_address": "dallas center, naples center, new york center, orlando center",
+        "latitude": 28.5383832,
+        "longitude": -81.3789269,
+        "result_types": [
+          "locality",
+          "political"
+        ]
+      }
+    },
+    {
+      "location_id": 2525,
+      "location_name": "Axmann & Gartenbach",
+      "current_locality": "Berlin",
+      "current_region": null,
+      "current_country_code": "CH",
+      "formatted_address": "Frankfurt am Main, Germany",
+      "result_country_code": "DE",
+      "location_type": "APPROXIMATE",
+      "result_types": [
+        "locality",
+        "political"
+      ],
+      "reason": "country_mismatch_approximate",
+      "claimed_place": null,
+      "detail": {
+        "logged_country_code": "CH",
+        "logged_address": "berlin, frankfurt, zurich",
+        "latitude": 50.1109221,
+        "longitude": 8.6821267,
+        "result_types": [
+          "locality",
+          "political"
+        ]
+      }
+    },
+    {
+      "location_id": 2528,
+      "location_name": "Next Health - New York City",
+      "current_locality": "Calabasas",
+      "current_region": null,
+      "current_country_code": "US",
+      "formatted_address": "Calabasas, CA, USA",
+      "result_country_code": "US",
+      "location_type": "APPROXIMATE",
+      "result_types": [
+        "locality",
+        "political"
+      ],
+      "reason": "name_claim_differs_from_geocoded_address",
+      "claimed_place": "New York",
+      "detail": {
+        "logged_country_code": "US",
+        "logged_address": "century city, dubai, four seasons resort maui, montecito, nashville the gulch, new york city, newport beach, studio city, west hollywood, woodland hills calabasas",
+        "latitude": 34.1539731,
+        "longitude": -118.6473801,
+        "result_types": [
+          "locality",
+          "political"
+        ]
+      }
+    },
+    {
+      "location_id": 2529,
+      "location_name": "Longevity Sport Lab",
+      "current_locality": "Longevity Center Poland",
+      "current_region": null,
+      "current_country_code": "CH",
+      "formatted_address": "Poland",
+      "result_country_code": "PL",
+      "location_type": "APPROXIMATE",
+      "result_types": [
+        "country",
+        "political"
+      ],
+      "reason": "country_mismatch_approximate",
+      "claimed_place": null,
+      "detail": {
+        "logged_country_code": "CH",
+        "logged_address": "longevity center poland, longevity center switzerland, longevity sport lab",
+        "latitude": 51.919438,
+        "longitude": 19.145136,
+        "result_types": [
+          "country",
+          "political"
+        ]
+      }
+    },
+    {
+      "location_id": 2530,
+      "location_name": "Longevity Center Poland",
+      "current_locality": "Longevity Center Poland",
+      "current_region": null,
+      "current_country_code": "CH",
+      "formatted_address": "Poland",
+      "result_country_code": "PL",
+      "location_type": "APPROXIMATE",
+      "result_types": [
+        "country",
+        "political"
+      ],
+      "reason": "country_mismatch_approximate",
+      "claimed_place": null,
+      "detail": {
+        "logged_country_code": "CH",
+        "logged_address": "longevity center poland, longevity center switzerland, longevity sport lab",
+        "latitude": 51.919438,
+        "longitude": 19.145136,
+        "result_types": [
+          "country",
+          "political"
+        ]
+      }
+    },
+    {
+      "location_id": 2531,
+      "location_name": "Longevity Center Switzerland",
+      "current_locality": "Longevity Center Poland",
+      "current_region": null,
+      "current_country_code": "CH",
+      "formatted_address": "Poland",
+      "result_country_code": "PL",
+      "location_type": "APPROXIMATE",
+      "result_types": [
+        "country",
+        "political"
+      ],
+      "reason": "country_mismatch_approximate",
+      "claimed_place": null,
+      "detail": {
+        "logged_country_code": "CH",
+        "logged_address": "longevity center poland, longevity center switzerland, longevity sport lab",
+        "latitude": 51.919438,
+        "longitude": 19.145136,
+        "result_types": [
+          "country",
+          "political"
+        ]
+      }
+    },
+    {
+      "location_id": 2537,
+      "location_name": "Levitas - London",
+      "current_locality": "Esher",
+      "current_region": null,
+      "current_country_code": "GB",
+      "formatted_address": "Guildford, UK",
+      "result_country_code": "GB",
+      "location_type": "APPROXIMATE",
+      "result_types": [
+        "locality",
+        "political"
+      ],
+      "reason": "name_claim_differs_from_geocoded_address",
+      "claimed_place": "London",
+      "detail": {
+        "logged_country_code": "GB",
+        "logged_address": "esher, guildford, london",
+        "latitude": 51.23622,
+        "longitude": -0.570409,
+        "result_types": [
+          "locality",
+          "political"
+        ]
+      }
+    },
+    {
+      "location_id": 2625,
+      "location_name": "Cornell & Associates Marriage and Family Therapy",
+      "current_locality": "Pasadena",
+      "current_region": null,
+      "current_country_code": "CA",
+      "formatted_address": "Pasadena, CA, USA",
+      "result_country_code": "US",
+      "location_type": "APPROXIMATE",
+      "result_types": [
+        "locality",
+        "political"
+      ],
+      "reason": "country_mismatch_approximate",
+      "claimed_place": null,
+      "detail": {
+        "logged_country_code": "CA",
+        "logged_address": "Pasadena, CA",
+        "latitude": 34.1476527,
+        "longitude": -118.144302,
+        "result_types": [
+          "locality",
+          "political"
+        ]
+      }
+    },
+    {
+      "location_id": 2626,
+      "location_name": "Cornell & Associates Marriage and Family Therapy",
+      "current_locality": "Del Mar",
+      "current_region": null,
+      "current_country_code": "CA",
+      "formatted_address": "Del Mar, CA 92014, USA",
+      "result_country_code": "US",
+      "location_type": "APPROXIMATE",
+      "result_types": [
+        "locality",
+        "political"
+      ],
+      "reason": "country_mismatch_approximate",
+      "claimed_place": null,
+      "detail": {
+        "logged_country_code": "CA",
+        "logged_address": "Del Mar, CA",
+        "latitude": 32.9594891,
+        "longitude": -117.2653146,
+        "result_types": [
+          "locality",
+          "political"
+        ]
+      }
+    },
+    {
+      "location_id": 2627,
+      "location_name": "Cornell & Associates Marriage and Family Therapy",
+      "current_locality": "San Diego",
+      "current_region": null,
+      "current_country_code": "CA",
+      "formatted_address": "San Diego, CA, USA",
+      "result_country_code": "US",
+      "location_type": "APPROXIMATE",
+      "result_types": [
+        "locality",
+        "political"
+      ],
+      "reason": "country_mismatch_approximate",
+      "claimed_place": null,
+      "detail": {
+        "logged_country_code": "CA",
+        "logged_address": "San Diego, CA",
+        "latitude": 32.715738,
+        "longitude": -117.1610838,
+        "result_types": [
+          "locality",
+          "political"
+        ]
+      }
+    },
+    {
+      "location_id": 2628,
+      "location_name": "Cornell & Associates Marriage and Family Therapy",
+      "current_locality": "Los Angeles",
+      "current_region": null,
+      "current_country_code": "CA",
+      "formatted_address": "Los Angeles, CA, USA",
+      "result_country_code": "US",
+      "location_type": "APPROXIMATE",
+      "result_types": [
+        "locality",
+        "political"
+      ],
+      "reason": "country_mismatch_approximate",
+      "claimed_place": null,
+      "detail": {
+        "logged_country_code": "CA",
+        "logged_address": "Los Angeles, CA",
+        "latitude": 34.0549076,
+        "longitude": -118.242643,
+        "result_types": [
+          "locality",
+          "political"
+        ]
+      }
+    },
+    {
+      "location_id": 2629,
+      "location_name": "Cornell & Associates Marriage and Family Therapy",
+      "current_locality": "San Francisco",
+      "current_region": null,
+      "current_country_code": "CA",
+      "formatted_address": "San Francisco, CA, USA",
+      "result_country_code": "US",
+      "location_type": "APPROXIMATE",
+      "result_types": [
+        "locality",
+        "political"
+      ],
+      "reason": "country_mismatch_approximate",
+      "claimed_place": null,
+      "detail": {
+        "logged_country_code": "CA",
+        "logged_address": "San Francisco, CA",
+        "latitude": 37.7749295,
+        "longitude": -122.4194155,
+        "result_types": [
+          "locality",
+          "political"
+        ]
+      }
+    },
+    {
+      "location_id": 2630,
+      "location_name": "Cornell & Associates Marriage and Family Therapy",
+      "current_locality": "La Jolla",
+      "current_region": null,
+      "current_country_code": "CA",
+      "formatted_address": "La Jolla, San Diego, CA, USA",
+      "result_country_code": "US",
+      "location_type": "APPROXIMATE",
+      "result_types": [
+        "neighborhood",
+        "political"
+      ],
+      "reason": "country_mismatch_approximate",
+      "claimed_place": null,
+      "detail": {
+        "logged_country_code": "CA",
+        "logged_address": "La Jolla, CA",
+        "latitude": 32.8328112,
+        "longitude": -117.2712717,
+        "result_types": [
+          "neighborhood",
+          "political"
+        ]
+      }
+    },
+    {
+      "location_id": 2951,
+      "location_name": "Bespoke Physical Therapy Hoboken",
+      "current_locality": "Los Angeles",
+      "current_region": null,
+      "current_country_code": "CA",
+      "formatted_address": "Los Angeles, CA, USA",
+      "result_country_code": "US",
+      "location_type": "APPROXIMATE",
+      "result_types": [
+        "locality",
+        "political"
+      ],
+      "reason": "country_mismatch_approximate",
+      "claimed_place": null,
+      "detail": {
+        "logged_country_code": "CA",
+        "logged_address": "Los Angeles, CA",
+        "latitude": 34.0549076,
+        "longitude": -118.242643,
+        "result_types": [
+          "locality",
+          "political"
+        ]
+      }
+    },
+    {
+      "location_id": 3140,
+      "location_name": "Functional Medicine Los Angeles",
+      "current_locality": "Studio City",
+      "current_region": null,
+      "current_country_code": "CA",
+      "formatted_address": "Studio City, Los Angeles, CA, USA",
+      "result_country_code": "US",
+      "location_type": "APPROXIMATE",
+      "result_types": [
+        "neighborhood",
+        "political"
+      ],
+      "reason": "country_mismatch_approximate",
+      "claimed_place": null,
+      "detail": {
+        "logged_country_code": "CA",
+        "logged_address": "Studio City, CA",
+        "latitude": 34.1435864,
+        "longitude": -118.3952727,
+        "result_types": [
+          "neighborhood",
+          "political"
+        ]
+      }
+    },
+    {
+      "location_id": 3141,
+      "location_name": "Functional Medicine Los Angeles",
+      "current_locality": "Beverly Hills",
+      "current_region": null,
+      "current_country_code": "CA",
+      "formatted_address": "Beverly Hills, CA, USA",
+      "result_country_code": "US",
+      "location_type": "APPROXIMATE",
+      "result_types": [
+        "locality",
+        "political"
+      ],
+      "reason": "country_mismatch_approximate",
+      "claimed_place": null,
+      "detail": {
+        "logged_country_code": "CA",
+        "logged_address": "Beverly Hills, CA",
+        "latitude": 34.0730715,
+        "longitude": -118.4016265,
+        "result_types": [
+          "locality",
+          "political"
+        ]
+      }
+    },
+    {
+      "location_id": 3142,
+      "location_name": "Functional Medicine Los Angeles",
+      "current_locality": "Burbank",
+      "current_region": null,
+      "current_country_code": "CA",
+      "formatted_address": "Burbank, CA, USA",
+      "result_country_code": "US",
+      "location_type": "APPROXIMATE",
+      "result_types": [
+        "locality",
+        "political"
+      ],
+      "reason": "country_mismatch_approximate",
+      "claimed_place": null,
+      "detail": {
+        "logged_country_code": "CA",
+        "logged_address": "Burbank, CA",
+        "latitude": 34.1820605,
+        "longitude": -118.3074827,
+        "result_types": [
+          "locality",
+          "political"
+        ]
+      }
+    },
+    {
+      "location_id": 3143,
+      "location_name": "Functional Medicine Los Angeles",
+      "current_locality": "Encino",
+      "current_region": null,
+      "current_country_code": "CA",
+      "formatted_address": "Encino, Los Angeles, CA, USA",
+      "result_country_code": "US",
+      "location_type": "APPROXIMATE",
+      "result_types": [
+        "neighborhood",
+        "political"
+      ],
+      "reason": "country_mismatch_approximate",
+      "claimed_place": null,
+      "detail": {
+        "logged_country_code": "CA",
+        "logged_address": "Encino, CA",
+        "latitude": 34.1592881,
+        "longitude": -118.5011688,
+        "result_types": [
+          "neighborhood",
+          "political"
+        ]
+      }
+    },
+    {
+      "location_id": 3144,
+      "location_name": "Functional Medicine Los Angeles",
+      "current_locality": "Glendale",
+      "current_region": null,
+      "current_country_code": "CA",
+      "formatted_address": "Glendale, CA, USA",
+      "result_country_code": "US",
+      "location_type": "APPROXIMATE",
+      "result_types": [
+        "locality",
+        "political"
+      ],
+      "reason": "country_mismatch_approximate",
+      "claimed_place": null,
+      "detail": {
+        "logged_country_code": "CA",
+        "logged_address": "Glendale, CA",
+        "latitude": 34.1463674,
+        "longitude": -118.2488703,
+        "result_types": [
+          "locality",
+          "political"
+        ]
+      }
+    },
+    {
+      "location_id": 3145,
+      "location_name": "Functional Medicine Los Angeles",
+      "current_locality": "Los Angeles",
+      "current_region": null,
+      "current_country_code": "CA",
+      "formatted_address": "Los Angeles, CA, USA",
+      "result_country_code": "US",
+      "location_type": "APPROXIMATE",
+      "result_types": [
+        "locality",
+        "political"
+      ],
+      "reason": "country_mismatch_approximate",
+      "claimed_place": null,
+      "detail": {
+        "logged_country_code": "CA",
+        "logged_address": "Los Angeles, CA",
+        "latitude": 34.0549076,
+        "longitude": -118.242643,
+        "result_types": [
+          "locality",
+          "political"
+        ]
+      }
+    },
+    {
+      "location_id": 3146,
+      "location_name": "Functional Medicine Los Angeles",
+      "current_locality": "San Fernando",
+      "current_region": null,
+      "current_country_code": "CA",
+      "formatted_address": "San Fernando, CA, USA",
+      "result_country_code": "US",
+      "location_type": "APPROXIMATE",
+      "result_types": [
+        "locality",
+        "political"
+      ],
+      "reason": "country_mismatch_approximate",
+      "claimed_place": null,
+      "detail": {
+        "logged_country_code": "CA",
+        "logged_address": "San Fernando, CA",
+        "latitude": 34.2819461,
+        "longitude": -118.4389719,
+        "result_types": [
+          "locality",
+          "political"
+        ]
+      }
+    },
+    {
+      "location_id": 3147,
+      "location_name": "Functional Medicine Los Angeles",
+      "current_locality": "Santa Monica",
+      "current_region": null,
+      "current_country_code": "CA",
+      "formatted_address": "Santa Monica, CA, USA",
+      "result_country_code": "US",
+      "location_type": "APPROXIMATE",
+      "result_types": [
+        "locality",
+        "political"
+      ],
+      "reason": "country_mismatch_approximate",
+      "claimed_place": null,
+      "detail": {
+        "logged_country_code": "CA",
+        "logged_address": "Santa Monica, CA",
+        "latitude": 34.0118828,
+        "longitude": -118.4915504,
+        "result_types": [
+          "locality",
+          "political"
+        ]
+      }
+    },
+    {
+      "location_id": 3148,
+      "location_name": "Functional Medicine Los Angeles",
+      "current_locality": "Tarzana",
+      "current_region": null,
+      "current_country_code": "CA",
+      "formatted_address": "Tarzana, Los Angeles, CA, USA",
+      "result_country_code": "US",
+      "location_type": "APPROXIMATE",
+      "result_types": [
+        "neighborhood",
+        "political"
+      ],
+      "reason": "country_mismatch_approximate",
+      "claimed_place": null,
+      "detail": {
+        "logged_country_code": "CA",
+        "logged_address": "Tarzana, CA",
+        "latitude": 34.1722605,
+        "longitude": -118.5447573,
+        "result_types": [
+          "neighborhood",
+          "political"
+        ]
+      }
+    },
+    {
+      "location_id": 3149,
+      "location_name": "Functional Medicine Los Angeles",
+      "current_locality": "Toluca Lake",
+      "current_region": null,
+      "current_country_code": "CA",
+      "formatted_address": "Toluca Lake, Los Angeles, CA, USA",
+      "result_country_code": "US",
+      "location_type": "APPROXIMATE",
+      "result_types": [
+        "neighborhood",
+        "political"
+      ],
+      "reason": "country_mismatch_approximate",
+      "claimed_place": null,
+      "detail": {
+        "logged_country_code": "CA",
+        "logged_address": "Toluca Lake, CA",
+        "latitude": 34.1522225,
+        "longitude": -118.3614667,
+        "result_types": [
+          "neighborhood",
+          "political"
+        ]
+      }
+    },
+    {
+      "location_id": 3150,
+      "location_name": "Functional Medicine Los Angeles",
+      "current_locality": "Valley Village",
+      "current_region": null,
+      "current_country_code": "CA",
+      "formatted_address": "Valley Village, Los Angeles, CA, USA",
+      "result_country_code": "US",
+      "location_type": "APPROXIMATE",
+      "result_types": [
+        "neighborhood",
+        "political"
+      ],
+      "reason": "country_mismatch_approximate",
+      "claimed_place": null,
+      "detail": {
+        "logged_country_code": "CA",
+        "logged_address": "Valley Village, CA",
+        "latitude": 34.1648781,
+        "longitude": -118.3965123,
+        "result_types": [
+          "neighborhood",
+          "political"
+        ]
+      }
+    },
+    {
+      "location_id": 3151,
+      "location_name": "Functional Medicine Los Angeles",
+      "current_locality": "Van Nuys",
+      "current_region": null,
+      "current_country_code": "CA",
+      "formatted_address": "Van Nuys, Los Angeles, CA, USA",
+      "result_country_code": "US",
+      "location_type": "APPROXIMATE",
+      "result_types": [
+        "neighborhood",
+        "political"
+      ],
+      "reason": "country_mismatch_approximate",
+      "claimed_place": null,
+      "detail": {
+        "logged_country_code": "CA",
+        "logged_address": "Van Nuys, CA",
+        "latitude": 34.2012166,
+        "longitude": -118.466222,
+        "result_types": [
+          "neighborhood",
+          "political"
+        ]
+      }
+    },
+    {
+      "location_id": 3152,
+      "location_name": "Functional Medicine Los Angeles",
+      "current_locality": "West Hollywood",
+      "current_region": null,
+      "current_country_code": "CA",
+      "formatted_address": "West Hollywood, CA, USA",
+      "result_country_code": "US",
+      "location_type": "APPROXIMATE",
+      "result_types": [
+        "locality",
+        "political"
+      ],
+      "reason": "country_mismatch_approximate",
+      "claimed_place": null,
+      "detail": {
+        "logged_country_code": "CA",
+        "logged_address": "West Hollywood, CA",
+        "latitude": 34.0907087,
+        "longitude": -118.3703284,
+        "result_types": [
+          "locality",
+          "political"
+        ]
+      }
+    },
+    {
+      "location_id": 3200,
+      "location_name": "Dexascans.com - Jacksonville, FL",
+      "current_locality": "Orange Park",
+      "current_region": "FL",
+      "current_country_code": "US",
+      "formatted_address": "Orange Park, FL 32073, USA",
+      "result_country_code": "US",
+      "location_type": "APPROXIMATE",
+      "result_types": [
+        "locality",
+        "political"
+      ],
+      "reason": "name_claim_differs_from_geocoded_address",
+      "claimed_place": "Jacksonville",
+      "detail": {
+        "logged_country_code": "US",
+        "logged_address": "Orange Park, FL",
+        "latitude": 30.1660736,
+        "longitude": -81.706484,
+        "result_types": [
+          "locality",
+          "political"
+        ]
+      }
+    },
+    {
+      "location_id": 3201,
+      "location_name": "Dexascans.com - Jacksonville, FL",
+      "current_locality": "St. Augustine",
+      "current_region": "FL",
+      "current_country_code": "US",
+      "formatted_address": "St. Augustine, FL, USA",
+      "result_country_code": "US",
+      "location_type": "APPROXIMATE",
+      "result_types": [
+        "locality",
+        "political"
+      ],
+      "reason": "name_claim_differs_from_geocoded_address",
+      "claimed_place": "Jacksonville",
+      "detail": {
+        "logged_country_code": "US",
+        "logged_address": "St. Augustine, FL",
+        "latitude": 29.8921835,
+        "longitude": -81.3139313,
+        "result_types": [
+          "locality",
+          "political"
+        ]
+      }
+    },
+    {
+      "location_id": 3202,
+      "location_name": "Dexascans.com - Jacksonville, FL",
+      "current_locality": "Ponte Vedra Beach",
+      "current_region": "FL",
+      "current_country_code": "US",
+      "formatted_address": "Ponte Vedra Beach, FL 32082, USA",
+      "result_country_code": "US",
+      "location_type": "APPROXIMATE",
+      "result_types": [
+        "neighborhood",
+        "political"
+      ],
+      "reason": "name_claim_differs_from_geocoded_address",
+      "claimed_place": "Jacksonville",
+      "detail": {
+        "logged_country_code": "US",
+        "logged_address": "Ponte Vedra Beach, FL",
+        "latitude": 30.2389212,
+        "longitude": -81.37788619999999,
+        "result_types": [
+          "neighborhood",
+          "political"
+        ]
+      }
+    },
+    {
+      "location_id": 3230,
+      "location_name": "Dexascans.com - San Jose, CA",
+      "current_locality": "San Francisco",
+      "current_region": null,
+      "current_country_code": "CA",
+      "formatted_address": "San Francisco, CA, USA",
+      "result_country_code": "US",
+      "location_type": "APPROXIMATE",
+      "result_types": [
+        "locality",
+        "political"
+      ],
+      "reason": "country_mismatch_approximate",
+      "claimed_place": null,
+      "detail": {
+        "logged_country_code": "CA",
+        "logged_address": "San Francisco, CA",
+        "latitude": 37.7749295,
+        "longitude": -122.4194155,
+        "result_types": [
+          "locality",
+          "political"
+        ]
+      }
+    },
+    {
+      "location_id": 3231,
+      "location_name": "Dexascans.com - San Jose, CA",
+      "current_locality": "Palo Alto",
+      "current_region": null,
+      "current_country_code": "CA",
+      "formatted_address": "Palo Alto, CA, USA",
+      "result_country_code": "US",
+      "location_type": "APPROXIMATE",
+      "result_types": [
+        "locality",
+        "political"
+      ],
+      "reason": "country_mismatch_approximate",
+      "claimed_place": null,
+      "detail": {
+        "logged_country_code": "CA",
+        "logged_address": "Palo Alto, CA",
+        "latitude": 37.4418834,
+        "longitude": -122.1430195,
+        "result_types": [
+          "locality",
+          "political"
+        ]
+      }
+    },
+    {
+      "location_id": 3427,
+      "location_name": "Advanced Recovery CryoTherapy",
+      "current_locality": "Tracy",
+      "current_region": null,
+      "current_country_code": "CA",
+      "formatted_address": "Tracy, CA, USA",
+      "result_country_code": "US",
+      "location_type": "APPROXIMATE",
+      "result_types": [
+        "locality",
+        "political"
+      ],
+      "reason": "country_mismatch_approximate",
+      "claimed_place": null,
+      "detail": {
+        "logged_country_code": "CA",
+        "logged_address": "Tracy, CA",
+        "latitude": 37.7395818,
+        "longitude": -121.4260018,
+        "result_types": [
+          "locality",
+          "political"
+        ]
+      }
+    },
+    {
+      "location_id": 3428,
+      "location_name": "Advanced Recovery CryoTherapy",
+      "current_locality": "Turlock",
+      "current_region": null,
+      "current_country_code": "CA",
+      "formatted_address": "Turlock, CA, USA",
+      "result_country_code": "US",
+      "location_type": "APPROXIMATE",
+      "result_types": [
+        "locality",
+        "political"
+      ],
+      "reason": "country_mismatch_approximate",
+      "claimed_place": null,
+      "detail": {
+        "logged_country_code": "CA",
+        "logged_address": "Turlock, CA",
+        "latitude": 37.4945743,
+        "longitude": -120.8459786,
+        "result_types": [
+          "locality",
+          "political"
+        ]
+      }
+    },
+    {
+      "location_id": 3429,
+      "location_name": "Advanced Recovery CryoTherapy",
+      "current_locality": "Stockton",
+      "current_region": null,
+      "current_country_code": "CA",
+      "formatted_address": "Stockton, CA, USA",
+      "result_country_code": "US",
+      "location_type": "APPROXIMATE",
+      "result_types": [
+        "locality",
+        "political"
+      ],
+      "reason": "country_mismatch_approximate",
+      "claimed_place": null,
+      "detail": {
+        "logged_country_code": "CA",
+        "logged_address": "Stockton, CA",
+        "latitude": 37.9575104,
+        "longitude": -121.2924737,
+        "result_types": [
+          "locality",
+          "political"
+        ]
+      }
+    },
+    {
+      "location_id": 3430,
+      "location_name": "Advanced Recovery CryoTherapy",
+      "current_locality": "Ceres",
+      "current_region": null,
+      "current_country_code": "CA",
+      "formatted_address": "Ceres, CA, USA",
+      "result_country_code": "US",
+      "location_type": "APPROXIMATE",
+      "result_types": [
+        "locality",
+        "political"
+      ],
+      "reason": "country_mismatch_approximate",
+      "claimed_place": null,
+      "detail": {
+        "logged_country_code": "CA",
+        "logged_address": "Ceres, CA",
+        "latitude": 37.5947202,
+        "longitude": -120.9568815,
+        "result_types": [
+          "locality",
+          "political"
+        ]
+      }
+    },
+    {
+      "location_id": 3431,
+      "location_name": "Advanced Recovery CryoTherapy",
+      "current_locality": "Escalon",
+      "current_region": null,
+      "current_country_code": "CA",
+      "formatted_address": "Escalon, CA 95320, USA",
+      "result_country_code": "US",
+      "location_type": "APPROXIMATE",
+      "result_types": [
+        "locality",
+        "political"
+      ],
+      "reason": "country_mismatch_approximate",
+      "claimed_place": null,
+      "detail": {
+        "logged_country_code": "CA",
+        "logged_address": "Escalon, CA",
+        "latitude": 37.7974273,
+        "longitude": -120.9966033,
+        "result_types": [
+          "locality",
+          "political"
+        ]
+      }
+    },
+    {
+      "location_id": 3432,
+      "location_name": "Advanced Recovery CryoTherapy",
+      "current_locality": "Hughson",
+      "current_region": null,
+      "current_country_code": "CA",
+      "formatted_address": "Hughson, CA 95326, USA",
+      "result_country_code": "US",
+      "location_type": "APPROXIMATE",
+      "result_types": [
+        "locality",
+        "political"
+      ],
+      "reason": "country_mismatch_approximate",
+      "claimed_place": null,
+      "detail": {
+        "logged_country_code": "CA",
+        "logged_address": "Hughson, CA",
+        "latitude": 37.6020139,
+        "longitude": -120.8653488,
+        "result_types": [
+          "locality",
+          "political"
+        ]
+      }
+    },
+    {
+      "location_id": 3433,
+      "location_name": "Advanced Recovery CryoTherapy",
+      "current_locality": "Lodi",
+      "current_region": null,
+      "current_country_code": "CA",
+      "formatted_address": "Lodi, CA, USA",
+      "result_country_code": "US",
+      "location_type": "APPROXIMATE",
+      "result_types": [
+        "locality",
+        "political"
+      ],
+      "reason": "country_mismatch_approximate",
+      "claimed_place": null,
+      "detail": {
+        "logged_country_code": "CA",
+        "logged_address": "Lodi, CA",
+        "latitude": 38.1341477,
+        "longitude": -121.2722194,
+        "result_types": [
+          "locality",
+          "political"
+        ]
+      }
+    },
+    {
+      "location_id": 3434,
+      "location_name": "Advanced Recovery CryoTherapy",
+      "current_locality": "Manteca",
+      "current_region": null,
+      "current_country_code": "CA",
+      "formatted_address": "Manteca, CA, USA",
+      "result_country_code": "US",
+      "location_type": "APPROXIMATE",
+      "result_types": [
+        "locality",
+        "political"
+      ],
+      "reason": "country_mismatch_approximate",
+      "claimed_place": null,
+      "detail": {
+        "logged_country_code": "CA",
+        "logged_address": "Manteca, CA",
+        "latitude": 37.7974273,
+        "longitude": -121.2160526,
+        "result_types": [
+          "locality",
+          "political"
+        ]
+      }
+    },
+    {
+      "location_id": 3435,
+      "location_name": "Advanced Recovery CryoTherapy",
+      "current_locality": "Merced",
+      "current_region": null,
+      "current_country_code": "CA",
+      "formatted_address": "Merced, CA, USA",
+      "result_country_code": "US",
+      "location_type": "APPROXIMATE",
+      "result_types": [
+        "locality",
+        "political"
+      ],
+      "reason": "country_mismatch_approximate",
+      "claimed_place": null,
+      "detail": {
+        "logged_country_code": "CA",
+        "logged_address": "Merced, CA",
+        "latitude": 37.302947,
+        "longitude": -120.484268,
+        "result_types": [
+          "locality",
+          "political"
+        ]
+      }
+    },
+    {
+      "location_id": 3436,
+      "location_name": "Advanced Recovery CryoTherapy",
+      "current_locality": "Oakdale",
+      "current_region": null,
+      "current_country_code": "CA",
+      "formatted_address": "Oakdale, CA 95361, USA",
+      "result_country_code": "US",
+      "location_type": "APPROXIMATE",
+      "result_types": [
+        "locality",
+        "political"
+      ],
+      "reason": "country_mismatch_approximate",
+      "claimed_place": null,
+      "detail": {
+        "logged_country_code": "CA",
+        "logged_address": "Oakdale, CA",
+        "latitude": 37.7666263,
+        "longitude": -120.8470308,
+        "result_types": [
+          "locality",
+          "political"
+        ]
+      }
+    },
+    {
+      "location_id": 3437,
+      "location_name": "Advanced Recovery CryoTherapy",
+      "current_locality": "Patterson",
+      "current_region": null,
+      "current_country_code": "CA",
+      "formatted_address": "Patterson, CA 95363, USA",
+      "result_country_code": "US",
+      "location_type": "APPROXIMATE",
+      "result_types": [
+        "locality",
+        "political"
+      ],
+      "reason": "country_mismatch_approximate",
+      "claimed_place": null,
+      "detail": {
+        "logged_country_code": "CA",
+        "logged_address": "Patterson, CA",
+        "latitude": 37.4716546,
+        "longitude": -121.1299128,
+        "result_types": [
+          "locality",
+          "political"
+        ]
+      }
+    },
+    {
+      "location_id": 3438,
+      "location_name": "Advanced Recovery CryoTherapy",
+      "current_locality": "Riverbank",
+      "current_region": null,
+      "current_country_code": "CA",
+      "formatted_address": "Riverbank, CA, USA",
+      "result_country_code": "US",
+      "location_type": "APPROXIMATE",
+      "result_types": [
+        "locality",
+        "political"
+      ],
+      "reason": "country_mismatch_approximate",
+      "claimed_place": null,
+      "detail": {
+        "logged_country_code": "CA",
+        "logged_address": "Riverbank, CA",
+        "latitude": 37.7360111,
+        "longitude": -120.9357139,
+        "result_types": [
+          "locality",
+          "political"
+        ]
+      }
+    },
+    {
+      "location_id": 3439,
+      "location_name": "Advanced Recovery CryoTherapy",
+      "current_locality": "Ripon",
+      "current_region": null,
+      "current_country_code": "CA",
+      "formatted_address": "Ripon, CA 95366, USA",
+      "result_country_code": "US",
+      "location_type": "APPROXIMATE",
+      "result_types": [
+        "locality",
+        "political"
+      ],
+      "reason": "country_mismatch_approximate",
+      "claimed_place": null,
+      "detail": {
+        "logged_country_code": "CA",
+        "logged_address": "Ripon, CA",
+        "latitude": 37.7394537,
+        "longitude": -121.1354141,
+        "result_types": [
+          "locality",
+          "political"
+        ]
+      }
+    },
+    {
+      "location_id": 3472,
+      "location_name": "Advanced Stem Cell Institute",
+      "current_locality": "Beverly Hills",
+      "current_region": null,
+      "current_country_code": "CA",
+      "formatted_address": "Beverly Hills, CA, USA",
+      "result_country_code": "US",
+      "location_type": "APPROXIMATE",
+      "result_types": [
+        "locality",
+        "political"
+      ],
+      "reason": "country_mismatch_approximate",
+      "claimed_place": null,
+      "detail": {
+        "logged_country_code": "CA",
+        "logged_address": "Beverly Hills, CA",
+        "latitude": 34.0730715,
+        "longitude": -118.4016265,
+        "result_types": [
+          "locality",
+          "political"
+        ]
+      }
+    },
+    {
+      "location_id": 3951,
+      "location_name": "Payday Money Centers- Santa Ana",
+      "current_locality": "Whittier",
+      "current_region": null,
+      "current_country_code": "CA",
+      "formatted_address": "Whittier, CA, USA",
+      "result_country_code": "US",
+      "location_type": "APPROXIMATE",
+      "result_types": [
+        "locality",
+        "political"
+      ],
+      "reason": "country_mismatch_approximate",
+      "claimed_place": null,
+      "detail": {
+        "logged_country_code": "CA",
+        "logged_address": "Whittier, CA",
+        "latitude": 33.9754423,
+        "longitude": -118.0326781,
+        "result_types": [
+          "locality",
+          "political"
+        ]
+      }
+    },
+    {
+      "location_id": 4921,
+      "location_name": "Life Solutions Psychotherapy",
+      "current_locality": null,
+      "current_region": "NY",
+      "current_country_code": "GR",
+      "formatted_address": "Greece, NY 14626, USA",
+      "result_country_code": "US",
+      "location_type": "APPROXIMATE",
+      "result_types": [
+        "locality",
+        "political"
+      ],
+      "reason": "country_mismatch_approximate",
+      "claimed_place": null,
+      "detail": {
+        "logged_country_code": "GR",
+        "logged_address": "Greece, NY",
+        "latitude": 43.2097837,
+        "longitude": -77.6930602,
+        "result_types": [
+          "locality",
+          "political"
+        ]
+      }
+    },
+    {
+      "location_id": 4949,
+      "location_name": "Orange County Mobile IV Therapy",
+      "current_locality": "Aliso Viejo",
+      "current_region": null,
+      "current_country_code": "CA",
+      "formatted_address": "Aliso Viejo, CA, USA",
+      "result_country_code": "US",
+      "location_type": "APPROXIMATE",
+      "result_types": [
+        "locality",
+        "political"
+      ],
+      "reason": "country_mismatch_approximate",
+      "claimed_place": null,
+      "detail": {
+        "logged_country_code": "CA",
+        "logged_address": "Aliso Viejo, CA",
+        "latitude": 33.5684605,
+        "longitude": -117.7262981,
+        "result_types": [
+          "locality",
+          "political"
+        ]
+      }
+    },
+    {
+      "location_id": 4950,
+      "location_name": "Orange County Mobile IV Therapy",
+      "current_locality": "Anaheim",
+      "current_region": null,
+      "current_country_code": "CA",
+      "formatted_address": "Anaheim, CA, USA",
+      "result_country_code": "US",
+      "location_type": "APPROXIMATE",
+      "result_types": [
+        "locality",
+        "political"
+      ],
+      "reason": "country_mismatch_approximate",
+      "claimed_place": null,
+      "detail": {
+        "logged_country_code": "CA",
+        "logged_address": "Anaheim, CA",
+        "latitude": 33.8365932,
+        "longitude": -117.9143012,
+        "result_types": [
+          "locality",
+          "political"
+        ]
+      }
+    },
+    {
+      "location_id": 4951,
+      "location_name": "Orange County Mobile IV Therapy",
+      "current_locality": "Buena Park",
+      "current_region": null,
+      "current_country_code": "CA",
+      "formatted_address": "Buena Park, CA, USA",
+      "result_country_code": "US",
+      "location_type": "APPROXIMATE",
+      "result_types": [
+        "locality",
+        "political"
+      ],
+      "reason": "country_mismatch_approximate",
+      "claimed_place": null,
+      "detail": {
+        "logged_country_code": "CA",
+        "logged_address": "Buena Park, CA",
+        "latitude": 33.8674044,
+        "longitude": -117.9981387,
+        "result_types": [
+          "locality",
+          "political"
+        ]
+      }
+    },
+    {
+      "location_id": 4952,
+      "location_name": "Orange County Mobile IV Therapy",
+      "current_locality": "Brea",
+      "current_region": null,
+      "current_country_code": "CA",
+      "formatted_address": "Brea, CA, USA",
+      "result_country_code": "US",
+      "location_type": "APPROXIMATE",
+      "result_types": [
+        "locality",
+        "political"
+      ],
+      "reason": "country_mismatch_approximate",
+      "claimed_place": null,
+      "detail": {
+        "logged_country_code": "CA",
+        "logged_address": "Brea, CA",
+        "latitude": 33.916475,
+        "longitude": -117.9002918,
+        "result_types": [
+          "locality",
+          "political"
+        ]
+      }
+    },
+    {
+      "location_id": 4953,
+      "location_name": "Orange County Mobile IV Therapy",
+      "current_locality": "Cypress",
+      "current_region": null,
+      "current_country_code": "CA",
+      "formatted_address": "Cypress, CA, USA",
+      "result_country_code": "US",
+      "location_type": "APPROXIMATE",
+      "result_types": [
+        "locality",
+        "political"
+      ],
+      "reason": "country_mismatch_approximate",
+      "claimed_place": null,
+      "detail": {
+        "logged_country_code": "CA",
+        "logged_address": "Cypress, CA",
+        "latitude": 33.8169366,
+        "longitude": -118.0368507,
+        "result_types": [
+          "locality",
+          "political"
+        ]
+      }
+    },
+    {
+      "location_id": 4954,
+      "location_name": "Orange County Mobile IV Therapy",
+      "current_locality": "Costa Mesa",
+      "current_region": null,
+      "current_country_code": "CA",
+      "formatted_address": "Costa Mesa, CA, USA",
+      "result_country_code": "US",
+      "location_type": "APPROXIMATE",
+      "result_types": [
+        "locality",
+        "political"
+      ],
+      "reason": "country_mismatch_approximate",
+      "claimed_place": null,
+      "detail": {
+        "logged_country_code": "CA",
+        "logged_address": "Costa Mesa, CA",
+        "latitude": 33.6638439,
+        "longitude": -117.9047429,
+        "result_types": [
+          "locality",
+          "political"
+        ]
+      }
+    },
+    {
+      "location_id": 4955,
+      "location_name": "Orange County Mobile IV Therapy",
+      "current_locality": "Fullerton",
+      "current_region": null,
+      "current_country_code": "CA",
+      "formatted_address": "Fullerton, CA, USA",
+      "result_country_code": "US",
+      "location_type": "APPROXIMATE",
+      "result_types": [
+        "locality",
+        "political"
+      ],
+      "reason": "country_mismatch_approximate",
+      "claimed_place": null,
+      "detail": {
+        "logged_country_code": "CA",
+        "logged_address": "Fullerton, CA",
+        "latitude": 33.8703645,
+        "longitude": -117.9242123,
+        "result_types": [
+          "locality",
+          "political"
+        ]
+      }
+    },
+    {
+      "location_id": 4956,
+      "location_name": "Orange County Mobile IV Therapy",
+      "current_locality": "Garden Grove",
+      "current_region": null,
+      "current_country_code": "CA",
+      "formatted_address": "Garden Grove, CA, USA",
+      "result_country_code": "US",
+      "location_type": "APPROXIMATE",
+      "result_types": [
+        "locality",
+        "political"
+      ],
+      "reason": "country_mismatch_approximate",
+      "claimed_place": null,
+      "detail": {
+        "logged_country_code": "CA",
+        "logged_address": "Garden Grove, CA",
+        "latitude": 33.7742692,
+        "longitude": -117.9379952,
+        "result_types": [
+          "locality",
+          "political"
+        ]
+      }
+    },
+    {
+      "location_id": 4957,
+      "location_name": "Orange County Mobile IV Therapy",
+      "current_locality": "Huntington Beach",
+      "current_region": null,
+      "current_country_code": "CA",
+      "formatted_address": "Huntington Beach, CA, USA",
+      "result_country_code": "US",
+      "location_type": "APPROXIMATE",
+      "result_types": [
+        "locality",
+        "political"
+      ],
+      "reason": "country_mismatch_approximate",
+      "claimed_place": null,
+      "detail": {
+        "logged_country_code": "CA",
+        "logged_address": "Huntington Beach, CA",
+        "latitude": 33.6594835,
+        "longitude": -117.9988026,
+        "result_types": [
+          "locality",
+          "political"
+        ]
+      }
+    },
+    {
+      "location_id": 4958,
+      "location_name": "Orange County Mobile IV Therapy",
+      "current_locality": "Irvine",
+      "current_region": null,
+      "current_country_code": "CA",
+      "formatted_address": "Irvine, CA, USA",
+      "result_country_code": "US",
+      "location_type": "APPROXIMATE",
+      "result_types": [
+        "locality",
+        "political"
+      ],
+      "reason": "country_mismatch_approximate",
+      "claimed_place": null,
+      "detail": {
+        "logged_country_code": "CA",
+        "logged_address": "Irvine, CA",
+        "latitude": 33.6845673,
+        "longitude": -117.8265049,
+        "result_types": [
+          "locality",
+          "political"
+        ]
+      }
+    },
+    {
+      "location_id": 4959,
+      "location_name": "Orange County Mobile IV Therapy",
+      "current_locality": "Laguna Beach",
+      "current_region": null,
+      "current_country_code": "CA",
+      "formatted_address": "Laguna Beach, CA, USA",
+      "result_country_code": "US",
+      "location_type": "APPROXIMATE",
+      "result_types": [
+        "locality",
+        "political"
+      ],
+      "reason": "country_mismatch_approximate",
+      "claimed_place": null,
+      "detail": {
+        "logged_country_code": "CA",
+        "logged_address": "Laguna Beach, CA",
+        "latitude": 33.5461808,
+        "longitude": -117.7820071,
+        "result_types": [
+          "locality",
+          "political"
+        ]
+      }
+    },
+    {
+      "location_id": 4960,
+      "location_name": "Orange County Mobile IV Therapy",
+      "current_locality": "Laguna Niguel",
+      "current_region": null,
+      "current_country_code": "CA",
+      "formatted_address": "Laguna Niguel, CA, USA",
+      "result_country_code": "US",
+      "location_type": "APPROXIMATE",
+      "result_types": [
+        "locality",
+        "political"
+      ],
+      "reason": "country_mismatch_approximate",
+      "claimed_place": null,
+      "detail": {
+        "logged_country_code": "CA",
+        "logged_address": "Laguna Niguel, CA",
+        "latitude": 33.5236744,
+        "longitude": -117.7149438,
+        "result_types": [
+          "locality",
+          "political"
+        ]
+      }
+    },
+    {
+      "location_id": 4961,
+      "location_name": "Orange County Mobile IV Therapy",
+      "current_locality": "Lake Forest",
+      "current_region": null,
+      "current_country_code": "CA",
+      "formatted_address": "Lake Forest, CA, USA",
+      "result_country_code": "US",
+      "location_type": "APPROXIMATE",
+      "result_types": [
+        "locality",
+        "political"
+      ],
+      "reason": "country_mismatch_approximate",
+      "claimed_place": null,
+      "detail": {
+        "logged_country_code": "CA",
+        "logged_address": "Lake Forest, CA",
+        "latitude": 33.6469437,
+        "longitude": -117.6861023,
+        "result_types": [
+          "locality",
+          "political"
+        ]
+      }
+    },
+    {
+      "location_id": 4962,
+      "location_name": "Orange County Mobile IV Therapy",
+      "current_locality": "Mission Viejo",
+      "current_region": null,
+      "current_country_code": "CA",
+      "formatted_address": "Mission Viejo, CA, USA",
+      "result_country_code": "US",
+      "location_type": "APPROXIMATE",
+      "result_types": [
+        "locality",
+        "political"
+      ],
+      "reason": "country_mismatch_approximate",
+      "claimed_place": null,
+      "detail": {
+        "logged_country_code": "CA",
+        "logged_address": "Mission Viejo, CA",
+        "latitude": 33.5968913,
+        "longitude": -117.6581562,
+        "result_types": [
+          "locality",
+          "political"
+        ]
+      }
+    },
+    {
+      "location_id": 4963,
+      "location_name": "Orange County Mobile IV Therapy",
+      "current_locality": "Newport Beach",
+      "current_region": null,
+      "current_country_code": "CA",
+      "formatted_address": "Newport Beach, CA, USA",
+      "result_country_code": "US",
+      "location_type": "APPROXIMATE",
+      "result_types": [
+        "locality",
+        "political"
+      ],
+      "reason": "country_mismatch_approximate",
+      "claimed_place": null,
+      "detail": {
+        "logged_country_code": "CA",
+        "logged_address": "Newport Beach, CA",
+        "latitude": 33.6099342,
+        "longitude": -117.8726469,
+        "result_types": [
+          "locality",
+          "political"
+        ]
+      }
+    },
+    {
+      "location_id": 4964,
+      "location_name": "Orange County Mobile IV Therapy",
+      "current_locality": "Orange",
+      "current_region": null,
+      "current_country_code": "CA",
+      "formatted_address": "Orange, CA, USA",
+      "result_country_code": "US",
+      "location_type": "APPROXIMATE",
+      "result_types": [
+        "locality",
+        "political"
+      ],
+      "reason": "country_mismatch_approximate",
+      "claimed_place": null,
+      "detail": {
+        "logged_country_code": "CA",
+        "logged_address": "Orange, CA",
+        "latitude": 33.7879085,
+        "longitude": -117.855281,
+        "result_types": [
+          "locality",
+          "political"
+        ]
+      }
+    },
+    {
+      "location_id": 4965,
+      "location_name": "Orange County Mobile IV Therapy",
+      "current_locality": "Placentia",
+      "current_region": null,
+      "current_country_code": "CA",
+      "formatted_address": "Placentia, CA 92870, USA",
+      "result_country_code": "US",
+      "location_type": "APPROXIMATE",
+      "result_types": [
+        "locality",
+        "political"
+      ],
+      "reason": "country_mismatch_approximate",
+      "claimed_place": null,
+      "detail": {
+        "logged_country_code": "CA",
+        "logged_address": "Placentia, CA",
+        "latitude": 33.8710317,
+        "longitude": -117.8628096,
+        "result_types": [
+          "locality",
+          "political"
+        ]
+      }
+    },
+    {
+      "location_id": 4966,
+      "location_name": "Orange County Mobile IV Therapy",
+      "current_locality": "San Clemente",
+      "current_region": null,
+      "current_country_code": "CA",
+      "formatted_address": "San Clemente, CA, USA",
+      "result_country_code": "US",
+      "location_type": "APPROXIMATE",
+      "result_types": [
+        "locality",
+        "political"
+      ],
+      "reason": "country_mismatch_approximate",
+      "claimed_place": null,
+      "detail": {
+        "logged_country_code": "CA",
+        "logged_address": "San Clemente, CA",
+        "latitude": 33.4273521,
+        "longitude": -117.6126004,
+        "result_types": [
+          "locality",
+          "political"
+        ]
+      }
+    },
+    {
+      "location_id": 4967,
+      "location_name": "Orange County Mobile IV Therapy",
+      "current_locality": "Tustin",
+      "current_region": null,
+      "current_country_code": "CA",
+      "formatted_address": "Tustin, CA, USA",
+      "result_country_code": "US",
+      "location_type": "APPROXIMATE",
+      "result_types": [
+        "locality",
+        "political"
+      ],
+      "reason": "country_mismatch_approximate",
+      "claimed_place": null,
+      "detail": {
+        "logged_country_code": "CA",
+        "logged_address": "Tustin, CA",
+        "latitude": 33.7420005,
+        "longitude": -117.8236391,
+        "result_types": [
+          "locality",
+          "political"
+        ]
+      }
+    },
+    {
+      "location_id": 5303,
+      "location_name": "Private Medical | New York",
+      "current_locality": "Greenwich",
+      "current_region": "CT",
+      "current_country_code": "US",
+      "formatted_address": "Greenwich, CT, USA",
+      "result_country_code": "US",
+      "location_type": "APPROXIMATE",
+      "result_types": [
+        "locality",
+        "political"
+      ],
+      "reason": "name_claim_differs_from_geocoded_address",
+      "claimed_place": "New York",
+      "detail": {
+        "logged_country_code": "US",
+        "logged_address": "Greenwich, CT",
+        "latitude": 41.0262417,
+        "longitude": -73.6281964,
+        "result_types": [
+          "locality",
+          "political"
+        ]
+      }
+    },
+    {
+      "location_id": 6299,
+      "location_name": "Hair Transplant Los Angeles Dr. Sean Behnam",
+      "current_locality": "Beverly Hills",
+      "current_region": null,
+      "current_country_code": "CA",
+      "formatted_address": "Beverly Hills, CA, USA",
+      "result_country_code": "US",
+      "location_type": "APPROXIMATE",
+      "result_types": [
+        "locality",
+        "political"
+      ],
+      "reason": "country_mismatch_approximate",
+      "claimed_place": null,
+      "detail": {
+        "logged_country_code": "CA",
+        "logged_address": "Beverly Hills, CA",
+        "latitude": 34.0730715,
+        "longitude": -118.4016265,
+        "result_types": [
+          "locality",
+          "political"
+        ]
+      }
+    },
+    {
+      "location_id": 6300,
+      "location_name": "Hair Transplant Los Angeles Dr. Sean Behnam",
+      "current_locality": "Santa Monica",
+      "current_region": null,
+      "current_country_code": "CA",
+      "formatted_address": "Santa Monica, CA, USA",
+      "result_country_code": "US",
+      "location_type": "APPROXIMATE",
+      "result_types": [
+        "locality",
+        "political"
+      ],
+      "reason": "country_mismatch_approximate",
+      "claimed_place": null,
+      "detail": {
+        "logged_country_code": "CA",
+        "logged_address": "Santa Monica, CA",
+        "latitude": 34.0118828,
+        "longitude": -118.4915504,
+        "result_types": [
+          "locality",
+          "political"
+        ]
+      }
+    },
+    {
+      "location_id": 6301,
+      "location_name": "Hair Transplant Los Angeles Dr. Sean Behnam",
+      "current_locality": "West Hollywood",
+      "current_region": null,
+      "current_country_code": "CA",
+      "formatted_address": "West Hollywood, CA, USA",
+      "result_country_code": "US",
+      "location_type": "APPROXIMATE",
+      "result_types": [
+        "locality",
+        "political"
+      ],
+      "reason": "country_mismatch_approximate",
+      "claimed_place": null,
+      "detail": {
+        "logged_country_code": "CA",
+        "logged_address": "West Hollywood, CA",
+        "latitude": 34.0907087,
+        "longitude": -118.3703284,
+        "result_types": [
+          "locality",
+          "political"
+        ]
+      }
+    },
+    {
+      "location_id": 6467,
+      "location_name": "Community Memorial Health Center – Vineyard Avenue",
+      "current_locality": "Ojai",
+      "current_region": null,
+      "current_country_code": "CA",
+      "formatted_address": "Ojai, CA 93023, USA",
+      "result_country_code": "US",
+      "location_type": "APPROXIMATE",
+      "result_types": [
+        "locality",
+        "political"
+      ],
+      "reason": "country_mismatch_approximate",
+      "claimed_place": null,
+      "detail": {
+        "logged_country_code": "CA",
+        "logged_address": "Ojai, CA",
+        "latitude": 34.4480495,
+        "longitude": -119.242889,
+        "result_types": [
+          "locality",
+          "political"
+        ]
+      }
+    },
+    {
+      "location_id": 7052,
+      "location_name": "California Rehabilitation and Sports Therapy – Santa Ana, E. 4th St.",
+      "current_locality": "Lodi",
+      "current_region": null,
+      "current_country_code": "CA",
+      "formatted_address": "N Fairmont Ave, Lodi, CA 95240, USA",
+      "result_country_code": "US",
+      "location_type": "GEOMETRIC_CENTER",
+      "result_types": [
+        "route"
+      ],
+      "reason": "country_mismatch_not_street_level",
+      "claimed_place": null,
+      "detail": {
+        "logged_country_code": "CA",
+        "logged_address": "Fairmont Ave, Lodi, CA",
+        "latitude": 38.1383132,
+        "longitude": -121.2864493,
+        "result_types": [
+          "route"
+        ]
+      }
+    },
+    {
+      "location_id": 7350,
+      "location_name": "Hydration Room Huntington Beach – Goldenwest (Inside LA Fitness)",
+      "current_locality": "Huntington Beach",
+      "current_region": null,
+      "current_country_code": "CA",
+      "formatted_address": "Adams Ave, Huntington Beach, CA, USA",
+      "result_country_code": "US",
+      "location_type": "GEOMETRIC_CENTER",
+      "result_types": [
+        "route"
+      ],
+      "reason": "country_mismatch_not_street_level",
+      "claimed_place": null,
+      "detail": {
+        "logged_country_code": "CA",
+        "logged_address": "Adams Avenue, Huntington Beach, CA",
+        "latitude": 33.6724442,
+        "longitude": -117.9749969,
+        "result_types": [
+          "route"
+        ]
+      }
+    },
+    {
+      "location_id": 8218,
+      "location_name": "Infusion SMP Scalp Micropigmentation",
+      "current_locality": "Lodi",
+      "current_region": null,
+      "current_country_code": "CA",
+      "formatted_address": "Lodi, CA, USA",
+      "result_country_code": "US",
+      "location_type": "APPROXIMATE",
+      "result_types": [
+        "locality",
+        "political"
+      ],
+      "reason": "country_mismatch_approximate",
+      "claimed_place": null,
+      "detail": {
+        "logged_country_code": "CA",
+        "logged_address": "Lodi, CA",
+        "latitude": 38.1341477,
+        "longitude": -121.2722194,
+        "result_types": [
+          "locality",
+          "political"
+        ]
+      }
+    },
+    {
+      "location_id": 8219,
+      "location_name": "Infusion SMP Scalp Micropigmentation",
+      "current_locality": "Brentwood",
+      "current_region": null,
+      "current_country_code": "CA",
+      "formatted_address": "Brentwood, CA 94513, USA",
+      "result_country_code": "US",
+      "location_type": "APPROXIMATE",
+      "result_types": [
+        "locality",
+        "political"
+      ],
+      "reason": "country_mismatch_approximate",
+      "claimed_place": null,
+      "detail": {
+        "logged_country_code": "CA",
+        "logged_address": "Brentwood, CA",
+        "latitude": 37.931868,
+        "longitude": -121.6957863,
+        "result_types": [
+          "locality",
+          "political"
+        ]
+      }
+    },
+    {
+      "location_id": 8220,
+      "location_name": "Infusion SMP Scalp Micropigmentation",
+      "current_locality": "Oakley",
+      "current_region": null,
+      "current_country_code": "CA",
+      "formatted_address": "Oakley, CA 94561, USA",
+      "result_country_code": "US",
+      "location_type": "APPROXIMATE",
+      "result_types": [
+        "locality",
+        "political"
+      ],
+      "reason": "country_mismatch_approximate",
+      "claimed_place": null,
+      "detail": {
+        "logged_country_code": "CA",
+        "logged_address": "Oakley, CA",
+        "latitude": 37.9974219,
+        "longitude": -121.7124536,
+        "result_types": [
+          "locality",
+          "political"
+        ]
+      }
+    },
+    {
+      "location_id": 8221,
+      "location_name": "Infusion SMP Scalp Micropigmentation",
+      "current_locality": "Modesto",
+      "current_region": null,
+      "current_country_code": "CA",
+      "formatted_address": "Modesto, CA, USA",
+      "result_country_code": "US",
+      "location_type": "APPROXIMATE",
+      "result_types": [
+        "locality",
+        "political"
+      ],
+      "reason": "country_mismatch_approximate",
+      "claimed_place": null,
+      "detail": {
+        "logged_country_code": "CA",
+        "logged_address": "Modesto, CA",
+        "latitude": 37.6392595,
+        "longitude": -120.9970014,
+        "result_types": [
+          "locality",
+          "political"
+        ]
+      }
+    },
+    {
+      "location_id": 8222,
+      "location_name": "Infusion SMP Scalp Micropigmentation",
+      "current_locality": "Tracy",
+      "current_region": null,
+      "current_country_code": "CA",
+      "formatted_address": "Tracy, CA, USA",
+      "result_country_code": "US",
+      "location_type": "APPROXIMATE",
+      "result_types": [
+        "locality",
+        "political"
+      ],
+      "reason": "country_mismatch_approximate",
+      "claimed_place": null,
+      "detail": {
+        "logged_country_code": "CA",
+        "logged_address": "Tracy, CA",
+        "latitude": 37.7395818,
+        "longitude": -121.4260018,
+        "result_types": [
+          "locality",
+          "political"
+        ]
+      }
+    },
+    {
+      "location_id": 8223,
+      "location_name": "Infusion SMP Scalp Micropigmentation",
+      "current_locality": "Merced",
+      "current_region": null,
+      "current_country_code": "CA",
+      "formatted_address": "Merced, CA, USA",
+      "result_country_code": "US",
+      "location_type": "APPROXIMATE",
+      "result_types": [
+        "locality",
+        "political"
+      ],
+      "reason": "country_mismatch_approximate",
+      "claimed_place": null,
+      "detail": {
+        "logged_country_code": "CA",
+        "logged_address": "Merced, CA",
+        "latitude": 37.302947,
+        "longitude": -120.484268,
+        "result_types": [
+          "locality",
+          "political"
+        ]
+      }
+    },
+    {
+      "location_id": 8224,
+      "location_name": "Infusion SMP Scalp Micropigmentation",
+      "current_locality": "Fresno",
+      "current_region": null,
+      "current_country_code": "CA",
+      "formatted_address": "Fresno, CA, USA",
+      "result_country_code": "US",
+      "location_type": "APPROXIMATE",
+      "result_types": [
+        "locality",
+        "political"
+      ],
+      "reason": "country_mismatch_approximate",
+      "claimed_place": null,
+      "detail": {
+        "logged_country_code": "CA",
+        "logged_address": "Fresno, CA",
+        "latitude": 36.7377981,
+        "longitude": -119.7871247,
+        "result_types": [
+          "locality",
+          "political"
+        ]
+      }
+    },
+    {
+      "location_id": 8225,
+      "location_name": "Infusion SMP Scalp Micropigmentation",
+      "current_locality": "Bakersfield",
+      "current_region": null,
+      "current_country_code": "CA",
+      "formatted_address": "Bakersfield, CA, USA",
+      "result_country_code": "US",
+      "location_type": "APPROXIMATE",
+      "result_types": [
+        "locality",
+        "political"
+      ],
+      "reason": "country_mismatch_approximate",
+      "claimed_place": null,
+      "detail": {
+        "logged_country_code": "CA",
+        "logged_address": "Bakersfield, CA",
+        "latitude": 35.3733492,
+        "longitude": -119.020061,
+        "result_types": [
+          "locality",
+          "political"
+        ]
+      }
+    },
+    {
+      "location_id": 8226,
+      "location_name": "Infusion SMP Scalp Micropigmentation",
+      "current_locality": "Visalia",
+      "current_region": null,
+      "current_country_code": "CA",
+      "formatted_address": "Visalia, CA, USA",
+      "result_country_code": "US",
+      "location_type": "APPROXIMATE",
+      "result_types": [
+        "locality",
+        "political"
+      ],
+      "reason": "country_mismatch_approximate",
+      "claimed_place": null,
+      "detail": {
+        "logged_country_code": "CA",
+        "logged_address": "Visalia, CA",
+        "latitude": 36.3301329,
+        "longitude": -119.2966367,
+        "result_types": [
+          "locality",
+          "political"
+        ]
+      }
+    },
+    {
+      "location_id": 8227,
+      "location_name": "Infusion SMP Scalp Micropigmentation",
+      "current_locality": "Hanford",
+      "current_region": null,
+      "current_country_code": "CA",
+      "formatted_address": "Hanford, CA 93230, USA",
+      "result_country_code": "US",
+      "location_type": "APPROXIMATE",
+      "result_types": [
+        "locality",
+        "political"
+      ],
+      "reason": "country_mismatch_approximate",
+      "claimed_place": null,
+      "detail": {
+        "logged_country_code": "CA",
+        "logged_address": "Hanford, CA",
+        "latitude": 36.3274502,
+        "longitude": -119.6456844,
+        "result_types": [
+          "locality",
+          "political"
+        ]
+      }
+    },
+    {
+      "location_id": 8228,
+      "location_name": "Infusion SMP Scalp Micropigmentation",
+      "current_locality": "San Luis Obispo",
+      "current_region": null,
+      "current_country_code": "CA",
+      "formatted_address": "San Luis Obispo, CA, USA",
+      "result_country_code": "US",
+      "location_type": "APPROXIMATE",
+      "result_types": [
+        "locality",
+        "political"
+      ],
+      "reason": "country_mismatch_approximate",
+      "claimed_place": null,
+      "detail": {
+        "logged_country_code": "CA",
+        "logged_address": "San Luis Obispo, CA",
+        "latitude": 35.2827524,
+        "longitude": -120.6596156,
+        "result_types": [
+          "locality",
+          "political"
+        ]
+      }
+    },
+    {
+      "location_id": 8229,
+      "location_name": "Infusion SMP Scalp Micropigmentation",
+      "current_locality": "Paso Robles",
+      "current_region": null,
+      "current_country_code": "CA",
+      "formatted_address": "Paso Robles, CA 93446, USA",
+      "result_country_code": "US",
+      "location_type": "APPROXIMATE",
+      "result_types": [
+        "locality",
+        "political"
+      ],
+      "reason": "country_mismatch_approximate",
+      "claimed_place": null,
+      "detail": {
+        "logged_country_code": "CA",
+        "logged_address": "Paso Robles, CA",
+        "latitude": 35.6368759,
+        "longitude": -120.6545022,
+        "result_types": [
+          "locality",
+          "political"
+        ]
+      }
+    },
+    {
+      "location_id": 8230,
+      "location_name": "Infusion SMP Scalp Micropigmentation",
+      "current_locality": "Fresno County",
+      "current_region": null,
+      "current_country_code": "CA",
+      "formatted_address": "Fresno County, CA, USA",
+      "result_country_code": "US",
+      "location_type": "APPROXIMATE",
+      "result_types": [
+        "administrative_area_level_2",
+        "political"
+      ],
+      "reason": "country_mismatch_approximate",
+      "claimed_place": null,
+      "detail": {
+        "logged_country_code": "CA",
+        "logged_address": "Fresno County, CA",
+        "latitude": 36.9858984,
+        "longitude": -119.2320784,
+        "result_types": [
+          "administrative_area_level_2",
+          "political"
+        ]
+      }
+    },
+    {
+      "location_id": 8291,
+      "location_name": "Polaris Rejuvenation",
+      "current_locality": "Orange County",
+      "current_region": null,
+      "current_country_code": "CA",
+      "formatted_address": "Orange County, CA, USA",
+      "result_country_code": "US",
+      "location_type": "APPROXIMATE",
+      "result_types": [
+        "administrative_area_level_2",
+        "political"
+      ],
+      "reason": "country_mismatch_approximate",
+      "claimed_place": null,
+      "detail": {
+        "logged_country_code": "CA",
+        "logged_address": "Orange County, CA",
+        "latitude": 33.7174708,
+        "longitude": -117.8311428,
+        "result_types": [
+          "administrative_area_level_2",
+          "political"
+        ]
+      }
+    },
+    {
+      "location_id": 8507,
+      "location_name": "Office Depot",
+      "current_locality": "Los Gatos",
+      "current_region": null,
+      "current_country_code": "CA",
+      "formatted_address": "Los Gatos, CA, USA",
+      "result_country_code": "US",
+      "location_type": "APPROXIMATE",
+      "result_types": [
+        "locality",
+        "political"
+      ],
+      "reason": "country_mismatch_approximate",
+      "claimed_place": null,
+      "detail": {
+        "logged_country_code": "CA",
+        "logged_address": "Los Gatos, CA",
+        "latitude": 37.2358078,
+        "longitude": -121.9623751,
+        "result_types": [
+          "locality",
+          "political"
+        ]
+      }
+    },
+    {
+      "location_id": 8639,
+      "location_name": "Central Coast Center for Integrative Health",
+      "current_locality": "Oxnard",
+      "current_region": null,
+      "current_country_code": "CA",
+      "formatted_address": "Oxnard, CA, USA",
+      "result_country_code": "US",
+      "location_type": "APPROXIMATE",
+      "result_types": [
+        "locality",
+        "political"
+      ],
+      "reason": "country_mismatch_approximate",
+      "claimed_place": null,
+      "detail": {
+        "logged_country_code": "CA",
+        "logged_address": "Oxnard, CA",
+        "latitude": 34.1976816,
+        "longitude": -119.1774639,
+        "result_types": [
+          "locality",
+          "political"
+        ]
+      }
+    },
+    {
+      "location_id": 8640,
+      "location_name": "Central Coast Center for Integrative Health",
+      "current_locality": "Ojai",
+      "current_region": null,
+      "current_country_code": "CA",
+      "formatted_address": "Ojai, CA 93023, USA",
+      "result_country_code": "US",
+      "location_type": "APPROXIMATE",
+      "result_types": [
+        "locality",
+        "political"
+      ],
+      "reason": "country_mismatch_approximate",
+      "claimed_place": null,
+      "detail": {
+        "logged_country_code": "CA",
+        "logged_address": "Ojai, CA",
+        "latitude": 34.4480495,
+        "longitude": -119.242889,
+        "result_types": [
+          "locality",
+          "political"
+        ]
+      }
+    },
+    {
+      "location_id": 8641,
+      "location_name": "Central Coast Center for Integrative Health",
+      "current_locality": "Santa Paula",
+      "current_region": null,
+      "current_country_code": "CA",
+      "formatted_address": "Santa Paula, CA 93060, USA",
+      "result_country_code": "US",
+      "location_type": "APPROXIMATE",
+      "result_types": [
+        "locality",
+        "political"
+      ],
+      "reason": "country_mismatch_approximate",
+      "claimed_place": null,
+      "detail": {
+        "logged_country_code": "CA",
+        "logged_address": "Santa Paula, CA",
+        "latitude": 34.3541659,
+        "longitude": -119.0592705,
+        "result_types": [
+          "locality",
+          "political"
+        ]
+      }
+    },
+    {
+      "location_id": 8642,
+      "location_name": "Central Coast Center for Integrative Health",
+      "current_locality": "Camarillo",
+      "current_region": null,
+      "current_country_code": "CA",
+      "formatted_address": "Camarillo, CA, USA",
+      "result_country_code": "US",
+      "location_type": "APPROXIMATE",
+      "result_types": [
+        "locality",
+        "political"
+      ],
+      "reason": "country_mismatch_approximate",
+      "claimed_place": null,
+      "detail": {
+        "logged_country_code": "CA",
+        "logged_address": "Camarillo, CA",
+        "latitude": 34.2163937,
+        "longitude": -119.0376023,
+        "result_types": [
+          "locality",
+          "political"
+        ]
+      }
+    },
+    {
+      "location_id": 8643,
+      "location_name": "Central Coast Center for Integrative Health",
+      "current_locality": "Santa Barbara",
+      "current_region": null,
+      "current_country_code": "CA",
+      "formatted_address": "Santa Barbara, CA, USA",
+      "result_country_code": "US",
+      "location_type": "APPROXIMATE",
+      "result_types": [
+        "locality",
+        "political"
+      ],
+      "reason": "country_mismatch_approximate",
+      "claimed_place": null,
+      "detail": {
+        "logged_country_code": "CA",
+        "logged_address": "Santa Barbara, CA",
+        "latitude": 34.420285,
+        "longitude": -119.698935,
+        "result_types": [
+          "locality",
+          "political"
+        ]
+      }
+    },
+    {
+      "location_id": 8644,
+      "location_name": "Central Coast Center for Integrative Health",
+      "current_locality": "Carpinteria",
+      "current_region": null,
+      "current_country_code": "CA",
+      "formatted_address": "Carpinteria, CA, USA",
+      "result_country_code": "US",
+      "location_type": "APPROXIMATE",
+      "result_types": [
+        "locality",
+        "political"
+      ],
+      "reason": "country_mismatch_approximate",
+      "claimed_place": null,
+      "detail": {
+        "logged_country_code": "CA",
+        "logged_address": "Carpinteria, CA",
+        "latitude": 34.39888380000001,
+        "longitude": -119.5184564,
+        "result_types": [
+          "locality",
+          "political"
+        ]
+      }
+    },
+    {
+      "location_id": 8645,
+      "location_name": "Central Coast Center for Integrative Health",
+      "current_locality": "Thousand Oaks",
+      "current_region": null,
+      "current_country_code": "CA",
+      "formatted_address": "Thousand Oaks, CA, USA",
+      "result_country_code": "US",
+      "location_type": "APPROXIMATE",
+      "result_types": [
+        "locality",
+        "political"
+      ],
+      "reason": "country_mismatch_approximate",
+      "claimed_place": null,
+      "detail": {
+        "logged_country_code": "CA",
+        "logged_address": "Thousand Oaks, CA",
+        "latitude": 34.1761133,
+        "longitude": -118.8487793,
+        "result_types": [
+          "locality",
+          "political"
+        ]
+      }
+    },
+    {
+      "location_id": 8646,
+      "location_name": "Central Coast Center for Integrative Health",
+      "current_locality": "Moorpark",
+      "current_region": null,
+      "current_country_code": "CA",
+      "formatted_address": "Moorpark, CA 93021, USA",
+      "result_country_code": "US",
+      "location_type": "APPROXIMATE",
+      "result_types": [
+        "locality",
+        "political"
+      ],
+      "reason": "country_mismatch_approximate",
+      "claimed_place": null,
+      "detail": {
+        "logged_country_code": "CA",
+        "logged_address": "Moorpark, CA",
+        "latitude": 34.2791018,
+        "longitude": -118.8747349,
+        "result_types": [
+          "locality",
+          "political"
+        ]
+      }
+    },
+    {
+      "location_id": 8647,
+      "location_name": "Central Coast Center for Integrative Health",
+      "current_locality": "Simi Valley",
+      "current_region": null,
+      "current_country_code": "CA",
+      "formatted_address": "Simi Valley, CA, USA",
+      "result_country_code": "US",
+      "location_type": "APPROXIMATE",
+      "result_types": [
+        "locality",
+        "political"
+      ],
+      "reason": "country_mismatch_approximate",
+      "claimed_place": null,
+      "detail": {
+        "logged_country_code": "CA",
+        "logged_address": "Simi Valley, CA",
+        "latitude": 34.2694474,
+        "longitude": -118.781482,
+        "result_types": [
+          "locality",
+          "political"
+        ]
+      }
+    },
+    {
+      "location_id": 8648,
+      "location_name": "Central Coast Center for Integrative Health",
+      "current_locality": "Newbury Park",
+      "current_region": null,
+      "current_country_code": "CA",
+      "formatted_address": "Newbury Park, Thousand Oaks, CA 91320, USA",
+      "result_country_code": "US",
+      "location_type": "APPROXIMATE",
+      "result_types": [
+        "neighborhood",
+        "political"
+      ],
+      "reason": "country_mismatch_approximate",
+      "claimed_place": null,
+      "detail": {
+        "logged_country_code": "CA",
+        "logged_address": "Newbury Park, CA",
+        "latitude": 34.1805403,
+        "longitude": -118.9070887,
+        "result_types": [
+          "neighborhood",
+          "political"
+        ]
+      }
+    },
+    {
+      "location_id": 8649,
+      "location_name": "Central Coast Center for Integrative Health",
+      "current_locality": "Calabasas",
+      "current_region": null,
+      "current_country_code": "CA",
+      "formatted_address": "Calabasas, CA, USA",
+      "result_country_code": "US",
+      "location_type": "APPROXIMATE",
+      "result_types": [
+        "locality",
+        "political"
+      ],
+      "reason": "country_mismatch_approximate",
+      "claimed_place": null,
+      "detail": {
+        "logged_country_code": "CA",
+        "logged_address": "Calabasas, CA",
+        "latitude": 34.1539731,
+        "longitude": -118.6473801,
+        "result_types": [
+          "locality",
+          "political"
+        ]
+      }
+    },
+    {
+      "location_id": 8650,
+      "location_name": "Central Coast Center for Integrative Health",
+      "current_locality": "Malibu",
+      "current_region": null,
+      "current_country_code": "CA",
+      "formatted_address": "Malibu, CA, USA",
+      "result_country_code": "US",
+      "location_type": "APPROXIMATE",
+      "result_types": [
+        "locality",
+        "political"
+      ],
+      "reason": "country_mismatch_approximate",
+      "claimed_place": null,
+      "detail": {
+        "logged_country_code": "CA",
+        "logged_address": "Malibu, CA",
+        "latitude": 34.0380585,
+        "longitude": -118.6923438,
+        "result_types": [
+          "locality",
+          "political"
+        ]
+      }
+    },
+    {
+      "location_id": 8779,
+      "location_name": "Elevate Health Group",
+      "current_locality": "Burbank",
+      "current_region": null,
+      "current_country_code": "CA",
+      "formatted_address": "Burbank, CA, USA",
+      "result_country_code": "US",
+      "location_type": "APPROXIMATE",
+      "result_types": [
+        "locality",
+        "political"
+      ],
+      "reason": "country_mismatch_approximate",
+      "claimed_place": null,
+      "detail": {
+        "logged_country_code": "CA",
+        "logged_address": "Burbank, CA",
+        "latitude": 34.1820605,
+        "longitude": -118.3074827,
+        "result_types": [
+          "locality",
+          "political"
+        ]
+      }
+    },
+    {
+      "location_id": 9303,
+      "location_name": "Colorado Cryo Clinic",
+      "current_locality": "Denver",
+      "current_region": "CO",
+      "current_country_code": "US",
+      "formatted_address": "Av. Lincoln, Montréal, QC, Canada",
+      "result_country_code": "CA",
+      "location_type": "GEOMETRIC_CENTER",
+      "result_types": [
+        "route"
+      ],
+      "reason": "country_mismatch_not_street_level",
+      "claimed_place": null,
+      "detail": {
+        "logged_country_code": "US",
+        "logged_address": "975 Lincoln Street, Suite #205, Unit F",
+        "latitude": 45.4931896,
+        "longitude": -73.5837271,
+        "result_types": [
+          "route"
+        ]
+      }
+    },
+    {
+      "location_id": 12171,
+      "location_name": "Stem Cell Medical Center",
+      "current_locality": "Hialeah",
+      "current_region": "FL",
+      "current_country_code": "US",
+      "formatted_address": "Friars Hill Road, St John's, Antigua and Barbuda",
+      "result_country_code": "AG",
+      "location_type": "GEOMETRIC_CENTER",
+      "result_types": [
+        "route"
+      ],
+      "reason": "country_mismatch_not_street_level",
+      "claimed_place": null,
+      "detail": {
+        "logged_country_code": "US",
+        "logged_address": "Friars Hill Road, St John's, Antigua & Barbuda",
+        "latitude": 17.1286058,
+        "longitude": -61.8377009,
+        "result_types": [
+          "route"
+        ]
+      }
+    }
+  ],
+  "country_fixes": [
+    {
+      "location_id": 2153,
+      "location_name": "Fitnescity",
+      "old_country_code": "CA",
+      "old_country_name": "Canada",
+      "old_region": null,
+      "old_locality": "'addressCountry': 'US'}]",
+      "old_latitude": null,
+      "old_longitude": null,
+      "new_country_code": "US",
+      "new_country_name": "United States",
+      "new_region": "NJ",
+      "new_locality": "Newark",
+      "new_latitude": 40.7425757,
+      "new_longitude": -74.1687227,
+      "formatted_address": "550 Broad St 4th Floor, Newark, NJ 07102, USA",
+      "location_type": "ROOFTOP",
+      "result_types": [
+        "street_address",
+        "subpremise"
+      ],
+      "rule": "geocoder_country_fix"
+    },
+    {
+      "location_id": 2372,
+      "location_name": "8th Element Hyperbaric Medicine",
+      "old_country_code": "CA",
+      "old_country_name": "Canada",
+      "old_region": null,
+      "old_locality": "Daly City",
+      "old_latitude": null,
+      "old_longitude": null,
+      "new_country_code": "US",
+      "new_country_name": "United States",
+      "new_region": "CA",
+      "new_locality": "Daly City",
+      "new_latitude": 37.6651868,
+      "new_longitude": -122.4756483,
+      "formatted_address": "901 Campus Dr Ste 206B, Daly City, CA 94015, USA",
+      "location_type": "ROOFTOP",
+      "result_types": [
+        "street_address",
+        "subpremise"
+      ],
+      "rule": "geocoder_country_fix"
+    },
+    {
+      "location_id": 3048,
+      "location_name": "Prime Health NYC",
+      "old_country_code": "JM",
+      "old_country_name": "Jamaica",
+      "old_region": "NY",
+      "old_locality": null,
+      "old_latitude": null,
+      "old_longitude": null,
+      "new_country_code": "US",
+      "new_country_name": "United States",
+      "new_region": "NY",
+      "new_locality": "Jamaica",
+      "new_latitude": 40.711433,
+      "new_longitude": -73.7959898,
+      "formatted_address": "167-10 Highland Ave, Jamaica, NY 11432, USA",
+      "location_type": "ROOFTOP",
+      "result_types": [
+        "street_address",
+        "subpremise"
+      ],
+      "rule": "geocoder_country_fix"
+    },
+    {
+      "location_id": 4804,
+      "location_name": "Cellular Performance Institute",
+      "old_country_code": "US",
+      "old_country_name": "United States",
+      "old_region": "CA",
+      "old_locality": "San Diego",
+      "old_latitude": null,
+      "old_longitude": null,
+      "new_country_code": "MX",
+      "new_country_name": "Mexico",
+      "new_region": "B.C.",
+      "new_locality": "Tijuana",
+      "new_latitude": 32.5318136,
+      "new_longitude": -117.1227949,
+      "formatted_address": "Av Del Pacifico 490, Monumental, 22504 Tijuana, B.C., Mexico",
+      "location_type": "ROOFTOP",
+      "result_types": [
+        "premise",
+        "street_address"
+      ],
+      "rule": "geocoder_country_fix"
+    },
+    {
+      "location_id": 4805,
+      "location_name": "Células Madre en Tijuana | Stem Cells Tijuana | Rilassare",
+      "old_country_code": "US",
+      "old_country_name": "United States",
+      "old_region": "CA",
+      "old_locality": "San Diego",
+      "old_latitude": null,
+      "old_longitude": null,
+      "new_country_code": "MX",
+      "new_country_name": "Mexico",
+      "new_region": "B.C.",
+      "new_locality": "Tijuana",
+      "new_latitude": 32.5244313,
+      "new_longitude": -117.0126021,
+      "formatted_address": "Corporativo Central, Av. Diego Rivera 2311-Ofi 904, Zona Urbana Rio Tijuana, 22010 Tijuana, B.C., Mexico",
+      "location_type": "ROOFTOP",
+      "result_types": [
+        "street_address",
+        "subpremise"
+      ],
+      "rule": "geocoder_country_fix"
+    },
+    {
+      "location_id": 5424,
+      "location_name": "Dr. Alice S Pien, MD – AMA Regenerative Medicine",
+      "old_country_code": "CA",
+      "old_country_name": "Canada",
+      "old_region": null,
+      "old_locality": "Los Angeles",
+      "old_latitude": null,
+      "old_longitude": null,
+      "new_country_code": "US",
+      "new_country_name": "United States",
+      "new_region": "CA",
+      "new_locality": "Los Angeles",
+      "new_latitude": 34.060523,
+      "new_longitude": -118.367693,
+      "formatted_address": "6310 S San Vicente Blvd #285, Los Angeles, CA 90048, USA",
+      "location_type": "ROOFTOP",
+      "result_types": [
+        "street_address",
+        "subpremise"
+      ],
+      "rule": "geocoder_country_fix"
+    },
+    {
+      "location_id": 5666,
+      "location_name": "Bespoke Biologix",
+      "old_country_code": "US",
+      "old_country_name": "United States",
+      "old_region": "CA",
+      "old_locality": "San Diego",
+      "old_latitude": null,
+      "old_longitude": null,
+      "new_country_code": "MX",
+      "new_country_name": "Mexico",
+      "new_region": "B.C.",
+      "new_locality": "Tijuana",
+      "new_latitude": 32.51365210000001,
+      "new_longitude": -116.9877401,
+      "formatted_address": "Prol Paseo de los Heroes 10999, Terrazas, 22100 Tijuana, B.C., Mexico",
+      "location_type": "ROOFTOP",
+      "result_types": [
+        "street_address",
+        "subpremise"
+      ],
+      "rule": "geocoder_country_fix"
+    },
+    {
+      "location_id": 5780,
+      "location_name": "Infinity Regenerative Medicine",
+      "old_country_code": "US",
+      "old_country_name": "United States",
+      "old_region": "CA",
+      "old_locality": "San Jose",
+      "old_latitude": null,
+      "old_longitude": null,
+      "new_country_code": "CR",
+      "new_country_name": "Costa Rica",
+      "new_region": "San José",
+      "new_locality": "San Rafael",
+      "new_latitude": 9.9438143,
+      "new_longitude": -84.14598699999999,
+      "formatted_address": "Plaza Itskatzú, San José, San Rafael, Costa Rica",
+      "location_type": "GEOMETRIC_CENTER",
+      "result_types": [
+        "premise",
+        "street_address"
+      ],
+      "rule": "geocoder_country_fix"
+    },
+    {
+      "location_id": 5853,
+      "location_name": "Pair & Marotta Physical Therapy – Buena Vista",
+      "old_country_code": "CA",
+      "old_country_name": "Canada",
+      "old_region": null,
+      "old_locality": "Shafter",
+      "old_latitude": null,
+      "old_longitude": null,
+      "new_country_code": "US",
+      "new_country_name": "United States",
+      "new_region": "CA",
+      "new_locality": "Shafter",
+      "new_latitude": 35.50033579999999,
+      "new_longitude": -119.2587072,
+      "formatted_address": "1160 E Lerdo Hwy, Shafter, CA 93263, USA",
+      "location_type": "ROOFTOP",
+      "result_types": [
+        "premise",
+        "street_address"
+      ],
+      "rule": "geocoder_country_fix"
+    },
+    {
+      "location_id": 5854,
+      "location_name": "Pair & Marotta Physical Therapy – Buena Vista",
+      "old_country_code": "CA",
+      "old_country_name": "Canada",
+      "old_region": null,
+      "old_locality": "Bakersfield",
+      "old_latitude": null,
+      "old_longitude": null,
+      "new_country_code": "US",
+      "new_country_name": "United States",
+      "new_region": "CA",
+      "new_locality": "Bakersfield",
+      "new_latitude": 35.3667291,
+      "new_longitude": -119.0620569,
+      "formatted_address": "5337 Truxtun Ave, Bakersfield, CA 93309, USA",
+      "location_type": "ROOFTOP",
+      "result_types": [
+        "street_address",
+        "subpremise"
+      ],
+      "rule": "geocoder_country_fix"
+    },
+    {
+      "location_id": 5855,
+      "location_name": "Pair & Marotta Physical Therapy – Buena Vista",
+      "old_country_code": "CA",
+      "old_country_name": "Canada",
+      "old_region": null,
+      "old_locality": "Bakersfield",
+      "old_latitude": null,
+      "old_longitude": null,
+      "new_country_code": "US",
+      "new_country_name": "United States",
+      "new_region": "CA",
+      "new_locality": "Bakersfield",
+      "new_latitude": 35.392585,
+      "new_longitude": -118.9494381,
+      "formatted_address": "2601 Oswell St, Bakersfield, CA 93306, USA",
+      "location_type": "ROOFTOP",
+      "result_types": [
+        "premise",
+        "street_address"
+      ],
+      "rule": "geocoder_country_fix"
+    },
+    {
+      "location_id": 5856,
+      "location_name": "Pair & Marotta Physical Therapy – Buena Vista",
+      "old_country_code": "CA",
+      "old_country_name": "Canada",
+      "old_region": null,
+      "old_locality": "Bakersfield",
+      "old_latitude": null,
+      "old_longitude": null,
+      "new_country_code": "US",
+      "new_country_name": "United States",
+      "new_region": "CA",
+      "new_locality": "Bakersfield",
+      "new_latitude": 35.3831143,
+      "new_longitude": -119.0226902,
+      "formatted_address": "2603 G St, Bakersfield, CA 93301, USA",
+      "location_type": "ROOFTOP",
+      "result_types": [
+        "premise",
+        "street_address"
+      ],
+      "rule": "geocoder_country_fix"
+    },
+    {
+      "location_id": 5857,
+      "location_name": "Pair & Marotta Physical Therapy – Buena Vista",
+      "old_country_code": "CA",
+      "old_country_name": "Canada",
+      "old_region": null,
+      "old_locality": "Bakersfield",
+      "old_latitude": null,
+      "old_longitude": null,
+      "new_country_code": "US",
+      "new_country_name": "United States",
+      "new_region": "CA",
+      "new_locality": "Bakersfield",
+      "new_latitude": 35.2970586,
+      "new_longitude": -119.0404946,
+      "formatted_address": "3400 Panama Ln, Bakersfield, CA 93313, USA",
+      "location_type": "ROOFTOP",
+      "result_types": [
+        "premise",
+        "street_address"
+      ],
+      "rule": "geocoder_country_fix"
+    },
+    {
+      "location_id": 5983,
+      "location_name": "Center for Sports Medicine & Orthopaedics",
+      "old_country_code": "GR",
+      "old_country_name": "Greece",
+      "old_region": "TN",
+      "old_locality": "Athens",
+      "old_latitude": null,
+      "old_longitude": null,
+      "new_country_code": "US",
+      "new_country_name": "United States",
+      "new_region": "TN",
+      "new_locality": "Athens",
+      "new_latitude": 35.4416343,
+      "new_longitude": -84.60548179999999,
+      "formatted_address": "719 Cook Dr #103, Athens, TN 37303, USA",
+      "location_type": "ROOFTOP",
+      "result_types": [
+        "street_address",
+        "subpremise"
+      ],
+      "rule": "geocoder_country_fix"
+    },
+    {
+      "location_id": 6193,
+      "location_name": "Hairport Clinic",
+      "old_country_code": "TR",
+      "old_country_name": "Türkiye",
+      "old_region": null,
+      "old_locality": "Istanbul",
+      "old_latitude": null,
+      "old_longitude": null,
+      "new_country_code": "IT",
+      "new_country_name": "Italy",
+      "new_region": "RM",
+      "new_locality": "Roma",
+      "new_latitude": 41.90955049999999,
+      "new_longitude": 12.4912441,
+      "formatted_address": "Via Sardegna, 38, 00187 Roma RM, Italy",
+      "location_type": "ROOFTOP",
+      "result_types": [
+        "street_address",
+        "subpremise"
+      ],
+      "rule": "geocoder_country_fix"
+    },
+    {
+      "location_id": 6891,
+      "location_name": "Osmosis Lounge",
+      "old_country_code": "CA",
+      "old_country_name": "Canada",
+      "old_region": null,
+      "old_locality": "Modesto",
+      "old_latitude": null,
+      "old_longitude": null,
+      "new_country_code": "US",
+      "new_country_name": "United States",
+      "new_region": "CA",
+      "new_locality": "Modesto",
+      "new_latitude": 37.6547121,
+      "new_longitude": -120.9761183,
+      "formatted_address": "803 Coffee Rd #2, Modesto, CA 95350, USA",
+      "location_type": "ROOFTOP",
+      "result_types": [
+        "street_address",
+        "subpremise"
+      ],
+      "rule": "geocoder_country_fix"
+    },
+    {
+      "location_id": 6892,
+      "location_name": "Osmosis Lounge",
+      "old_country_code": "CA",
+      "old_country_name": "Canada",
+      "old_region": null,
+      "old_locality": "Turlock",
+      "old_latitude": null,
+      "old_longitude": null,
+      "new_country_code": "US",
+      "new_country_name": "United States",
+      "new_region": "CA",
+      "new_locality": "Turlock",
+      "new_latitude": 37.4937706,
+      "new_longitude": -120.8474704,
+      "formatted_address": "121 W Main St Ste h, Turlock, CA 95380, USA",
+      "location_type": "ROOFTOP",
+      "result_types": [
+        "street_address",
+        "subpremise"
+      ],
+      "rule": "geocoder_country_fix"
+    },
+    {
+      "location_id": 6893,
+      "location_name": "Osmosis Lounge",
+      "old_country_code": "CA",
+      "old_country_name": "Canada",
+      "old_region": null,
+      "old_locality": "Modesto",
+      "old_latitude": null,
+      "old_longitude": null,
+      "new_country_code": "US",
+      "new_country_name": "United States",
+      "new_region": "CA",
+      "new_locality": "Modesto",
+      "new_latitude": 37.6419741,
+      "new_longitude": -120.998196,
+      "formatted_address": "1200 J St, Modesto, CA 95354, USA",
+      "location_type": "ROOFTOP",
+      "result_types": [
+        "street_address",
+        "subpremise"
+      ],
+      "rule": "geocoder_country_fix"
+    },
+    {
+      "location_id": 7051,
+      "location_name": "California Rehabilitation and Sports Therapy – Santa Ana, E. 4th St.",
+      "old_country_code": "CA",
+      "old_country_name": "Canada",
+      "old_region": null,
+      "old_locality": "Garden Grove",
+      "old_latitude": null,
+      "old_longitude": null,
+      "new_country_code": "US",
+      "new_country_name": "United States",
+      "new_region": "CA",
+      "new_locality": "Garden Grove",
+      "new_latitude": 33.7899475,
+      "new_longitude": -118.0297783,
+      "formatted_address": "11869 Valley View St, Garden Grove, CA 92845, USA",
+      "location_type": "ROOFTOP",
+      "result_types": [
+        "street_address",
+        "subpremise"
+      ],
+      "rule": "geocoder_country_fix"
+    },
+    {
+      "location_id": 7130,
+      "location_name": "Institute For Progressive Medicine",
+      "old_country_code": "CA",
+      "old_country_name": "Canada",
+      "old_region": null,
+      "old_locality": "Irvine",
+      "old_latitude": null,
+      "old_longitude": null,
+      "new_country_code": "US",
+      "new_country_name": "United States",
+      "new_region": "CA",
+      "new_locality": "Irvine",
+      "new_latitude": 33.6405312,
+      "new_longitude": -117.8529821,
+      "formatted_address": "856 Health Sciences Rd Ste 2600, Irvine, CA 92617, USA",
+      "location_type": "ROOFTOP",
+      "result_types": [
+        "establishment",
+        "health",
+        "point_of_interest"
+      ],
+      "rule": "geocoder_country_fix"
+    },
+    {
+      "location_id": 7131,
+      "location_name": "Institute For Progressive Medicine",
+      "old_country_code": "CA",
+      "old_country_name": "Canada",
+      "old_region": null,
+      "old_locality": "Irvine",
+      "old_latitude": null,
+      "old_longitude": null,
+      "new_country_code": "US",
+      "new_country_name": "United States",
+      "new_region": "CA",
+      "new_locality": "Irvine",
+      "new_latitude": 33.6511439,
+      "new_longitude": -117.7157035,
+      "formatted_address": "4 Hughes #150, Irvine, CA 92618, USA",
+      "location_type": "ROOFTOP",
+      "result_types": [
+        "doctor",
+        "establishment",
+        "health",
+        "point_of_interest"
+      ],
+      "rule": "geocoder_country_fix"
+    },
+    {
+      "location_id": 7132,
+      "location_name": "Institute For Progressive Medicine",
+      "old_country_code": "CA",
+      "old_country_name": "Canada",
+      "old_region": null,
+      "old_locality": "Foothill Ranch",
+      "old_latitude": null,
+      "old_longitude": null,
+      "new_country_code": "US",
+      "new_country_name": "United States",
+      "new_region": "CA",
+      "new_locality": "Foothill Ranch",
+      "new_latitude": 33.6742318,
+      "new_longitude": -117.6640037,
+      "formatted_address": "26700 Towne Centre Dr Ste 100, Foothill Ranch, CA 92610, USA",
+      "location_type": "ROOFTOP",
+      "result_types": [
+        "doctor",
+        "establishment",
+        "health",
+        "point_of_interest"
+      ],
+      "rule": "geocoder_country_fix"
+    },
+    {
+      "location_id": 7345,
+      "location_name": "Hospital Mexico Americano Nuevo Laredo",
+      "old_country_code": "US",
+      "old_country_name": "United States",
+      "old_region": "TX",
+      "old_locality": "Laredo",
+      "old_latitude": null,
+      "old_longitude": null,
+      "new_country_code": "MX",
+      "new_country_name": "Mexico",
+      "new_region": "Tamps.",
+      "new_locality": "Nuevo Laredo",
+      "new_latitude": 27.4580732,
+      "new_longitude": -99.52435249999999,
+      "formatted_address": "Priv. Esteban Vaca Calderón 4400, Concordia, 88000 Nuevo Laredo, Tamps., Mexico",
+      "location_type": "ROOFTOP",
+      "result_types": [
+        "street_address",
+        "subpremise"
+      ],
+      "rule": "geocoder_country_fix"
+    },
+    {
+      "location_id": 8553,
+      "location_name": "CitiMed - Corona",
+      "old_country_code": "JM",
+      "old_country_name": "Jamaica",
+      "old_region": "NY",
+      "old_locality": null,
+      "old_latitude": null,
+      "old_longitude": null,
+      "new_country_code": "US",
+      "new_country_name": "United States",
+      "new_region": "NY",
+      "new_locality": "Jamaica",
+      "new_latitude": 40.7050663,
+      "new_longitude": -73.7947263,
+      "formatted_address": "92-12 165th St, Jamaica, NY 11433, USA",
+      "location_type": "ROOFTOP",
+      "result_types": [
+        "street_address",
+        "subpremise"
+      ],
+      "rule": "geocoder_country_fix"
+    },
+    {
+      "location_id": 8567,
+      "location_name": "CitiMed - Corona",
+      "old_country_code": "JM",
+      "old_country_name": "Jamaica",
+      "old_region": "NY",
+      "old_locality": null,
+      "old_latitude": null,
+      "old_longitude": null,
+      "new_country_code": "US",
+      "new_country_name": "United States",
+      "new_region": "NY",
+      "new_locality": "Jamaica",
+      "new_latitude": 40.6573128,
+      "new_longitude": -73.7738834,
+      "formatted_address": "Building 78, 78a N Boundary Rd, Jamaica, NY 11430, USA",
+      "location_type": "ROOFTOP",
+      "result_types": [
+        "street_address",
+        "subpremise"
+      ],
+      "rule": "geocoder_country_fix"
+    },
+    {
+      "location_id": 9036,
+      "location_name": "OC Athletic Fitness & Massage",
+      "old_country_code": "CA",
+      "old_country_name": "Canada",
+      "old_region": null,
+      "old_locality": "Newport Beach",
+      "old_latitude": null,
+      "old_longitude": null,
+      "new_country_code": "US",
+      "new_country_name": "United States",
+      "new_region": "CA",
+      "new_locality": "Newport Beach",
+      "new_latitude": 33.6652807,
+      "new_longitude": -117.8687626,
+      "formatted_address": "4100 Birch St, Newport Beach, CA 92660, USA",
+      "location_type": "ROOFTOP",
+      "result_types": [
+        "premise",
+        "street_address"
+      ],
+      "rule": "geocoder_country_fix"
+    },
+    {
+      "location_id": 9037,
+      "location_name": "Renew Performance Center",
+      "old_country_code": "CA",
+      "old_country_name": "Canada",
+      "old_region": null,
+      "old_locality": "Pasadena",
+      "old_latitude": null,
+      "old_longitude": null,
+      "new_country_code": "US",
+      "new_country_name": "United States",
+      "new_region": "CA",
+      "new_locality": "Pasadena",
+      "new_latitude": 34.1455348,
+      "new_longitude": -118.1379256,
+      "formatted_address": "600 E Colorado Blvd Ste 110, Pasadena, CA 91101, USA",
+      "location_type": "ROOFTOP",
+      "result_types": [
+        "street_address",
+        "subpremise"
+      ],
+      "rule": "geocoder_country_fix"
+    },
+    {
+      "location_id": 9702,
+      "location_name": "Bespoke Biologix",
+      "old_country_code": "US",
+      "old_country_name": "United States",
+      "old_region": "CA",
+      "old_locality": "San Diego",
+      "old_latitude": null,
+      "old_longitude": null,
+      "new_country_code": "MX",
+      "new_country_name": "Mexico",
+      "new_region": "B.C.",
+      "new_locality": "Tijuana",
+      "new_latitude": 32.5179654,
+      "new_longitude": -117.007868,
+      "formatted_address": "P.º de los Héroes 10999, Zona Urbana Rio Tijuana, 22010 Tijuana, B.C., Mexico",
+      "location_type": "GEOMETRIC_CENTER",
+      "result_types": [
+        "premise",
+        "street_address"
+      ],
+      "rule": "geocoder_country_fix"
+    },
+    {
+      "location_id": 9716,
+      "location_name": "Bioadvanced Medical Center",
+      "old_country_code": "US",
+      "old_country_name": "United States",
+      "old_region": "CA",
+      "old_locality": "San Diego",
+      "old_latitude": null,
+      "old_longitude": null,
+      "new_country_code": "MX",
+      "new_country_name": "Mexico",
+      "new_region": "B.C.",
+      "new_locality": "Tijuana",
+      "new_latitude": 32.5207133,
+      "new_longitude": -117.0131915,
+      "formatted_address": "David Alfaro Siqueiros 2795, Zona Urbana Rio Tijuana, 22010 Tijuana, B.C., Mexico",
+      "location_type": "ROOFTOP",
+      "result_types": [
+        "premise",
+        "street_address"
+      ],
+      "rule": "geocoder_country_fix"
+    },
+    {
+      "location_id": 10384,
+      "location_name": "Hospital Mexico Americano Nuevo Laredo",
+      "old_country_code": "US",
+      "old_country_name": "United States",
+      "old_region": "TX",
+      "old_locality": "Laredo",
+      "old_latitude": null,
+      "old_longitude": null,
+      "new_country_code": "MX",
+      "new_country_name": "Mexico",
+      "new_region": "Tamps.",
+      "new_locality": "Nuevo Laredo",
+      "new_latitude": 27.4586301,
+      "new_longitude": -99.5245905,
+      "formatted_address": "Priv. Esteban Vaca Calderón 4400, Colonia Electricistas, 88298 Nuevo Laredo, Tamps., Mexico",
+      "location_type": "GEOMETRIC_CENTER",
+      "result_types": [
+        "premise",
+        "street_address"
+      ],
+      "rule": "geocoder_country_fix"
+    },
+    {
+      "location_id": 10425,
+      "location_name": "Infinity Cellular Wellness",
+      "old_country_code": "US",
+      "old_country_name": "United States",
+      "old_region": "CA",
+      "old_locality": "San Diego",
+      "old_latitude": null,
+      "old_longitude": null,
+      "new_country_code": "MX",
+      "new_country_name": "Mexico",
+      "new_region": "B.C.",
+      "new_locality": "Tijuana",
+      "new_latitude": 32.5219479,
+      "new_longitude": -117.013662,
+      "formatted_address": "P.º de los Héroes 10289-interior 2020, Zona Urbana Rio Tijuana, 22010 Tijuana, B.C., Mexico",
+      "location_type": "ROOFTOP",
+      "result_types": [
+        "street_address",
+        "subpremise"
+      ],
+      "rule": "geocoder_country_fix"
+    },
+    {
+      "location_id": 10619,
+      "location_name": "Life Altering Stem Cell Therapy Institute",
+      "old_country_code": "US",
+      "old_country_name": "United States",
+      "old_region": "CO",
+      "old_locality": "Aurora",
+      "old_latitude": null,
+      "old_longitude": null,
+      "new_country_code": "MX",
+      "new_country_name": "Mexico",
+      "new_region": "CDMX",
+      "new_locality": "Ciudad de México",
+      "new_latitude": 19.4286275,
+      "new_longitude": -99.1941982,
+      "formatted_address": "Luis G. Urbina 4-Ofi 303, Polanco, Polanco IV Secc, Miguel Hidalgo, 11550 Ciudad de México, CDMX, Mexico",
+      "location_type": "ROOFTOP",
+      "result_types": [
+        "street_address",
+        "subpremise"
+      ],
+      "rule": "geocoder_country_fix"
+    },
+    {
+      "location_id": 11197,
+      "location_name": "ProgenCell",
+      "old_country_code": "US",
+      "old_country_name": "United States",
+      "old_region": "CA",
+      "old_locality": "San Diego",
+      "old_latitude": null,
+      "old_longitude": null,
+      "new_country_code": "MX",
+      "new_country_name": "Mexico",
+      "new_region": "B.C.",
+      "new_locality": "Tijuana",
+      "new_latitude": 32.5364082,
+      "new_longitude": -117.0228125,
+      "formatted_address": "P.º del Centenario 9580-piso 28, Zona Urbana Rio Tijuana, 22010 Tijuana, B.C., Mexico",
+      "location_type": "ROOFTOP",
+      "result_types": [
+        "street_address",
+        "subpremise"
+      ],
+      "rule": "geocoder_country_fix"
+    },
+    {
+      "location_id": 12740,
+      "location_name": "Trinity Stem Cells – San José del Cabo",
+      "old_country_code": "US",
+      "old_country_name": "United States",
+      "old_region": "TX",
+      "old_locality": "Laredo",
+      "old_latitude": null,
+      "old_longitude": null,
+      "new_country_code": "MX",
+      "new_country_name": "Mexico",
+      "new_region": "B.C.S.",
+      "new_locality": "San José del Cabo",
+      "new_latitude": 23.054326,
+      "new_longitude": -109.6939113,
+      "formatted_address": "P.º de Las Misiones 1942, Campo de Golf Fonatur, 23400 San José del Cabo, B.C.S., Mexico",
+      "location_type": "ROOFTOP",
+      "result_types": [
+        "street_address",
+        "subpremise"
+      ],
+      "rule": "geocoder_country_fix"
+    },
+    {
+      "location_id": 12741,
+      "location_name": "Trinity Stem Cells Cancún",
+      "old_country_code": "US",
+      "old_country_name": "United States",
+      "old_region": "TX",
+      "old_locality": "Laredo",
+      "old_latitude": null,
+      "old_longitude": null,
+      "new_country_code": "MX",
+      "new_country_name": "Mexico",
+      "new_region": "Q.R.",
+      "new_locality": "Cancún",
+      "new_latitude": 21.1522321,
+      "new_longitude": -86.8235638,
+      "formatted_address": "Retorno, Viento 15, capilla ecumenica, 77500 Cancún, Q.R., Mexico",
+      "location_type": "ROOFTOP",
+      "result_types": [
+        "doctor",
+        "establishment",
+        "health",
+        "hospital",
+        "point_of_interest"
+      ],
+      "rule": "geocoder_country_fix"
+    },
+    {
+      "location_id": 12742,
+      "location_name": "Trinity Stem Cells Guadalajara",
+      "old_country_code": "US",
+      "old_country_name": "United States",
+      "old_region": "TX",
+      "old_locality": "Laredo",
+      "old_latitude": null,
+      "old_longitude": null,
+      "new_country_code": "MX",
+      "new_country_name": "Mexico",
+      "new_region": "Jal.",
+      "new_locality": "Zapopan",
+      "new_latitude": 20.7218921,
+      "new_longitude": -103.4296447,
+      "formatted_address": "Av. Central Guillermo Gonzalez Camarena 911, Residencial Poniente, 45136 Zapopan, Jal., Mexico",
+      "location_type": "ROOFTOP",
+      "result_types": [
+        "establishment",
+        "health",
+        "hospital",
+        "point_of_interest"
+      ],
+      "rule": "geocoder_country_fix"
+    },
+    {
+      "location_id": 12743,
+      "location_name": "Trinity Stem Cells Los Algodones",
+      "old_country_code": "US",
+      "old_country_name": "United States",
+      "old_region": "TX",
+      "old_locality": "Laredo",
+      "old_latitude": null,
+      "old_longitude": null,
+      "new_country_code": "MX",
+      "new_country_name": "Mexico",
+      "new_region": "B.C.",
+      "new_locality": "Vicente Guerrero",
+      "new_latitude": 32.7170308,
+      "new_longitude": -114.726396,
+      "formatted_address": "Calz. Saratoga 196-local # 4, Vicente Guerrero, 21970 Vicente Guerrero, B.C., Mexico",
+      "location_type": "ROOFTOP",
+      "result_types": [
+        "street_address",
+        "subpremise"
+      ],
+      "rule": "geocoder_country_fix"
+    },
+    {
+      "location_id": 12744,
+      "location_name": "Trinity Stem Cells Monterrey",
+      "old_country_code": "US",
+      "old_country_name": "United States",
+      "old_region": "TX",
+      "old_locality": "Laredo",
+      "old_latitude": null,
+      "old_longitude": null,
+      "new_country_code": "MX",
+      "new_country_name": "Mexico",
+      "new_region": "N.L.",
+      "new_locality": "Monterrey",
+      "new_latitude": 25.6694161,
+      "new_longitude": -100.3534173,
+      "formatted_address": "Dr. Fernando Guajardo 155, Los Doctores, 64710 Monterrey, N.L., Mexico",
+      "location_type": "ROOFTOP",
+      "result_types": [
+        "establishment",
+        "health",
+        "hospital",
+        "point_of_interest"
+      ],
+      "rule": "geocoder_country_fix"
+    },
+    {
+      "location_id": 12745,
+      "location_name": "Trinity Stem Cells Nuevo Laredo",
+      "old_country_code": "US",
+      "old_country_name": "United States",
+      "old_region": "TX",
+      "old_locality": "Laredo",
+      "old_latitude": null,
+      "old_longitude": null,
+      "new_country_code": "MX",
+      "new_country_name": "Mexico",
+      "new_region": "Tamps.",
+      "new_locality": "Nuevo Laredo",
+      "new_latitude": 27.458067,
+      "new_longitude": -99.524343,
+      "formatted_address": "Priv. Esteban Vaca Calderón 4400, Colonia Electricistas, 88298 Nuevo Laredo, Tamps., Mexico",
+      "location_type": "ROOFTOP",
+      "result_types": [
+        "establishment",
+        "health",
+        "hospital",
+        "point_of_interest"
+      ],
+      "rule": "geocoder_country_fix"
+    },
+    {
+      "location_id": 13368,
+      "location_name": "ZignaGenix",
+      "old_country_code": "US",
+      "old_country_name": "United States",
+      "old_region": "CA",
+      "old_locality": "San Diego",
+      "old_latitude": null,
+      "old_longitude": null,
+      "new_country_code": "MX",
+      "new_country_name": "Mexico",
+      "new_region": "B.C.",
+      "new_locality": "Tijuana",
+      "new_latitude": 32.5229907,
+      "new_longitude": -117.0108365,
+      "formatted_address": "Torre Quattro, Zona Urbana Rio Tijuana, 22010 Tijuana, B.C., Mexico",
+      "location_type": "ROOFTOP",
+      "result_types": [
+        "premise",
+        "street_address"
+      ],
+      "rule": "geocoder_country_fix"
+    }
+  ],
+  "geocenter_recoveries_sample": [
+    {
+      "location_id": 1461,
+      "location_name": "Harmony Functional Medicine",
+      "old_latitude": null,
+      "old_longitude": null,
+      "new_latitude": 30.2244041,
+      "new_longitude": -97.7618736,
+      "formatted_address": "3903 S Congress Ave, Austin, TX 78704, USA",
+      "location_type": "GEOMETRIC_CENTER",
+      "result_types": [
+        "premise",
+        "street_address"
+      ],
+      "result_country_code": "US",
+      "rule": "geometric_center_street_level"
+    },
+    {
+      "location_id": 1527,
+      "location_name": "Aeterna Longevity Lab",
+      "old_latitude": null,
+      "old_longitude": null,
+      "new_latitude": 41.4137103,
+      "new_longitude": 2.1424157,
+      "formatted_address": "Av. de Vallcarca, 151, Gràcia, 08023 Barcelona, Spain",
+      "location_type": "GEOMETRIC_CENTER",
+      "result_types": [
+        "premise",
+        "street_address"
+      ],
+      "result_country_code": "ES",
+      "rule": "geometric_center_street_level"
+    },
+    {
+      "location_id": 1529,
+      "location_name": "ATA Medical",
+      "old_latitude": null,
+      "old_longitude": null,
+      "new_latitude": 41.3912203,
+      "new_longitude": 2.1233913,
+      "formatted_address": "Passeig de Manuel Girona, 33, Sarrià-Sant Gervasi, 08034 Barcelona, Spain",
+      "location_type": "GEOMETRIC_CENTER",
+      "result_types": [
+        "premise",
+        "street_address"
+      ],
+      "result_country_code": "ES",
+      "rule": "geometric_center_street_level"
+    },
+    {
+      "location_id": 1991,
+      "location_name": "BodySpec",
+      "old_latitude": null,
+      "old_longitude": null,
+      "new_latitude": 33.9854375,
+      "new_longitude": -118.3861861,
+      "formatted_address": "5847 Uplander Wy, Culver City, CA 90230, USA",
+      "location_type": "GEOMETRIC_CENTER",
+      "result_types": [
+        "premise",
+        "street_address"
+      ],
+      "result_country_code": "US",
+      "rule": "geometric_center_street_level"
+    },
+    {
+      "location_id": 2136,
+      "location_name": "Body Scan Queensland",
+      "old_latitude": null,
+      "old_longitude": null,
+      "new_latitude": -27.4651002,
+      "new_longitude": 153.1076775,
+      "formatted_address": "197 Murarrie Rd, Murarrie QLD 4172, Australia",
+      "location_type": "GEOMETRIC_CENTER",
+      "result_types": [
+        "premise",
+        "street_address"
+      ],
+      "result_country_code": "AU",
+      "rule": "geometric_center_street_level"
+    },
+    {
+      "location_id": 2600,
+      "location_name": "UPKEEP Med Spa",
+      "old_latitude": null,
+      "old_longitude": null,
+      "new_latitude": 32.9512357,
+      "new_longitude": -96.8210319,
+      "formatted_address": "5100 Belt Line Rd, Dallas, TX 75254, USA",
+      "location_type": "GEOMETRIC_CENTER",
+      "result_types": [
+        "premise",
+        "street_address"
+      ],
+      "result_country_code": "US",
+      "rule": "geometric_center_street_level"
+    },
+    {
+      "location_id": 2687,
+      "location_name": "Primary Care Doctor Brooklyn",
+      "old_latitude": null,
+      "old_longitude": null,
+      "new_latitude": 40.6381222,
+      "new_longitude": -74.0754497,
+      "formatted_address": "155 Bay St, Staten Island, NY 10301, USA",
+      "location_type": "GEOMETRIC_CENTER",
+      "result_types": [
+        "premise",
+        "street_address"
+      ],
+      "result_country_code": "US",
+      "rule": "geometric_center_street_level"
+    },
+    {
+      "location_id": 2692,
+      "location_name": "NewYork-Presbyterian Medical Group Queens - Primary Care - Sunnyside",
+      "old_latitude": null,
+      "old_longitude": null,
+      "new_latitude": 40.667882,
+      "new_longitude": -73.9791462,
+      "formatted_address": "506 6th St, Brooklyn, NY 11215, USA",
+      "location_type": "GEOMETRIC_CENTER",
+      "result_types": [
+        "premise",
+        "street_address"
+      ],
+      "result_country_code": "US",
+      "rule": "geometric_center_street_level"
+    },
+    {
+      "location_id": 2761,
+      "location_name": "Best Medical Care - Primary Care Office",
+      "old_latitude": null,
+      "old_longitude": null,
+      "new_latitude": 40.7042413,
+      "new_longitude": -73.81787489999999,
+      "formatted_address": "136-21 Hillside Ave., Richmond Hill, NY 11418, USA",
+      "location_type": "GEOMETRIC_CENTER",
+      "result_types": [
+        "premise",
+        "street_address"
+      ],
+      "result_country_code": "US",
+      "rule": "geometric_center_street_level"
+    },
+    {
+      "location_id": 2932,
+      "location_name": "IV Concierge",
+      "old_latitude": null,
+      "old_longitude": null,
+      "new_latitude": 26.3693482,
+      "new_longitude": -80.1681502,
+      "formatted_address": "7777 Glades Rd, Boca Raton, FL 33434, USA",
+      "location_type": "GEOMETRIC_CENTER",
+      "result_types": [
+        "premise",
+        "street_address"
+      ],
+      "result_country_code": "US",
+      "rule": "geometric_center_street_level"
+    },
+    {
+      "location_id": 2950,
+      "location_name": "Bespoke Physical Therapy Hoboken",
+      "old_latitude": null,
+      "old_longitude": null,
+      "new_latitude": 47.60825209999999,
+      "new_longitude": -122.3237206,
+      "formatted_address": "1124 Columbia St, Seattle, WA 98104, USA",
+      "location_type": "GEOMETRIC_CENTER",
+      "result_types": [
+        "premise",
+        "street_address"
+      ],
+      "result_country_code": "US",
+      "rule": "geometric_center_street_level"
+    },
+    {
+      "location_id": 3107,
+      "location_name": "ChillRx Franchising LLC",
+      "old_latitude": null,
+      "old_longitude": null,
+      "new_latitude": 40.6489854,
+      "new_longitude": -74.3475668,
+      "formatted_address": "Parking lot, 327 South Ave W, Westfield, NJ 07090, USA",
+      "location_type": "GEOMETRIC_CENTER",
+      "result_types": [
+        "premise",
+        "street_address"
+      ],
+      "result_country_code": "US",
+      "rule": "geometric_center_street_level"
+    },
+    {
+      "location_id": 3125,
+      "location_name": "Highland Park Concierge Longevity & Performance Clinic by MultiGen",
+      "old_latitude": null,
+      "old_longitude": null,
+      "new_latitude": 29.6095683,
+      "new_longitude": -98.6067913,
+      "formatted_address": "17803 La Cantera Terrace, San Antonio, TX 78256, USA",
+      "location_type": "GEOMETRIC_CENTER",
+      "result_types": [
+        "premise",
+        "street_address"
+      ],
+      "result_country_code": "US",
+      "rule": "geometric_center_street_level"
+    },
+    {
+      "location_id": 3191,
+      "location_name": "Medicine Center Intégrative",
+      "old_latitude": null,
+      "old_longitude": null,
+      "new_latitude": 46.1887048,
+      "new_longitude": 6.161698599999999,
+      "formatted_address": "Chem. de Beau-Soleil 20, 1206 Genève, Switzerland",
+      "location_type": "GEOMETRIC_CENTER",
+      "result_types": [
+        "premise",
+        "street_address"
+      ],
+      "result_country_code": "CH",
+      "rule": "geometric_center_street_level"
+    },
+    {
+      "location_id": 3203,
+      "location_name": "Anytime Fitness - Northgate",
+      "old_latitude": null,
+      "old_longitude": null,
+      "new_latitude": 33.9854375,
+      "new_longitude": -118.3861861,
+      "formatted_address": "5847 Uplander Wy, Culver City, CA 90230, USA",
+      "location_type": "GEOMETRIC_CENTER",
+      "result_types": [
+        "premise",
+        "street_address"
+      ],
+      "result_country_code": "US",
+      "rule": "geometric_center_street_level"
+    },
+    {
+      "location_id": 3337,
+      "location_name": "Adult Stem Cell Transplantation Program at Dana-Farber",
+      "old_latitude": null,
+      "old_longitude": null,
+      "new_latitude": 42.33776539999999,
+      "new_longitude": -71.1082976,
+      "formatted_address": "450 Brookline Ave, Boston, MA 02215, USA",
+      "location_type": "GEOMETRIC_CENTER",
+      "result_types": [
+        "premise",
+        "street_address"
+      ],
+      "result_country_code": "US",
+      "rule": "geometric_center_street_level"
+    },
+    {
+      "location_id": 3582,
+      "location_name": "Allina Health Orthopedics – St. Paul",
+      "old_latitude": null,
+      "old_longitude": null,
+      "new_latitude": 44.6820333,
+      "new_longitude": -93.2871303,
+      "formatted_address": "18465 Orchard Trail, Lakeville, MN 55044, USA",
+      "location_type": "GEOMETRIC_CENTER",
+      "result_types": [
+        "premise",
+        "street_address"
+      ],
+      "result_country_code": "US",
+      "rule": "geometric_center_street_level"
+    },
+    {
+      "location_id": 3607,
+      "location_name": "AMA Regenerative Medicine",
+      "old_latitude": null,
+      "old_longitude": null,
+      "new_latitude": 33.7126554,
+      "new_longitude": -117.8489091,
+      "formatted_address": "1570 Brookhollow Dr, Santa Ana, CA 92705, USA",
+      "location_type": "GEOMETRIC_CENTER",
+      "result_types": [
+        "premise",
+        "street_address"
+      ],
+      "result_country_code": "US",
+      "rule": "geometric_center_street_level"
+    },
+    {
+      "location_id": 3737,
+      "location_name": "The Therapy Zone",
+      "old_latitude": null,
+      "old_longitude": null,
+      "new_latitude": 40.5472873,
+      "new_longitude": -74.1666128,
+      "formatted_address": "3710 Richmond Ave, Staten Island, NY 10312, USA",
+      "location_type": "GEOMETRIC_CENTER",
+      "result_types": [
+        "premise",
+        "street_address"
+      ],
+      "result_country_code": "US",
+      "rule": "geometric_center_street_level"
+    },
+    {
+      "location_id": 3822,
+      "location_name": "Encompass Health Rehabilitation Hospital of Memphis",
+      "old_latitude": null,
+      "old_longitude": null,
+      "new_latitude": 35.1382215,
+      "new_longitude": -90.01894709999999,
+      "formatted_address": "1282 Union Ave, Memphis, TN 38104, USA",
+      "location_type": "GEOMETRIC_CENTER",
+      "result_types": [
+        "premise",
+        "street_address"
+      ],
+      "result_country_code": "US",
+      "rule": "geometric_center_street_level"
+    },
+    {
+      "location_id": 3825,
+      "location_name": "EuroPhoria Medical & Personal Spa",
+      "old_latitude": null,
+      "old_longitude": null,
+      "new_latitude": 35.3553996,
+      "new_longitude": -119.0932627,
+      "formatted_address": "8200 Stockdale Hwy, Bakersfield, CA 93311, USA",
+      "location_type": "GEOMETRIC_CENTER",
+      "result_types": [
+        "premise",
+        "street_address"
+      ],
+      "result_country_code": "US",
+      "rule": "geometric_center_street_level"
+    },
+    {
+      "location_id": 3855,
+      "location_name": "Hughston Clinic Montgomery (Lomac)",
+      "old_latitude": null,
+      "old_longitude": null,
+      "new_latitude": 32.5081667,
+      "new_longitude": -85.00872729999999,
+      "formatted_address": "4401 Riverchase Dr, Phenix City, AL 36867, USA",
+      "location_type": "GEOMETRIC_CENTER",
+      "result_types": [
+        "premise",
+        "street_address"
+      ],
+      "result_country_code": "US",
+      "rule": "geometric_center_street_level"
+    },
+    {
+      "location_id": 3863,
+      "location_name": "Joseph U. Barker, MD",
+      "old_latitude": null,
+      "old_longitude": null,
+      "new_latitude": 35.8224886,
+      "new_longitude": -78.7102415,
+      "formatted_address": "3001 Edwards Mill Rd, Raleigh, NC 27612, USA",
+      "location_type": "GEOMETRIC_CENTER",
+      "result_types": [
+        "premise",
+        "street_address"
+      ],
+      "result_country_code": "US",
+      "rule": "geometric_center_street_level"
+    },
+    {
+      "location_id": 3893,
+      "location_name": "Mobile Infirmary | Employee Health",
+      "old_latitude": null,
+      "old_longitude": null,
+      "new_latitude": 30.6967851,
+      "new_longitude": -88.08043359999999,
+      "formatted_address": "5 Mobile Infirmary Cir, Mobile, AL 36607, USA",
+      "location_type": "GEOMETRIC_CENTER",
+      "result_types": [
+        "premise",
+        "street_address"
+      ],
+      "result_country_code": "US",
+      "rule": "geometric_center_street_level"
+    },
+    {
+      "location_id": 4013,
+      "location_name": "Arkansas Spine and Pain",
+      "old_latitude": null,
+      "old_longitude": null,
+      "new_latitude": 34.8699358,
+      "new_longitude": -92.1264592,
+      "formatted_address": "140 John Harden Dr, Jacksonville, AR 72076, USA",
+      "location_type": "GEOMETRIC_CENTER",
+      "result_types": [
+        "premise",
+        "street_address"
+      ],
+      "result_country_code": "US",
+      "rule": "geometric_center_street_level"
+    },
+    {
+      "location_id": 4085,
+      "location_name": "Connections Physical Therapy – Worcester",
+      "old_latitude": null,
+      "old_longitude": null,
+      "new_latitude": 42.8423846,
+      "new_longitude": -70.8934687,
+      "formatted_address": "Parking lot, 191 Elm St, Salisbury, MA 01952, USA",
+      "location_type": "GEOMETRIC_CENTER",
+      "result_types": [
+        "premise",
+        "street_address"
+      ],
+      "result_country_code": "US",
+      "rule": "geometric_center_street_level"
+    },
+    {
+      "location_id": 4123,
+      "location_name": "Family Care Center",
+      "old_latitude": null,
+      "old_longitude": null,
+      "new_latitude": 41.8708828,
+      "new_longitude": -71.37545510000001,
+      "formatted_address": "111 Brewster St, Pawtucket, RI 02860, USA",
+      "location_type": "GEOMETRIC_CENTER",
+      "result_types": [
+        "premise",
+        "street_address"
+      ],
+      "result_country_code": "US",
+      "rule": "geometric_center_street_level"
+    },
+    {
+      "location_id": 4141,
+      "location_name": "Greater Therapy Centers – Plano, TX",
+      "old_latitude": null,
+      "old_longitude": null,
+      "new_latitude": 33.1437491,
+      "new_longitude": -96.6766763,
+      "formatted_address": "963 State Hwy 121, Allen, TX 75013, USA",
+      "location_type": "GEOMETRIC_CENTER",
+      "result_types": [
+        "premise",
+        "street_address"
+      ],
+      "result_country_code": "US",
+      "rule": "geometric_center_street_level"
+    },
+    {
+      "location_id": 4149,
+      "location_name": "Greater Therapy Centers – Plano, TX",
+      "old_latitude": null,
+      "old_longitude": null,
+      "new_latitude": 33.0464821,
+      "new_longitude": -96.84079500000001,
+      "formatted_address": "3501 Midway Rd, Plano, TX 75093, USA",
+      "location_type": "GEOMETRIC_CENTER",
+      "result_types": [
+        "premise",
+        "street_address"
+      ],
+      "result_country_code": "US",
+      "rule": "geometric_center_street_level"
+    },
+    {
+      "location_id": 4204,
+      "location_name": "Madonna Rehabilitation Hospitals-Lincoln Campus",
+      "old_latitude": null,
+      "old_longitude": null,
+      "new_latitude": 40.789871,
+      "new_longitude": -96.64677499999999,
+      "formatted_address": "5401 South St, Lincoln, NE 68506, USA",
+      "location_type": "GEOMETRIC_CENTER",
+      "result_types": [
+        "premise",
+        "street_address"
+      ],
+      "result_country_code": "US",
+      "rule": "geometric_center_street_level"
+    },
+    {
+      "location_id": 4230,
+      "location_name": "North Texas Pain Recovery Center",
+      "old_latitude": null,
+      "old_longitude": null,
+      "new_latitude": 32.6823687,
+      "new_longitude": -97.2145611,
+      "formatted_address": "6702 W Poly Webb Rd, Arlington, TX 76016, USA",
+      "location_type": "GEOMETRIC_CENTER",
+      "result_types": [
+        "premise",
+        "street_address"
+      ],
+      "result_country_code": "US",
+      "rule": "geometric_center_street_level"
+    },
+    {
+      "location_id": 4265,
+      "location_name": "Hamilton General Hospital",
+      "old_latitude": null,
+      "old_longitude": null,
+      "new_latitude": 43.1886264,
+      "new_longitude": -79.5417277,
+      "formatted_address": "169 Main St E, Grimsby, ON L3M 1P3, Canada",
+      "location_type": "GEOMETRIC_CENTER",
+      "result_types": [
+        "premise",
+        "street_address"
+      ],
+      "result_country_code": "CA",
+      "rule": "geometric_center_street_level"
+    },
+    {
+      "location_id": 4377,
+      "location_name": "Joseph Campbell Jr, MD",
+      "old_latitude": null,
+      "old_longitude": null,
+      "new_latitude": 36.5780068,
+      "new_longitude": -79.4055025,
+      "formatted_address": "142 S Main St, Danville, VA 24541, USA",
+      "location_type": "GEOMETRIC_CENTER",
+      "result_types": [
+        "premise",
+        "street_address"
+      ],
+      "result_country_code": "US",
+      "rule": "geometric_center_street_level"
+    },
+    {
+      "location_id": 4378,
+      "location_name": "Joseph Campbell Jr, MD",
+      "old_latitude": null,
+      "old_longitude": null,
+      "new_latitude": 36.6981979,
+      "new_longitude": -79.86634610000002,
+      "formatted_address": "Parking lot, 320 Hospital Dr, Martinsville, VA 24112, USA",
+      "location_type": "GEOMETRIC_CENTER",
+      "result_types": [
+        "premise",
+        "street_address"
+      ],
+      "result_country_code": "US",
+      "rule": "geometric_center_street_level"
+    },
+    {
+      "location_id": 4391,
+      "location_name": "Methodist Richardson Medical Group",
+      "old_latitude": null,
+      "old_longitude": null,
+      "new_latitude": 32.7612026,
+      "new_longitude": -96.8245105,
+      "formatted_address": "1441 N Beckley Ave, Dallas, TX 75203, USA",
+      "location_type": "GEOMETRIC_CENTER",
+      "result_types": [
+        "premise",
+        "street_address"
+      ],
+      "result_country_code": "US",
+      "rule": "geometric_center_street_level"
+    },
+    {
+      "location_id": 4399,
+      "location_name": "Murphy Wainer Orthopedic Specialists",
+      "old_latitude": null,
+      "old_longitude": null,
+      "new_latitude": 36.0929998,
+      "new_longitude": -79.78238979999999,
+      "formatted_address": "1130 N Church St, Greensboro, NC 27405, USA",
+      "location_type": "GEOMETRIC_CENTER",
+      "result_types": [
+        "premise",
+        "street_address"
+      ],
+      "result_country_code": "US",
+      "rule": "geometric_center_street_level"
+    },
+    {
+      "location_id": 4514,
+      "location_name": "NewYork-Presbyterian Medical Group Westchester - Primary Care & Specialty Care",
+      "old_latitude": null,
+      "old_longitude": null,
+      "new_latitude": 41.028076,
+      "new_longitude": -73.7540373,
+      "formatted_address": "21 Bloomingdale Rd, White Plains, NY 10605, USA",
+      "location_type": "GEOMETRIC_CENTER",
+      "result_types": [
+        "premise",
+        "street_address"
+      ],
+      "result_country_code": "US",
+      "rule": "geometric_center_street_level"
+    },
+    {
+      "location_id": 4517,
+      "location_name": "NewYork-Presbyterian Medical Group Westchester - Primary Care & Specialty Care",
+      "old_latitude": null,
+      "old_longitude": null,
+      "new_latitude": 40.7101668,
+      "new_longitude": -74.0048564,
+      "formatted_address": "170 William St, New York, NY 10038, USA",
+      "location_type": "GEOMETRIC_CENTER",
+      "result_types": [
+        "premise",
+        "street_address"
+      ],
+      "result_country_code": "US",
+      "rule": "geometric_center_street_level"
+    },
+    {
+      "location_id": 4519,
+      "location_name": "NewYork-Presbyterian Medical Group Westchester - Primary Care & Specialty Care",
+      "old_latitude": null,
+      "old_longitude": null,
+      "new_latitude": 40.7648658,
+      "new_longitude": -73.9539836,
+      "formatted_address": "525 E 68th St, New York, NY 10065, USA",
+      "location_type": "GEOMETRIC_CENTER",
+      "result_types": [
+        "premise",
+        "street_address"
+      ],
+      "result_country_code": "US",
+      "rule": "geometric_center_street_level"
+    },
+    {
+      "location_id": 4555,
+      "location_name": "Augusta Health Multispeciality Clinic Harrisonburg",
+      "old_latitude": null,
+      "old_longitude": null,
+      "new_latitude": 38.0949055,
+      "new_longitude": -78.98502789999999,
+      "formatted_address": "78 Medical Center Cir, Fishersville, VA 22939, USA",
+      "location_type": "GEOMETRIC_CENTER",
+      "result_types": [
+        "premise",
+        "street_address"
+      ],
+      "result_country_code": "US",
+      "rule": "geometric_center_street_level"
+    },
+    {
+      "location_id": 4556,
+      "location_name": "AUM Physical Therapy & Yoga Center",
+      "old_latitude": null,
+      "old_longitude": null,
+      "new_latitude": 35.3675355,
+      "new_longitude": -119.1103405,
+      "formatted_address": "1002 Calloway Dr, Bakersfield, CA 93312, USA",
+      "location_type": "GEOMETRIC_CENTER",
+      "result_types": [
+        "premise",
+        "street_address"
+      ],
+      "result_country_code": "US",
+      "rule": "geometric_center_street_level"
+    },
+    {
+      "location_id": 4595,
+      "location_name": "CHKD Sports Medicine in Ghent",
+      "old_latitude": null,
+      "old_longitude": null,
+      "new_latitude": 36.8626168,
+      "new_longitude": -76.3017886,
+      "formatted_address": "601 Childrens Ln, Norfolk, VA 23507, USA",
+      "location_type": "GEOMETRIC_CENTER",
+      "result_types": [
+        "premise",
+        "street_address"
+      ],
+      "result_country_code": "US",
+      "rule": "geometric_center_street_level"
+    },
+    {
+      "location_id": 4599,
+      "location_name": "Coalition Health Center",
+      "old_latitude": null,
+      "old_longitude": null,
+      "new_latitude": 61.181422,
+      "new_longitude": -149.8708686,
+      "formatted_address": "701 E Tudor Rd, Anchorage, AK 99503, USA",
+      "location_type": "GEOMETRIC_CENTER",
+      "result_types": [
+        "premise",
+        "street_address"
+      ],
+      "result_country_code": "US",
+      "rule": "geometric_center_street_level"
+    },
+    {
+      "location_id": 4603,
+      "location_name": "Crimson Clinic",
+      "old_latitude": null,
+      "old_longitude": null,
+      "new_latitude": 37.1863783,
+      "new_longitude": -77.3991879,
+      "formatted_address": "3101 Johnson Rd, Petersburg, VA 23805, USA",
+      "location_type": "GEOMETRIC_CENTER",
+      "result_types": [
+        "premise",
+        "street_address"
+      ],
+      "result_country_code": "US",
+      "rule": "geometric_center_street_level"
+    },
+    {
+      "location_id": 4681,
+      "location_name": "Hoag Health Center – Huntington Beach",
+      "old_latitude": null,
+      "old_longitude": null,
+      "new_latitude": 33.6779803,
+      "new_longitude": -117.9880491,
+      "formatted_address": "19582 Beach Blvd, Huntington Beach, CA 92648, USA",
+      "location_type": "GEOMETRIC_CENTER",
+      "result_types": [
+        "premise",
+        "street_address"
+      ],
+      "result_country_code": "US",
+      "rule": "geometric_center_street_level"
+    },
+    {
+      "location_id": 4703,
+      "location_name": "Kids Center for Pediatric Therapies (Central Campus)",
+      "old_latitude": null,
+      "old_longitude": null,
+      "new_latitude": 38.2190059,
+      "new_longitude": -85.7334925,
+      "formatted_address": "982 Eastern Pkwy, Louisville, KY 40217, USA",
+      "location_type": "GEOMETRIC_CENTER",
+      "result_types": [
+        "premise",
+        "street_address"
+      ],
+      "result_country_code": "US",
+      "rule": "geometric_center_street_level"
+    },
+    {
+      "location_id": 4705,
+      "location_name": "LCMC Health Bienville Health Center",
+      "old_latitude": null,
+      "old_longitude": null,
+      "new_latitude": 29.9499107,
+      "new_longitude": -90.0754797,
+      "formatted_address": "1100 Poydras St, New Orleans, LA 70113, USA",
+      "location_type": "GEOMETRIC_CENTER",
+      "result_types": [
+        "premise",
+        "street_address"
+      ],
+      "result_country_code": "US",
+      "rule": "geometric_center_street_level"
+    },
+    {
+      "location_id": 4708,
+      "location_name": "LCMC Health Bienville Health Center",
+      "old_latitude": null,
+      "old_longitude": null,
+      "new_latitude": 30.41089049999999,
+      "new_longitude": -90.080809,
+      "formatted_address": "95 Judge Tanner Blvd, Covington, LA 70433, USA",
+      "location_type": "GEOMETRIC_CENTER",
+      "result_types": [
+        "premise",
+        "street_address"
+      ],
+      "result_country_code": "US",
+      "rule": "geometric_center_street_level"
+    },
+    {
+      "location_id": 4750,
+      "location_name": "Next Generation Stem Cell Clinic",
+      "old_latitude": null,
+      "old_longitude": null,
+      "new_latitude": 28.3786883,
+      "new_longitude": -80.7029023,
+      "formatted_address": "1205 N Courtenay Pkwy, Merritt Island, FL 32953, USA",
+      "location_type": "GEOMETRIC_CENTER",
+      "result_types": [
+        "premise",
+        "street_address"
+      ],
+      "result_country_code": "US",
+      "rule": "geometric_center_street_level"
+    },
+    {
+      "location_id": 4872,
+      "location_name": "Entira Family Clinics – West St. Paul",
+      "old_latitude": null,
+      "old_longitude": null,
+      "new_latitude": 44.9916608,
+      "new_longitude": -93.14492399999999,
+      "formatted_address": "1050 Larpenteur Ave W, St Paul, MN 55117, USA",
+      "location_type": "GEOMETRIC_CENTER",
+      "result_types": [
+        "premise",
+        "street_address"
+      ],
+      "result_country_code": "US",
+      "rule": "geometric_center_street_level"
+    },
+    {
+      "location_id": 4945,
+      "location_name": "NWA Smash Lab",
+      "old_latitude": null,
+      "old_longitude": null,
+      "new_latitude": 36.047567,
+      "new_longitude": -94.166574,
+      "formatted_address": "1585 S W Ave, Fayetteville, AR 72701, USA",
+      "location_type": "GEOMETRIC_CENTER",
+      "result_types": [
+        "premise",
+        "street_address"
+      ],
+      "result_country_code": "US",
+      "rule": "geometric_center_street_level"
+    },
+    {
+      "location_id": 4948,
+      "location_name": "Orange County Mobile IV Therapy",
+      "old_latitude": null,
+      "old_longitude": null,
+      "new_latitude": 33.7474915,
+      "new_longitude": -117.8631942,
+      "formatted_address": "450 E 4th St, Santa Ana, CA 92701, USA",
+      "location_type": "GEOMETRIC_CENTER",
+      "result_types": [
+        "premise",
+        "street_address"
+      ],
+      "result_country_code": "US",
+      "rule": "geometric_center_street_level"
+    },
+    {
+      "location_id": 4982,
+      "location_name": "PÜR LIFE Medical – Austin",
+      "old_latitude": null,
+      "old_longitude": null,
+      "new_latitude": 30.3696754,
+      "new_longitude": -97.892911,
+      "formatted_address": "2900 N Quinlan Park Rd, Austin, TX 78732, USA",
+      "location_type": "GEOMETRIC_CENTER",
+      "result_types": [
+        "premise",
+        "street_address"
+      ],
+      "result_country_code": "US",
+      "rule": "geometric_center_street_level"
+    },
+    {
+      "location_id": 5036,
+      "location_name": "ATA Medical",
+      "old_latitude": null,
+      "old_longitude": null,
+      "new_latitude": 40.4631366,
+      "new_longitude": -3.785015,
+      "formatted_address": "C. de Pleyades, 25, Moncloa - Aravaca, 28023 Madrid, Spain",
+      "location_type": "GEOMETRIC_CENTER",
+      "result_types": [
+        "premise",
+        "street_address"
+      ],
+      "result_country_code": "ES",
+      "rule": "geometric_center_street_level"
+    },
+    {
+      "location_id": 5065,
+      "location_name": "Augusta Health Sports Medicine",
+      "old_latitude": null,
+      "old_longitude": null,
+      "new_latitude": 38.0949055,
+      "new_longitude": -78.98502789999999,
+      "formatted_address": "78 Medical Center Cir, Fishersville, VA 22939, USA",
+      "location_type": "GEOMETRIC_CENTER",
+      "result_types": [
+        "premise",
+        "street_address"
+      ],
+      "result_country_code": "US",
+      "rule": "geometric_center_street_level"
+    },
+    {
+      "location_id": 5073,
+      "location_name": "Baptist Health Therapy Center-Heights",
+      "old_latitude": null,
+      "old_longitude": null,
+      "new_latitude": 33.2207691,
+      "new_longitude": -92.6707469,
+      "formatted_address": "700 W Grove St, El Dorado, AR 71730, USA",
+      "location_type": "GEOMETRIC_CENTER",
+      "result_types": [
+        "premise",
+        "street_address"
+      ],
+      "result_country_code": "US",
+      "rule": "geometric_center_street_level"
+    },
+    {
+      "location_id": 5085,
+      "location_name": "Baylor Scott & White Charles A. Sammons Cancer Center – Dallas",
+      "old_latitude": null,
+      "old_longitude": null,
+      "new_latitude": 32.729545,
+      "new_longitude": -97.34584989999999,
+      "formatted_address": "1400 8th Ave, Fort Worth, TX 76104, USA",
+      "location_type": "GEOMETRIC_CENTER",
+      "result_types": [
+        "premise",
+        "street_address"
+      ],
+      "result_country_code": "US",
+      "rule": "geometric_center_street_level"
+    },
+    {
+      "location_id": 5094,
+      "location_name": "Baylor Scott & White Charles A. Sammons Cancer Center – Dallas",
+      "old_latitude": null,
+      "old_longitude": null,
+      "new_latitude": 32.9341727,
+      "new_longitude": -97.09353519999999,
+      "formatted_address": "1650 W College St, Grapevine, TX 76051, USA",
+      "location_type": "GEOMETRIC_CENTER",
+      "result_types": [
+        "premise",
+        "street_address"
+      ],
+      "result_country_code": "US",
+      "rule": "geometric_center_street_level"
+    },
+    {
+      "location_id": 5097,
+      "location_name": "Baylor Scott & White Charles A. Sammons Cancer Center – Dallas",
+      "old_latitude": null,
+      "old_longitude": null,
+      "new_latitude": 33.0135211,
+      "new_longitude": -96.7910759,
+      "formatted_address": "4700 Alliance Blvd, Plano, TX 75093, USA",
+      "location_type": "GEOMETRIC_CENTER",
+      "result_types": [
+        "premise",
+        "street_address"
+      ],
+      "result_country_code": "US",
+      "rule": "geometric_center_street_level"
+    },
+    {
+      "location_id": 5098,
+      "location_name": "Baylor Scott & White Charles A. Sammons Cancer Center – Dallas",
+      "old_latitude": null,
+      "old_longitude": null,
+      "new_latitude": 31.07357619999999,
+      "new_longitude": -97.36163719999999,
+      "formatted_address": "2401 S 31st St, Temple, TX 76508, USA",
+      "location_type": "GEOMETRIC_CENTER",
+      "result_types": [
+        "premise",
+        "street_address"
+      ],
+      "result_country_code": "US",
+      "rule": "geometric_center_street_level"
+    },
+    {
+      "location_id": 5233,
+      "location_name": "Methodist Le Bonheur Healthcare",
+      "old_latitude": null,
+      "old_longitude": null,
+      "new_latitude": 35.1358666,
+      "new_longitude": -90.0192884,
+      "formatted_address": "1265 Union Ave, Memphis, TN 38104, USA",
+      "location_type": "GEOMETRIC_CENTER",
+      "result_types": [
+        "premise",
+        "street_address"
+      ],
+      "result_country_code": "US",
+      "rule": "geometric_center_street_level"
+    },
+    {
+      "location_id": 5234,
+      "location_name": "Methodist Le Bonheur Healthcare",
+      "old_latitude": null,
+      "old_longitude": null,
+      "new_latitude": 35.0916932,
+      "new_longitude": -89.8066441,
+      "formatted_address": "Methodist Le Bonheur Germantown Hospital, 7691 Poplar Ave, Germantown, TN 38138, USA",
+      "location_type": "GEOMETRIC_CENTER",
+      "result_types": [
+        "premise",
+        "street_address"
+      ],
+      "result_country_code": "US",
+      "rule": "geometric_center_street_level"
+    },
+    {
+      "location_id": 5243,
+      "location_name": "Midwestern University Multispecialty Clinics",
+      "old_latitude": null,
+      "old_longitude": null,
+      "new_latitude": 33.6649243,
+      "new_longitude": -112.183384,
+      "formatted_address": "19555 N 59th Ave, Glendale, AZ 85308, USA",
+      "location_type": "GEOMETRIC_CENTER",
+      "result_types": [
+        "premise",
+        "street_address"
+      ],
+      "result_country_code": "US",
+      "rule": "geometric_center_street_level"
+    },
+    {
+      "location_id": 5247,
+      "location_name": "Montgomery Cancer Center | Prattville Medical Park",
+      "old_latitude": null,
+      "old_longitude": null,
+      "new_latitude": 32.3587533,
+      "new_longitude": -86.2373653,
+      "formatted_address": "4145 Carmichael Rd, Montgomery, AL 36106, USA",
+      "location_type": "GEOMETRIC_CENTER",
+      "result_types": [
+        "premise",
+        "street_address"
+      ],
+      "result_country_code": "US",
+      "rule": "geometric_center_street_level"
+    },
+    {
+      "location_id": 5321,
+      "location_name": "Augusta University",
+      "old_latitude": null,
+      "old_longitude": null,
+      "new_latitude": 33.4713125,
+      "new_longitude": -81.9878626,
+      "formatted_address": "1120 15th St, Augusta, GA 30912, USA",
+      "location_type": "GEOMETRIC_CENTER",
+      "result_types": [
+        "premise",
+        "street_address"
+      ],
+      "result_country_code": "US",
+      "rule": "geometric_center_street_level"
+    },
+    {
+      "location_id": 5344,
+      "location_name": "Cardinal Hill Outpatient Clinic",
+      "old_latitude": null,
+      "old_longitude": null,
+      "new_latitude": 38.0305679,
+      "new_longitude": -84.507865,
+      "formatted_address": "1000 S Limestone, Lexington, KY 40506, USA",
+      "location_type": "GEOMETRIC_CENTER",
+      "result_types": [
+        "premise",
+        "street_address"
+      ],
+      "result_country_code": "US",
+      "rule": "geometric_center_street_level"
+    },
+    {
+      "location_id": 5350,
+      "location_name": "Cendant Stem Cell Center",
+      "old_latitude": null,
+      "old_longitude": null,
+      "new_latitude": 41.3077399,
+      "new_longitude": -96.13762179999999,
+      "formatted_address": "14242 Fort St, Omaha, NE 68164, USA",
+      "location_type": "GEOMETRIC_CENTER",
+      "result_types": [
+        "premise",
+        "street_address"
+      ],
+      "result_country_code": "US",
+      "rule": "geometric_center_street_level"
+    },
+    {
+      "location_id": 5365,
+      "location_name": "Center For Cell And Gene Therapy",
+      "old_latitude": null,
+      "old_longitude": null,
+      "new_latitude": 29.7105673,
+      "new_longitude": -95.3960293,
+      "formatted_address": "1 Baylor Plz, Houston, TX 77030, USA",
+      "location_type": "GEOMETRIC_CENTER",
+      "result_types": [
+        "premise",
+        "street_address"
+      ],
+      "result_country_code": "US",
+      "rule": "geometric_center_street_level"
+    },
+    {
+      "location_id": 5376,
+      "location_name": "Children’s Hospital of New Jersey at Newark Beth Israel Medical Center",
+      "old_latitude": null,
+      "old_longitude": null,
+      "new_latitude": 40.7851601,
+      "new_longitude": -74.1752636,
+      "formatted_address": "1 Clara Maass Dr, Belleville, NJ 07109, USA",
+      "location_type": "GEOMETRIC_CENTER",
+      "result_types": [
+        "premise",
+        "street_address"
+      ],
+      "result_country_code": "US",
+      "rule": "geometric_center_street_level"
+    },
+    {
+      "location_id": 5377,
+      "location_name": "Children’s Hospital of New Jersey at Newark Beth Israel Medical Center",
+      "old_latitude": null,
+      "old_longitude": null,
+      "new_latitude": 39.96382639999999,
+      "new_longitude": -74.21573149999999,
+      "formatted_address": "99 NJ-37, Toms River, NJ 08755, USA",
+      "location_type": "GEOMETRIC_CENTER",
+      "result_types": [
+        "premise",
+        "street_address"
+      ],
+      "result_country_code": "US",
+      "rule": "geometric_center_street_level"
+    },
+    {
+      "location_id": 5381,
+      "location_name": "Children’s Hospital of New Jersey at Newark Beth Israel Medical Center",
+      "old_latitude": null,
+      "old_longitude": null,
+      "new_latitude": 40.0734654,
+      "new_longitude": -74.21903309999999,
+      "formatted_address": "600 River Ave, Lakewood, NJ 08701, USA",
+      "location_type": "GEOMETRIC_CENTER",
+      "result_types": [
+        "premise",
+        "street_address"
+      ],
+      "result_country_code": "US",
+      "rule": "geometric_center_street_level"
+    },
+    {
+      "location_id": 5382,
+      "location_name": "Children’s Hospital of New Jersey at Newark Beth Israel Medical Center",
+      "old_latitude": null,
+      "old_longitude": null,
+      "new_latitude": 40.4951771,
+      "new_longitude": -74.4513927,
+      "formatted_address": "1 Robert Wood Johnson Pl, New Brunswick, NJ 08901, USA",
+      "location_type": "GEOMETRIC_CENTER",
+      "result_types": [
+        "premise",
+        "street_address"
+      ],
+      "result_country_code": "US",
+      "rule": "geometric_center_street_level"
+    },
+    {
+      "location_id": 5391,
+      "location_name": "Cmh Center For Family Health: Moorehead Kristen D",
+      "old_latitude": null,
+      "old_longitude": null,
+      "new_latitude": 34.274062,
+      "new_longitude": -119.2576254,
+      "formatted_address": "147 N Brent St, Ventura, CA 93003, USA",
+      "location_type": "GEOMETRIC_CENTER",
+      "result_types": [
+        "premise",
+        "street_address"
+      ],
+      "result_country_code": "US",
+      "rule": "geometric_center_street_level"
+    },
+    {
+      "location_id": 5407,
+      "location_name": "Comprehensive Blood & Cancer Center (CBCC)",
+      "old_latitude": null,
+      "old_longitude": null,
+      "new_latitude": 35.3612091,
+      "new_longitude": -119.0747201,
+      "formatted_address": "6501 Truxtun Ave, Bakersfield, CA 93309, USA",
+      "location_type": "GEOMETRIC_CENTER",
+      "result_types": [
+        "premise",
+        "street_address"
+      ],
+      "result_country_code": "US",
+      "rule": "geometric_center_street_level"
+    },
+    {
+      "location_id": 5418,
+      "location_name": "DICK’S Sporting Goods",
+      "old_latitude": null,
+      "old_longitude": null,
+      "new_latitude": 33.6557178,
+      "new_longitude": -111.9263133,
+      "formatted_address": "7000 E Mayo Blvd, Phoenix, AZ 85054, USA",
+      "location_type": "GEOMETRIC_CENTER",
+      "result_types": [
+        "premise",
+        "street_address"
+      ],
+      "result_country_code": "US",
+      "rule": "geometric_center_street_level"
+    },
+    {
+      "location_id": 5423,
+      "location_name": "Dr. Alice S Pien, MD – AMA Regenerative Medicine",
+      "old_latitude": null,
+      "old_longitude": null,
+      "new_latitude": 33.7126554,
+      "new_longitude": -117.8489091,
+      "formatted_address": "1570 Brookhollow Dr, Santa Ana, CA 92705, USA",
+      "location_type": "GEOMETRIC_CENTER",
+      "result_types": [
+        "premise",
+        "street_address"
+      ],
+      "result_country_code": "US",
+      "rule": "geometric_center_street_level"
+    },
+    {
+      "location_id": 5434,
+      "location_name": "Dr. Thomas Kesman",
+      "old_latitude": null,
+      "old_longitude": null,
+      "new_latitude": 42.264678,
+      "new_longitude": -71.79647670000001,
+      "formatted_address": "123 Summer St, Worcester, MA 01608, USA",
+      "location_type": "GEOMETRIC_CENTER",
+      "result_types": [
+        "premise",
+        "street_address"
+      ],
+      "result_country_code": "US",
+      "rule": "geometric_center_street_level"
+    },
+    {
+      "location_id": 5445,
+      "location_name": "Fayetteville Diagnostic Clinic, A MANA Clinic",
+      "old_latitude": null,
+      "old_longitude": null,
+      "new_latitude": 36.1120373,
+      "new_longitude": -94.1560152,
+      "formatted_address": "3344 N Futrall Dr, Fayetteville, AR 72703, USA",
+      "location_type": "GEOMETRIC_CENTER",
+      "result_types": [
+        "premise",
+        "street_address"
+      ],
+      "result_country_code": "US",
+      "rule": "geometric_center_street_level"
+    },
+    {
+      "location_id": 5465,
+      "location_name": "Healogics, LLC",
+      "old_latitude": null,
+      "old_longitude": null,
+      "new_latitude": 27.6068511,
+      "new_longitude": -99.477687,
+      "formatted_address": "10700 McPherson Rd, Laredo, TX 78045, USA",
+      "location_type": "GEOMETRIC_CENTER",
+      "result_types": [
+        "premise",
+        "street_address"
+      ],
+      "result_country_code": "US",
+      "rule": "geometric_center_street_level"
+    },
+    {
+      "location_id": 5513,
+      "location_name": "MCW – Medical College of Wisconsin",
+      "old_latitude": null,
+      "old_longitude": null,
+      "new_latitude": 43.04357539999999,
+      "new_longitude": -88.021162,
+      "formatted_address": "8701 W Watertown Plank Rd, Milwaukee, WI 53226, USA",
+      "location_type": "GEOMETRIC_CENTER",
+      "result_types": [
+        "premise",
+        "street_address"
+      ],
+      "result_country_code": "US",
+      "rule": "geometric_center_street_level"
+    },
+    {
+      "location_id": 5672,
+      "location_name": "Bio-Communications Research",
+      "old_latitude": null,
+      "old_longitude": null,
+      "new_latitude": 37.740775,
+      "new_longitude": -97.2919273,
+      "formatted_address": "3100 N Hillside St, Wichita, KS 67219, USA",
+      "location_type": "GEOMETRIC_CENTER",
+      "result_types": [
+        "premise",
+        "street_address"
+      ],
+      "result_country_code": "US",
+      "rule": "geometric_center_street_level"
+    },
+    {
+      "location_id": 5741,
+      "location_name": "Eastern Virginia Medical School",
+      "old_latitude": null,
+      "old_longitude": null,
+      "new_latitude": 36.889046,
+      "new_longitude": -76.30474699999999,
+      "formatted_address": "5115 Hampton Blvd, Norfolk, VA 23508, USA",
+      "location_type": "GEOMETRIC_CENTER",
+      "result_types": [
+        "premise",
+        "street_address"
+      ],
+      "result_country_code": "US",
+      "rule": "geometric_center_street_level"
+    },
+    {
+      "location_id": 5756,
+      "location_name": "Garland Women’s Health Center",
+      "old_latitude": null,
+      "old_longitude": null,
+      "new_latitude": 32.8135637,
+      "new_longitude": -96.8348,
+      "formatted_address": "5200 Harry Hines Blvd, Dallas, TX 75235, USA",
+      "location_type": "GEOMETRIC_CENTER",
+      "result_types": [
+        "premise",
+        "street_address"
+      ],
+      "result_country_code": "US",
+      "rule": "geometric_center_street_level"
+    },
+    {
+      "location_id": 6031,
+      "location_name": "HealthPartners Orthopedics St. Paul",
+      "old_latitude": null,
+      "old_longitude": null,
+      "new_latitude": 44.9566307,
+      "new_longitude": -93.0931298,
+      "formatted_address": "640 Jackson St, St Paul, MN 55101, USA",
+      "location_type": "GEOMETRIC_CENTER",
+      "result_types": [
+        "premise",
+        "street_address"
+      ],
+      "result_country_code": "US",
+      "rule": "geometric_center_street_level"
+    },
+    {
+      "location_id": 6032,
+      "location_name": "HealthPartners Orthopedics St. Paul",
+      "old_latitude": null,
+      "old_longitude": null,
+      "new_latitude": 44.85596,
+      "new_longitude": -93.22915429999999,
+      "formatted_address": "8170 33rd Ave S, Bloomington, MN 55425, USA",
+      "location_type": "GEOMETRIC_CENTER",
+      "result_types": [
+        "premise",
+        "street_address"
+      ],
+      "result_country_code": "US",
+      "rule": "geometric_center_street_level"
+    },
+    {
+      "location_id": 6038,
+      "location_name": "Hillcrest Firethorn",
+      "old_latitude": null,
+      "old_longitude": null,
+      "new_latitude": 41.1447641,
+      "new_longitude": -96.2332807,
+      "formatted_address": "20332 Hackberry Dr, Gretna, NE 68028, USA",
+      "location_type": "GEOMETRIC_CENTER",
+      "result_types": [
+        "premise",
+        "street_address"
+      ],
+      "result_country_code": "US",
+      "rule": "geometric_center_street_level"
+    },
+    {
+      "location_id": 6048,
+      "location_name": "In Motion at Ghent Station",
+      "old_latitude": null,
+      "old_longitude": null,
+      "new_latitude": 36.836609,
+      "new_longitude": -76.34744789999999,
+      "formatted_address": "3636 High St, Portsmouth, VA 23707, USA",
+      "location_type": "GEOMETRIC_CENTER",
+      "result_types": [
+        "premise",
+        "street_address"
+      ],
+      "result_country_code": "US",
+      "rule": "geometric_center_street_level"
+    },
+    {
+      "location_id": 6065,
+      "location_name": "In Motion at Ghent Station",
+      "old_latitude": null,
+      "old_longitude": null,
+      "new_latitude": 34.8416824,
+      "new_longitude": -82.32382350000002,
+      "formatted_address": "712 Congaree Rd, Greenville, SC 29607, USA",
+      "location_type": "GEOMETRIC_CENTER",
+      "result_types": [
+        "premise",
+        "street_address"
+      ],
+      "result_country_code": "US",
+      "rule": "geometric_center_street_level"
+    },
+    {
+      "location_id": 6067,
+      "location_name": "In Motion at Ghent Station",
+      "old_latitude": null,
+      "old_longitude": null,
+      "new_latitude": 37.0596433,
+      "new_longitude": -76.3829008,
+      "formatted_address": "5 Armistead Pointe Pkwy, Hampton, VA 23666, USA",
+      "location_type": "GEOMETRIC_CENTER",
+      "result_types": [
+        "premise",
+        "street_address"
+      ],
+      "result_country_code": "US",
+      "rule": "geometric_center_street_level"
+    },
+    {
+      "location_id": 6079,
+      "location_name": "Inova Joint Replacement Center – Inova Mount Vernon",
+      "old_latitude": null,
+      "old_longitude": null,
+      "new_latitude": 38.7391148,
+      "new_longitude": -77.07625689999999,
+      "formatted_address": "2501 Parkers Ln, Alexandria, VA 22306, USA",
+      "location_type": "GEOMETRIC_CENTER",
+      "result_types": [
+        "premise",
+        "street_address"
+      ],
+      "result_country_code": "US",
+      "rule": "geometric_center_street_level"
+    },
+    {
+      "location_id": 6080,
+      "location_name": "Inova Joint Replacement Center – Inova Mount Vernon",
+      "old_latitude": null,
+      "old_longitude": null,
+      "new_latitude": 38.8224707,
+      "new_longitude": -77.10491429999999,
+      "formatted_address": "4320 Seminary Rd, Alexandria, VA 22304, USA",
+      "location_type": "GEOMETRIC_CENTER",
+      "result_types": [
+        "premise",
+        "street_address"
+      ],
+      "result_country_code": "US",
+      "rule": "geometric_center_street_level"
+    },
+    {
+      "location_id": 6083,
+      "location_name": "Inova Joint Replacement Center – Inova Mount Vernon",
+      "old_latitude": null,
+      "old_longitude": null,
+      "new_latitude": 39.0735313,
+      "new_longitude": -77.4768783,
+      "formatted_address": "44045 Riverside Pkwy, Leesburg, VA 20176, USA",
+      "location_type": "GEOMETRIC_CENTER",
+      "result_types": [
+        "premise",
+        "street_address"
+      ],
+      "result_country_code": "US",
+      "rule": "geometric_center_street_level"
+    },
+    {
+      "location_id": 6132,
+      "location_name": "Nebraska Pain Institute: C. Weston Whitten, MD; Douglas Spurgeon, MD",
+      "old_latitude": null,
+      "old_longitude": null,
+      "new_latitude": 40.7421229,
+      "new_longitude": -96.61922469999999,
+      "formatted_address": "7350 Willowbrook Ln., Lincoln, NE 68516, USA",
+      "location_type": "GEOMETRIC_CENTER",
+      "result_types": [
+        "premise",
+        "street_address"
+      ],
+      "result_country_code": "US",
+      "rule": "geometric_center_street_level"
+    },
+    {
+      "location_id": 6199,
+      "location_name": "Rezen Recovery and Cryotherapy",
+      "old_latitude": null,
+      "old_longitude": null,
+      "new_latitude": 29.7747962,
+      "new_longitude": -95.4001724,
+      "formatted_address": "Yale Street Marketplace, 195 Yale St, Houston, TX 77007, USA",
+      "location_type": "GEOMETRIC_CENTER",
+      "result_types": [
+        "premise",
+        "street_address"
+      ],
+      "result_country_code": "US",
+      "rule": "geometric_center_street_level"
+    },
+    {
+      "location_id": 6220,
+      "location_name": "Bakios Stephen N Dr",
+      "old_latitude": null,
+      "old_longitude": null,
+      "new_latitude": 41.8517218,
+      "new_longitude": -71.39825619999999,
+      "formatted_address": "164 Summit Ave, Providence, RI 02906, USA",
+      "location_type": "GEOMETRIC_CENTER",
+      "result_types": [
+        "premise",
+        "street_address"
+      ],
+      "result_country_code": "US",
+      "rule": "geometric_center_street_level"
+    },
+    {
+      "location_id": 6332,
+      "location_name": "Lincoln Medical Education",
+      "old_latitude": null,
+      "old_longitude": null,
+      "new_latitude": 40.8038237,
+      "new_longitude": -96.65612809999999,
+      "formatted_address": "4600 Valley Rd, Lincoln, NE 68510, USA",
+      "location_type": "GEOMETRIC_CENTER",
+      "result_types": [
+        "premise",
+        "street_address"
+      ],
+      "result_country_code": "US",
+      "rule": "geometric_center_street_level"
+    },
+    {
+      "location_id": 6365,
+      "location_name": "Orthopaedic Hospital at Sentara CarePlex",
+      "old_latitude": null,
+      "old_longitude": null,
+      "new_latitude": 37.0562483,
+      "new_longitude": -76.3904967,
+      "formatted_address": "3000 Coliseum Dr, Hampton, VA 23666, USA",
+      "location_type": "GEOMETRIC_CENTER",
+      "result_types": [
+        "premise",
+        "street_address"
+      ],
+      "result_country_code": "US",
+      "rule": "geometric_center_street_level"
+    },
+    {
+      "location_id": 6417,
+      "location_name": "BioSpine Institute – Tampa",
+      "old_latitude": null,
+      "old_longitude": null,
+      "new_latitude": 28.4936495,
+      "new_longitude": -81.4263531,
+      "formatted_address": "3900 Millenia Blvd, Orlando, FL 32839, USA",
+      "location_type": "GEOMETRIC_CENTER",
+      "result_types": [
+        "premise",
+        "street_address"
+      ],
+      "result_country_code": "US",
+      "rule": "geometric_center_street_level"
+    },
+    {
+      "location_id": 6505,
+      "location_name": "Eugene O. Gullingsrud, M.D",
+      "old_latitude": null,
+      "old_longitude": null,
+      "new_latitude": 44.8257263,
+      "new_longitude": -93.29263420000001,
+      "formatted_address": "9801 Dupont Ave S, Bloomington, MN 55431, USA",
+      "location_type": "GEOMETRIC_CENTER",
+      "result_types": [
+        "premise",
+        "street_address"
+      ],
+      "result_country_code": "US",
+      "rule": "geometric_center_street_level"
+    },
+    {
+      "location_id": 6563,
+      "location_name": "Ioannis A. Lougaris Veterans’ Administration Medical Center",
+      "old_latitude": null,
+      "old_longitude": null,
+      "new_latitude": 39.5160784,
+      "new_longitude": -119.7994173,
+      "formatted_address": "975 Kirman Ave, Reno, NV 89502, USA",
+      "location_type": "GEOMETRIC_CENTER",
+      "result_types": [
+        "premise",
+        "street_address"
+      ],
+      "result_country_code": "US",
+      "rule": "geometric_center_street_level"
+    }
+  ]
+}

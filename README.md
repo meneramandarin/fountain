@@ -36,6 +36,7 @@ The old full refresh/import path from `canonical.db` has been removed on purpose
 Only the live Postgres invariant check remains in `scripts/`:
 
 - `check-postgres-state.mjs`: validates runtime invariants, Blob-only image rows, slugs, IDs, search triggers, helper functions, and stale legacy tooling.
+- `cleanup-vercel-blob-images.mjs`: dry-runs or deletes `listing-images` Blob objects that are no longer referenced by active rows in `fountain.images`.
 
 ## Local SQLite Archive
 

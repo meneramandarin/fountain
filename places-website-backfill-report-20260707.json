@@ -1,0 +1,5173 @@
+{
+  "generated_at": "2026-07-08T00:48:20.305Z",
+  "mode": "EXECUTED",
+  "prompt": "docs/places-website-backfill-prompt.md",
+  "field_mask": "id,displayName,websiteUri,nationalPhoneNumber",
+  "inventory": {
+    "candidates": 331,
+    "cached_hits_with_website": 0,
+    "api_calls_required": 331,
+    "estimated_api_cost_before_free_usd": 6.62,
+    "estimated_api_cost_after_free_allowance_usd": 0,
+    "free_enterprise_calls_estimate": 1000,
+    "rymaps_locations_to_null": 2
+  },
+  "backup_tables": [
+    "fountain_raw.locations_backup_20260707_places_website_backfill",
+    "fountain_raw.organizations_backup_20260707_places_website_backfill",
+    "fountain_raw.places_website_backfill_location_actions_20260707",
+    "fountain_raw.places_website_backfill_org_map_20260707",
+    "fountain_raw.places_website_backfill_new_orgs_20260707",
+    "fountain_raw.places_website_backfill_guardrail_20260707"
+  ],
+  "summary": {
+    "candidates": 331,
+    "cached_hits": 0,
+    "api_calls_made": 0,
+    "matches_written": 323,
+    "mismatches_flagged": 4,
+    "no_website": 4,
+    "fetch_errors": 0,
+    "rymaps_nulled": 2,
+    "relinked": 88,
+    "new_orgs_created": 214,
+    "new_org_locations": 220,
+    "org_guardrail": 9,
+    "refreshed_locations": 329,
+    "estimated_api_cost_before_free_usd": 6.62,
+    "estimated_api_cost_after_free_allowance_usd": 0
+  },
+  "mismatches": [
+    {
+      "location_id": 43,
+      "location_name": "QC NY SPA",
+      "locality": "New York",
+      "region": "NY",
+      "place_id": "ChIJ6QzFjltbwokRhjgdHc01agI",
+      "api_display_name": "QC Spa New York",
+      "returned_website": "https://www.qcny.com/",
+      "verification": {
+        "match": false,
+        "score": 0,
+        "overlap": [],
+        "location_tokens": [],
+        "display_tokens": [],
+        "substring_match": false
+      }
+    },
+    {
+      "location_id": 621,
+      "location_name": "Sports, Pain​ & Regenerative Institute - Fairview",
+      "locality": "Fairview",
+      "region": "NJ",
+      "place_id": "ChIJW7uH43r3wokRhzvtDkWnNy0",
+      "api_display_name": "SPR Institute",
+      "returned_website": "https://www.sprinstitute.com/",
+      "verification": {
+        "match": false,
+        "score": 0,
+        "overlap": [],
+        "location_tokens": [
+          "sports",
+          "pain",
+          "regenerative"
+        ],
+        "display_tokens": [
+          "spr"
+        ],
+        "substring_match": false
+      }
+    },
+    {
+      "location_id": 1010,
+      "location_name": "Endure Health and Wellness: Weight Loss, Testosterone, ED, PE, Vitamin Shot, NAD+",
+      "locality": "South Orange Village",
+      "region": "NJ",
+      "place_id": "ChIJv9l6drGtw4kRnvOJS2IT1E0",
+      "api_display_name": "Endure Health Direct Primary Care, LLC",
+      "returned_website": "https://endure-health.com/",
+      "verification": {
+        "match": false,
+        "score": 0.3333333333333333,
+        "overlap": [
+          "endure"
+        ],
+        "location_tokens": [
+          "endure",
+          "weight",
+          "loss",
+          "testosterone",
+          "vitamin",
+          "shot",
+          "nad"
+        ],
+        "display_tokens": [
+          "endure",
+          "direct",
+          "primary"
+        ],
+        "substring_match": false
+      }
+    },
+    {
+      "location_id": 1061,
+      "location_name": "Vitalist Healing Traditions - Dr. Carina Lopez - Your 'Holistic Doctor Near Me' - Naturopathic Doctor NYC",
+      "locality": "Yonkers",
+      "region": "NY",
+      "place_id": "ChIJpz3Qh1vywokRkDV1L1udjNY",
+      "api_display_name": "VHT Society",
+      "returned_website": "https://www.vitalisthealingtraditions.com/",
+      "verification": {
+        "match": false,
+        "score": 0,
+        "overlap": [],
+        "location_tokens": [
+          "vitalist",
+          "healing",
+          "traditions",
+          "carina",
+          "lopez",
+          "your",
+          "holistic",
+          "near",
+          "naturopathic",
+          "nyc"
+        ],
+        "display_tokens": [
+          "vht",
+          "society"
+        ],
+        "substring_match": false
+      }
+    }
+  ],
+  "no_website": [
+    {
+      "location_id": 188,
+      "location_name": "REVIV New York - IV Therapy | NAD+ | B12 Shots | Glutathione",
+      "locality": "New York",
+      "region": "NY",
+      "place_id": "ChIJV3oF2aNZwokRUFWiSUJkRR4",
+      "api_display_name": "Alive New York - Mobile IV Therapy | Peptides",
+      "returned_website": null
+    },
+    {
+      "location_id": 313,
+      "location_name": "CryoBodyBK - Brooklyn Cryotherapy Spa",
+      "locality": "Brooklyn",
+      "region": "NY",
+      "place_id": "ChIJ3XlxIh9ZwokRLzTGYzxXDmM",
+      "api_display_name": "CryoBodyBK - Brooklyn Cryotherapy Spa",
+      "returned_website": null
+    },
+    {
+      "location_id": 741,
+      "location_name": "Bare Aesthetics NJ",
+      "locality": "Newark",
+      "region": "NJ",
+      "place_id": "ChIJ_ZnlX2dTwokRZO39emYDWA8",
+      "api_display_name": "Bare Aesthetics NJ",
+      "returned_website": null
+    },
+    {
+      "location_id": 1111,
+      "location_name": "Warren J. Bleiweiss, MD",
+      "locality": "Caldwell",
+      "region": "NJ",
+      "place_id": "ChIJW0-QkYQAw4kRRN3npO6rlPQ",
+      "api_display_name": "Warren J. Bleiweiss, MD",
+      "returned_website": null
+    }
+  ],
+  "fetch_errors": [],
+  "relinked": [
+    {
+      "location_id": 10,
+      "location_name": "Princeton Longevity Center",
+      "old_org_id": null,
+      "new_org_id": 900,
+      "old_org_name": null,
+      "new_org_name": "Princeton Longevity Center",
+      "domain": "princetonlongevitycenter.com"
+    },
+    {
+      "location_id": 13,
+      "location_name": "AIRE Ancient Baths New York · Tribeca",
+      "old_org_id": null,
+      "new_org_id": 293,
+      "old_org_name": null,
+      "new_org_name": "AIRE Ancient Baths New York · Upper East Side",
+      "domain": "beaire.com"
+    },
+    {
+      "location_id": 15,
+      "location_name": "Clean Market",
+      "old_org_id": null,
+      "new_org_id": 34,
+      "old_org_name": null,
+      "new_org_name": "Clean Market",
+      "domain": "cleanmarket.com"
+    },
+    {
+      "location_id": 19,
+      "location_name": "InVita Wellness",
+      "old_org_id": null,
+      "new_org_id": 4169,
+      "old_org_name": null,
+      "new_org_name": "InVita Wellness",
+      "domain": "invitacryonyc.com"
+    },
+    {
+      "location_id": 28,
+      "location_name": "Equinox SoHo",
+      "old_org_id": null,
+      "new_org_id": 3795,
+      "old_org_name": null,
+      "new_org_name": "Equinox Paramus",
+      "domain": "equinox.com"
+    },
+    {
+      "location_id": 36,
+      "location_name": "Equinox Orchard Street",
+      "old_org_id": null,
+      "new_org_id": 3795,
+      "old_org_name": null,
+      "new_org_name": "Equinox Paramus",
+      "domain": "equinox.com"
+    },
+    {
+      "location_id": 37,
+      "location_name": "Equinox Bond Street",
+      "old_org_id": null,
+      "new_org_id": 3795,
+      "old_org_name": null,
+      "new_org_name": "Equinox Paramus",
+      "domain": "equinox.com"
+    },
+    {
+      "location_id": 41,
+      "location_name": "Recoverie - Wellness Club",
+      "old_org_id": null,
+      "new_org_id": 4168,
+      "old_org_name": null,
+      "new_org_name": "Recoverie",
+      "domain": "recoverienyc.com"
+    },
+    {
+      "location_id": 46,
+      "location_name": "JECT",
+      "old_org_id": null,
+      "new_org_id": 320,
+      "old_org_name": null,
+      "new_org_name": "JECT",
+      "domain": "ject.us"
+    },
+    {
+      "location_id": 50,
+      "location_name": "Integrative Health NYC",
+      "old_org_id": null,
+      "new_org_id": 3207,
+      "old_org_name": null,
+      "new_org_name": "Houston Regenerative Center & Spa Houston, TX",
+      "domain": "godaddysites.com"
+    },
+    {
+      "location_id": 52,
+      "location_name": "Glowbar Jersey City",
+      "old_org_id": null,
+      "new_org_id": 2349,
+      "old_org_name": null,
+      "new_org_name": "Glowbar Cobble Hill",
+      "domain": "glowbar.com"
+    },
+    {
+      "location_id": 56,
+      "location_name": "Ageless Men's Health",
+      "old_org_id": null,
+      "new_org_id": 501,
+      "old_org_name": null,
+      "new_org_name": "Ageless Men's Health",
+      "domain": "agelessmenshealth.com"
+    },
+    {
+      "location_id": 59,
+      "location_name": "Extension Health",
+      "old_org_id": null,
+      "new_org_id": 898,
+      "old_org_name": null,
+      "new_org_name": "Extension Health",
+      "domain": "extension.health"
+    },
+    {
+      "location_id": 76,
+      "location_name": "Gameday Men's Health Jersey City - TRT, Peptides & ED Clinic",
+      "old_org_id": null,
+      "new_org_id": 7743,
+      "old_org_name": null,
+      "new_org_name": "Gameday Men's Health",
+      "domain": "gamedaymenshealth.com"
+    },
+    {
+      "location_id": 79,
+      "location_name": "Advanced TRT Clinic",
+      "old_org_id": null,
+      "new_org_id": 544,
+      "old_org_name": null,
+      "new_org_name": "Advanced TRT Clinic",
+      "domain": "advancedtrtclinic.com"
+    },
+    {
+      "location_id": 103,
+      "location_name": "Othership Flatiron",
+      "old_org_id": null,
+      "new_org_id": 4030,
+      "old_org_name": null,
+      "new_org_name": "Othership",
+      "domain": "othership.us"
+    },
+    {
+      "location_id": 113,
+      "location_name": "Glowbar Cobble Hill",
+      "old_org_id": null,
+      "new_org_id": 2349,
+      "old_org_name": null,
+      "new_org_name": "Glowbar Cobble Hill",
+      "domain": "glowbar.com"
+    },
+    {
+      "location_id": 115,
+      "location_name": "Vital IV - Ketamine Therapy & IV Infusions",
+      "old_org_id": null,
+      "new_org_id": 619,
+      "old_org_name": null,
+      "new_org_name": "Vital IV - Ketamine Therapy & IV Infusions",
+      "domain": "vitalivinfusion.com"
+    },
+    {
+      "location_id": 152,
+      "location_name": "Bathhouse Flatiron",
+      "old_org_id": null,
+      "new_org_id": 4031,
+      "old_org_name": null,
+      "new_org_name": "Bathhouse",
+      "domain": "abathhouse.com"
+    },
+    {
+      "location_id": 181,
+      "location_name": "Peachy Williamsburg",
+      "old_org_id": null,
+      "new_org_id": 54,
+      "old_org_name": null,
+      "new_org_name": "Peachy Brooklyn Heights",
+      "domain": "peachystudio.com"
+    },
+    {
+      "location_id": 194,
+      "location_name": "Jersey City Medical Center",
+      "old_org_id": null,
+      "new_org_id": 310,
+      "old_org_name": null,
+      "new_org_name": "Jersey City Medical Center",
+      "domain": "rwjbh.org"
+    },
+    {
+      "location_id": 236,
+      "location_name": "Perspire Sauna Studio",
+      "old_org_id": null,
+      "new_org_id": 4264,
+      "old_org_name": null,
+      "new_org_name": "Perspire Sauna Studio - Austin Southwest",
+      "domain": "perspiresaunastudio.com"
+    },
+    {
+      "location_id": 241,
+      "location_name": "Next Health",
+      "old_org_id": null,
+      "new_org_id": 1,
+      "old_org_name": null,
+      "new_org_name": "NEXT HEALTH",
+      "domain": "next-health.com"
+    },
+    {
+      "location_id": 244,
+      "location_name": "Bathhouse Williamsburg",
+      "old_org_id": null,
+      "new_org_id": 4031,
+      "old_org_name": null,
+      "new_org_name": "Bathhouse",
+      "domain": "abathhouse.com"
+    },
+    {
+      "location_id": 257,
+      "location_name": "VitalBalance Hormone Center",
+      "old_org_id": null,
+      "new_org_id": 6281,
+      "old_org_name": null,
+      "new_org_name": "VitalBalance Hormone Center",
+      "domain": "vitalbalancehormone.com"
+    },
+    {
+      "location_id": 262,
+      "location_name": "Vessel Floats",
+      "old_org_id": null,
+      "new_org_id": 2580,
+      "old_org_name": null,
+      "new_org_name": "Vessel Floats",
+      "domain": "vesselfloats.com"
+    },
+    {
+      "location_id": 271,
+      "location_name": "4Ever Young Med Spa & Wellness Center - Hoboken",
+      "old_org_id": null,
+      "new_org_id": 735,
+      "old_org_name": null,
+      "new_org_name": "4Ever Young Med Spa & Wellness Center - Livingston",
+      "domain": "4everyoungantiaging.com"
+    },
+    {
+      "location_id": 280,
+      "location_name": "AllCare Health & Pain",
+      "old_org_id": null,
+      "new_org_id": 3441,
+      "old_org_name": null,
+      "new_org_name": "AllCare Health & Pain",
+      "domain": "njallcarepain.com"
+    },
+    {
+      "location_id": 288,
+      "location_name": "Equinox Hudson Yards",
+      "old_org_id": null,
+      "new_org_id": 3795,
+      "old_org_name": null,
+      "new_org_name": "Equinox Paramus",
+      "domain": "equinox.com"
+    },
+    {
+      "location_id": 298,
+      "location_name": "overture spa",
+      "old_org_id": null,
+      "new_org_id": 4167,
+      "old_org_name": null,
+      "new_org_name": "Overture Spa",
+      "domain": "brooklyn-spa.com"
+    },
+    {
+      "location_id": 302,
+      "location_name": "Dr. Neil Paulvin",
+      "old_org_id": null,
+      "new_org_id": 1033,
+      "old_org_name": null,
+      "new_org_name": "Dr. Neil Paulvin",
+      "domain": "doctorpaulvin.com"
+    },
+    {
+      "location_id": 334,
+      "location_name": "Vitality Medicine of New York",
+      "old_org_id": null,
+      "new_org_id": 6290,
+      "old_org_name": null,
+      "new_org_name": "Vitality Medicine of New York",
+      "domain": "vitalitymedny.com"
+    },
+    {
+      "location_id": 342,
+      "location_name": "Acupuncture & Alternative Medicine of Brooklyn",
+      "old_org_id": null,
+      "new_org_id": 582,
+      "old_org_name": null,
+      "new_org_name": "Acupuncture & Alternative Medicine of Staten Island",
+      "domain": "acuherbnewyork.com"
+    },
+    {
+      "location_id": 352,
+      "location_name": "Jersey Integrative Health and Wellness",
+      "old_org_id": null,
+      "new_org_id": 241,
+      "old_org_name": null,
+      "new_org_name": "Manit Roy, DO",
+      "domain": "jerseyintegrative.com"
+    },
+    {
+      "location_id": 364,
+      "location_name": "Visco Spine & Joint Center",
+      "old_org_id": null,
+      "new_org_id": 209,
+      "old_org_name": null,
+      "new_org_name": "Visco Spine & Joint Center",
+      "domain": "viscospineandjoint.com"
+    },
+    {
+      "location_id": 380,
+      "location_name": "Sixth Borough Medical - Dr. Manish Patel",
+      "old_org_id": null,
+      "new_org_id": 5601,
+      "old_org_name": null,
+      "new_org_name": "Sixth Borough Medical – Dr. Manish Patel",
+      "domain": "sixthboroughmedical.com"
+    },
+    {
+      "location_id": 392,
+      "location_name": "Equinox West 50th Street",
+      "old_org_id": null,
+      "new_org_id": 3795,
+      "old_org_name": null,
+      "new_org_name": "Equinox Paramus",
+      "domain": "equinox.com"
+    },
+    {
+      "location_id": 408,
+      "location_name": "Live Hydration Spa Long Island City",
+      "old_org_id": null,
+      "new_org_id": 4881,
+      "old_org_name": null,
+      "new_org_name": "LIVE Hydration Spa Kirby",
+      "domain": "livehydrationspa.com"
+    },
+    {
+      "location_id": 417,
+      "location_name": "Cenegenics New York",
+      "old_org_id": null,
+      "new_org_id": 899,
+      "old_org_name": null,
+      "new_org_name": "Cenegenics",
+      "domain": "cenegenics.com"
+    },
+    {
+      "location_id": 436,
+      "location_name": "Gameday Men's Health Manhattan - Upper East Side",
+      "old_org_id": null,
+      "new_org_id": 7743,
+      "old_org_name": null,
+      "new_org_name": "Gameday Men's Health",
+      "domain": "gamedaymenshealth.com"
+    },
+    {
+      "location_id": 468,
+      "location_name": "The Floating Hospital",
+      "old_org_id": null,
+      "new_org_id": 2470,
+      "old_org_name": null,
+      "new_org_name": "The Floating Hospital",
+      "domain": "thefloatinghospital.org"
+    },
+    {
+      "location_id": 469,
+      "location_name": "Restore Hyper Wellness",
+      "old_org_id": null,
+      "new_org_id": 61,
+      "old_org_name": null,
+      "new_org_name": "Restore Hyper Wellness",
+      "domain": "restore.com"
+    },
+    {
+      "location_id": 484,
+      "location_name": "East Coast Health and Longevity",
+      "old_org_id": null,
+      "new_org_id": 902,
+      "old_org_name": null,
+      "new_org_name": "East Coast Health and Longevity",
+      "domain": "drjboss.com"
+    },
+    {
+      "location_id": 489,
+      "location_name": "Equinox East 74th Street",
+      "old_org_id": null,
+      "new_org_id": 3795,
+      "old_org_name": null,
+      "new_org_name": "Equinox Paramus",
+      "domain": "equinox.com"
+    },
+    {
+      "location_id": 517,
+      "location_name": "Dr.JayZute,Ridgewood NY-BLS CPR ACLS PALS EKG Phleb,NCLEX,Naturopathy,Medical Weight Loss,Hair Loss,Erectile Dysfunction,DM 2",
+      "old_org_id": null,
+      "new_org_id": 670,
+      "old_org_name": null,
+      "new_org_name": "Dr.Jay Zute,Queens,NY- Notary, BLS CPR ACLS PALS-Functional Medicine-Ayurveda-Diabetes-Weight Loss",
+      "domain": "drzute.com"
+    },
+    {
+      "location_id": 522,
+      "location_name": "Thrivewell Infusion - Borough Park",
+      "old_org_id": null,
+      "new_org_id": 640,
+      "old_org_name": null,
+      "new_org_name": "Thrivewell Infusion - Bronx",
+      "domain": "thrivewellinfusion.com"
+    },
+    {
+      "location_id": 545,
+      "location_name": "MD Longevity",
+      "old_org_id": null,
+      "new_org_id": 906,
+      "old_org_name": null,
+      "new_org_name": "MD Longevity",
+      "domain": "mdlongevity.com"
+    },
+    {
+      "location_id": 550,
+      "location_name": "Equinox East 92nd Street",
+      "old_org_id": null,
+      "new_org_id": 3795,
+      "old_org_name": null,
+      "new_org_name": "Equinox Paramus",
+      "domain": "equinox.com"
+    },
+    {
+      "location_id": 560,
+      "location_name": "Patients Medical PC, Functional and Holistic Medicine",
+      "old_org_id": null,
+      "new_org_id": 2352,
+      "old_org_name": null,
+      "new_org_name": "Patients Medical PC, Functional and Holistic Medicine",
+      "domain": "patientsmedical.com"
+    },
+    {
+      "location_id": 590,
+      "location_name": "Rapha Wellness Center",
+      "old_org_id": null,
+      "new_org_id": 7972,
+      "old_org_name": null,
+      "new_org_name": "Rapha Wellness Center",
+      "domain": "raphaphysicaltherapybayonne.com"
+    },
+    {
+      "location_id": 612,
+      "location_name": "Van Uden Center Holistic Health",
+      "old_org_id": null,
+      "new_org_id": 1030,
+      "old_org_name": null,
+      "new_org_name": "Van Uden Center Holistic Health",
+      "domain": "vanudencenter.com"
+    },
+    {
+      "location_id": 637,
+      "location_name": "Ironbound Spine & Rehabilitation Center",
+      "old_org_id": null,
+      "new_org_id": 3213,
+      "old_org_name": null,
+      "new_org_name": "Ironbound Spine & Rehabilitation Center",
+      "domain": "newarkchiro.com"
+    },
+    {
+      "location_id": 640,
+      "location_name": "Ageless Men's Health",
+      "old_org_id": null,
+      "new_org_id": 501,
+      "old_org_name": null,
+      "new_org_name": "Ageless Men's Health",
+      "domain": "agelessmenshealth.com"
+    },
+    {
+      "location_id": 646,
+      "location_name": "Phrost Cryo, Tanning & Wellness Spa",
+      "old_org_id": null,
+      "new_org_id": 4166,
+      "old_org_name": null,
+      "new_org_name": "Phrost Cryo Tanning & Wellness",
+      "domain": "phrost-cryo.com"
+    },
+    {
+      "location_id": 663,
+      "location_name": "4Ever Young Med Spa & Wellness Center - Edgewater",
+      "old_org_id": null,
+      "new_org_id": 735,
+      "old_org_name": null,
+      "new_org_name": "4Ever Young Med Spa & Wellness Center - Livingston",
+      "domain": "4everyoungantiaging.com"
+    },
+    {
+      "location_id": 672,
+      "location_name": "Armenti Medical Group",
+      "old_org_id": null,
+      "new_org_id": 538,
+      "old_org_name": null,
+      "new_org_name": "Roseville Medical Society",
+      "domain": "nirvanahealthcare.com"
+    },
+    {
+      "location_id": 725,
+      "location_name": "SportsMed Physical Therapy - Newark NJ",
+      "old_org_id": null,
+      "new_org_id": 234,
+      "old_org_name": null,
+      "new_org_name": "SportsMed Physical Therapy - Jersey City NJ Journal Square",
+      "domain": "spineandsportsmed.com"
+    },
+    {
+      "location_id": 726,
+      "location_name": "Chelation Therapy",
+      "old_org_id": null,
+      "new_org_id": 330,
+      "old_org_name": null,
+      "new_org_name": "Concierge Doctor NYC",
+      "domain": "drgolberg.nyc"
+    },
+    {
+      "location_id": 740,
+      "location_name": "Advanced TRT Clinic",
+      "old_org_id": null,
+      "new_org_id": 544,
+      "old_org_name": null,
+      "new_org_name": "Advanced TRT Clinic",
+      "domain": "advancedtrtclinic.com"
+    },
+    {
+      "location_id": 757,
+      "location_name": "Mera Clinic: Pain and Regenerative Therapy (PRP, Stem Cells, Weight Loss, Testosterone)",
+      "old_org_id": null,
+      "new_org_id": 913,
+      "old_org_name": null,
+      "new_org_name": "Mera Clinic: Pain and Regenerative Therapy (PRP, Stem Cells, Weight Loss, Testosterone)",
+      "domain": "meraclinicny.com"
+    },
+    {
+      "location_id": 770,
+      "location_name": "cellgenemedix",
+      "old_org_id": null,
+      "new_org_id": 3358,
+      "old_org_name": null,
+      "new_org_name": "cellgenemedix",
+      "domain": "cellgenemedix.com"
+    },
+    {
+      "location_id": 774,
+      "location_name": "Relive Health",
+      "old_org_id": null,
+      "new_org_id": 5340,
+      "old_org_name": null,
+      "new_org_name": "Relive Corpus Christi",
+      "domain": "relivehealth.com"
+    },
+    {
+      "location_id": 844,
+      "location_name": "Jersey Rehab & Pain Management: Belleville",
+      "old_org_id": null,
+      "new_org_id": 3670,
+      "old_org_name": null,
+      "new_org_name": "Jersey Rehab & Pain Management: Belleville",
+      "domain": "jerseyrehab.com"
+    },
+    {
+      "location_id": 867,
+      "location_name": "Newark Beth Israel Medical Center",
+      "old_org_id": null,
+      "new_org_id": 310,
+      "old_org_name": null,
+      "new_org_name": "Jersey City Medical Center",
+      "domain": "rwjbh.org"
+    },
+    {
+      "location_id": 888,
+      "location_name": "Pure Integrated Medicine",
+      "old_org_id": null,
+      "new_org_id": 538,
+      "old_org_name": null,
+      "new_org_name": "Roseville Medical Society",
+      "domain": "nirvanahealthcare.com"
+    },
+    {
+      "location_id": 994,
+      "location_name": "DRS 2 HEALTH Naturopathic Doctors",
+      "old_org_id": null,
+      "new_org_id": 1029,
+      "old_org_name": null,
+      "new_org_name": "DRS2Health Naturopathic & Holistic Medicine",
+      "domain": "drs2health.com"
+    },
+    {
+      "location_id": 1011,
+      "location_name": "Salt Float Center",
+      "old_org_id": null,
+      "new_org_id": 3794,
+      "old_org_name": null,
+      "new_org_name": "Salt Float Center",
+      "domain": "saltfloatcenter.com"
+    },
+    {
+      "location_id": 1017,
+      "location_name": "Stem Cell Therapy of NJ",
+      "old_org_id": null,
+      "new_org_id": 5738,
+      "old_org_name": null,
+      "new_org_name": "Stem Cell of NJ",
+      "domain": "stemcellofnj.com"
+    },
+    {
+      "location_id": 1029,
+      "location_name": "Montclair Rejuvenation Center",
+      "old_org_id": null,
+      "new_org_id": 751,
+      "old_org_name": null,
+      "new_org_name": "MRC West Medspa",
+      "domain": "montclairrejuvenationcenter.com"
+    },
+    {
+      "location_id": 1037,
+      "location_name": "In Harmony Holistic",
+      "old_org_id": null,
+      "new_org_id": 1028,
+      "old_org_name": null,
+      "new_org_name": "In Harmony Holistic",
+      "domain": "inharmonyholistic.com"
+    },
+    {
+      "location_id": 1058,
+      "location_name": "Stem Regen Medical",
+      "old_org_id": null,
+      "new_org_id": 1031,
+      "old_org_name": null,
+      "new_org_name": "Stem Regen Medical",
+      "domain": "stemregenmedical.com"
+    },
+    {
+      "location_id": 1084,
+      "location_name": "Advanced TRT Clinic",
+      "old_org_id": null,
+      "new_org_id": 544,
+      "old_org_name": null,
+      "new_org_name": "Advanced TRT Clinic",
+      "domain": "advancedtrtclinic.com"
+    },
+    {
+      "location_id": 1095,
+      "location_name": "Restore Hyper Wellness",
+      "old_org_id": null,
+      "new_org_id": 61,
+      "old_org_name": null,
+      "new_org_name": "Restore Hyper Wellness",
+      "domain": "restore.com"
+    },
+    {
+      "location_id": 1137,
+      "location_name": "Regenerative Pain & Sports Medicine - Oradell, NJ",
+      "old_org_id": null,
+      "new_org_id": 912,
+      "old_org_name": null,
+      "new_org_name": "Regenerative Pain & Sports Medicine",
+      "domain": "regenpainnynj.com"
+    },
+    {
+      "location_id": 1149,
+      "location_name": "Advanced Hormone Solutions",
+      "old_org_id": null,
+      "new_org_id": 3163,
+      "old_org_name": null,
+      "new_org_name": "Advanced Hormone Solutions",
+      "domain": "advancedhormonesolutions.com"
+    },
+    {
+      "location_id": 1178,
+      "location_name": "Equinox Paramus",
+      "old_org_id": null,
+      "new_org_id": 3795,
+      "old_org_name": null,
+      "new_org_name": "Equinox Paramus",
+      "domain": "equinox.com"
+    },
+    {
+      "location_id": 1209,
+      "location_name": "4Ever Young Med Spa & Wellness Center - Ridgewood",
+      "old_org_id": null,
+      "new_org_id": 735,
+      "old_org_name": null,
+      "new_org_name": "4Ever Young Med Spa & Wellness Center - Livingston",
+      "domain": "4everyoungantiaging.com"
+    },
+    {
+      "location_id": 1210,
+      "location_name": "Renew Vitality Testosterone Clinic of Garden City",
+      "old_org_id": null,
+      "new_org_id": 579,
+      "old_org_name": null,
+      "new_org_name": "Renew Vitality Testosterone Clinic of Staten Island",
+      "domain": "vitalityhrt.com"
+    },
+    {
+      "location_id": 1231,
+      "location_name": "New York Cryogen, Inc",
+      "old_org_id": null,
+      "new_org_id": 4164,
+      "old_org_name": null,
+      "new_org_name": "New York Cryogen",
+      "domain": "nycryogen.com"
+    },
+    {
+      "location_id": 1247,
+      "location_name": "OsteoStrong Garden City",
+      "old_org_id": null,
+      "new_org_id": 2868,
+      "old_org_name": null,
+      "new_org_name": "OsteoStrong Midtown Mobile",
+      "domain": "osteostrong.me"
+    },
+    {
+      "location_id": 1263,
+      "location_name": "Restore Hyper Wellness",
+      "old_org_id": null,
+      "new_org_id": 61,
+      "old_org_name": null,
+      "new_org_name": "Restore Hyper Wellness",
+      "domain": "restore.com"
+    },
+    {
+      "location_id": 1269,
+      "location_name": "Medwell Family Practice & Functional Medicine of Bergen County NJ",
+      "old_org_id": null,
+      "new_org_id": 2772,
+      "old_org_name": null,
+      "new_org_name": "MedWell Spine, OsteoArthritis & Neuropathy Center",
+      "domain": "medwellnj.com"
+    },
+    {
+      "location_id": 1295,
+      "location_name": "Stem Cell of NJ",
+      "old_org_id": null,
+      "new_org_id": 5738,
+      "old_org_name": null,
+      "new_org_name": "Stem Cell of NJ",
+      "domain": "stemcellofnj.com"
+    },
+    {
+      "location_id": 1338,
+      "location_name": "Atlas Mens Health Clinic",
+      "old_org_id": null,
+      "new_org_id": 211,
+      "old_org_name": null,
+      "new_org_name": "Atlas Mens Health Clinic - Midtown Manhattan | TRT | Peptides | Weight Loss Clinic",
+      "domain": "atlasmenshealth.com"
+    },
+    {
+      "location_id": 1339,
+      "location_name": "Ageless Men's Health",
+      "old_org_id": null,
+      "new_org_id": 501,
+      "old_org_name": null,
+      "new_org_name": "Ageless Men's Health",
+      "domain": "agelessmenshealth.com"
+    },
+    {
+      "location_id": 1341,
+      "location_name": "Renew Vitality Testosterone Clinic of Pearl River",
+      "old_org_id": null,
+      "new_org_id": 579,
+      "old_org_name": null,
+      "new_org_name": "Renew Vitality Testosterone Clinic of Staten Island",
+      "domain": "vitalityhrt.com"
+    },
+    {
+      "location_id": 1343,
+      "location_name": "New York Stem Cell & PRP Therapy - Knee Pain - Elbow Pain",
+      "old_org_id": null,
+      "new_org_id": 3523,
+      "old_org_name": null,
+      "new_org_name": "New York Stem Cell & PRP Therapy – Knee Pain – Elbow Pain",
+      "domain": "newyorkstemcell.com"
+    },
+    {
+      "location_id": 1377,
+      "location_name": "Renew Vitality Testosterone Clinic of White Plains",
+      "old_org_id": null,
+      "new_org_id": 579,
+      "old_org_name": null,
+      "new_org_name": "Renew Vitality Testosterone Clinic of Staten Island",
+      "domain": "vitalityhrt.com"
+    }
+  ],
+  "new_orgs_created": [
+    {
+      "org_id": 8338,
+      "canonical_name": "Advanced Holistic Center",
+      "website_domain": "advancedholisticcenter.com",
+      "dedup_key": "advancedholisticcenter.com",
+      "location_count": 2,
+      "location_ids": [
+        18,
+        190
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "all_location_names_match_after_suffix_stripping",
+        "canonical_name": "Advanced Holistic Center",
+        "distinct_names": [
+          "Advanced Holistic Center"
+        ]
+      }
+    },
+    {
+      "org_id": 8339,
+      "canonical_name": "IV DRIPS",
+      "website_domain": "ivdrips.com",
+      "dedup_key": "ivdrips.com",
+      "location_count": 2,
+      "location_ids": [
+        25,
+        594
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "all_location_names_match_after_suffix_stripping",
+        "canonical_name": "IV DRIPS",
+        "distinct_names": [
+          "IV DRIPS"
+        ]
+      }
+    },
+    {
+      "org_id": 8340,
+      "canonical_name": "Tribeca Spa of Tranquility",
+      "website_domain": "tribecaspanyc.com",
+      "dedup_key": "tribecaspanyc.com",
+      "location_count": 1,
+      "location_ids": [
+        26
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "single_location_domain",
+        "canonical_name": "Tribeca Spa of Tranquility",
+        "distinct_names": [
+          "Tribeca Spa of Tranquility"
+        ]
+      }
+    },
+    {
+      "org_id": 8341,
+      "canonical_name": "Serenity Natural Health",
+      "website_domain": "serenitynaturalhealth.com",
+      "dedup_key": "serenitynaturalhealth.com",
+      "location_count": 1,
+      "location_ids": [
+        31
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "single_location_domain",
+        "canonical_name": "Serenity Natural Health",
+        "distinct_names": [
+          "Serenity Natural Health"
+        ]
+      }
+    },
+    {
+      "org_id": 8342,
+      "canonical_name": "Kollectiv",
+      "website_domain": "kollectivnyc.com",
+      "dedup_key": "kollectivnyc.com",
+      "location_count": 1,
+      "location_ids": [
+        35
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "single_location_domain",
+        "canonical_name": "Kollectiv",
+        "distinct_names": [
+          "Kollectiv"
+        ]
+      }
+    },
+    {
+      "org_id": 8343,
+      "canonical_name": "Cortisone Shot Specialists Brooklyn",
+      "website_domain": "downtownpainphysicians.com",
+      "dedup_key": "downtownpainphysicians.com",
+      "location_count": 1,
+      "location_ids": [
+        39
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "single_location_domain",
+        "canonical_name": "Cortisone Shot Specialists Brooklyn",
+        "distinct_names": [
+          "Cortisone Shot Specialists Brooklyn"
+        ]
+      }
+    },
+    {
+      "org_id": 8344,
+      "canonical_name": "Clinique YFT",
+      "website_domain": "cliniqueyft.com",
+      "dedup_key": "cliniqueyft.com",
+      "location_count": 1,
+      "location_ids": [
+        49
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "single_location_domain",
+        "canonical_name": "Clinique YFT",
+        "distinct_names": [
+          "Clinique YFT"
+        ]
+      }
+    },
+    {
+      "org_id": 8345,
+      "canonical_name": "Russian & Turkish Baths",
+      "website_domain": "russianturkishbaths.com",
+      "dedup_key": "russianturkishbaths.com",
+      "location_count": 1,
+      "location_ids": [
+        58
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "single_location_domain",
+        "canonical_name": "Russian & Turkish Baths",
+        "distinct_names": [
+          "Russian & Turkish Baths"
+        ]
+      }
+    },
+    {
+      "org_id": 8346,
+      "canonical_name": "Lov MedSpa New York",
+      "website_domain": "lovmedspa.com",
+      "dedup_key": "lovmedspa.com",
+      "location_count": 1,
+      "location_ids": [
+        68
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "single_location_domain",
+        "canonical_name": "Lov MedSpa New York",
+        "distinct_names": [
+          "Lov MedSpa New York"
+        ]
+      }
+    },
+    {
+      "org_id": 8347,
+      "canonical_name": "Tanuj P. Palvia, MD",
+      "website_domain": "motionis.health",
+      "dedup_key": "motionis.health",
+      "location_count": 1,
+      "location_ids": [
+        69
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "single_location_domain",
+        "canonical_name": "Tanuj P. Palvia, MD",
+        "distinct_names": [
+          "Tanuj P. Palvia, MD"
+        ]
+      }
+    },
+    {
+      "org_id": 8348,
+      "canonical_name": "Ageless Skin & Body Solutions",
+      "website_domain": "agelessskinbody.com",
+      "dedup_key": "agelessskinbody.com",
+      "location_count": 1,
+      "location_ids": [
+        72
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "single_location_domain",
+        "canonical_name": "Ageless Skin & Body Solutions",
+        "distinct_names": [
+          "Ageless Skin & Body Solutions"
+        ]
+      }
+    },
+    {
+      "org_id": 8349,
+      "canonical_name": "Dr. Syra Aesthetics & Longevity Institute",
+      "website_domain": "syraaesthetics.com",
+      "dedup_key": "syraaesthetics.com",
+      "location_count": 1,
+      "location_ids": [
+        77
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "single_location_domain",
+        "canonical_name": "Dr. Syra Aesthetics & Longevity Institute",
+        "distinct_names": [
+          "Dr. Syra Aesthetics & Longevity Institute"
+        ]
+      }
+    },
+    {
+      "org_id": 8350,
+      "canonical_name": "Tree of Life Acupuncture",
+      "website_domain": "newyorkacupuncturecenter.com",
+      "dedup_key": "newyorkacupuncturecenter.com",
+      "location_count": 1,
+      "location_ids": [
+        78
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "single_location_domain",
+        "canonical_name": "Tree of Life Acupuncture",
+        "distinct_names": [
+          "Tree of Life Acupuncture"
+        ]
+      }
+    },
+    {
+      "org_id": 8351,
+      "canonical_name": "Clear Laser Skin Clinic Jersey City",
+      "website_domain": "clearlaserskin.com",
+      "dedup_key": "clearlaserskin.com",
+      "location_count": 1,
+      "location_ids": [
+        80
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "single_location_domain",
+        "canonical_name": "Clear Laser Skin Clinic Jersey City",
+        "distinct_names": [
+          "Clear Laser Skin Clinic Jersey City"
+        ]
+      }
+    },
+    {
+      "org_id": 8352,
+      "canonical_name": "LIFEDRIPS.IV",
+      "website_domain": "lifedripsiv.com",
+      "dedup_key": "lifedripsiv.com",
+      "location_count": 1,
+      "location_ids": [
+        83
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "single_location_domain",
+        "canonical_name": "LIFEDRIPS.IV",
+        "distinct_names": [
+          "LIFEDRIPS.IV"
+        ]
+      }
+    },
+    {
+      "org_id": 8353,
+      "canonical_name": "Simplicity Health Associates",
+      "website_domain": "simplicityhealthassociates.com",
+      "dedup_key": "simplicityhealthassociates.com",
+      "location_count": 1,
+      "location_ids": [
+        89
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "single_location_domain",
+        "canonical_name": "Simplicity Health Associates",
+        "distinct_names": [
+          "Simplicity Health Associates"
+        ]
+      }
+    },
+    {
+      "org_id": 8354,
+      "canonical_name": "FICS by PRTL",
+      "website_domain": "prtl.com",
+      "dedup_key": "prtl.com",
+      "location_count": 1,
+      "location_ids": [
+        93
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "single_location_domain",
+        "canonical_name": "FICS by PRTL",
+        "distinct_names": [
+          "FICS by PRTL"
+        ]
+      }
+    },
+    {
+      "org_id": 8355,
+      "canonical_name": "Maha Rose",
+      "website_domain": "maharose.com",
+      "dedup_key": "maharose.com",
+      "location_count": 1,
+      "location_ids": [
+        97
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "single_location_domain",
+        "canonical_name": "Maha Rose",
+        "distinct_names": [
+          "Maha Rose"
+        ]
+      }
+    },
+    {
+      "org_id": 8356,
+      "canonical_name": "chi4life",
+      "website_domain": "chi4life.org",
+      "dedup_key": "chi4life.org",
+      "location_count": 1,
+      "location_ids": [
+        110
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "single_location_domain",
+        "canonical_name": "chi4life",
+        "distinct_names": [
+          "chi4life"
+        ]
+      }
+    },
+    {
+      "org_id": 8357,
+      "canonical_name": "Raine n River Apothecary",
+      "website_domain": "rainenriver.com",
+      "dedup_key": "rainenriver.com",
+      "location_count": 1,
+      "location_ids": [
+        111
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "single_location_domain",
+        "canonical_name": "Raine n River Apothecary",
+        "distinct_names": [
+          "Raine n River Apothecary"
+        ]
+      }
+    },
+    {
+      "org_id": 8358,
+      "canonical_name": "om.life Wellness * Modern Recovery Spa",
+      "website_domain": "om.life",
+      "dedup_key": "om.life",
+      "location_count": 1,
+      "location_ids": [
+        116
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "single_location_domain",
+        "canonical_name": "om.life Wellness * Modern Recovery Spa",
+        "distinct_names": [
+          "om.life Wellness * Modern Recovery Spa"
+        ]
+      }
+    },
+    {
+      "org_id": 8359,
+      "canonical_name": "Doctor K Private Medicine",
+      "website_domain": "doctork.nyc",
+      "dedup_key": "doctork.nyc",
+      "location_count": 1,
+      "location_ids": [
+        123
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "single_location_domain",
+        "canonical_name": "Doctor K Private Medicine",
+        "distinct_names": [
+          "Doctor K Private Medicine"
+        ]
+      }
+    },
+    {
+      "org_id": 8360,
+      "canonical_name": "OsteoStrong NYC Flatiron",
+      "website_domain": "manhattanbonehealth.com",
+      "dedup_key": "manhattanbonehealth.com",
+      "location_count": 1,
+      "location_ids": [
+        125
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "single_location_domain",
+        "canonical_name": "OsteoStrong NYC Flatiron",
+        "distinct_names": [
+          "OsteoStrong NYC Flatiron"
+        ]
+      }
+    },
+    {
+      "org_id": 8361,
+      "canonical_name": "Drip Alchemy NYC",
+      "website_domain": "dripalchemynyc.com",
+      "dedup_key": "dripalchemynyc.com",
+      "location_count": 1,
+      "location_ids": [
+        129
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "single_location_domain",
+        "canonical_name": "Drip Alchemy NYC",
+        "distinct_names": [
+          "Drip Alchemy NYC"
+        ]
+      }
+    },
+    {
+      "org_id": 8362,
+      "canonical_name": "Emèlle Restorative Medicine, P.C.",
+      "website_domain": "emellemd.com",
+      "dedup_key": "emellemd.com",
+      "location_count": 1,
+      "location_ids": [
+        132
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "single_location_domain",
+        "canonical_name": "Emèlle Restorative Medicine, P.C.",
+        "distinct_names": [
+          "Emèlle Restorative Medicine, P.C."
+        ]
+      }
+    },
+    {
+      "org_id": 8363,
+      "canonical_name": "Riverpoint Wellness Group",
+      "website_domain": "riverpointwellness.com",
+      "dedup_key": "riverpointwellness.com",
+      "location_count": 1,
+      "location_ids": [
+        145
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "single_location_domain",
+        "canonical_name": "Riverpoint Wellness Group",
+        "distinct_names": [
+          "Riverpoint Wellness Group"
+        ]
+      }
+    },
+    {
+      "org_id": 8364,
+      "canonical_name": "Lift / Next Level Floats",
+      "website_domain": "liftfloats.com",
+      "dedup_key": "liftfloats.com",
+      "location_count": 1,
+      "location_ids": [
+        153
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "single_location_domain",
+        "canonical_name": "Lift / Next Level Floats",
+        "distinct_names": [
+          "Lift / Next Level Floats"
+        ]
+      }
+    },
+    {
+      "org_id": 8365,
+      "canonical_name": "Hello Hydration",
+      "website_domain": "hellohydrationnj.com",
+      "dedup_key": "hellohydrationnj.com",
+      "location_count": 1,
+      "location_ids": [
+        157
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "single_location_domain",
+        "canonical_name": "Hello Hydration",
+        "distinct_names": [
+          "Hello Hydration"
+        ]
+      }
+    },
+    {
+      "org_id": 8366,
+      "canonical_name": "Zen Om Studio",
+      "website_domain": "zenomstudio.com",
+      "dedup_key": "zenomstudio.com",
+      "location_count": 1,
+      "location_ids": [
+        159
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "single_location_domain",
+        "canonical_name": "Zen Om Studio",
+        "distinct_names": [
+          "Zen Om Studio"
+        ]
+      }
+    },
+    {
+      "org_id": 8367,
+      "canonical_name": "Elevate Holistics",
+      "website_domain": "elevate-holistics.com",
+      "dedup_key": "elevate-holistics.com",
+      "location_count": 1,
+      "location_ids": [
+        160
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "single_location_domain",
+        "canonical_name": "Elevate Holistics",
+        "distinct_names": [
+          "Elevate Holistics"
+        ]
+      }
+    },
+    {
+      "org_id": 8368,
+      "canonical_name": "Elite Aesthetics",
+      "website_domain": "eliteaestheticsnyc.com",
+      "dedup_key": "eliteaestheticsnyc.com",
+      "location_count": 1,
+      "location_ids": [
+        172
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "single_location_domain",
+        "canonical_name": "Elite Aesthetics",
+        "distinct_names": [
+          "Elite Aesthetics"
+        ]
+      }
+    },
+    {
+      "org_id": 8369,
+      "canonical_name": "Peak By MD",
+      "website_domain": "peakbymd.com",
+      "dedup_key": "peakbymd.com",
+      "location_count": 1,
+      "location_ids": [
+        180
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "single_location_domain",
+        "canonical_name": "Peak By MD",
+        "distinct_names": [
+          "Peak By MD"
+        ]
+      }
+    },
+    {
+      "org_id": 8370,
+      "canonical_name": "N4 Esthetic Clinic",
+      "website_domain": "n4estheticclinic.com",
+      "dedup_key": "n4estheticclinic.com",
+      "location_count": 1,
+      "location_ids": [
+        182
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "single_location_domain",
+        "canonical_name": "N4 Esthetic Clinic",
+        "distinct_names": [
+          "N4 Esthetic Clinic"
+        ]
+      }
+    },
+    {
+      "org_id": 8371,
+      "canonical_name": "Flora Naturopathics - Holistic Medicine",
+      "website_domain": "floranaturopathics.com",
+      "dedup_key": "floranaturopathics.com",
+      "location_count": 1,
+      "location_ids": [
+        193
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "single_location_domain",
+        "canonical_name": "Flora Naturopathics - Holistic Medicine",
+        "distinct_names": [
+          "Flora Naturopathics - Holistic Medicine"
+        ]
+      }
+    },
+    {
+      "org_id": 8372,
+      "canonical_name": "ShemaYah Holistic Health",
+      "website_domain": "shemayahholistichealth.com",
+      "dedup_key": "shemayahholistichealth.com",
+      "location_count": 1,
+      "location_ids": [
+        199
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "single_location_domain",
+        "canonical_name": "ShemaYah Holistic Health",
+        "distinct_names": [
+          "ShemaYah Holistic Health"
+        ]
+      }
+    },
+    {
+      "org_id": 8373,
+      "canonical_name": "NY Center for Functional Medicine",
+      "website_domain": "nyfunctionalmed.org",
+      "dedup_key": "nyfunctionalmed.org",
+      "location_count": 1,
+      "location_ids": [
+        208
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "single_location_domain",
+        "canonical_name": "NY Center for Functional Medicine",
+        "distinct_names": [
+          "NY Center for Functional Medicine"
+        ]
+      }
+    },
+    {
+      "org_id": 8374,
+      "canonical_name": "Olympus Center for Holistic Integrative Medicine",
+      "website_domain": "olympuscenter.com",
+      "dedup_key": "olympuscenter.com",
+      "location_count": 1,
+      "location_ids": [
+        209
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "single_location_domain",
+        "canonical_name": "Olympus Center for Holistic Integrative Medicine",
+        "distinct_names": [
+          "Olympus Center for Holistic Integrative Medicine"
+        ]
+      }
+    },
+    {
+      "org_id": 8375,
+      "canonical_name": "NY Center For Integrative Health",
+      "website_domain": "nycintegrative.com",
+      "dedup_key": "nycintegrative.com",
+      "location_count": 1,
+      "location_ids": [
+        217
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "single_location_domain",
+        "canonical_name": "NY Center For Integrative Health",
+        "distinct_names": [
+          "NY Center For Integrative Health"
+        ]
+      }
+    },
+    {
+      "org_id": 8376,
+      "canonical_name": "The Gael Center: William Gael, MD",
+      "website_domain": "drwilliamgael.com",
+      "dedup_key": "drwilliamgael.com",
+      "location_count": 1,
+      "location_ids": [
+        222
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "single_location_domain",
+        "canonical_name": "The Gael Center: William Gael, MD",
+        "distinct_names": [
+          "The Gael Center: William Gael, MD"
+        ]
+      }
+    },
+    {
+      "org_id": 8377,
+      "canonical_name": "Doody Free Girl",
+      "website_domain": "doodyfreegirl.com",
+      "dedup_key": "doodyfreegirl.com",
+      "location_count": 1,
+      "location_ids": [
+        225
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "single_location_domain",
+        "canonical_name": "Doody Free Girl",
+        "distinct_names": [
+          "Doody Free Girl"
+        ]
+      }
+    },
+    {
+      "org_id": 8378,
+      "canonical_name": "Anima Mundi Apothecary",
+      "website_domain": "animamundiherbals.com",
+      "dedup_key": "animamundiherbals.com",
+      "location_count": 1,
+      "location_ids": [
+        231
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "single_location_domain",
+        "canonical_name": "Anima Mundi Apothecary",
+        "distinct_names": [
+          "Anima Mundi Apothecary"
+        ]
+      }
+    },
+    {
+      "org_id": 8379,
+      "canonical_name": "The SPA Club",
+      "website_domain": "thespaclub.com",
+      "dedup_key": "thespaclub.com",
+      "location_count": 1,
+      "location_ids": [
+        232
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "single_location_domain",
+        "canonical_name": "The SPA Club",
+        "distinct_names": [
+          "The SPA Club"
+        ]
+      }
+    },
+    {
+      "org_id": 8380,
+      "canonical_name": "Blossom Pediatrics PC",
+      "website_domain": "blossompediatrics.com",
+      "dedup_key": "blossompediatrics.com",
+      "location_count": 1,
+      "location_ids": [
+        235
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "single_location_domain",
+        "canonical_name": "Blossom Pediatrics PC",
+        "distinct_names": [
+          "Blossom Pediatrics PC"
+        ]
+      }
+    },
+    {
+      "org_id": 8381,
+      "canonical_name": "Kahuna Skin Clinic",
+      "website_domain": "kahunaskinclinic.com",
+      "dedup_key": "kahunaskinclinic.com",
+      "location_count": 1,
+      "location_ids": [
+        237
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "single_location_domain",
+        "canonical_name": "Kahuna Skin Clinic",
+        "distinct_names": [
+          "Kahuna Skin Clinic"
+        ]
+      }
+    },
+    {
+      "org_id": 8382,
+      "canonical_name": "cityWell brooklyn",
+      "website_domain": "citywellbrooklyn.com",
+      "dedup_key": "citywellbrooklyn.com",
+      "location_count": 1,
+      "location_ids": [
+        246
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "single_location_domain",
+        "canonical_name": "cityWell brooklyn",
+        "distinct_names": [
+          "cityWell brooklyn"
+        ]
+      }
+    },
+    {
+      "org_id": 8383,
+      "canonical_name": "BeRejuved Medical Spa & Wellness Studio - NYC",
+      "website_domain": "berejuved.com",
+      "dedup_key": "berejuved.com",
+      "location_count": 1,
+      "location_ids": [
+        248
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "single_location_domain",
+        "canonical_name": "BeRejuved Medical Spa & Wellness Studio - NYC",
+        "distinct_names": [
+          "BeRejuved Medical Spa & Wellness Studio - NYC"
+        ]
+      }
+    },
+    {
+      "org_id": 8384,
+      "canonical_name": "Purely Natural Medical Spa",
+      "website_domain": "purelynaturalspa.com",
+      "dedup_key": "purelynaturalspa.com",
+      "location_count": 1,
+      "location_ids": [
+        249
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "single_location_domain",
+        "canonical_name": "Purely Natural Medical Spa",
+        "distinct_names": [
+          "Purely Natural Medical Spa"
+        ]
+      }
+    },
+    {
+      "org_id": 8385,
+      "canonical_name": "Aura Wellness Spa",
+      "website_domain": "spa-aura.com",
+      "dedup_key": "spa-aura.com",
+      "location_count": 1,
+      "location_ids": [
+        260
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "single_location_domain",
+        "canonical_name": "Aura Wellness Spa",
+        "distinct_names": [
+          "Aura Wellness Spa"
+        ]
+      }
+    },
+    {
+      "org_id": 8386,
+      "canonical_name": "Dr. Sarah Cimperman, ND",
+      "website_domain": "drsarahcimperman.com",
+      "dedup_key": "drsarahcimperman.com",
+      "location_count": 1,
+      "location_ids": [
+        265
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "single_location_domain",
+        "canonical_name": "Dr. Sarah Cimperman, ND",
+        "distinct_names": [
+          "Dr. Sarah Cimperman, ND"
+        ]
+      }
+    },
+    {
+      "org_id": 8387,
+      "canonical_name": "Dr. Susan Eisen, D.C.",
+      "website_domain": "drsusaneisen.com",
+      "dedup_key": "drsusaneisen.com",
+      "location_count": 1,
+      "location_ids": [
+        275
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "single_location_domain",
+        "canonical_name": "Dr. Susan Eisen, D.C.",
+        "distinct_names": [
+          "Dr. Susan Eisen, D.C."
+        ]
+      }
+    },
+    {
+      "org_id": 8388,
+      "canonical_name": "EKAH - Erin Kumpf Acupuncture & Herbs",
+      "website_domain": "ekahlife.com",
+      "dedup_key": "ekahlife.com",
+      "location_count": 1,
+      "location_ids": [
+        297
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "single_location_domain",
+        "canonical_name": "EKAH - Erin Kumpf Acupuncture & Herbs",
+        "distinct_names": [
+          "EKAH - Erin Kumpf Acupuncture & Herbs"
+        ]
+      }
+    },
+    {
+      "org_id": 8389,
+      "canonical_name": "Birchwell Functional Medicine - Integrative Health & Holistic Nutrition",
+      "website_domain": "birchwell.clinic",
+      "dedup_key": "birchwell.clinic",
+      "location_count": 1,
+      "location_ids": [
+        305
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "single_location_domain",
+        "canonical_name": "Birchwell Functional Medicine - Integrative Health & Holistic Nutrition",
+        "distinct_names": [
+          "Birchwell Functional Medicine - Integrative Health & Holistic Nutrition"
+        ]
+      }
+    },
+    {
+      "org_id": 8390,
+      "canonical_name": "Elena Klimenko, MD - Functional Medicine",
+      "website_domain": "drelenaklimenko.com",
+      "dedup_key": "drelenaklimenko.com",
+      "location_count": 1,
+      "location_ids": [
+        309
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "single_location_domain",
+        "canonical_name": "Elena Klimenko, MD - Functional Medicine",
+        "distinct_names": [
+          "Elena Klimenko, MD - Functional Medicine"
+        ]
+      }
+    },
+    {
+      "org_id": 8391,
+      "canonical_name": "Studio 17 Cosmetics & Wellness",
+      "website_domain": "studio17cw.com",
+      "dedup_key": "studio17cw.com",
+      "location_count": 1,
+      "location_ids": [
+        310
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "single_location_domain",
+        "canonical_name": "Studio 17 Cosmetics & Wellness",
+        "distinct_names": [
+          "Studio 17 Cosmetics & Wellness"
+        ]
+      }
+    },
+    {
+      "org_id": 8392,
+      "canonical_name": "Skin30.co / Skin Longevity Clinic",
+      "website_domain": "skinlongevityclinic.com",
+      "dedup_key": "skinlongevityclinic.com",
+      "location_count": 1,
+      "location_ids": [
+        316
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "single_location_domain",
+        "canonical_name": "Skin30.co / Skin Longevity Clinic",
+        "distinct_names": [
+          "Skin30.co / Skin Longevity Clinic"
+        ]
+      }
+    },
+    {
+      "org_id": 8393,
+      "canonical_name": "Your Health Success",
+      "website_domain": "yourhealthsuccess.com",
+      "dedup_key": "yourhealthsuccess.com",
+      "location_count": 1,
+      "location_ids": [
+        318
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "single_location_domain",
+        "canonical_name": "Your Health Success",
+        "distinct_names": [
+          "Your Health Success"
+        ]
+      }
+    },
+    {
+      "org_id": 8394,
+      "canonical_name": "Neighborhood Natural Medicine",
+      "website_domain": "neighborhoodnaturalmedicine.com",
+      "dedup_key": "neighborhoodnaturalmedicine.com",
+      "location_count": 1,
+      "location_ids": [
+        321
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "single_location_domain",
+        "canonical_name": "Neighborhood Natural Medicine",
+        "distinct_names": [
+          "Neighborhood Natural Medicine"
+        ]
+      }
+    },
+    {
+      "org_id": 8395,
+      "canonical_name": "Anti-Aging Medical Group",
+      "website_domain": "antiagingmedicalgroup.com",
+      "dedup_key": "antiagingmedicalgroup.com",
+      "location_count": 1,
+      "location_ids": [
+        335
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "single_location_domain",
+        "canonical_name": "Anti-Aging Medical Group",
+        "distinct_names": [
+          "Anti-Aging Medical Group"
+        ]
+      }
+    },
+    {
+      "org_id": 8396,
+      "canonical_name": "Park Slope Integrative Medicine PLLC",
+      "website_domain": "drchiniwala.com",
+      "dedup_key": "drchiniwala.com",
+      "location_count": 1,
+      "location_ids": [
+        336
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "single_location_domain",
+        "canonical_name": "Park Slope Integrative Medicine PLLC",
+        "distinct_names": [
+          "Park Slope Integrative Medicine PLLC"
+        ]
+      }
+    },
+    {
+      "org_id": 8397,
+      "canonical_name": "+advitam®",
+      "website_domain": "myadvitam.com",
+      "dedup_key": "myadvitam.com",
+      "location_count": 1,
+      "location_ids": [
+        348
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "single_location_domain",
+        "canonical_name": "+advitam®",
+        "distinct_names": [
+          "+advitam®"
+        ]
+      }
+    },
+    {
+      "org_id": 8398,
+      "canonical_name": "Balance Regenerative, Sports, and Rehabilitation Medicine",
+      "website_domain": "balancebklyn.com",
+      "dedup_key": "balancebklyn.com",
+      "location_count": 1,
+      "location_ids": [
+        349
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "single_location_domain",
+        "canonical_name": "Balance Regenerative, Sports, and Rehabilitation Medicine",
+        "distinct_names": [
+          "Balance Regenerative, Sports, and Rehabilitation Medicine"
+        ]
+      }
+    },
+    {
+      "org_id": 8399,
+      "canonical_name": "NYC Hormone Replacement Therapy Doctor",
+      "website_domain": "hormonereplacementdoctor.com",
+      "dedup_key": "hormonereplacementdoctor.com",
+      "location_count": 1,
+      "location_ids": [
+        355
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "single_location_domain",
+        "canonical_name": "NYC Hormone Replacement Therapy Doctor",
+        "distinct_names": [
+          "NYC Hormone Replacement Therapy Doctor"
+        ]
+      }
+    },
+    {
+      "org_id": 8400,
+      "canonical_name": "Mobile IV Drip",
+      "website_domain": "mobileivdrip.com",
+      "dedup_key": "mobileivdrip.com",
+      "location_count": 1,
+      "location_ids": [
+        370
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "single_location_domain",
+        "canonical_name": "Mobile IV Drip",
+        "distinct_names": [
+          "Mobile IV Drip"
+        ]
+      }
+    },
+    {
+      "org_id": 8401,
+      "canonical_name": "BNC Homeopathy Vitamins & Herbals",
+      "website_domain": "onlinehomeopathyusa.com",
+      "dedup_key": "onlinehomeopathyusa.com",
+      "location_count": 1,
+      "location_ids": [
+        371
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "single_location_domain",
+        "canonical_name": "BNC Homeopathy Vitamins & Herbals",
+        "distinct_names": [
+          "BNC Homeopathy Vitamins & Herbals"
+        ]
+      }
+    },
+    {
+      "org_id": 8402,
+      "canonical_name": "Madison Health NY - NY Health & Wellness Clinic Specializing in Testosterone Replacement Therapy",
+      "website_domain": "madisonhealthny.com",
+      "dedup_key": "madisonhealthny.com",
+      "location_count": 1,
+      "location_ids": [
+        377
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "single_location_domain",
+        "canonical_name": "Madison Health NY - NY Health & Wellness Clinic Specializing in Testosterone Replacement Therapy",
+        "distinct_names": [
+          "Madison Health NY - NY Health & Wellness Clinic Specializing in Testosterone Replacement Therapy"
+        ]
+      }
+    },
+    {
+      "org_id": 8403,
+      "canonical_name": "Holistic Medical Five",
+      "website_domain": "acuptnyc.com",
+      "dedup_key": "acuptnyc.com",
+      "location_count": 2,
+      "location_ids": [
+        379,
+        641
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "shared_non_generic_brand_token",
+        "canonical_name": "Holistic Medical Five",
+        "distinct_names": [
+          "Holistic Medical Five - Times Square",
+          "Holistic Medical Five"
+        ],
+        "common_tokens": [
+          "holistic",
+          "five"
+        ],
+        "domain_tokens": [
+          "acuptnyc"
+        ]
+      }
+    },
+    {
+      "org_id": 8404,
+      "canonical_name": "Château Glow East Williamsburg",
+      "website_domain": "chateauglowskin.com",
+      "dedup_key": "chateauglowskin.com",
+      "location_count": 1,
+      "location_ids": [
+        385
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "single_location_domain",
+        "canonical_name": "Château Glow East Williamsburg",
+        "distinct_names": [
+          "Château Glow East Williamsburg"
+        ]
+      }
+    },
+    {
+      "org_id": 8405,
+      "canonical_name": "TSM Healing Center",
+      "website_domain": "tsmhealingcenter.com",
+      "dedup_key": "tsmhealingcenter.com",
+      "location_count": 1,
+      "location_ids": [
+        386
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "single_location_domain",
+        "canonical_name": "TSM Healing Center",
+        "distinct_names": [
+          "TSM Healing Center"
+        ]
+      }
+    },
+    {
+      "org_id": 8406,
+      "canonical_name": "E-MOTION PHYSICAL THERAPY & WELLNESS",
+      "website_domain": "e-motionpt.com",
+      "dedup_key": "e-motionpt.com",
+      "location_count": 1,
+      "location_ids": [
+        387
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "single_location_domain",
+        "canonical_name": "E-MOTION PHYSICAL THERAPY & WELLNESS",
+        "distinct_names": [
+          "E-MOTION PHYSICAL THERAPY & WELLNESS"
+        ]
+      }
+    },
+    {
+      "org_id": 8407,
+      "canonical_name": "Drip Doc IV Infusion & Wellness",
+      "website_domain": "dripdocwellness.com",
+      "dedup_key": "dripdocwellness.com",
+      "location_count": 1,
+      "location_ids": [
+        393
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "single_location_domain",
+        "canonical_name": "Drip Doc IV Infusion & Wellness",
+        "distinct_names": [
+          "Drip Doc IV Infusion & Wellness"
+        ]
+      }
+    },
+    {
+      "org_id": 8408,
+      "canonical_name": "KUR Skin Lab",
+      "website_domain": "kurskinlab.com",
+      "dedup_key": "kurskinlab.com",
+      "location_count": 1,
+      "location_ids": [
+        395
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "single_location_domain",
+        "canonical_name": "KUR Skin Lab",
+        "distinct_names": [
+          "KUR Skin Lab"
+        ]
+      }
+    },
+    {
+      "org_id": 8409,
+      "canonical_name": "Evolved Science",
+      "website_domain": "eshealth.com",
+      "dedup_key": "eshealth.com",
+      "location_count": 1,
+      "location_ids": [
+        396
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "single_location_domain",
+        "canonical_name": "Evolved Science",
+        "distinct_names": [
+          "Evolved Science"
+        ]
+      }
+    },
+    {
+      "org_id": 8410,
+      "canonical_name": "Aleksander Kanevsky, DC - Chiropractic & Functional Medicine",
+      "website_domain": "atlantchiropractic.com",
+      "dedup_key": "atlantchiropractic.com",
+      "location_count": 1,
+      "location_ids": [
+        397
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "single_location_domain",
+        "canonical_name": "Aleksander Kanevsky, DC - Chiropractic & Functional Medicine",
+        "distinct_names": [
+          "Aleksander Kanevsky, DC - Chiropractic & Functional Medicine"
+        ]
+      }
+    },
+    {
+      "org_id": 8411,
+      "canonical_name": "Functional Chiropractic and Nutrition Associates, Inc.",
+      "website_domain": "functionalchirojc.com",
+      "dedup_key": "functionalchirojc.com",
+      "location_count": 1,
+      "location_ids": [
+        401
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "single_location_domain",
+        "canonical_name": "Functional Chiropractic and Nutrition Associates, Inc.",
+        "distinct_names": [
+          "Functional Chiropractic and Nutrition Associates, Inc."
+        ]
+      }
+    },
+    {
+      "org_id": 8412,
+      "canonical_name": "Dr. Susan Cucchiara, Naturopathic Doctor NYC",
+      "website_domain": "naturallysue.com",
+      "dedup_key": "naturallysue.com",
+      "location_count": 1,
+      "location_ids": [
+        410
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "single_location_domain",
+        "canonical_name": "Dr. Susan Cucchiara, Naturopathic Doctor NYC",
+        "distinct_names": [
+          "Dr. Susan Cucchiara, Naturopathic Doctor NYC"
+        ]
+      }
+    },
+    {
+      "org_id": 8413,
+      "canonical_name": "Age Management and Skin care",
+      "website_domain": "agemanagment.com",
+      "dedup_key": "agemanagment.com",
+      "location_count": 1,
+      "location_ids": [
+        413
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "single_location_domain",
+        "canonical_name": "Age Management and Skin care",
+        "distinct_names": [
+          "Age Management and Skin care"
+        ]
+      }
+    },
+    {
+      "org_id": 8414,
+      "canonical_name": "The Jersey City Clinic",
+      "website_domain": "jerseycitynj.gov",
+      "dedup_key": "jerseycitynj.gov",
+      "location_count": 1,
+      "location_ids": [
+        414
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "single_location_domain",
+        "canonical_name": "The Jersey City Clinic",
+        "distinct_names": [
+          "The Jersey City Clinic"
+        ]
+      }
+    },
+    {
+      "org_id": 8415,
+      "canonical_name": "FRESH Medicine Dr. Robert Graham, MD",
+      "website_domain": "freshmednyc.com",
+      "dedup_key": "freshmednyc.com",
+      "location_count": 1,
+      "location_ids": [
+        426
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "single_location_domain",
+        "canonical_name": "FRESH Medicine Dr. Robert Graham, MD",
+        "distinct_names": [
+          "FRESH Medicine Dr. Robert Graham, MD"
+        ]
+      }
+    },
+    {
+      "org_id": 8416,
+      "canonical_name": "Dr. Howard Robins, DPM",
+      "website_domain": "ozonedoctor.net",
+      "dedup_key": "ozonedoctor.net",
+      "location_count": 1,
+      "location_ids": [
+        430
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "single_location_domain",
+        "canonical_name": "Dr. Howard Robins, DPM",
+        "distinct_names": [
+          "Dr. Howard Robins, DPM"
+        ]
+      }
+    },
+    {
+      "org_id": 8417,
+      "canonical_name": "IV Drip Therapy",
+      "website_domain": "rebalancenyc.com",
+      "dedup_key": "rebalancenyc.com",
+      "location_count": 1,
+      "location_ids": [
+        441
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "single_location_domain",
+        "canonical_name": "IV Drip Therapy",
+        "distinct_names": [
+          "IV Drip Therapy"
+        ]
+      }
+    },
+    {
+      "org_id": 8418,
+      "canonical_name": "OsteoStrong Park Ave",
+      "website_domain": "osteonewyorkcity.com",
+      "dedup_key": "osteonewyorkcity.com",
+      "location_count": 1,
+      "location_ids": [
+        442
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "single_location_domain",
+        "canonical_name": "OsteoStrong Park Ave",
+        "distinct_names": [
+          "OsteoStrong Park Ave"
+        ]
+      }
+    },
+    {
+      "org_id": 8419,
+      "canonical_name": "L'Elite MediSpa and Wellness BK",
+      "website_domain": "lelitemedispa.com",
+      "dedup_key": "lelitemedispa.com",
+      "location_count": 1,
+      "location_ids": [
+        445
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "single_location_domain",
+        "canonical_name": "L'Elite MediSpa and Wellness BK",
+        "distinct_names": [
+          "L'Elite MediSpa and Wellness BK"
+        ]
+      }
+    },
+    {
+      "org_id": 8420,
+      "canonical_name": "Comite Center for Precision Medicine & Healthy Longevity",
+      "website_domain": "comitemd.com",
+      "dedup_key": "comitemd.com",
+      "location_count": 1,
+      "location_ids": [
+        447
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "single_location_domain",
+        "canonical_name": "Comite Center for Precision Medicine & Healthy Longevity",
+        "distinct_names": [
+          "Comite Center for Precision Medicine & Healthy Longevity"
+        ]
+      }
+    },
+    {
+      "org_id": 8421,
+      "canonical_name": "EHormones MD",
+      "website_domain": "ehormones.com",
+      "dedup_key": "ehormones.com",
+      "location_count": 1,
+      "location_ids": [
+        448
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "single_location_domain",
+        "canonical_name": "EHormones MD",
+        "distinct_names": [
+          "EHormones MD"
+        ]
+      }
+    },
+    {
+      "org_id": 8422,
+      "canonical_name": "Geb Hetep Wholistic Center",
+      "website_domain": "gebhetep.com",
+      "dedup_key": "gebhetep.com",
+      "location_count": 1,
+      "location_ids": [
+        450
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "single_location_domain",
+        "canonical_name": "Geb Hetep Wholistic Center",
+        "distinct_names": [
+          "Geb Hetep Wholistic Center"
+        ]
+      }
+    },
+    {
+      "org_id": 8423,
+      "canonical_name": "Dr. Robin Unger",
+      "website_domain": "drrobinunger.com",
+      "dedup_key": "drrobinunger.com",
+      "location_count": 1,
+      "location_ids": [
+        475
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "single_location_domain",
+        "canonical_name": "Dr. Robin Unger",
+        "distinct_names": [
+          "Dr. Robin Unger"
+        ]
+      }
+    },
+    {
+      "org_id": 8424,
+      "canonical_name": "Best IV Drips- Mobile IV Therapy",
+      "website_domain": "bestivdrips.com",
+      "dedup_key": "bestivdrips.com",
+      "location_count": 2,
+      "location_ids": [
+        480,
+        659
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "shared_non_generic_brand_token",
+        "canonical_name": "Best IV Drips- Mobile IV Therapy",
+        "distinct_names": [
+          "Best IV Drips- Mobile IV Therapy NYC",
+          "Best IV Drips- Mobile IV Therapy"
+        ],
+        "common_tokens": [
+          "best",
+          "drips",
+          "mobile"
+        ],
+        "domain_tokens": [
+          "bestivdrips"
+        ]
+      }
+    },
+    {
+      "org_id": 8425,
+      "canonical_name": "Brooklyn Bathhouse",
+      "website_domain": "brooklynbathhouse.nyc",
+      "dedup_key": "brooklynbathhouse.nyc",
+      "location_count": 1,
+      "location_ids": [
+        492
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "single_location_domain",
+        "canonical_name": "Brooklyn Bathhouse",
+        "distinct_names": [
+          "Brooklyn Bathhouse"
+        ]
+      }
+    },
+    {
+      "org_id": 8426,
+      "canonical_name": "Inga Zilberstein, MD",
+      "website_domain": "drzilberstein.com",
+      "dedup_key": "drzilberstein.com",
+      "location_count": 1,
+      "location_ids": [
+        494
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "single_location_domain",
+        "canonical_name": "Inga Zilberstein, MD",
+        "distinct_names": [
+          "Inga Zilberstein, MD"
+        ]
+      }
+    },
+    {
+      "org_id": 8427,
+      "canonical_name": "Liondale Medical",
+      "website_domain": "liondalemedical.com",
+      "dedup_key": "liondalemedical.com",
+      "location_count": 1,
+      "location_ids": [
+        497
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "single_location_domain",
+        "canonical_name": "Liondale Medical",
+        "distinct_names": [
+          "Liondale Medical"
+        ]
+      }
+    },
+    {
+      "org_id": 8428,
+      "canonical_name": "OsteoStrong Upper West",
+      "website_domain": "osteonewyork.com",
+      "dedup_key": "osteonewyork.com",
+      "location_count": 1,
+      "location_ids": [
+        498
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "single_location_domain",
+        "canonical_name": "OsteoStrong Upper West",
+        "distinct_names": [
+          "OsteoStrong Upper West"
+        ]
+      }
+    },
+    {
+      "org_id": 8429,
+      "canonical_name": "Generational Health by Adult Health",
+      "website_domain": "generationalhealthbyadulthealth.org",
+      "dedup_key": "generationalhealthbyadulthealth.org",
+      "location_count": 1,
+      "location_ids": [
+        539
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "single_location_domain",
+        "canonical_name": "Generational Health by Adult Health",
+        "distinct_names": [
+          "Generational Health by Adult Health"
+        ]
+      }
+    },
+    {
+      "org_id": 8430,
+      "canonical_name": "Unique Clinique Aesthetics",
+      "website_domain": "uniquecliniqueaesthetics.com",
+      "dedup_key": "uniquecliniqueaesthetics.com",
+      "location_count": 1,
+      "location_ids": [
+        543
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "single_location_domain",
+        "canonical_name": "Unique Clinique Aesthetics",
+        "distinct_names": [
+          "Unique Clinique Aesthetics"
+        ]
+      }
+    },
+    {
+      "org_id": 8431,
+      "canonical_name": "Live Holistic",
+      "website_domain": "liveholistic.net",
+      "dedup_key": "liveholistic.net",
+      "location_count": 1,
+      "location_ids": [
+        562
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "single_location_domain",
+        "canonical_name": "Live Holistic",
+        "distinct_names": [
+          "Live Holistic"
+        ]
+      }
+    },
+    {
+      "org_id": 8432,
+      "canonical_name": "Bioidentical Hormones NYC",
+      "website_domain": "bioidenticalhormones.nyc",
+      "dedup_key": "bioidenticalhormones.nyc",
+      "location_count": 1,
+      "location_ids": [
+        565
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "single_location_domain",
+        "canonical_name": "Bioidentical Hormones NYC",
+        "distinct_names": [
+          "Bioidentical Hormones NYC"
+        ]
+      }
+    },
+    {
+      "org_id": 8433,
+      "canonical_name": "Artisans Aesthetics",
+      "website_domain": "artisansaesthetics.com",
+      "dedup_key": "artisansaesthetics.com",
+      "location_count": 1,
+      "location_ids": [
+        585
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "single_location_domain",
+        "canonical_name": "Artisans Aesthetics",
+        "distinct_names": [
+          "Artisans Aesthetics"
+        ]
+      }
+    },
+    {
+      "org_id": 8434,
+      "canonical_name": "Prime Infusions - Brooklyn Infusion Center",
+      "website_domain": "primeinfusions.com",
+      "dedup_key": "primeinfusions.com",
+      "location_count": 1,
+      "location_ids": [
+        600
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "single_location_domain",
+        "canonical_name": "Prime Infusions - Brooklyn Infusion Center",
+        "distinct_names": [
+          "Prime Infusions - Brooklyn Infusion Center"
+        ]
+      }
+    },
+    {
+      "org_id": 8435,
+      "canonical_name": "Drip Gym - Jackson Heights",
+      "website_domain": "dripgym.com",
+      "dedup_key": "dripgym.com",
+      "location_count": 1,
+      "location_ids": [
+        601
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "single_location_domain",
+        "canonical_name": "Drip Gym - Jackson Heights",
+        "distinct_names": [
+          "Drip Gym - Jackson Heights"
+        ]
+      }
+    },
+    {
+      "org_id": 8436,
+      "canonical_name": "Doctor Selassie at the New Flower Center for Naturopathic Medicine",
+      "website_domain": "doctorselassie.com",
+      "dedup_key": "doctorselassie.com",
+      "location_count": 1,
+      "location_ids": [
+        602
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "single_location_domain",
+        "canonical_name": "Doctor Selassie at the New Flower Center for Naturopathic Medicine",
+        "distinct_names": [
+          "Doctor Selassie at the New Flower Center for Naturopathic Medicine"
+        ]
+      }
+    },
+    {
+      "org_id": 8437,
+      "canonical_name": "Arctic Cryotherapy Bayonne",
+      "website_domain": "arcticcryotherapybayonne.com",
+      "dedup_key": "arcticcryotherapybayonne.com",
+      "location_count": 1,
+      "location_ids": [
+        608
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "single_location_domain",
+        "canonical_name": "Arctic Cryotherapy Bayonne",
+        "distinct_names": [
+          "Arctic Cryotherapy Bayonne"
+        ]
+      }
+    },
+    {
+      "org_id": 8438,
+      "canonical_name": "Larisa N. Likver, MD",
+      "website_domain": "drlikver.com",
+      "dedup_key": "drlikver.com",
+      "location_count": 1,
+      "location_ids": [
+        611
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "single_location_domain",
+        "canonical_name": "Larisa N. Likver, MD",
+        "distinct_names": [
+          "Larisa N. Likver, MD"
+        ]
+      }
+    },
+    {
+      "org_id": 8439,
+      "canonical_name": "WORLD SPA",
+      "website_domain": "worldspa.com",
+      "dedup_key": "worldspa.com",
+      "location_count": 1,
+      "location_ids": [
+        618
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "single_location_domain",
+        "canonical_name": "WORLD SPA",
+        "distinct_names": [
+          "WORLD SPA"
+        ]
+      }
+    },
+    {
+      "org_id": 8440,
+      "canonical_name": "Oxygen Clinic - Hyperbaric Oxygen Therapy Facility",
+      "website_domain": "oxygenclinicny.com",
+      "dedup_key": "oxygenclinicny.com",
+      "location_count": 1,
+      "location_ids": [
+        622
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "single_location_domain",
+        "canonical_name": "Oxygen Clinic - Hyperbaric Oxygen Therapy Facility",
+        "distinct_names": [
+          "Oxygen Clinic - Hyperbaric Oxygen Therapy Facility"
+        ]
+      }
+    },
+    {
+      "org_id": 8441,
+      "canonical_name": "Una Aesthetics",
+      "website_domain": "unaaesthetics.com",
+      "dedup_key": "unaaesthetics.com",
+      "location_count": 1,
+      "location_ids": [
+        623
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "single_location_domain",
+        "canonical_name": "Una Aesthetics",
+        "distinct_names": [
+          "Una Aesthetics"
+        ]
+      }
+    },
+    {
+      "org_id": 8442,
+      "canonical_name": "SYLK MEDSPA",
+      "website_domain": "sylkmedspa.com",
+      "dedup_key": "sylkmedspa.com",
+      "location_count": 1,
+      "location_ids": [
+        631
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "single_location_domain",
+        "canonical_name": "SYLK MEDSPA",
+        "distinct_names": [
+          "SYLK MEDSPA"
+        ]
+      }
+    },
+    {
+      "org_id": 8443,
+      "canonical_name": "Amita Holistic Healing Center",
+      "website_domain": "amitausa.com",
+      "dedup_key": "amitausa.com",
+      "location_count": 1,
+      "location_ids": [
+        638
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "single_location_domain",
+        "canonical_name": "Amita Holistic Healing Center",
+        "distinct_names": [
+          "Amita Holistic Healing Center"
+        ]
+      }
+    },
+    {
+      "org_id": 8444,
+      "canonical_name": "Temple of Wellness",
+      "website_domain": "templeofwellness.com",
+      "dedup_key": "templeofwellness.com",
+      "location_count": 1,
+      "location_ids": [
+        648
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "single_location_domain",
+        "canonical_name": "Temple of Wellness",
+        "distinct_names": [
+          "Temple of Wellness"
+        ]
+      }
+    },
+    {
+      "org_id": 8445,
+      "canonical_name": "The Center for Medical Healing",
+      "website_domain": "thecenterformedicalhealing.com",
+      "dedup_key": "thecenterformedicalhealing.com",
+      "location_count": 1,
+      "location_ids": [
+        657
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "single_location_domain",
+        "canonical_name": "The Center for Medical Healing",
+        "distinct_names": [
+          "The Center for Medical Healing"
+        ]
+      }
+    },
+    {
+      "org_id": 8446,
+      "canonical_name": "Ironbound Physical Therapy & Wellness",
+      "website_domain": "ironboundptwellness.com",
+      "dedup_key": "ironboundptwellness.com",
+      "location_count": 1,
+      "location_ids": [
+        662
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "single_location_domain",
+        "canonical_name": "Ironbound Physical Therapy & Wellness",
+        "distinct_names": [
+          "Ironbound Physical Therapy & Wellness"
+        ]
+      }
+    },
+    {
+      "org_id": 8447,
+      "canonical_name": "Harmonious Life with FNP Marina Moiseyeva",
+      "website_domain": "liveharmoniouslife.com",
+      "dedup_key": "liveharmoniouslife.com",
+      "location_count": 1,
+      "location_ids": [
+        676
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "single_location_domain",
+        "canonical_name": "Harmonious Life with FNP Marina Moiseyeva",
+        "distinct_names": [
+          "Harmonious Life with FNP Marina Moiseyeva"
+        ]
+      }
+    },
+    {
+      "org_id": 8448,
+      "canonical_name": "Time2Drip - MedSpa",
+      "website_domain": "time2drip.com",
+      "dedup_key": "time2drip.com",
+      "location_count": 1,
+      "location_ids": [
+        682
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "single_location_domain",
+        "canonical_name": "Time2Drip - MedSpa",
+        "distinct_names": [
+          "Time2Drip - MedSpa"
+        ]
+      }
+    },
+    {
+      "org_id": 8449,
+      "canonical_name": "HealthierU Natural Nutritionist Brooklyn",
+      "website_domain": "healthieruny.com",
+      "dedup_key": "healthieruny.com",
+      "location_count": 1,
+      "location_ids": [
+        683
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "single_location_domain",
+        "canonical_name": "HealthierU Natural Nutritionist Brooklyn",
+        "distinct_names": [
+          "HealthierU Natural Nutritionist Brooklyn"
+        ]
+      }
+    },
+    {
+      "org_id": 8450,
+      "canonical_name": "Vitality Health Group",
+      "website_domain": "vitalityhealthgroup.com",
+      "dedup_key": "vitalityhealthgroup.com",
+      "location_count": 1,
+      "location_ids": [
+        685
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "single_location_domain",
+        "canonical_name": "Vitality Health Group",
+        "distinct_names": [
+          "Vitality Health Group"
+        ]
+      }
+    },
+    {
+      "org_id": 8451,
+      "canonical_name": "Shore Parkway Wellness",
+      "website_domain": "shoreparkwaywellness.net",
+      "dedup_key": "shoreparkwaywellness.net",
+      "location_count": 1,
+      "location_ids": [
+        686
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "single_location_domain",
+        "canonical_name": "Shore Parkway Wellness",
+        "distinct_names": [
+          "Shore Parkway Wellness"
+        ]
+      }
+    },
+    {
+      "org_id": 8452,
+      "canonical_name": "MedLou Drips",
+      "website_domain": "medloucare.com",
+      "dedup_key": "medloucare.com",
+      "location_count": 1,
+      "location_ids": [
+        693
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "single_location_domain",
+        "canonical_name": "MedLou Drips",
+        "distinct_names": [
+          "MedLou Drips"
+        ]
+      }
+    },
+    {
+      "org_id": 8453,
+      "canonical_name": "Kearny Wellness",
+      "website_domain": "kearnywellness.com",
+      "dedup_key": "kearnywellness.com",
+      "location_count": 1,
+      "location_ids": [
+        703
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "single_location_domain",
+        "canonical_name": "Kearny Wellness",
+        "distinct_names": [
+          "Kearny Wellness"
+        ]
+      }
+    },
+    {
+      "org_id": 8454,
+      "canonical_name": "Ironbound Acupuncture and Wellness",
+      "website_domain": "ironboundacu.com",
+      "dedup_key": "ironboundacu.com",
+      "location_count": 1,
+      "location_ids": [
+        715
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "single_location_domain",
+        "canonical_name": "Ironbound Acupuncture and Wellness",
+        "distinct_names": [
+          "Ironbound Acupuncture and Wellness"
+        ]
+      }
+    },
+    {
+      "org_id": 8455,
+      "canonical_name": "Body Luxe Day Spa",
+      "website_domain": "bodyluxdayspa.com",
+      "dedup_key": "bodyluxdayspa.com",
+      "location_count": 1,
+      "location_ids": [
+        720
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "single_location_domain",
+        "canonical_name": "Body Luxe Day Spa",
+        "distinct_names": [
+          "Body Luxe Day Spa"
+        ]
+      }
+    },
+    {
+      "org_id": 8456,
+      "canonical_name": "BeAti Acupuncture Wellness Clinic",
+      "website_domain": "careacu.com",
+      "dedup_key": "careacu.com",
+      "location_count": 1,
+      "location_ids": [
+        729
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "single_location_domain",
+        "canonical_name": "BeAti Acupuncture Wellness Clinic",
+        "distinct_names": [
+          "BeAti Acupuncture Wellness Clinic"
+        ]
+      }
+    },
+    {
+      "org_id": 8457,
+      "canonical_name": "Paukman Bioage Clinic",
+      "website_domain": "paukmanbioageclinic.com",
+      "dedup_key": "paukmanbioageclinic.com",
+      "location_count": 1,
+      "location_ids": [
+        730
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "single_location_domain",
+        "canonical_name": "Paukman Bioage Clinic",
+        "distinct_names": [
+          "Paukman Bioage Clinic"
+        ]
+      }
+    },
+    {
+      "org_id": 8458,
+      "canonical_name": "Boris Bobyr NP - Hormone Replacement Therapy Center",
+      "website_domain": "borisbobyrnp.com",
+      "dedup_key": "borisbobyrnp.com",
+      "location_count": 2,
+      "location_ids": [
+        748,
+        902
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "shared_non_generic_brand_token",
+        "canonical_name": "Boris Bobyr NP - Hormone Replacement Therapy Center",
+        "distinct_names": [
+          "Boris Bobyr ANP - Hormone Replacement Therapy Center",
+          "Boris Bobyr NP - Hormone Replacement Therapy Center"
+        ],
+        "common_tokens": [
+          "boris",
+          "bobyr",
+          "hormone",
+          "replacement"
+        ],
+        "domain_tokens": [
+          "borisbobyrnp"
+        ]
+      }
+    },
+    {
+      "org_id": 8459,
+      "canonical_name": "Dr. Olga Zilberstein Medical Aesthetics Brooklyn",
+      "website_domain": "drolgaz.com",
+      "dedup_key": "drolgaz.com",
+      "location_count": 1,
+      "location_ids": [
+        766
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "single_location_domain",
+        "canonical_name": "Dr. Olga Zilberstein Medical Aesthetics Brooklyn",
+        "distinct_names": [
+          "Dr. Olga Zilberstein Medical Aesthetics Brooklyn"
+        ]
+      }
+    },
+    {
+      "org_id": 8460,
+      "canonical_name": "Natural Essential Wellness, LLC",
+      "website_domain": "naturalessentialwellness.net",
+      "dedup_key": "naturalessentialwellness.net",
+      "location_count": 1,
+      "location_ids": [
+        772
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "single_location_domain",
+        "canonical_name": "Natural Essential Wellness, LLC",
+        "distinct_names": [
+          "Natural Essential Wellness, LLC"
+        ]
+      }
+    },
+    {
+      "org_id": 8461,
+      "canonical_name": "Brooklyn Integrative Medicine",
+      "website_domain": "brooklynintegrativemedicine.com",
+      "dedup_key": "brooklynintegrativemedicine.com",
+      "location_count": 1,
+      "location_ids": [
+        775
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "single_location_domain",
+        "canonical_name": "Brooklyn Integrative Medicine",
+        "distinct_names": [
+          "Brooklyn Integrative Medicine"
+        ]
+      }
+    },
+    {
+      "org_id": 8462,
+      "canonical_name": "Inspire Health",
+      "website_domain": "inspirehealthpro.com",
+      "dedup_key": "inspirehealthpro.com",
+      "location_count": 1,
+      "location_ids": [
+        784
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "single_location_domain",
+        "canonical_name": "Inspire Health",
+        "distinct_names": [
+          "Inspire Health"
+        ]
+      }
+    },
+    {
+      "org_id": 8463,
+      "canonical_name": "Inspire Med Spa",
+      "website_domain": "inspiremedspa.com",
+      "dedup_key": "inspiremedspa.com",
+      "location_count": 1,
+      "location_ids": [
+        785
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "single_location_domain",
+        "canonical_name": "Inspire Med Spa",
+        "distinct_names": [
+          "Inspire Med Spa"
+        ]
+      }
+    },
+    {
+      "org_id": 8464,
+      "canonical_name": "Geria Dermatology - Rutherford",
+      "website_domain": "geriadermatology.com",
+      "dedup_key": "geriadermatology.com",
+      "location_count": 1,
+      "location_ids": [
+        788
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "single_location_domain",
+        "canonical_name": "Geria Dermatology - Rutherford",
+        "distinct_names": [
+          "Geria Dermatology - Rutherford"
+        ]
+      }
+    },
+    {
+      "org_id": 8465,
+      "canonical_name": "Healing Touch IV",
+      "website_domain": "healingtouchiv.com",
+      "dedup_key": "healingtouchiv.com",
+      "location_count": 1,
+      "location_ids": [
+        792
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "single_location_domain",
+        "canonical_name": "Healing Touch IV",
+        "distinct_names": [
+          "Healing Touch IV"
+        ]
+      }
+    },
+    {
+      "org_id": 8466,
+      "canonical_name": "Humaira Quraishi ND, MS",
+      "website_domain": "natureshum.net",
+      "dedup_key": "natureshum.net",
+      "location_count": 1,
+      "location_ids": [
+        806
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "single_location_domain",
+        "canonical_name": "Humaira Quraishi ND, MS",
+        "distinct_names": [
+          "Humaira Quraishi ND, MS"
+        ]
+      }
+    },
+    {
+      "org_id": 8467,
+      "canonical_name": "Functional Wellness Medical Care",
+      "website_domain": "drhamzajalal.com",
+      "dedup_key": "drhamzajalal.com",
+      "location_count": 1,
+      "location_ids": [
+        808
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "single_location_domain",
+        "canonical_name": "Functional Wellness Medical Care",
+        "distinct_names": [
+          "Functional Wellness Medical Care"
+        ]
+      }
+    },
+    {
+      "org_id": 8468,
+      "canonical_name": "Juventee",
+      "website_domain": "juventee.com",
+      "dedup_key": "juventee.com",
+      "location_count": 1,
+      "location_ids": [
+        813
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "single_location_domain",
+        "canonical_name": "Juventee",
+        "distinct_names": [
+          "Juventee"
+        ]
+      }
+    },
+    {
+      "org_id": 8469,
+      "canonical_name": "Zia Communications, Sales of cryotherapy chambers, fitness and spa equipment",
+      "website_domain": "vacuactivus.com",
+      "dedup_key": "vacuactivus.com",
+      "location_count": 1,
+      "location_ids": [
+        824
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "single_location_domain",
+        "canonical_name": "Zia Communications, Sales of cryotherapy chambers, fitness and spa equipment",
+        "distinct_names": [
+          "Zia Communications, Sales of cryotherapy chambers, fitness and spa equipment"
+        ]
+      }
+    },
+    {
+      "org_id": 8470,
+      "canonical_name": "The Lennard Clinic",
+      "website_domain": "thelennardclinic.org",
+      "dedup_key": "thelennardclinic.org",
+      "location_count": 1,
+      "location_ids": [
+        829
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "single_location_domain",
+        "canonical_name": "The Lennard Clinic",
+        "distinct_names": [
+          "The Lennard Clinic"
+        ]
+      }
+    },
+    {
+      "org_id": 8471,
+      "canonical_name": "MULTIVITA IV",
+      "website_domain": "multivitaiv.com",
+      "dedup_key": "multivitaiv.com",
+      "location_count": 1,
+      "location_ids": [
+        830
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "single_location_domain",
+        "canonical_name": "MULTIVITA IV",
+        "distinct_names": [
+          "MULTIVITA IV"
+        ]
+      }
+    },
+    {
+      "org_id": 8472,
+      "canonical_name": "Spa Castle New York",
+      "website_domain": "spacastleusa.com",
+      "dedup_key": "spacastleusa.com",
+      "location_count": 1,
+      "location_ids": [
+        841
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "single_location_domain",
+        "canonical_name": "Spa Castle New York",
+        "distinct_names": [
+          "Spa Castle New York"
+        ]
+      }
+    },
+    {
+      "org_id": 8473,
+      "canonical_name": "Dr. Natasha Fuksina AstraMDhealth Functional, Internal And Obesity Medicine Bioidentical Hormones",
+      "website_domain": "astramdhealth.com",
+      "dedup_key": "astramdhealth.com",
+      "location_count": 1,
+      "location_ids": [
+        847
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "single_location_domain",
+        "canonical_name": "Dr. Natasha Fuksina AstraMDhealth Functional, Internal And Obesity Medicine Bioidentical Hormones",
+        "distinct_names": [
+          "Dr. Natasha Fuksina AstraMDhealth Functional, Internal And Obesity Medicine Bioidentical Hormones"
+        ]
+      }
+    },
+    {
+      "org_id": 8474,
+      "canonical_name": "New York Spa & Sauna",
+      "website_domain": "nyspasauna.com",
+      "dedup_key": "nyspasauna.com",
+      "location_count": 1,
+      "location_ids": [
+        855
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "single_location_domain",
+        "canonical_name": "New York Spa & Sauna",
+        "distinct_names": [
+          "New York Spa & Sauna"
+        ]
+      }
+    },
+    {
+      "org_id": 8475,
+      "canonical_name": "Your Natural Path to Health Clinic",
+      "website_domain": "njnaturopath.com",
+      "dedup_key": "njnaturopath.com",
+      "location_count": 1,
+      "location_ids": [
+        856
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "single_location_domain",
+        "canonical_name": "Your Natural Path to Health Clinic",
+        "distinct_names": [
+          "Your Natural Path to Health Clinic"
+        ]
+      }
+    },
+    {
+      "org_id": 8476,
+      "canonical_name": "Health N Wellness Rx",
+      "website_domain": "healthnwellnessrx.com",
+      "dedup_key": "healthnwellnessrx.com",
+      "location_count": 1,
+      "location_ids": [
+        864
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "single_location_domain",
+        "canonical_name": "Health N Wellness Rx",
+        "distinct_names": [
+          "Health N Wellness Rx"
+        ]
+      }
+    },
+    {
+      "org_id": 8477,
+      "canonical_name": "Herboganic Retail",
+      "website_domain": "herboganic.com",
+      "dedup_key": "herboganic.com",
+      "location_count": 1,
+      "location_ids": [
+        901
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "single_location_domain",
+        "canonical_name": "Herboganic Retail",
+        "distinct_names": [
+          "Herboganic Retail"
+        ]
+      }
+    },
+    {
+      "org_id": 8478,
+      "canonical_name": "Alternative Health Center PC",
+      "website_domain": "alternativehealthcenter.com",
+      "dedup_key": "alternativehealthcenter.com",
+      "location_count": 1,
+      "location_ids": [
+        912
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "single_location_domain",
+        "canonical_name": "Alternative Health Center PC",
+        "distinct_names": [
+          "Alternative Health Center PC"
+        ]
+      }
+    },
+    {
+      "org_id": 8479,
+      "canonical_name": "Stunning Med Spa",
+      "website_domain": "stunningmedspas.com",
+      "dedup_key": "stunningmedspas.com",
+      "location_count": 1,
+      "location_ids": [
+        928
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "single_location_domain",
+        "canonical_name": "Stunning Med Spa",
+        "distinct_names": [
+          "Stunning Med Spa"
+        ]
+      }
+    },
+    {
+      "org_id": 8480,
+      "canonical_name": "Pearl Wellness and Detox",
+      "website_domain": "pearlwellnessdetox.com",
+      "dedup_key": "pearlwellnessdetox.com",
+      "location_count": 1,
+      "location_ids": [
+        954
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "single_location_domain",
+        "canonical_name": "Pearl Wellness and Detox",
+        "distinct_names": [
+          "Pearl Wellness and Detox"
+        ]
+      }
+    },
+    {
+      "org_id": 8481,
+      "canonical_name": "Quantum Integrative Medicine, LLC - Monica J Johnson, DC, NP-C, L.Ac",
+      "website_domain": "quantumintegrativemed.com",
+      "dedup_key": "quantumintegrativemed.com",
+      "location_count": 1,
+      "location_ids": [
+        955
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "single_location_domain",
+        "canonical_name": "Quantum Integrative Medicine, LLC - Monica J Johnson, DC, NP-C, L.Ac",
+        "distinct_names": [
+          "Quantum Integrative Medicine, LLC - Monica J Johnson, DC, NP-C, L.Ac"
+        ]
+      }
+    },
+    {
+      "org_id": 8482,
+      "canonical_name": "Longevity",
+      "website_domain": "longevitynj.com",
+      "dedup_key": "longevitynj.com",
+      "location_count": 1,
+      "location_ids": [
+        957
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "single_location_domain",
+        "canonical_name": "Longevity",
+        "distinct_names": [
+          "Longevity"
+        ]
+      }
+    },
+    {
+      "org_id": 8483,
+      "canonical_name": "AliveDrip Montclair",
+      "website_domain": "alivedripmedical.com",
+      "dedup_key": "alivedripmedical.com",
+      "location_count": 1,
+      "location_ids": [
+        967
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "single_location_domain",
+        "canonical_name": "AliveDrip Montclair",
+        "distinct_names": [
+          "AliveDrip Montclair"
+        ]
+      }
+    },
+    {
+      "org_id": 8484,
+      "canonical_name": "Anti-Aging and Metabolic Health Clinic",
+      "website_domain": "aamhclinic.com",
+      "dedup_key": "aamhclinic.com",
+      "location_count": 1,
+      "location_ids": [
+        978
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "single_location_domain",
+        "canonical_name": "Anti-Aging and Metabolic Health Clinic",
+        "distinct_names": [
+          "Anti-Aging and Metabolic Health Clinic"
+        ]
+      }
+    },
+    {
+      "org_id": 8485,
+      "canonical_name": "ShiCares MedSpa",
+      "website_domain": "shicaresmedspa.com",
+      "dedup_key": "shicaresmedspa.com",
+      "location_count": 1,
+      "location_ids": [
+        987
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "single_location_domain",
+        "canonical_name": "ShiCares MedSpa",
+        "distinct_names": [
+          "ShiCares MedSpa"
+        ]
+      }
+    },
+    {
+      "org_id": 8486,
+      "canonical_name": "Lewis Holistic Healing Institute",
+      "website_domain": "drlisalewis.com",
+      "dedup_key": "drlisalewis.com",
+      "location_count": 1,
+      "location_ids": [
+        992
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "single_location_domain",
+        "canonical_name": "Lewis Holistic Healing Institute",
+        "distinct_names": [
+          "Lewis Holistic Healing Institute"
+        ]
+      }
+    },
+    {
+      "org_id": 8487,
+      "canonical_name": "Whole Body Natural Wellness Center, LLC",
+      "website_domain": "drchante.com",
+      "dedup_key": "drchante.com",
+      "location_count": 1,
+      "location_ids": [
+        997
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "single_location_domain",
+        "canonical_name": "Whole Body Natural Wellness Center, LLC",
+        "distinct_names": [
+          "Whole Body Natural Wellness Center, LLC"
+        ]
+      }
+    },
+    {
+      "org_id": 8488,
+      "canonical_name": "Infusion Center of NJ",
+      "website_domain": "infusioncenterofnj.com",
+      "dedup_key": "infusioncenterofnj.com",
+      "location_count": 1,
+      "location_ids": [
+        1002
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "single_location_domain",
+        "canonical_name": "Infusion Center of NJ",
+        "distinct_names": [
+          "Infusion Center of NJ"
+        ]
+      }
+    },
+    {
+      "org_id": 8489,
+      "canonical_name": "REVIVE Body Mind Cryotherapy & Halotherapy",
+      "website_domain": "revivebodymind.com",
+      "dedup_key": "revivebodymind.com",
+      "location_count": 1,
+      "location_ids": [
+        1005
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "single_location_domain",
+        "canonical_name": "REVIVE Body Mind Cryotherapy & Halotherapy",
+        "distinct_names": [
+          "REVIVE Body Mind Cryotherapy & Halotherapy"
+        ]
+      }
+    },
+    {
+      "org_id": 8490,
+      "canonical_name": "Holistic Naturopathic Center",
+      "website_domain": "holisticnaturopath.com",
+      "dedup_key": "holisticnaturopath.com",
+      "location_count": 1,
+      "location_ids": [
+        1012
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "single_location_domain",
+        "canonical_name": "Holistic Naturopathic Center",
+        "distinct_names": [
+          "Holistic Naturopathic Center"
+        ]
+      }
+    },
+    {
+      "org_id": 8491,
+      "canonical_name": "Holistic Pain Relief and Weight Loss Center",
+      "website_domain": "holisticpainreliefandweightlosscenter.com",
+      "dedup_key": "holisticpainreliefandweightlosscenter.com",
+      "location_count": 1,
+      "location_ids": [
+        1018
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "single_location_domain",
+        "canonical_name": "Holistic Pain Relief and Weight Loss Center",
+        "distinct_names": [
+          "Holistic Pain Relief and Weight Loss Center"
+        ]
+      }
+    },
+    {
+      "org_id": 8492,
+      "canonical_name": "Onyx Aesthetics & Sports Medicine",
+      "website_domain": "onyxaasm.com",
+      "dedup_key": "onyxaasm.com",
+      "location_count": 1,
+      "location_ids": [
+        1028
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "single_location_domain",
+        "canonical_name": "Onyx Aesthetics & Sports Medicine",
+        "distinct_names": [
+          "Onyx Aesthetics & Sports Medicine"
+        ]
+      }
+    },
+    {
+      "org_id": 8493,
+      "canonical_name": "Feel Natural Wellness Center",
+      "website_domain": "feelnaturalwellnesscenter.com",
+      "dedup_key": "feelnaturalwellnesscenter.com",
+      "location_count": 1,
+      "location_ids": [
+        1030
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "single_location_domain",
+        "canonical_name": "Feel Natural Wellness Center",
+        "distinct_names": [
+          "Feel Natural Wellness Center"
+        ]
+      }
+    },
+    {
+      "org_id": 8494,
+      "canonical_name": "True Bliss Medical Aesthetics and Wellness",
+      "website_domain": "trueblissmedical.com",
+      "dedup_key": "trueblissmedical.com",
+      "location_count": 1,
+      "location_ids": [
+        1031
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "single_location_domain",
+        "canonical_name": "True Bliss Medical Aesthetics and Wellness",
+        "distinct_names": [
+          "True Bliss Medical Aesthetics and Wellness"
+        ]
+      }
+    },
+    {
+      "org_id": 8495,
+      "canonical_name": "Refresh Clinic",
+      "website_domain": "refreshclinic.com",
+      "dedup_key": "refreshclinic.com",
+      "location_count": 1,
+      "location_ids": [
+        1038
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "single_location_domain",
+        "canonical_name": "Refresh Clinic",
+        "distinct_names": [
+          "Refresh Clinic"
+        ]
+      }
+    },
+    {
+      "org_id": 8496,
+      "canonical_name": "IV Hydrate Cafe",
+      "website_domain": "ivhydratecafe.com",
+      "dedup_key": "ivhydratecafe.com",
+      "location_count": 1,
+      "location_ids": [
+        1046
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "single_location_domain",
+        "canonical_name": "IV Hydrate Cafe",
+        "distinct_names": [
+          "IV Hydrate Cafe"
+        ]
+      }
+    },
+    {
+      "org_id": 8497,
+      "canonical_name": "Anti-aging and Weight loss",
+      "website_domain": "sunwellness.info",
+      "dedup_key": "sunwellness.info",
+      "location_count": 1,
+      "location_ids": [
+        1047
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "single_location_domain",
+        "canonical_name": "Anti-aging and Weight loss",
+        "distinct_names": [
+          "Anti-aging and Weight loss"
+        ]
+      }
+    },
+    {
+      "org_id": 8498,
+      "canonical_name": "Testosterone Replacement Therapy Specialists",
+      "website_domain": "trtspecialistnj.com",
+      "dedup_key": "trtspecialistnj.com",
+      "location_count": 1,
+      "location_ids": [
+        1059
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "single_location_domain",
+        "canonical_name": "Testosterone Replacement Therapy Specialists",
+        "distinct_names": [
+          "Testosterone Replacement Therapy Specialists"
+        ]
+      }
+    },
+    {
+      "org_id": 8499,
+      "canonical_name": "VitaMineral IV Therapy",
+      "website_domain": "vitamineralivtherapy.com",
+      "dedup_key": "vitamineralivtherapy.com",
+      "location_count": 1,
+      "location_ids": [
+        1067
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "single_location_domain",
+        "canonical_name": "VitaMineral IV Therapy",
+        "distinct_names": [
+          "VitaMineral IV Therapy"
+        ]
+      }
+    },
+    {
+      "org_id": 8500,
+      "canonical_name": "BRC Day Spa & Sauna Resort",
+      "website_domain": "brc-spa.com",
+      "dedup_key": "brc-spa.com",
+      "location_count": 1,
+      "location_ids": [
+        1072
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "single_location_domain",
+        "canonical_name": "BRC Day Spa & Sauna Resort",
+        "distinct_names": [
+          "BRC Day Spa & Sauna Resort"
+        ]
+      }
+    },
+    {
+      "org_id": 8501,
+      "canonical_name": "Bergen Total Health",
+      "website_domain": "bergentotalhealth.com",
+      "dedup_key": "bergentotalhealth.com",
+      "location_count": 1,
+      "location_ids": [
+        1083
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "single_location_domain",
+        "canonical_name": "Bergen Total Health",
+        "distinct_names": [
+          "Bergen Total Health"
+        ]
+      }
+    },
+    {
+      "org_id": 8502,
+      "canonical_name": "Integrative Medicine of New Jersey",
+      "website_domain": "integrativemedicineofnj.com",
+      "dedup_key": "integrativemedicineofnj.com",
+      "location_count": 1,
+      "location_ids": [
+        1087
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "single_location_domain",
+        "canonical_name": "Integrative Medicine of New Jersey",
+        "distinct_names": [
+          "Integrative Medicine of New Jersey"
+        ]
+      }
+    },
+    {
+      "org_id": 8503,
+      "canonical_name": "Cryo Energy",
+      "website_domain": "cryonrg.com",
+      "dedup_key": "cryonrg.com",
+      "location_count": 1,
+      "location_ids": [
+        1097
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "single_location_domain",
+        "canonical_name": "Cryo Energy",
+        "distinct_names": [
+          "Cryo Energy"
+        ]
+      }
+    },
+    {
+      "org_id": 8504,
+      "canonical_name": "Advanced Integrated Health - Holistic & Functional Medicine",
+      "website_domain": "advancedintegratedhealth.com",
+      "dedup_key": "advancedintegratedhealth.com",
+      "location_count": 1,
+      "location_ids": [
+        1101
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "single_location_domain",
+        "canonical_name": "Advanced Integrated Health - Holistic & Functional Medicine",
+        "distinct_names": [
+          "Advanced Integrated Health - Holistic & Functional Medicine"
+        ]
+      }
+    },
+    {
+      "org_id": 8505,
+      "canonical_name": "Tideline Center for Health & Aesthetics",
+      "website_domain": "tidelinehealth.net",
+      "dedup_key": "tidelinehealth.net",
+      "location_count": 1,
+      "location_ids": [
+        1122
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "single_location_domain",
+        "canonical_name": "Tideline Center for Health & Aesthetics",
+        "distinct_names": [
+          "Tideline Center for Health & Aesthetics"
+        ]
+      }
+    },
+    {
+      "org_id": 8506,
+      "canonical_name": "Elysium Aesthetics and Vein Care: David Singh, MD",
+      "website_domain": "elysiumveincare.com",
+      "dedup_key": "elysiumveincare.com",
+      "location_count": 1,
+      "location_ids": [
+        1124
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "single_location_domain",
+        "canonical_name": "Elysium Aesthetics and Vein Care: David Singh, MD",
+        "distinct_names": [
+          "Elysium Aesthetics and Vein Care: David Singh, MD"
+        ]
+      }
+    },
+    {
+      "org_id": 8507,
+      "canonical_name": "Reset Float",
+      "website_domain": "resetfloat.com",
+      "dedup_key": "resetfloat.com",
+      "location_count": 1,
+      "location_ids": [
+        1125
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "single_location_domain",
+        "canonical_name": "Reset Float",
+        "distinct_names": [
+          "Reset Float"
+        ]
+      }
+    },
+    {
+      "org_id": 8508,
+      "canonical_name": "BouncebackIV Medspa",
+      "website_domain": "bouncebackiv.com",
+      "dedup_key": "bouncebackiv.com",
+      "location_count": 1,
+      "location_ids": [
+        1131
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "single_location_domain",
+        "canonical_name": "BouncebackIV Medspa",
+        "distinct_names": [
+          "BouncebackIV Medspa"
+        ]
+      }
+    },
+    {
+      "org_id": 8509,
+      "canonical_name": "Dr Radu Kramer MD - Integrative Medicine Associates - Comprehensive Healing",
+      "website_domain": "comprehensivehealingmd.com",
+      "dedup_key": "comprehensivehealingmd.com",
+      "location_count": 1,
+      "location_ids": [
+        1143
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "single_location_domain",
+        "canonical_name": "Dr Radu Kramer MD - Integrative Medicine Associates - Comprehensive Healing",
+        "distinct_names": [
+          "Dr Radu Kramer MD - Integrative Medicine Associates - Comprehensive Healing"
+        ]
+      }
+    },
+    {
+      "org_id": 8510,
+      "canonical_name": "HeavenLee Float Spa",
+      "website_domain": "heavenleefloatspa.com",
+      "dedup_key": "heavenleefloatspa.com",
+      "location_count": 1,
+      "location_ids": [
+        1158
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "single_location_domain",
+        "canonical_name": "HeavenLee Float Spa",
+        "distinct_names": [
+          "HeavenLee Float Spa"
+        ]
+      }
+    },
+    {
+      "org_id": 8511,
+      "canonical_name": "Martin P. Goldman, MD & Jay A. Goldman, LAc.",
+      "website_domain": "jaygoldmanacupuncture.com",
+      "dedup_key": "jaygoldmanacupuncture.com",
+      "location_count": 1,
+      "location_ids": [
+        1164
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "single_location_domain",
+        "canonical_name": "Martin P. Goldman, MD & Jay A. Goldman, LAc.",
+        "distinct_names": [
+          "Martin P. Goldman, MD & Jay A. Goldman, LAc."
+        ]
+      }
+    },
+    {
+      "org_id": 8512,
+      "canonical_name": "Longevity Physical Therapy & Performance",
+      "website_domain": "longevityptperformance.com",
+      "dedup_key": "longevityptperformance.com",
+      "location_count": 1,
+      "location_ids": [
+        1171
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "single_location_domain",
+        "canonical_name": "Longevity Physical Therapy & Performance",
+        "distinct_names": [
+          "Longevity Physical Therapy & Performance"
+        ]
+      }
+    },
+    {
+      "org_id": 8513,
+      "canonical_name": "RxIV Infusions",
+      "website_domain": "rxivinfusions.com",
+      "dedup_key": "rxivinfusions.com",
+      "location_count": 1,
+      "location_ids": [
+        1174
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "single_location_domain",
+        "canonical_name": "RxIV Infusions",
+        "distinct_names": [
+          "RxIV Infusions"
+        ]
+      }
+    },
+    {
+      "org_id": 8514,
+      "canonical_name": "OsteoStrong Westfield NJ",
+      "website_domain": "osteostrongwestfield.com",
+      "dedup_key": "osteostrongwestfield.com",
+      "location_count": 1,
+      "location_ids": [
+        1176
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "single_location_domain",
+        "canonical_name": "OsteoStrong Westfield NJ",
+        "distinct_names": [
+          "OsteoStrong Westfield NJ"
+        ]
+      }
+    },
+    {
+      "org_id": 8515,
+      "canonical_name": "Balanced Health & Wellness",
+      "website_domain": "balancedhealthlb.com",
+      "dedup_key": "balancedhealthlb.com",
+      "location_count": 1,
+      "location_ids": [
+        1185
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "single_location_domain",
+        "canonical_name": "Balanced Health & Wellness",
+        "distinct_names": [
+          "Balanced Health & Wellness"
+        ]
+      }
+    },
+    {
+      "org_id": 8516,
+      "canonical_name": "Integrative Med Solutions, Dr. Fred Lisanti",
+      "website_domain": "intmedsolutions.com",
+      "dedup_key": "intmedsolutions.com",
+      "location_count": 1,
+      "location_ids": [
+        1195
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "single_location_domain",
+        "canonical_name": "Integrative Med Solutions, Dr. Fred Lisanti",
+        "distinct_names": [
+          "Integrative Med Solutions, Dr. Fred Lisanti"
+        ]
+      }
+    },
+    {
+      "org_id": 8517,
+      "canonical_name": "Westchester Wellness Medicine",
+      "website_domain": "westchesterwellnessmedicine.com",
+      "dedup_key": "westchesterwellnessmedicine.com",
+      "location_count": 1,
+      "location_ids": [
+        1197
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "single_location_domain",
+        "canonical_name": "Westchester Wellness Medicine",
+        "distinct_names": [
+          "Westchester Wellness Medicine"
+        ]
+      }
+    },
+    {
+      "org_id": 8518,
+      "canonical_name": "Regenerative Healing Center",
+      "website_domain": "regenerativehealingcenter.com",
+      "dedup_key": "regenerativehealingcenter.com",
+      "location_count": 1,
+      "location_ids": [
+        1202
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "single_location_domain",
+        "canonical_name": "Regenerative Healing Center",
+        "distinct_names": [
+          "Regenerative Healing Center"
+        ]
+      }
+    },
+    {
+      "org_id": 8519,
+      "canonical_name": "KC Performance: High-Performance Health & Longevity for Former Athletes",
+      "website_domain": "kcperformanceny.com",
+      "dedup_key": "kcperformanceny.com",
+      "location_count": 1,
+      "location_ids": [
+        1208
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "single_location_domain",
+        "canonical_name": "KC Performance: High-Performance Health & Longevity for Former Athletes",
+        "distinct_names": [
+          "KC Performance: High-Performance Health & Longevity for Former Athletes"
+        ]
+      }
+    },
+    {
+      "org_id": 8520,
+      "canonical_name": "Dr. Michelle S. Yusupov",
+      "website_domain": "drmichnd.com",
+      "dedup_key": "drmichnd.com",
+      "location_count": 1,
+      "location_ids": [
+        1211
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "single_location_domain",
+        "canonical_name": "Dr. Michelle S. Yusupov",
+        "distinct_names": [
+          "Dr. Michelle S. Yusupov"
+        ]
+      }
+    },
+    {
+      "org_id": 8521,
+      "canonical_name": "prosperIV Yonkers",
+      "website_domain": "theprosperiv.com",
+      "dedup_key": "theprosperiv.com",
+      "location_count": 1,
+      "location_ids": [
+        1213
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "single_location_domain",
+        "canonical_name": "prosperIV Yonkers",
+        "distinct_names": [
+          "prosperIV Yonkers"
+        ]
+      }
+    },
+    {
+      "org_id": 8522,
+      "canonical_name": "IVRevive",
+      "website_domain": "iv-revive.com",
+      "dedup_key": "iv-revive.com",
+      "location_count": 1,
+      "location_ids": [
+        1215
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "single_location_domain",
+        "canonical_name": "IVRevive",
+        "distinct_names": [
+          "IVRevive"
+        ]
+      }
+    },
+    {
+      "org_id": 8523,
+      "canonical_name": "Restoration Men's Health",
+      "website_domain": "restorationmenshealth.com",
+      "dedup_key": "restorationmenshealth.com",
+      "location_count": 1,
+      "location_ids": [
+        1218
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "single_location_domain",
+        "canonical_name": "Restoration Men's Health",
+        "distinct_names": [
+          "Restoration Men's Health"
+        ]
+      }
+    },
+    {
+      "org_id": 8524,
+      "canonical_name": "Zeta Aesthetics NYC Westchester",
+      "website_domain": "zetaaestheticsnyc.com",
+      "dedup_key": "zetaaestheticsnyc.com",
+      "location_count": 1,
+      "location_ids": [
+        1223
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "single_location_domain",
+        "canonical_name": "Zeta Aesthetics NYC Westchester",
+        "distinct_names": [
+          "Zeta Aesthetics NYC Westchester"
+        ]
+      }
+    },
+    {
+      "org_id": 8525,
+      "canonical_name": "OsteoStrong Roslyn",
+      "website_domain": "osteostrongroslyn.com",
+      "dedup_key": "osteostrongroslyn.com",
+      "location_count": 1,
+      "location_ids": [
+        1225
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "single_location_domain",
+        "canonical_name": "OsteoStrong Roslyn",
+        "distinct_names": [
+          "OsteoStrong Roslyn"
+        ]
+      }
+    },
+    {
+      "org_id": 8526,
+      "canonical_name": "Within Natural Health",
+      "website_domain": "withinnaturalhealth.com",
+      "dedup_key": "withinnaturalhealth.com",
+      "location_count": 1,
+      "location_ids": [
+        1230
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "single_location_domain",
+        "canonical_name": "Within Natural Health",
+        "distinct_names": [
+          "Within Natural Health"
+        ]
+      }
+    },
+    {
+      "org_id": 8527,
+      "canonical_name": "Dr. Eric Landi Functional Medicine",
+      "website_domain": "drericlandi.com",
+      "dedup_key": "drericlandi.com",
+      "location_count": 1,
+      "location_ids": [
+        1235
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "single_location_domain",
+        "canonical_name": "Dr. Eric Landi Functional Medicine",
+        "distinct_names": [
+          "Dr. Eric Landi Functional Medicine"
+        ]
+      }
+    },
+    {
+      "org_id": 8528,
+      "canonical_name": "Infinite You Wellness Clinic",
+      "website_domain": "infiniteyouclinic.com",
+      "dedup_key": "infiniteyouclinic.com",
+      "location_count": 1,
+      "location_ids": [
+        1236
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "single_location_domain",
+        "canonical_name": "Infinite You Wellness Clinic",
+        "distinct_names": [
+          "Infinite You Wellness Clinic"
+        ]
+      }
+    },
+    {
+      "org_id": 8529,
+      "canonical_name": "Pod Spa and Wellness",
+      "website_domain": "podspas.com",
+      "dedup_key": "podspas.com",
+      "location_count": 1,
+      "location_ids": [
+        1237
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "single_location_domain",
+        "canonical_name": "Pod Spa and Wellness",
+        "distinct_names": [
+          "Pod Spa and Wellness"
+        ]
+      }
+    },
+    {
+      "org_id": 8530,
+      "canonical_name": "Dr. Poonam Desai",
+      "website_domain": "drpoonamdesai.com",
+      "dedup_key": "drpoonamdesai.com",
+      "location_count": 1,
+      "location_ids": [
+        1251
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "single_location_domain",
+        "canonical_name": "Dr. Poonam Desai",
+        "distinct_names": [
+          "Dr. Poonam Desai"
+        ]
+      }
+    },
+    {
+      "org_id": 8531,
+      "canonical_name": "New Jersey HBOT",
+      "website_domain": "oxygennj.com",
+      "dedup_key": "oxygennj.com",
+      "location_count": 1,
+      "location_ids": [
+        1252
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "single_location_domain",
+        "canonical_name": "New Jersey HBOT",
+        "distinct_names": [
+          "New Jersey HBOT"
+        ]
+      }
+    },
+    {
+      "org_id": 8532,
+      "canonical_name": "Infused Health and Wellness",
+      "website_domain": "infusedhealthwellness.com",
+      "dedup_key": "infusedhealthwellness.com",
+      "location_count": 1,
+      "location_ids": [
+        1256
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "single_location_domain",
+        "canonical_name": "Infused Health and Wellness",
+        "distinct_names": [
+          "Infused Health and Wellness"
+        ]
+      }
+    },
+    {
+      "org_id": 8533,
+      "canonical_name": "Vitality TK Health",
+      "website_domain": "vitalitytkhealth.com",
+      "dedup_key": "vitalitytkhealth.com",
+      "location_count": 1,
+      "location_ids": [
+        1258
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "single_location_domain",
+        "canonical_name": "Vitality TK Health",
+        "distinct_names": [
+          "Vitality TK Health"
+        ]
+      }
+    },
+    {
+      "org_id": 8534,
+      "canonical_name": "Rescu",
+      "website_domain": "rescu.life",
+      "dedup_key": "rescu.life",
+      "location_count": 1,
+      "location_ids": [
+        1270
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "single_location_domain",
+        "canonical_name": "Rescu",
+        "distinct_names": [
+          "Rescu"
+        ]
+      }
+    },
+    {
+      "org_id": 8535,
+      "canonical_name": "Mindful Waters",
+      "website_domain": "mindfulwaters.com",
+      "dedup_key": "mindfulwaters.com",
+      "location_count": 1,
+      "location_ids": [
+        1273
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "single_location_domain",
+        "canonical_name": "Mindful Waters",
+        "distinct_names": [
+          "Mindful Waters"
+        ]
+      }
+    },
+    {
+      "org_id": 8536,
+      "canonical_name": "Amari Health Functional & Integrative Medicine",
+      "website_domain": "amarihealth.com",
+      "dedup_key": "amarihealth.com",
+      "location_count": 1,
+      "location_ids": [
+        1280
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "single_location_domain",
+        "canonical_name": "Amari Health Functional & Integrative Medicine",
+        "distinct_names": [
+          "Amari Health Functional & Integrative Medicine"
+        ]
+      }
+    },
+    {
+      "org_id": 8537,
+      "canonical_name": "IV Therapy Long Island At Home On Demand",
+      "website_domain": "ivtherapydemand.com",
+      "dedup_key": "ivtherapydemand.com",
+      "location_count": 1,
+      "location_ids": [
+        1281
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "single_location_domain",
+        "canonical_name": "IV Therapy Long Island At Home On Demand",
+        "distinct_names": [
+          "IV Therapy Long Island At Home On Demand"
+        ]
+      }
+    },
+    {
+      "org_id": 8538,
+      "canonical_name": "Cloud Aquatic Float Parlor",
+      "website_domain": "cloudaquatic.com",
+      "dedup_key": "cloudaquatic.com",
+      "location_count": 1,
+      "location_ids": [
+        1282
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "single_location_domain",
+        "canonical_name": "Cloud Aquatic Float Parlor",
+        "distinct_names": [
+          "Cloud Aquatic Float Parlor"
+        ]
+      }
+    },
+    {
+      "org_id": 8539,
+      "canonical_name": "thebodybar",
+      "website_domain": "bodybar-ny.com",
+      "dedup_key": "bodybar-ny.com",
+      "location_count": 1,
+      "location_ids": [
+        1288
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "single_location_domain",
+        "canonical_name": "thebodybar",
+        "distinct_names": [
+          "thebodybar"
+        ]
+      }
+    },
+    {
+      "org_id": 8540,
+      "canonical_name": "Healthy Aging Medical Centers",
+      "website_domain": "newjerseyantiaging.com",
+      "dedup_key": "newjerseyantiaging.com",
+      "location_count": 2,
+      "location_ids": [
+        1290,
+        1344
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "all_location_names_match_after_suffix_stripping",
+        "canonical_name": "Healthy Aging Medical Centers",
+        "distinct_names": [
+          "Healthy Aging Medical Centers"
+        ]
+      }
+    },
+    {
+      "org_id": 8541,
+      "canonical_name": "SeeBeyond Medicine - Scarsdale Integrative Medicine",
+      "website_domain": "seebeyondmedicine.com",
+      "dedup_key": "seebeyondmedicine.com",
+      "location_count": 1,
+      "location_ids": [
+        1291
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "single_location_domain",
+        "canonical_name": "SeeBeyond Medicine - Scarsdale Integrative Medicine",
+        "distinct_names": [
+          "SeeBeyond Medicine - Scarsdale Integrative Medicine"
+        ]
+      }
+    },
+    {
+      "org_id": 8542,
+      "canonical_name": "Jill Weintraub, MD",
+      "website_domain": "jillweintraubmd.com",
+      "dedup_key": "jillweintraubmd.com",
+      "location_count": 1,
+      "location_ids": [
+        1306
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "single_location_domain",
+        "canonical_name": "Jill Weintraub, MD",
+        "distinct_names": [
+          "Jill Weintraub, MD"
+        ]
+      }
+    },
+    {
+      "org_id": 8543,
+      "canonical_name": "Iron Health Ardsley",
+      "website_domain": "ironhealth.co",
+      "dedup_key": "ironhealth.co",
+      "location_count": 1,
+      "location_ids": [
+        1316
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "single_location_domain",
+        "canonical_name": "Iron Health Ardsley",
+        "distinct_names": [
+          "Iron Health Ardsley"
+        ]
+      }
+    },
+    {
+      "org_id": 8544,
+      "canonical_name": "Hormone and Weight Loss Doctors of NJ",
+      "website_domain": "hormoneweightlossdoctorsnj.com",
+      "dedup_key": "hormoneweightlossdoctorsnj.com",
+      "location_count": 1,
+      "location_ids": [
+        1317
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "single_location_domain",
+        "canonical_name": "Hormone and Weight Loss Doctors of NJ",
+        "distinct_names": [
+          "Hormone and Weight Loss Doctors of NJ"
+        ]
+      }
+    },
+    {
+      "org_id": 8545,
+      "canonical_name": "The Functional Medicine Center of New Jersey",
+      "website_domain": "fmcofnj.com",
+      "dedup_key": "fmcofnj.com",
+      "location_count": 1,
+      "location_ids": [
+        1324
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "single_location_domain",
+        "canonical_name": "The Functional Medicine Center of New Jersey",
+        "distinct_names": [
+          "The Functional Medicine Center of New Jersey"
+        ]
+      }
+    },
+    {
+      "org_id": 8546,
+      "canonical_name": "Cryo.BeautyBar",
+      "website_domain": "cryobeautybar.online",
+      "dedup_key": "cryobeautybar.online",
+      "location_count": 1,
+      "location_ids": [
+        1329
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "single_location_domain",
+        "canonical_name": "Cryo.BeautyBar",
+        "distinct_names": [
+          "Cryo.BeautyBar"
+        ]
+      }
+    },
+    {
+      "org_id": 8547,
+      "canonical_name": "Integrative Holistic Center",
+      "website_domain": "integrativeholisticcenter.com",
+      "dedup_key": "integrativeholisticcenter.com",
+      "location_count": 1,
+      "location_ids": [
+        1332
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "single_location_domain",
+        "canonical_name": "Integrative Holistic Center",
+        "distinct_names": [
+          "Integrative Holistic Center"
+        ]
+      }
+    },
+    {
+      "org_id": 8548,
+      "canonical_name": "Hydration Medic Mobile and IV Spa",
+      "website_domain": "hydrationmedicny.com",
+      "dedup_key": "hydrationmedicny.com",
+      "location_count": 1,
+      "location_ids": [
+        1340
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "single_location_domain",
+        "canonical_name": "Hydration Medic Mobile and IV Spa",
+        "distinct_names": [
+          "Hydration Medic Mobile and IV Spa"
+        ]
+      }
+    },
+    {
+      "org_id": 8549,
+      "canonical_name": "Aesthetics By KM",
+      "website_domain": "aestheticsbykm.com",
+      "dedup_key": "aestheticsbykm.com",
+      "location_count": 1,
+      "location_ids": [
+        1342
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "single_location_domain",
+        "canonical_name": "Aesthetics By KM",
+        "distinct_names": [
+          "Aesthetics By KM"
+        ]
+      }
+    },
+    {
+      "org_id": 8550,
+      "canonical_name": "Dr Robert G. Silverman, DC. Westchester Integrative Health",
+      "website_domain": "drrobertsilverman.com",
+      "dedup_key": "drrobertsilverman.com",
+      "location_count": 1,
+      "location_ids": [
+        1355
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "single_location_domain",
+        "canonical_name": "Dr Robert G. Silverman, DC. Westchester Integrative Health",
+        "distinct_names": [
+          "Dr Robert G. Silverman, DC. Westchester Integrative Health"
+        ]
+      }
+    },
+    {
+      "org_id": 8551,
+      "canonical_name": "Advanced Anti-Aging",
+      "website_domain": "advancedantiaging.com",
+      "dedup_key": "advancedantiaging.com",
+      "location_count": 1,
+      "location_ids": [
+        1375
+      ],
+      "brand_evidence": {
+        "safe": true,
+        "reason": "single_location_domain",
+        "canonical_name": "Advanced Anti-Aging",
+        "distinct_names": [
+          "Advanced Anti-Aging"
+        ]
+      }
+    }
+  ],
+  "org_guardrail": [
+    {
+      "location_id": 140,
+      "location_name": "The Metaphysical Shoppe & Botanica",
+      "location_domain": "square.site",
+      "old_org_id": null,
+      "reason": "multiple_existing_orgs_share_domain",
+      "evidence": {
+        "matching_orgs": [
+          {
+            "id": 4474,
+            "canonical_name": "Blu Spa and Wellness",
+            "website_domain": "blu-spa-wellness.square.site",
+            "dedup_key": "blu-spa-wellness.square.site",
+            "deleted_at": null,
+            "normalized_domain": "square.site"
+          },
+          {
+            "id": 4934,
+            "canonical_name": "Mend and Kure Wellness Center",
+            "website_domain": "mendandkurewellness.square.site",
+            "dedup_key": "mendandkurewellness.square.site",
+            "deleted_at": null,
+            "normalized_domain": "square.site"
+          },
+          {
+            "id": 5632,
+            "canonical_name": "Smash It Rage Room",
+            "website_domain": "yousmashedit.square.site",
+            "dedup_key": "yousmashedit.square.site",
+            "deleted_at": null,
+            "normalized_domain": "square.site"
+          },
+          {
+            "id": 5799,
+            "canonical_name": "Sublime Aesthetics & Wellness",
+            "website_domain": "sublime-aesthetics-wellness.square.site",
+            "dedup_key": "sublime-aesthetics-wellness.square.site",
+            "deleted_at": null,
+            "normalized_domain": "square.site"
+          }
+        ]
+      }
+    },
+    {
+      "location_id": 344,
+      "location_name": "Santhigram Wellness",
+      "location_domain": "zoca.com",
+      "old_org_id": null,
+      "reason": "multiple_existing_orgs_share_domain",
+      "evidence": {
+        "matching_orgs": [
+          {
+            "id": 162,
+            "canonical_name": "Ommmango Wellness",
+            "website_domain": "ommmangowellnessbrooklyn.zoca.com",
+            "dedup_key": "ommmangowellnessbrooklyn.zoca.com",
+            "deleted_at": null,
+            "normalized_domain": "zoca.com"
+          },
+          {
+            "id": 318,
+            "canonical_name": "Wellness Spa 71",
+            "website_domain": "wellnessspa71.zoca.com",
+            "dedup_key": "wellnessspa71.zoca.com",
+            "deleted_at": null,
+            "normalized_domain": "zoca.com"
+          },
+          {
+            "id": 551,
+            "canonical_name": "Saged NYC Beauty & Wellness",
+            "website_domain": "sagednycwellness.zoca.com",
+            "dedup_key": "sagednycwellness.zoca.com",
+            "deleted_at": null,
+            "normalized_domain": "zoca.com"
+          },
+          {
+            "id": 794,
+            "canonical_name": "Bel0 Cryotherapy LLC",
+            "website_domain": "bel0cryotherapy.zoca.com",
+            "dedup_key": "bel0cryotherapy.zoca.com",
+            "deleted_at": null,
+            "normalized_domain": "zoca.com"
+          },
+          {
+            "id": 3204,
+            "canonical_name": "Healthydermis MedSpa and Laser Clinic – Oakton",
+            "website_domain": "healthydermisoakton.zoca.com",
+            "dedup_key": "healthydermisoakton.zoca.com",
+            "deleted_at": null,
+            "normalized_domain": "zoca.com"
+          }
+        ]
+      }
+    },
+    {
+      "location_id": 346,
+      "location_name": "The DRIPBaR Manhattan",
+      "location_domain": "thedripbar.com",
+      "old_org_id": null,
+      "reason": "multiple_existing_orgs_share_domain",
+      "evidence": {
+        "matching_orgs": [
+          {
+            "id": 711,
+            "canonical_name": "The DRIPBaR Cranford",
+            "website_domain": "cranford-nj.thedripbar.com",
+            "dedup_key": "cranford-nj.thedripbar.com",
+            "deleted_at": null,
+            "normalized_domain": "thedripbar.com"
+          },
+          {
+            "id": 4105,
+            "canonical_name": "The DRIPBaR Austin The Domain",
+            "website_domain": "austin-the-domain.thedripbar.com",
+            "dedup_key": "austin-the-domain.thedripbar.com",
+            "deleted_at": null,
+            "normalized_domain": "thedripbar.com"
+          },
+          {
+            "id": 5923,
+            "canonical_name": "The DRIPBaR Winchester",
+            "website_domain": "winchester.thedripbar.com",
+            "dedup_key": "winchester.thedripbar.com",
+            "deleted_at": null,
+            "normalized_domain": "thedripbar.com"
+          }
+        ]
+      }
+    },
+    {
+      "location_id": 546,
+      "location_name": "CryoHealLLC - Whole Body Cryotherapy",
+      "location_domain": "google.com",
+      "old_org_id": null,
+      "reason": "non_clinic_or_marketplace_domain",
+      "evidence": {}
+    },
+    {
+      "location_id": 1020,
+      "location_name": "ChillRx Cryotherapy Montclair",
+      "location_domain": "chillcryo.net",
+      "old_org_id": null,
+      "reason": "multiple_existing_orgs_share_domain",
+      "evidence": {
+        "matching_orgs": [
+          {
+            "id": 769,
+            "canonical_name": "ChillRx Franchising LLC",
+            "website_domain": "westfield.chillcryo.net",
+            "dedup_key": "westfield.chillcryo.net",
+            "deleted_at": null,
+            "normalized_domain": "chillcryo.net"
+          },
+          {
+            "id": 3552,
+            "canonical_name": "ChillRx Cryotherapy",
+            "website_domain": "cincinnati.chillcryo.net",
+            "dedup_key": "cincinnati.chillcryo.net",
+            "deleted_at": null,
+            "normalized_domain": "chillcryo.net"
+          }
+        ]
+      }
+    },
+    {
+      "location_id": 1147,
+      "location_name": "Yasthetics and Wellness",
+      "location_domain": "square.site",
+      "old_org_id": null,
+      "reason": "multiple_existing_orgs_share_domain",
+      "evidence": {
+        "matching_orgs": [
+          {
+            "id": 4474,
+            "canonical_name": "Blu Spa and Wellness",
+            "website_domain": "blu-spa-wellness.square.site",
+            "dedup_key": "blu-spa-wellness.square.site",
+            "deleted_at": null,
+            "normalized_domain": "square.site"
+          },
+          {
+            "id": 4934,
+            "canonical_name": "Mend and Kure Wellness Center",
+            "website_domain": "mendandkurewellness.square.site",
+            "dedup_key": "mendandkurewellness.square.site",
+            "deleted_at": null,
+            "normalized_domain": "square.site"
+          },
+          {
+            "id": 5632,
+            "canonical_name": "Smash It Rage Room",
+            "website_domain": "yousmashedit.square.site",
+            "dedup_key": "yousmashedit.square.site",
+            "deleted_at": null,
+            "normalized_domain": "square.site"
+          },
+          {
+            "id": 5799,
+            "canonical_name": "Sublime Aesthetics & Wellness",
+            "website_domain": "sublime-aesthetics-wellness.square.site",
+            "dedup_key": "sublime-aesthetics-wellness.square.site",
+            "deleted_at": null,
+            "normalized_domain": "square.site"
+          }
+        ]
+      }
+    },
+    {
+      "location_id": 1175,
+      "location_name": "ChillRx Cryotherapy",
+      "location_domain": "chillcryo.net",
+      "old_org_id": null,
+      "reason": "multiple_existing_orgs_share_domain",
+      "evidence": {
+        "matching_orgs": [
+          {
+            "id": 769,
+            "canonical_name": "ChillRx Franchising LLC",
+            "website_domain": "westfield.chillcryo.net",
+            "dedup_key": "westfield.chillcryo.net",
+            "deleted_at": null,
+            "normalized_domain": "chillcryo.net"
+          },
+          {
+            "id": 3552,
+            "canonical_name": "ChillRx Cryotherapy",
+            "website_domain": "cincinnati.chillcryo.net",
+            "dedup_key": "cincinnati.chillcryo.net",
+            "deleted_at": null,
+            "normalized_domain": "chillcryo.net"
+          }
+        ]
+      }
+    },
+    {
+      "location_id": 769,
+      "location_name": "Mary Eliza Mahoney Health Center",
+      "location_domain": "newarknj.gov",
+      "old_org_id": null,
+      "reason": "no_shared_obvious_brand_token",
+      "evidence": {
+        "safe": false,
+        "reason": "no_shared_obvious_brand_token",
+        "distinct_names": [
+          "Mary Eliza Mahoney Health Center",
+          "Newark Department of Health & Community Wellness"
+        ],
+        "common_tokens": [],
+        "domain_tokens": [
+          "newarknj"
+        ]
+      }
+    },
+    {
+      "location_id": 777,
+      "location_name": "Newark Department of Health & Community Wellness",
+      "location_domain": "newarknj.gov",
+      "old_org_id": null,
+      "reason": "no_shared_obvious_brand_token",
+      "evidence": {
+        "safe": false,
+        "reason": "no_shared_obvious_brand_token",
+        "distinct_names": [
+          "Mary Eliza Mahoney Health Center",
+          "Newark Department of Health & Community Wellness"
+        ],
+        "common_tokens": [],
+        "domain_tokens": [
+          "newarknj"
+        ]
+      }
+    }
+  ],
+  "acceptance": {
+    "active_maps_place_id_remaining_count": 4,
+    "active_maps_place_id_remaining_sample": [
+      {
+        "id": 43,
+        "name": "QC NY SPA",
+        "website": "https://www.google.com/maps/place/?q=place_id:ChIJ6QzFjltbwokRhjgdHc01agI"
+      },
+      {
+        "id": 621,
+        "name": "Sports, Pain​ & Regenerative Institute - Fairview",
+        "website": "https://www.google.com/maps/place/?q=place_id:ChIJW7uH43r3wokRhzvtDkWnNy0"
+      },
+      {
+        "id": 1010,
+        "name": "Endure Health and Wellness: Weight Loss, Testosterone, ED, PE, Vitamin Shot, NAD+",
+        "website": "https://www.google.com/maps/place/?q=place_id:ChIJv9l6drGtw4kRnvOJS2IT1E0"
+      },
+      {
+        "id": 1061,
+        "name": "Vitalist Healing Traditions - Dr. Carina Lopez - Your 'Holistic Doctor Near Me' - Naturopathic Doctor NYC",
+        "website": "https://www.google.com/maps/place/?q=place_id:ChIJpz3Qh1vywokRkDV1L1udjNY"
+      }
+    ],
+    "remaining_explained_by_mismatch_or_fetch_error": true,
+    "elitra_health_location_8": {
+      "id": 8,
+      "name": "Elitra Health",
+      "website": "http://www.elitrahealth.com/",
+      "org_id": 4,
+      "org_name": "Elitra Health",
+      "org_domain": "elitrahealth.com"
+    },
+    "new_org_domain_conflicts": []
+  }
+}

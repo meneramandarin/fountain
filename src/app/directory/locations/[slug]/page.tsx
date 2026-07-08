@@ -3,6 +3,7 @@ import {
   type LocationDetailRecord,
 } from "@/components/directory-detail-page";
 import { getLocationDetail, getRelatedTreatmentSearches } from "@/lib/queries";
+import { formatLocationPlace } from "@/lib/location-display";
 import { ogImage, siteDescription } from "@/lib/site";
 import type { Metadata } from "next";
 import { notFound, redirect } from "next/navigation";
@@ -23,7 +24,12 @@ export async function generateMetadata({ params }: LocationPageProps): Promise<M
   }
 
   const title = location.name || location.org_name || "Directory listing";
-  const place = [location.locality, location.region, location.country_name].filter(Boolean).join(", ");
+  const place = formatLocationPlace({
+    locality: location.locality,
+    region: location.region,
+    countryCode: location.country_code,
+    countryName: location.country_name,
+  });
   const description = place ? `${title} in ${place}. ${siteDescription}` : siteDescription;
   const canonicalPath = `/directory/locations/${location.slug || location.id}`;
 

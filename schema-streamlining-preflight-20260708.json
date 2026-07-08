@@ -1,0 +1,391 @@
+{
+  "counts": {
+    "unmapped_terms": 53607,
+    "treatment_aliases": 95,
+    "import_metadata": 3,
+    "sources": 254,
+    "source_databases": 254,
+    "external_reviews": 9164,
+    "reviews": 3018,
+    "external_place_matches": 2544,
+    "categories": 7,
+    "treatments": 43,
+    "images_with_local_path": 0,
+    "locations_with_price_text": 610,
+    "accounts": 0,
+    "auth_users": 0
+  },
+  "source_compare": {
+    "matched": 254,
+    "raw_without_source": 0,
+    "source_without_raw": 0
+  },
+  "sources_columns": [
+    {
+      "column_name": "id",
+      "data_type": "integer",
+      "is_nullable": "NO"
+    },
+    {
+      "column_name": "slug",
+      "data_type": "text",
+      "is_nullable": "NO"
+    },
+    {
+      "column_name": "name",
+      "data_type": "text",
+      "is_nullable": "YES"
+    },
+    {
+      "column_name": "base_url",
+      "data_type": "text",
+      "is_nullable": "YES"
+    },
+    {
+      "column_name": "scraped_at",
+      "data_type": "text",
+      "is_nullable": "YES"
+    },
+    {
+      "column_name": "trust_weight",
+      "data_type": "double precision",
+      "is_nullable": "YES"
+    },
+    {
+      "column_name": "record_count",
+      "data_type": "integer",
+      "is_nullable": "YES"
+    }
+  ],
+  "reviews_columns": [
+    {
+      "column_name": "id",
+      "data_type": "integer",
+      "is_nullable": "NO"
+    },
+    {
+      "column_name": "location_id",
+      "data_type": "integer",
+      "is_nullable": "YES"
+    },
+    {
+      "column_name": "reviewer",
+      "data_type": "text",
+      "is_nullable": "YES"
+    },
+    {
+      "column_name": "rating",
+      "data_type": "text",
+      "is_nullable": "YES"
+    },
+    {
+      "column_name": "review_date",
+      "data_type": "text",
+      "is_nullable": "YES"
+    },
+    {
+      "column_name": "body",
+      "data_type": "text",
+      "is_nullable": "YES"
+    },
+    {
+      "column_name": "source_id",
+      "data_type": "integer",
+      "is_nullable": "YES"
+    },
+    {
+      "column_name": "status",
+      "data_type": "text",
+      "is_nullable": "NO"
+    },
+    {
+      "column_name": "data_origin",
+      "data_type": "text",
+      "is_nullable": "NO"
+    },
+    {
+      "column_name": "verification_status",
+      "data_type": "text",
+      "is_nullable": "NO"
+    },
+    {
+      "column_name": "created_at",
+      "data_type": "timestamp with time zone",
+      "is_nullable": "YES"
+    },
+    {
+      "column_name": "updated_at",
+      "data_type": "timestamp with time zone",
+      "is_nullable": "YES"
+    },
+    {
+      "column_name": "deleted_at",
+      "data_type": "timestamp with time zone",
+      "is_nullable": "YES"
+    },
+    {
+      "column_name": "owner_account_id",
+      "data_type": "uuid",
+      "is_nullable": "YES"
+    }
+  ],
+  "external_reviews_parse": {
+    "total": 9164,
+    "rating_null": 0,
+    "rating_unparseable": 0,
+    "review_date_not_iso": 9164,
+    "fetched_at_blank": 0,
+    "raw_json_nonblank": 0
+  },
+  "review_dedup": {
+    "obvious_doubles": 627,
+    "duplicate_groups": 591
+  },
+  "external_place_parse": {
+    "total": 2544,
+    "fetched_blank": 0,
+    "expires_blank": 331,
+    "raw_json_nonblank": 331
+  },
+  "categories": [
+    {
+      "id": 1,
+      "name": "Diagnostics & testing",
+      "parent_id": null,
+      "facet": "treatment_domain",
+      "treatments": 16
+    },
+    {
+      "id": 2,
+      "name": "Regenerative & cellular",
+      "parent_id": null,
+      "facet": "treatment_domain",
+      "treatments": 4
+    },
+    {
+      "id": 3,
+      "name": "IV & infusion",
+      "parent_id": null,
+      "facet": "treatment_domain",
+      "treatments": 3
+    },
+    {
+      "id": 4,
+      "name": "Hormone & metabolic",
+      "parent_id": null,
+      "facet": "treatment_domain",
+      "treatments": 3
+    },
+    {
+      "id": 5,
+      "name": "Recovery & performance",
+      "parent_id": null,
+      "facet": "treatment_domain",
+      "treatments": 7
+    },
+    {
+      "id": 6,
+      "name": "Aesthetic",
+      "parent_id": null,
+      "facet": "treatment_domain",
+      "treatments": 5
+    },
+    {
+      "id": 7,
+      "name": "Lifestyle & foundational",
+      "parent_id": null,
+      "facet": "treatment_domain",
+      "treatments": 5
+    }
+  ],
+  "category_routes": [
+    {
+      "category_id": 6,
+      "name": "Aesthetic",
+      "offerings": 2074
+    },
+    {
+      "category_id": 1,
+      "name": "Diagnostics & testing",
+      "offerings": 1756
+    },
+    {
+      "category_id": 4,
+      "name": "Hormone & metabolic",
+      "offerings": 737
+    },
+    {
+      "category_id": 3,
+      "name": "IV & infusion",
+      "offerings": 2026
+    },
+    {
+      "category_id": 7,
+      "name": "Lifestyle & foundational",
+      "offerings": 672
+    },
+    {
+      "category_id": 5,
+      "name": "Recovery & performance",
+      "offerings": 2958
+    },
+    {
+      "category_id": 2,
+      "name": "Regenerative & cellular",
+      "offerings": 3131
+    }
+  ],
+  "price_text_samples": [
+    {
+      "id": 1428,
+      "name": "Vitality Integrative Medicine",
+      "price_text": "$$"
+    },
+    {
+      "id": 1429,
+      "name": "CEO2 Health",
+      "price_text": "$$$"
+    },
+    {
+      "id": 1446,
+      "name": "NEIOS Life",
+      "price_text": "$$"
+    },
+    {
+      "id": 1451,
+      "name": "RECVR • IV Therapy • Sports Therapy",
+      "price_text": "$$"
+    },
+    {
+      "id": 1483,
+      "name": "BioNektar - Performance & Longevity",
+      "price_text": "$$"
+    },
+    {
+      "id": 1487,
+      "name": "Gravity Health",
+      "price_text": "$$"
+    },
+    {
+      "id": 1494,
+      "name": "Blue Sky Clinic - Blue Spa. Coyoacán",
+      "price_text": "$$"
+    },
+    {
+      "id": 1522,
+      "name": "Mio Mio Relax Longevity, Health & IV Infusion Boutique",
+      "price_text": "$$$"
+    },
+    {
+      "id": 1593,
+      "name": "Central Health",
+      "price_text": "$$$"
+    },
+    {
+      "id": 1595,
+      "name": "The Recovery Lab and Cryo",
+      "price_text": "$$"
+    },
+    {
+      "id": 1609,
+      "name": "CRYOMEND -Sports Recovery Centre",
+      "price_text": "$$"
+    },
+    {
+      "id": 1632,
+      "name": "Regen Recovery",
+      "price_text": "$$"
+    },
+    {
+      "id": 1672,
+      "name": "VHR - Vitality Health Recovery",
+      "price_text": "$$"
+    },
+    {
+      "id": 1996,
+      "name": "BodySpec",
+      "price_text": "$300; $39; $39.95"
+    },
+    {
+      "id": 2120,
+      "name": "Restore Hyper Wellness",
+      "price_text": "$30"
+    },
+    {
+      "id": 2125,
+      "name": "Upgrade Labs - Coeur d'Alene",
+      "price_text": "$75,000; $75,000,"
+    },
+    {
+      "id": 2126,
+      "name": "Upgrade Labs - Lake Nona, Orlando",
+      "price_text": "$75,000; $75,000,"
+    },
+    {
+      "id": 2127,
+      "name": "Upgrade Labs - Oakville",
+      "price_text": "$75,000; $75,000,"
+    },
+    {
+      "id": 2128,
+      "name": "Upgrade Labs - Park City",
+      "price_text": "$75,000; $75,000,"
+    },
+    {
+      "id": 2129,
+      "name": "Upgrade Labs - Riverton",
+      "price_text": "$75,000; $75,000,"
+    }
+  ],
+  "dependent_fks": [
+    {
+      "conname": "categories_parent_id_fkey",
+      "schema_name": "fountain",
+      "table_name": "categories",
+      "column_name": "parent_id",
+      "def": "FOREIGN KEY (parent_id) REFERENCES categories(id)"
+    },
+    {
+      "conname": "documents_source_id_fkey",
+      "schema_name": "fountain",
+      "table_name": "documents",
+      "column_name": "source_id",
+      "def": "FOREIGN KEY (source_id) REFERENCES sources(id)"
+    },
+    {
+      "conname": "images_source_id_fkey",
+      "schema_name": "fountain",
+      "table_name": "images",
+      "column_name": "source_id",
+      "def": "FOREIGN KEY (source_id) REFERENCES sources(id)"
+    },
+    {
+      "conname": "offerings_source_id_fkey",
+      "schema_name": "fountain",
+      "table_name": "offerings",
+      "column_name": "source_id",
+      "def": "FOREIGN KEY (source_id) REFERENCES sources(id)"
+    },
+    {
+      "conname": "reviews_source_id_fkey",
+      "schema_name": "fountain",
+      "table_name": "reviews",
+      "column_name": "source_id",
+      "def": "FOREIGN KEY (source_id) REFERENCES sources(id)"
+    },
+    {
+      "conname": "source_records_source_id_fkey",
+      "schema_name": "fountain",
+      "table_name": "source_records",
+      "column_name": "source_id",
+      "def": "FOREIGN KEY (source_id) REFERENCES sources(id)"
+    },
+    {
+      "conname": "treatments_category_id_fkey",
+      "schema_name": "fountain",
+      "table_name": "treatments",
+      "column_name": "category_id",
+      "def": "FOREIGN KEY (category_id) REFERENCES categories(id)"
+    }
+  ]
+}

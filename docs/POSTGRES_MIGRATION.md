@@ -76,7 +76,7 @@ Locations and practitioners also have durable `slug` fields for public detail UR
 
 ## Search
 
-Search stays in Postgres. The serving table `fountain.search_index` uses a generated `tsvector` column plus a GIN index for full-text search. Database triggers refresh the relevant search row when locations, practitioners, documents, offerings, affiliations, entity tags, or treatments change.
+Search stays in Postgres. The serving table `fountain.search_index` uses a generated `tsvector` column plus a GIN index for full-text search. Database triggers refresh the relevant search row when locations, practitioners, offerings, affiliations, entity tags, or treatments change.
 
 This is the least moving-parts option at the current scale: no external search cluster, no rebuild step, and no stale manual search table after direct edits. If search later outgrows Postgres, the trigger-maintained search table becomes the clean source for streaming to a dedicated search system.
 
@@ -85,7 +85,7 @@ This is the least moving-parts option at the current scale: no external search c
 Production images are Blob-backed:
 
 - `fountain.images.blob_url` must be non-empty.
-- `fountain.images.local_path` must be empty.
+- `fountain.images.blob_url` is required; the legacy `local_path` column has been removed.
 - image bytes are stored in Vercel Blob, not Neon.
 - Neon stores only URL strings/hashes required to associate a Blob object with a clinic/practitioner/source row.
 - local files under `data/media/` are transient processing artifacts only.

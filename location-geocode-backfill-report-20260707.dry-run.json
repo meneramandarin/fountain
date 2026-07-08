@@ -1,0 +1,92 @@
+{
+  "generated_at": "2026-07-08T02:30:04.931Z",
+  "mode": "dry_run",
+  "dry_run": true,
+  "schema": "fountain",
+  "raw_schema": "fountain_raw",
+  "checkpoint": "location-geocode-backfill-checkpoint-20260707.json",
+  "backup_table": "fountain_raw.location_geocode_coordinate_backup_20260707",
+  "audit_table": "fountain_raw.location_geocode_backfill_audit_20260707",
+  "low_confidence_table": "fountain_raw.location_geocode_low_confidence_20260707",
+  "locality_audit_table": "fountain_raw.location_geocode_locality_audit_20260707",
+  "summary": {
+    "candidates_all_before": 10119,
+    "candidates_with_country_before": 10118,
+    "locality_review_rows_before": 2579,
+    "locality_review_geocodable_before": 2507,
+    "total_google_targets": 10394,
+    "estimated_cost_usd": 51.97,
+    "coordinate_coverage_before": 1861,
+    "coordinate_coverage_after": 1861,
+    "coordinates_written": 0,
+    "low_confidence_or_skipped": 0,
+    "locality_conflicts_resolved": 3,
+    "locality_conflicts_remaining_or_unresolved": 0
+  },
+  "before": {
+    "total_locations": 13118,
+    "coordinate_coverage": 1861,
+    "geocode_candidates_all": 10119,
+    "geocode_candidates_with_country": 10118,
+    "locality_review_rows": 2579,
+    "geocode_locality_review_candidates": 2507,
+    "estimated_cost_usd": 51.97
+  },
+  "after": {
+    "total_locations": 13118,
+    "coordinate_coverage": 1861,
+    "geocode_candidates_all": 10119,
+    "geocode_candidates_with_country": 10118,
+    "locality_review_rows": 2579,
+    "geocode_locality_review_candidates": 2507,
+    "estimated_cost_usd": 51.97
+  },
+  "review_by_status": {},
+  "locality_by_status": {
+    "resolved": 3
+  },
+  "accepted_sample": [],
+  "low_confidence_sample": [],
+  "locality_resolved_sample": [
+    {
+      "location_id": 30,
+      "location_name": "Bamford Wellness Spa",
+      "old_locality": "New York",
+      "parsed_city": "Brooklyn",
+      "geocoded_locality": "Brooklyn",
+      "formatted_address": "60 Furman St, Brooklyn, NY 11201, USA",
+      "location_type": "ROOFTOP",
+      "result_country_code": "US",
+      "status": "resolved",
+      "new_locality": "Brooklyn",
+      "rule": "google_canonical_locality_matches_candidate"
+    },
+    {
+      "location_id": 52,
+      "location_name": "Glowbar Jersey City",
+      "old_locality": "Jersey City",
+      "parsed_city": "NJ",
+      "geocoded_locality": "Jersey City",
+      "formatted_address": "200 Greene St, Jersey City, NJ 07311, USA",
+      "location_type": "GEOMETRIC_CENTER",
+      "result_country_code": "US",
+      "status": "resolved",
+      "new_locality": "Jersey City",
+      "rule": "google_canonical_locality_matches_candidate"
+    },
+    {
+      "location_id": 76,
+      "location_name": "Gameday Men's Health Jersey City - TRT, Peptides & ED Clinic",
+      "old_locality": "Jersey City",
+      "parsed_city": "NJ",
+      "geocoded_locality": "Jersey City",
+      "formatted_address": "239 Washington St, Jersey City, NJ 07302, USA",
+      "location_type": "ROOFTOP",
+      "result_country_code": "US",
+      "status": "resolved",
+      "new_locality": "Jersey City",
+      "rule": "google_canonical_locality_matches_candidate"
+    }
+  ],
+  "locality_conflict_sample": []
+}

@@ -14,17 +14,18 @@ import {
 import Image from "next/image";
 import Link from "next/link";
 import { locationHref, practitionerHref } from "@/lib/directory-urls";
+import { formatLocationPlace } from "@/lib/location-display";
 
 type Tag = { facet: string; value: string };
 type ImageRef = { blob_url?: string | null; alt?: string | null };
-type ReviewRef = { reviewer?: string | null; rating?: string | number | null; review_date?: string | null; body?: string | null };
+type ReviewRef = { author?: string | null; rating?: string | number | null; review_date?: string | null; text?: string | null };
 type ExternalReviewGroup = {
   provider: string;
   provider_name: string;
   provider_url?: string | null;
   rating?: number | null;
   review_count?: number | null;
-  reviews?: Array<ReviewRef & { source_url?: string | null }>;
+  reviews?: ReviewRef[];
 };
 type OfferingRef = {
   raw_name?: string | null;
@@ -91,7 +92,12 @@ export function DirectoryDetailPage(props: DetailProps) {
       : props.data.full_name || "Directory record";
   const subtitle =
     props.kind === "locations"
-      ? [props.data.locality, props.data.region, props.data.country_name].filter(Boolean).join(", ")
+      ? formatLocationPlace({
+          locality: props.data.locality,
+          region: props.data.region,
+          countryCode: props.data.country_code,
+          countryName: props.data.country_name,
+        })
       : [props.data.primary_specialty, props.data.years_experience ? `${props.data.years_experience} years experience` : ""]
           .filter(Boolean)
           .join(" · ");
@@ -260,7 +266,14 @@ function PractitionerMain({ data }: { data: PractitionerDetailRecord }) {
 
 function LocationContact({ data }: { data: LocationDetailRecord }) {
   const website = data.website ? externalHref(data.website) : null;
-  const address = data.address || [data.locality, data.region, data.country_name].filter(Boolean).join(", ");
+  const address =
+    data.address ||
+    formatLocationPlace({
+      locality: data.locality,
+      region: data.region,
+      countryCode: data.country_code,
+      countryName: data.country_name,
+    });
   const hasFacts = Boolean(address || data.phone || data.email);
   return (
     <div className="listing-side-panel">
@@ -422,12 +435,12 @@ function ReviewList({ reviews }: { reviews: ReviewRef[] }) {
         Reviews <small>{reviews.length}</small>
       </h2>
       {reviews.slice(0, 6).map((review, index) => {
-        const reviewer = reviewField(review.reviewer, "name") || "Anonymous";
+        const author = reviewField(review.author, "name") || "Anonymous";
         const rating = reviewField(review.rating, "ratingValue");
         return (
           <blockquote key={`${review.review_date}-${index}`}>
             <div className="review-meta">
-              <b>{reviewer}</b>
+              <b>{author}</b>
               {rating ? (
                 <span>
                   <Star size={11} aria-hidden="true" />
@@ -435,7 +448,7 @@ function ReviewList({ reviews }: { reviews: ReviewRef[] }) {
                 </span>
               ) : null}
             </div>
-            <p>{review.body || "No review body provided."}</p>
+            <p>{review.text || "No review body provided."}</p>
           </blockquote>
         );
       })}
@@ -472,12 +485,12 @@ function ExternalReviewList({ groups }: { groups: ExternalReviewGroup[] }) {
               ) : null}
             </div>
             {(group.reviews || []).slice(0, 5).map((review, index) => {
-              const reviewer = reviewField(review.reviewer, "name") || "Anonymous";
+              const author = reviewField(review.author, "name") || "Anonymous";
               const rating = reviewField(review.rating, "ratingValue");
               return (
                 <blockquote key={`${group.provider}-${review.review_date || ""}-${index}`}>
                   <div className="review-meta">
-                    <b>{reviewer}</b>
+                    <b>{author}</b>
                     {rating ? (
                       <span>
                         <Star size={11} aria-hidden="true" />
@@ -485,7 +498,7 @@ function ExternalReviewList({ groups }: { groups: ExternalReviewGroup[] }) {
                       </span>
                     ) : null}
                   </div>
-                  <p>{review.body || "No review body provided."}</p>
+                  <p>{review.text || "No review body provided."}</p>
                 </blockquote>
               );
             })}
@@ -497,7 +510,7 @@ function ExternalReviewList({ groups }: { groups: ExternalReviewGroup[] }) {
 }
 
 function TagPills({ tags }: { tags: Tag[] }) {
-  const visible = tags.filter((tag) => ["entity_type", "care_model", "trust", "price_tier"].includes(tag.facet));
+  const visible = tags.filter((tag) => ["care_model", "goal", "price_tier", "trust"].includes(tag.facet));
   if (!visible.length) {
     return null;
   }
