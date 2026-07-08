@@ -17,7 +17,7 @@ export function EditorialProviderRail({
         {hasDirectoryCards ? (
           <div className="editorial-directory-card-grid">
             {directoryCards.map((card) => (
-              <DirectoryLocationCard from="article" key={card.id} result={card} />
+              <DirectoryLocationCard from={rail.cardFrom || "article"} key={card.id} result={card} />
             ))}
           </div>
         ) : (
