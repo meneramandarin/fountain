@@ -17,7 +17,7 @@ import {
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { practitionerHref } from "@/lib/directory-urls";
 import { getPopularTreatments, popularTreatmentLabel } from "@/lib/popular-treatments";
 
@@ -45,7 +45,7 @@ export type DirectoryState = {
   page: number;
 };
 
-type SearchPayload = {
+export type SearchPayload = {
   results: Array<LocationResultRow | PractitionerResultRow>;
   total: number;
   page: number;
@@ -77,9 +77,22 @@ type PractitionerResultRow = {
   affiliations?: AffiliationRef[];
   image?: string | null;
 };
+type VisitorLocation = {
+  country?: string;
+  region?: string;
+  city?: string;
+  latitude?: number;
+  longitude?: number;
+  source?: string;
+};
+type CachedVisitorLocation = {
+  location: VisitorLocation | null;
+  cachedAt: number;
+};
 
 const optionCollator = new Intl.Collator("en", { sensitivity: "base" });
 const countryDividerValue = "__country-divider";
+const visitorLocationCacheKey = "fountain.visitorLocation.v1";
 
 function countryLabel(country: { code: string; name: string }) {
   return country.code === "US" ? "USA" : country.name || country.code;
@@ -87,17 +100,20 @@ function countryLabel(country: { code: string; name: string }) {
 
 export function DirectoryShell({
   initialFacets,
+  initialPayload,
   initialState: seededState,
 }: {
   initialFacets: Facets;
   initialStats: Stats;
+  initialPayload: SearchPayload;
   initialState: DirectoryState;
 }) {
   const router = useRouter();
   const [state, setState] = useState<DirectoryState>(seededState);
   const [searchDraft, setSearchDraft] = useState(seededState.q);
-  const [payload, setPayload] = useState<SearchPayload>({ results: [], total: 0, page: 0, page_size: 25 });
-  const [loading, setLoading] = useState(true);
+  const [payload, setPayload] = useState<SearchPayload>(initialPayload);
+  const [loading, setLoading] = useState(false);
+  const [visitorLocation, setVisitorLocation] = useState<VisitorLocation | null>(null);
 
   const queryString = useMemo(() => {
     const params = new URLSearchParams();
@@ -113,11 +129,19 @@ export function DirectoryShell({
     if (state.page) {
       params.set("page", String(state.page));
     }
+    if (usesPersonalizedDefaultSort(state) && visitorLocation?.country) {
+      appendVisitorLocationParams(params, visitorLocation);
+    }
     return params.toString();
-  }, [state]);
+  }, [state, visitorLocation]);
+  const initialQueryString = useRef(queryString);
 
   useEffect(() => {
+    if (queryString === initialQueryString.current) {
+      return;
+    }
     const controller = new AbortController();
+    setLoading(true);
     fetch(`/api/search?${queryString}`, { signal: controller.signal })
       .then((response) => {
         if (!response.ok) {
@@ -134,6 +158,36 @@ export function DirectoryShell({
       .finally(() => setLoading(false));
     return () => controller.abort();
   }, [queryString]);
+
+  useEffect(() => {
+    const cached = readCachedVisitorLocation();
+    if (cached) {
+      const timeout = window.setTimeout(() => setVisitorLocation(cached.location), 0);
+      return () => window.clearTimeout(timeout);
+    }
+
+    const controller = new AbortController();
+    fetch("/api/geo", { signal: controller.signal })
+      .then((response) => {
+        if (!response.ok) {
+          return { location: null };
+        }
+        return response.json() as Promise<{ location: VisitorLocation | null }>;
+      })
+      .then((data) => {
+        const location = validVisitorLocation(data.location) ? data.location : null;
+        writeCachedVisitorLocation(location);
+        setVisitorLocation(location);
+      })
+      .catch((error) => {
+        if (error.name !== "AbortError") {
+          writeCachedVisitorLocation(null);
+          setVisitorLocation(null);
+        }
+      });
+
+    return () => controller.abort();
+  }, []);
 
   const updateState = useCallback((patch: Partial<DirectoryState>) => {
     setLoading(true);
@@ -425,6 +479,64 @@ export function DirectoryShell({
 
 function emptyState(): DirectoryState {
   return { kind: "locations", q: "", country: "", locality: "", treatment_ids: [], entity_type: "", care_model: "", page: 0 };
+}
+
+function usesPersonalizedDefaultSort(state: DirectoryState) {
+  return state.kind === "locations"
+    && !state.q
+    && !state.country
+    && !state.locality
+    && !state.treatment_ids.length
+    && !state.entity_type
+    && !state.care_model;
+}
+
+function appendVisitorLocationParams(params: URLSearchParams, location: VisitorLocation) {
+  appendParam(params, "geo_country", location.country);
+  appendParam(params, "geo_region", location.region);
+  appendParam(params, "geo_city", location.city);
+  appendNumberParam(params, "geo_lat", location.latitude);
+  appendNumberParam(params, "geo_lng", location.longitude);
+}
+
+function appendParam(params: URLSearchParams, key: string, value?: string) {
+  if (value) {
+    params.set(key, value);
+  }
+}
+
+function appendNumberParam(params: URLSearchParams, key: string, value?: number) {
+  if (typeof value === "number" && Number.isFinite(value)) {
+    params.set(key, String(value));
+  }
+}
+
+function readCachedVisitorLocation() {
+  try {
+    const raw = window.sessionStorage.getItem(visitorLocationCacheKey);
+    if (!raw) {
+      return null;
+    }
+    const cached = JSON.parse(raw) as CachedVisitorLocation;
+    return typeof cached.cachedAt === "number" ? cached : null;
+  } catch {
+    return null;
+  }
+}
+
+function writeCachedVisitorLocation(location: VisitorLocation | null) {
+  try {
+    window.sessionStorage.setItem(
+      visitorLocationCacheKey,
+      JSON.stringify({ location, cachedAt: Date.now() } satisfies CachedVisitorLocation),
+    );
+  } catch {
+    // Session storage can be unavailable in private browsing; personalization is optional.
+  }
+}
+
+function validVisitorLocation(location: VisitorLocation | null | undefined): location is VisitorLocation {
+  return Boolean(location?.country && /^[A-Z][A-Z]$/.test(location.country));
 }
 
 function FacetButtons({
