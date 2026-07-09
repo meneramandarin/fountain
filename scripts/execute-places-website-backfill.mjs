@@ -4,6 +4,7 @@ import { existsSync, readFileSync, writeFileSync } from "node:fs";
 import path from "node:path";
 import process from "node:process";
 import pg from "pg";
+import { sanitizeUrl } from "../src/lib/url-sanitize.mjs";
 
 const { Client } = pg;
 const ROOT = process.cwd();
@@ -396,7 +397,7 @@ function buildPlan(preflight, resolvedRows) {
       continue;
     }
     const displayName = extractDisplayName(row.payload);
-    const website = cleanWebsiteUri(row.payload?.websiteUri);
+    const website = sanitizeUrl(row.payload?.websiteUri);
     const phone = row.payload?.nationalPhoneNumber || null;
     if (!website) {
       const planned = { ...row, action: "NO_WEBSITE", verified: true, display_name: displayName, website: null, phone };
@@ -1119,24 +1120,6 @@ function parsePlacePayload(rawJson) {
 
 function extractDisplayName(payload) {
   return payload?.displayName?.text || payload?.displayName || payload?.name || null;
-}
-
-function cleanWebsiteUri(value) {
-  if (!value || typeof value !== "string") {
-    return null;
-  }
-  try {
-    const url = new URL(value.trim());
-    for (const key of [...url.searchParams.keys()]) {
-      if (/^utm_/i.test(key) || ["fbclid", "gclid", "msclkid"].includes(key.toLowerCase())) {
-        url.searchParams.delete(key);
-      }
-    }
-    url.hash = "";
-    return url.toString();
-  } catch {
-    return value.trim() || null;
-  }
 }
 
 function orgGuardrail(row, reason, evidence = {}) {

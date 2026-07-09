@@ -4,6 +4,7 @@ import { existsSync, readFileSync } from "node:fs";
 import path from "node:path";
 import process from "node:process";
 import pg from "pg";
+import { containsTrackingParams } from "../src/lib/url-sanitize.mjs";
 
 const { Client } = pg;
 const ROOT = process.cwd();
@@ -42,6 +43,10 @@ try {
   await checkRefreshToolingRemoved();
   await checkWriteReadiness(client);
   await checkSearchMaintenance(client);
+  await checkLocationWebsiteTrackingHygiene(client);
+  if (options.seedDirtyUrlCheck) {
+    await checkSeededLocationWebsiteTrackingHygiene(client);
+  }
   await checkPolymorphicReferences(client);
 } finally {
   await client.end();
@@ -470,6 +475,70 @@ async function checkSearchMaintenance(pgClient) {
   }
 }
 
+async function checkLocationWebsiteTrackingHygiene(pgClient) {
+  const result = await pgClient.query(
+    `
+    SELECT id, slug, website
+    FROM ${quoteIdent(canonicalSchema)}.locations
+    WHERE website IS NOT NULL
+      AND btrim(website) <> ''
+    `,
+  );
+  const dirty = result.rows.filter((location) => containsTrackingParams(location.website));
+  summary.location_websites_with_tracking_params = dirty.length;
+  if (dirty.length) {
+    const sample = dirty.slice(0, 10).map((location) => `${location.id}:${location.slug || ""}`).join(", ");
+    failures.push(`${canonicalSchema}.locations.website has ${dirty.length} rows with tracking params; sample ${sample}`);
+  }
+}
+
+async function checkSeededLocationWebsiteTrackingHygiene(pgClient) {
+  await pgClient.query("BEGIN");
+  try {
+    const seed = await pgClient.query(
+      `
+      SELECT id, website
+      FROM ${quoteIdent(canonicalSchema)}.locations
+      WHERE website IS NOT NULL
+        AND btrim(website) <> ''
+      LIMIT 1
+      `,
+    );
+    if (!seed.rowCount) {
+      warnings.push("skipped seeded URL hygiene check; no location website rows exist");
+      return;
+    }
+
+    const original = seed.rows[0].website;
+    const dirtyWebsite = `${original}${original.includes("?") ? "&" : "?"}utm_source=dbcheck-seed`;
+    await pgClient.query(
+      `
+      UPDATE ${quoteIdent(canonicalSchema)}.locations
+      SET website = $1
+      WHERE id = $2
+      `,
+      [dirtyWebsite, seed.rows[0].id],
+    );
+    const seeded = await pgClient.query(
+      `
+      SELECT website
+      FROM ${quoteIdent(canonicalSchema)}.locations
+      WHERE id = $1
+      `,
+      [seed.rows[0].id],
+    );
+    const detected = containsTrackingParams(seeded.rows[0]?.website);
+    summary.seeded_dirty_url_check_detected = detected;
+    if (detected) {
+      failures.push("seeded dirty location website check failed as expected; transaction rolled back");
+    } else {
+      failures.push("seeded dirty location website check did not detect the seeded tracking param");
+    }
+  } finally {
+    await pgClient.query("ROLLBACK");
+  }
+}
+
 async function checkPolymorphicReferences(pgClient) {
   const result = await pgClient.query(
     `
@@ -576,7 +645,7 @@ function loadEnvFile(filePath) {
 }
 
 function parseArgs(args) {
-  const parsed = { allowTransientSchemas: false, json: false };
+  const parsed = { allowTransientSchemas: false, json: false, seedDirtyUrlCheck: false };
   for (let index = 0; index < args.length; index += 1) {
     const arg = args[index];
     const next = args[index + 1];
@@ -584,6 +653,8 @@ function parseArgs(args) {
       parsed.allowTransientSchemas = true;
     } else if (arg === "--json") {
       parsed.json = true;
+    } else if (arg === "--seed-dirty-url-check") {
+      parsed.seedDirtyUrlCheck = true;
     } else if (arg.startsWith("--") && next) {
       const key = arg.slice(2).replace(/-([a-z])/g, (_, letter) => letter.toUpperCase());
       if (key === "envFile") {
