@@ -1,5 +1,8 @@
 import type { Metadata } from "next";
 import { DM_Serif_Display, DM_Serif_Text, Geist, Geist_Mono } from "next/font/google";
+import Script from "next/script";
+import { Suspense } from "react";
+import { GoogleAnalyticsPageview } from "@/components/google-analytics";
 import { ogImage, siteDescription, siteName, siteUrl } from "@/lib/site";
 import "./globals.css";
 
@@ -24,6 +27,8 @@ const dmSerifText = DM_Serif_Text({
   weight: "400",
   variable: "--font-dm-serif-text",
 });
+
+const gaMeasurementId = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID || "G-HRXQ56P1Y7";
 
 export const metadata: Metadata = {
   metadataBase: siteUrl,
@@ -69,7 +74,25 @@ export default function RootLayout({
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} ${dmSerifDisplay.variable} ${dmSerifText.variable}`}
     >
-      <body>{children}</body>
+      <body>
+        {gaMeasurementId ? (
+          <>
+            <Script src={`https://www.googletagmanager.com/gtag/js?id=${gaMeasurementId}`} strategy="afterInteractive" />
+            <Script id="google-analytics" strategy="afterInteractive">
+              {`
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){dataLayer.push(arguments);}
+                window.gtag = gtag;
+                gtag('js', new Date());
+              `}
+            </Script>
+            <Suspense fallback={null}>
+              <GoogleAnalyticsPageview measurementId={gaMeasurementId} />
+            </Suspense>
+          </>
+        ) : null}
+        {children}
+      </body>
     </html>
   );
 }
