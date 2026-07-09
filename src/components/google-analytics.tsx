@@ -68,8 +68,11 @@ function initializeGtag(measurementId: string): (...args: unknown[]) => void {
   window.dataLayer = window.dataLayer || [];
   const gtag =
     window.gtag ||
-    function queuedGtag(...args: unknown[]) {
-      window.dataLayer?.push(args);
+    function queuedGtag() {
+      // gtag.js only recognizes `arguments` objects, NOT arrays.
+      // Do NOT refactor to rest params or an arrow function; that reintroduces the bug.
+      // eslint-disable-next-line prefer-rest-params
+      window.dataLayer?.push(arguments);
     };
   window.gtag = gtag;
 
