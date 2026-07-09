@@ -13,6 +13,9 @@ out/
 *.tsbuildinfo
 blob-cleanup-report*.json
 
+# Local task prompts and generated reports
+*.md
+
 # SQLite runtime sidecars
 *.sqlite-wal
 *.sqlite-shm

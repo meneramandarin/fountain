@@ -4,6 +4,7 @@ import { existsSync, readFileSync, writeFileSync } from "node:fs";
 import path from "node:path";
 import process from "node:process";
 import pg from "pg";
+import { sanitizeUrl } from "../src/lib/url-sanitize.mjs";
 
 const { Client } = pg;
 const ROOT = process.cwd();
@@ -212,7 +213,7 @@ function buildPlan(preflight) {
       throw new Error(`Missing approved closeout location or external match for ${locationId}`);
     }
     const payload = parseJson(match.raw_json);
-    const website = cleanWebsiteUri(payload?.websiteUri);
+    const website = sanitizeUrl(payload?.websiteUri);
     const phone = payload?.nationalPhoneNumber || location.phone;
     if (!website) {
       throw new Error(`Approved closeout location ${locationId} has no fetched websiteUri`);
@@ -865,24 +866,6 @@ function parseJson(value) {
     return JSON.parse(value);
   } catch {
     return null;
-  }
-}
-
-function cleanWebsiteUri(value) {
-  if (!value || typeof value !== "string") {
-    return null;
-  }
-  try {
-    const url = new URL(value.trim());
-    for (const key of [...url.searchParams.keys()]) {
-      if (/^utm_/i.test(key) || ["fbclid", "gclid", "msclkid"].includes(key.toLowerCase())) {
-        url.searchParams.delete(key);
-      }
-    }
-    url.hash = "";
-    return url.toString();
-  } catch {
-    return value.trim() || null;
   }
 }
 

@@ -15,6 +15,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { locationHref, practitionerHref } from "@/lib/directory-urls";
 import { formatLocationPlace } from "@/lib/location-display";
+import { OutboundClinicLink } from "@/components/outbound-clinic-link";
 
 type Tag = { facet: string; value: string };
 type ImageRef = { blob_url?: string | null; alt?: string | null };
@@ -265,7 +266,7 @@ function PractitionerMain({ data }: { data: PractitionerDetailRecord }) {
 }
 
 function LocationContact({ data }: { data: LocationDetailRecord }) {
-  const website = data.website ? externalHref(data.website) : null;
+  const website = data.website ? `/go/${data.slug || data.id}` : null;
   const address =
     data.address ||
     formatLocationPlace({
@@ -301,9 +302,9 @@ function LocationContact({ data }: { data: LocationDetailRecord }) {
         </div>
       ) : null}
       {website ? (
-        <a className="listing-primary-action" href={website} target="_blank" rel="noreferrer">
+        <OutboundClinicLink className="listing-primary-action" href={website} locationId={data.id} locationSlug={data.slug}>
           Book online <ExternalLink size={15} aria-hidden="true" />
-        </a>
+        </OutboundClinicLink>
       ) : null}
     </div>
   );

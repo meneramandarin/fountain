@@ -4,6 +4,7 @@ import { existsSync, readFileSync, writeFileSync } from "node:fs";
 import path from "node:path";
 import process from "node:process";
 import pg from "pg";
+import { sanitizeUrl } from "../src/lib/url-sanitize.mjs";
 
 const { Client } = pg;
 const ROOT = process.cwd();
@@ -274,7 +275,7 @@ function buildPlan(preflight) {
       setField(next, location, audit, "postal_code", parsed.postalCode, "postal_code_from_address");
     }
 
-    const cleanedWebsite = cleanWebsite(location.website);
+    const cleanedWebsite = sanitizeUrl(location.website);
     if (cleanedWebsite !== location.website) {
       setField(next, location, audit, "website", cleanedWebsite, "website_tracking_params_removed");
     }
@@ -794,35 +795,6 @@ function repairLocality(locality, region, countryCode, parsed) {
     return { shouldWrite: true, value: parsedCity, rule: "locality_from_address" };
   }
   return { shouldWrite: false };
-}
-
-function cleanWebsite(website) {
-  const trimmed = trimOrNull(website);
-  if (!trimmed) {
-    return website;
-  }
-  try {
-    const url = new URL(trimmed);
-    const remove = [];
-    for (const key of Array.from(url.searchParams.keys())) {
-      const lower = key.toLowerCase();
-      if (
-        lower.startsWith("utm_") ||
-        ["fbclid", "gclid", "gbraid", "wbraid", "msclkid", "mc_cid", "mc_eid", "igshid", "_hsenc", "_hsmi"].includes(lower)
-      ) {
-        remove.push(key);
-      }
-    }
-    for (const key of remove) {
-      url.searchParams.delete(key);
-    }
-    if (/^#?utm_/i.test(url.hash) || /[&#](utm_|fbclid|gclid|gbraid|wbraid|msclkid|mc_cid|mc_eid|igshid|_hsenc|_hsmi)=/i.test(url.hash)) {
-      url.hash = "";
-    }
-    return url.toString();
-  } catch {
-    return trimmed;
-  }
 }
 
 function setField(next, original, audit, field, value, rule) {
