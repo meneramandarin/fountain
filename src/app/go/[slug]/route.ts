@@ -4,7 +4,7 @@ import {
   noindexHeaders,
   outboundInternalFrom,
   outboundSourcePage,
-  websiteRedirectUrl,
+  websiteRedirectTarget,
 } from "@/lib/outbound-clicks";
 import { NextResponse } from "next/server";
 
@@ -14,7 +14,7 @@ export const dynamic = "force-dynamic";
 export async function GET(request: Request, context: { params: Promise<{ slug: string }> }) {
   const { slug } = await context.params;
   const location = await getLocationRedirectTarget(slug);
-  const website = typeof location?.website === "string" && location.website ? websiteRedirectUrl(location.website) : null;
+  const website = typeof location?.website === "string" && location.website ? websiteRedirectTarget(location.website) : null;
   const headers = noindexHeaders();
 
   if (!location || !website) {
@@ -29,7 +29,8 @@ export async function GET(request: Request, context: { params: Promise<{ slug: s
     internalFrom: outboundInternalFrom(requestUrl),
     referrer,
     userAgent: request.headers.get("user-agent"),
+    paramSkipped: website.paramSkipped,
   });
 
-  return NextResponse.redirect(website, { status: 302, headers });
+  return NextResponse.redirect(website.href, { status: 302, headers });
 }

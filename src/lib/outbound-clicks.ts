@@ -1,6 +1,6 @@
 import crypto from "node:crypto";
 import { row } from "@/lib/db";
-import { addFountainReferralParams } from "./url-sanitize.mjs";
+import { addFountainReferralParams, shouldSkipFountainReferralParams } from "./url-sanitize.mjs";
 
 type LocationRedirectTarget = {
   id: number;
@@ -14,6 +14,12 @@ type OutboundClickInput = {
   internalFrom: string | null;
   referrer: string | null;
   userAgent: string | null;
+  paramSkipped?: boolean;
+};
+
+type WebsiteRedirectTarget = {
+  href: string;
+  paramSkipped: boolean;
 };
 
 export async function getLocationRedirectTarget(ref: string) {
@@ -50,9 +56,10 @@ export async function logOutboundClick(input: OutboundClickInput) {
         internal_from,
         referrer,
         user_agent_hash,
-        is_bot
+        is_bot,
+        param_skipped
       )
-      VALUES (?, ?, ?, ?, ?, ?)
+      VALUES (?, ?, ?, ?, ?, ?, ?)
       RETURNING id
     `,
       [
@@ -62,6 +69,7 @@ export async function logOutboundClick(input: OutboundClickInput) {
         input.referrer,
         hashUserAgent(input.userAgent),
         isLikelyBot(input.userAgent),
+        Boolean(input.paramSkipped),
       ],
     );
   } catch (error) {
@@ -70,8 +78,16 @@ export async function logOutboundClick(input: OutboundClickInput) {
 }
 
 export function websiteRedirectUrl(rawWebsite: string) {
+  return websiteRedirectTarget(rawWebsite).href;
+}
+
+export function websiteRedirectTarget(rawWebsite: string): WebsiteRedirectTarget {
+  const paramSkipped = shouldSkipFountainReferralParams(rawWebsite);
   const withReferral = addFountainReferralParams(rawWebsite) || rawWebsite;
-  return externalHref(withReferral);
+  return {
+    href: externalHref(withReferral),
+    paramSkipped,
+  };
 }
 
 export function outboundSourcePage(requestUrl: URL, referrer: string | null) {

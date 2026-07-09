@@ -27,7 +27,8 @@ export function OutboundClinicLink({ href, locationId, locationSlug, className, 
         window.gtag?.("event", "outbound_click", {
           location_id: locationId,
           location_slug: locationSlug || String(locationId),
-          source_page: window.location.pathname,
+          source_page: `${window.location.pathname}${window.location.search}`,
+          transport_type: "beacon",
         });
       }}
     >
