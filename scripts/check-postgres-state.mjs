@@ -4,7 +4,7 @@ import { existsSync, readFileSync } from "node:fs";
 import path from "node:path";
 import process from "node:process";
 import pg from "pg";
-import { containsTrackingParams } from "../src/lib/url-sanitize.mjs";
+import { containsTrackingParams, isGoogleSerpRedirectWrapper } from "../src/lib/url-sanitize.mjs";
 
 const { Client } = pg;
 const ROOT = process.cwd();
@@ -46,6 +46,7 @@ try {
   await checkLocationWebsiteTrackingHygiene(client);
   if (options.seedDirtyUrlCheck) {
     await checkSeededLocationWebsiteTrackingHygiene(client);
+    await checkSeededLocationWebsiteSerpWrapperHygiene(client);
   }
   await checkPolymorphicReferences(client);
 } finally {
@@ -485,10 +486,16 @@ async function checkLocationWebsiteTrackingHygiene(pgClient) {
     `,
   );
   const dirty = result.rows.filter((location) => containsTrackingParams(location.website));
+  const serpWrappers = result.rows.filter((location) => isGoogleSerpRedirectWrapper(location.website));
   summary.location_websites_with_tracking_params = dirty.length;
+  summary.location_websites_with_google_serp_wrappers = serpWrappers.length;
   if (dirty.length) {
     const sample = dirty.slice(0, 10).map((location) => `${location.id}:${location.slug || ""}`).join(", ");
     failures.push(`${canonicalSchema}.locations.website has ${dirty.length} rows with tracking params; sample ${sample}`);
+  }
+  if (serpWrappers.length) {
+    const sample = serpWrappers.slice(0, 10).map((location) => `${location.id}:${location.slug || ""}`).join(", ");
+    failures.push(`${canonicalSchema}.locations.website has ${serpWrappers.length} Google SERP redirect wrapper rows; sample ${sample}`);
   }
 }
 
@@ -533,6 +540,50 @@ async function checkSeededLocationWebsiteTrackingHygiene(pgClient) {
       failures.push("seeded dirty location website check failed as expected; transaction rolled back");
     } else {
       failures.push("seeded dirty location website check did not detect the seeded tracking param");
+    }
+  } finally {
+    await pgClient.query("ROLLBACK");
+  }
+}
+
+async function checkSeededLocationWebsiteSerpWrapperHygiene(pgClient) {
+  await pgClient.query("BEGIN");
+  try {
+    const seed = await pgClient.query(
+      `
+      SELECT id
+      FROM ${quoteIdent(canonicalSchema)}.locations
+      LIMIT 1
+      `,
+    );
+    if (!seed.rowCount) {
+      warnings.push("skipped seeded SERP wrapper hygiene check; no location rows exist");
+      return;
+    }
+
+    const dirtyWebsite = "/url?q=https%3A%2F%2Fexample.com%2Fclinic&sa=U&ved=dbcheck-seed";
+    await pgClient.query(
+      `
+      UPDATE ${quoteIdent(canonicalSchema)}.locations
+      SET website = $1
+      WHERE id = $2
+      `,
+      [dirtyWebsite, seed.rows[0].id],
+    );
+    const seeded = await pgClient.query(
+      `
+      SELECT website
+      FROM ${quoteIdent(canonicalSchema)}.locations
+      WHERE id = $1
+      `,
+      [seed.rows[0].id],
+    );
+    const detected = isGoogleSerpRedirectWrapper(seeded.rows[0]?.website);
+    summary.seeded_serp_wrapper_check_detected = detected;
+    if (detected) {
+      failures.push("seeded Google SERP wrapper location website check failed as expected; transaction rolled back");
+    } else {
+      failures.push("seeded Google SERP wrapper location website check did not detect the seeded wrapper");
     }
   } finally {
     await pgClient.query("ROLLBACK");

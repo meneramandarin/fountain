@@ -24,12 +24,47 @@ const TRACKER_REF_HOST_PATTERNS = [
   /(^|\.)veritone-ce\.com$/i,
 ];
 
+export const OUTBOUND_REFERRAL_PARAM_SKIP_HOSTS = ["shawellnessclinic.com"];
+
 export function isTrackingParamName(name, url) {
   const normalized = String(name || "").toLowerCase();
   if (normalized.startsWith("utm_") || TRACKING_PARAM_NAMES.has(normalized)) {
     return true;
   }
   return normalized === "ref" && isKnownTrackerRefHost(url);
+}
+
+export function shouldSkipFountainReferralParams(value) {
+  const url = parseUrlLike(value);
+  if (!url?.hostname) {
+    return false;
+  }
+
+  const hostname = normalizedHostname(url.hostname);
+  return OUTBOUND_REFERRAL_PARAM_SKIP_HOSTS.some((domain) => hostname === domain || hostname.endsWith(`.${domain}`));
+}
+
+export function isGoogleSerpRedirectWrapper(value) {
+  const url = parseUrlLike(value);
+  if (!url) {
+    return false;
+  }
+
+  return isGoogleSerpRedirectUrl(url) && Boolean(googleSerpRedirectTargetParam(url));
+}
+
+export function extractGoogleSerpRedirectTarget(value) {
+  const url = parseUrlLike(value);
+  if (!url || !isGoogleSerpRedirectUrl(url)) {
+    return null;
+  }
+
+  const target = googleSerpRedirectTargetParam(url);
+  if (!target) {
+    return null;
+  }
+
+  return sanitizeUrl(target);
 }
 
 export function sanitizeUrl(value) {
@@ -86,6 +121,10 @@ export function addFountainReferralParams(value) {
   const parseValue = hadScheme ? trimmed : `https://${trimmed}`;
 
   try {
+    if (shouldSkipFountainReferralParams(trimmed)) {
+      return trimmed;
+    }
+
     const url = new URL(parseValue);
     url.searchParams.set("utm_source", "fountain.clinic");
     url.searchParams.set("utm_medium", "referral");
@@ -122,6 +161,48 @@ function isKnownTrackerRefHost(url) {
     return false;
   }
   return TRACKER_REF_HOST_PATTERNS.some((pattern) => pattern.test(url.hostname));
+}
+
+function parseUrlLike(value) {
+  if (!value || typeof value !== "string") {
+    return null;
+  }
+
+  const trimmed = value.trim();
+  if (!trimmed) {
+    return null;
+  }
+
+  const hadScheme = /^[a-z][a-z0-9+.-]*:\/\//i.test(trimmed);
+  const isProtocolRelative = trimmed.startsWith("//");
+  const isRootRelative = trimmed.startsWith("/");
+  const parseValue = hadScheme
+    ? trimmed
+    : isProtocolRelative
+      ? `https:${trimmed}`
+      : isRootRelative
+        ? `https://www.google.com${trimmed}`
+        : `https://${trimmed}`;
+
+  try {
+    return new URL(parseValue);
+  } catch {
+    return null;
+  }
+}
+
+function normalizedHostname(hostname) {
+  return String(hostname || "")
+    .toLowerCase()
+    .replace(/^www\d?\./, "");
+}
+
+function isGoogleSerpRedirectUrl(url) {
+  return normalizedHostname(url.hostname).startsWith("google.") && url.pathname === "/url";
+}
+
+function googleSerpRedirectTargetParam(url) {
+  return url.searchParams.get("q") || url.searchParams.get("url");
 }
 
 function rebuildOriginalUrlWithQuery(original, query) {

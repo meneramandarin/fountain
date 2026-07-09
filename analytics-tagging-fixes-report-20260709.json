@@ -1,0 +1,108 @@
+{
+  "phase_date": "20260709",
+  "dry_run": false,
+  "prompt": "docs/analytics-tagging-fixes-prompt.md",
+  "backup_tables": [
+    "fountain_raw.locations_backup_20260709_google_serp_wrapper_hygiene",
+    "fountain_raw.location_website_serp_wrapper_audit_20260709"
+  ],
+  "summary": {
+    "location_websites_scanned": 12917,
+    "google_serp_wrappers_before": 15,
+    "google_serp_wrappers_updated": 15,
+    "google_serp_wrappers_after": 0
+  },
+  "changed_locations": [
+    {
+      "id": 10028,
+      "slug": "david-b-chernoff-md-staunton",
+      "old_value": "/url?q=https%3A%2F%2Fwww.carilionclinic.org%2Fproviders%2Fdavid-b-chernoff-md&opi=79508299&sa=U&ved=0ahUKEwj2yKnSxZqSAxUiBrwBHTM7L1wQ61gIEigO&usg=AOvVaw226u_XoCx6dECb5uNa38OD",
+      "new_value": "https://www.carilionclinic.org/providers/david-b-chernoff-md"
+    },
+    {
+      "id": 10062,
+      "slug": "dollar-general-hopewell",
+      "old_value": "/url?q=https://www.dollargeneral.com/store-directory/va/hopewell/2079&opi=79508299&sa=U&ved=0ahUKEwicwpeaxZqSAxXBGFkFHaq1NOIQ61gIEygO&usg=AOvVaw1B8JlzO_1IlQXCcHVMqpP2",
+      "new_value": "https://www.dollargeneral.com/store-directory/va/hopewell/2079"
+    },
+    {
+      "id": 10318,
+      "slug": "green-bay-integrative-health",
+      "old_value": "/url?q=http://www.greenbayintegrativehealth.com/&opi=79508299&sa=U&ved=0ahUKEwjqqa-FiO2RAxWGAxAIHX5IBGsQ61gIEigO&usg=AOvVaw3z_hSjFVilV6_ftUQ2wCtj",
+      "new_value": "http://www.greenbayintegrativehealth.com/"
+    },
+    {
+      "id": 10545,
+      "slug": "kellogg-clinic-wichita",
+      "old_value": "/url?q=http://www.kelloggclinic.com/&opi=79508299&sa=U&ved=0ahUKEwjK2M-rtZeSAxUInWoFHRRkEPIQ61gIEigO&usg=AOvVaw2MzJGKGt_gX-m-5I10ZitR",
+      "new_value": "http://www.kelloggclinic.com/"
+    },
+    {
+      "id": 10660,
+      "slug": "lyrad-health-grand-prairie",
+      "old_value": "/url?q=https://lyradhealth.com/&opi=79508299&sa=U&ved=0ahUKEwjH8MDczKaRAxVIEFkFHcDdGN0Q61gIEigO&usg=AOvVaw0OVh8y2M4xev5aQyz1-NTR",
+      "new_value": "https://lyradhealth.com/"
+    },
+    {
+      "id": 10693,
+      "slug": "mayo-clinic-fayetteville",
+      "old_value": "/url?q=https://www.mayoclinic.org/&opi=79508299&sa=U&ved=0ahUKEwi3r-_2h-2RAxX4nGoFHTh4C6YQ61gIDigK&usg=AOvVaw2ECor7g52EePHn6nMrB0QH",
+      "new_value": "https://www.mayoclinic.org/"
+    },
+    {
+      "id": 10991,
+      "slug": "optimize-u-fayetteville-hormone-cryotherapy-clinic",
+      "old_value": "/url?q=https://optimizeucenters.com/locations/fayetteville-north-carolina/&opi=79508299&sa=U&ved=0ahUKEwjj_pLm_NORAxV3ODQIHfXAEccQ61gIEigO&usg=AOvVaw2kula4RpEQW3nQlJ5-H8CO",
+      "new_value": "https://optimizeucenters.com/locations/fayetteville-north-carolina/"
+    },
+    {
+      "id": 11103,
+      "slug": "peak-iv-hydration-knoxville",
+      "old_value": "/url?q=http://www.peakivhydration.com/&opi=79508299&sa=U&ved=0ahUKEwimzIDzzKaRAxVcHRAIHR0hHRkQ61gIEigO&usg=AOvVaw3qePXhPVjWB5FQu4j9XGCy",
+      "new_value": "http://www.peakivhydration.com/"
+    },
+    {
+      "id": 11132,
+      "slug": "physicians-treatment-center-lynchburg",
+      "old_value": "/url?q=http://www.ptclynchburg.com/&opi=79508299&sa=U&ved=0ahUKEwjx78KdxZqSAxVlLRAIHa11OgkQ61gIEigO&usg=AOvVaw05rvJ7LwitmrMhOF44a5rP",
+      "new_value": "http://www.ptclynchburg.com/"
+    },
+    {
+      "id": 11267,
+      "slug": "qc-kinetix-lansing",
+      "old_value": "/url?q=https%3A%2F%2Fqckinetix.com%2Flansing%2F&opi=79508299&sa=U&ved=0ahUKEwijhbaLiO2RAxXMI0QIHcoFM20Q61gIEigO&usg=AOvVaw3bYkxHFoUVAEl5MKcq6v-r",
+      "new_value": "https://qckinetix.com/lansing/"
+    },
+    {
+      "id": 11668,
+      "slug": "riordan-clinic-wichita",
+      "old_value": "/url?q=https://riordanclinic.org/&opi=79508299&sa=U&ved=0ahUKEwjMgsCctZeSAxU6hu4BHQpgBhcQ61gIEigO&usg=AOvVaw1Zvdy3OJX1-omkBVMGeVJ2",
+      "new_value": "https://riordanclinic.org/"
+    },
+    {
+      "id": 12725,
+      "slug": "tri-med-integrative-psychiatry-sleep-medicine-frisco",
+      "old_value": "/url?q=https://www.trimedhealth.com/contact-tri-med-health-frisco-texas/&opi=79508299&sa=U&ved=0ahUKEwjC75LYzKaRAxWKkYkEHeIjG7cQ61gIEigO&usg=AOvVaw3BKd8g3KYUq-Cgi3IZGNXB",
+      "new_value": "https://www.trimedhealth.com/contact-tri-med-health-frisco-texas/"
+    },
+    {
+      "id": 12855,
+      "slug": "united-medical-imaging-of-huntington-beach",
+      "old_value": "/url?q=http://umih.com/&opi=79508299&sa=U&ved=0ahUKEwjnkPnjzKaRAxVLLUQIHf1hFYQQ61gIEigO&usg=AOvVaw1i_G2-uldzTusM7IxZ2yRa",
+      "new_value": "http://umih.com/"
+    },
+    {
+      "id": 12945,
+      "slug": "valencia-canine-rehabilitation-center-santa-clarita",
+      "old_value": "/url?q=https://www.bestvalenciavet.com/site/rehabilitation-services-santa-clarita&opi=79508299&sa=U&ved=0ahUKEwitlOzz9OORAxVjLEQIHbMAHCgQ61gIEigO&usg=AOvVaw2azutLK1TGK2-hFDLr0tjd",
+      "new_value": "https://www.bestvalenciavet.com/site/rehabilitation-services-santa-clarita"
+    },
+    {
+      "id": 13090,
+      "slug": "vitality-testosterone-replacement-therapy-clinic-norfolk",
+      "old_value": "/url?q=https%3A%2F%2Fvitalitytestosteronereplacementtherapy.com%2Flocations%2Fnorfolk-va%2F&opi=79508299&sa=U&ved=0ahUKEwj3laC0xZqSAxVbnSYFHf3pEi8Q61gIECgN&usg=AOvVaw10aFVJz3BfqMEU_t8zVCAu",
+      "new_value": "https://vitalitytestosteronereplacementtherapy.com/locations/norfolk-va/"
+    }
+  ],
+  "unresolved_wrappers_after": []
+}

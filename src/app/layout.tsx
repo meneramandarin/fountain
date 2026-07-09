@@ -1,8 +1,6 @@
 import type { Metadata } from "next";
 import { DM_Serif_Display, DM_Serif_Text, Geist, Geist_Mono } from "next/font/google";
-import Script from "next/script";
-import { Suspense } from "react";
-import { GoogleAnalyticsPageview } from "@/components/google-analytics";
+import { GoogleAnalytics } from "@/components/google-analytics";
 import { ogImage, siteDescription, siteName, siteUrl } from "@/lib/site";
 import "./globals.css";
 
@@ -75,22 +73,7 @@ export default function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} ${dmSerifDisplay.variable} ${dmSerifText.variable}`}
     >
       <body>
-        {gaMeasurementId ? (
-          <>
-            <Script src={`https://www.googletagmanager.com/gtag/js?id=${gaMeasurementId}`} strategy="afterInteractive" />
-            <Script id="google-analytics" strategy="afterInteractive">
-              {`
-                window.dataLayer = window.dataLayer || [];
-                function gtag(){dataLayer.push(arguments);}
-                window.gtag = gtag;
-                gtag('js', new Date());
-              `}
-            </Script>
-            <Suspense fallback={null}>
-              <GoogleAnalyticsPageview measurementId={gaMeasurementId} />
-            </Suspense>
-          </>
-        ) : null}
+        <GoogleAnalytics measurementId={gaMeasurementId} />
         {children}
       </body>
     </html>
