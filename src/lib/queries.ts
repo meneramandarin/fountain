@@ -54,6 +54,15 @@ export type DirectoryParams = {
   treatment_ids?: number[];
   entity_type?: string;
   care_model?: string;
+  visitor?: VisitorLocationParams;
+};
+
+export type VisitorLocationParams = {
+  country?: string;
+  region?: string;
+  city?: string;
+  latitude?: number;
+  longitude?: number;
 };
 
 export type Stats = {
@@ -158,6 +167,10 @@ function containsNoCase(expression: string, termExpression: string) {
   return isPostgres()
     ? `${expression} ILIKE '%' || ${termExpression} || '%'`
     : `${expression} LIKE '%' || ${termExpression} || '%'`;
+}
+
+function trimLower(expression: string) {
+  return `lower(trim(${expression}))`;
 }
 
 function activeEntityCondition(alias: string) {
@@ -1196,14 +1209,141 @@ function locationWhere(params: DirectoryParams, options: { includeText?: boolean
   };
 }
 
+function usesLocationAwareDefault(params: DirectoryParams) {
+  return !ftsMatch(params.q)
+    && !params.country
+    && !params.locality
+    && !(params.treatment_ids || []).length
+    && !params.entity_type
+    && !params.care_model;
+}
+
+function normalizedCountryCode(country?: string | null) {
+  const value = country?.trim().toUpperCase();
+  return value && /^[A-Z][A-Z]$/.test(value) ? value : undefined;
+}
+
+function normalizedLocationText(value?: string | null) {
+  return value?.trim() || undefined;
+}
+
+function finiteCoordinate(value?: number) {
+  return typeof value === "number" && Number.isFinite(value) ? value : undefined;
+}
+
+async function activeLocationCountryCount(countryCode: string) {
+  return (await row<{ count: number }>(
+    `
+    SELECT COUNT(*) AS count
+    FROM locations l
+    WHERE ${activeEntityCondition("l")}
+      AND l.country_code = ?
+  `,
+    [countryCode],
+  ))?.count || 0;
+}
+
+function distanceKmExpression() {
+  return `
+    CASE
+      WHEN l.latitude IS NOT NULL
+        AND l.longitude IS NOT NULL
+      THEN (
+        6371 * 2 * asin(
+          sqrt(
+            power(sin(radians((l.latitude - ?) / 2)), 2)
+            + cos(radians(?)) * cos(radians(l.latitude))
+            * power(sin(radians((l.longitude - ?) / 2)), 2)
+          )
+        )
+      )
+      ELSE NULL
+    END
+  `;
+}
+
+function locationAwareDefaultOrder(
+  visitor: VisitorLocationParams | undefined,
+  visitorCountryListingCount: number | null,
+) {
+  const countryCode = normalizedCountryCode(visitor?.country);
+  const city = normalizedLocationText(visitor?.city);
+  const region = normalizedLocationText(visitor?.region);
+  const latitude = finiteCoordinate(visitor?.latitude);
+  const longitude = finiteCoordinate(visitor?.longitude);
+  const values: unknown[] = [];
+
+  const hasVisitorCountry = Boolean(countryCode);
+  const useUsFallbackAfterVisitorCountry =
+    hasVisitorCountry && countryCode !== "US" && (visitorCountryListingCount ?? 0) < 5;
+
+  let proximityRank = "CASE WHEN l.country_code = 'US' THEN 0 ELSE 1 END";
+
+  if (countryCode) {
+    const proximityCases: string[] = [];
+    if (city) {
+      proximityCases.push(`WHEN l.country_code = ? AND ${trimLower("l.locality")} = ${trimLower("?")} THEN 0`);
+      values.push(countryCode, city);
+    }
+    if (region) {
+      proximityCases.push(`WHEN l.country_code = ? AND ${trimLower("l.region")} = ${trimLower("?")} THEN 1`);
+      values.push(countryCode, region);
+    }
+    proximityCases.push("WHEN l.country_code = ? THEN 2");
+    values.push(countryCode);
+    if (useUsFallbackAfterVisitorCountry) {
+      proximityCases.push("WHEN l.country_code = 'US' THEN 3");
+    }
+    proximityRank = `
+      CASE
+        ${proximityCases.join("\n        ")}
+        ELSE 4
+      END
+    `;
+  }
+
+  let distanceRank = "CASE WHEN false THEN 1 ELSE 0 END";
+  if (latitude !== undefined && longitude !== undefined) {
+    distanceRank = distanceKmExpression();
+    values.push(latitude, latitude, longitude);
+  }
+
+  return {
+    sql: `
+      has_image DESC,
+      ${proximityRank} ASC,
+      (${distanceRank} IS NULL),
+      ${distanceRank} ASC,
+      has_treatment_menu DESC,
+      has_practitioner DESC,
+      (google_reviews.review_count IS NULL),
+      google_reviews.review_count DESC,
+      (google_reviews.rating IS NULL),
+      google_reviews.rating DESC,
+      ${orderNoCase("l.name")}
+    `,
+    values: latitude !== undefined && longitude !== undefined
+      ? [...values, latitude, latitude, longitude]
+      : values,
+  };
+}
+
 export async function searchLocations(params: DirectoryParams, page = 0) {
   const match = ftsMatch(params.q);
   const matchJoin = match ? searchMatchJoin("l", "location") : "";
   const { clause, values } = locationWhere(params, { includeText: !match });
   const queryValues = match ? searchMatchValues(match, values) : values;
-  const orderBy = match
+  const defaultOrdering = usesLocationAwareDefault(params);
+  const visitorCountryCode = normalizedCountryCode(params.visitor?.country);
+  const visitorCountryListingCount = defaultOrdering && visitorCountryCode
+    ? await activeLocationCountryCount(visitorCountryCode)
+    : null;
+  const defaultOrder = defaultOrdering
+    ? locationAwareDefaultOrder(params.visitor, visitorCountryListingCount)
+    : null;
+  const orderBy = defaultOrder?.sql || (match
     ? `search_match.fts_rank ASC, (google_reviews.rating IS NULL), google_reviews.rating DESC, (google_reviews.review_count IS NULL), google_reviews.review_count DESC, ${orderNoCase("l.name")}`
-    : `(google_reviews.review_count IS NULL), google_reviews.review_count DESC, ${orderNoCase("l.name")}`;
+    : `(google_reviews.review_count IS NULL), google_reviews.review_count DESC, ${orderNoCase("l.name")}`);
   const total =
     (await row<{ count: number }>(
     `SELECT COUNT(*) AS count FROM locations l${matchJoin}${clause}`,
@@ -1213,6 +1353,9 @@ export async function searchLocations(params: DirectoryParams, page = 0) {
     `
     SELECT l.id, ${locationSlugSelect("l")} AS slug, l.name, l.locality, l.region, l.country_code, l.country_name,
            l.website, google_reviews.rating, google_reviews.review_count, org.canonical_name AS org_name,
+           COALESCE(image_flags.has_image, false) AS has_image,
+           COALESCE(menu_flags.has_treatment_menu, false) AS has_treatment_menu,
+           COALESCE(practitioner_flags.has_practitioner, false) AS has_practitioner,
            (
              SELECT MIN(o.price_amount)
              FROM offerings o
@@ -1228,12 +1371,33 @@ export async function searchLocations(params: DirectoryParams, page = 0) {
     FROM locations l
     LEFT JOIN organizations org ON org.id = l.org_id
     ${googleReviewMatchJoin()}
+    LEFT JOIN (
+      SELECT img.entity_id AS location_id, true AS has_image
+      FROM images img
+      WHERE img.entity_type = 'location'
+        AND ${activeImageCondition("img")}
+        AND img.blob_url IS NOT NULL
+        AND img.blob_url != ''
+      GROUP BY img.entity_id
+    ) image_flags ON image_flags.location_id = l.id
+    LEFT JOIN (
+      SELECT menu_o.location_id, true AS has_treatment_menu
+      FROM offerings menu_o
+      WHERE ${activeOfferingCondition("menu_o")}
+      GROUP BY menu_o.location_id
+    ) menu_flags ON menu_flags.location_id = l.id
+    LEFT JOIN (
+      SELECT a.location_id, true AS has_practitioner
+      FROM affiliations a
+      WHERE ${activeEntityCondition("a")}
+      GROUP BY a.location_id
+    ) practitioner_flags ON practitioner_flags.location_id = l.id
     ${matchJoin}
     ${clause}
     ORDER BY ${orderBy}
     LIMIT ? OFFSET ?
   `,
-    [...queryValues, PAGE_SIZE, page * PAGE_SIZE],
+    [...queryValues, ...(defaultOrder?.values || []), PAGE_SIZE, page * PAGE_SIZE],
   );
 
   const ids = results.map((result) => result.id as number);
@@ -1603,6 +1767,7 @@ export function parseDirectoryParams(searchParams: URLSearchParams): DirectoryPa
         .filter((id) => Number.isFinite(id)),
     ),
   ).slice(0, MAX_TREATMENT_FILTERS);
+  const visitor = parseVisitorLocationParams(searchParams);
   return {
     kind: searchParams.get("kind") === "practitioners" ? "practitioners" : "locations",
     q: searchParams.get("q") || undefined,
@@ -1611,5 +1776,34 @@ export function parseDirectoryParams(searchParams: URLSearchParams): DirectoryPa
     treatment_ids: treatmentIds.length ? treatmentIds : undefined,
     entity_type: searchParams.get("entity_type") || undefined,
     care_model: searchParams.get("care_model") || undefined,
+    visitor,
   };
+}
+
+function parseVisitorLocationParams(searchParams: URLSearchParams): VisitorLocationParams | undefined {
+  const country = normalizedCountryCode(searchParams.get("geo_country"));
+  const region = normalizedLocationText(searchParams.get("geo_region"));
+  const city = normalizedLocationText(searchParams.get("geo_city"));
+  const latitude = parseFiniteNumber(searchParams.get("geo_lat"));
+  const longitude = parseFiniteNumber(searchParams.get("geo_lng"));
+
+  if (!country && !region && !city && latitude === undefined && longitude === undefined) {
+    return undefined;
+  }
+
+  return {
+    country,
+    region,
+    city,
+    latitude,
+    longitude,
+  };
+}
+
+function parseFiniteNumber(raw: string | null) {
+  if (!raw) {
+    return undefined;
+  }
+  const value = Number.parseFloat(raw);
+  return Number.isFinite(value) ? value : undefined;
 }

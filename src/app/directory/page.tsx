@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
-import { DirectoryShell, type DirectoryState } from "@/components/directory-shell";
-import { getFacets, getStats, MAX_TREATMENT_FILTERS } from "@/lib/queries";
+import { DirectoryShell, type DirectoryState, type SearchPayload } from "@/components/directory-shell";
+import { getFacets, getStats, MAX_TREATMENT_FILTERS, searchLocations, searchPractitioners, type DirectoryParams } from "@/lib/queries";
 import { ogImage, siteDescription } from "@/lib/site";
 
 export const dynamic = "force-dynamic";
@@ -32,13 +32,18 @@ type DirectoryPageProps = {
 
 export default async function DirectoryPage({ searchParams }: DirectoryPageProps) {
   const params = await searchParams;
-  const [facets, stats] = await Promise.all([getFacets(), getStats()]);
   const initialState = stateFromSearchParams(params);
+  const initialParams = paramsFromState(initialState);
+  const initialPayloadPromise = initialState.kind === "practitioners"
+    ? searchPractitioners(initialParams, initialState.page)
+    : searchLocations(initialParams, initialState.page);
+  const [facets, stats, initialPayload] = await Promise.all([getFacets(), getStats(), initialPayloadPromise]);
   return (
     <DirectoryShell
       key={stateKey(initialState)}
       initialFacets={facets}
       initialStats={stats}
+      initialPayload={initialPayload as SearchPayload}
       initialState={initialState}
     />
   );
@@ -63,6 +68,22 @@ function stateFromSearchParams(params: Record<string, string | string[] | undefi
     entity_type: value(params, "entity_type"),
     care_model: value(params, "care_model"),
     page: Math.max(0, Number.parseInt(value(params, "page") || "0", 10) || 0),
+  };
+}
+
+function paramsFromState(state: DirectoryState): DirectoryParams {
+  const treatmentIds = state.treatment_ids
+    .map((id) => Number.parseInt(id, 10))
+    .filter((id) => Number.isFinite(id));
+
+  return {
+    kind: state.kind,
+    q: state.q || undefined,
+    country: state.country || undefined,
+    locality: state.locality || undefined,
+    treatment_ids: treatmentIds.length ? treatmentIds : undefined,
+    entity_type: state.entity_type || undefined,
+    care_model: state.care_model || undefined,
   };
 }
 
