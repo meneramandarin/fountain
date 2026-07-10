@@ -1,8 +1,8 @@
 "use client";
 
-import { Search } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { SplitDirectorySearch } from "@/components/split-directory-search";
 
 export function LandingScrollHeader({ alwaysVisible = false }: { alwaysVisible?: boolean }) {
   const [isVisible, setIsVisible] = useState(false);
@@ -16,7 +16,7 @@ export function LandingScrollHeader({ alwaysVisible = false }: { alwaysVisible?:
     let animationFrame = 0;
 
     function updateVisibility() {
-      const heroSearch = document.querySelector<HTMLElement>(".landing-search");
+      const heroSearch = document.querySelector<HTMLElement>(".landing-hero-search .split-search");
       const triggerLine = 0;
       const shouldShow = heroSearch ? heroSearch.getBoundingClientRect().bottom <= triggerLine : window.scrollY > 220;
 
@@ -44,19 +44,7 @@ export function LandingScrollHeader({ alwaysVisible = false }: { alwaysVisible?:
       <Link className="landing-brand landing-scroll-brand" href="/">
         fountain
       </Link>
-      <form className="landing-scroll-search" action="/directory" role="search">
-        <input
-          name="q"
-          type="search"
-          aria-label="Search treatments, clinics, doctors"
-          autoComplete="off"
-          autoCorrect="off"
-          spellCheck={false}
-        />
-        <button type="submit" aria-label="Search">
-          <Search size={16} aria-hidden="true" />
-        </button>
-      </form>
+      <SplitDirectorySearch className="landing-scroll-search" compact />
       <button className="coming-soon-pill landing-scroll-join" type="button">
         Coming Soon <span aria-hidden="true">|</span> Join
       </button>

@@ -60,6 +60,10 @@ function stateFromSearchParams(params: Record<string, string | string[] | undefi
     q: value(params, "q"),
     country: value(params, "country"),
     locality: value(params, "locality"),
+    city_label: value(params, "city_label"),
+    city_country: value(params, "city_country"),
+    city_lat: finiteNumber(value(params, "city_lat")),
+    city_lng: finiteNumber(value(params, "city_lng")),
     treatment_ids: value(params, "treatment_id")
       .split(",")
       .map((id) => id.trim())
@@ -81,6 +85,10 @@ function paramsFromState(state: DirectoryState): DirectoryParams {
     q: state.q || undefined,
     country: state.country || undefined,
     locality: state.locality || undefined,
+    city_label: state.city_label || undefined,
+    city_country: state.city_country || undefined,
+    city_lat: state.city_lat,
+    city_lng: state.city_lng,
     treatment_ids: treatmentIds.length ? treatmentIds : undefined,
     entity_type: state.entity_type || undefined,
     care_model: state.care_model || undefined,
@@ -93,9 +101,21 @@ function stateKey(state: DirectoryState) {
     state.q,
     state.country,
     state.locality,
+    state.city_label,
+    state.city_country,
+    state.city_lat,
+    state.city_lng,
     state.treatment_ids.join(","),
     state.entity_type,
     state.care_model,
     state.page,
   ]);
+}
+
+function finiteNumber(value: string) {
+  if (!value) {
+    return undefined;
+  }
+  const numberValue = Number.parseFloat(value);
+  return Number.isFinite(numberValue) ? numberValue : undefined;
 }

@@ -16,6 +16,7 @@ import Link from "next/link";
 import { locationHref, practitionerHref } from "@/lib/directory-urls";
 import { formatLocationPlace } from "@/lib/location-display";
 import { OutboundClinicLink } from "@/components/outbound-clinic-link";
+import { SplitDirectorySearch } from "@/components/split-directory-search";
 
 type Tag = { facet: string; value: string };
 type ImageRef = { blob_url?: string | null; alt?: string | null };
@@ -112,6 +113,7 @@ export function DirectoryDetailPage(props: DetailProps) {
           <Link className="landing-brand directory-brand" href="/">
             fountain
           </Link>
+          <SplitDirectorySearch className="listing-detail-search" compact />
           <button className="coming-soon-pill" type="button">
             Coming Soon <span aria-hidden="true">|</span> Log in
           </button>

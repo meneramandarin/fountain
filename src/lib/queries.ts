@@ -51,6 +51,10 @@ export type DirectoryParams = {
   q?: string;
   country?: string;
   locality?: string;
+  city_label?: string;
+  city_country?: string;
+  city_lat?: number;
+  city_lng?: number;
   treatment_ids?: number[];
   entity_type?: string;
   care_model?: string;
@@ -1237,6 +1241,7 @@ async function activeLocationCountryCount(countryCode: string) {
     SELECT COUNT(*) AS count
     FROM locations l
     WHERE ${activeEntityCondition("l")}
+      AND COALESCE(l.is_virtual, false) = false
       AND l.country_code = ?
   `,
     [countryCode],
@@ -1259,6 +1264,20 @@ function distanceKmExpression() {
       )
       ELSE NULL
     END
+  `;
+}
+
+function distanceMilesExpression() {
+  return `
+    (
+      3958.7613 * 2 * asin(
+        sqrt(
+          power(sin(radians((l.latitude - ?) / 2)), 2)
+          + cos(radians(?)) * cos(radians(l.latitude))
+          * power(sin(radians((l.longitude - ?) / 2)), 2)
+        )
+      )
+    )
   `;
 }
 
@@ -1329,6 +1348,12 @@ function locationAwareDefaultOrder(
 }
 
 export async function searchLocations(params: DirectoryParams, page = 0) {
+  const cityLatitude = finiteCoordinate(params.city_lat);
+  const cityLongitude = finiteCoordinate(params.city_lng);
+  if (cityLatitude !== undefined && cityLongitude !== undefined) {
+    return searchLocationsByCityRadius(params, cityLatitude, cityLongitude, page);
+  }
+
   const match = ftsMatch(params.q);
   const matchJoin = match ? searchMatchJoin("l", "location") : "";
   const { clause, values } = locationWhere(params, { includeText: !match });
@@ -1400,6 +1425,11 @@ export async function searchLocations(params: DirectoryParams, page = 0) {
     [...queryValues, ...(defaultOrder?.values || []), PAGE_SIZE, page * PAGE_SIZE],
   );
 
+  await hydrateLocationRows(results);
+  return { results, total, page, page_size: PAGE_SIZE };
+}
+
+async function hydrateLocationRows(results: AnyRow[]) {
   const ids = results.map((result) => result.id as number);
   if (ids.length) {
     const marks = placeholders(ids.length);
@@ -1462,8 +1492,224 @@ export async function searchLocations(params: DirectoryParams, page = 0) {
       result.image = imageMap.get(id) || null;
     }
   }
+}
 
+type RadiusSearchMode = "exact_radius" | "expanded_radius" | "country_fallback" | "cross_border" | "empty";
+
+async function searchLocationsByCityRadius(params: DirectoryParams, latitude: number, longitude: number, page: number) {
+  const countryCode = normalizedCountryCode(params.city_country || params.country);
+  const radii = [25, 50, 100];
+  let lastRadiusPayload: Awaited<ReturnType<typeof radiusLocationPayload>> | null = null;
+
+  for (const radius of radii) {
+    const payload = await radiusLocationPayload(params, latitude, longitude, radius, countryCode, page);
+    lastRadiusPayload = payload;
+    if (payload.total >= 5) {
+      await hydrateLocationRows(payload.results);
+      return {
+        ...payload,
+        mode: radius === 25 ? "exact_radius" as const : "expanded_radius" as const,
+        effective_radius: radius,
+        searched_city: params.city_label || null,
+        searched_country: countryCode || null,
+      };
+    }
+  }
+
+  if (countryCode) {
+    const countryTotal = await activeLocationCountryCount(countryCode);
+    if (countryTotal <= 10 && countryTotal > 0) {
+      const payload = await fallbackLocationPayload(latitude, longitude, page, {
+        mode: "country_fallback",
+        countryCode,
+      });
+      await hydrateLocationRows(payload.results);
+      return {
+        ...payload,
+        mode: "country_fallback" as const,
+        effective_radius: null,
+        searched_city: params.city_label || null,
+        searched_country: countryCode,
+      };
+    }
+
+    if (countryTotal === 0) {
+      const payload = await fallbackLocationPayload(latitude, longitude, page, {
+        mode: "cross_border",
+        radius: 500,
+      });
+      await hydrateLocationRows(payload.results);
+      return {
+        ...payload,
+        mode: payload.total ? "cross_border" as const : "empty" as const,
+        effective_radius: payload.total ? 500 : null,
+        searched_city: params.city_label || null,
+        searched_country: countryCode,
+      };
+    }
+  }
+
+  if (lastRadiusPayload) {
+    await hydrateLocationRows(lastRadiusPayload.results);
+    return {
+      ...lastRadiusPayload,
+      mode: lastRadiusPayload.total ? "expanded_radius" as const : "empty" as const,
+      effective_radius: lastRadiusPayload.total ? 100 : null,
+      searched_city: params.city_label || null,
+      searched_country: countryCode || null,
+    };
+  }
+
+  return emptyLocationPayload(page, params.city_label || null, countryCode || null);
+}
+
+function radiusBox(latitude: number, longitude: number, radiusMiles: number) {
+  const latDelta = radiusMiles / 69;
+  const cos = Math.max(0.1, Math.cos(latitude * Math.PI / 180));
+  const lngDelta = radiusMiles / (69 * cos);
+  return {
+    minLat: latitude - latDelta,
+    maxLat: latitude + latDelta,
+    minLng: longitude - lngDelta,
+    maxLng: longitude + lngDelta,
+  };
+}
+
+async function radiusLocationPayload(
+  params: DirectoryParams,
+  latitude: number,
+  longitude: number,
+  radius: number,
+  countryCode: string | undefined,
+  page: number,
+) {
+  const match = ftsMatch(params.q);
+  const matchJoin = match ? searchMatchJoin("l", "location") : "";
+  const filteredParams: DirectoryParams = { ...params, country: countryCode, locality: undefined };
+  const { clause, values } = locationWhere(filteredParams, { includeText: !match });
+  const where = clause ? [clause.replace(/^\s*WHERE\s+/i, "")] : [];
+  const queryValues = match ? searchMatchValues(match, values) : [...values];
+  const box = radiusBox(latitude, longitude, radius);
+  where.push("COALESCE(l.is_virtual, false) = false");
+  where.push("l.latitude IS NOT NULL AND l.longitude IS NOT NULL");
+  where.push("l.latitude BETWEEN ? AND ?");
+  queryValues.push(box.minLat, box.maxLat);
+  where.push("l.longitude BETWEEN ? AND ?");
+  queryValues.push(box.minLng, box.maxLng);
+  where.push(`${distanceMilesExpression()} <= ?`);
+  queryValues.push(latitude, latitude, longitude, radius);
+  return locationPayloadFromWhere({
+    latitude,
+    longitude,
+    matchJoin,
+    where,
+    values: queryValues,
+    page,
+  });
+}
+
+async function fallbackLocationPayload(
+  latitude: number,
+  longitude: number,
+  page: number,
+  options: { mode: Exclude<RadiusSearchMode, "exact_radius" | "expanded_radius" | "empty">; countryCode?: string; radius?: number },
+) {
+  const where = [
+    activeEntityCondition("l"),
+    "COALESCE(l.is_virtual, false) = false",
+    "l.latitude IS NOT NULL AND l.longitude IS NOT NULL",
+  ];
+  const values: unknown[] = [];
+  if (options.countryCode) {
+    where.push("l.country_code = ?");
+    values.push(options.countryCode);
+  }
+  if (options.radius) {
+    const box = radiusBox(latitude, longitude, options.radius);
+    where.push("l.latitude BETWEEN ? AND ?");
+    values.push(box.minLat, box.maxLat);
+    where.push("l.longitude BETWEEN ? AND ?");
+    values.push(box.minLng, box.maxLng);
+    where.push(`${distanceMilesExpression()} <= ?`);
+    values.push(latitude, latitude, longitude, options.radius);
+  }
+  return locationPayloadFromWhere({
+    latitude,
+    longitude,
+    matchJoin: "",
+    where,
+    values,
+    page,
+  });
+}
+
+async function locationPayloadFromWhere({
+  latitude,
+  longitude,
+  matchJoin,
+  where,
+  values,
+  page,
+}: {
+  latitude: number;
+  longitude: number;
+  matchJoin: string;
+  where: string[];
+  values: unknown[];
+  page: number;
+}) {
+  const clause = where.length ? `WHERE ${where.join(" AND ")}` : "";
+  const total = (await row<{ count: number }>(
+    `SELECT COUNT(*) AS count FROM locations l${matchJoin} ${clause}`,
+    values,
+  ))?.count || 0;
+  const distanceSql = distanceMilesExpression();
+  const results = await rows<AnyRow>(
+    `
+    SELECT l.id, ${locationSlugSelect("l")} AS slug, l.name, l.locality, l.region, l.country_code, l.country_name,
+           l.website, google_reviews.rating, google_reviews.review_count, org.canonical_name AS org_name,
+           (${distanceSql}) AS distance_miles,
+           (
+             SELECT MIN(o.price_amount)
+             FROM offerings o
+             WHERE o.location_id = l.id AND o.price_amount IS NOT NULL AND ${activeOfferingCondition("o")}
+           ) AS min_price_amount,
+           (
+             SELECT o.price_currency
+             FROM offerings o
+             WHERE o.location_id = l.id AND o.price_amount IS NOT NULL AND ${activeOfferingCondition("o")}
+             ORDER BY o.price_amount ASC
+             LIMIT 1
+           ) AS min_price_currency
+    FROM locations l
+    LEFT JOIN organizations org ON org.id = l.org_id
+    ${googleReviewMatchJoin()}
+    ${matchJoin}
+    ${clause}
+    ORDER BY distance_miles ASC,
+      (google_reviews.rating IS NULL),
+      google_reviews.rating DESC,
+      (google_reviews.review_count IS NULL),
+      google_reviews.review_count DESC,
+      ${orderNoCase("l.name")}
+    LIMIT ? OFFSET ?
+  `,
+    [latitude, latitude, longitude, ...values, PAGE_SIZE, page * PAGE_SIZE],
+  );
   return { results, total, page, page_size: PAGE_SIZE };
+}
+
+function emptyLocationPayload(page: number, searchedCity: string | null, searchedCountry: string | null) {
+  return {
+    results: [],
+    total: 0,
+    page,
+    page_size: PAGE_SIZE,
+    mode: "empty" as const,
+    effective_radius: null,
+    searched_city: searchedCity,
+    searched_country: searchedCountry,
+  };
 }
 
 export async function searchPractitioners(params: DirectoryParams, page = 0) {
@@ -1773,6 +2019,10 @@ export function parseDirectoryParams(searchParams: URLSearchParams): DirectoryPa
     q: searchParams.get("q") || undefined,
     country: searchParams.get("country") || undefined,
     locality: searchParams.get("locality") || undefined,
+    city_label: normalizedLocationText(searchParams.get("city_label")),
+    city_country: normalizedCountryCode(searchParams.get("city_country")),
+    city_lat: parseFiniteNumber(searchParams.get("city_lat")),
+    city_lng: parseFiniteNumber(searchParams.get("city_lng")),
     treatment_ids: treatmentIds.length ? treatmentIds : undefined,
     entity_type: searchParams.get("entity_type") || undefined,
     care_model: searchParams.get("care_model") || undefined,
