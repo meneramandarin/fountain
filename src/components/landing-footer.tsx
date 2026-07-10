@@ -62,10 +62,10 @@ export function LandingFooter() {
               <a href="#">Help Center</a>
             </li>
             <li>
-              <a href="#">Privacy Policy</a>
+              <Link href="/privacy-policy">Privacy Policy</Link>
             </li>
             <li>
-              <a href="#">Terms of Service</a>
+              <Link href="/terms-of-service">Terms of Service</Link>
             </li>
           </ul>
         </div>
