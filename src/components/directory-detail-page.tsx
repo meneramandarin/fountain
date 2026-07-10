@@ -255,7 +255,11 @@ function PractitionerMain({ data }: { data: PractitionerDetailRecord }) {
             {(data.affiliations || []).map((affiliation, index) => (
               <div className="listing-row-item" key={`${affiliation.id || index}-${affiliation.clinic}`}>
                 <b>{affiliation.clinic || "Linked clinic"}</b>
-                <span>{[affiliation.locality, affiliation.country_name || affiliation.country_code, affiliation.role].filter(Boolean).join(" · ")}</span>
+                <span>{[formatLocationPlace({
+                  locality: affiliation.locality,
+                  countryCode: affiliation.country_code,
+                  countryName: affiliation.country_name,
+                }), affiliation.role].filter(Boolean).join(" · ")}</span>
               </div>
             ))}
           </div>
@@ -320,7 +324,11 @@ function PractitionerContact({ data }: { data: PractitionerDetailRecord }) {
       <div className="listing-side-facts">
         <span>{data.primary_specialty || "Specialty unavailable"}</span>
         {data.years_experience ? <span>{data.years_experience} years experience</span> : null}
-        {affiliation ? <span>{[affiliation.clinic, affiliation.locality, affiliation.country_name].filter(Boolean).join(", ")}</span> : null}
+        {affiliation ? <span>{[affiliation.clinic, formatLocationPlace({
+          locality: affiliation.locality,
+          countryCode: affiliation.country_code,
+          countryName: affiliation.country_name,
+        })].filter(Boolean).join(", ")}</span> : null}
       </div>
       {affiliation?.id ? (
         <Link className="listing-primary-action" href={locationHref({ id: affiliation.id, slug: affiliation.slug })}>

@@ -18,6 +18,7 @@ import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { practitionerHref } from "@/lib/directory-urls";
 import { SplitDirectorySearch } from "@/components/split-directory-search";
+import { formatLocationPlace } from "@/lib/location-display";
 
 type Facets = {
   countries: { code: string; name: string; n: number }[];
@@ -39,6 +40,7 @@ export type DirectoryState = {
   locality: string;
   city_label: string;
   city_country: string;
+  place_type: string;
   city_lat?: number;
   city_lng?: number;
   treatment_ids: string[];
@@ -58,7 +60,7 @@ export type SearchPayload = {
   searched_country?: string | null;
 };
 
-type SearchMode = "exact_radius" | "expanded_radius" | "country_fallback" | "cross_border" | "empty";
+type SearchMode = "exact_radius" | "expanded_radius" | "country_fallback" | "country_search" | "cross_border" | "empty";
 
 type Tag = { facet: string; value: string };
 type TreatmentChip = { name: string; domain: string };
@@ -131,7 +133,7 @@ export function DirectoryShell({
         params.set(key, state[key]);
       }
     }
-    for (const key of ["city_label", "city_country"] as const) {
+    for (const key of ["city_label", "city_country", "place_type"] as const) {
       if (state[key]) {
         params.set(key, state[key]);
       }
@@ -213,24 +215,31 @@ export function DirectoryShell({
     setState((current) => ({ ...current, ...patch, page: patch.page ?? 0 }));
   }, []);
 
-  const submitSearch = useCallback((payload: { what: string; city_label: string; city_country: string; city_lat?: number; city_lng?: number }) => {
+  const submitSearch = useCallback((payload: { what: string; city_label: string; city_country: string; place_type?: string; city_lat?: number; city_lng?: number }) => {
+    const isCountry = payload.place_type === "country" && payload.city_country;
     const nextState = {
       ...emptyState(),
       kind: state.kind,
       q: payload.what,
-      country: "",
+      country: isCountry ? payload.city_country : "",
       locality: "",
       city_label: payload.city_label,
       city_country: payload.city_country,
-      city_lat: payload.city_lat,
-      city_lng: payload.city_lng,
+      place_type: isCountry ? "country" : "",
+      city_lat: isCountry ? undefined : payload.city_lat,
+      city_lng: isCountry ? undefined : payload.city_lng,
     };
     const params = new URLSearchParams();
     params.set("kind", nextState.kind);
     if (nextState.q) {
       params.set("q", nextState.q);
     }
-    if (nextState.city_lat != null && nextState.city_lng != null) {
+    if (isCountry) {
+      params.set("country", nextState.country);
+      params.set("city_label", nextState.city_label);
+      params.set("city_country", nextState.city_country);
+      params.set("place_type", "country");
+    } else if (nextState.city_lat != null && nextState.city_lng != null) {
       params.set("city_label", nextState.city_label);
       params.set("city_country", nextState.city_country);
       params.set("city_lat", String(nextState.city_lat));
@@ -297,11 +306,12 @@ export function DirectoryShell({
 
         <div className="directory-search-row">
           <SplitDirectorySearch
-            key={`${state.kind}:${state.q}:${state.country}:${state.locality}:${state.city_label}:${state.city_country}:${state.city_lat}:${state.city_lng}`}
+            key={`${state.kind}:${state.q}:${state.country}:${state.locality}:${state.city_label}:${state.city_country}:${state.place_type}:${state.city_lat}:${state.city_lng}`}
             className="directory-search"
             initialWhat={state.q}
             initialWhere={state.city_label || state.locality}
             initialCityCountry={state.city_country}
+            initialPlaceType={state.place_type}
             initialCityLat={state.city_lat}
             initialCityLng={state.city_lng}
             kind={state.kind}
@@ -464,6 +474,7 @@ function emptyState(): DirectoryState {
     locality: "",
     city_label: "",
     city_country: "",
+    place_type: "",
     city_lat: undefined,
     city_lng: undefined,
     treatment_ids: [],
@@ -583,6 +594,8 @@ function DirectorySearchBanner({ payload }: { payload: SearchPayload }) {
     message = `No clinics in ${payload.searched_city || "that city"} yet. Showing options nearby.`;
   } else if (mode === "country_fallback") {
     message = `Showing all clinics in ${payload.searched_country || "this country"}.`;
+  } else if (mode === "country_search") {
+    message = `All clinics in ${payload.searched_country || "this country"}.`;
   } else if (mode === "cross_border") {
     message = `No clinics in ${payload.searched_country || "that country"} yet. Showing options nearby.`;
   } else if (mode === "empty") {
@@ -596,7 +609,11 @@ function PractitionerResult({ result }: { result: PractitionerResultRow }) {
   const [imageFailed, setImageFailed] = useState(false);
   const affiliation = result.affiliations?.[0];
   const place = affiliation
-    ? [affiliation.clinic, affiliation.locality, affiliation.country_name || affiliation.country_code].filter(Boolean).join(", ")
+    ? [affiliation.clinic, formatLocationPlace({
+      locality: affiliation.locality,
+      countryCode: affiliation.country_code,
+      countryName: affiliation.country_name,
+    })].filter(Boolean).join(", ")
     : "";
   const initials = (result.full_name || "")
     .split(/\s+/)

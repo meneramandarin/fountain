@@ -14,6 +14,7 @@ export type DirectoryLocationCardData = {
   org_name?: string | null;
   locality?: string | null;
   region?: string | null;
+  country_code?: string | null;
   country_name?: string | null;
   rating?: number | null;
   review_count?: number | null;
@@ -71,6 +72,7 @@ export function DirectoryLocationCard({ result, from = "search" }: { result: Dir
   const place = formatLocationPlace({
     locality: result.locality,
     region: result.region,
+    countryCode: result.country_code,
     countryName: result.country_name,
   });
   const type = result.tags?.find((tag) => tag.facet === "entity_type");

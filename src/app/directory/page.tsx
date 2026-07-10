@@ -62,6 +62,7 @@ function stateFromSearchParams(params: Record<string, string | string[] | undefi
     locality: value(params, "locality"),
     city_label: value(params, "city_label"),
     city_country: value(params, "city_country"),
+    place_type: value(params, "place_type"),
     city_lat: finiteNumber(value(params, "city_lat")),
     city_lng: finiteNumber(value(params, "city_lng")),
     treatment_ids: value(params, "treatment_id")
@@ -87,6 +88,7 @@ function paramsFromState(state: DirectoryState): DirectoryParams {
     locality: state.locality || undefined,
     city_label: state.city_label || undefined,
     city_country: state.city_country || undefined,
+    place_type: state.place_type || undefined,
     city_lat: state.city_lat,
     city_lng: state.city_lng,
     treatment_ids: treatmentIds.length ? treatmentIds : undefined,
@@ -103,6 +105,7 @@ function stateKey(state: DirectoryState) {
     state.locality,
     state.city_label,
     state.city_country,
+    state.place_type,
     state.city_lat,
     state.city_lng,
     state.treatment_ids.join(","),

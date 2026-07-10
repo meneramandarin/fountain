@@ -45,6 +45,9 @@ export type SearchKind = "locations" | "practitioners";
 // No UX-facing cap on how many treatments a user can combine — this only guards
 // against a pathological number of ids showing up in a crafted query string.
 export const MAX_TREATMENT_FILTERS = 25;
+const RADIUS_COORDINATE_WARNING_CACHE_MS = 60 * 60 * 1000;
+
+let radiusCoordinateWarningCache: { expiresAt: number; count: number } | null = null;
 
 export type DirectoryParams = {
   kind?: SearchKind;
@@ -53,6 +56,7 @@ export type DirectoryParams = {
   locality?: string;
   city_label?: string;
   city_country?: string;
+  place_type?: string;
   city_lat?: number;
   city_lng?: number;
   treatment_ids?: number[];
@@ -122,6 +126,7 @@ export type LandingFeaturedDirectoryCard = {
   org_name: string | null;
   locality: string | null;
   region: string | null;
+  country_code: string | null;
   country_name: string | null;
   rating: number | null;
   review_count: number | null;
@@ -868,7 +873,7 @@ export async function getLandingFeaturedDirectoryCards(
           AND img.blob_url <> ''
       )
     )
-    SELECT id, slug, name, locality, region, country_name, rating, review_count, org_name
+    SELECT id, slug, name, locality, region, country_code, country_name, rating, review_count, org_name
     FROM matches
     WHERE match_rank = 1
     ORDER BY rank
@@ -876,7 +881,7 @@ export async function getLandingFeaturedDirectoryCards(
   );
   const fallbackCandidates = await rows<AnyRow>(
     `
-    SELECT l.id, ${locationSlugSelect("l")} AS slug, l.name, l.locality, l.region, l.country_name,
+    SELECT l.id, ${locationSlugSelect("l")} AS slug, l.name, l.locality, l.region, l.country_code, l.country_name,
            google_reviews.rating, google_reviews.review_count,
            org.canonical_name AS org_name
     FROM locations l
@@ -946,7 +951,7 @@ export async function getLandingTreatmentDirectoryCards(
 
   const candidates = await rows<AnyRow>(
     `
-    SELECT l.id, ${locationSlugSelect("l")} AS slug, l.name, l.locality, l.region, l.country_name,
+    SELECT l.id, ${locationSlugSelect("l")} AS slug, l.name, l.locality, l.region, l.country_code, l.country_name,
            google_reviews.rating, google_reviews.review_count,
            org.canonical_name AS org_name
     FROM locations l
@@ -963,6 +968,7 @@ export async function getLandingTreatmentDirectoryCards(
       l.name,
       l.locality,
       l.region,
+      l.country_code,
       l.country_name,
       google_reviews.rating,
       google_reviews.review_count,
@@ -1066,6 +1072,7 @@ async function hydrateLandingDirectoryCards(
       org_name: (card.org_name as string | null) || null,
       locality: (card.locality as string | null) || null,
       region: (card.region as string | null) || null,
+      country_code: (card.country_code as string | null) || null,
       country_name: (card.country_name as string | null) || null,
       rating: (card.rating as number | null) || null,
       review_count: (card.review_count as number | null) || null,
@@ -1248,6 +1255,25 @@ async function activeLocationCountryCount(countryCode: string) {
   ))?.count || 0;
 }
 
+async function warnRadiusCoordinateExclusions() {
+  const now = Date.now();
+  if (!radiusCoordinateWarningCache || radiusCoordinateWarningCache.expiresAt <= now) {
+    const count = (await row<{ count: number }>(
+      `
+      SELECT COUNT(*) AS count
+      FROM locations l
+      WHERE ${activeEntityCondition("l")}
+        AND COALESCE(l.is_virtual, false) = false
+        AND (l.latitude IS NULL OR l.longitude IS NULL)
+    `,
+    ))?.count || 0;
+    radiusCoordinateWarningCache = { count, expiresAt: now + RADIUS_COORDINATE_WARNING_CACHE_MS };
+  }
+  if (radiusCoordinateWarningCache.count > 0) {
+    console.warn(`Radius search excluded ${radiusCoordinateWarningCache.count} active non-virtual locations with null coordinates.`);
+  }
+}
+
 function distanceKmExpression() {
   return `
     CASE
@@ -1348,6 +1374,11 @@ function locationAwareDefaultOrder(
 }
 
 export async function searchLocations(params: DirectoryParams, page = 0) {
+  const selectedCountryCode = normalizedCountryCode(params.city_country || params.country);
+  if (params.place_type === "country" && selectedCountryCode) {
+    return searchLocationsByCountry(params, selectedCountryCode, page);
+  }
+
   const cityLatitude = finiteCoordinate(params.city_lat);
   const cityLongitude = finiteCoordinate(params.city_lng);
   if (cityLatitude !== undefined && cityLongitude !== undefined) {
@@ -1429,6 +1460,67 @@ export async function searchLocations(params: DirectoryParams, page = 0) {
   return { results, total, page, page_size: PAGE_SIZE };
 }
 
+async function searchLocationsByCountry(params: DirectoryParams, countryCode: string, page: number) {
+  const match = ftsMatch(params.q);
+  const matchJoin = match ? searchMatchJoin("l", "location") : "";
+  const filteredParams: DirectoryParams = {
+    ...params,
+    country: countryCode,
+    locality: undefined,
+    city_lat: undefined,
+    city_lng: undefined,
+  };
+  const { clause, values } = locationWhere(filteredParams, { includeText: !match });
+  const queryValues = match ? searchMatchValues(match, values) : values;
+  const total = (await row<{ count: number }>(
+    `SELECT COUNT(*) AS count FROM locations l${matchJoin}${clause}`,
+    queryValues,
+  ))?.count || 0;
+  const results = await rows<AnyRow>(
+    `
+    SELECT l.id, ${locationSlugSelect("l")} AS slug, l.name, l.locality, l.region, l.country_code, l.country_name,
+           l.website, google_reviews.rating, google_reviews.review_count, org.canonical_name AS org_name,
+           (
+             SELECT MIN(o.price_amount)
+             FROM offerings o
+             WHERE o.location_id = l.id AND o.price_amount IS NOT NULL AND ${activeOfferingCondition("o")}
+           ) AS min_price_amount,
+           (
+             SELECT o.price_currency
+             FROM offerings o
+             WHERE o.location_id = l.id AND o.price_amount IS NOT NULL AND ${activeOfferingCondition("o")}
+             ORDER BY o.price_amount ASC
+             LIMIT 1
+           ) AS min_price_currency
+    FROM locations l
+    LEFT JOIN organizations org ON org.id = l.org_id
+    ${googleReviewMatchJoin()}
+    ${matchJoin}
+    ${clause}
+    ORDER BY
+      (google_reviews.rating IS NULL),
+      google_reviews.rating DESC,
+      (google_reviews.review_count IS NULL),
+      google_reviews.review_count DESC,
+      ${orderNoCase("l.name")}
+    LIMIT ? OFFSET ?
+  `,
+    [...queryValues, PAGE_SIZE, page * PAGE_SIZE],
+  );
+  await hydrateLocationRows(results);
+  const searchedCountry = params.city_label || params.city_country || countryCode;
+  return {
+    results,
+    total,
+    page,
+    page_size: PAGE_SIZE,
+    mode: "country_search" as const,
+    effective_radius: null,
+    searched_city: null,
+    searched_country: searchedCountry,
+  };
+}
+
 async function hydrateLocationRows(results: AnyRow[]) {
   const ids = results.map((result) => result.id as number);
   if (ids.length) {
@@ -1494,9 +1586,10 @@ async function hydrateLocationRows(results: AnyRow[]) {
   }
 }
 
-type RadiusSearchMode = "exact_radius" | "expanded_radius" | "country_fallback" | "cross_border" | "empty";
+type RadiusSearchMode = "exact_radius" | "expanded_radius" | "country_fallback" | "country_search" | "cross_border" | "empty";
 
 async function searchLocationsByCityRadius(params: DirectoryParams, latitude: number, longitude: number, page: number) {
+  await warnRadiusCoordinateExclusions();
   const countryCode = normalizedCountryCode(params.city_country || params.country);
   const radii = [25, 50, 100];
   let lastRadiusPayload: Awaited<ReturnType<typeof radiusLocationPayload>> | null = null;
@@ -2021,6 +2114,7 @@ export function parseDirectoryParams(searchParams: URLSearchParams): DirectoryPa
     locality: searchParams.get("locality") || undefined,
     city_label: normalizedLocationText(searchParams.get("city_label")),
     city_country: normalizedCountryCode(searchParams.get("city_country")),
+    place_type: searchParams.get("place_type") === "country" ? "country" : undefined,
     city_lat: parseFiniteNumber(searchParams.get("city_lat")),
     city_lng: parseFiniteNumber(searchParams.get("city_lng")),
     treatment_ids: treatmentIds.length ? treatmentIds : undefined,

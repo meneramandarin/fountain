@@ -8,6 +8,8 @@
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
     "db:check": "node scripts/check-postgres-state.mjs",
+    "geocode:check": "node scripts/check-geocode-coverage.mjs",
+    "geocode:backfill": "node scripts/execute-location-geocode-guardrail-backfill.mjs",
     "city-index:refresh": "node scripts/refresh-city-index.mjs",
     "blob:cleanup": "node scripts/cleanup-vercel-blob-images.mjs"
   },

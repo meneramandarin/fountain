@@ -6,6 +6,7 @@ import { useEffect, useRef, useState } from "react";
 type SuggestedCity = {
   id: string;
   source: "inventory" | "google";
+  place_type?: "locality" | "country";
   label: string;
   city: string;
   region?: string | null;
@@ -23,6 +24,7 @@ type SplitSearchSubmit = {
   country: string;
   city_label: string;
   city_country: string;
+  place_type?: string;
   city_lat?: number;
   city_lng?: number;
 };
@@ -32,6 +34,7 @@ type SplitDirectorySearchProps = {
   initialWhat?: string;
   initialWhere?: string;
   initialCityCountry?: string;
+  initialPlaceType?: string;
   initialCityLat?: number;
   initialCityLng?: number;
   kind?: "locations" | "practitioners";
@@ -46,6 +49,7 @@ export function SplitDirectorySearch({
   initialWhat = "",
   initialWhere = "",
   initialCityCountry = "",
+  initialPlaceType = "",
   initialCityLat,
   initialCityLng,
   kind,
@@ -57,10 +61,11 @@ export function SplitDirectorySearch({
   const [activeField, setActiveField] = useState<"what" | "where" | null>(null);
   const [citySuggestions, setCitySuggestions] = useState<SuggestedCity[]>([]);
   const [selectedCity, setSelectedCity] = useState<SuggestedCity | null>(() =>
-    initialWhere && initialCityLat != null && initialCityLng != null
+    initialWhere && (initialPlaceType === "country" || (initialCityLat != null && initialCityLng != null))
       ? {
           id: `initial:${initialCityCountry}:${initialWhere}`,
           source: "inventory",
+          place_type: initialPlaceType === "country" ? "country" : "locality",
           label: initialWhere,
           city: initialWhere,
           country_code: initialCityCountry || null,
@@ -133,7 +138,12 @@ export function SplitDirectorySearch({
     if (payload.what) {
       params.set("q", payload.what);
     }
-    if (payload.city_lat != null && payload.city_lng != null) {
+    if (payload.place_type === "country" && payload.city_country) {
+      params.set("country", payload.city_country);
+      params.set("city_label", payload.city_label);
+      params.set("city_country", payload.city_country);
+      params.set("place_type", "country");
+    } else if (payload.city_lat != null && payload.city_lng != null) {
       params.set("city_label", payload.city_label);
       params.set("city_country", payload.city_country);
       params.set("city_lat", String(payload.city_lat));
@@ -154,7 +164,7 @@ export function SplitDirectorySearch({
   }
 
   function selectCity(city: SuggestedCity) {
-    setWhere(city.city || city.label);
+    setWhere(city.place_type === "country" ? city.label : city.city || city.label);
     setSelectedCity(city);
     if (city.source === "inventory") {
       setCitySessionToken(null);
@@ -211,15 +221,15 @@ export function SplitDirectorySearch({
           <label className="split-search-segment split-search-where">
             <span>Where</span>
             <input
-            value={where}
-            onChange={(event) => {
-              setWhere(event.target.value);
-              setSelectedCity(null);
-            }}
-            onFocus={focusWhere}
+              value={where}
+              onChange={(event) => {
+                setWhere(event.target.value);
+                setSelectedCity(null);
+              }}
+              onFocus={focusWhere}
               type="search"
-              aria-label="Search cities"
-              placeholder="City"
+              aria-label="Search places"
+              placeholder="City or country"
               autoComplete="off"
               autoCorrect="off"
               spellCheck={false}
@@ -228,7 +238,7 @@ export function SplitDirectorySearch({
               <button
                 className="split-search-clear"
                 type="button"
-                aria-label="Clear city"
+                aria-label="Clear place"
                 onClick={() => {
                   setWhere("");
                   setSelectedCity(null);
@@ -271,8 +281,8 @@ export function SplitDirectorySearch({
 
       {whereIsActive ? (
         <div className="split-search-menu split-search-menu-where">
-          <p>Suggested Cities</p>
-          <div className="split-search-suggestions" role="listbox" aria-label="Suggested cities">
+          <p>Suggested Places</p>
+          <div className="split-search-suggestions" role="listbox" aria-label="Suggested places">
             {citySuggestions.map((city) => (
               <button
                 type="button"
@@ -325,6 +335,7 @@ function payloadFromDrafts(whatDraft: string, whereDraft: string, city: Suggeste
     country: city?.country_code || "",
     city_label: city?.label || where,
     city_country: city?.country_code || "",
+    place_type: city?.place_type,
     city_lat: finiteNumber(city?.lat),
     city_lng: finiteNumber(city?.lng),
   };
