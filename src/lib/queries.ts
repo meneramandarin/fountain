@@ -845,7 +845,7 @@ export async function getLandingFeaturedDirectoryCards(
         ('The Hundred', 5)
     ),
     matches AS (
-      SELECT p.rank, l.id, ${locationSlugSelect("l")} AS slug, l.name, l.locality, l.region, l.country_name,
+      SELECT p.rank, l.id, ${locationSlugSelect("l")} AS slug, l.name, l.locality, l.region, l.country_code, l.country_name,
              google_reviews.rating, google_reviews.review_count,
              org.canonical_name AS org_name,
              ROW_NUMBER() OVER (
@@ -921,8 +921,15 @@ export async function getLandingTreatmentDirectoryCards(
   limit = 5,
   options: LandingTreatmentCardOptions = {},
 ): Promise<LandingFeaturedDirectoryCard[]> {
-  const filters: string[] = ["t.canonical_name = ?"];
-  const values: unknown[] = [treatmentName];
+  const treatment = await row<{ id: number }>("SELECT id FROM treatments WHERE canonical_name = ?", [treatmentName]);
+
+  if (!treatment) {
+    console.warn(`[landing] treatment not found: ${treatmentName}`);
+    return [];
+  }
+
+  const filters: string[] = ["o.treatment_id = ?"];
+  const values: unknown[] = [treatment.id];
 
   if (options.countryCode) {
     filters.push("l.country_code = ?");
@@ -958,7 +965,6 @@ export async function getLandingTreatmentDirectoryCards(
     LEFT JOIN organizations org ON org.id = l.org_id
     ${googleReviewMatchJoin()}
     JOIN offerings o ON o.location_id = l.id AND ${activeOfferingCondition("o")}
-    JOIN treatments t ON t.id = o.treatment_id
     WHERE ${activeEntityCondition("l")}
       AND ${filters.join(" AND ")}
       ${imageRequirement}

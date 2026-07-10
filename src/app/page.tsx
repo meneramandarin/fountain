@@ -19,6 +19,15 @@ function searchHref(term: string) {
   return `/directory?q=${encodeURIComponent(term)}`;
 }
 
+async function safeLandingSection<T>(label: string, load: () => Promise<T[]>) {
+  try {
+    return await load();
+  } catch (error) {
+    console.error(`[landing] ${label} failed`, error);
+    return [];
+  }
+}
+
 const exploreItems: LandingExploreItem[] = [
   { label: "The Grey Zone - Peptides, Reclassified", image: "/domains/peptides.webp", href: "/peptide-regulation.html" },
   { label: "On Microdosing GLP-1s", image: "/domains/microdosing.png", href: "/glp1-microdosing.html" },
@@ -33,14 +42,16 @@ const exploreItems: LandingExploreItem[] = [
 
 export default async function HomePage() {
   const [countrySearches, featuredCards, nadCards, mriCards] = await Promise.all([
-    getLandingCityTreatmentSearches(),
-    getLandingFeaturedDirectoryCards(5),
-    getLandingTreatmentDirectoryCards("NAD+ IV therapy", 5, {
-      countryCode: "US",
-      localities: ["New York", "Brooklyn", "Long Island City", "Jackson Heights", "Rego Park", "Staten Island"],
-      requireImage: false,
-    }),
-    getLandingTreatmentDirectoryCards("Full-body MRI", 5),
+    safeLandingSection("city treatment searches", () => getLandingCityTreatmentSearches()),
+    safeLandingSection("featured directory cards", () => getLandingFeaturedDirectoryCards(5)),
+    safeLandingSection("NAD+ IV therapy cards", () =>
+      getLandingTreatmentDirectoryCards("NAD+ IV therapy", 5, {
+        countryCode: "US",
+        localities: ["New York", "Brooklyn", "Long Island City", "Jackson Heights", "Rego Park", "Staten Island"],
+        requireImage: false,
+      }),
+    ),
+    safeLandingSection("full-body MRI cards", () => getLandingTreatmentDirectoryCards("Full-body MRI", 5)),
   ]);
 
   return (
