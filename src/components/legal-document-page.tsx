@@ -5,7 +5,7 @@ import { LandingFooter } from "@/components/landing-footer";
 import { LandingScrollHeader } from "@/components/landing-scroll-header";
 import type { LegalDocument } from "@/lib/legal-documents";
 
-const DOCS_ROOT = path.join(process.cwd(), "docs");
+const LEGAL_CONTENT_ROOT = path.join(process.cwd(), "src/content/legal");
 const INLINE_TOKEN = /(\*\*[^*]+\*\*|https?:\/\/[^\s)]+[^\s).,])/g;
 
 function renderInline(text: string) {
@@ -66,7 +66,7 @@ function renderMarkdown(markdown: string) {
 }
 
 async function loadLegalDocument(document: LegalDocument) {
-  return readFile(path.join(DOCS_ROOT, document.source), "utf8");
+  return readFile(path.join(LEGAL_CONTENT_ROOT, document.source), "utf8");
 }
 
 export async function LegalDocumentPage({ document }: { document: LegalDocument }) {
