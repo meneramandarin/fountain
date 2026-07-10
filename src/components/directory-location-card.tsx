@@ -22,6 +22,7 @@ export type DirectoryLocationCardData = {
   treatments?: { name: string; domain: string }[];
   tags?: { facet: string; value: string }[];
   image?: string | null;
+  distance_miles?: number | null;
 };
 
 const domainTone: Record<string, { bg: string; fg: string }> = {
@@ -111,6 +112,7 @@ export function DirectoryLocationCard({ result, from = "search" }: { result: Dir
           {type ? <em>{type.value}</em> : null}
           {price ? <small>From {price}</small> : null}
           {result.review_count ? <small>{Number(result.review_count).toLocaleString()} reviews</small> : null}
+          {result.distance_miles != null ? <small>{formatDistance(result.distance_miles)} away</small> : null}
         </span>
         <span className="treatment-row">
           {(result.treatments || []).slice(0, 3).map((treatment) => {
@@ -125,4 +127,8 @@ export function DirectoryLocationCard({ result, from = "search" }: { result: Dir
       </span>
     </Link>
   );
+}
+
+function formatDistance(distance: number) {
+  return `${Math.max(0, Math.round(distance)).toLocaleString()} mi`;
 }

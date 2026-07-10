@@ -1,15 +1,12 @@
-import { Search } from "lucide-react";
 import Image from "next/image";
-import Link from "next/link";
 import { CityTreatmentSearches } from "@/components/city-treatment-searches";
 import { LandingExploreCarousel, type LandingExploreItem } from "@/components/landing-explore-carousel";
 import { LandingFeaturedDirectoryCarousel } from "@/components/landing-featured-directory-carousel";
 import { LandingFooter } from "@/components/landing-footer";
 import { LandingScrollHeader } from "@/components/landing-scroll-header";
 import { LandingTopbar } from "@/components/landing-topbar";
-import { getPopularTreatments, popularTreatmentLabel } from "@/lib/popular-treatments";
+import { SplitDirectorySearch } from "@/components/split-directory-search";
 import {
-  getFacets,
   getLandingCityTreatmentSearches,
   getLandingFeaturedDirectoryCards,
   getLandingTreatmentDirectoryCards,
@@ -35,7 +32,7 @@ const exploreItems: LandingExploreItem[] = [
 ];
 
 export default async function HomePage() {
-  const [countrySearches, featuredCards, nadCards, mriCards, facets] = await Promise.all([
+  const [countrySearches, featuredCards, nadCards, mriCards] = await Promise.all([
     getLandingCityTreatmentSearches(),
     getLandingFeaturedDirectoryCards(5),
     getLandingTreatmentDirectoryCards("NAD+ IV therapy", 5, {
@@ -44,10 +41,7 @@ export default async function HomePage() {
       requireImage: false,
     }),
     getLandingTreatmentDirectoryCards("Full-body MRI", 5),
-    getFacets(),
   ]);
-  const treatmentFacets = facets.treatment_domains.flatMap((domain) => domain.treatments);
-  const popularTreatments = getPopularTreatments(treatmentFacets);
 
   return (
     <main className="landing">
@@ -57,31 +51,12 @@ export default async function HomePage() {
         <LandingTopbar />
 
         <div className="landing-hero-copy">
-          <h1 id="landing-hero-title">The World’s Biggest Longevity Market Place.</h1>
-          <p>Discover treatments, find practitioners.</p>
+          <h1 id="landing-hero-title">The pursuit of a longer life starts here.</h1>
+          <p>Thousands of treatments. Hundreds of cities. One place.</p>
         </div>
 
         <div className="landing-hero-search">
-          <form className="landing-search" action="/directory" role="search">
-            <input
-              name="q"
-              type="search"
-              aria-label="Search treatments, clinics, doctors"
-              autoComplete="off"
-              autoCorrect="off"
-              spellCheck={false}
-            />
-            <button type="submit" aria-label="Search">
-              <Search size={18} aria-hidden="true" />
-            </button>
-          </form>
-          <nav className="treatment-bubbles" aria-label="Popular treatments">
-            {popularTreatments.map((treatment) => (
-              <Link className="treatment-bubble" href={`/directory?treatment_id=${treatment.id}`} key={treatment.id}>
-                {popularTreatmentLabel(treatment.name)}
-              </Link>
-            ))}
-          </nav>
+          <SplitDirectorySearch />
         </div>
       </section>
 

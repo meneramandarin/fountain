@@ -5,12 +5,10 @@ import { DirectoryLocationCard, type DirectoryLocationCardData } from "@/compone
 import {
   ArrowLeft,
   ArrowRight,
-  Building2,
   ChevronDown,
   Filter,
   Loader2,
   MapPin,
-  Search,
   Stethoscope,
   X,
 } from "lucide-react";
@@ -19,7 +17,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { practitionerHref } from "@/lib/directory-urls";
-import { getPopularTreatments, popularTreatmentLabel } from "@/lib/popular-treatments";
+import { SplitDirectorySearch } from "@/components/split-directory-search";
 
 type Facets = {
   countries: { code: string; name: string; n: number }[];
@@ -39,6 +37,10 @@ export type DirectoryState = {
   q: string;
   country: string;
   locality: string;
+  city_label: string;
+  city_country: string;
+  city_lat?: number;
+  city_lng?: number;
   treatment_ids: string[];
   entity_type: string;
   care_model: string;
@@ -50,7 +52,13 @@ export type SearchPayload = {
   total: number;
   page: number;
   page_size: number;
+  mode?: SearchMode;
+  effective_radius?: number | null;
+  searched_city?: string | null;
+  searched_country?: string | null;
 };
+
+type SearchMode = "exact_radius" | "expanded_radius" | "country_fallback" | "cross_border" | "empty";
 
 type Tag = { facet: string; value: string };
 type TreatmentChip = { name: string; domain: string };
@@ -67,6 +75,7 @@ type AffiliationRef = {
 type LocationResultRow = {
   treatments?: TreatmentChip[];
   tags?: Tag[];
+  distance_miles?: number | null;
 } & DirectoryLocationCardData;
 type PractitionerResultRow = {
   id: number;
@@ -110,7 +119,6 @@ export function DirectoryShell({
 }) {
   const router = useRouter();
   const [state, setState] = useState<DirectoryState>(seededState);
-  const [searchDraft, setSearchDraft] = useState(seededState.q);
   const [payload, setPayload] = useState<SearchPayload>(initialPayload);
   const [loading, setLoading] = useState(false);
   const [visitorLocation, setVisitorLocation] = useState<VisitorLocation | null>(null);
@@ -122,6 +130,17 @@ export function DirectoryShell({
       if (state[key]) {
         params.set(key, state[key]);
       }
+    }
+    for (const key of ["city_label", "city_country"] as const) {
+      if (state[key]) {
+        params.set(key, state[key]);
+      }
+    }
+    if (typeof state.city_lat === "number" && Number.isFinite(state.city_lat)) {
+      params.set("city_lat", String(state.city_lat));
+    }
+    if (typeof state.city_lng === "number" && Number.isFinite(state.city_lng)) {
+      params.set("city_lng", String(state.city_lng));
     }
     if (state.treatment_ids.length) {
       params.set("treatment_id", state.treatment_ids.join(","));
@@ -194,25 +213,34 @@ export function DirectoryShell({
     setState((current) => ({ ...current, ...patch, page: patch.page ?? 0 }));
   }, []);
 
-  const submitSearch = useCallback((event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-
+  const submitSearch = useCallback((payload: { what: string; city_label: string; city_country: string; city_lat?: number; city_lng?: number }) => {
     const nextState = {
       ...emptyState(),
       kind: state.kind,
-      q: searchDraft.trim(),
+      q: payload.what,
+      country: "",
+      locality: "",
+      city_label: payload.city_label,
+      city_country: payload.city_country,
+      city_lat: payload.city_lat,
+      city_lng: payload.city_lng,
     };
     const params = new URLSearchParams();
     params.set("kind", nextState.kind);
     if (nextState.q) {
       params.set("q", nextState.q);
     }
+    if (nextState.city_lat != null && nextState.city_lng != null) {
+      params.set("city_label", nextState.city_label);
+      params.set("city_country", nextState.city_country);
+      params.set("city_lat", String(nextState.city_lat));
+      params.set("city_lng", String(nextState.city_lng));
+    }
 
     setLoading(true);
-    setSearchDraft(nextState.q);
     setState(nextState);
     router.push(`/directory?${params.toString()}`);
-  }, [router, searchDraft, state.kind]);
+  }, [router, state.kind]);
 
   const toggleTreatment = useCallback((id: string) => {
     if (!id) {
@@ -240,11 +268,6 @@ export function DirectoryShell({
     }
     return map;
   }, [allTreatments]);
-  const popularTreatments = useMemo(
-    () =>
-      getPopularTreatments(allTreatments),
-    [allTreatments],
-  );
   const countryOptions = useMemo(() => {
     const usCountry = initialFacets.countries.find((country) => country.code === "US");
     const otherCountries = initialFacets.countries
@@ -272,66 +295,20 @@ export function DirectoryShell({
           </button>
         </header>
 
-        <div className="kind-tabs directory-kind-tabs" role="tablist" aria-label="Directory type">
-          <button
-            type="button"
-            role="tab"
-            aria-selected={state.kind === "locations"}
-            onClick={() => updateState({ kind: "locations", entity_type: "", care_model: "" })}
-          >
-            <Building2 size={17} aria-hidden="true" />
-            Clinics & Med Spas
-          </button>
-          <button
-            type="button"
-            role="tab"
-            aria-selected={state.kind === "practitioners"}
-            onClick={() => updateState({ kind: "practitioners", entity_type: "", care_model: "" })}
-          >
-            <Stethoscope size={17} aria-hidden="true" />
-            Doctors & practitioners
-          </button>
-        </div>
-
         <div className="directory-search-row">
-          <form
-            className="landing-search directory-search"
-            role="search"
+          <SplitDirectorySearch
+            key={`${state.kind}:${state.q}:${state.country}:${state.locality}:${state.city_label}:${state.city_country}:${state.city_lat}:${state.city_lng}`}
+            className="directory-search"
+            initialWhat={state.q}
+            initialWhere={state.city_label || state.locality}
+            initialCityCountry={state.city_country}
+            initialCityLat={state.city_lat}
+            initialCityLng={state.city_lng}
+            kind={state.kind}
             onSubmit={submitSearch}
-          >
-            <input
-              name="q"
-              value={searchDraft}
-              onChange={(event) => setSearchDraft(event.target.value)}
-              aria-label="Search treatments, clinics, doctors"
-              type="search"
-              autoComplete="off"
-              autoCorrect="off"
-              spellCheck={false}
-            />
-            <button type="submit" aria-label="Search">
-              <Search size={18} aria-hidden="true" />
-            </button>
-          </form>
+          />
         </div>
 
-        <div className="treatment-bubbles" role="group" aria-label="Popular treatments">
-          {popularTreatments.map((treatment) => {
-            const id = String(treatment.id);
-            const selected = state.treatment_ids.includes(id);
-            return (
-              <button
-                type="button"
-                className="treatment-bubble"
-                key={treatment.id}
-                aria-pressed={selected}
-                onClick={() => toggleTreatment(id)}
-              >
-                {popularTreatmentLabel(treatment.name)}
-              </button>
-            );
-          })}
-        </div>
       </section>
 
       <div className="directory-layout">
@@ -428,7 +405,6 @@ export function DirectoryShell({
             type="button"
             onClick={() => {
               setLoading(true);
-              setSearchDraft("");
               setState({ ...emptyState(), kind: state.kind });
             }}
           >
@@ -437,6 +413,8 @@ export function DirectoryShell({
         </aside>
 
         <section className="directory-results" aria-live="polite">
+          <DirectorySearchBanner payload={payload} />
+
           <div className="resultbar">
             <span>
               {loading ? "Searching..." : `${payload.total.toLocaleString()} result${payload.total === 1 ? "" : "s"}`}
@@ -453,6 +431,7 @@ export function DirectoryShell({
                   <LocationResult
                     key={result.id}
                     result={result as LocationResultRow}
+                    showDistance={shouldShowDistance(payload)}
                   />
                 ))
               : payload.results.map((result) => (
@@ -478,7 +457,20 @@ export function DirectoryShell({
 }
 
 function emptyState(): DirectoryState {
-  return { kind: "locations", q: "", country: "", locality: "", treatment_ids: [], entity_type: "", care_model: "", page: 0 };
+  return {
+    kind: "locations",
+    q: "",
+    country: "",
+    locality: "",
+    city_label: "",
+    city_country: "",
+    city_lat: undefined,
+    city_lng: undefined,
+    treatment_ids: [],
+    entity_type: "",
+    care_model: "",
+    page: 0,
+  };
 }
 
 function usesPersonalizedDefaultSort(state: DirectoryState) {
@@ -486,6 +478,8 @@ function usesPersonalizedDefaultSort(state: DirectoryState) {
     && !state.q
     && !state.country
     && !state.locality
+    && !state.city_lat
+    && !state.city_lng
     && !state.treatment_ids.length
     && !state.entity_type
     && !state.care_model;
@@ -570,8 +564,32 @@ function FacetButtons({
   );
 }
 
-function LocationResult({ result }: { result: LocationResultRow }) {
-  return <DirectoryLocationCard result={result} />;
+function shouldShowDistance(payload: SearchPayload) {
+  return Boolean(payload.mode && !(payload.mode === "exact_radius" && payload.effective_radius === 25));
+}
+
+function LocationResult({ result, showDistance }: { result: LocationResultRow; showDistance: boolean }) {
+  return <DirectoryLocationCard result={showDistance ? result : { ...result, distance_miles: null }} />;
+}
+
+function DirectorySearchBanner({ payload }: { payload: SearchPayload }) {
+  const mode = payload.mode;
+  if (!mode || (mode === "exact_radius" && payload.effective_radius === 25)) {
+    return null;
+  }
+
+  let message = "";
+  if (mode === "expanded_radius") {
+    message = `No clinics in ${payload.searched_city || "that city"} yet. Showing options nearby.`;
+  } else if (mode === "country_fallback") {
+    message = `Showing all clinics in ${payload.searched_country || "this country"}.`;
+  } else if (mode === "cross_border") {
+    message = `No clinics in ${payload.searched_country || "that country"} yet. Showing options nearby.`;
+  } else if (mode === "empty") {
+    message = `No clinics near ${payload.searched_city || "that city"} yet.`;
+  }
+
+  return message ? <div className="directory-search-banner">{message}</div> : null;
 }
 
 function PractitionerResult({ result }: { result: PractitionerResultRow }) {
