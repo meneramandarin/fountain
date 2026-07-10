@@ -1,5 +1,6 @@
 import type { MetadataRoute } from "next";
 import { editorialArticles } from "@/lib/editorial-articles";
+import { legalDocuments } from "@/lib/legal-documents";
 import { siteUrl } from "@/lib/site";
 
 export default function sitemap(): MetadataRoute.Sitemap {
@@ -23,6 +24,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified: new Date(article.updated),
       changeFrequency: "monthly" as const,
       priority: 0.7,
+    })),
+    ...legalDocuments.map((document) => ({
+      url: new URL(`/${document.slug}`, siteUrl).toString(),
+      lastModified: new Date(document.effectiveDate),
+      changeFrequency: "yearly" as const,
+      priority: 0.4,
     })),
   ];
 }
