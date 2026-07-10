@@ -1,3 +1,5 @@
+import { countryDisplayName } from "@/lib/countries";
+
 const hiddenRegionNames = new Set([
   "africa",
   "antarctica",
@@ -18,7 +20,7 @@ type LocationPlaceInput = {
 export function formatLocationPlace({ locality, region, countryCode, countryName }: LocationPlaceInput) {
   const cleanLocality = cleanPart(locality);
   const cleanRegion = visibleRegion(region, countryCode, countryName);
-  const cleanCountry = cleanPart(countryName) || cleanPart(countryCode);
+  const cleanCountry = cleanPart(countryDisplayName(countryCode, countryName));
 
   return [cleanLocality, cleanRegion, cleanCountry].filter(Boolean).join(", ");
 }

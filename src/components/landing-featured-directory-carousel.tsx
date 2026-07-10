@@ -67,6 +67,7 @@ export function LandingFeaturedDirectoryCarousel({ cards, title }: LandingFeatur
           const place = formatLocationPlace({
             locality: card.locality,
             region: card.region,
+            countryCode: card.country_code,
             countryName: card.country_name,
           });
           const type = card.tags.find((tag) => tag.facet === "entity_type");

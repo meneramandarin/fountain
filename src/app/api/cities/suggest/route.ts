@@ -1,4 +1,5 @@
 import { rows } from "@/lib/db";
+import { countryDisplayName, iso2ToDisplay } from "@/lib/countries";
 import { NextResponse } from "next/server";
 
 export const runtime = "nodejs";
@@ -7,6 +8,7 @@ export const dynamic = "force-dynamic";
 type CitySuggestion = {
   id: string;
   source: "inventory" | "google";
+  place_type: "locality" | "country";
   label: string;
   city: string;
   region?: string | null;
@@ -29,18 +31,27 @@ type CityIndexRow = {
   image_coverage: number;
 };
 
+type CountryIndexRow = {
+  country_code: string;
+  country_name: string | null;
+  listing_count: number;
+};
+
 export async function GET(request: Request) {
   const url = new URL(request.url);
   const query = (url.searchParams.get("q") || "").trim();
   const sessionToken = cleanToken(url.searchParams.get("session_token"));
 
   const inventoryPromise = query ? inventoryPrefixSuggestions(query, 3) : topInventoryCities(request.headers, 8);
+  const countryPromise = query ? inventoryCountrySuggestions(query, 4) : Promise.resolve([]);
   const googlePromise = query ? googleCitySuggestions(query, sessionToken) : Promise.resolve([]);
-  const [inventory, google] = await Promise.all([inventoryPromise, googlePromise]);
+  const [inventory, countries, google] = await Promise.all([inventoryPromise, countryPromise, googlePromise]);
 
   const suggestions = mergeSuggestions([
     ...inventory.map(cityRowToSuggestion),
-    ...google,
+    ...google.filter((suggestion) => suggestion.place_type !== "country"),
+    ...countries.map(countryRowToSuggestion),
+    ...google.filter((suggestion) => suggestion.place_type === "country"),
   ], query ? 6 : 8);
 
   return NextResponse.json(
@@ -60,6 +71,22 @@ async function inventoryPrefixSuggestions(query: string, limit: number) {
     LIMIT ?
   `,
     [normalized, limit],
+  );
+}
+
+async function inventoryCountrySuggestions(query: string, limit: number) {
+  const normalized = query.toLowerCase();
+  return rows<CountryIndexRow>(
+    `
+    SELECT country_code, MAX(country_name) AS country_name, SUM(listing_count)::int AS listing_count
+    FROM city_index
+    GROUP BY country_code
+    HAVING lower(COALESCE(MAX(country_name), country_code)) LIKE ? || '%'
+       OR lower(country_code) LIKE ? || '%'
+    ORDER BY SUM(listing_count) DESC, COALESCE(MAX(country_name), country_code)
+    LIMIT ?
+  `,
+    [normalized, normalized, limit],
   );
 }
 
@@ -97,6 +124,7 @@ function cityRowToSuggestion(row: CityIndexRow): CitySuggestion {
   return {
     id: `inventory:${row.country_code}:${row.city.toLowerCase()}`,
     source: "inventory",
+    place_type: "locality",
     label: cityLabel(row.city, row.region, row.country_code),
     city: row.city,
     region: row.region,
@@ -104,6 +132,23 @@ function cityRowToSuggestion(row: CityIndexRow): CitySuggestion {
     country_name: row.country_name,
     lat: row.latitude,
     lng: row.longitude,
+    has_inventory: true,
+  };
+}
+
+function countryRowToSuggestion(row: CountryIndexRow): CitySuggestion {
+  const displayName = countryDisplayName(row.country_code, row.country_name) || row.country_code;
+  return {
+    id: `inventory-country:${row.country_code}`,
+    source: "inventory",
+    place_type: "country",
+    label: displayName,
+    city: displayName,
+    region: null,
+    country_code: row.country_code,
+    country_name: displayName,
+    lat: null,
+    lng: null,
     has_inventory: true,
   };
 }
@@ -122,11 +167,11 @@ async function googleCitySuggestions(query: string, sessionToken: string | null)
       headers: {
         "Content-Type": "application/json",
         "X-Goog-Api-Key": apiKey,
-        "X-Goog-FieldMask": "suggestions.placePrediction.placeId,suggestions.placePrediction.text.text",
+        "X-Goog-FieldMask": "suggestions.placePrediction.placeId,suggestions.placePrediction.text.text,suggestions.placePrediction.types",
       },
       body: JSON.stringify({
         input: query,
-        includedPrimaryTypes: ["locality"],
+        includedPrimaryTypes: ["locality", "country"],
         languageCode: "en",
         ...(sessionToken ? { sessionToken } : {}),
       }),
@@ -136,18 +181,20 @@ async function googleCitySuggestions(query: string, sessionToken: string | null)
       return [];
     }
     const data = await response.json() as {
-      suggestions?: { placePrediction?: { placeId?: string; text?: { text?: string } } }[];
+      suggestions?: { placePrediction?: { placeId?: string; text?: { text?: string }; types?: string[] } }[];
     };
     return (data.suggestions || [])
       .map((suggestion) => suggestion.placePrediction)
-      .filter((prediction): prediction is { placeId: string; text?: { text?: string } } => Boolean(prediction?.placeId))
+      .filter((prediction): prediction is { placeId: string; text?: { text?: string }; types?: string[] } => Boolean(prediction?.placeId))
       .slice(0, 5)
       .map((prediction) => {
         const label = prediction.text?.text || "Unknown city";
-        const parsed = parseGoogleLabel(label);
+        const placeType = prediction.types?.includes("country") ? "country" : "locality";
+        const parsed = parseGoogleLabel(label, placeType);
         return {
           id: `google:${prediction.placeId}`,
           source: "google",
+          place_type: placeType,
           label,
           city: parsed.city || label,
           region: parsed.region,
@@ -170,7 +217,9 @@ function mergeSuggestions(suggestions: CitySuggestion[], limit: number) {
   const seen = new Set<string>();
   const merged: CitySuggestion[] = [];
   for (const suggestion of suggestions) {
-    const key = `${normalizeText(suggestion.city)}:${suggestion.country_code || normalizeText(suggestion.country_name || "")}`;
+    const key = suggestion.place_type === "country" && suggestion.country_code
+      ? `country:${suggestion.country_code}`
+      : `${normalizeText(suggestion.city)}:${suggestion.country_code || normalizeText(suggestion.country_name || "")}`;
     if (seen.has(key)) {
       continue;
     }
@@ -223,13 +272,27 @@ function normalizeText(value: string) {
   return value.trim().toLowerCase().replace(/\s+/g, " ");
 }
 
-function parseGoogleLabel(label: string) {
+function parseGoogleLabel(label: string, placeType: "locality" | "country") {
   const parts = label.split(",").map((part) => part.trim()).filter(Boolean);
   const countryName = parts.at(-1);
+  if (placeType === "country") {
+    const countryCode = iso2FromDisplay(label);
+    return {
+      city: label,
+      region: undefined,
+      countryName: label,
+      countryCode,
+    };
+  }
   return {
     city: parts[0],
     region: parts.length > 2 ? parts.at(-2) : undefined,
     countryName,
     countryCode: countryName === "USA" || countryName === "United States" ? "US" : undefined,
   };
+}
+
+function iso2FromDisplay(value: string) {
+  const normalized = normalizeText(value);
+  return Object.entries(iso2ToDisplay).find(([, label]) => normalizeText(label) === normalized)?.[0];
 }

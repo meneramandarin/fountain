@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { countryDisplayName } from "@/lib/countries";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -21,7 +22,7 @@ export async function GET(request: Request) {
       headers: {
         "Content-Type": "application/json",
         "X-Goog-Api-Key": apiKey,
-        "X-Goog-FieldMask": "id,formattedAddress,location,addressComponents",
+        "X-Goog-FieldMask": "id,formattedAddress,location,addressComponents,types",
       },
       cache: "no-store",
     });
@@ -33,23 +34,31 @@ export async function GET(request: Request) {
       formattedAddress?: string;
       location?: { latitude?: number; longitude?: number };
       addressComponents?: { longText?: string; shortText?: string; types?: string[] }[];
+      types?: string[];
     };
     const country = component(data.addressComponents, "country");
     const region = component(data.addressComponents, "administrative_area_level_1");
-    const city = component(data.addressComponents, "locality") || data.formattedAddress?.split(",")[0]?.trim();
     const countryCode = country?.shortText && /^[A-Z][A-Z]$/.test(country.shortText) ? country.shortText : undefined;
-    const label = data.formattedAddress || [city, region?.shortText, countryCode].filter(Boolean).join(", ");
+    const placeType = data.types?.includes("country") ? "country" : "locality";
+    const countryName = countryDisplayName(countryCode, country?.longText) || country?.longText || null;
+    const city = placeType === "country"
+      ? countryName || data.formattedAddress?.split(",")[0]?.trim()
+      : component(data.addressComponents, "locality") || data.formattedAddress?.split(",")[0]?.trim();
+    const label = placeType === "country"
+      ? countryName || data.formattedAddress || [city, countryCode].filter(Boolean).join(", ")
+      : data.formattedAddress || [city, region?.shortText, countryCode].filter(Boolean).join(", ");
     return NextResponse.json({
-      city: data.location?.latitude != null && data.location?.longitude != null ? {
+      city: placeType === "country" || (data.location?.latitude != null && data.location?.longitude != null) ? {
         id: `google:${data.id || placeId}`,
         source: "google",
+        place_type: placeType,
         label,
         city: city || label,
         region: region?.shortText || region?.longText || null,
         country_code: countryCode || null,
-        country_name: country?.longText || null,
-        lat: data.location.latitude,
-        lng: data.location.longitude,
+        country_name: countryName,
+        lat: placeType === "country" ? null : data.location?.latitude,
+        lng: placeType === "country" ? null : data.location?.longitude,
         has_inventory: false,
         place_id: placeId,
       } : null,

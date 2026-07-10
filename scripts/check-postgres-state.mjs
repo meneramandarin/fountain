@@ -43,6 +43,7 @@ try {
   await checkRefreshToolingRemoved();
   await checkWriteReadiness(client);
   await checkSearchMaintenance(client);
+  await checkGeocodeCoverage(client);
   await checkLocationWebsiteTrackingHygiene(client);
   if (options.seedDirtyUrlCheck) {
     await checkSeededLocationWebsiteTrackingHygiene(client);
@@ -472,6 +473,33 @@ async function checkSearchMaintenance(pgClient) {
   for (const [key, value] of Object.entries(row)) {
     if (Number(value) !== 0) {
       failures.push(`${canonicalSchema}.search_index has ${value} ${key.replaceAll("_", " ")}`);
+    }
+  }
+}
+
+async function checkGeocodeCoverage(pgClient) {
+  const result = await pgClient.query(
+    `
+    SELECT
+      COUNT(*) FILTER (WHERE latitude IS NULL OR longitude IS NULL)::bigint AS null_coordinate,
+      COUNT(*) FILTER (WHERE latitude IS NOT NULL AND longitude IS NOT NULL AND latitude = 0 AND longitude = 0)::bigint AS zero_zero,
+      COUNT(*) FILTER (WHERE latitude IS NOT NULL AND (latitude < -90 OR latitude > 90))::bigint AS latitude_out_of_bounds,
+      COUNT(*) FILTER (WHERE longitude IS NOT NULL AND (longitude < -180 OR longitude > 180))::bigint AS longitude_out_of_bounds
+    FROM ${quoteIdent(canonicalSchema)}.locations
+    WHERE status = 'active'
+      AND deleted_at IS NULL
+      AND COALESCE(is_virtual, false) = false
+    `,
+  );
+  const row = result.rows[0];
+  summary.geocode_null_coordinate_locations = row.null_coordinate;
+  summary.geocode_zero_zero_locations = row.zero_zero;
+  summary.geocode_latitude_out_of_bounds_locations = row.latitude_out_of_bounds;
+  summary.geocode_longitude_out_of_bounds_locations = row.longitude_out_of_bounds;
+
+  for (const [key, value] of Object.entries(row)) {
+    if (Number(value) !== 0) {
+      failures.push(`${canonicalSchema}.locations has ${value} active non-virtual rows with ${key.replaceAll("_", " ")}`);
     }
   }
 }
