@@ -1,0 +1,414 @@
+{
+  "phase_date": "20260711",
+  "mode": "live",
+  "backups": [
+    "fountain_raw.taxonomy_phase4_treatments_backup_20260711",
+    "fountain_raw.taxonomy_phase4_treatment_aliases_backup_20260711",
+    "fountain_raw.taxonomy_phase4_offering_treatment_backup_20260711"
+  ],
+  "audit_tables": [
+    "fountain_raw.taxonomy_phase4_offering_remap_audit_20260711",
+    "fountain_raw.taxonomy_phase4_alias_remap_audit_20260711",
+    "fountain_raw.taxonomy_phase4_rejected_terms_20260711"
+  ],
+  "before": {
+    "treatments": 43,
+    "aliases": 3080,
+    "active_offerings": 100352,
+    "active_mapped_offerings": 21388,
+    "active_unmapped_offerings": 78964,
+    "active_mapped_pct": 21.31
+  },
+  "after": {
+    "treatments": 62,
+    "aliases": 3399,
+    "active_offerings": 100352,
+    "active_mapped_offerings": 28349,
+    "active_unmapped_offerings": 72003,
+    "active_mapped_pct": 28.25
+  },
+  "expected_treatment_count": 62,
+  "treatment_count_ok": true,
+  "inserted_treatments": [
+    {
+      "id": 44,
+      "canonical_name": "Physical therapy",
+      "category": "Recovery & performance",
+      "inserted": true
+    },
+    {
+      "id": 45,
+      "canonical_name": "Chiropractic care",
+      "category": "Lifestyle & foundational",
+      "inserted": true
+    },
+    {
+      "id": 46,
+      "canonical_name": "Acupuncture",
+      "category": "Lifestyle & foundational",
+      "inserted": true
+    },
+    {
+      "id": 47,
+      "canonical_name": "Microneedling",
+      "category": "Aesthetic",
+      "inserted": true
+    },
+    {
+      "id": 48,
+      "canonical_name": "Body contouring",
+      "category": "Aesthetic",
+      "inserted": true
+    },
+    {
+      "id": 49,
+      "canonical_name": "Massage therapy",
+      "category": "Recovery & performance",
+      "inserted": true
+    },
+    {
+      "id": 50,
+      "canonical_name": "Laser hair removal",
+      "category": "Aesthetic",
+      "inserted": true
+    },
+    {
+      "id": 51,
+      "canonical_name": "Hair restoration",
+      "category": "Regenerative & cellular",
+      "inserted": true
+    },
+    {
+      "id": 52,
+      "canonical_name": "Skin tightening",
+      "category": "Aesthetic",
+      "inserted": true
+    },
+    {
+      "id": 53,
+      "canonical_name": "Hydrafacial",
+      "category": "Aesthetic",
+      "inserted": true
+    },
+    {
+      "id": 54,
+      "canonical_name": "Ozone therapy",
+      "category": "Regenerative & cellular",
+      "inserted": true
+    },
+    {
+      "id": 55,
+      "canonical_name": "Laser skin resurfacing",
+      "category": "Aesthetic",
+      "inserted": true
+    },
+    {
+      "id": 56,
+      "canonical_name": "Lymphatic drainage",
+      "category": "Recovery & performance",
+      "inserted": true
+    },
+    {
+      "id": 57,
+      "canonical_name": "Chemical peel",
+      "category": "Aesthetic",
+      "inserted": true
+    },
+    {
+      "id": 58,
+      "canonical_name": "Colon hydrotherapy",
+      "category": "Lifestyle & foundational",
+      "inserted": true
+    },
+    {
+      "id": 59,
+      "canonical_name": "Laser tattoo removal",
+      "category": "Aesthetic",
+      "inserted": true
+    },
+    {
+      "id": 60,
+      "canonical_name": "Testosterone replacement therapy (TRT)",
+      "category": "Hormone & metabolic",
+      "inserted": true
+    },
+    {
+      "id": 61,
+      "canonical_name": "Menopause hormone therapy (HRT)",
+      "category": "Hormone & metabolic",
+      "inserted": true
+    },
+    {
+      "id": 62,
+      "canonical_name": "Medical weight loss",
+      "category": "Hormone & metabolic",
+      "inserted": true
+    }
+  ],
+  "inserted_aliases": 319,
+  "remapped_aliases": 8,
+  "offering_rows_changed": 7738,
+  "new_treatments": [
+    {
+      "id": 44,
+      "canonical_name": "Physical therapy",
+      "category": "Recovery & performance",
+      "alias_count": 12,
+      "offering_rows_changed": 1087,
+      "distinct_locations_changed": 684
+    },
+    {
+      "id": 45,
+      "canonical_name": "Chiropractic care",
+      "category": "Lifestyle & foundational",
+      "alias_count": 12,
+      "offering_rows_changed": 753,
+      "distinct_locations_changed": 442
+    },
+    {
+      "id": 46,
+      "canonical_name": "Acupuncture",
+      "category": "Lifestyle & foundational",
+      "alias_count": 11,
+      "offering_rows_changed": 531,
+      "distinct_locations_changed": 319
+    },
+    {
+      "id": 47,
+      "canonical_name": "Microneedling",
+      "category": "Aesthetic",
+      "alias_count": 22,
+      "offering_rows_changed": 724,
+      "distinct_locations_changed": 449
+    },
+    {
+      "id": 48,
+      "canonical_name": "Body contouring",
+      "category": "Aesthetic",
+      "alias_count": 12,
+      "offering_rows_changed": 435,
+      "distinct_locations_changed": 303
+    },
+    {
+      "id": 49,
+      "canonical_name": "Massage therapy",
+      "category": "Recovery & performance",
+      "alias_count": 12,
+      "offering_rows_changed": 399,
+      "distinct_locations_changed": 292
+    },
+    {
+      "id": 50,
+      "canonical_name": "Laser hair removal",
+      "category": "Aesthetic",
+      "alias_count": 12,
+      "offering_rows_changed": 359,
+      "distinct_locations_changed": 241
+    },
+    {
+      "id": 51,
+      "canonical_name": "Hair restoration",
+      "category": "Regenerative & cellular",
+      "alias_count": 12,
+      "offering_rows_changed": 501,
+      "distinct_locations_changed": 388
+    },
+    {
+      "id": 52,
+      "canonical_name": "Skin tightening",
+      "category": "Aesthetic",
+      "alias_count": 12,
+      "offering_rows_changed": 248,
+      "distinct_locations_changed": 161
+    },
+    {
+      "id": 53,
+      "canonical_name": "Hydrafacial",
+      "category": "Aesthetic",
+      "alias_count": 12,
+      "offering_rows_changed": 203,
+      "distinct_locations_changed": 153
+    },
+    {
+      "id": 54,
+      "canonical_name": "Ozone therapy",
+      "category": "Regenerative & cellular",
+      "alias_count": 12,
+      "offering_rows_changed": 182,
+      "distinct_locations_changed": 143
+    },
+    {
+      "id": 55,
+      "canonical_name": "Laser skin resurfacing",
+      "category": "Aesthetic",
+      "alias_count": 12,
+      "offering_rows_changed": 140,
+      "distinct_locations_changed": 110
+    },
+    {
+      "id": 56,
+      "canonical_name": "Lymphatic drainage",
+      "category": "Recovery & performance",
+      "alias_count": 12,
+      "offering_rows_changed": 137,
+      "distinct_locations_changed": 103
+    },
+    {
+      "id": 57,
+      "canonical_name": "Chemical peel",
+      "category": "Aesthetic",
+      "alias_count": 12,
+      "offering_rows_changed": 114,
+      "distinct_locations_changed": 87
+    },
+    {
+      "id": 58,
+      "canonical_name": "Colon hydrotherapy",
+      "category": "Lifestyle & foundational",
+      "alias_count": 11,
+      "offering_rows_changed": 49,
+      "distinct_locations_changed": 23
+    },
+    {
+      "id": 59,
+      "canonical_name": "Laser tattoo removal",
+      "category": "Aesthetic",
+      "alias_count": 4,
+      "offering_rows_changed": 29,
+      "distinct_locations_changed": 29
+    },
+    {
+      "id": 60,
+      "canonical_name": "Testosterone replacement therapy (TRT)",
+      "category": "Hormone & metabolic",
+      "alias_count": 12,
+      "offering_rows_changed": 317,
+      "distinct_locations_changed": 250
+    },
+    {
+      "id": 61,
+      "canonical_name": "Menopause hormone therapy (HRT)",
+      "category": "Hormone & metabolic",
+      "alias_count": 11,
+      "offering_rows_changed": 184,
+      "distinct_locations_changed": 144
+    },
+    {
+      "id": 62,
+      "canonical_name": "Medical weight loss",
+      "category": "Hormone & metabolic",
+      "alias_count": 18,
+      "offering_rows_changed": 1046,
+      "distinct_locations_changed": 858
+    }
+  ],
+  "hormone_split": [
+    {
+      "target": "Testosterone replacement therapy (TRT)",
+      "rows_moved_from_hormone_optimization": 276,
+      "total_rows_changed_to_target": 317
+    },
+    {
+      "target": "Menopause hormone therapy (HRT)",
+      "rows_moved_from_hormone_optimization": 97,
+      "total_rows_changed_to_target": 184
+    },
+    {
+      "target": "Medical weight loss",
+      "rows_moved_from_glp1_weight_management": 55,
+      "total_rows_changed_to_target": 1046
+    }
+  ],
+  "decisions": [
+    {
+      "reason": "phase4_new_treatment_alias",
+      "rows": 3925
+    },
+    {
+      "reason": "proposal_family_rule",
+      "rows": 2500
+    },
+    {
+      "reason": "medical_weight_loss_rule",
+      "rows": 704
+    },
+    {
+      "reason": "trt_rule",
+      "rows": 163
+    },
+    {
+      "reason": "approved_lab_testing_family",
+      "rows": 149
+    },
+    {
+      "reason": "hrt_rule",
+      "rows": 127
+    },
+    {
+      "reason": "redirect_ambiguous_injectables",
+      "rows": 49
+    },
+    {
+      "reason": "approved_facial_rejuvenation_family",
+      "rows": 32
+    },
+    {
+      "reason": "approved_biomarker_family",
+      "rows": 25
+    },
+    {
+      "reason": "approved_redirect_weight_loss",
+      "rows": 19
+    },
+    {
+      "reason": "hormone_generic_kept",
+      "rows": 14
+    },
+    {
+      "reason": "approved_infusion_services",
+      "rows": 12
+    },
+    {
+      "reason": "approved_metabolic_testing_family",
+      "rows": 8
+    },
+    {
+      "reason": "approved_wellness_exam_family",
+      "rows": 4
+    },
+    {
+      "reason": "glp1_drug_explicit_rule",
+      "rows": 4
+    },
+    {
+      "reason": "redirect_vitamin_injectables",
+      "rows": 3
+    }
+  ],
+  "rejected_terms": [
+    {
+      "normalized": "sports injury rehabilitation",
+      "reason": "rejected_hbot_mapping"
+    },
+    {
+      "normalized": "cardiac rehabilitation",
+      "reason": "rejected_cardiac_screening_mapping"
+    },
+    {
+      "normalized": "supportive injectables",
+      "reason": "rejected_ambiguous_injectables"
+    },
+    {
+      "normalized": "medical abortion non per televisit medications labs imaging additional",
+      "reason": "out_of_scope_medical_abortion"
+    }
+  ],
+  "search_index": {
+    "affected_locations": 2801,
+    "locations_refreshed": 2801
+  },
+  "sitemap": {
+    "treatment_feed": false,
+    "note": "src/app/sitemap.ts does not enumerate treatments; no sitemap regeneration needed."
+  }
+}
