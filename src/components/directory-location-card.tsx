@@ -101,6 +101,18 @@ export function DirectoryLocationCard({ result, from = "search" }: { result: Dir
             {Number(result.rating).toFixed(1)}
           </span>
         ) : null}
+        {result.treatments?.length ? (
+          <span className="result-photo-tags" aria-hidden="true">
+            {result.treatments.slice(0, 3).map((treatment) => {
+              const tone = domainTone[treatment.domain] || { bg: "#eef2f0", fg: "#39443e" };
+              return (
+                <span key={`${result.id}-photo-${treatment.name}`} style={{ background: tone.bg, color: tone.fg }}>
+                  {treatment.name}
+                </span>
+              );
+            })}
+          </span>
+        ) : null}
       </span>
       <span className="result-body">
         <span className="result-main">

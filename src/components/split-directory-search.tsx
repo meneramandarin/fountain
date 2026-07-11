@@ -179,6 +179,7 @@ export function SplitDirectorySearch({
 
   const whatIsActive = activeField === "what";
   const whereIsActive = activeField === "where";
+  const hasServedQuery = Boolean(initialWhat.trim() || initialWhere.trim());
 
   return (
     <form
@@ -186,6 +187,7 @@ export function SplitDirectorySearch({
       className={[
         "split-search",
         compact ? "split-search-compact" : "",
+        hasServedQuery ? "has-served-query" : "",
         whatIsActive ? "is-what-active" : "",
         whereIsActive ? "is-where-active" : "",
         className,
