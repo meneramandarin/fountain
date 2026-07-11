@@ -71,6 +71,7 @@ export function LandingFeaturedDirectoryCarousel({ cards, title }: LandingFeatur
             countryName: card.country_name,
           });
           const type = card.tags.find((tag) => tag.facet === "entity_type");
+          const previewTreatments = card.treatments.slice(0, 3);
 
           return (
             <Link className="landing-featured-card" href={locationHref(card)} key={card.id}>
@@ -92,6 +93,18 @@ export function LandingFeaturedDirectoryCarousel({ cards, title }: LandingFeatur
                   <span className="landing-featured-rating">
                     <Star size={12} aria-hidden="true" />
                     {Number(card.rating).toFixed(1)}
+                  </span>
+                ) : null}
+                {previewTreatments.length ? (
+                  <span className="landing-featured-photo-tags" aria-hidden="true">
+                    {previewTreatments.map((treatment) => {
+                      const tone = domainTone[treatment.domain] || { bg: "#eef2f0", fg: "#39443e" };
+                      return (
+                        <span key={`${card.id}-photo-${treatment.name}`} style={{ background: tone.bg, color: tone.fg }}>
+                          {treatment.name}
+                        </span>
+                      );
+                    })}
                   </span>
                 ) : null}
               </span>

@@ -46,24 +46,30 @@ export function CityTreatmentSearches({ countries }: CityTreatmentSearchesProps)
     return null;
   }
 
+  const countryRows = [0, 1, 2].map((rowIndex) => countries.filter((_, index) => index % 3 === rowIndex));
+
   return (
     <>
       <div className="browse-tabs country-tabs" role="group" aria-label="Countries">
-        {countries.map((country) => {
-          const isSelected = country.country_code === activeCountryCode;
+        {countryRows.map((rowCountries, rowIndex) => (
+          <div className="country-tab-row" key={`country-row-${rowIndex}`}>
+            {rowCountries.map((country) => {
+              const isSelected = country.country_code === activeCountryCode;
 
-          return (
-            <button
-              aria-label={`${country.country_name}, ${country.cities.length} cities`}
-              aria-pressed={isSelected}
-              key={country.country_code}
-              onClick={() => setActiveCountryCode(country.country_code)}
-              type="button"
-            >
-              {country.country_name}
-            </button>
-          );
-        })}
+              return (
+                <button
+                  aria-label={`${country.country_name}, ${country.cities.length} cities`}
+                  aria-pressed={isSelected}
+                  key={country.country_code}
+                  onClick={() => setActiveCountryCode(country.country_code)}
+                  type="button"
+                >
+                  {country.country_name}
+                </button>
+              );
+            })}
+          </div>
+        ))}
       </div>
 
       {countries.map((country) => (
