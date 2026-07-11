@@ -846,7 +846,10 @@ input[type="search"]::-webkit-search-cancel-button:hover {
 }
 
 .landing-featured-treatments span {
-  border-radius: 6px;
+  border-radius: 999px;
+  border: 0.5px solid rgba(30, 26, 15, 0.10);
+  background: #f7f3ea;
+  color: rgba(30, 26, 15, 0.72);
   padding: 3px 7px;
   font-family: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
   font-size: 12px;
@@ -1925,7 +1928,7 @@ input[type="search"]::-webkit-search-cancel-button:hover {
     max-width: 100%;
     overflow: hidden;
     padding: 2px 5px;
-    border-radius: 5px;
+    border-radius: 999px;
     box-shadow: 0 5px 12px rgba(30, 26, 15, 0.16);
     font-family: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
     font-size: 8.5px;
@@ -2425,10 +2428,18 @@ input[type="search"]::-webkit-search-cancel-button:hover {
 
 .treatment-row span,
 .drawer-tags span {
-  border-radius: 6px;
   padding: 3px 7px;
   font-family: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
   font-size: 12px;
+}
+
+.treatment-row span,
+.result-photo-tags span,
+.landing-featured-photo-tags span {
+  border-radius: 999px;
+  border: 0.5px solid rgba(30, 26, 15, 0.10);
+  background: #f7f3ea;
+  color: rgba(30, 26, 15, 0.72);
 }
 
 .practitioner-card {
@@ -2781,6 +2792,7 @@ input[type="search"]::-webkit-search-cancel-button:hover {
 }
 
 .drawer-tags span {
+  border-radius: 6px;
   background: var(--landing-parchment-soft);
   color: var(--landing-fg);
   border: 1px solid var(--landing-line);
@@ -3690,7 +3702,7 @@ blockquote p {
     max-width: 100%;
     overflow: hidden;
     padding: 3px 6px;
-    border-radius: 6px;
+    border-radius: 999px;
     box-shadow: 0 5px 12px rgba(30, 26, 15, 0.16);
     font-family: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
     font-size: 10px;
