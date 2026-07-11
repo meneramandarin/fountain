@@ -409,6 +409,7 @@ export async function getStats(): Promise<Stats> {
 export async function getLandingCityTreatmentSearches(
   cityLimitPerCountry = 10,
   treatmentLimit = 8,
+  countryLimit = 20,
 ): Promise<LandingCountrySearch[]> {
   const cityTreatmentRows = await rows<{
     locality: string;
@@ -690,12 +691,15 @@ export async function getLandingCityTreatmentSearches(
     }
   }
 
-  return Array.from(byCountry.values()).sort(
-    (a, b) =>
-      b.cities.length - a.cities.length ||
-      b.location_count - a.location_count ||
-      a.country_name.localeCompare(b.country_name),
-  );
+  return Array.from(byCountry.values())
+    .sort(
+      (a, b) =>
+        b.location_count - a.location_count ||
+        b.treatment_count - a.treatment_count ||
+        b.cities.length - a.cities.length ||
+        a.country_name.localeCompare(b.country_name),
+    )
+    .slice(0, countryLimit);
 }
 
 export async function getRelatedTreatmentSearches(
