@@ -12,6 +12,8 @@ export const REVIEWS_FETCH_ACTOR_ID = "b5c71897-83d0-4c30-a7a3-202607120014";
 export const REVIEWS_FETCH_SOURCE_SLUG = "google_places_reviews";
 export const REVIEWS_FETCH_PROVIDER = "google";
 export const REVIEWS_FETCH_MINIMUM_STORED_REVIEWS = 3;
+export const REVIEWS_FETCH_SOURCE_LISTING_SEQUENCE =
+  "fountain_raw.google_places_reviews_listing_id_seq";
 
 // Current global Places API (New) list price, first paid volume tier:
 // Place Details Enterprise + Atmosphere = $25 / 1,000 successful requests.
@@ -528,10 +530,9 @@ export async function persistReviewPayload(
   const actorLabel = `reviews_fetch_run_${normalizedRunId}`;
 
   return withTransaction(async (tx) => {
-    // Location and shared raw-source writes are serialized explicitly below.
-    // READ COMMITTED is intentional: workers that wait on the shared source
-    // lock must see the preceding worker's newly allocated listing id instead
-    // of retaining a pre-lock SERIALIZABLE snapshot and aborting at commit.
+    // Each location is locked explicitly below. Raw source ids come from a
+    // dedicated sequence and source URLs are unique, so READ COMMITTED retains
+    // the ledger recheck without avoidable cross-location serialization.
     await tx.query("SET TRANSACTION ISOLATION LEVEL READ COMMITTED");
     await tx.query(
       "SELECT pg_advisory_xact_lock(hashtextextended($1::text, 0))",
@@ -717,57 +718,40 @@ async function ensureRawSourceListing(tx, {
   detailsData,
   fetchedAtIso,
 }) {
-  await tx.query(
-    "SELECT pg_advisory_xact_lock(hashtextextended($1::text, 0))",
-    [`reviews_fetch:source:${REVIEWS_FETCH_SOURCE_SLUG}`],
-  );
-  const existing = await tx.query(`
-    SELECT source_listing_id
-    FROM fountain_raw.source_listings
-    WHERE source_slug = $1 AND source_url = $2
-    FOR UPDATE
-  `, [REVIEWS_FETCH_SOURCE_SLUG, sourceUrl]);
-  const existingId = rowsFrom(existing)[0]?.source_listing_id;
-  if (existingId != null) {
-    await tx.query(`
-      UPDATE fountain_raw.source_listings
-      SET name = $3,
-          extracted_at = $4,
-          payload = $5::jsonb,
-          synced_at = $6::timestamptz
-      WHERE source_slug = $1 AND source_listing_id = $2
-    `, [
-      REVIEWS_FETCH_SOURCE_SLUG,
-      existingId,
-      displayName || null,
-      fetchedAtIso,
-      JSON.stringify({ provider: "google_places", provider_place_id: placeId, details: detailsData }),
-      fetchedAtIso,
-    ]);
-    return { sourceListingId: Number(existingId), inserted: false };
-  }
-  const nextResult = await tx.query(`
-    SELECT COALESCE(max(source_listing_id), 0)::bigint + 1 AS next_id
-    FROM fountain_raw.source_listings
-    WHERE source_slug = $1
-  `, [REVIEWS_FETCH_SOURCE_SLUG]);
-  const nextId = positiveInteger(rowsFrom(nextResult)[0]?.next_id, "next source listing id");
-  const inserted = await tx.query(`
+  const upserted = await tx.query(`
     INSERT INTO fountain_raw.source_listings (
       source_slug, source_listing_id, source_url, name, extracted_at, payload, synced_at
     )
-    VALUES ($1, $2, $3, $4, $5, $6::jsonb, $7::timestamptz)
+    VALUES (
+      $1,
+      nextval('fountain_raw.google_places_reviews_listing_id_seq'),
+      $2,
+      $3,
+      $4,
+      $5::jsonb,
+      $6::timestamptz
+    )
+    ON CONFLICT (source_slug, source_url) DO UPDATE
+    SET name = EXCLUDED.name,
+        extracted_at = EXCLUDED.extracted_at,
+        payload = EXCLUDED.payload,
+        synced_at = EXCLUDED.synced_at
+    RETURNING source_listing_id
   `, [
     REVIEWS_FETCH_SOURCE_SLUG,
-    nextId,
     sourceUrl,
     displayName || null,
     fetchedAtIso,
     JSON.stringify({ provider: "google_places", provider_place_id: placeId, details: detailsData }),
     fetchedAtIso,
   ]);
-  assertCount("Google reviews raw source listing", inserted, 1);
-  return { sourceListingId: nextId, inserted: true };
+  assertCount("Google reviews raw source listing", upserted, 1);
+  return {
+    sourceListingId: positiveInteger(
+      rowsFrom(upserted)[0]?.source_listing_id,
+      "Google reviews source listing id",
+    ),
+  };
 }
 
 async function ensureSourceRecord(tx, {
