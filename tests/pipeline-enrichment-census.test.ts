@@ -6,23 +6,30 @@ import * as census from "../pipeline/lib/enrichment-census.mjs";
 const {
   assertEnrichmentEnqueuePlan,
   assertImageClassifyEnqueuePlan,
+  assertMenuPricesEnqueuePlan,
   assertPostContactEnqueuePlan,
   buildEnrichmentCensus,
   buildEnrichmentEnqueuePlan,
   buildImageClassifyEnqueuePlan,
+  buildMenuPricesEnqueuePlan,
   buildPostContactEnqueuePlan,
   compareEnrichmentCensuses,
   ENRICHMENT_CENSUS_SQL,
   ENRICHMENT_ENQUEUE_SQL,
   ENRICHMENT_IMAGE_CLASSIFY_ENQUEUE_SQL,
+  ENRICHMENT_MENU_PRICES_ACTIVE_TASKS_SQL,
+  ENRICHMENT_MENU_PRICES_ENQUEUE_SQL,
   ENRICHMENT_POST_CONTACT_CANDIDATES_SQL,
   ENRICHMENT_POST_CONTACT_ENQUEUE_SQL,
   enqueueEnrichmentPlan,
   enqueueImageClassifyPlan,
+  enqueueMenuPricesPlan,
   enqueuePostContactPlan,
+  loadMenuPricesEnqueuePlan,
   loadPostContactEnqueuePlan,
   renderEnrichmentCensusReport,
   renderImageClassifyEnqueueReport,
+  renderMenuPricesEnqueueReport,
   renderPostContactEnqueueReport,
 } = census;
 
@@ -112,6 +119,7 @@ describe("enrichment coverage census", () => {
       has_longitude: true,
       image_count: 1,
       menu_count: 2,
+      priced_count: 1,
       review_count: 3,
     } : row);
     const after = buildEnrichmentCensus(afterRows, {
@@ -139,15 +147,28 @@ describe("enrichment coverage census", () => {
     expect(rendered).toContain("## Coverage by country");
     expect(rendered).toContain("## Coverage by source");
     expect(rendered).toContain("Apply remains guarded");
+
+    const frozenBeforeShape = structuredClone(before);
+    delete frozenBeforeShape.menuPrices;
+    for (const location of frozenBeforeShape.locations) {
+      delete location.pricedCount;
+      delete location.menuMissingAttempted;
+      delete location.pricesMissingAttempted;
+    }
+    expect(() => buildEnrichmentEnqueuePlan(frozenBeforeShape)).not.toThrow();
+    expect(() => compareEnrichmentCensuses(frozenBeforeShape, after)).not.toThrow();
+    expect(() => renderEnrichmentCensusReport({ before: frozenBeforeShape, after })).not.toThrow();
   });
 
   test("enforces exact snapshot candidates and explicit task-handler readiness", () => {
     const snapshot = buildEnrichmentCensus(fixtureRows(), { label: "live" });
     const plan = buildEnrichmentEnqueuePlan(snapshot, {
-      campaign: "enrichment_wave_1",
       priority: 80,
       maxAttempts: 2,
     });
+
+    expect(() => buildEnrichmentEnqueuePlan(snapshot, { campaign: "retry_wave" }))
+      .toThrow("retries require an explicit non-census enqueue");
 
     expect(plan.expectedInsertions).toBe(9);
     expect(plan.tasks.find((task: { taskType: string }) => task.taskType === "menu_extract"))
@@ -307,9 +328,12 @@ describe("enrichment coverage census", () => {
   });
 
   test("refreshes only newly unlocked post-contact downstream candidates", async () => {
-    const snapshot = buildEnrichmentCensus(fixtureRows(), { label: "post_contact" });
+    const snapshot = buildEnrichmentCensus(fixtureRows().map((item) => item.id === 4
+      ? { ...item, has_website: true, menu_count: 1, priced_count: 0 }
+      : item), { label: "post_contact" });
     const candidateRows = [
       { task_type: "menu_extract", entity_id: 2 },
+      { task_type: "menu_extract", entity_id: 4, gap_kind: "prices_missing" },
       { task_type: "geocode", entity_id: 2 },
       { task_type: "image_harvest", entity_id: 2 },
     ];
@@ -317,11 +341,15 @@ describe("enrichment coverage census", () => {
     expect(plan).toMatchObject({
       stage: "post_contact_refresh",
       campaign: "enrichment_census_v1",
-      expectedInsertions: 3,
+      expectedInsertions: 4,
       tasks: [
         { taskType: "geocode", candidateIds: [2] },
         { taskType: "image_harvest", candidateIds: [2] },
-        { taskType: "menu_extract", candidateIds: [2] },
+        {
+          taskType: "menu_extract",
+          candidateIds: [2, 4],
+          candidateGapKinds: { 2: "menu_missing", 4: "prices_missing" },
+        },
       ],
     });
     expect(assertPostContactEnqueuePlan(plan, snapshot, {
@@ -330,7 +358,7 @@ describe("enrichment coverage census", () => {
 
     const loadQuery = vi.fn(async () => ({ rows: candidateRows }));
     const loaded = await loadPostContactEnqueuePlan(snapshot, {}, { query: loadQuery });
-    expect(loaded.expectedInsertions).toBe(3);
+    expect(loaded.expectedInsertions).toBe(4);
     expect(loadQuery).toHaveBeenCalledWith(
       ENRICHMENT_POST_CONTACT_CANDIDATES_SQL,
       ["enrichment_census_v1"],
@@ -340,12 +368,12 @@ describe("enrichment coverage census", () => {
       void args;
       return { rows: [{
         ready: true,
-        expected_count: 3,
-        live_count: 3,
+        expected_count: 4,
+        live_count: 4,
         drift_count: 0,
         active_conflict_count: 0,
-        inserted_count: 3,
-        inserted_by_task: { geocode: 1, image_harvest: 1, menu_extract: 1 },
+        inserted_count: 4,
+        inserted_by_task: { geocode: 1, image_harvest: 1, menu_extract: 2 },
       }] };
     });
     const applied = await enqueuePostContactPlan({
@@ -356,15 +384,238 @@ describe("enrichment coverage census", () => {
       apply: true,
     }, { query: enqueueQuery });
     expect(applied).toMatchObject({
-      insertedCount: 3,
-      insertedByTask: { geocode: 1, image_harvest: 1, menu_extract: 1 },
+      insertedCount: 4,
+      insertedByTask: { geocode: 1, image_harvest: 1, menu_extract: 2 },
     });
     expect(enqueueQuery.mock.calls[0]?.[0]).toBe(ENRICHMENT_POST_CONTACT_ENQUEUE_SQL);
     expect(enqueueQuery.mock.calls[0]?.[1]?.[3]).toBe("enrichment_census_v1");
     expect(ENRICHMENT_POST_CONTACT_CANDIDATES_SQL).toContain("queue.payload->>'campaign' = $1");
+    expect(ENRICHMENT_POST_CONTACT_CANDIDATES_SQL).toContain("priced_count = 0");
+    expect(ENRICHMENT_POST_CONTACT_CANDIDATES_SQL).toContain("prompt_version");
     expect(ENRICHMENT_POST_CONTACT_ENQUEUE_SQL).toContain("queue.payload->>'campaign' = $4");
     expect(renderPostContactEnqueueReport({ snapshot, plan, enqueue: applied }))
-      .toContain("3 inserted");
+      .toContain("4 inserted");
+  });
+
+  test("adopts existing menu gaps and atomically inserts only zero-priced menu gaps", async () => {
+    const rows = [
+      row({
+        id: 101,
+        has_website: true,
+        menu_count: 0,
+        priced_count: 0,
+        menu_missing_attempted: true,
+      }),
+      row({
+        id: 102,
+        has_website: true,
+        menu_count: 3,
+        priced_count: 0,
+      }),
+      row({
+        id: 103,
+        has_website: true,
+        menu_count: 3,
+        priced_count: 1,
+      }),
+      row({
+        id: 104,
+        has_website: false,
+        menu_count: 2,
+        priced_count: 0,
+      }),
+      row({
+        id: 105,
+        has_website: false,
+        menu_count: 0,
+        priced_count: 0,
+      }),
+    ];
+    const snapshot = buildEnrichmentCensus(rows, { label: "menu_prices" });
+    expect(snapshot.menuPrices).toMatchObject({
+      menuMissing: {
+        ids: [101, 105],
+        actionableIds: [101],
+        attemptedUnresolvedIds: [101],
+        enqueueableIds: [],
+      },
+      pricesMissing: {
+        ids: [102, 104],
+        actionableIds: [102],
+        attemptedUnresolvedIds: [],
+        enqueueableIds: [102],
+      },
+    });
+    const plan = buildMenuPricesEnqueuePlan(snapshot, [{
+      task_id: "7001",
+      entity_id: 101,
+      status: "pending",
+      run_id: "69",
+      payload: {
+        campaign: "enrichment_census_v1",
+        census_snapshot: "original-run-69-snapshot",
+        candidate_digest: "original-run-69-digest",
+      },
+    }]);
+    expect(plan).toMatchObject({
+      stage: "menu_prices_refresh",
+      campaign: "enrichment_census_v1",
+      promptVersion: "menu-extract-v1",
+      expectedAdoptions: 1,
+      expectedInsertions: 1,
+      expectedTasks: 2,
+      menuMissing: { candidateIds: [101], adoptions: [{ taskId: "7001", runId: "69" }] },
+      pricesMissing: { candidateIds: [102] },
+    });
+    expect(assertMenuPricesEnqueuePlan(plan, snapshot, {
+      implementedTaskTypes: ["menu_extract"],
+    })).toBe(true);
+    const loadQuery = vi.fn(async () => ({ rows: [{
+      task_id: "7001",
+      entity_id: 101,
+      status: "pending",
+      run_id: "69",
+      payload: { campaign: "enrichment_census_v1" },
+    }] }));
+    expect((await loadMenuPricesEnqueuePlan(snapshot, {}, { query: loadQuery })).expectedTasks)
+      .toBe(2);
+    expect(loadQuery).toHaveBeenCalledWith(ENRICHMENT_MENU_PRICES_ACTIVE_TASKS_SQL);
+
+    const query = vi.fn(async (...args: [string, unknown[]]) => {
+      void args;
+      return { rows: [{
+        ready: true,
+        expected_adoption_count: 1,
+        expected_insertion_count: 1,
+        live_menu_count: 1,
+        live_prices_count: 1,
+        invalid_expected_count: 0,
+        overlap_count: 0,
+        adoption_drift_count: 0,
+        insertion_drift_count: 0,
+        adoption_queue_drift_count: 0,
+        adoption_payload_conflict_count: 0,
+        active_conflict_count: 0,
+        price_history_conflict_count: 0,
+        adopted_count: 1,
+        inserted_count: 1,
+      }] };
+    });
+    const applied = await enqueueMenuPricesPlan({
+      plan,
+      liveSnapshot: snapshot,
+      runId: "92",
+      implementedTaskTypes: ["menu_extract"],
+      apply: true,
+    }, { query });
+    expect(applied).toMatchObject({ adoptedCount: 1, insertedCount: 1 });
+    expect(query.mock.calls[0]?.[0]).toBe(ENRICHMENT_MENU_PRICES_ENQUEUE_SQL);
+    const expectedRows = JSON.parse(String(query.mock.calls[0]?.[1]?.[0]));
+    expect(expectedRows).toEqual([
+      expect.objectContaining({ operation: "adopt", task_id: "7001", entity_id: 101 }),
+      expect.objectContaining({
+        operation: "insert",
+        entity_id: 102,
+        payload: expect.objectContaining({
+          campaign: "enrichment_census_v1",
+          prompt_version: "menu-extract-v1",
+          gap_kind: "prices_missing",
+          census_snapshot: snapshot.digest,
+          candidate_digest: plan.pricesMissing.candidateDigest,
+        }),
+      }),
+    ]);
+    expect(ENRICHMENT_MENU_PRICES_ACTIVE_TASKS_SQL).toContain("status IN ('pending', 'claimed')");
+    expect(ENRICHMENT_MENU_PRICES_ENQUEUE_SQL).toContain("pg_advisory_xact_lock");
+    expect(ENRICHMENT_MENU_PRICES_ENQUEUE_SQL).toContain("menu_count > 0");
+    expect(ENRICHMENT_MENU_PRICES_ENQUEUE_SQL).toContain("priced_count = 0");
+    expect(ENRICHMENT_MENU_PRICES_ENQUEUE_SQL).toContain("adoption_queue_drift");
+    expect(ENRICHMENT_MENU_PRICES_ENQUEUE_SQL).toContain("price_history_conflicts");
+    expect(ENRICHMENT_MENU_PRICES_ENQUEUE_SQL).toContain("queue.payload || jsonb_build_object");
+    expect(ENRICHMENT_MENU_PRICES_ENQUEUE_SQL).not.toContain("SET run_id =");
+    const report = renderMenuPricesEnqueueReport({ snapshot, plan, enqueue: applied });
+    expect(report).toContain("Partially priced locations are intentionally excluded");
+    expect(report).toContain("1 adopted; 1 inserted");
+
+    const canonical = buildEnrichmentEnqueuePlan(snapshot);
+    expect(canonical.tasks.find((task: { taskType: string }) => task.taskType === "menu_extract"))
+      .toMatchObject({
+        candidateIds: [102],
+        candidateGapKinds: { 102: "prices_missing" },
+        attemptedUnresolvedCount: 1,
+      });
+    const attemptedSnapshot = buildEnrichmentCensus(rows.map((item) => item.id === 102
+      ? { ...item, prices_missing_attempted: true }
+      : item), { label: "future_before" });
+    expect(attemptedSnapshot.menuPrices.pricesMissing).toMatchObject({
+      actionableIds: [102],
+      attemptedUnresolvedIds: [102],
+      enqueueableIds: [],
+    });
+    expect(buildEnrichmentEnqueuePlan(attemptedSnapshot).tasks
+      .find((task: { taskType: string }) => task.taskType === "menu_extract"))
+      .toMatchObject({ candidateIds: [], attemptedUnresolvedCount: 2 });
+
+    const transitionedMenuGap = buildEnrichmentCensus(rows.map((item) => item.id === 101
+      ? { ...item, menu_count: 2, priced_count: 0 }
+      : item), { label: "post_menu_attempt" });
+    expect(transitionedMenuGap.menuPrices.pricesMissing).toMatchObject({
+      actionableIds: [101, 102],
+      attemptedUnresolvedIds: [101],
+      enqueueableIds: [102],
+    });
+  });
+
+  test("fails closed on adoption, overlap, and insertion reconciliation conflicts", async () => {
+    const snapshot = buildEnrichmentCensus([
+      row({
+        id: 201,
+        has_website: true,
+        menu_missing_attempted: true,
+      }),
+      row({ id: 202, has_website: true, menu_count: 2, priced_count: 0 }),
+    ], { label: "menu_prices" });
+    expect(() => buildMenuPricesEnqueuePlan(snapshot, []))
+      .toThrow("Expected exactly one active menu_missing task");
+    expect(() => buildMenuPricesEnqueuePlan(snapshot, [{
+      task_id: "1",
+      entity_id: 201,
+      status: "claimed",
+      run_id: "69",
+      payload: { campaign: "enrichment_census_v1" },
+    }])).toThrow("is claimed, not pending");
+
+    const plan = buildMenuPricesEnqueuePlan(snapshot, [{
+      task_id: "1",
+      entity_id: 201,
+      status: "pending",
+      run_id: "69",
+      payload: { campaign: "enrichment_census_v1" },
+    }]);
+    const query = vi.fn(async () => ({ rows: [{
+      ready: false,
+      expected_adoption_count: 1,
+      expected_insertion_count: 1,
+      live_menu_count: 1,
+      live_prices_count: 1,
+      invalid_expected_count: 0,
+      overlap_count: 0,
+      adoption_drift_count: 0,
+      insertion_drift_count: 0,
+      adoption_queue_drift_count: 0,
+      adoption_payload_conflict_count: 0,
+      active_conflict_count: 1,
+      price_history_conflict_count: 0,
+      adopted_count: 0,
+      inserted_count: 0,
+    }] }));
+    await expect(enqueueMenuPricesPlan({
+      plan,
+      liveSnapshot: snapshot,
+      runId: 93,
+      implementedTaskTypes: ["menu_extract"],
+      apply: true,
+    }, { query })).rejects.toThrow("Menu-prices enqueue reconciliation failed");
   });
 });
 
@@ -388,6 +639,7 @@ function fixtureRows() {
       image_count: 2,
       unclassified_image_count: 1,
       menu_count: 3,
+      priced_count: 1,
       review_count: 4,
       place_match_count: 1,
     }),
@@ -421,6 +673,7 @@ function fixtureRows() {
       has_geocode: true,
       image_count: 1,
       menu_count: 1,
+      priced_count: 1,
       review_count: 2,
     }),
   ];
@@ -447,6 +700,7 @@ function row(overrides: Record<string, unknown>) {
     image_count: 0,
     unclassified_image_count: 0,
     menu_count: 0,
+    priced_count: 0,
     review_count: 0,
     place_match_count: 0,
     ...overrides,

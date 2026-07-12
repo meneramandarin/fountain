@@ -105,6 +105,8 @@ describe("pipeline CLI parsing", () => {
       "final-report",
       "--run-selection",
       '{"enrichment":{"contact_fill":[63]}}',
+      "--menu-prices-before",
+      "docs/runs/custom-menu-baseline.json",
     ]))).toMatchObject({ command: "final-report" });
     expect(() => validateCommandArgs(parseCliArgs(["final-report"])))
       .toThrow("requires --runs-file or --run-selection");
@@ -115,6 +117,49 @@ describe("pipeline CLI parsing", () => {
       "--run-selection",
       "{}",
     ]))).toThrow("mutually exclusive");
+  });
+
+  test("loads the supplemental pre-menu census when menu_extract runs are selected", async () => {
+    const before = { schemaVersion: 1, label: "before" };
+    const after = { schemaVersion: 1, label: "after", menuPrices: {} };
+    const menuPricesBefore = {
+      schemaVersion: 1,
+      label: "menu_prices_enrichment",
+      menuPrices: {},
+    };
+    const data = finalReportData();
+    const readFile = vi.fn(async (filePath: string) => {
+      if (filePath.endsWith("enrichment-before-census.json")) return JSON.stringify(before);
+      if (filePath.endsWith("enrichment-after-census.json")) return JSON.stringify(after);
+      if (filePath.endsWith("enrichment-menu-prices-census.json")) {
+        return JSON.stringify({ snapshot: menuPricesBefore });
+      }
+      throw new Error(`Unexpected final-report file: ${filePath}`);
+    });
+    const loadEnrichmentFinalReportData = vi.fn(async () => data);
+
+    const result = await runFinalReport({
+      runSelection: '{"enrichment":{"menu_extract":[85]}}',
+    }, { dry_run: true }, {
+      readFile,
+      withTransaction: vi.fn(async (operation) => operation({ query: vi.fn() })),
+      loadPersistedLegitimacyCloseout: vi.fn(async () => ({ stage3: {}, redemption: {} })),
+      loadEnrichmentFinalReportData,
+      renderEnrichmentFinalReport: vi.fn(() => "# menu closeout\n"),
+      writeStdout: vi.fn(),
+      now: () => new Date("2026-07-12T12:00:00.000Z"),
+    });
+
+    expect(loadEnrichmentFinalReportData).toHaveBeenCalledWith(expect.objectContaining({
+      before,
+      after,
+      menuPricesBefore,
+      runIds: expect.objectContaining({ ids: ["57", "61", "85"] }),
+    }), expect.any(Object));
+    expect(result.result).toMatchObject({
+      dryRun: true,
+      menuPricesBeforePath: expect.stringMatching(/enrichment-menu-prices-census\.json$/u),
+    });
   });
 
   test("orchestrates final-report in one read-only snapshot and writes only after reconciliation", async () => {
@@ -373,6 +418,80 @@ describe("pipeline CLI parsing", () => {
     ]));
     expect(outcome).toMatchObject({
       counts: { expected_tasks: 4, inserted: 4, reports_written: 2 },
+    });
+  });
+
+  test("orchestrates the isolated menu-prices adoption and incremental enqueue", async () => {
+    const snapshot = { population: { eligible: 7_178 } };
+    const plan = {
+      menuMissing: { rawCount: 2_200 },
+      pricesMissing: { rawCount: 3_400 },
+      expectedAdoptions: 2_172,
+      expectedInsertions: 3_353,
+      expectedTasks: 5_525,
+    };
+    const loadEnrichmentCensus = vi.fn(async () => snapshot);
+    const loadMenuPricesEnqueuePlan = vi.fn(async () => plan);
+    const enqueueMenuPricesPlan = vi.fn(async () => ({
+      adoptedCount: 2_172,
+      insertedCount: 3_353,
+    }));
+    const renderMenuPricesEnqueueReport = vi.fn(() => "# menu prices\n");
+    const writeFile = vi.fn(async (...args: [string, string, string]) => {
+      void args;
+    });
+    const operations = {
+      loadEnrichmentCensus,
+      loadMenuPricesEnqueuePlan,
+      enqueueMenuPricesPlan,
+      renderMenuPricesEnqueueReport,
+      writeFile,
+    };
+
+    const preview = await runCensus(
+      { scope: "menu-prices" },
+      { id: "105", dry_run: true },
+      operations,
+    );
+    expect(preview).toMatchObject({
+      counts: {
+        expected_tasks: 5_525,
+        menu_missing_adoptions: 2_172,
+        prices_missing_insertions: 3_353,
+        adopted: 0,
+        inserted: 0,
+      },
+      result: { dryRun: true, scope: "menu-prices" },
+    });
+    expect(enqueueMenuPricesPlan).not.toHaveBeenCalled();
+    expect(writeFile).not.toHaveBeenCalled();
+
+    const applied = await runCensus(
+      { scope: "menu-prices" },
+      { id: "106", dry_run: false },
+      operations,
+    );
+    expect(loadEnrichmentCensus).toHaveBeenLastCalledWith(expect.objectContaining({
+      label: "menu_prices_enrichment",
+    }));
+    expect(enqueueMenuPricesPlan).toHaveBeenCalledWith(expect.objectContaining({
+      plan,
+      liveSnapshot: snapshot,
+      runId: "106",
+      implementedTaskTypes: ["menu_extract"],
+      apply: true,
+    }));
+    expect(writeFile.mock.calls.map((call) => String(call[0]))).toEqual(expect.arrayContaining([
+      expect.stringContaining("enrichment-menu-prices-census.md"),
+      expect.stringContaining("enrichment-menu-prices-census.json"),
+    ]));
+    expect(applied).toMatchObject({
+      counts: {
+        expected_tasks: 5_525,
+        adopted: 2_172,
+        inserted: 3_353,
+        reports_written: 2,
+      },
     });
   });
 

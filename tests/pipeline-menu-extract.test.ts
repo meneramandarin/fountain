@@ -10,6 +10,8 @@ const {
   extractOfferingsWithLlm,
   guardedApplyMenuExtraction,
   handleMenuExtract,
+  MENU_EXTRACT_MAX_TOKENS_BY_ATTEMPT,
+  MENU_EXTRACT_MAX_TOKENS_CAP,
   MENU_EXTRACT_RESPONSE_FORMAT,
   normalizeExtractedOfferings,
   normalizeMenuTerm,
@@ -162,6 +164,38 @@ describe("menu extraction task", () => {
     }));
   });
 
+  test.each([
+    [1, 2_400],
+    [2, 4_800],
+    [3, 9_600],
+    [4, 9_600],
+    [99, 9_600],
+  ])("uses the bounded retry token ceiling for attempt %i", async (attempts, expectedMaxTokens) => {
+    const complete = vi.fn(async () => ({
+      content: JSON.stringify({ offerings: [], notes: "No menu found." }),
+    }));
+
+    await extractOfferingsWithLlm({
+      location: eligibleLocation(),
+      pages: [{
+        ok: true,
+        requested_url: "https://clinic.example/pricing",
+        final_url: "https://clinic.example/pricing",
+        title: "Pricing",
+        content: "IV Therapy — $150 per session.",
+      }],
+      runId: "17",
+      attempts,
+      llmClient: { complete },
+    });
+
+    expect(MENU_EXTRACT_MAX_TOKENS_BY_ATTEMPT).toEqual([2_400, 4_800, 9_600]);
+    expect(MENU_EXTRACT_MAX_TOKENS_CAP).toBe(9_600);
+    expect(complete).toHaveBeenCalledWith(expect.objectContaining({
+      maxTokens: expectedMaxTokens,
+    }));
+  });
+
   test("composes crawl, metered extraction, alias mapping, and guarded apply as a queue handler", async () => {
     const page = {
       ok: true,
@@ -215,7 +249,7 @@ describe("menu extraction task", () => {
     });
 
     const result = await handleMenuExtract({
-      task: { id: 9, entity_type: "location", entity_id: 42 },
+      task: { id: 9, entity_type: "location", entity_id: 42, attempts: 2 },
       run: { id: 17 },
     }, {
       query,
@@ -245,6 +279,7 @@ describe("menu extraction task", () => {
       taskId: "9",
       runId: "17",
     }), expect.any(Object));
+    expect(extract).toHaveBeenCalledWith(expect.objectContaining({ attempts: 2 }));
   });
 
   test("inserts mapped and unmapped offerings atomically and records taxonomy evidence", async () => {
@@ -336,6 +371,107 @@ describe("menu extraction task", () => {
       .filter((sql) => sql.includes("UPDATE fountain.offerings"));
     expect(servingUpdates).toHaveLength(2);
     expect(tx.query.mock.calls.some(([sql]) => String(sql).includes("price_conflicts_20260711"))).toBe(true);
+  });
+
+  test("fills amount only for a matching stored currency and conflicts on mismatched or protected rows", async () => {
+    const existing = [
+      existingOffering(7, "NAD Therapy", { price_currency: "usd" }),
+      existingOffering(8, "Red Light Therapy", { price_currency: "EUR" }),
+      existingOffering(9, "IV Therapy", {
+        price_currency: "USD",
+        verification_status: "human_verified",
+      }),
+    ];
+    const tx = menuTransaction({
+      existing,
+      offeringStates: new Map(existing.map((item) => [item.id, item])),
+    });
+    const recordWrite = permissiveLedger(tx);
+    const result = await guardedApplyMenuExtraction({
+      locationId: 42,
+      website: "https://clinic.example/",
+      sourceId: 256,
+      offerings: [
+        normalizedOffering("NAD Therapy", { price_amount: 250, price_currency: "USD" }),
+        normalizedOffering("Red Light Therapy", { price_amount: 120, price_currency: "USD" }),
+        normalizedOffering("IV Therapy", { price_amount: 150, price_currency: "USD" }),
+      ],
+      taskId: 11,
+      runId: 19,
+    }, { recordWrite, setActor: vi.fn() });
+
+    expect(result).toMatchObject({
+      counts: {
+        prices_backfilled: 1,
+        price_amount_only_backfills: 1,
+        price_conflicts: 2,
+      },
+      serving_write: {
+        prices_backfilled: 1,
+        price_amount_only_backfills: 1,
+        existing_prices_overwritten: 0,
+      },
+    });
+    expect(recordWrite.mock.calls.map(([call]) => call.field)).toEqual([
+      "offerings",
+      "price_amount",
+    ]);
+    const amountOnlyUpdates = tx.query.mock.calls.map(([sql]) => String(sql))
+      .filter((sql) => sql.includes("price_amount = $2") && sql.includes("upper(btrim(price_currency))"));
+    expect(amountOnlyUpdates).toHaveLength(1);
+    expect(amountOnlyUpdates[0]).not.toContain("price_currency =");
+    expect(tx.query.mock.calls.filter(([sql]) => String(sql).includes("price_conflicts_20260711")))
+      .toHaveLength(2);
+    expect(result.outcomes).toEqual(expect.arrayContaining([
+      expect.objectContaining({
+        raw_name: "NAD Therapy",
+        price_write: expect.objectContaining({ written: true }),
+      }),
+      expect.objectContaining({
+        raw_name: "Red Light Therapy",
+        price_write: expect.objectContaining({ reason: "price_conflict_recorded" }),
+      }),
+      expect.objectContaining({
+        raw_name: "IV Therapy",
+        protected: true,
+        price_write: expect.objectContaining({ reason: "price_conflict_recorded" }),
+      }),
+    ]));
+  });
+
+  test("refuses amount-only fill if the matching currency changes during the ledger recheck", async () => {
+    const initial = existingOffering(10, "NAD Therapy", { price_currency: "USD" });
+    const changed = { ...initial, price_currency: "EUR" };
+    const tx = menuTransaction({
+      existing: [initial],
+      offeringStates: new Map([[initial.id, changed]]),
+    });
+    const result = await guardedApplyMenuExtraction({
+      locationId: 42,
+      website: "https://clinic.example/",
+      sourceId: 256,
+      offerings: [normalizedOffering("NAD Therapy", {
+        price_amount: 250,
+        price_currency: "USD",
+      })],
+      taskId: 12,
+      runId: 20,
+    }, { recordWrite: permissiveLedger(tx), setActor: vi.fn() });
+
+    expect(result).toMatchObject({
+      counts: { prices_backfilled: 0, price_amount_only_backfills: 0, price_conflicts: 1 },
+      outcomes: [{
+        price_write: {
+          written: false,
+          reason: "price_currency_changed",
+          conflict_recorded: true,
+        },
+      }],
+    });
+    expect(tx.query.mock.calls.some(([sql]) => (
+      String(sql).includes("UPDATE fountain.offerings")
+      && String(sql).includes("upper(btrim(price_currency))")
+    ))).toBe(false);
   });
 
   test("refuses all transaction writes if suppression appears after extraction", async () => {
@@ -501,6 +637,12 @@ function menuTransaction({
       }
       if (sql.includes("UPDATE fountain.offerings") && sql.includes("treatment_id = $2")) {
         return { rowCount: 1, rows: [{ id: params[0], treatment_id: params[1] }] };
+      }
+      if (sql.includes("UPDATE fountain.offerings") && sql.includes("upper(btrim(price_currency))")) {
+        return {
+          rowCount: 1,
+          rows: [{ id: params[0], price_amount: params[1], price_currency: params[3] }],
+        };
       }
       if (sql.includes("UPDATE fountain.offerings") && sql.includes("price_amount = $2")) {
         return {
