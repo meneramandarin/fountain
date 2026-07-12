@@ -160,12 +160,17 @@ export async function buildEnrichmentFinalReport(input, dependencies = {}) {
  */
 export async function writeEnrichmentFinalReport(
   data,
-  { outputDir = path.join(process.cwd(), "docs", "runs") } = {},
+  {
+    outputDir = path.join(process.cwd(), "docs", "runs"),
+    outputPath = null,
+  } = {},
 ) {
+  assertEnrichmentFinalReconciliation(data);
   const markdown = renderEnrichmentFinalReport(data);
-  const resolvedOutputDir = path.resolve(outputDir);
-  const reportPath = path.join(resolvedOutputDir, ENRICHMENT_FINAL_REPORT_FILENAME);
-  await mkdir(resolvedOutputDir, { recursive: true });
+  const reportPath = outputPath
+    ? path.resolve(outputPath)
+    : path.join(path.resolve(outputDir), ENRICHMENT_FINAL_REPORT_FILENAME);
+  await mkdir(path.dirname(reportPath), { recursive: true });
   await writeFile(reportPath, markdown, "utf8");
   return reportPath;
 }
