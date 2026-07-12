@@ -62,15 +62,16 @@ export function LandingFeaturedDirectoryCarousel({ cards, title }: LandingFeatur
           });
           const type = card.tags.find((tag) => tag.facet === "entity_type");
           const previewTreatments = card.treatments.slice(0, 3);
+          const isContainedGraphic = card.image_kind === "text_graphic" || card.image_kind === "logo";
 
           return (
             <Link className="landing-featured-card" href={locationHref(card)} key={card.id}>
-              <span className={`landing-featured-photo${card.image_kind === "text_graphic" ? " image-frame-text-graphic" : ""}`}>
+              <span className={`landing-featured-photo${isContainedGraphic ? " image-frame-text-graphic" : ""}`}>
                 {card.image ? (
                   <>
-                    {card.image_kind === "text_graphic" ? <Image className="image-frame-backdrop" src={imageSource(card.image)} alt="" fill unoptimized aria-hidden="true" sizes="100vw" /> : null}
+                    {isContainedGraphic ? <Image className="image-frame-backdrop" src={imageSource(card.image)} alt="" fill unoptimized aria-hidden="true" sizes="100vw" /> : null}
                     <Image
-                      className={card.image_kind === "text_graphic" ? "image-frame-content" : undefined}
+                      className={isContainedGraphic ? "image-frame-content" : undefined}
                       src={imageSource(card.image)}
                       alt=""
                       fill

@@ -208,7 +208,7 @@ function ImageGallery({ images, title, kind }: { images: ImageRef[]; title: stri
     <div className="listing-gallery">
       {visible.map((image, index) => {
         const src = imageSource(image.blob_url || "");
-        const isTextGraphic = image.image_kind === "text_graphic";
+        const isTextGraphic = image.image_kind === "text_graphic" || image.image_kind === "logo";
         return (
         <div className={`${index === 0 ? "listing-gallery-primary" : "listing-gallery-secondary"}${isTextGraphic ? " image-frame-text-graphic" : ""}`} key={`${src}-${index}`}>
           {isTextGraphic ? <Image className="image-frame-backdrop" src={src} alt="" fill unoptimized aria-hidden="true" sizes="100vw" /> : null}
