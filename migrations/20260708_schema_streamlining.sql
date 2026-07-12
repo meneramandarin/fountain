@@ -553,8 +553,6 @@ BEGIN
     phone = COALESCE(NULLIF(keep_location.phone, ''), delete_location.phone),
     email = COALESCE(NULLIF(keep_location.email, ''), delete_location.email),
     website = COALESCE(NULLIF(keep_location.website, ''), delete_location.website),
-    rating = COALESCE(keep_location.rating, delete_location.rating),
-    review_count = GREATEST(COALESCE(keep_location.review_count, 0), COALESCE(delete_location.review_count, 0)),
     verification_status = CASE
       WHEN keep_location.verification_status = 'unverified' THEN delete_location.verification_status
       ELSE keep_location.verification_status
