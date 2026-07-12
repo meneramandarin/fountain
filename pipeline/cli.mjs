@@ -17,6 +17,12 @@ import {
   renderLegitimacyReviewQueue,
 } from "./lib/legitimacy-full.mjs";
 import {
+  applyLegitimacyGateBSuppression,
+  LEGITIMACY_GATE_B_COMPLETION_PATH,
+  previewLegitimacyGateBSuppression,
+  renderLegitimacyGateBCompletion,
+} from "./lib/legitimacy-suppression.mjs";
+import {
   enqueueLegitimacyGateASample,
   LEGITIMACY_GATE_A_CAMPAIGN,
   LEGITIMACY_PROMPT_VERSION,
@@ -105,6 +111,7 @@ export function validateCommandArgs(parsed) {
       "dryRun",
     ]),
     report: new Set(["run", "campaign", "output", "apply", "dryRun"]),
+    suppress: new Set(["run", "campaign", "expected", "apply", "dryRun"]),
     migrate: new Set(["file", "apply", "dryRun"]),
     census: new Set(["apply", "dryRun"]),
     maintain: new Set(["schema", "output", "apply", "dryRun"]),
@@ -142,6 +149,8 @@ async function dispatchCommand(parsed, run) {
       return runDrain(parsed, run);
     case "report":
       return runReport(parsed, run);
+    case "suppress":
+      return runSuppress(parsed, run);
     case "migrate":
       return runMigrate(parsed, run);
     case "maintain":
@@ -615,6 +624,72 @@ function requireTaskHandler(taskType, definition) {
   }
 }
 
+export async function runSuppress(parsed, run, operations = {}) {
+  const campaign = required(parsed.campaign, "--campaign");
+  const expectedSuppressionCount = positiveInteger(
+    required(parsed.expected, "--expected"),
+    "--expected",
+  );
+  const classificationRunIds = parseRunIds(required(parsed.run, "--run"));
+  const preview = operations.previewLegitimacyGateBSuppression
+    || previewLegitimacyGateBSuppression;
+  const apply = operations.applyLegitimacyGateBSuppression
+    || applyLegitimacyGateBSuppression;
+  const render = operations.renderLegitimacyGateBCompletion
+    || renderLegitimacyGateBCompletion;
+  const write = operations.writeFile || writeFile;
+
+  if (run.dry_run) {
+    const result = await preview({
+      campaign,
+      promptVersion: LEGITIMACY_GATE_B_PROMPT_VERSION,
+      expectedSuppressionCount,
+    });
+    return {
+      status: "completed",
+      counts: {
+        selected: Number(result.candidateCount || 0),
+        hidden: 0,
+        suppression_ledger_rows_inserted: 0,
+      },
+      result: {
+        dryRun: true,
+        classificationRunIds,
+        ...result,
+      },
+    };
+  }
+
+  const result = await apply({
+    campaign,
+    promptVersion: LEGITIMACY_GATE_B_PROMPT_VERSION,
+    runId: run.id,
+    classificationRunIds,
+    expectedSuppressionCount,
+  });
+  const markdown = render(result);
+  const outputPath = path.resolve(ROOT, LEGITIMACY_GATE_B_COMPLETION_PATH);
+  await write(outputPath, markdown, "utf8");
+  process.stdout.write(markdown);
+  return {
+    status: "completed",
+    counts: {
+      selected: result.preflight.candidateCount,
+      hidden: result.verification.hiddenCount,
+      suppression_ledger_rows_inserted: result.verification.runSuppressionLedgerRows,
+      entity_change_events: result.verification.stampedEventCount,
+      hard_exclusions_touched: result.preflight.hardExcludedCandidateCount,
+      reports_written: 1,
+    },
+    result: {
+      dryRun: false,
+      classificationRunIds,
+      outputPath,
+      ...result,
+    },
+  };
+}
+
 export async function runReport(parsed, run, operations = {}) {
   const targetRunId = required(parsed.run, "--run");
   if (parsed.campaign === LEGITIMACY_GATE_B_CAMPAIGN) {
@@ -897,6 +972,15 @@ function validateCampaignOptions(parsed) {
       throw new Error("Gate B report paths are fixed; omit --output.");
     }
   }
+
+  if (parsed.command === "suppress") {
+    if (parsed.campaign !== LEGITIMACY_GATE_B_CAMPAIGN) {
+      throw new Error(`--campaign must be ${LEGITIMACY_GATE_B_CAMPAIGN} for suppress.`);
+    }
+    required(parsed.run, "--run");
+    parseRunIds(parsed.run);
+    positiveInteger(required(parsed.expected, "--expected"), "--expected");
+  }
 }
 
 function parseRunIds(value) {
@@ -916,7 +1000,7 @@ function nonnegativeNumber(value, flag) {
 function usage() {
   return [
     "Usage: node pipeline/cli.mjs <command> [options]",
-    "Commands: enqueue, drain, report, migrate, census, maintain",
+    "Commands: enqueue, drain, report, suppress, migrate, census, maintain",
     "Maintenance: regen-structure-doc, refresh-city-index",
     "Persistent side effects require --apply; dry-run is the default.",
   ].join("\n");

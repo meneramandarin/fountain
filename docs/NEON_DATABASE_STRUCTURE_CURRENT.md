@@ -1,6 +1,6 @@
 # Neon Database Structure Current
 
-Generated: 2026-07-12T03:54:40.093Z
+Generated: 2026-07-12T05:50:44.327Z
 Snapshot source: live Neon database
 
 This document is generated from the live Neon database. It records structural metadata and point-in-time row counts for the configured schemas.
@@ -35,7 +35,7 @@ This document is generated from the live Neon database. It records structural me
 | fountain | affiliations | 96 |
 | fountain | city_index | 2272 |
 | fountain | clinic_claims | 0 |
-| fountain | entity_change_events | 72489 |
+| fountain | entity_change_events | 77701 |
 | fountain | entity_tags | 5478 |
 | fountain | external_place_matches | 3600 |
 | fountain | images | 31721 |
@@ -43,18 +43,18 @@ This document is generated from the live Neon database. It records structural me
 | fountain | locations | 13878 |
 | fountain | offerings | 100712 |
 | fountain | organizations | 8195 |
-| fountain | outbound_clicks | 81 |
+| fountain | outbound_clicks | 82 |
 | fountain | practitioners | 1303 |
 | fountain | reviews | 15563 |
-| fountain | search_index | 14824 |
+| fountain | search_index | 9612 |
 | fountain | source_records | 43032 |
 | fountain | sources | 256 |
 | fountain | tags | 36 |
 | fountain | treatments | 103 |
-| fountain_ops | external_calls | 2923 |
-| fountain_ops | field_status | 0 |
-| fountain_ops | runs | 44 |
-| fountain_ops | task_queue | 13837 |
+| fountain_ops | external_calls | 2978 |
+| fountain_ops | field_status | 5212 |
+| fountain_ops | runs | 54 |
+| fountain_ops | task_queue | 13887 |
 | fountain_raw | browser_swarm_image_ingest_20260708 | 1673 |
 | fountain_raw | browser_swarm_menu_ingest_20260708 | 25198 |
 | fountain_raw | dedup_candidates_20260711 | 1300 |
@@ -72,7 +72,7 @@ This document is generated from the live Neon database. It records structural me
 | fountain_raw | source_listing_fields | 154050 |
 | fountain_raw | source_listings | 23378 |
 | fountain_raw | source_reviews | 7591 |
-| fountain_raw | suppressed_source_listings | 345 |
+| fountain_raw | suppressed_source_listings | 8520 |
 | fountain_raw | taxonomy_final_triage_20260711 | 43647 |
 | fountain_raw | treatment_aliases | 3577 |
 | fountain_raw | unmapped_terms | 71013 |
@@ -266,7 +266,7 @@ Rows: 0
 
 ### fountain.entity_change_events
 
-Rows: 72489
+Rows: 77701
 
 #### Columns
 
@@ -642,7 +642,7 @@ Rows: 8195
 
 ### fountain.outbound_clicks
 
-Rows: 81
+Rows: 82
 
 #### Columns
 
@@ -783,7 +783,7 @@ Rows: 15563
 
 ### fountain.search_index
 
-Rows: 14824
+Rows: 9612
 
 #### Columns
 
@@ -944,7 +944,7 @@ Rows: 103
 
 ### fountain_ops.external_calls
 
-Rows: 2923
+Rows: 2978
 
 #### Columns
 
@@ -992,7 +992,7 @@ _None._
 
 ### fountain_ops.field_status
 
-Rows: 0
+Rows: 5212
 
 #### Columns
 
@@ -1028,7 +1028,7 @@ _None._
 
 ### fountain_ops.runs
 
-Rows: 44
+Rows: 54
 
 #### Columns
 
@@ -1072,7 +1072,7 @@ _None._
 
 ### fountain_ops.task_queue
 
-Rows: 13837
+Rows: 13887
 
 #### Columns
 
@@ -1745,7 +1745,7 @@ _None._
 
 ### fountain_raw.suppressed_source_listings
 
-Rows: 345
+Rows: 8520
 
 #### Columns
 
