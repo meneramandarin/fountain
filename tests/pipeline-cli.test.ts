@@ -9,6 +9,7 @@ const {
   runCensus,
   runDrain,
   runEnqueue,
+  runFinalReport,
   runReport,
   runSuppress,
   validateCommandArgs,
@@ -87,6 +88,151 @@ describe("pipeline CLI parsing", () => {
       "--output",
       "unused.md",
     ]))).toThrow("Unknown option for maintain refresh-city-index: --output");
+  });
+
+  test("validates the standalone final-report selection surface", () => {
+    expect(validateCommandArgs(parseCliArgs([
+      "final-report",
+      "--runs-file",
+      "docs/runs/enrichment-final-runs.json",
+      "--apply",
+    ]))).toMatchObject({
+      command: "final-report",
+      runsFile: "docs/runs/enrichment-final-runs.json",
+      apply: true,
+    });
+    expect(validateCommandArgs(parseCliArgs([
+      "final-report",
+      "--run-selection",
+      '{"enrichment":{"contact_fill":[63]}}',
+    ]))).toMatchObject({ command: "final-report" });
+    expect(() => validateCommandArgs(parseCliArgs(["final-report"])))
+      .toThrow("requires --runs-file or --run-selection");
+    expect(() => validateCommandArgs(parseCliArgs([
+      "final-report",
+      "--runs-file",
+      "runs.json",
+      "--run-selection",
+      "{}",
+    ]))).toThrow("mutually exclusive");
+  });
+
+  test("orchestrates final-report in one read-only snapshot and writes only after reconciliation", async () => {
+    const before = { schemaVersion: 1, label: "before" };
+    const after = { schemaVersion: 1, label: "after" };
+    const persisted = { stage3: { exact: 57 }, redemption: { exact: 61 } };
+    const data = finalReportData();
+    const tx = { query: vi.fn(async () => ({ rows: [] })) };
+    const withTransaction = vi.fn(async (operation: (client: typeof tx) => Promise<unknown>) => (
+      operation(tx)
+    ));
+    const readFile = vi.fn(async (filePath: string) => {
+      if (filePath.endsWith("before.json")) return JSON.stringify(before);
+      if (filePath.endsWith("after.json")) return JSON.stringify({ snapshot: after });
+      if (filePath.endsWith("runs.json")) {
+        return JSON.stringify({
+          stage3: 57,
+          redemption: 61,
+          enrichment: { contact_fill: [63], reviews_fetch: 64 },
+        });
+      }
+      throw new Error(`Unexpected final-report file: ${filePath}`);
+    });
+    const loadPersistedLegitimacyCloseout = vi.fn(async () => persisted);
+    const loadEnrichmentFinalReportData = vi.fn(async () => data);
+    const renderEnrichmentFinalReport = vi.fn(() => "# final closeout\n");
+    const assertEnrichmentFinalReconciliation = vi.fn(() => true);
+    const writeEnrichmentFinalReport = vi.fn(async (_data: unknown, options: { outputPath: string }) => (
+      options.outputPath
+    ));
+    const writeStdout = vi.fn();
+    const operations = {
+      readFile,
+      withTransaction,
+      loadPersistedLegitimacyCloseout,
+      loadEnrichmentFinalReportData,
+      renderEnrichmentFinalReport,
+      assertEnrichmentFinalReconciliation,
+      writeEnrichmentFinalReport,
+      writeStdout,
+      now: () => new Date("2026-07-12T12:00:00.000Z"),
+    };
+
+    const preview = await runFinalReport({
+      before: "before.json",
+      after: "after.json",
+      runsFile: "runs.json",
+      output: "final.md",
+    }, { dry_run: true }, operations);
+
+    expect(withTransaction).toHaveBeenCalledOnce();
+    expect(tx.query).toHaveBeenCalledWith(
+      "SET TRANSACTION ISOLATION LEVEL REPEATABLE READ READ ONLY",
+    );
+    expect(loadPersistedLegitimacyCloseout).toHaveBeenCalledWith({
+      stage3RunId: "57",
+      redemptionRunId: "61",
+    }, { query: tx });
+    expect(loadEnrichmentFinalReportData).toHaveBeenCalledWith(expect.objectContaining({
+      before,
+      after,
+      stage3: persisted.stage3,
+      redemption: persisted.redemption,
+      generatedAt: "2026-07-12T12:00:00.000Z",
+      runIds: {
+        ids: ["57", "61", "63", "64"],
+        entries: expect.any(Array),
+      },
+    }), { query: tx });
+    expect(assertEnrichmentFinalReconciliation).not.toHaveBeenCalled();
+    expect(writeEnrichmentFinalReport).not.toHaveBeenCalled();
+    expect(preview).toMatchObject({
+      counts: { files_written: 0, selected_runs: 4, reconciliation_failures: 0 },
+      result: { dryRun: true, outputPath: null },
+    });
+
+    const applied = await runFinalReport({
+      before: "before.json",
+      after: "after.json",
+      runsFile: "runs.json",
+      output: "final.md",
+    }, { dry_run: false }, operations);
+    expect(assertEnrichmentFinalReconciliation).toHaveBeenCalledWith(data);
+    expect(writeEnrichmentFinalReport).toHaveBeenCalledWith(
+      data,
+      { outputPath: expect.stringMatching(/final\.md$/u) },
+    );
+    expect(writeStdout).toHaveBeenCalledWith("# final closeout\n");
+    expect(applied).toMatchObject({
+      counts: { files_written: 1 },
+      result: { dryRun: false, outputPath: expect.stringMatching(/final\.md$/u) },
+    });
+  });
+
+  test("final-report refuses apply on reconciliation mismatch before the writer", async () => {
+    const data = finalReportData({ failures: [{ id: "active_search_rows" }] });
+    const writeEnrichmentFinalReport = vi.fn();
+    const assertEnrichmentFinalReconciliation = vi.fn(() => {
+      throw new Error("Final enrichment reconciliation failed: active_search_rows=1/2.");
+    });
+
+    await expect(runFinalReport({
+      runSelection: '{"enrichment":{"contact_fill":[63]}}',
+    }, { dry_run: false }, {
+      readFile: vi.fn(async (filePath: string) => JSON.stringify({
+        schemaVersion: 1,
+        label: filePath.includes("before") ? "before" : "after",
+      })),
+      withTransaction: vi.fn(async (operation) => operation({ query: vi.fn() })),
+      loadPersistedLegitimacyCloseout: vi.fn(async () => ({ stage3: {}, redemption: {} })),
+      loadEnrichmentFinalReportData: vi.fn(async () => data),
+      renderEnrichmentFinalReport: vi.fn(() => "# mismatch\n"),
+      assertEnrichmentFinalReconciliation,
+      writeEnrichmentFinalReport,
+      writeStdout: vi.fn(),
+      now: () => new Date("2026-07-12T12:00:00.000Z"),
+    })).rejects.toThrow("active_search_rows=1/2");
+    expect(writeEnrichmentFinalReport).not.toHaveBeenCalled();
   });
 
   test("orchestrates the guarded before census with all five initial task handlers", async () => {
@@ -970,3 +1116,26 @@ describe("pipeline CLI parsing", () => {
     expect(result.stages.stage_2).toBeUndefined();
   });
 });
+
+function finalReportData({ failures = [] }: { failures?: Array<{ id: string }> } = {}) {
+  return {
+    runSelection: {
+      ids: ["57", "61", "63", "64"],
+      entries: [
+        { runId: "57", roles: ["stage3"] },
+        { runId: "61", roles: ["redemption"] },
+        { runId: "63", roles: ["enrichment.contact_fill.0"] },
+        { runId: "64", roles: ["enrichment.reviews_fetch"] },
+      ],
+    },
+    external: { calls: 10 },
+    tasks: { total: 20 },
+    stage3: { humanReviewRows: 282 },
+    redemption: { redeemRows: 1 },
+    reconciliation: {
+      ok: failures.length === 0,
+      checks: [],
+      failures,
+    },
+  };
+}

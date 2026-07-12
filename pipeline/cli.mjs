@@ -22,6 +22,19 @@ import {
   renderImageClassifyEnqueueReport,
   renderPostContactEnqueueReport,
 } from "./lib/enrichment-census.mjs";
+import {
+  FINAL_REDEMPTION_RUN_ID,
+  FINAL_STAGE3_RUN_ID,
+  loadPersistedLegitimacyCloseout,
+} from "./lib/enrichment-final-evidence.mjs";
+import {
+  assertEnrichmentFinalReconciliation,
+  ENRICHMENT_FINAL_REPORT_FILENAME,
+  loadEnrichmentFinalReportData,
+  normalizeFinalReportRunIds,
+  renderEnrichmentFinalReport,
+  writeEnrichmentFinalReport,
+} from "./lib/enrichment-final-report.mjs";
 import { closePool, query as dbQuery, withTransaction } from "./lib/db.mjs";
 import {
   enqueueLegitimacyGateBFull,
@@ -93,6 +106,21 @@ export async function main(argv = process.argv.slice(2)) {
   const parsed = parseCliArgs(argv);
   validateCommandArgs(parsed);
   const dryRun = !parsed.apply;
+  if (parsed.command === "final-report") {
+    try {
+      const outcome = await runFinalReport(parsed, { dry_run: dryRun });
+      const payload = {
+        run: null,
+        status: outcome.status,
+        counts: outcome.counts,
+        ...withoutLifecycleFields(outcome),
+      };
+      console.log(JSON.stringify(payload, null, 2));
+      return payload;
+    } finally {
+      await closePool();
+    }
+  }
   const budgetUsd = parsed.budget == null ? null : nonnegativeNumber(parsed.budget, "--budget");
   const runArgs = redactArgs(parsed);
 
@@ -155,6 +183,15 @@ export function validateCommandArgs(parsed) {
     suppress: new Set(["run", "campaign", "expected", "apply", "dryRun"]),
     stage3: new Set(["concurrency", "batchSize", "budget", "apply", "dryRun"]),
     redemption: new Set(["concurrency", "batchSize", "budget", "apply", "dryRun"]),
+    "final-report": new Set([
+      "before",
+      "after",
+      "runsFile",
+      "runSelection",
+      "output",
+      "apply",
+      "dryRun",
+    ]),
     migrate: new Set(["file", "apply", "dryRun"]),
     census: new Set(["scope", "apply", "dryRun"]),
     maintain: new Set(["schema", "output", "apply", "dryRun"]),
@@ -198,6 +235,8 @@ async function dispatchCommand(parsed, run) {
       return runStage3(parsed, run);
     case "redemption":
       return runRedemption(parsed, run);
+    case "final-report":
+      return runFinalReport(parsed, run);
     case "migrate":
       return runMigrate(parsed, run);
     case "maintain":
@@ -966,6 +1005,95 @@ export async function runRedemption(parsed, run, operations = {}) {
   };
 }
 
+export async function runFinalReport(parsed, run, operations = {}) {
+  const beforePath = path.resolve(
+    ROOT,
+    parsed.before || "docs/runs/enrichment-before-census.json",
+  );
+  const afterPath = path.resolve(
+    ROOT,
+    parsed.after || "docs/runs/enrichment-after-census.json",
+  );
+  const outputPath = path.resolve(
+    ROOT,
+    parsed.output || path.join("docs", "runs", ENRICHMENT_FINAL_REPORT_FILENAME),
+  );
+  const read = operations.readFile || readFile;
+  const [beforeText, afterText, selectionText] = await Promise.all([
+    read(beforePath, "utf8"),
+    read(afterPath, "utf8"),
+    parsed.runsFile
+      ? read(path.resolve(ROOT, parsed.runsFile), "utf8")
+      : Promise.resolve(parsed.runSelection),
+  ]).catch((error) => {
+    throw new Error(`Final-report input evidence is unavailable: ${error.message}`);
+  });
+  const before = parseCensusEvidence(beforeText, "before", beforePath);
+  const after = parseCensusEvidence(afterText, "after", afterPath);
+  const rawSelection = parseJsonEvidence(
+    selectionText,
+    "run selection",
+    parsed.runsFile ? path.resolve(ROOT, parsed.runsFile) : "--run-selection",
+  );
+  const runIds = finalRunSelection(rawSelection);
+  const transact = operations.withTransaction || withTransaction;
+  const loadPersisted = operations.loadPersistedLegitimacyCloseout
+    || loadPersistedLegitimacyCloseout;
+  const loadFinal = operations.loadEnrichmentFinalReportData
+    || loadEnrichmentFinalReportData;
+  const data = await transact(async (tx) => {
+    await tx.query("SET TRANSACTION ISOLATION LEVEL REPEATABLE READ READ ONLY");
+    const persisted = await loadPersisted({
+      stage3RunId: FINAL_STAGE3_RUN_ID,
+      redemptionRunId: FINAL_REDEMPTION_RUN_ID,
+    }, { query: tx });
+    return loadFinal({
+      before,
+      after,
+      stage3: persisted.stage3,
+      redemption: persisted.redemption,
+      runIds,
+      generatedAt: (operations.now || (() => new Date()))().toISOString(),
+    }, { query: tx });
+  });
+  const render = operations.renderEnrichmentFinalReport
+    || renderEnrichmentFinalReport;
+  const markdown = render(data);
+  let writtenPath = null;
+  if (!run.dry_run) {
+    (operations.assertEnrichmentFinalReconciliation
+      || assertEnrichmentFinalReconciliation)(data);
+    writtenPath = await (operations.writeEnrichmentFinalReport
+      || writeEnrichmentFinalReport)(data, { outputPath });
+  }
+  (operations.writeStdout || process.stdout.write.bind(process.stdout))(
+    `${markdown.trimEnd()}\n`,
+  );
+  return {
+    status: "completed",
+    counts: {
+      reports_rendered: 1,
+      files_written: writtenPath ? 1 : 0,
+      selected_runs: data.runSelection.ids.length,
+      external_calls: data.external.calls,
+      task_rows: data.tasks.total,
+      needs_human_review: data.stage3.humanReviewRows,
+      redeemed: data.redemption.redeemRows,
+      reconciliation_failures: data.reconciliation.failures.length,
+    },
+    result: {
+      dryRun: Boolean(run.dry_run),
+      stage3RunId: FINAL_STAGE3_RUN_ID,
+      redemptionRunId: FINAL_REDEMPTION_RUN_ID,
+      beforePath,
+      afterPath,
+      runSelection: data.runSelection,
+      reconciliation: data.reconciliation,
+      outputPath: writtenPath,
+    },
+  };
+}
+
 export async function runCensus(parsed, run, operations = {}) {
   const scope = parsed.scope || "before";
   if (!new Set(["before", "post-contact", "image-classify", "after"]).has(scope)) {
@@ -1322,6 +1450,16 @@ function optionalPositiveInteger(value, flag) {
 }
 
 function validateCampaignOptions(parsed) {
+  if (parsed.command === "final-report") {
+    if (parsed.runsFile != null && parsed.runSelection != null) {
+      throw new Error("--runs-file and --run-selection are mutually exclusive.");
+    }
+    if (parsed.runsFile == null && parsed.runSelection == null) {
+      throw new Error("final-report requires --runs-file or --run-selection.");
+    }
+    return;
+  }
+
   if (parsed.command === "enqueue") {
     if (parsed.sample != null && parsed.scope != null) {
       throw new Error("--sample and --scope are mutually exclusive.");
@@ -1419,6 +1557,60 @@ function parseRunIds(value) {
   return [...new Set(values)];
 }
 
+function parseCensusEvidence(value, label, source) {
+  const parsed = parseJsonEvidence(value, `${label} census`, source);
+  if (!parsed || typeof parsed !== "object" || Array.isArray(parsed)) {
+    throw new Error(`${label} census evidence at ${source} must be a JSON object.`);
+  }
+  const snapshot = parsed.snapshot ?? parsed[label] ?? parsed;
+  if (!snapshot || typeof snapshot !== "object" || Array.isArray(snapshot)) {
+    throw new Error(`${label} census evidence at ${source} has no snapshot object.`);
+  }
+  return snapshot;
+}
+
+function parseJsonEvidence(value, label, source) {
+  try {
+    return JSON.parse(String(value));
+  } catch (error) {
+    throw new Error(`Invalid ${label} JSON at ${source}: ${error.message}`);
+  }
+}
+
+function finalRunSelection(input) {
+  if (!input || typeof input !== "object" || Array.isArray(input)) {
+    throw new Error("Final-report run selection must be a JSON object.");
+  }
+  const selected = input.runIds ?? input.run_ids ?? input.selection ?? input;
+  if (!selected || typeof selected !== "object" || Array.isArray(selected)) {
+    throw new Error("Final-report run selection must contain a structured object.");
+  }
+  const requestedStage3 = selected.stage3 ?? selected.stage3_run ?? selected.stage3Run;
+  const requestedRedemption = selected.redemption
+    ?? selected.redemption_run
+    ?? selected.redemptionRun;
+  if (requestedStage3 != null && String(requestedStage3) !== FINAL_STAGE3_RUN_ID) {
+    throw new Error(`Final-report Stage 3 evidence is fixed to run ${FINAL_STAGE3_RUN_ID}.`);
+  }
+  if (requestedRedemption != null && String(requestedRedemption) !== FINAL_REDEMPTION_RUN_ID) {
+    throw new Error(
+      `Final-report redemption evidence is fixed to run ${FINAL_REDEMPTION_RUN_ID}.`,
+    );
+  }
+  const normalized = normalizeFinalReportRunIds({
+    ...selected,
+    stage3: FINAL_STAGE3_RUN_ID,
+    redemption: FINAL_REDEMPTION_RUN_ID,
+  });
+  if (!normalized.ids.some((runId) => ![
+    FINAL_STAGE3_RUN_ID,
+    FINAL_REDEMPTION_RUN_ID,
+  ].includes(runId))) {
+    throw new Error("Final-report run selection must include at least one enrichment run.");
+  }
+  return normalized;
+}
+
 function nonnegativeNumber(value, flag) {
   const parsed = Number(value);
   if (!Number.isFinite(parsed) || parsed < 0) throw new Error(`${flag} must be a nonnegative number.`);
@@ -1428,7 +1620,8 @@ function nonnegativeNumber(value, flag) {
 function usage() {
   return [
     "Usage: node pipeline/cli.mjs <command> [options]",
-    "Commands: enqueue, drain, report, suppress, stage3, redemption, migrate, census, maintain",
+    "Commands: enqueue, drain, report, suppress, stage3, redemption, final-report, migrate, census, maintain",
+    "Final closeout: final-report --runs-file <selection.json> [--before <json>] [--after <json>] [--output <md>] [--apply]",
     "Maintenance: regen-structure-doc, refresh-city-index",
     "Persistent side effects require --apply; dry-run is the default.",
   ].join("\n");

@@ -89,6 +89,13 @@ describe("final enrichment ledger report", () => {
     await expect(readFile(reportPath, "utf8")).resolves.toBe(
       renderEnrichmentFinalReport(data),
     );
+
+    const customPath = path.join(root, "custom", "closeout.md");
+    await expect(writeEnrichmentFinalReport(data, { outputPath: customPath }))
+      .resolves.toBe(customPath);
+    await expect(readFile(customPath, "utf8")).resolves.toBe(
+      renderEnrichmentFinalReport(data),
+    );
   });
 
   test("surfaces mismatches in Markdown and refuses a completion assertion", () => {
