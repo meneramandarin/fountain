@@ -107,6 +107,225 @@ describe("reviews_fetch queue handler", () => {
       run_id: "80",
       task_id: "501",
     });
+    const rawListingCall = harness.calls.find((call) => (
+      call.sql.includes("INSERT INTO fountain_raw.source_listings")
+    ));
+    expect(rawListingCall?.sql).toContain("$7::timestamptz");
+    expect(rawListingCall?.params).toHaveLength(7);
+    expect(rawListingCall?.params[4]).toBe(rawListingCall?.params[6]);
+  });
+
+  test("tries the next stored Google alias when the preferred ID mismatches", async () => {
+    const state = locationRow({
+      id: 107,
+      name: "Foxtrot Longevity",
+      external_place_matches: [
+        { provider: "google", provider_place_id: "foxtrot-current" },
+        { provider: "google_places", provider_place_id: "foxtrot-stale" },
+      ],
+    });
+    const harness = persistenceHarness(state, { insertedIds: [907] });
+    const attemptedIds: string[] = [];
+    const placesClient = {
+      searchText: vi.fn(),
+      getDetails: vi.fn(async ({ placeId }: { placeId: string }) => {
+        attemptedIds.push(placeId);
+        return {
+          data: placeId === "foxtrot-stale"
+            ? detailsPayload("Unrelated Hardware", 1, placeId)
+            : detailsPayload("Foxtrot Longevity", 1, placeId),
+          externalCallId: placeId === "foxtrot-stale" ? 7201 : 7202,
+          costEstimateUsd: 0.025,
+        };
+      }),
+    };
+
+    const result = await handleReviewsFetch({
+      task: { id: "507", entity_type: "location", entity_id: 107 },
+      run: { id: "86" },
+    }, {
+      query: vi.fn(async () => ({ rows: [state] })),
+      placesClient,
+      withTransaction: harness.withTransaction,
+      setActor: harness.setActor,
+      recordWrite: harness.recordWrite,
+    });
+
+    expect(attemptedIds).toEqual(["foxtrot-stale", "foxtrot-current"]);
+    expect(placesClient.searchText).not.toHaveBeenCalled();
+    expect(result).toMatchObject({
+      outcome: "reviews_stored",
+      place_match_write: {
+        reason: "stored_provider_id",
+        provider: "google",
+        providerPlaceId: "foxtrot-current",
+      },
+    });
+    expect(result.evidence.details_attempts).toMatchObject([
+      { source: "stored_provider_id", outcome: "identity_mismatch" },
+      { source: "stored_provider_id", outcome: "ok", identity_validated: true },
+    ]);
+  });
+
+  test("searches once after all stored aliases mismatch and persists only the validated result", async () => {
+    const state = locationRow({
+      id: 108,
+      name: "Gamma Preventive",
+      external_place_matches: [
+        { provider: "google", provider_place_id: "gamma-stale-two" },
+        { provider: "google_places", provider_place_id: "gamma-stale-one" },
+      ],
+    });
+    const harness = persistenceHarness(state, { insertedIds: [908] });
+    const order: string[] = [];
+    const placesClient = {
+      searchText: vi.fn(async () => {
+        order.push("search");
+        return {
+          data: { places: [{ id: "gamma-current" }] },
+          externalCallId: 7303,
+          fieldMask: "places.id",
+          costEstimateUsd: 0,
+        };
+      }),
+      getDetails: vi.fn(async ({ placeId }: { placeId: string }) => {
+        order.push(`details:${placeId}`);
+        return {
+          data: placeId === "gamma-current"
+            ? detailsPayload("Gamma Preventive", 1, placeId)
+            : detailsPayload("Unrelated Hardware", 1, placeId),
+          externalCallId: 7300 + order.length,
+          costEstimateUsd: 0.025,
+        };
+      }),
+    };
+
+    const result = await handleReviewsFetch({
+      task: { id: "508", entity_type: "location", entity_id: 108 },
+      run: { id: "87" },
+    }, {
+      query: vi.fn(async () => ({ rows: [state] })),
+      placesClient,
+      withTransaction: harness.withTransaction,
+      setActor: harness.setActor,
+      recordWrite: harness.recordWrite,
+    });
+
+    expect(order).toEqual([
+      "details:gamma-stale-one",
+      "details:gamma-stale-two",
+      "search",
+      "details:gamma-current",
+    ]);
+    expect(placesClient.searchText).toHaveBeenCalledOnce();
+    expect(result).toMatchObject({
+      outcome: "reviews_stored",
+      place_match_write: {
+        attempted: true,
+        written: true,
+        providerPlaceId: "gamma-current",
+      },
+    });
+    expect(result.evidence.details_attempts).toHaveLength(3);
+    expect(state.external_place_matches).toEqual([
+      { provider: "google_places", provider_place_id: "gamma-current" },
+    ]);
+  });
+
+  test("deduplicates a shared stored place ID before trying the next distinct alias", async () => {
+    const state = locationRow({
+      id: 109,
+      name: "Hotel Diagnostics",
+      external_place_matches: [
+        { provider: "google", provider_place_id: "shared-stale" },
+        { provider: "places", provider_place_id: "hotel-current" },
+        { provider: "google_places", provider_place_id: "shared-stale" },
+      ],
+    });
+    const harness = persistenceHarness(state, { insertedIds: [909] });
+    const placesClient = {
+      searchText: vi.fn(),
+      getDetails: vi.fn(async ({ placeId }: { placeId: string }) => ({
+        data: placeId === "hotel-current"
+          ? detailsPayload("Hotel Diagnostics", 1, placeId)
+          : detailsPayload("Unrelated Hardware", 1, placeId),
+        costEstimateUsd: 0.025,
+      })),
+    };
+
+    const result = await handleReviewsFetch({
+      task: { id: "509", entity_type: "location", entity_id: 109 },
+      run: { id: "88" },
+    }, {
+      query: vi.fn(async () => ({ rows: [state] })),
+      placesClient,
+      withTransaction: harness.withTransaction,
+      setActor: harness.setActor,
+      recordWrite: harness.recordWrite,
+    });
+
+    expect(placesClient.getDetails.mock.calls.map(([request]) => request.placeId)).toEqual([
+      "shared-stale",
+      "hotel-current",
+    ]);
+    expect(placesClient.searchText).not.toHaveBeenCalled();
+    expect(result).toMatchObject({
+      outcome: "reviews_stored",
+      place_match_write: { provider: "places", providerPlaceId: "hotel-current" },
+    });
+  });
+
+  test("keeps every failed candidate as evidence and performs no writes when none validates", async () => {
+    const originalMatches = [
+      { provider: "google_places", provider_place_id: "india-missing" },
+      { provider: "google", provider_place_id: "india-stale" },
+    ];
+    const state = locationRow({
+      id: 110,
+      name: "India Longevity",
+      external_place_matches: structuredClone(originalMatches),
+    });
+    const withTransaction = vi.fn();
+    const placesClient = {
+      searchText: vi.fn(async () => ({
+        data: { places: [{ id: "india-search-mismatch" }] },
+        externalCallId: 7503,
+        fieldMask: "places.id",
+        costEstimateUsd: 0,
+      })),
+      getDetails: vi.fn(async ({ placeId }: { placeId: string }) => {
+        if (placeId === "india-missing") {
+          throw Object.assign(new Error("Place was not found"), { status: 404, attempts: 1 });
+        }
+        return {
+          data: detailsPayload("Unrelated Hardware", 1, placeId),
+          externalCallId: placeId === "india-stale" ? 7502 : 7504,
+          costEstimateUsd: 0.025,
+        };
+      }),
+    };
+
+    const result = await handleReviewsFetch({
+      task: { id: "510", entity_type: "location", entity_id: 110 },
+      run: { id: "89" },
+    }, {
+      query: vi.fn(async () => ({ rows: [state] })),
+      placesClient,
+      withTransaction,
+    });
+
+    expect(placesClient.searchText).toHaveBeenCalledOnce();
+    expect(result).toMatchObject({
+      outcome: "provider_identity_mismatch",
+      serving_write: { attempted: false, written: false, reviews_inserted: 0 },
+    });
+    expect(result.evidence.details_attempts).toMatchObject([
+      { provider_place_id: "india-missing", outcome: "not_found", http_status: 404 },
+      { provider_place_id: "india-stale", outcome: "identity_mismatch" },
+      { provider_place_id: "india-search-mismatch", outcome: "identity_mismatch" },
+    ]);
+    expect(withTransaction).not.toHaveBeenCalled();
+    expect(state.external_place_matches).toEqual(originalMatches);
   });
 
   test("does ID-only search first, persists one external match safely, then fetches reviews", async () => {

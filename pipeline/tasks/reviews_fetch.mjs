@@ -6,7 +6,6 @@ import {
 } from "../lib/db.mjs";
 import { recordWrite as defaultRecordWrite } from "../lib/ledger.mjs";
 import { createPlacesClient } from "../lib/places.mjs";
-import { selectGooglePlaceMatch } from "../lib/website-discovery.mjs";
 
 export const REVIEWS_FETCH_SCHEMA_VERSION = 1;
 export const REVIEWS_FETCH_ACTOR_ID = "b5c71897-83d0-4c30-a7a3-202607120014";
@@ -303,9 +302,10 @@ export function createReviewsFetchHandler(dependencies = {}) {
 }
 
 /**
- * Queue-handler-compatible Google review enrichment. It never searches when a
- * stored Google provider ID exists, and every write rechecks eligibility in a
- * transaction after the external call.
+ * Queue-handler-compatible Google review enrichment. Stored Google aliases are
+ * tried in deterministic preference order before one ID-only search fallback,
+ * and every write rechecks eligibility in a transaction after the external
+ * calls.
  */
 export async function handleReviewsFetch(
   { task, run },
@@ -336,14 +336,51 @@ export async function handleReviewsFetch(
   const evidence = {
     discovery: [],
     details: null,
+    details_attempts: [],
     pricing: pricingEvidence(),
   };
-  let placeMatch = selectGooglePlaceMatch(location.externalPlaceMatches);
+  const storedPlaceMatches = distinctStoredGooglePlaceMatches(location.externalPlaceMatches);
+  const attemptedPlaceIds = new Set();
+  const providerErrors = [];
+  let placeMatch = null;
+  let selectedDetails = null;
   let placeMatchWrite = {
     attempted: false,
     written: false,
-    reason: placeMatch ? "stored_provider_id" : "not_attempted",
+    reason: storedPlaceMatches.length > 0 ? "stored_provider_ids_unverified" : "not_attempted",
   };
+
+  for (const storedPlaceMatch of storedPlaceMatches) {
+    attemptedPlaceIds.add(storedPlaceMatch.providerPlaceId);
+    evidence.discovery.push({
+      operation: "stored_provider_id",
+      outcome: "details_requested",
+      provider: storedPlaceMatch.provider,
+      provider_place_id: storedPlaceMatch.providerPlaceId,
+      cost_estimate_usd: 0,
+    });
+    const candidate = await fetchAndValidateDetails({
+      placesClient,
+      runId,
+      location,
+      placeMatch: storedPlaceMatch,
+      source: "stored_provider_id",
+      evidence,
+    });
+    if (candidate.error) providerErrors.push(candidate.error);
+    if (!candidate.identityValidated) continue;
+    placeMatch = storedPlaceMatch;
+    selectedDetails = candidate;
+    placeMatchWrite = {
+      attempted: false,
+      written: false,
+      reason: "stored_provider_id",
+      provider: storedPlaceMatch.provider,
+      providerPlaceId: storedPlaceMatch.providerPlaceId,
+      identityValidated: true,
+    };
+    break;
+  }
 
   if (!placeMatch) {
     const search = await placesClient.searchText({
@@ -356,89 +393,68 @@ export async function handleReviewsFetch(
       maxAttempts: 4,
     });
     const providerPlaceId = text(search?.data?.places?.[0]?.id);
+    const duplicateStoredPlaceId = providerPlaceId && attemptedPlaceIds.has(providerPlaceId);
     evidence.discovery.push({
       operation: "search_text",
-      outcome: providerPlaceId ? "place_id_found" : "no_results",
+      outcome: duplicateStoredPlaceId
+        ? "duplicate_place_id_already_validated"
+        : providerPlaceId
+          ? "place_id_found"
+          : "no_results",
       provider_place_id: providerPlaceId || null,
       external_call_id: search?.externalCallId ?? null,
       field_mask: search?.fieldMask || SEARCH_FIELD_MASK,
       cost_estimate_usd: number(search?.costEstimateUsd),
     });
-    if (!providerPlaceId) {
-      return completedResult({
-        taskId,
+    if (providerPlaceId && !duplicateStoredPlaceId) {
+      // ID-only search has no identity fields. Keep the candidate ephemeral
+      // until the paid Details response validates the business identity; the
+      // verified match is then inserted atomically with raw/serving reviews.
+      placeMatchWrite = {
+        attempted: false,
+        written: false,
+        reason: "pending_details_identity_validation",
+        provider: "google_places",
+        providerPlaceId,
+      };
+      const searchedPlaceMatch = {
+        provider: "google_places",
+        providerPlaceId,
+        providerIdSource: "id_only_search_unpersisted",
+      };
+      attemptedPlaceIds.add(providerPlaceId);
+      const candidate = await fetchAndValidateDetails({
+        placesClient,
         runId,
         location,
-        outcome: "provider_place_not_found",
+        placeMatch: searchedPlaceMatch,
+        source: "id_only_search",
         evidence,
-        placeMatchWrite,
       });
+      if (candidate.error) providerErrors.push(candidate.error);
+      if (candidate.identityValidated) {
+        placeMatch = searchedPlaceMatch;
+        selectedDetails = candidate;
+      }
     }
-    // ID-only search has no identity fields. Keep the candidate ephemeral
-    // until the paid Details response validates the business identity; the
-    // verified match is then inserted atomically with raw/serving reviews.
-    placeMatchWrite = {
-      attempted: false,
-      written: false,
-      reason: "pending_details_identity_validation",
-      provider: "google_places",
-      providerPlaceId,
-    };
-    placeMatch = {
-      provider: "google_places",
-      providerPlaceId,
-      providerIdSource: "id_only_search_unpersisted",
-    };
-  } else {
-    evidence.discovery.push({
-      operation: "stored_provider_id",
-      outcome: "used_directly",
-      provider: placeMatch.provider,
-      provider_place_id: placeMatch.providerPlaceId,
-      cost_estimate_usd: 0,
-    });
   }
 
-  const details = await placesClient.getDetails({
-    runId,
-    taskType: "reviews_fetch",
-    entityId: locationId,
-    placeId: placeMatch.providerPlaceId,
-    costEstimateUsd: REVIEWS_FETCH_DETAILS_COST_USD,
-    maxAttempts: 4,
-  });
-  const detailsData = object(details?.data);
-  const returnedPlaceId = text(detailsData.id);
-  const identityValidated = (
-    returnedPlaceId === placeMatch.providerPlaceId
-    && validateReviewsPlaceIdentity(location, detailsData)
-  );
-  evidence.details = {
-    operation: "place_details",
-    outcome: identityValidated ? "ok" : "identity_mismatch",
-    provider_place_id: placeMatch.providerPlaceId,
-    returned_provider_place_id: returnedPlaceId || null,
-    external_call_id: details?.externalCallId ?? null,
-    field_mask: details?.fieldMask || DETAILS_FIELD_MASK,
-    sku: REVIEWS_FETCH_DETAILS_SKU,
-    sku_id: REVIEWS_FETCH_DETAILS_SKU_ID,
-    cost_estimate_usd: number(
-      details?.costEstimateUsd ?? REVIEWS_FETCH_DETAILS_COST_USD,
-    ),
-    returned_reviews: Array.isArray(detailsData.reviews) ? detailsData.reviews.length : 0,
-    identity_validated: identityValidated,
-  };
-  if (!identityValidated) {
+  if (!placeMatch || !selectedDetails) {
+    const retryableError = providerErrors.find((error) => !isNotFoundError(error));
+    if (retryableError) throw retryableError;
     return completedResult({
       taskId,
       runId,
       location,
-      outcome: "provider_identity_mismatch",
+      outcome: evidence.details_attempts.length > 0
+        ? "provider_identity_mismatch"
+        : "provider_place_not_found",
       evidence,
       placeMatchWrite,
     });
   }
 
+  const { details, detailsData } = selectedDetails;
   const normalizedReviews = normalizeGoogleReviews(detailsData.reviews);
   const persistence = await persistReviewPayload({
     taskId,
@@ -714,7 +730,7 @@ async function ensureRawSourceListing(tx, {
       SET name = $3,
           extracted_at = $4,
           payload = $5::jsonb,
-          synced_at = $4::timestamptz
+          synced_at = $6::timestamptz
       WHERE source_slug = $1 AND source_listing_id = $2
     `, [
       REVIEWS_FETCH_SOURCE_SLUG,
@@ -722,6 +738,7 @@ async function ensureRawSourceListing(tx, {
       displayName || null,
       fetchedAtIso,
       JSON.stringify({ provider: "google_places", provider_place_id: placeId, details: detailsData }),
+      fetchedAtIso,
     ]);
     return { sourceListingId: Number(existingId), inserted: false };
   }
@@ -735,7 +752,7 @@ async function ensureRawSourceListing(tx, {
     INSERT INTO fountain_raw.source_listings (
       source_slug, source_listing_id, source_url, name, extracted_at, payload, synced_at
     )
-    VALUES ($1, $2, $3, $4, $5, $6::jsonb, $5::timestamptz)
+    VALUES ($1, $2, $3, $4, $5, $6::jsonb, $7::timestamptz)
   `, [
     REVIEWS_FETCH_SOURCE_SLUG,
     nextId,
@@ -743,6 +760,7 @@ async function ensureRawSourceListing(tx, {
     displayName || null,
     fetchedAtIso,
     JSON.stringify({ provider: "google_places", provider_place_id: placeId, details: detailsData }),
+    fetchedAtIso,
   ]);
   assertCount("Google reviews raw source listing", inserted, 1);
   return { sourceListingId: nextId, inserted: true };
@@ -940,6 +958,132 @@ function pricingEvidence() {
     pricing_url: REVIEWS_FETCH_PRICING_URL,
     field_sku_url: REVIEWS_FETCH_FIELD_SKU_URL,
   };
+}
+
+export function distinctStoredGooglePlaceMatches(matches = []) {
+  if (!Array.isArray(matches)) {
+    throw new TypeError("externalPlaceMatches must be an array.");
+  }
+  const candidates = matches
+    .map((match, index) => {
+      if (!match || typeof match !== "object" || Array.isArray(match)) return null;
+      const provider = text(match.provider).toLowerCase();
+      const priority = GOOGLE_PROVIDER_NAMES.indexOf(provider);
+      const providerPlaceId = text(
+        match.provider_place_id ?? match.providerPlaceId ?? match.place_id ?? match.placeId,
+      );
+      if (priority < 0 || !providerPlaceId) return null;
+      return {
+        provider,
+        providerPlaceId,
+        providerIdSource: "stored_match",
+        priority,
+        index,
+      };
+    })
+    .filter(Boolean)
+    .sort((left, right) => (
+      left.priority - right.priority
+      || left.providerPlaceId.localeCompare(right.providerPlaceId, "en-US")
+      || left.index - right.index
+    ));
+  const seenPlaceIds = new Set();
+  return candidates.filter((candidate) => {
+    if (seenPlaceIds.has(candidate.providerPlaceId)) return false;
+    seenPlaceIds.add(candidate.providerPlaceId);
+    return true;
+  });
+}
+
+async function fetchAndValidateDetails({
+  placesClient,
+  runId,
+  location,
+  placeMatch,
+  source,
+  evidence,
+}) {
+  let details;
+  try {
+    details = await placesClient.getDetails({
+      runId,
+      taskType: "reviews_fetch",
+      entityId: location.id,
+      placeId: placeMatch.providerPlaceId,
+      costEstimateUsd: REVIEWS_FETCH_DETAILS_COST_USD,
+      maxAttempts: 4,
+    });
+  } catch (error) {
+    const attempt = {
+      operation: "place_details",
+      source,
+      outcome: isNotFoundError(error) ? "not_found" : "error",
+      provider: placeMatch.provider,
+      provider_place_id: placeMatch.providerPlaceId,
+      returned_provider_place_id: null,
+      external_call_id: error?.externalCallId ?? null,
+      field_mask: DETAILS_FIELD_MASK,
+      sku: REVIEWS_FETCH_DETAILS_SKU,
+      sku_id: REVIEWS_FETCH_DETAILS_SKU_ID,
+      cost_estimate_usd: 0,
+      returned_reviews: 0,
+      identity_validated: false,
+      http_status: Number.isInteger(Number(error?.status)) ? Number(error.status) : null,
+      attempts: Number.isInteger(Number(error?.attempts)) ? Number(error.attempts) : null,
+      error: errorMessage(error),
+    };
+    evidence.details_attempts.push(attempt);
+    evidence.details = attempt;
+    return {
+      details: null,
+      detailsData: null,
+      identityValidated: false,
+      error,
+    };
+  }
+
+  const detailsData = object(details?.data);
+  const returnedPlaceId = text(detailsData.id);
+  const exactPlaceId = returnedPlaceId === placeMatch.providerPlaceId;
+  const identityValidated = exactPlaceId
+    && validateReviewsPlaceIdentity(location, detailsData);
+  const attempt = {
+    operation: "place_details",
+    source,
+    outcome: identityValidated
+      ? "ok"
+      : exactPlaceId
+        ? "identity_mismatch"
+        : "provider_place_id_mismatch",
+    provider: placeMatch.provider,
+    provider_place_id: placeMatch.providerPlaceId,
+    returned_provider_place_id: returnedPlaceId || null,
+    external_call_id: details?.externalCallId ?? null,
+    field_mask: details?.fieldMask || DETAILS_FIELD_MASK,
+    sku: REVIEWS_FETCH_DETAILS_SKU,
+    sku_id: REVIEWS_FETCH_DETAILS_SKU_ID,
+    cost_estimate_usd: number(
+      details?.costEstimateUsd ?? REVIEWS_FETCH_DETAILS_COST_USD,
+    ),
+    returned_reviews: Array.isArray(detailsData.reviews) ? detailsData.reviews.length : 0,
+    identity_validated: identityValidated,
+  };
+  evidence.details_attempts.push(attempt);
+  evidence.details = attempt;
+  return {
+    details,
+    detailsData,
+    identityValidated,
+    error: null,
+  };
+}
+
+function isNotFoundError(error) {
+  return Number(error?.status) === 404;
+}
+
+function errorMessage(error) {
+  return text(error instanceof Error ? error.message : error).slice(0, 1_000);
 }
 
 function normalizeLocation(row) {
