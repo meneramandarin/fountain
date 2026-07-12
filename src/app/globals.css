@@ -2218,9 +2218,9 @@ input[type="search"]::-webkit-search-cancel-button:hover {
 
 .directory-map-panel {
   position: sticky;
-  top: 20px;
+  top: 90px;
   align-self: start;
-  height: calc(100vh - 230px);
+  height: calc(100vh - 110px);
   min-height: 0;
   overflow: hidden;
   border: 1px solid var(--landing-line);
@@ -2656,6 +2656,7 @@ input[type="search"]::-webkit-search-cancel-button:hover {
 .pager {
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 10px;
   margin-top: 16px;
   color: rgba(30, 26, 15, 0.62);
