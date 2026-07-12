@@ -17,6 +17,7 @@ const {
   REVIEWS_FETCH_LOAD_SQL,
   REVIEWS_FETCH_PRICING_URL,
   REVIEWS_FETCH_RECHECK_SQL,
+  REVIEWS_FETCH_SOURCE_LISTING_SEQUENCE,
   validateReviewsPlaceIdentity,
 } = reviewsFetch;
 
@@ -114,9 +115,12 @@ describe("reviews_fetch queue handler", () => {
       call.sql.includes("SET TRANSACTION ISOLATION LEVEL")
     ));
     expect(isolationCall?.sql).toContain("READ COMMITTED");
-    expect(rawListingCall?.sql).toContain("$7::timestamptz");
-    expect(rawListingCall?.params).toHaveLength(7);
-    expect(rawListingCall?.params[4]).toBe(rawListingCall?.params[6]);
+    expect(rawListingCall?.sql).toContain(
+      "nextval('fountain_raw.google_places_reviews_listing_id_seq')",
+    );
+    expect(rawListingCall?.sql).toContain("ON CONFLICT (source_slug, source_url) DO UPDATE");
+    expect(rawListingCall?.params).toHaveLength(6);
+    expect(rawListingCall?.params[3]).toBe(rawListingCall?.params[5]);
   });
 
   test("tries the next stored Google alias when the preferred ID mismatches", async () => {
@@ -569,6 +573,9 @@ describe("review normalization, cost, and schema contracts", () => {
     );
     expect(REVIEWS_FETCH_DETAILS_SKU_ID).toBe("EB23-5ECC-F753");
     expect(REVIEWS_FETCH_DETAILS_COST_USD).toBe(0.025);
+    expect(REVIEWS_FETCH_SOURCE_LISTING_SEQUENCE).toBe(
+      "fountain_raw.google_places_reviews_listing_id_seq",
+    );
     expect(REVIEWS_FETCH_PRICING_URL).toContain("developers.google.com/maps/billing-and-pricing/pricing");
     expect(REVIEWS_FETCH_FIELD_SKU_URL).toContain("place-details");
     expect(projectedReviewsFetchCost({
@@ -614,6 +621,15 @@ describe("review normalization, cost, and schema contracts", () => {
     expect(migration).toContain("'google_places_reviews'");
     expect(migration).toContain("fountain_raw.source_databases");
     expect(migration).toContain("ON CONFLICT (source_slug) DO NOTHING");
+
+    const sequenceMigration = readFileSync(path.resolve(
+      process.cwd(),
+      "migrations/20260712_google_places_reviews_listing_sequence.sql",
+    ), "utf8");
+    expect(sequenceMigration).toContain(
+      "CREATE SEQUENCE IF NOT EXISTS fountain_raw.google_places_reviews_listing_id_seq",
+    );
+    expect(sequenceMigration).toContain("max(source_listing_id)");
   });
 });
 
@@ -651,12 +667,8 @@ function persistenceHarness(
         }];
         return { rows: [], rowCount: 1 };
       }
-      if (sql.includes("FROM fountain_raw.source_listings") && sql.includes("source_url = $2")) {
-        return { rows: [] };
-      }
-      if (sql.includes("max(source_listing_id)")) return { rows: [{ next_id: 1 }] };
       if (sql.includes("INSERT INTO fountain_raw.source_listings")) {
-        return { rows: [], rowCount: 1 };
+        return { rows: [{ source_listing_id: 1 }], rowCount: 1 };
       }
       if (sql.includes("INSERT INTO fountain.source_records")) return { rows: [], rowCount: 1 };
       if (sql.includes("INSERT INTO fountain_raw.source_reviews")) return { rows: [], rowCount: 2 };
