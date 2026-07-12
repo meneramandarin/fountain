@@ -66,6 +66,18 @@ describe("pipeline CLI parsing", () => {
     ]))).toMatchObject({ command: "offering-display", apply: true });
   });
 
+  test("supports offering translation and requires a live-run budget", () => {
+    expect(validateCommandArgs(parseCliArgs([
+      "offering-translate", "--location-id", "13431", "--batch-size", "50",
+    ]))).toMatchObject({ command: "offering-translate", locationId: "13431", batchSize: "50" });
+    expect(() => validateCommandArgs(parseCliArgs([
+      "offering-translate", "--apply",
+    ]))).toThrow("requires an explicit --budget");
+    expect(validateCommandArgs(parseCliArgs([
+      "offering-translate", "--budget", "5", "--apply",
+    ]))).toMatchObject({ command: "offering-translate", apply: true, budget: "5" });
+  });
+
   test("requires an exact Gate B campaign, evidence runs, and expected count for suppression", () => {
     expect(validateCommandArgs(parseCliArgs([
       "suppress",

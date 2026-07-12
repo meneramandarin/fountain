@@ -95,6 +95,37 @@ describe("offering display resolution", () => {
 
     expect(result.decisions).toEqual([]);
   });
+
+  test("deduplicates unmapped offerings without requiring taxonomy", () => {
+    const result = resolveOfferingDisplay([
+      offering(40, "Brain Tap", { treatment_id: null, source_granularity: "menu_item" }),
+      offering(41, "Brain-Tap", {
+        treatment_id: null,
+        source_granularity: "direct_service",
+        source_offer_url: "https://clinic.example/braintap",
+      }),
+    ]);
+
+    expect(result.decisions).toEqual([
+      expect.objectContaining({
+        offering_id: 40,
+        winner_offering_id: 41,
+        reason: "duplicate_same_term",
+      }),
+    ]);
+  });
+
+  test("does not treat unrelated unmapped summaries as one treatment", () => {
+    const result = resolveOfferingDisplay([
+      offering(50, "Brain health", { treatment_id: null, source_granularity: "summary" }),
+      offering(51, "Deuterium-depleted water", {
+        treatment_id: null,
+        source_granularity: "direct_service",
+      }),
+    ]);
+
+    expect(result.decisions).toEqual([]);
+  });
 });
 
 function offering(id: number, rawName: string, overrides: Record<string, unknown> = {}) {

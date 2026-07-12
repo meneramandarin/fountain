@@ -1996,10 +1996,17 @@ export async function getLocationDetail(ref: number | string) {
   location.review_count = (location.google_review_count as number | null) || null;
   location.offerings = await rows(
     `
-    SELECT o.raw_name, o.price_amount, o.price_currency,
+    SELECT
+           CASE
+             WHEN translation.review_status IN ('auto_approved', 'human_approved')
+               THEN translation.english_text
+             ELSE o.raw_name
+           END AS raw_name,
+           o.price_amount, o.price_currency,
            t.canonical_name AS treatment, t.category AS domain
     FROM offerings o
-    JOIN treatments t ON t.id = o.treatment_id
+    LEFT JOIN treatments t ON t.id = o.treatment_id
+    LEFT JOIN offering_term_translations translation ON translation.source_text = o.raw_name
     WHERE o.location_id = ?
       AND ${activeOfferingCondition("o")}
       AND NOT EXISTS (
@@ -2008,7 +2015,8 @@ export async function getLocationDetail(ref: number | string) {
         WHERE suppression.offering_id = o.id
           AND suppression.active
       )
-    ORDER BY (t.category IS NULL), t.category, t.canonical_name, o.raw_name
+    ORDER BY (t.category IS NULL), t.category, t.canonical_name,
+             COALESCE(translation.english_text, o.raw_name)
   `,
     [id],
   );

@@ -397,7 +397,7 @@ function Offerings({ offerings }: { offerings: OfferingRef[] }) {
         Offerings <small>{offerings.length}</small>
       </h2>
       <div className="offer-list listing-offer-list">
-        {offerings.slice(0, 60).map((offering, index) => {
+        {offerings.map((offering, index) => {
           const { primary } = getOfferingLabels(offering);
           return (
             <div className="offer-item" key={`${offering.raw_name || offering.treatment}-${index}`}>
