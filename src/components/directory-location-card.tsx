@@ -60,6 +60,7 @@ function formatPrice(amount?: number | null, currency?: string | null) {
 
 export function DirectoryLocationCard({ result, from = "search" }: { result: DirectoryLocationCardData; from?: string }) {
   const [imageFailed, setImageFailed] = useState(false);
+  const isContainedGraphic = result.image_kind === "text_graphic" || result.image_kind === "logo";
   const place = formatLocationPlace({
     locality: result.locality,
     region: result.region,
@@ -71,12 +72,12 @@ export function DirectoryLocationCard({ result, from = "search" }: { result: Dir
 
   return (
     <Link className="result-card" href={`${locationHref(result)}?from=${encodeURIComponent(from)}`}>
-      <span className={`result-photo${result.image_kind === "text_graphic" ? " image-frame-text-graphic" : ""}`}>
+      <span className={`result-photo${isContainedGraphic ? " image-frame-text-graphic" : ""}`}>
         {result.image && !imageFailed ? (
           <>
-            {result.image_kind === "text_graphic" ? <Image className="image-frame-backdrop" src={imageSource(result.image)} alt="" fill unoptimized aria-hidden="true" sizes="100vw" /> : null}
+            {isContainedGraphic ? <Image className="image-frame-backdrop" src={imageSource(result.image)} alt="" fill unoptimized aria-hidden="true" sizes="100vw" /> : null}
             <Image
-              className={result.image_kind === "text_graphic" ? "image-frame-content" : undefined}
+              className={isContainedGraphic ? "image-frame-content" : undefined}
               src={imageSource(result.image)}
               alt=""
               fill

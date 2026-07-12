@@ -3086,8 +3086,8 @@ blockquote p {
   object-fit: cover;
 }
 
-/* Text graphics must remain legible: show the entire asset, with a softened
-   version behind it to preserve the card's intended aspect ratio. */
+/* Text graphics and logos must remain legible: show the entire asset, with a
+   softened version behind it to preserve the card's intended aspect ratio. */
 .image-frame-text-graphic {
   isolation: isolate;
   background: rgba(247, 240, 225, 0.9);
