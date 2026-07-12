@@ -35,73 +35,16 @@ export const FINAL_REPORT_EXTERNAL_CALLS_SQL = `
 
 export const FINAL_REPORT_TASKS_SQL = `
   SELECT
+    task.id::text AS task_id,
     task.run_id::text AS run_id,
     task.task_type,
+    task.entity_type,
+    task.entity_id,
     task.status,
-    COALESCE(task.result->>'outcome', task.result->>'resolution', '_none') AS outcome,
-    count(*)::integer AS count,
-    count(*) FILTER (
-      WHERE task.result#>>'{serving_write,attempted}' = 'true'
-    )::integer AS attempted_count,
-    count(*) FILTER (
-      WHERE task.result#>>'{serving_write,written}' = 'true'
-    )::integer AS written_count,
-    count(*) FILTER (
-      WHERE task.result->>'needs_human_review' = 'true'
-         OR task.result->>'outcome' = 'needs_human_review'
-         OR task.result->>'resolution' = 'needs_human_review'
-    )::integer AS needs_human_count,
-    COALESCE(sum(
-      CASE WHEN task.task_type = 'menu_extract'
-        THEN COALESCE((task.result#>>'{serving_write,prices_backfilled}')::integer, 0)
-        ELSE 0
-      END
-    ), 0)::integer AS price_backfill_count,
-    COALESCE(sum(
-      CASE WHEN task.task_type = 'menu_extract'
-        THEN COALESCE((task.result#>>'{serving_write,price_amount_only_backfills}')::integer, 0)
-        ELSE 0
-      END
-    ), 0)::integer AS price_amount_only_backfill_count,
-    count(*) FILTER (
-      WHERE task.task_type = 'menu_extract'
-        AND task.result#>>'{apply,written}' = 'true'
-    )::integer AS menu_application_count,
-    COALESCE(sum(
-      CASE WHEN task.task_type = 'menu_extract'
-        THEN COALESCE((task.result#>>'{serving_write,offerings_inserted}')::integer, 0)
-        ELSE 0
-      END
-    ), 0)::integer AS offering_insert_count,
-    COALESCE(sum(
-      CASE WHEN task.task_type = 'menu_extract'
-        THEN COALESCE((task.result#>>'{serving_write,treatments_backfilled}')::integer, 0)
-        ELSE 0
-      END
-    ), 0)::integer AS treatment_backfill_count,
-    COALESCE(sum(
-      CASE WHEN task.task_type = 'menu_extract'
-        THEN COALESCE((task.result#>>'{apply,counts,price_conflicts}')::integer, 0)
-        ELSE 0
-      END
-    ), 0)::integer AS price_conflict_count,
-    COALESCE(sum(
-      CASE WHEN task.task_type = 'menu_extract'
-        THEN COALESCE((task.result#>>'{apply,counts,price_reviews}')::integer, 0)
-        ELSE 0
-      END
-    ), 0)::integer AS price_review_count,
-    COALESCE(sum(
-      CASE WHEN task.task_type = 'menu_extract'
-        THEN COALESCE((task.result#>>'{serving_write,existing_prices_overwritten}')::integer, 0)
-        ELSE 0
-      END
-    ), 0)::integer AS existing_price_overwrite_count
+    task.result
   FROM fountain_ops.task_queue task
   WHERE task.run_id = ANY($1::bigint[])
-  GROUP BY task.run_id, task.task_type, task.status,
-    COALESCE(task.result->>'outcome', task.result->>'resolution', '_none')
-  ORDER BY task.run_id, task.task_type, task.status, outcome
+  ORDER BY task.run_id, task.task_type, task.entity_type, task.entity_id, task.id
 `;
 
 export const FINAL_REPORT_STATE_SQL = `
@@ -446,11 +389,16 @@ export function summarizeFinalTaskOutcomes(rows = []) {
   let priceConflicts = 0;
   let priceReviews = 0;
   let existingPricesOverwritten = 0;
+  const doneIdentities = new Set();
+  const failedIdentityRows = [];
   for (const row of rows) {
     const count = nonnegativeInteger(row?.count ?? 1, "task count");
     const taskType = text(row?.task_type ?? row?.taskType) || "_unknown_task";
     const runId = optionalRunId(row?.run_id ?? row?.runId) || "_unattributed";
     const status = text(row?.status) || "unknown";
+    const identity = taskEntityIdentity(row);
+    if (identity && status === "done") doneIdentities.add(identity);
+    if (status === "failed") failedIdentityRows.push({ identity, count });
     const result = object(row?.result);
     const outcome = text(row?.outcome ?? result.outcome ?? result.resolution) || "_none";
     const attemptedCount = aggregateCount(
@@ -578,6 +526,11 @@ export function summarizeFinalTaskOutcomes(rows = []) {
   }
   const statusTotal = sumObject(statuses);
   const outcomeTotal = sumObject(outcomes);
+  const failedTotal = statuses.failed || 0;
+  const recoveredFailures = failedIdentityRows.reduce((total, row) => (
+    row.identity && doneIdentities.has(row.identity) ? total + row.count : total
+  ), 0);
+  const unresolvedFailures = failedTotal - recoveredFailures;
   return {
     total,
     attempted,
@@ -593,6 +546,11 @@ export function summarizeFinalTaskOutcomes(rows = []) {
     priceConflicts,
     priceReviews,
     existingPricesOverwritten,
+    failures: {
+      total: failedTotal,
+      recovered: recoveredFailures,
+      unresolved: unresolvedFailures,
+    },
     statuses: sortedObject(statuses),
     outcomes: sortedObject(outcomes),
     byTask: [...tasks.values()].sort((left, right) => left.key.localeCompare(right.key)),
@@ -856,6 +814,7 @@ function appendTaskSummary(lines, tasks) {
     "## Queue task outcomes and serving writes",
     "",
     `Selected-run task rows: ${integer(tasks.total)}; serving writes attempted by ${integer(tasks.attempted)} task(s), completed by ${integer(tasks.written)} task(s); needs_human_review outcomes: ${integer(tasks.needsHuman)}.`,
+    `Historical failed rows: ${integer(tasks.failures.total)}; recovered by a selected-run done row for the same task/entity: ${integer(tasks.failures.recovered)}; unresolved: ${integer(tasks.failures.unresolved)}.`,
     "| Task | Total | Pending | Claimed | Done | Failed | Skipped | Write attempted | Written | Needs human |",
     "| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |",
   );
@@ -1002,13 +961,13 @@ function appendRemainingGaps(lines, after) {
     "",
     "## Remaining enrichment gaps",
     "",
-    "| Task | Remaining gap | Actionable | Blocked |",
-    "| --- | ---: | ---: | ---: |",
+    "| Task | Remaining gap | Actionable | Attempted unresolved | Enqueueable | Blocked |",
+    "| --- | ---: | ---: | ---: | ---: | ---: |",
   );
   for (const taskType of ENRICHMENT_TASK_TYPES) {
     const gap = after.gaps[taskType];
     lines.push(
-      `| ${code(taskType)} | ${integer(gap.count)} | ${integer(gap.actionableCount)} | ${integer(gap.blockedCount)} |`,
+      `| ${code(taskType)} | ${integer(gap.count)} | ${integer(gap.actionableCount)} | ${integer(gap.attemptedUnresolvedCount || 0)} | ${integer(gap.enqueueableCount ?? gap.actionableCount)} | ${integer(gap.blockedCount)} |`,
     );
   }
 }
@@ -1594,9 +1553,9 @@ function buildFollowUps(data) {
       `Resolve ledger mismatches before closeout: ${data.reconciliation.failures.map((check) => code(check.id)).join(", ")}.`,
     );
   }
-  const failed = data.tasks.statuses.failed || 0;
+  const failed = data.tasks.failures?.unresolved ?? data.tasks.statuses.failed ?? 0;
   const activeQueue = (data.tasks.statuses.pending || 0) + (data.tasks.statuses.claimed || 0);
-  if (failed > 0) followUps.push(`Investigate ${integer(failed)} failed selected-run task(s).`);
+  if (failed > 0) followUps.push(`Investigate ${integer(failed)} unresolved failed selected-run task(s).`);
   if (activeQueue > 0) followUps.push(`Drain or intentionally defer ${integer(activeQueue)} pending/claimed task(s).`);
   if (data.stage3.humanReviewRows > 0) {
     followUps.push(
@@ -1605,13 +1564,15 @@ function buildFollowUps(data) {
   }
   for (const taskType of ENRICHMENT_TASK_TYPES) {
     const gap = data.after.gaps[taskType];
-    if (gap.actionableCount > 0) {
+    const enqueueableCount = gap.enqueueableCount ?? gap.actionableCount;
+    if (enqueueableCount > 0) {
       followUps.push(
-        `Re-enqueue ${integer(gap.actionableCount)} remaining actionable ${code(taskType)} gap(s) after reviewing no-change/provider outcomes.`,
+        `Re-enqueue ${integer(enqueueableCount)} remaining enqueueable ${code(taskType)} gap(s) after reviewing no-change/provider outcomes.`,
       );
     }
   }
-  if (data.after.gaps.reviews_fetch.count > 0) {
+  const reviewsGap = data.after.gaps.reviews_fetch;
+  if ((reviewsGap.enqueueableCount ?? reviewsGap.actionableCount) > 0) {
     followUps.push("Reconfirm the current Google Places reviews SKU and budget before any later review expansion.");
   }
   followUps.push("Repeat the completeness census monthly and investigate any newly introduced gaps or suppression/search drift.");
@@ -1712,6 +1673,16 @@ function taskAccumulator(key) {
     statuses: { pending: 0, claimed: 0, done: 0, failed: 0, skipped: 0 },
     outcomes: {},
   };
+}
+
+function taskEntityIdentity(row) {
+  const taskType = text(row?.task_type ?? row?.taskType);
+  const entityType = text(row?.entity_type ?? row?.entityType);
+  const entityId = row?.entity_id ?? row?.entityId;
+  if (!taskType || !entityType || entityId === null || entityId === undefined || entityId === "") {
+    return null;
+  }
+  return JSON.stringify([taskType, entityType, String(entityId)]);
 }
 
 function addTaskAggregate(target, value) {

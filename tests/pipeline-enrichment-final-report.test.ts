@@ -192,6 +192,88 @@ describe("final enrichment ledger report", () => {
     });
   });
 
+  test("distinguishes recovered historical failures from unresolved selected-run failures", () => {
+    const summary = summarizeFinalTaskOutcomes([
+      {
+        run_id: "91",
+        task_type: "menu_extract",
+        entity_type: "location",
+        entity_id: 101,
+        status: "failed",
+        result: { outcome: "invalid_json" },
+      },
+      {
+        run_id: "96",
+        task_type: "menu_extract",
+        entity_type: "location",
+        entity_id: 101,
+        status: "done",
+        result: { outcome: "menu_applied" },
+      },
+      {
+        run_id: "91",
+        task_type: "menu_extract",
+        entity_type: "location",
+        entity_id: 102,
+        status: "failed",
+        result: { outcome: "invalid_json" },
+      },
+    ]);
+
+    expect(summary.statuses.failed).toBe(2);
+    expect(summary.failures).toEqual({ total: 2, recovered: 1, unresolved: 1 });
+
+    const input = reportInput();
+    const data = buildEnrichmentFinalReportData({
+      ...input,
+      externalCalls: externalCallRows(),
+      taskRows: [
+        ...taskRows(),
+        {
+          run_id: "60",
+          task_type: "contact_fill",
+          entity_type: "location",
+          entity_id: 200,
+          status: "failed",
+          result: { outcome: "provider_error" },
+        },
+        {
+          run_id: "61",
+          task_type: "contact_fill",
+          entity_type: "location",
+          entity_id: 200,
+          status: "done",
+          result: { outcome: "contact_filled" },
+        },
+      ],
+      state: servingState(),
+      eventRows: eventRows(),
+    });
+    const markdown = renderEnrichmentFinalReport(data);
+    expect(data.tasks.failures).toEqual({ total: 1, recovered: 1, unresolved: 0 });
+    expect(data.followUps.join("\n")).not.toContain("failed selected-run task");
+    expect(markdown).toContain("Historical failed rows: 1; recovered");
+
+    const unresolved = buildEnrichmentFinalReportData({
+      ...input,
+      externalCalls: externalCallRows(),
+      taskRows: [...taskRows(), {
+        run_id: "60",
+        task_type: "contact_fill",
+        entity_type: "location",
+        entity_id: 201,
+        status: "failed",
+        result: { outcome: "provider_error" },
+      }],
+      state: servingState(),
+      eventRows: eventRows(),
+    });
+    expect(unresolved.tasks.failures).toEqual({ total: 1, recovered: 0, unresolved: 1 });
+    expect(unresolved.followUps.join("\n")).toContain(
+      "Investigate 1 unresolved failed selected-run task(s).",
+    );
+  });
+
   test("reconciles the supplemental price baseline and every menu mutation ledger per run", () => {
     const menuTask = {
       run_id: "60",

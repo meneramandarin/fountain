@@ -135,6 +135,17 @@ const ACTIVE_NON_SUPPRESSED_CTES = `
       AND review.deleted_at IS NULL
     GROUP BY review.location_id
   ),
+  review_attempts AS MATERIALIZED (
+    SELECT
+      queue.entity_id AS location_id,
+      true AS review_fetch_attempted
+    FROM fountain_ops.task_queue queue
+    WHERE queue.task_type = 'reviews_fetch'
+      AND queue.entity_type = 'location'
+      AND queue.status = 'done'
+      AND queue.payload->>'campaign' = '${ENRICHMENT_CENSUS_CAMPAIGN}'
+    GROUP BY queue.entity_id
+  ),
   place_matches AS MATERIALIZED (
     SELECT place_match.location_id, count(*)::integer AS place_match_count
     FROM fountain.external_place_matches place_match
@@ -180,12 +191,14 @@ const ACTIVE_NON_SUPPRESSED_CTES = `
       COALESCE(menu_counts.priced_count, 0) AS priced_count,
       COALESCE(menu_attempts.menu_extraction_attempted, false) AS menu_extraction_attempted,
       COALESCE(review_counts.review_count, 0) AS review_count,
+      COALESCE(review_attempts.review_fetch_attempted, false) AS review_fetch_attempted,
       COALESCE(place_matches.place_match_count, 0) AS place_match_count
     FROM active_non_suppressed location
     LEFT JOIN image_counts ON image_counts.location_id = location.id
     LEFT JOIN menu_counts ON menu_counts.location_id = location.id
     LEFT JOIN menu_attempts ON menu_attempts.location_id = location.id
     LEFT JOIN review_counts ON review_counts.location_id = location.id
+    LEFT JOIN review_attempts ON review_attempts.location_id = location.id
     LEFT JOIN place_matches ON place_matches.location_id = location.id
     LEFT JOIN source_lists ON source_lists.location_id = location.id
   )
@@ -232,6 +245,7 @@ export const ENRICHMENT_ENQUEUE_SQL = `
     SELECT 'reviews_fetch', id
     FROM coverage
     WHERE review_count < 3
+      AND NOT review_fetch_attempted
   ),
   expected AS MATERIALIZED (
     SELECT task_type, entity_id, priority, max_attempts, payload
@@ -879,6 +893,10 @@ export function compareEnrichmentCensuses(before, after) {
         newGapIds: difference(later.ids, earlier.ids),
         beforeActionable: earlier.actionableCount,
         afterActionable: later.actionableCount,
+        beforeAttemptedUnresolved: earlier.attemptedUnresolvedCount || 0,
+        afterAttemptedUnresolved: later.attemptedUnresolvedCount || 0,
+        beforeEnqueueable: reviewEnqueueableIds(earlier).length,
+        afterEnqueueable: reviewEnqueueableIds(later).length,
       }];
     })),
   });
@@ -927,17 +945,21 @@ export function buildEnrichmentEnqueuePlan(snapshot, {
       };
     }
     const gap = snapshot.gaps[taskType];
+    const candidateIds = reviewEnqueueableIds(gap);
     return {
       taskType,
       entityType: "location",
       priority: normalizedPriority,
       maxAttempts: normalizedMaxAttempts,
       gapCount: gap.count,
-      candidateCount: gap.actionableCount,
+      actionableCount: gap.actionableCount,
+      attemptedUnresolvedCount: gap.attemptedUnresolvedCount || 0,
+      enqueueableCount: candidateIds.length,
+      candidateCount: candidateIds.length,
       blockedCount: gap.blockedCount,
-      candidateIds: [...gap.actionableIds],
+      candidateIds,
       blockedIds: [...gap.blockedIds],
-      candidateDigest: digestIds(gap.actionableIds),
+      candidateDigest: digestIds(candidateIds),
     };
   });
   return deepFreeze({
@@ -1263,8 +1285,9 @@ export function assertEnrichmentEnqueuePlan(plan, liveSnapshot, {
       continue;
     }
     const live = liveSnapshot.gaps[task.taskType];
-    if (task.candidateDigest !== digestIds(live.actionableIds)
-        || !sameIntegerArray(task.candidateIds, live.actionableIds)) {
+    const liveCandidateIds = reviewEnqueueableIds(live);
+    if (task.candidateDigest !== digestIds(liveCandidateIds)
+        || !sameIntegerArray(task.candidateIds, liveCandidateIds)) {
       throw new Error(`Enrichment candidate drift for ${task.taskType}.`);
     }
     if (task.candidateCount > 0 && !implemented.has(task.taskType)) {
@@ -1685,14 +1708,14 @@ export function renderEnrichmentCensusReport({ before, after = null, plan = null
     "",
     "Contact gaps mean any missing website, phone, email, or address. Reviews are complete at three active rows. Geocode and image gaps exclude virtual locations.",
     "",
-    "| Task | Gap before | Gap after | Actionable now | Blocked now | Exact digest | First IDs |",
-    "| --- | ---: | ---: | ---: | ---: | --- | --- |",
+    "| Task | Gap before | Gap after | Actionable now | Attempted unresolved | Enqueueable now | Blocked now | Exact digest | First IDs |",
+    "| --- | ---: | ---: | ---: | ---: | ---: | ---: | --- | --- |",
   );
   for (const taskType of ENRICHMENT_TASK_TYPES) {
     const beforeGap = before.gaps[taskType];
     const latestGap = latest.gaps[taskType];
     lines.push(
-      `| ${taskType} | ${formatInteger(beforeGap.count)} | ${formatInteger(after ? latestGap.count : beforeGap.count)} | ${formatInteger(latestGap.actionableCount)} | ${formatInteger(latestGap.blockedCount)} | ${latestGap.digest} | ${latestGap.ids.slice(0, 10).join(", ") || "—"} |`,
+      `| ${taskType} | ${formatInteger(beforeGap.count)} | ${formatInteger(after ? latestGap.count : beforeGap.count)} | ${formatInteger(latestGap.actionableCount)} | ${formatInteger(latestGap.attemptedUnresolvedCount || 0)} | ${formatInteger(reviewEnqueueableIds(latestGap).length)} | ${formatInteger(latestGap.blockedCount)} | ${latestGap.digest} | ${latestGap.ids.slice(0, 10).join(", ") || "—"} |`,
     );
   }
   if (comparison) {
@@ -1859,6 +1882,7 @@ function normalizeCoverageRow(row) {
     throw new TypeError("priced offering count cannot exceed menu count.");
   }
   const reviewCount = nonnegativeInteger(row?.review_count, "review count");
+  const reviewFetchAttempted = Boolean(row?.review_fetch_attempted);
   const placeMatchCount = nonnegativeInteger(row?.place_match_count, "place match count");
   const menuExtractionAttempted = Boolean(
     row?.menu_extraction_attempted
@@ -1889,6 +1913,7 @@ function normalizeCoverageRow(row) {
     menuMissingAttempted: menuExtractionAttempted,
     pricesMissingAttempted: menuExtractionAttempted,
     reviewCount,
+    reviewFetchAttempted,
     placeMatchCount,
     hasImages: imageCount > 0,
     hasMenus: menuCount > 0,
@@ -1918,6 +1943,7 @@ function buildGapCohorts(rows) {
     reviews_fetch: {
       gap: (row) => !row.hasReviews,
       actionable: () => true,
+      attempted: (row) => row.reviewFetchAttempted,
     },
   };
   return Object.fromEntries(ENRICHMENT_TASK_TYPES.map((taskType) => {
@@ -1926,6 +1952,12 @@ function buildGapCohorts(rows) {
     const actionableIds = gapRows.filter(definition.actionable).map((row) => row.id);
     const blockedIds = gapRows.filter((row) => !definition.actionable(row)).map((row) => row.id);
     const ids = gapRows.map((row) => row.id);
+    const attemptedUnresolvedIds = definition.attempted
+      ? gapRows.filter((row) => definition.actionable(row) && definition.attempted(row))
+        .map((row) => row.id)
+      : [];
+    const attemptedSet = new Set(attemptedUnresolvedIds);
+    const enqueueableIds = actionableIds.filter((id) => !attemptedSet.has(id));
     return [taskType, {
       ids,
       count: ids.length,
@@ -1933,8 +1965,14 @@ function buildGapCohorts(rows) {
       actionableCount: actionableIds.length,
       blockedIds,
       blockedCount: blockedIds.length,
+      attemptedUnresolvedIds,
+      attemptedUnresolvedCount: attemptedUnresolvedIds.length,
+      enqueueableIds,
+      enqueueableCount: enqueueableIds.length,
       digest: digestIds(ids),
       actionableDigest: digestIds(actionableIds),
+      attemptedUnresolvedDigest: digestIds(attemptedUnresolvedIds),
+      enqueueableDigest: digestIds(enqueueableIds),
     }];
   }));
 }
@@ -2201,7 +2239,12 @@ function digestSnapshot(rows) {
     menuCount: row.menuCount,
     pricedCount: row.pricedCount,
     menuExtractionAttempted: row.menuExtractionAttempted,
+    reviewFetchAttempted: row.reviewFetchAttempted,
   })));
+}
+
+function reviewEnqueueableIds(gap) {
+  return [...(gap?.enqueueableIds || gap?.actionableIds || [])];
 }
 
 function digestIds(ids) {
