@@ -776,6 +776,19 @@ input[type="search"]::-webkit-search-cancel-button:hover {
 }
 
 .landing-featured-photo-tags {
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+  left: 10px;
+  z-index: 1;
+  display: flex;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  gap: 5px;
+  pointer-events: none;
+}
+
+.landing-featured-treatments {
   display: none;
 }
 
@@ -848,9 +861,7 @@ input[type="search"]::-webkit-search-cancel-button:hover {
 }
 
 .landing-featured-treatments {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 5px;
+  display: none;
 }
 
 .landing-featured-treatments span {
@@ -2209,8 +2220,8 @@ input[type="search"]::-webkit-search-cancel-button:hover {
   position: sticky;
   top: 20px;
   align-self: start;
-  height: calc(100vh - 40px);
-  min-height: 620px;
+  height: calc(100vh - 230px);
+  min-height: 0;
   overflow: hidden;
   border: 1px solid var(--landing-line);
   border-radius: 20px;
@@ -2375,6 +2386,14 @@ input[type="search"]::-webkit-search-cancel-button:hover {
   font-size: 13px;
 }
 
+.resultbar > span {
+  color: var(--landing-fg);
+  font-family: var(--font-dm-serif-display), serif;
+  font-size: 21px;
+  font-weight: 400;
+  line-height: 1.1;
+}
+
 .directory-search-banner {
   margin-bottom: 12px;
   padding: 12px 14px;
@@ -2468,7 +2487,16 @@ input[type="search"]::-webkit-search-cancel-button:hover {
 }
 
 .result-photo-tags {
-  display: none;
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+  left: 10px;
+  z-index: 1;
+  display: flex;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  gap: 5px;
+  pointer-events: none;
 }
 
 .result-body {
@@ -2530,9 +2558,7 @@ input[type="search"]::-webkit-search-cancel-button:hover {
 }
 
 .treatment-row {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 5px;
+  display: none;
 }
 
 .treatment-row span,
@@ -2549,6 +2575,19 @@ input[type="search"]::-webkit-search-cancel-button:hover {
   border: 0.5px solid rgba(30, 26, 15, 0.10);
   background: #f7f3ea;
   color: rgba(30, 26, 15, 0.72);
+}
+
+.result-photo-tags span,
+.landing-featured-photo-tags span {
+  max-width: 100%;
+  overflow: hidden;
+  padding: 4px 8px;
+  box-shadow: 0 5px 12px rgba(30, 26, 15, 0.16);
+  font-family: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  font-size: 11px;
+  line-height: 1.2;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .practitioner-card {
