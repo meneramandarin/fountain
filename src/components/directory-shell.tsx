@@ -101,7 +101,6 @@ export function DirectoryShell({
   const [visitorLocation, setVisitorLocation] = useState<VisitorLocation | null>(null);
   const [activeLocationId, setActiveLocationId] = useState<number | null>(null);
   const resultsRef = useRef<HTMLElement>(null);
-  const showMap = state.kind === "locations" && !isKoreaDirectory(state);
 
   const queryString = useMemo(() => {
     const params = new URLSearchParams();
@@ -267,7 +266,7 @@ export function DirectoryShell({
 
       </section>
 
-      <div className={`directory-layout${showMap ? "" : " directory-layout--full"}`}>
+      <div className="directory-layout">
         <section ref={resultsRef} className="directory-results" aria-live="polite">
           <DirectorySearchBanner payload={payload} />
 
@@ -306,7 +305,7 @@ export function DirectoryShell({
             onNext={() => changePage(state.page + 1)}
           />
         </section>
-        {showMap ? (
+        {state.kind === "locations" ? (
           <aside className="directory-map-panel" aria-label="Directory result map">
             <DirectoryMap locations={payload.results as LocationResultRow[]} activeLocationId={activeLocationId} />
           </aside>
@@ -334,10 +333,6 @@ function emptyState(): DirectoryState {
     care_model: "",
     page: 0,
   };
-}
-
-function isKoreaDirectory(state: DirectoryState) {
-  return state.country.toUpperCase() === "KR" || state.city_country.toUpperCase() === "KR";
 }
 
 function usesPersonalizedDefaultSort(state: DirectoryState) {

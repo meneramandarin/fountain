@@ -2422,16 +2422,6 @@ input[type="search"]::-webkit-search-cancel-button:hover {
   gap: 22px 18px;
 }
 
-@media (min-width: 981px) {
-  .directory-layout--full {
-    grid-template-columns: minmax(0, 1fr);
-  }
-
-  .directory-layout--full .result-list {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-  }
-}
-
 .result-card {
   width: 100%;
   height: 100%;
