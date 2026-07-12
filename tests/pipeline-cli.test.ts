@@ -57,6 +57,15 @@ describe("pipeline CLI parsing", () => {
     ]))).toMatchObject({ command: "taxonomy-present", apply: true, budget: "1" });
   });
 
+  test("supports offering display previews and scoped recomputation", () => {
+    expect(validateCommandArgs(parseCliArgs([
+      "offering-display", "--location-id", "63",
+    ]))).toMatchObject({ command: "offering-display", locationId: "63" });
+    expect(validateCommandArgs(parseCliArgs([
+      "offering-display", "--apply",
+    ]))).toMatchObject({ command: "offering-display", apply: true });
+  });
+
   test("requires an exact Gate B campaign, evidence runs, and expected count for suppression", () => {
     expect(validateCommandArgs(parseCliArgs([
       "suppress",

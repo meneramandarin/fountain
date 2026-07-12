@@ -9,7 +9,8 @@
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
     "city-index:refresh": "node pipeline/cli.mjs maintain refresh-city-index",
-    "taxonomy:present": "node pipeline/cli.mjs taxonomy-present"
+    "taxonomy:present": "node pipeline/cli.mjs taxonomy-present",
+    "offerings:display": "node pipeline/cli.mjs offering-display"
   },
   "dependencies": {
     "@vercel/blob": "2.5.0",

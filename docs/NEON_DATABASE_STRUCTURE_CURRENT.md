@@ -1,6 +1,6 @@
 # Neon Database Structure Current
 
-Generated: 2026-07-12T17:20:21.157Z
+Generated: 2026-07-12T18:08:24.264Z
 Snapshot source: live Neon database
 
 This document is generated from the live Neon database. It records structural metadata and point-in-time row counts for the configured schemas.
@@ -11,7 +11,7 @@ This document is generated from the live Neon database. It records structural me
 | --- | --- | --- |
 | fountain | function | 96 |
 | fountain | sequence | 16 |
-| fountain | table | 21 |
+| fountain | table | 22 |
 | fountain_ops | sequence | 3 |
 | fountain_ops | table | 4 |
 | fountain_raw | sequence | 6 |
@@ -41,9 +41,10 @@ This document is generated from the live Neon database. It records structural me
 | fountain | images | 32834 |
 | fountain | listing_submissions | 0 |
 | fountain | locations | 13878 |
+| fountain | offering_display_suppressions | 1360 |
 | fountain | offerings | 106792 |
 | fountain | organizations | 8195 |
-| fountain | outbound_clicks | 94 |
+| fountain | outbound_clicks | 95 |
 | fountain | practitioners | 1303 |
 | fountain | reviews | 33606 |
 | fountain | search_index | 8481 |
@@ -54,7 +55,7 @@ This document is generated from the live Neon database. It records structural me
 | fountain | treatments | 103 |
 | fountain_ops | external_calls | 41915 |
 | fountain_ops | field_status | 29545 |
-| fountain_ops | runs | 120 |
+| fountain_ops | runs | 126 |
 | fountain_ops | task_queue | 40793 |
 | fountain_raw | browser_swarm_image_ingest_20260708 | 1673 |
 | fountain_raw | browser_swarm_menu_ingest_20260708 | 25198 |
@@ -542,6 +543,48 @@ Rows: 13878
 | trg_refresh_location_search_index | CREATE TRIGGER trg_refresh_location_search_index AFTER INSERT OR DELETE OR UPDATE ON locations FOR EACH ROW EXECUTE FUNCTION refresh_location_search_index_trigger() |
 | trg_touch_updated_at | CREATE TRIGGER trg_touch_updated_at BEFORE UPDATE ON locations FOR EACH ROW EXECUTE FUNCTION touch_updated_at() |
 
+### fountain.offering_display_suppressions
+
+Rows: 1360
+
+#### Columns
+
+| pos | column | type | udt | nullable | default |
+| --- | --- | --- | --- | --- | --- |
+| 1 | offering_id | integer | int4 | NO |  |
+| 2 | location_id | integer | int4 | NO |  |
+| 3 | reason | text | text | NO |  |
+| 4 | winner_offering_id | integer | int4 | NO |  |
+| 5 | rule_version | text | text | NO |  |
+| 6 | evidence | jsonb | jsonb | NO | '{}'::jsonb |
+| 7 | active | boolean | bool | NO | true |
+| 8 | created_at | timestamp with time zone | timestamptz | NO | now() |
+| 9 | updated_at | timestamp with time zone | timestamptz | NO | now() |
+
+#### Constraints
+
+| name | type | definition |
+| --- | --- | --- |
+| offering_display_suppressions_evidence_object | c | CHECK (jsonb_typeof(evidence) = 'object'::text) |
+| offering_display_suppressions_location_id_fkey | f | FOREIGN KEY (location_id) REFERENCES locations(id) ON DELETE CASCADE |
+| offering_display_suppressions_not_self | c | CHECK (offering_id <> winner_offering_id) |
+| offering_display_suppressions_offering_id_fkey | f | FOREIGN KEY (offering_id) REFERENCES offerings(id) ON DELETE CASCADE |
+| offering_display_suppressions_pkey | p | PRIMARY KEY (offering_id) |
+| offering_display_suppressions_reason_valid | c | CHECK (reason = ANY (ARRAY['duplicate_same_term'::text, 'duplicate_unpriced_shadow'::text, 'legacy_summary_shadow'::text])) |
+| offering_display_suppressions_winner_offering_id_fkey | f | FOREIGN KEY (winner_offering_id) REFERENCES offerings(id) ON DELETE CASCADE |
+
+#### Indexes
+
+| name | definition |
+| --- | --- |
+| offering_display_suppressions_location_active_idx | CREATE INDEX offering_display_suppressions_location_active_idx ON fountain.offering_display_suppressions USING btree (location_id, active) |
+| offering_display_suppressions_pkey | CREATE UNIQUE INDEX offering_display_suppressions_pkey ON fountain.offering_display_suppressions USING btree (offering_id) |
+| offering_display_suppressions_winner_idx | CREATE INDEX offering_display_suppressions_winner_idx ON fountain.offering_display_suppressions USING btree (winner_offering_id) |
+
+#### Triggers
+
+_None._
+
 ### fountain.offerings
 
 Rows: 106792
@@ -646,7 +689,7 @@ Rows: 8195
 
 ### fountain.outbound_clicks
 
-Rows: 94
+Rows: 95
 
 #### Columns
 
@@ -864,11 +907,13 @@ Rows: 257
 | 1 | id | integer | int4 | NO |  |
 | 2 | slug | text | text | NO |  |
 | 6 | trust_weight | double precision | float8 | YES | 1.0 |
+| 8 | offering_granularity | text | text | NO | 'unknown'::text |
 
 #### Constraints
 
 | name | type | definition |
 | --- | --- | --- |
+| sources_offering_granularity_valid | c | CHECK (offering_granularity = ANY (ARRAY['unknown'::text, 'summary'::text, 'menu_item'::text, 'direct_service'::text])) |
 | sources_pkey | p | PRIMARY KEY (id) |
 | sources_slug_key | u | UNIQUE (slug) |
 
@@ -1076,7 +1121,7 @@ _None._
 
 ### fountain_ops.runs
 
-Rows: 120
+Rows: 126
 
 #### Columns
 
