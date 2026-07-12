@@ -5,7 +5,7 @@ import { runMaintenance } from "../pipeline/cli.mjs";
 // @ts-expect-error -- the pipeline runtime intentionally uses native .mjs modules.
 import { inspectCityIndex, normalizeIdentifier, refreshCityIndex } from "../pipeline/lib/city-index.mjs";
 // @ts-expect-error -- the pipeline runtime intentionally uses native .mjs modules.
-import { regenerateStructureDocument } from "../pipeline/lib/structure-doc.mjs";
+import { DEFAULT_SCHEMAS, regenerateStructureDocument } from "../pipeline/lib/structure-doc.mjs";
 
 describe("pipeline maintenance", () => {
   test("keeps refresh-city-index read-only unless apply is set", async () => {
@@ -70,6 +70,7 @@ describe("pipeline maintenance", () => {
   });
 
   test("builds a generic structure document and writes only in apply mode", async () => {
+    expect(DEFAULT_SCHEMAS).toContain("fountain_ops");
     const statements: string[] = [];
     const query = vi.fn(async (sql: string) => {
       statements.push(sql);

@@ -2,7 +2,12 @@ import { writeFile as defaultWriteFile } from "node:fs/promises";
 
 import { query as defaultQuery } from "./db.mjs";
 
-export const DEFAULT_SCHEMAS = Object.freeze(["fountain", "fountain_raw", "neon_auth"]);
+export const DEFAULT_SCHEMAS = Object.freeze([
+  "fountain",
+  "fountain_ops",
+  "fountain_raw",
+  "neon_auth",
+]);
 
 export async function regenerateStructureDocument({
   outputPath,

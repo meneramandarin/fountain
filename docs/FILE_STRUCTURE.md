@@ -1,6 +1,6 @@
 # File Structure
 
-Snapshot: 2026-07-11 (post Phase 3)
+Snapshot: 2026-07-11 (post Phase 3 + Pass 1 Gate A)
 
 This is the active repository structure after the conservative Phase 3 cleanup.
 Git records the legacy moves. The retained review assets remain active until a
@@ -11,8 +11,9 @@ Omitted from the listings below:
 - Dependency, build, tool, and secret state: .git/, node_modules/, .next/,
   .venv/, .vercel/, .cache/, .env files, and tsconfig.tsbuildinfo.
 - The 106 local custom-format files under
-  archive/db-dumps/fountain_raw_archive_20260711/. Their committed MANIFEST.md
-  records every payload.
+  archive/db-dumps/fountain_raw_archive_20260711/ and the 28 Pass 1 Step 0
+  payloads under fountain_raw_archive_20260711_pass1_step0/. Their committed
+  MANIFEST.md files record every payload.
 - The 84 worker JSONL files under swarm-browser-output/results/. The entire swarm
   directory remains at the repository root as a Gate A hold.
 - Individual files in the unchanged public/ and most historical docs/ trees.
@@ -47,6 +48,7 @@ manifest. archive/reports/ and archive/scripts-legacy/ each contain 41 files.
 - archive/.gitignore
 - archive/README.md
 - archive/db-dumps/fountain_raw_archive_20260711/MANIFEST.md
+- archive/db-dumps/fountain_raw_archive_20260711_pass1_step0/MANIFEST.md
 
 ### Archived reports
 
@@ -145,6 +147,7 @@ manifest. archive/reports/ and archive/scripts-legacy/ each contain 41 files.
 - pipeline/lib/city-index.mjs
 - pipeline/lib/db.mjs
 - pipeline/lib/ledger.mjs
+- pipeline/lib/legitimacy-sample.mjs
 - pipeline/lib/llm.mjs
 - pipeline/lib/matcher.mjs
 - pipeline/lib/migrations.mjs
@@ -153,6 +156,8 @@ manifest. archive/reports/ and archive/scripts-legacy/ each contain 41 files.
 - pipeline/lib/report.mjs
 - pipeline/lib/runs.mjs
 - pipeline/lib/structure-doc.mjs
+- pipeline/lib/web.mjs
+- pipeline/tasks/legitimacy.mjs
 - pipeline/tasks/llm_smoke.mjs
 - pipeline/tasks/noop.mjs
 
@@ -169,6 +174,8 @@ manifest. archive/reports/ and archive/scripts-legacy/ each contain 41 files.
 - tests/pipeline-cli.test.ts
 - tests/pipeline-db.test.ts
 - tests/pipeline-ledger.test.ts
+- tests/pipeline-legitimacy-sample.test.ts
+- tests/pipeline-legitimacy.test.ts
 - tests/pipeline-llm.test.ts
 - tests/pipeline-maintenance.test.ts
 - tests/pipeline-migrations.test.ts
@@ -177,13 +184,16 @@ manifest. archive/reports/ and archive/scripts-legacy/ each contain 41 files.
 - tests/pipeline-report.test.ts
 - tests/pipeline-runs.test.ts
 - tests/pipeline-tasks.test.ts
+- tests/pipeline-web.test.ts
 - tests/url-sanitize.test.ts
 
 ## Run documents
 
 - docs/runs/phase3-inventory.md
+- docs/runs/pass1-sample-review.md
 - docs/runs/run-4.md
 - docs/runs/run-7.md
+- docs/runs/run-21.md
 
 ## Migrations
 
@@ -220,9 +230,11 @@ manifest. archive/reports/ and archive/scripts-legacy/ each contain 41 files.
 - swarm-browser-output/
 - swarm-browser-output/results/ (84 worker JSONL files across campaign run directories)
 
-## Database shape after Phase 3
+## Database shape after Pass 1 Gate A
 
 The generated docs/NEON_DATABASE_STRUCTURE_CURRENT.md is the authoritative live
-schema snapshot. fountain_raw now contains 49 tables: the 10 permanent raw
-keep-list tables plus the 39 conservative holds. It contains 10 owned sequences and
-zero orphan sequences.
+schema snapshot. fountain_raw now contains 21 tables: the 10 permanent raw
+keep-list tables plus 11 unresolved workflow/review holds. It contains five owned
+sequences and zero orphan sequences. fountain_ops contains the 300-row Gate A task
+cohort plus its run and external-call ledger evidence; no Gate A serving writes were
+performed.

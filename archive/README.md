@@ -8,9 +8,11 @@ active Fountain runtime.
   supported commands; relative imports were intentionally not rewritten.
 - reports/ contains the root-level JSON reports and checkpoints produced by those
   campaigns.
-- db-dumps/fountain_raw_archive_20260711/ contains the committed manifest for the
-  Phase 3 raw-table archive. The custom-format .dump payloads and operational
-  metadata stay local and are ignored by Git.
+- db-dumps/fountain_raw_archive_20260711/ and
+  db-dumps/fountain_raw_archive_20260711_pass1_step0/ contain the committed
+  manifests for the Phase 3 and Pass 1 Step 0 raw-table archives. The
+  custom-format .dump payloads and operational metadata stay local and are
+  ignored by Git.
 
 The live application continues to use Neon Postgres only. Legacy SQLite databases
 and sidecars remain ignored here.
@@ -22,8 +24,8 @@ sequences, TOC verification, and scratch-restore results. Keep the entire local 
 directory together when making a backup.
 
 The repository copy is not an off-machine backup because dump payloads are ignored.
-Copy archive/db-dumps/fountain_raw_archive_20260711/ to an encrypted external drive
-or private cloud storage after this phase. No upload is performed by the pipeline or
+Copy both dated archive/db-dumps/ directories to an encrypted external drive or
+private cloud storage after this phase. No upload is performed by the pipeline or
 by this cleanup.
 
 To restore a table later, use the matching PostgreSQL major-version pg_restore

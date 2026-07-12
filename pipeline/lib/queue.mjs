@@ -102,23 +102,35 @@ export async function enqueueTasks({
   };
 }
 
-export async function previewDrain({ taskType, limit = 10 }, options = {}) {
+export async function previewDrain({ taskType, limit = 10, stage = null }, options = {}) {
   const query = options.query || defaultQuery;
+  const normalizedStage = optionalStage(stage);
+  const params = [taskType];
+  const stageClause = normalizedStage === null
+    ? ""
+    : `AND payload->>'stage' = $${params.push(normalizedStage)}`;
+  const limitParameter = `$${params.push(positiveInteger(limit, "limit"))}`;
   const result = await query(
     `
-      SELECT id, task_type, entity_type, entity_id, priority, attempts, max_attempts
+      SELECT id, task_type, entity_type, entity_id, priority, payload, attempts, max_attempts
       FROM fountain_ops.task_queue
       WHERE task_type = $1 AND status = 'pending' AND attempts < max_attempts
+        ${stageClause}
       ORDER BY priority, id
-      LIMIT $2
+      LIMIT ${limitParameter}
     `,
-    [taskType, positiveInteger(limit, "limit")],
+    params,
   );
   return result.rows;
 }
 
-export async function claimTask({ taskType, workerId, runId }, options = {}) {
+export async function claimTask({ taskType, workerId, runId, stage = null }, options = {}) {
   const query = options.query || defaultQuery;
+  const normalizedStage = optionalStage(stage);
+  const params = [taskType, workerId, runId];
+  const stageClause = normalizedStage === null
+    ? ""
+    : `AND payload->>'stage' = $${params.push(normalizedStage)}`;
   const result = await query(
     `
       WITH next_task AS (
@@ -127,6 +139,7 @@ export async function claimTask({ taskType, workerId, runId }, options = {}) {
         WHERE task_type = $1
           AND status = 'pending'
           AND attempts < max_attempts
+          ${stageClause}
         ORDER BY priority, id
         FOR UPDATE SKIP LOCKED
         LIMIT 1
@@ -143,9 +156,71 @@ export async function claimTask({ taskType, workerId, runId }, options = {}) {
       WHERE q.id = next_task.id
       RETURNING q.*
     `,
-    [taskType, workerId, runId],
+    params,
   );
   return result.rows[0] || null;
+}
+
+export async function claimTasks({ taskType, workerId, runId, limit, stage = null }, options = {}) {
+  const query = options.query || defaultQuery;
+  const normalizedStage = optionalStage(stage);
+  const batchSize = positiveInteger(limit, "limit");
+  const result = await query(
+    `
+      WITH next_tasks AS (
+        SELECT id, priority
+        FROM fountain_ops.task_queue
+        WHERE task_type = $1
+          AND status = 'pending'
+          AND attempts < max_attempts
+          AND ($4::text IS NULL OR payload->>'stage' = $4)
+        ORDER BY priority, id
+        FOR UPDATE SKIP LOCKED
+        LIMIT $5
+      ), claimed AS (
+        UPDATE fountain_ops.task_queue q
+        SET status = 'claimed',
+            attempts = q.attempts + 1,
+            claimed_by = $2,
+            claimed_at = now(),
+            run_id = $3,
+            error = NULL,
+            updated_at = now()
+        FROM next_tasks
+        WHERE q.id = next_tasks.id
+        RETURNING q.*
+      )
+      SELECT claimed.*
+      FROM claimed
+      JOIN next_tasks ON next_tasks.id = claimed.id
+      ORDER BY next_tasks.priority, next_tasks.id
+    `,
+    [taskType, workerId, runId, normalizedStage, batchSize],
+  );
+  return result.rows;
+}
+
+export async function transitionTaskStage({ taskId, workerId, runId, payload }, options = {}) {
+  const query = options.query || defaultQuery;
+  const normalizedPayload = stagePayload(payload);
+  const updated = await query(
+    `
+      UPDATE fountain_ops.task_queue
+      SET status = 'pending',
+          payload = $4::jsonb,
+          attempts = 0,
+          claimed_by = NULL,
+          claimed_at = NULL,
+          result = NULL,
+          error = NULL,
+          updated_at = now()
+      WHERE id = $1 AND status = 'claimed' AND claimed_by = $2 AND run_id = $3
+      RETURNING *
+    `,
+    [taskId, workerId, runId, JSON.stringify(normalizedPayload)],
+  );
+  if (!updated.rows[0]) throw new Error(`Worker ${workerId} no longer owns task ${taskId}.`);
+  return updated.rows[0];
 }
 
 export async function completeTask({ taskId, workerId, runId, result }, options = {}) {
@@ -256,4 +331,23 @@ function positiveInteger(value, name) {
   const parsed = integer(value, name);
   if (parsed <= 0) throw new Error(`${name} must be greater than zero.`);
   return parsed;
+}
+
+function optionalStage(value) {
+  if (value == null) return null;
+  if (typeof value !== "string" || !value.trim()) {
+    throw new Error("stage must be a non-empty string when provided.");
+  }
+  return value.trim();
+}
+
+function stagePayload(value) {
+  if (!value || typeof value !== "object" || Array.isArray(value)) {
+    throw new Error("payload must be an object.");
+  }
+  const stage = optionalStage(value.stage);
+  if (stage === null) {
+    throw new Error("payload.stage is required for a stage transition.");
+  }
+  return { ...value, stage };
 }
