@@ -14,12 +14,12 @@ describe("offering labels", () => {
     });
   });
 
-  test("shows reviewed brand context", () => {
+  test("keeps brand taxonomy available without rendering it as a second label", () => {
     expect(getOfferingLabels({
       raw_name: "Dysport",
       treatment: "Botox",
       treatment_display_mode: "raw_and_canonical",
-    })).toEqual({ primary: "Dysport", secondary: "Botox" });
+    })).toEqual({ primary: "Dysport", secondary: null });
   });
 
   test("does not repeat equivalent labels even when dual display is requested", () => {
@@ -30,12 +30,12 @@ describe("offering labels", () => {
     })).toEqual({ primary: "Full Body MRI", secondary: null });
   });
 
-  test("can prefer the canonical label for an overly broad source term", () => {
+  test("does not replace clinic wording with a canonical label", () => {
     expect(getOfferingLabels({
       raw_name: "exercise",
       treatment: "Exercise programming",
       treatment_display_mode: "canonical_only",
-    })).toEqual({ primary: "Exercise programming", secondary: null });
+    })).toEqual({ primary: "Exercise", secondary: null });
   });
 
   test("capitalizes the source-facing offering label without changing its casing", () => {

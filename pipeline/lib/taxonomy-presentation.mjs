@@ -64,6 +64,7 @@ export const LOAD_PENDING_TAXONOMY_PRESENTATIONS_SQL = `
       (array_agg(alias.alias_text ORDER BY length(alias.alias_text), alias.alias_text))[1] AS display_term,
       count(*)::integer AS alias_rows
     FROM fountain_raw.treatment_aliases alias
+    WHERE alias.mapping_status = 'active'
     GROUP BY alias.treatment_id, alias.alias_normalized
   ), exact_usage AS (
     SELECT

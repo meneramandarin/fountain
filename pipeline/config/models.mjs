@@ -1,5 +1,6 @@
 const GPT_4O_MINI = "openai/gpt-4o-mini";
 const GEMINI_3_5_FLASH = "google/gemini-3.5-flash";
+const GPT_5_5 = "openai/gpt-5.5";
 
 /**
  * Task code selects a tier, not a provider model name. Keep tier mappings on
@@ -22,6 +23,10 @@ export const MODEL_PRICES_USD_PER_MILLION = Object.freeze({
   [GEMINI_3_5_FLASH]: Object.freeze({
     input: 1.5,
     output: 9,
+  }),
+  [GPT_5_5]: Object.freeze({
+    input: 5,
+    output: 30,
   }),
 });
 

@@ -1,6 +1,6 @@
 # Neon Database Structure Current
 
-Generated: 2026-07-12T18:08:24.264Z
+Generated: 2026-07-12T19:00:33.454Z
 Snapshot source: live Neon database
 
 This document is generated from the live Neon database. It records structural metadata and point-in-time row counts for the configured schemas.
@@ -14,8 +14,8 @@ This document is generated from the live Neon database. It records structural me
 | fountain | table | 22 |
 | fountain_ops | sequence | 3 |
 | fountain_ops | table | 4 |
-| fountain_raw | sequence | 6 |
-| fountain_raw | table | 21 |
+| fountain_raw | sequence | 7 |
+| fountain_raw | table | 23 |
 | neon_auth | table | 9 |
 
 ## Installed Extensions
@@ -35,7 +35,7 @@ This document is generated from the live Neon database. It records structural me
 | fountain | affiliations | 96 |
 | fountain | city_index | 2272 |
 | fountain | clinic_claims | 0 |
-| fountain | entity_change_events | 119044 |
+| fountain | entity_change_events | 119296 |
 | fountain | entity_tags | 5478 |
 | fountain | external_place_matches | 7554 |
 | fountain | images | 32834 |
@@ -44,7 +44,7 @@ This document is generated from the live Neon database. It records structural me
 | fountain | offering_display_suppressions | 1360 |
 | fountain | offerings | 106792 |
 | fountain | organizations | 8195 |
-| fountain | outbound_clicks | 95 |
+| fountain | outbound_clicks | 104 |
 | fountain | practitioners | 1303 |
 | fountain | reviews | 33606 |
 | fountain | search_index | 8481 |
@@ -53,9 +53,9 @@ This document is generated from the live Neon database. It records structural me
 | fountain | tags | 36 |
 | fountain | treatment_term_presentations | 3562 |
 | fountain | treatments | 103 |
-| fountain_ops | external_calls | 41915 |
-| fountain_ops | field_status | 29545 |
-| fountain_ops | runs | 126 |
+| fountain_ops | external_calls | 41973 |
+| fountain_ops | field_status | 29548 |
+| fountain_ops | runs | 134 |
 | fountain_ops | task_queue | 40793 |
 | fountain_raw | browser_swarm_image_ingest_20260708 | 1673 |
 | fountain_raw | browser_swarm_menu_ingest_20260708 | 25198 |
@@ -77,6 +77,8 @@ This document is generated from the live Neon database. It records structural me
 | fountain_raw | suppressed_source_listings | 10116 |
 | fountain_raw | taxonomy_final_triage_20260711 | 43647 |
 | fountain_raw | treatment_aliases | 3577 |
+| fountain_raw | treatment_mapping_offering_backup | 606 |
+| fountain_raw | treatment_mapping_reviews | 337 |
 | fountain_raw | unmapped_terms | 74329 |
 | neon_auth | account | 0 |
 | neon_auth | invitation | 0 |
@@ -268,7 +270,7 @@ Rows: 0
 
 ### fountain.entity_change_events
 
-Rows: 119044
+Rows: 119296
 
 #### Columns
 
@@ -689,7 +691,7 @@ Rows: 8195
 
 ### fountain.outbound_clicks
 
-Rows: 95
+Rows: 104
 
 #### Columns
 
@@ -1037,7 +1039,7 @@ Rows: 103
 
 ### fountain_ops.external_calls
 
-Rows: 41915
+Rows: 41973
 
 #### Columns
 
@@ -1085,7 +1087,7 @@ _None._
 
 ### fountain_ops.field_status
 
-Rows: 29545
+Rows: 29548
 
 #### Columns
 
@@ -1121,7 +1123,7 @@ _None._
 
 ### fountain_ops.runs
 
-Rows: 126
+Rows: 134
 
 #### Columns
 
@@ -1921,12 +1923,19 @@ Rows: 3577
 | 3 | alias_text | text | text | NO |  |
 | 4 | alias_normalized | text | text | NO |  |
 | 5 | source_slug | text | text | YES |  |
+| 6 | mapping_status | text | text | NO | 'needs_review'::text |
+| 7 | mapping_confidence | double precision | float8 | YES |  |
+| 8 | mapping_review_model | text | text | YES |  |
+| 9 | mapping_reviewed_at | timestamp with time zone | timestamptz | YES |  |
+| 10 | mapping_review_rationale | text | text | YES |  |
 
 #### Constraints
 
 | name | type | definition |
 | --- | --- | --- |
 | treatment_aliases_alias_normalized_source_slug_key | u | UNIQUE (alias_normalized, source_slug) |
+| treatment_aliases_mapping_confidence_valid | c | CHECK (mapping_confidence IS NULL OR mapping_confidence >= 0::double precision AND mapping_confidence <= 1::double precision) |
+| treatment_aliases_mapping_status_valid | c | CHECK (mapping_status = ANY (ARRAY['active'::text, 'rejected'::text, 'needs_review'::text])) |
 | treatment_aliases_pkey | p | PRIMARY KEY (id) |
 | treatment_aliases_treatment_id_fkey | f | FOREIGN KEY (treatment_id) REFERENCES treatments(id) |
 
@@ -1936,8 +1945,94 @@ Rows: 3577
 | --- | --- |
 | idx_aliases_norm | CREATE INDEX idx_aliases_norm ON fountain_raw.treatment_aliases USING btree (alias_normalized) |
 | idx_treatment_aliases_treatment_term | CREATE INDEX idx_treatment_aliases_treatment_term ON fountain_raw.treatment_aliases USING btree (treatment_id, alias_normalized) |
+| treatment_aliases_active_normalized_idx | CREATE INDEX treatment_aliases_active_normalized_idx ON fountain_raw.treatment_aliases USING btree (alias_normalized, treatment_id) WHERE (mapping_status = 'active'::text) |
 | treatment_aliases_alias_normalized_source_slug_key | CREATE UNIQUE INDEX treatment_aliases_alias_normalized_source_slug_key ON fountain_raw.treatment_aliases USING btree (alias_normalized, source_slug) |
 | treatment_aliases_pkey | CREATE UNIQUE INDEX treatment_aliases_pkey ON fountain_raw.treatment_aliases USING btree (id) |
+
+#### Triggers
+
+_None._
+
+### fountain_raw.treatment_mapping_offering_backup
+
+Rows: 606
+
+#### Columns
+
+| pos | column | type | udt | nullable | default |
+| --- | --- | --- | --- | --- | --- |
+| 1 | review_id | bigint | int8 | NO |  |
+| 2 | offering_id | bigint | int8 | NO |  |
+| 3 | previous_treatment_id | integer | int4 | YES |  |
+| 4 | restored_at | timestamp with time zone | timestamptz | YES |  |
+| 5 | created_at | timestamp with time zone | timestamptz | NO | now() |
+
+#### Constraints
+
+| name | type | definition |
+| --- | --- | --- |
+| treatment_mapping_offering_backup_offering_id_fkey | f | FOREIGN KEY (offering_id) REFERENCES offerings(id) |
+| treatment_mapping_offering_backup_pkey | p | PRIMARY KEY (review_id, offering_id) |
+| treatment_mapping_offering_backup_previous_treatment_id_fkey | f | FOREIGN KEY (previous_treatment_id) REFERENCES treatments(id) |
+| treatment_mapping_offering_backup_review_id_fkey | f | FOREIGN KEY (review_id) REFERENCES fountain_raw.treatment_mapping_reviews(id) |
+
+#### Indexes
+
+| name | definition |
+| --- | --- |
+| treatment_mapping_offering_backup_pkey | CREATE UNIQUE INDEX treatment_mapping_offering_backup_pkey ON fountain_raw.treatment_mapping_offering_backup USING btree (review_id, offering_id) |
+
+#### Triggers
+
+_None._
+
+### fountain_raw.treatment_mapping_reviews
+
+Rows: 337
+
+#### Columns
+
+| pos | column | type | udt | nullable | default |
+| --- | --- | --- | --- | --- | --- |
+| 1 | id | bigint | int8 | NO | nextval('fountain_raw.treatment_mapping_reviews_id_seq'::regclass) |
+| 2 | run_id | bigint | int8 | NO |  |
+| 3 | term_normalized | text | text | NO |  |
+| 4 | display_term | text | text | NO |  |
+| 5 | old_treatment_id | integer | int4 | NO |  |
+| 6 | proposed_treatment_id | integer | int4 | YES |  |
+| 7 | first_pass | jsonb | jsonb | NO |  |
+| 8 | second_pass | jsonb | jsonb | YES |  |
+| 9 | final_decision | text | text | NO |  |
+| 10 | consensus_confidence | double precision | float8 | YES |  |
+| 11 | model | text | text | NO |  |
+| 12 | prompt_version | text | text | NO |  |
+| 13 | review_status | text | text | NO |  |
+| 14 | applied | boolean | bool | NO | false |
+| 15 | affected_alias_ids | ARRAY | _int4 | NO | '{}'::integer[] |
+| 16 | affected_offering_ids | ARRAY | _int8 | NO | '{}'::bigint[] |
+| 17 | created_at | timestamp with time zone | timestamptz | NO | now() |
+| 18 | applied_at | timestamp with time zone | timestamptz | YES |  |
+
+#### Constraints
+
+| name | type | definition |
+| --- | --- | --- |
+| treatment_mapping_reviews_confidence_valid | c | CHECK (consensus_confidence IS NULL OR consensus_confidence >= 0::double precision AND consensus_confidence <= 1::double precision) |
+| treatment_mapping_reviews_decision_valid | c | CHECK (final_decision = ANY (ARRAY['keep_mapping'::text, 'remap_existing'::text, 'unmap_valid_service'::text, 'reject_non_service'::text, 'unresolved'::text])) |
+| treatment_mapping_reviews_old_treatment_id_fkey | f | FOREIGN KEY (old_treatment_id) REFERENCES treatments(id) |
+| treatment_mapping_reviews_pkey | p | PRIMARY KEY (id) |
+| treatment_mapping_reviews_proposed_treatment_id_fkey | f | FOREIGN KEY (proposed_treatment_id) REFERENCES treatments(id) |
+| treatment_mapping_reviews_run_id_fkey | f | FOREIGN KEY (run_id) REFERENCES fountain_ops.runs(id) |
+| treatment_mapping_reviews_run_id_term_normalized_old_treatm_key | u | UNIQUE (run_id, term_normalized, old_treatment_id) |
+| treatment_mapping_reviews_status_valid | c | CHECK (review_status = ANY (ARRAY['consensus'::text, 'needs_review'::text, 'applied'::text, 'not_applicable'::text])) |
+
+#### Indexes
+
+| name | definition |
+| --- | --- |
+| treatment_mapping_reviews_pkey | CREATE UNIQUE INDEX treatment_mapping_reviews_pkey ON fountain_raw.treatment_mapping_reviews USING btree (id) |
+| treatment_mapping_reviews_queue_idx | CREATE INDEX treatment_mapping_reviews_queue_idx ON fountain_raw.treatment_mapping_reviews USING btree (review_status, final_decision, created_at DESC) |
+| treatment_mapping_reviews_run_id_term_normalized_old_treatm_key | CREATE UNIQUE INDEX treatment_mapping_reviews_run_id_term_normalized_old_treatm_key ON fountain_raw.treatment_mapping_reviews USING btree (run_id, term_normalized, old_treatment_id) |
 
 #### Triggers
 
