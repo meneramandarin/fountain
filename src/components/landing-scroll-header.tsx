@@ -16,9 +16,10 @@ export function LandingScrollHeader({ alwaysVisible = false }: { alwaysVisible?:
     let animationFrame = 0;
 
     function updateVisibility() {
-      const heroSearch = document.querySelector<HTMLElement>(".landing-hero-search .split-search");
-      const triggerLine = 0;
-      const shouldShow = heroSearch ? heroSearch.getBoundingClientRect().bottom <= triggerLine : window.scrollY > 220;
+      const heroSearch = document.querySelector<HTMLElement>(
+        ".landing-hero-search .split-search, .directory-search .split-search",
+      );
+      const shouldShow = heroSearch ? heroSearch.getBoundingClientRect().bottom <= 0 : window.scrollY > 220;
 
       setIsVisible(shouldShow);
     }

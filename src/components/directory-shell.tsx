@@ -1,6 +1,7 @@
 "use client";
 
 import { LandingFooter } from "@/components/landing-footer";
+import { LandingScrollHeader } from "@/components/landing-scroll-header";
 import { DirectoryLocationCard, type DirectoryLocationCardData } from "@/components/directory-location-card";
 import { DirectoryMap } from "@/components/directory-map";
 import { ArrowLeft, ArrowRight, Loader2, MapPin, Stethoscope } from "lucide-react";
@@ -99,6 +100,7 @@ export function DirectoryShell({
   const [loading, setLoading] = useState(false);
   const [visitorLocation, setVisitorLocation] = useState<VisitorLocation | null>(null);
   const [activeLocationId, setActiveLocationId] = useState<number | null>(null);
+  const resultsRef = useRef<HTMLElement>(null);
 
   const queryString = useMemo(() => {
     const params = new URLSearchParams();
@@ -190,6 +192,14 @@ export function DirectoryShell({
     setState((current) => ({ ...current, ...patch, page: patch.page ?? 0 }));
   }, []);
 
+  const changePage = useCallback((page: number) => {
+    const resultsTop = resultsRef.current?.getBoundingClientRect().top;
+    if (typeof resultsTop === "number") {
+      window.scrollTo({ top: Math.max(0, window.scrollY + resultsTop - 90), behavior: "smooth" });
+    }
+    updateState({ page });
+  }, [updateState]);
+
   const submitSearch = useCallback((payload: { what: string; city_label: string; city_country: string; place_type?: string; city_lat?: number; city_lng?: number }) => {
     const isCountry = payload.place_type === "country" && payload.city_country;
     const nextState = {
@@ -228,6 +238,7 @@ export function DirectoryShell({
 
   return (
     <main className="directory-shell">
+      <LandingScrollHeader />
       <section className="directory-hero" aria-label="Directory search">
         <header className="directory-topbar">
           <Link className="landing-brand directory-brand" href="/">
@@ -256,7 +267,7 @@ export function DirectoryShell({
       </section>
 
       <div className="directory-layout">
-        <section className="directory-results" aria-live="polite">
+        <section ref={resultsRef} className="directory-results" aria-live="polite">
           <DirectorySearchBanner payload={payload} />
 
           <div className="resultbar">
@@ -290,8 +301,8 @@ export function DirectoryShell({
           <Pager
             payload={payload}
             loading={loading}
-            onPrevious={() => updateState({ page: Math.max(0, state.page - 1) })}
-            onNext={() => updateState({ page: state.page + 1 })}
+            onPrevious={() => changePage(Math.max(0, state.page - 1))}
+            onNext={() => changePage(state.page + 1)}
           />
         </section>
         {state.kind === "locations" ? (
