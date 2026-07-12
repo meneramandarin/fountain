@@ -80,6 +80,13 @@ import { executeMigrationSql, loadMigrationFile } from "./lib/migrations.mjs";
 import { createOpenRouterAgentWebSearch } from "./lib/openrouter-web-search.mjs";
 import { recomputeOfferingDisplay } from "./lib/offering-display.mjs";
 import {
+  OFFERING_TRANSLATION_BATCH_SIZE,
+  OFFERING_TRANSLATION_CONCURRENCY,
+  OFFERING_TRANSLATION_MODEL,
+  OFFERING_TRANSLATION_VERIFICATION_MODEL,
+  runOfferingTranslation,
+} from "./lib/offering-translations.mjs";
+import {
   applyLegitimacyRedemptions,
   LEGITIMACY_REDEMPTION_REPORT_PATH,
   loadLegitimacyRedemptionCohort,
@@ -210,6 +217,7 @@ export function validateCommandArgs(parsed) {
     maintain: new Set(["schema", "output", "apply", "dryRun"]),
     "taxonomy-present": new Set(["model", "batchSize", "concurrency", "limit", "budget", "apply", "dryRun"]),
     "offering-display": new Set(["locationId", "apply", "dryRun"]),
+    "offering-translate": new Set(["locationId", "model", "verificationModel", "batchSize", "concurrency", "limit", "budget", "apply", "dryRun"]),
   };
   const allowed = allowedByCommand[parsed.command];
   if (!allowed) throw new Error(`Unknown command: ${parsed.command}\n${usage()}`);
@@ -262,6 +270,8 @@ async function dispatchCommand(parsed, run) {
       return runTaxonomyPresent(parsed, run);
     case "offering-display":
       return runOfferingDisplay(parsed, run);
+    case "offering-translate":
+      return runOfferingTranslate(parsed, run);
     default:
       throw new Error(`Unknown command: ${parsed.command}\n${usage()}`);
   }
@@ -1536,6 +1546,42 @@ export async function runOfferingDisplay(parsed, run, operations = {}) {
   };
 }
 
+export async function runOfferingTranslate(parsed, run, operations = {}) {
+  const execute = operations.runOfferingTranslation || runOfferingTranslation;
+  const locationId = parsed.locationId == null ? null : positiveInteger(parsed.locationId, "--location-id");
+  const model = parsed.model || OFFERING_TRANSLATION_MODEL;
+  const verificationModel = parsed.verificationModel || OFFERING_TRANSLATION_VERIFICATION_MODEL;
+  const batchSize = parsed.batchSize == null
+    ? OFFERING_TRANSLATION_BATCH_SIZE
+    : positiveInteger(parsed.batchSize, "--batch-size");
+  const concurrency = parsed.concurrency == null
+    ? OFFERING_TRANSLATION_CONCURRENCY
+    : positiveInteger(parsed.concurrency, "--concurrency");
+  const limit = parsed.limit == null ? 100_000 : positiveInteger(parsed.limit, "--limit");
+  const budgetUsd = parsed.budget == null ? null : nonnegativeNumber(parsed.budget, "--budget");
+  const outcome = await execute({
+    query: operations.query || dbQuery,
+    runId: run.id,
+    apply: !run.dry_run,
+    locationId,
+    model,
+    verificationModel,
+    batchSize,
+    concurrency,
+    limit,
+    budgetUsd,
+    ...(operations.llmClient ? { llmClient: operations.llmClient } : {}),
+    onProgress: operations.onProgress || ((progress) => {
+      console.error(`offering-translate batch ${progress.completedBatches}/${progress.totalBatches}; classified ${progress.classified}`);
+    }),
+  });
+  return {
+    status: outcome.budget_exhausted ? "budget_exhausted" : "completed",
+    counts: outcome,
+    result: { dryRun: run.dry_run, locationId, model, verificationModel, batchSize, concurrency, limit, budgetUsd, ...outcome },
+  };
+}
+
 export async function runMaintenance(parsed, run, operations = {}) {
   const subcommand = parsed.positional[0];
   if (subcommand === "regen-structure-doc") {
@@ -1662,6 +1708,9 @@ function validateCampaignOptions(parsed) {
 
   if (parsed.command === "taxonomy-present" && parsed.apply && parsed.budget == null) {
     throw new Error("taxonomy-present --apply requires an explicit --budget.");
+  }
+  if (parsed.command === "offering-translate" && parsed.apply && parsed.budget == null) {
+    throw new Error("offering-translate --apply requires an explicit --budget.");
   }
 
   if (parsed.command === "drain") {
@@ -1795,10 +1844,11 @@ function nonnegativeNumber(value, flag) {
 function usage() {
   return [
     "Usage: node pipeline/cli.mjs <command> [options]",
-    "Commands: enqueue, drain, report, suppress, stage3, redemption, final-report, migrate, census, maintain, taxonomy-present, offering-display",
+    "Commands: enqueue, drain, report, suppress, stage3, redemption, final-report, migrate, census, maintain, taxonomy-present, offering-display, offering-translate",
     "Final closeout: final-report --runs-file <selection.json> [--before <json>] [--after <json>] [--menu-prices-before <json>] [--output <md>] [--apply]",
     "Taxonomy presentation: taxonomy-present [--model <slug>] [--batch-size <n>] [--concurrency <n>] [--limit <n>] [--budget <usd>] [--apply]",
     "Offering display: offering-display [--location-id <id>] [--apply]",
+    "Offering translation: offering-translate [--location-id <id>] [--model <slug>] [--verification-model <slug>] [--batch-size <n>] [--concurrency <n>] [--limit <n>] [--budget <usd>] [--apply]",
     "Maintenance: regen-structure-doc, refresh-city-index",
     "Persistent side effects require --apply; dry-run is the default.",
   ].join("\n");

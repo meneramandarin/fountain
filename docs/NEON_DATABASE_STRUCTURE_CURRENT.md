@@ -1,6 +1,6 @@
 # Neon Database Structure Current
 
-Generated: 2026-07-12T19:00:33.454Z
+Generated: 2026-07-12T20:28:46.730Z
 Snapshot source: live Neon database
 
 This document is generated from the live Neon database. It records structural metadata and point-in-time row counts for the configured schemas.
@@ -11,7 +11,7 @@ This document is generated from the live Neon database. It records structural me
 | --- | --- | --- |
 | fountain | function | 96 |
 | fountain | sequence | 16 |
-| fountain | table | 22 |
+| fountain | table | 23 |
 | fountain_ops | sequence | 3 |
 | fountain_ops | table | 4 |
 | fountain_raw | sequence | 7 |
@@ -35,16 +35,17 @@ This document is generated from the live Neon database. It records structural me
 | fountain | affiliations | 96 |
 | fountain | city_index | 2272 |
 | fountain | clinic_claims | 0 |
-| fountain | entity_change_events | 119296 |
+| fountain | entity_change_events | 119300 |
 | fountain | entity_tags | 5478 |
 | fountain | external_place_matches | 7554 |
 | fountain | images | 32834 |
 | fountain | listing_submissions | 0 |
 | fountain | locations | 13878 |
-| fountain | offering_display_suppressions | 1360 |
+| fountain | offering_display_suppressions | 2879 |
+| fountain | offering_term_translations | 53755 |
 | fountain | offerings | 106792 |
 | fountain | organizations | 8195 |
-| fountain | outbound_clicks | 104 |
+| fountain | outbound_clicks | 110 |
 | fountain | practitioners | 1303 |
 | fountain | reviews | 33606 |
 | fountain | search_index | 8481 |
@@ -53,9 +54,9 @@ This document is generated from the live Neon database. It records structural me
 | fountain | tags | 36 |
 | fountain | treatment_term_presentations | 3562 |
 | fountain | treatments | 103 |
-| fountain_ops | external_calls | 41973 |
-| fountain_ops | field_status | 29548 |
-| fountain_ops | runs | 134 |
+| fountain_ops | external_calls | 43520 |
+| fountain_ops | field_status | 29550 |
+| fountain_ops | runs | 153 |
 | fountain_ops | task_queue | 40793 |
 | fountain_raw | browser_swarm_image_ingest_20260708 | 1673 |
 | fountain_raw | browser_swarm_menu_ingest_20260708 | 25198 |
@@ -270,7 +271,7 @@ Rows: 0
 
 ### fountain.entity_change_events
 
-Rows: 119296
+Rows: 119300
 
 #### Columns
 
@@ -547,7 +548,7 @@ Rows: 13878
 
 ### fountain.offering_display_suppressions
 
-Rows: 1360
+Rows: 2879
 
 #### Columns
 
@@ -582,6 +583,51 @@ Rows: 1360
 | offering_display_suppressions_location_active_idx | CREATE INDEX offering_display_suppressions_location_active_idx ON fountain.offering_display_suppressions USING btree (location_id, active) |
 | offering_display_suppressions_pkey | CREATE UNIQUE INDEX offering_display_suppressions_pkey ON fountain.offering_display_suppressions USING btree (offering_id) |
 | offering_display_suppressions_winner_idx | CREATE INDEX offering_display_suppressions_winner_idx ON fountain.offering_display_suppressions USING btree (winner_offering_id) |
+
+#### Triggers
+
+_None._
+
+### fountain.offering_term_translations
+
+Rows: 53755
+
+#### Columns
+
+| pos | column | type | udt | nullable | default |
+| --- | --- | --- | --- | --- | --- |
+| 1 | source_text | text | text | NO |  |
+| 2 | source_language | text | text | NO |  |
+| 3 | english_text | text | text | NO |  |
+| 4 | is_english | boolean | bool | NO |  |
+| 5 | confidence | double precision | float8 | NO |  |
+| 6 | model | text | text | NO |  |
+| 7 | prompt_version | text | text | NO |  |
+| 8 | review_status | text | text | NO |  |
+| 9 | last_run_id | bigint | int8 | YES |  |
+| 10 | rationale | text | text | YES |  |
+| 11 | created_at | timestamp with time zone | timestamptz | NO | now() |
+| 12 | updated_at | timestamp with time zone | timestamptz | NO | now() |
+
+#### Constraints
+
+| name | type | definition |
+| --- | --- | --- |
+| offering_term_translations_confidence_valid | c | CHECK (confidence >= 0::double precision AND confidence <= 1::double precision) |
+| offering_term_translations_english_nonempty | c | CHECK (btrim(english_text) <> ''::text) |
+| offering_term_translations_language_nonempty | c | CHECK (btrim(source_language) <> ''::text) |
+| offering_term_translations_last_run_id_fkey | f | FOREIGN KEY (last_run_id) REFERENCES fountain_ops.runs(id) |
+| offering_term_translations_pkey | p | PRIMARY KEY (source_text) |
+| offering_term_translations_review_status_valid | c | CHECK (review_status = ANY (ARRAY['auto_approved'::text, 'needs_review'::text, 'human_approved'::text, 'human_rejected'::text])) |
+| offering_term_translations_source_nonempty | c | CHECK (btrim(source_text) <> ''::text) |
+
+#### Indexes
+
+| name | definition |
+| --- | --- |
+| offering_term_translations_pkey | CREATE UNIQUE INDEX offering_term_translations_pkey ON fountain.offering_term_translations USING btree (source_text) |
+| offering_term_translations_review_idx | CREATE INDEX offering_term_translations_review_idx ON fountain.offering_term_translations USING btree (review_status, is_english, updated_at DESC) |
+| offering_term_translations_run_idx | CREATE INDEX offering_term_translations_run_idx ON fountain.offering_term_translations USING btree (last_run_id) |
 
 #### Triggers
 
@@ -691,7 +737,7 @@ Rows: 8195
 
 ### fountain.outbound_clicks
 
-Rows: 104
+Rows: 110
 
 #### Columns
 
@@ -1039,7 +1085,7 @@ Rows: 103
 
 ### fountain_ops.external_calls
 
-Rows: 41973
+Rows: 43520
 
 #### Columns
 
@@ -1087,7 +1133,7 @@ _None._
 
 ### fountain_ops.field_status
 
-Rows: 29548
+Rows: 29550
 
 #### Columns
 
@@ -1123,7 +1169,7 @@ _None._
 
 ### fountain_ops.runs
 
-Rows: 134
+Rows: 153
 
 #### Columns
 

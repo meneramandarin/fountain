@@ -5,6 +5,7 @@ import { recordWrite as defaultRecordWrite } from "../lib/ledger.mjs";
 import { createLlmClient } from "../lib/llm.mjs";
 import { normalizeName, normalizeWebsiteDomain } from "../lib/matcher.mjs";
 import { recomputeOfferingDisplay } from "../lib/offering-display.mjs";
+import { runOfferingTranslation } from "../lib/offering-translations.mjs";
 import { createWebClient } from "../lib/web.mjs";
 
 export const MENU_EXTRACT_SCHEMA_VERSION = 1;
@@ -214,6 +215,7 @@ export async function handleMenuExtract(
     extract = extractOfferingsWithLlm,
     apply = guardedApplyMenuExtraction,
     recomputeDisplay = recomputeOfferingDisplay,
+    translateOfferings = runOfferingTranslation,
   } = {},
 ) {
   const taskId = positiveIntegerString(task?.id, "task.id");
@@ -282,6 +284,25 @@ export async function handleMenuExtract(
   const displayResolution = applied.serving_write?.written
     ? await recomputeDisplay({ query, locationId, apply: true })
     : null;
+  let translationResolution = null;
+  if (applied.serving_write?.written) {
+    try {
+      translationResolution = await translateOfferings({
+        query,
+        runId,
+        locationId,
+        apply: true,
+        concurrency: 1,
+        limit: 1_000,
+        llmClient,
+      });
+    } catch (error) {
+      translationResolution = {
+        status: "error",
+        error: String(error?.message || error).slice(0, 1_000),
+      };
+    }
+  }
 
   return {
     schema_version: MENU_EXTRACT_SCHEMA_VERSION,
@@ -309,6 +330,7 @@ export async function handleMenuExtract(
           suppressions_deactivated: displayResolution.write.deactivated_suppressions,
         }
       : null,
+    translation_resolution: translationResolution,
   };
 }
 

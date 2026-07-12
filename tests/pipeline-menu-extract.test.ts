@@ -244,6 +244,14 @@ describe("menu extraction task", () => {
       summary: { suppressions: 1, price_conflicts: 0 },
       write: { active_suppressions: 1, deactivated_suppressions: 0 },
     }));
+    const translateOfferings = vi.fn(async () => ({
+      pending: 1,
+      written: 1,
+      translated: 0,
+      english: 1,
+      needs_review: 0,
+      refreshed: 1,
+    }));
     const query = vi.fn(async (sql: string) => {
       if (sql.includes("FROM fountain.locations location")) return { rows: [eligibleLocation()] };
       if (sql.includes("FROM fountain.treatments treatment")) {
@@ -263,6 +271,7 @@ describe("menu extraction task", () => {
       extract,
       apply,
       recomputeDisplay,
+      translateOfferings,
     });
 
     expect(result).toMatchObject({
@@ -277,6 +286,7 @@ describe("menu extraction task", () => {
       extraction: { model: "openai/gpt-4o-mini", external_call_id: "701" },
       serving_write: { written: true, offerings_inserted: 1 },
       display_resolution: { suppressions: 1, suppressions_written: 1 },
+      translation_resolution: { written: 1, english: 1, refreshed: 1 },
     });
     expect(apply).toHaveBeenCalledWith(expect.objectContaining({
       locationId: 42,
@@ -287,6 +297,13 @@ describe("menu extraction task", () => {
     }), expect.any(Object));
     expect(extract).toHaveBeenCalledWith(expect.objectContaining({ attempts: 2 }));
     expect(recomputeDisplay).toHaveBeenCalledWith({ query, locationId: 42, apply: true });
+    expect(translateOfferings).toHaveBeenCalledWith(expect.objectContaining({
+      query,
+      runId: "17",
+      locationId: 42,
+      apply: true,
+      llmClient: {},
+    }));
   });
 
   test("inserts mapped and unmapped offerings atomically and records taxonomy evidence", async () => {

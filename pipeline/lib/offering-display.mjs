@@ -1,6 +1,6 @@
 import { normalizeName } from "./matcher.mjs";
 
-export const OFFERING_DISPLAY_RULE_VERSION = "offering-display-v1";
+export const OFFERING_DISPLAY_RULE_VERSION = "offering-display-v2";
 
 export const LOAD_OFFERING_DISPLAY_ROWS_SQL = `
   SELECT
@@ -24,7 +24,6 @@ export const LOAD_OFFERING_DISPLAY_ROWS_SQL = `
   LEFT JOIN fountain.sources source ON source.id = offering.source_id
   WHERE offering.status = 'active'
     AND offering.deleted_at IS NULL
-    AND offering.treatment_id IS NOT NULL
     AND ($1::integer IS NULL OR offering.location_id = $1)
   ORDER BY offering.location_id, offering.id
 `;
@@ -106,9 +105,9 @@ export function resolveOfferingDisplay(rows) {
 
   for (const locationRows of byLocation.values()) {
     const suppressed = new Map();
-    const exactGroups = groupBy(locationRows, (row) => (
-      `${row.treatment_id}:${normalizeOfferingTerm(row.raw_name)}`
-    ));
+    // Exact source-name duplicates are duplicates regardless of whether one
+    // row has taxonomy metadata and the other has not been classified yet.
+    const exactGroups = groupBy(locationRows, (row) => normalizeOfferingTerm(row.raw_name));
 
     for (const group of exactGroups.values()) {
       if (group.length < 2) continue;
@@ -145,6 +144,9 @@ export function resolveOfferingDisplay(rows) {
     const visible = locationRows.filter((row) => !suppressed.has(row.id));
     for (const row of visible) {
       if (effectiveGranularity(row) !== "summary") continue;
+      // A null taxonomy ID means "not classified", not "same treatment".
+      // Never use it to collapse semantically unrelated summary offerings.
+      if (row.treatment_id == null) continue;
       const strongerSiblings = visible.filter((candidate) => (
         candidate.id !== row.id
         && candidate.treatment_id === row.treatment_id
@@ -313,7 +315,7 @@ function normalizeOfferingRow(row) {
     ...row,
     id: positiveInteger(row.id, "offering id"),
     location_id: positiveInteger(row.location_id, "location id"),
-    treatment_id: positiveInteger(row.treatment_id, "treatment id"),
+    treatment_id: row.treatment_id == null ? null : positiveInteger(row.treatment_id, "treatment id"),
     price_amount: row.price_amount == null ? null : Number(row.price_amount),
   };
 }

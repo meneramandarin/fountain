@@ -11,6 +11,7 @@
     "city-index:refresh": "node pipeline/cli.mjs maintain refresh-city-index",
     "taxonomy:present": "node pipeline/cli.mjs taxonomy-present",
     "taxonomy:review": "node scripts/review-taxonomy-mappings.mjs",
+    "offerings:translate": "node pipeline/cli.mjs offering-translate",
     "offerings:display": "node pipeline/cli.mjs offering-display"
   },
   "dependencies": {
