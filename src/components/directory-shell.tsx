@@ -2,6 +2,7 @@
 
 import { LandingFooter } from "@/components/landing-footer";
 import { DirectoryLocationCard, type DirectoryLocationCardData } from "@/components/directory-location-card";
+import { DirectoryMap } from "@/components/directory-map";
 import { ArrowLeft, ArrowRight, Loader2, MapPin, Stethoscope } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -58,6 +59,8 @@ type LocationResultRow = {
   treatments?: TreatmentChip[];
   tags?: Tag[];
   distance_miles?: number | null;
+  latitude?: number | null;
+  longitude?: number | null;
 } & DirectoryLocationCardData;
 type PractitionerResultRow = {
   id: number;
@@ -144,7 +147,7 @@ export function DirectoryShell({
       .then((data: SearchPayload) => setPayload(data))
       .catch((error) => {
         if (error.name !== "AbortError") {
-          setPayload({ results: [], total: 0, page: 0, page_size: 25 });
+          setPayload({ results: [], total: 0, page: 0, page_size: 18 });
         }
       })
       .finally(() => setLoading(false));
@@ -289,6 +292,11 @@ export function DirectoryShell({
             onNext={() => updateState({ page: state.page + 1 })}
           />
         </section>
+        {state.kind === "locations" ? (
+          <aside className="directory-map-panel" aria-label="Directory result map">
+            <DirectoryMap locations={payload.results as LocationResultRow[]} />
+          </aside>
+        ) : null}
       </div>
 
       <LandingFooter />

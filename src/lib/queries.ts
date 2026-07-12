@@ -1,6 +1,6 @@
 import { hasTable, isPostgres, row, rows } from "@/lib/db";
 
-export const PAGE_SIZE = 25;
+export const PAGE_SIZE = 18;
 
 const invalidRelatedSearchLocalities = new Set([
   "USA",
@@ -1420,7 +1420,7 @@ export async function searchLocations(params: DirectoryParams, page = 0) {
     ))?.count || 0;
   const results = await rows<AnyRow>(
     `
-    SELECT l.id, ${locationSlugSelect("l")} AS slug, l.name, l.locality, l.region, l.country_code, l.country_name,
+    SELECT l.id, ${locationSlugSelect("l")} AS slug, l.name, l.locality, l.region, l.country_code, l.country_name, l.latitude, l.longitude,
            l.website, google_reviews.rating, google_reviews.review_count, org.canonical_name AS org_name,
            COALESCE(image_flags.has_image, false) AS has_image,
            COALESCE(menu_flags.has_treatment_menu, false) AS has_treatment_menu,
@@ -1491,7 +1491,7 @@ async function searchLocationsByCountry(params: DirectoryParams, countryCode: st
   ))?.count || 0;
   const results = await rows<AnyRow>(
     `
-    SELECT l.id, ${locationSlugSelect("l")} AS slug, l.name, l.locality, l.region, l.country_code, l.country_name,
+    SELECT l.id, ${locationSlugSelect("l")} AS slug, l.name, l.locality, l.region, l.country_code, l.country_name, l.latitude, l.longitude,
            l.website, google_reviews.rating, google_reviews.review_count, org.canonical_name AS org_name,
            (
              SELECT MIN(o.price_amount)
@@ -1773,7 +1773,7 @@ async function locationPayloadFromWhere({
   const distanceSql = distanceMilesExpression();
   const results = await rows<AnyRow>(
     `
-    SELECT l.id, ${locationSlugSelect("l")} AS slug, l.name, l.locality, l.region, l.country_code, l.country_name,
+    SELECT l.id, ${locationSlugSelect("l")} AS slug, l.name, l.locality, l.region, l.country_code, l.country_name, l.latitude, l.longitude,
            l.website, google_reviews.rating, google_reviews.review_count, org.canonical_name AS org_name,
            (${distanceSql}) AS distance_miles,
            (
