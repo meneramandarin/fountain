@@ -1,0 +1,88 @@
+{
+  "phaseDate": "20260708",
+  "partA": {
+    "frontendUsesBlobOnly": true,
+    "notes": [
+      "Runtime image queries select blob_url for directory cards, detail galleries, practitioner images, and editorial provider cards.",
+      "Sitemap has URL entries only; no image sitemap exists.",
+      "OG image metadata uses static site assets, not fountain.images.image_url."
+    ],
+    "filesTouched": []
+  },
+  "partB": {
+    "before": {
+      "totalBlobCount": 17555,
+      "totalBlobBytes": 1383754119,
+      "referencedBlobUrls": 17553,
+      "orphanBlobCount": 2,
+      "orphanBlobBytes": 120551,
+      "orphanBlobRatio": 0.000114,
+      "referencedBlobUrlsMissingBeforeDelete": 0
+    },
+    "after": {
+      "deletedBlobCount": 2,
+      "deletedBlobBytes": 120551,
+      "totalBlobCount": 17553,
+      "totalBlobBytes": 1383633568,
+      "orphanBlobCount": 0,
+      "orphanBlobBytes": 0,
+      "referencedBlobUrlsMissingAfterDelete": 0
+    }
+  },
+  "partC": {
+    "backupTable": "fountain_raw.source_images_purged_20260708",
+    "deletedRows": 6368,
+    "countsByBucket": [
+      {
+        "purge_bucket": "dead_link",
+        "rows": 308
+      },
+      {
+        "purge_bucket": "failed_validation",
+        "rows": 182
+      },
+      {
+        "purge_bucket": "junk_pattern",
+        "rows": 155
+      },
+      {
+        "purge_bucket": "no_entity",
+        "rows": 5723
+      }
+    ],
+    "sourceImagesAfter": 26867
+  },
+  "finalInvariants": {
+    "everyImageRowHasLiveBlob": true,
+    "everyBlobHasImageRow": true,
+    "orphanBlobCount": 0,
+    "imageRowsPointingAtMissingBlobCount": 0,
+    "sourceImagesRemainingByPromotionState": [
+      {
+        "bucket": "cross_listing_duplicate",
+        "outcome": "",
+        "rows": 11324
+      },
+      {
+        "bucket": "promotable",
+        "outcome": "capped",
+        "rows": 3457
+      },
+      {
+        "bucket": "promotable",
+        "outcome": "duplicate_content",
+        "rows": 354
+      },
+      {
+        "bucket": "promotable",
+        "outcome": "promoted",
+        "rows": 1387
+      },
+      {
+        "bucket": null,
+        "outcome": "",
+        "rows": 11824
+      }
+    ]
+  }
+}

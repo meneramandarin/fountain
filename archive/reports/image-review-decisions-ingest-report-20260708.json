@@ -1,0 +1,350 @@
+{
+  "phaseDate": "20260708",
+  "tier": 1,
+  "inputPath": "image-review-decisions-20260708.json",
+  "imageLogTable": "fountain_raw.browser_swarm_image_ingest_20260708",
+  "dryRun": false,
+  "startedAt": "2026-07-09T03:57:45.227Z",
+  "completedAt": "2026-07-09T03:59:38.419Z",
+  "decisions": {
+    "approved": 119,
+    "rejected": 35,
+    "undecided": 0
+  },
+  "coverageBefore": {
+    "zero_image_locations": 2694,
+    "active_images": 30719
+  },
+  "coverageAfter": {
+    "zero_image_locations": 2663,
+    "active_images": 30794
+  },
+  "approved": {
+    "proposed": 119,
+    "ingested": 75,
+    "failedValidation": 33,
+    "skipped": 11,
+    "skippedByReason": {
+      "location_image_cap_reached": 11
+    },
+    "failuresByReason": {
+      "too_small_bytes": 14,
+      "too_small_dimensions": 18,
+      "logo_like_aspect_ratio": 1
+    }
+  },
+  "rejected": {
+    "logged": 35,
+    "alreadyLogged": 0,
+    "skipped": 0
+  },
+  "spotChecks": [
+    {
+      "location_id": 1375,
+      "image_url": "https://www.advancedantiaging.com/wp-content/uploads/2021/04/Untitled-1-1.jpg",
+      "blob_url": null,
+      "outcome": "human_rejected",
+      "reason": "manual_review_rejected"
+    },
+    {
+      "location_id": 1375,
+      "image_url": "https://www.advancedantiaging.com/wp-content/uploads/2018/11/11.jpg",
+      "blob_url": null,
+      "outcome": "human_rejected",
+      "reason": "manual_review_rejected"
+    },
+    {
+      "location_id": 581,
+      "image_url": "https://beachbum.com/wp-content/uploads/sb-instagram-feed-images/731384999_18589896112040357_2376437126359993004_nlow.webp",
+      "blob_url": null,
+      "outcome": "human_rejected",
+      "reason": "manual_review_rejected"
+    },
+    {
+      "location_id": 132,
+      "image_url": "https://images.squarespace-cdn.com/content/v1/56d0aab31bbee040b2cd2b6c/1497212533877-3I7RTHURT9NX954COZCG/greengrass.jpg?format=1500w",
+      "blob_url": null,
+      "outcome": "human_rejected",
+      "reason": "manual_review_rejected"
+    },
+    {
+      "location_id": 864,
+      "image_url": "https://healthnwellnessrx.com/wp-content/uploads/2022/11/Elevate1.png",
+      "blob_url": null,
+      "outcome": "human_rejected",
+      "reason": "manual_review_rejected"
+    },
+    {
+      "location_id": 146,
+      "image_url": "https://mindfulpower.net/wp-content/uploads/baby2.jpg",
+      "blob_url": null,
+      "outcome": "human_rejected",
+      "reason": "manual_review_rejected"
+    },
+    {
+      "location_id": 209,
+      "image_url": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDg3IiBoZWlnaHQ9IjcyNSIgdmlld0JveD0iMCAwIDEwODcgNzI1Ij48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBzdHlsZT0iZmlsbDojY2ZkNGRiO2ZpbGwtb3BhY2l0eTogMC4xOyIvPjwvc3ZnPg==",
+      "blob_url": null,
+      "outcome": "human_rejected",
+      "reason": "manual_review_rejected"
+    },
+    {
+      "location_id": 209,
+      "image_url": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI3NTAiIGhlaWdodD0iNTAwIiB2aWV3Qm94PSIwIDAgNzUwIDUwMCI+PHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgc3R5bGU9ImZpbGw6I2NmZDRkYjtmaWxsLW9wYWNpdHk6IDAuMTsiLz48L3N2Zz4=",
+      "blob_url": null,
+      "outcome": "human_rejected",
+      "reason": "manual_review_rejected"
+    },
+    {
+      "location_id": 2283,
+      "image_url": "https://www.terapia.ca/s/img/emotionheader.png?1637263688.920px.420px",
+      "blob_url": null,
+      "outcome": "human_rejected",
+      "reason": "manual_review_rejected"
+    },
+    {
+      "location_id": 8372,
+      "image_url": "https://www.assurewellnessgroup.com/img/zeusdemox20000.webp?view=4930",
+      "blob_url": null,
+      "outcome": "human_rejected",
+      "reason": "manual_review_rejected"
+    },
+    {
+      "location_id": 8372,
+      "image_url": "https://dsuown9evwz4y.cloudfront.net/Images/_normad-alpha/menu/desktop/home/animations/game-code-7e252.png?v=jj2ww53",
+      "blob_url": null,
+      "outcome": "human_rejected",
+      "reason": "manual_review_rejected"
+    },
+    {
+      "location_id": 8372,
+      "image_url": "https://dsuown9evwz4y.cloudfront.net/Images/_normad-alpha/menu/desktop/home/animations/game-code-70e252.png?v=jj2ww53",
+      "blob_url": null,
+      "outcome": "human_rejected",
+      "reason": "manual_review_rejected"
+    },
+    {
+      "location_id": 426,
+      "image_url": "https://images.squarespace-cdn.com/content/v1/5757943907eaa03affd47d2d/1605811355894-SGJIW7KSWJM4R69LWIZY/fresh-med-contact-us.jpg?format=1500w",
+      "blob_url": null,
+      "outcome": "human_rejected",
+      "reason": "manual_review_rejected"
+    },
+    {
+      "location_id": 715,
+      "image_url": "https://www.ironboundacu.com/universal/svg/social-accounts.svg",
+      "blob_url": null,
+      "outcome": "human_rejected",
+      "reason": "manual_review_rejected"
+    },
+    {
+      "location_id": 807,
+      "image_url": "https://www.mhhc.org/images/cta/Our-Services.jpg",
+      "blob_url": null,
+      "outcome": "human_rejected",
+      "reason": "manual_review_rejected"
+    },
+    {
+      "location_id": 13004,
+      "image_url": "https://static.wixstatic.com/media/cc619c_d4e6dd5ad90e4ce8b53cefed6d76643a.jpg/v1/fill/w_365,h_180,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/cc619c_d4e6dd5ad90e4ce8b53cefed6d76643a.jpg",
+      "blob_url": null,
+      "outcome": "human_rejected",
+      "reason": "manual_review_rejected"
+    },
+    {
+      "location_id": 238,
+      "image_url": "https://static.wixstatic.com/media/bc3ec7bc825c4e6ca746c659189cea83.jpg/v1/fill/w_658,h_1080,al_c,q_85,enc_avif,quality_auto/bc3ec7bc825c4e6ca746c659189cea83.jpg",
+      "blob_url": null,
+      "outcome": "human_rejected",
+      "reason": "manual_review_rejected"
+    },
+    {
+      "location_id": 515,
+      "image_url": "https://sa1s3optim.patientpop.com/assets/docs/270088.jpg",
+      "blob_url": null,
+      "outcome": "human_rejected",
+      "reason": "manual_review_rejected"
+    },
+    {
+      "location_id": 1172,
+      "image_url": "https://images.squarespace-cdn.com/content/v1/5eb93dc09ff474701d841ed2/09f5fe0a-1d02-4c6e-ba0a-52d225ede9ee/PagingDrN-241.jpg?format=750w",
+      "blob_url": null,
+      "outcome": "human_rejected",
+      "reason": "manual_review_rejected"
+    },
+    {
+      "location_id": 894,
+      "image_url": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8Xw8AAoMBgDTD2qgAAAAASUVORK5CYII=",
+      "blob_url": null,
+      "outcome": "human_rejected",
+      "reason": "manual_review_rejected"
+    }
+  ],
+  "failures": [
+    {
+      "location_id": 1637,
+      "image_url": "https://images.squarespace-cdn.com/content/v1/6227bf3f0b45753465a454e8/1649104176709-HXBE5S76Z0KPUNEMHZX2/IV-one+copy.png?format=1000w",
+      "reason": "too_small_bytes"
+    },
+    {
+      "location_id": 1637,
+      "image_url": "https://images.squarespace-cdn.com/content/v1/6227bf3f0b45753465a454e8/1649104656580-N4AZRO0XI4HVKNQ1HJ9G/iv-three.png?format=1000w",
+      "reason": "too_small_bytes"
+    },
+    {
+      "location_id": 319,
+      "image_url": "https://marceljacobspt.com/wp-content/uploads/2025/07/marcel-123-1-300x200.jpg",
+      "reason": "too_small_bytes"
+    },
+    {
+      "location_id": 319,
+      "image_url": "https://marceljacobspt.com/wp-content/uploads/2025/07/423sda-300x200.jpg",
+      "reason": "too_small_bytes"
+    },
+    {
+      "location_id": 319,
+      "image_url": "https://marceljacobspt.com/wp-content/uploads/2025/07/pain-relief-and-physical-therapy-300x200.jpg",
+      "reason": "too_small_dimensions"
+    },
+    {
+      "location_id": 1646,
+      "image_url": "https://images.squarespace-cdn.com/content/v1/5f503c87ab2d532ca5561910/1604609513189-CZVYC731LV03JALGW6AY/IMG_0883.jpeg?format=1500w",
+      "reason": "too_small_dimensions"
+    },
+    {
+      "location_id": 1595,
+      "image_url": "https://recoverylabstore.com/wp-content/uploads/2022/09/thumbnail_Recovery20Corto20Blanco.png",
+      "reason": "too_small_dimensions"
+    },
+    {
+      "location_id": 1165,
+      "image_url": "https://drlans.org/wp-content/uploads/sites/29/Bioidentical-Hormone-Therapy-Treatment-200x300.webp",
+      "reason": "too_small_bytes"
+    },
+    {
+      "location_id": 494,
+      "image_url": "https://sa1s3optim.patientpop.com/assets/docs/296828.png",
+      "reason": "too_small_bytes"
+    },
+    {
+      "location_id": 795,
+      "image_url": "https://dynamicrehab-pt.com/wp-content/uploads/2018/09/cupping-354x353.jpeg",
+      "reason": "too_small_dimensions"
+    },
+    {
+      "location_id": 795,
+      "image_url": "https://dynamicrehab-pt.com/wp-content/uploads/2018/09/shockwave-354x353.jpeg",
+      "reason": "too_small_dimensions"
+    },
+    {
+      "location_id": 795,
+      "image_url": "https://dynamicrehab-pt.com/wp-content/uploads/2018/10/biomagnetism.jpg",
+      "reason": "too_small_bytes"
+    },
+    {
+      "location_id": 1078,
+      "image_url": "https://dynamicrehab-pt.com/wp-content/uploads/2018/09/diatheramy-354x353.jpeg",
+      "reason": "too_small_dimensions"
+    },
+    {
+      "location_id": 1078,
+      "image_url": "https://dynamicrehab-pt.com/wp-content/uploads/2018/09/mysofocial-354x353.jpeg",
+      "reason": "too_small_dimensions"
+    },
+    {
+      "location_id": 1078,
+      "image_url": "https://dynamicrehab-pt.com/wp-content/uploads/2019/03/pre-surgical-rehab-2may-1280x500-1024x400-1-354x353.jpg",
+      "reason": "too_small_bytes"
+    },
+    {
+      "location_id": 807,
+      "image_url": "https://www.mhhc.org/images/panel/service-content.jpg",
+      "reason": "too_small_dimensions"
+    },
+    {
+      "location_id": 13004,
+      "image_url": "https://static.wixstatic.com/media/cc8a3c00c0a0a280e2837b6b85471789.jpg/v1/fill/w_335,h_191,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/cc8a3c00c0a0a280e2837b6b85471789.jpg",
+      "reason": "too_small_bytes"
+    },
+    {
+      "location_id": 1062,
+      "image_url": "https://static.wixstatic.com/media/0e373e_c0160007222b4d4d917741660e72ad79~mv2.jpg/v1/fill/w_408,h_306,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/40436287_241006549949850_447800287641678.jpg",
+      "reason": "too_small_dimensions"
+    },
+    {
+      "location_id": 1667,
+      "image_url": "http://stemology.co.uk/wp-content/uploads/2015/03/Front-Page-image-Small.jpg",
+      "reason": "too_small_dimensions"
+    },
+    {
+      "location_id": 400,
+      "image_url": "https://weisswellnessnyc.com/wp-content/uploads/2025/03/Dr.-Weiss-Office-58_bw-scaled-e1709757607767.jpg-200x200.webp",
+      "reason": "too_small_bytes"
+    },
+    {
+      "location_id": 1460,
+      "image_url": "https://advancedfunctionalmedicineaustin.com/wp-content/uploads/2025/01/Starwood-6-e1738792249372.png",
+      "reason": "too_small_dimensions"
+    },
+    {
+      "location_id": 7876,
+      "image_url": "https://custom-images.strikinglycdn.com/res/hrscywv4p/image/upload/c_limit,fl_lossy,h_1440,w_720,f_auto,q_auto/1270913/599492_988552.png",
+      "reason": "too_small_dimensions"
+    },
+    {
+      "location_id": 7876,
+      "image_url": "https://custom-images.strikinglycdn.com/res/hrscywv4p/image/upload/c_limit,fl_lossy,h_1440,w_720,f_auto,q_auto/1270913/239142_534173.jpeg",
+      "reason": "too_small_bytes"
+    },
+    {
+      "location_id": 7876,
+      "image_url": "https://custom-images.strikinglycdn.com/res/hrscywv4p/image/upload/c_limit,fl_lossy,h_1440,w_720,f_auto,q_auto/1270913/669424_471642.jpeg",
+      "reason": "too_small_bytes"
+    },
+    {
+      "location_id": 349,
+      "image_url": "https://static.wixstatic.com/media/01687d_5036fa7abed94da2853a6d3a6f04f388~mv2.png/v1/fill/w_270,h_270,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/01687d_5036fa7abed94da2853a6d3a6f04f388~mv2.png",
+      "reason": "too_small_dimensions"
+    },
+    {
+      "location_id": 5345,
+      "image_url": "https://carememphis.com/wp-content/uploads/2024/01/DSC_1160.webp",
+      "reason": "too_small_bytes"
+    },
+    {
+      "location_id": 992,
+      "image_url": "https://drlisalewis.com/wp-content/uploads/2019/03/test.jpg",
+      "reason": "too_small_bytes"
+    },
+    {
+      "location_id": 1276,
+      "image_url": "https://static.wixstatic.com/media/d6c236_ae8036f76f574781ab82ccf1d1c80254~mv2.png/v1/crop/x_0,y_38,w_240,h_214/fill/w_288,h_300,al_c,lg_1,q_85,enc_avif,quality_auto/Noel%20profile%20pic%20AH%20bay_heic.png",
+      "reason": "too_small_dimensions"
+    },
+    {
+      "location_id": 753,
+      "image_url": "https://kinesioworks.com/wp-content/uploads/2025/07/Artboard-%E2%80%93-25.jpg",
+      "reason": "logo_like_aspect_ratio"
+    },
+    {
+      "location_id": 7373,
+      "image_url": "https://medoncmassage.us/wp-content/uploads/2024/06/2774173.png",
+      "reason": "too_small_dimensions"
+    },
+    {
+      "location_id": 8493,
+      "image_url": "https://mindfulhealthsolutions.com/wp-content/uploads/2025/11/Telepsychiatry-block-1.png",
+      "reason": "too_small_dimensions"
+    },
+    {
+      "location_id": 1027,
+      "image_url": "https://new-yorkf.peakvitalityhormones.com/wp-content/uploads/2024/03/65e6027ae088df35943d71a1_Vasectomy-Ireland-13-EditPrint-p-500-1.jpg",
+      "reason": "too_small_dimensions"
+    },
+    {
+      "location_id": 12640,
+      "image_url": "https://www.thinmdmedspa.com/wp-content/uploads/2025/05/Ellipse-8.png",
+      "reason": "too_small_dimensions"
+    }
+  ]
+}

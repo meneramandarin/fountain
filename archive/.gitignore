@@ -1,3 +1,12 @@
-*
-!.gitignore
-!README.md
+# Version archive metadata and convenience copies. Custom database dump
+# payloads remain local; their manifests are explicitly committed.
+db-dumps/**
+!db-dumps/
+!db-dumps/**/
+!db-dumps/**/MANIFEST.md
+
+# Legacy local databases remain machine-local.
+*.sqlite
+*.sqlite-*
+*.db
+*.db-*

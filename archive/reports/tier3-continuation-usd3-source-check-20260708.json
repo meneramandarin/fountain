@@ -1,0 +1,21 @@
+{
+  "checked": [
+    {
+      "location_id": 10598,
+      "raw_name": "Dysport",
+      "price_amount": 3,
+      "price_currency": "USD",
+      "price_context": "per unit",
+      "source_page_url": "https://laserwellnessmedspa.com/january-specials/",
+      "source_check": "page says Dysport — Only $3/Unit",
+      "action": "inserted_offering",
+      "offering_id": 92108
+    }
+  ],
+  "glp1": {
+    "location_id": 8608,
+    "raw_name": "GLP-1 Weight Loss Program",
+    "source_check": "page says AS LOW AS $3 A DAY; not per-unit",
+    "action": "left_flagged"
+  }
+}

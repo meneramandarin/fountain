@@ -39,6 +39,33 @@ describe("pipeline CLI parsing", () => {
       .toThrow("report does not accept positional arguments");
   });
 
+  test("validates maintenance subcommands and their scoped options", () => {
+    expect(validateCommandArgs(parseCliArgs([
+      "maintain",
+      "regen-structure-doc",
+      "--schema=fountain,fountain_raw",
+      "--output",
+      "docs/schema.md",
+    ]))).toMatchObject({ positional: ["regen-structure-doc"] });
+    expect(validateCommandArgs(parseCliArgs([
+      "maintain",
+      "refresh-city-index",
+      "--schema",
+      "fountain",
+    ]))).toMatchObject({ positional: ["refresh-city-index"] });
+
+    expect(() => validateCommandArgs(parseCliArgs(["maintain"])))
+      .toThrow("maintain requires exactly one subcommand");
+    expect(() => validateCommandArgs(parseCliArgs(["maintain", "unknown"])))
+      .toThrow("Unknown maintain subcommand: unknown");
+    expect(() => validateCommandArgs(parseCliArgs([
+      "maintain",
+      "refresh-city-index",
+      "--output",
+      "unused.md",
+    ]))).toThrow("Unknown option for maintain refresh-city-index: --output");
+  });
+
   test("budget exhaustion prevents a second claim without a dispatch cap", async () => {
     const claimTask = vi.fn()
       .mockResolvedValueOnce({ id: "1", entity_id: 997 })

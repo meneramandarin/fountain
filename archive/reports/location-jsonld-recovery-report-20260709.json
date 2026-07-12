@@ -1,0 +1,190 @@
+{
+  "generated_at": "2026-07-10T01:36:04.830Z",
+  "contamination_table": "fountain_raw.location_jsonld_contamination_20260709",
+  "recovery_table": "fountain_raw.location_jsonld_recovery_20260709",
+  "audited_rows": 6,
+  "written": 5,
+  "needs_review": [
+    {
+      "location_id": 2302,
+      "location_name": "ReWell",
+      "old_address": "[{'@type': 'PostalAddress', 'streetAddress': 'Unit 3', 'addressLocality': ' Health and Fitness', 'addressRegion': ' Maudlands', 'postalCode': ' Fishery Lane', 'addressCountry': ' Co. Kildare'}, {'streetAddress': '', 'addressLocality': '', 'addressRegion': '', 'postalCode': '', 'addressCountry': ''}]",
+      "old_locality": "'addressCountry': ''}]",
+      "old_region": null,
+      "old_postal_code": null,
+      "old_country_code": "IE",
+      "old_country_name": "Ireland",
+      "old_latitude": 53.22676,
+      "old_longitude": -6.62914,
+      "new_address": "Unit 3",
+      "new_locality": "Health and Fitness",
+      "new_region": "Maudlands",
+      "new_postal_code": null,
+      "new_country_code": "IE",
+      "new_country_name": "Ireland",
+      "query_string": "Unit 3, Health and Fitness, Maudlands, Ireland",
+      "recovery_notes": [
+        "ignored_invalid_postal_code:Fishery Lane",
+        "ignored_country_field:Co. Kildare"
+      ],
+      "provider_status": "OK",
+      "returned_latitude": 53.77975540000001,
+      "returned_longitude": -7.3055309,
+      "location_type": "APPROXIMATE",
+      "formatted_address": "Ireland",
+      "returned_country_code": null,
+      "returned_country_name": null,
+      "result_types": [
+        "establishment",
+        "natural_feature"
+      ],
+      "place_id": "ChIJj2lzXZ5hXkgRjcZqTUQ5m8o",
+      "raw_result": {
+        "address_components": [
+          {
+            "long_name": "Ireland",
+            "short_name": "Ireland",
+            "types": [
+              "establishment",
+              "natural_feature"
+            ]
+          }
+        ],
+        "formatted_address": "Ireland",
+        "geometry": {
+          "bounds": {
+            "northeast": {
+              "lat": 55.38294149999999,
+              "lng": -5.431909999999999
+            },
+            "southwest": {
+              "lat": 51.4475448,
+              "lng": -10.4800237
+            }
+          },
+          "location": {
+            "lat": 53.77975540000001,
+            "lng": -7.3055309
+          },
+          "location_type": "APPROXIMATE",
+          "viewport": {
+            "northeast": {
+              "lat": 55.38294149999999,
+              "lng": -5.431909999999999
+            },
+            "southwest": {
+              "lat": 51.4475448,
+              "lng": -10.4800237
+            }
+          }
+        },
+        "partial_match": true,
+        "place_id": "ChIJj2lzXZ5hXkgRjcZqTUQ5m8o",
+        "types": [
+          "establishment",
+          "natural_feature"
+        ]
+      },
+      "low_confidence": false,
+      "needs_review": true,
+      "write_applied": false,
+      "decision": "needs_review",
+      "reason": "country_mismatch"
+    }
+  ],
+  "recovered": [
+    {
+      "location_id": 2153,
+      "name": "Fitnescity",
+      "decision": "write",
+      "reason": "street_level_country_match",
+      "low_confidence": false,
+      "query_string": "3 Columbus Circle, New York, NY, 10019, United States",
+      "formatted_address": "3 Columbus Cir, New York, NY 10019, USA",
+      "location_type": "ROOFTOP",
+      "notes": []
+    },
+    {
+      "location_id": 2195,
+      "name": "Kalos Health",
+      "decision": "write",
+      "reason": "street_level_country_match",
+      "low_confidence": false,
+      "query_string": "1234 Market Street, San Francisco, CA, 94102, United States",
+      "formatted_address": "1234 Market St, San Francisco, CA 94102, USA",
+      "location_type": "ROOFTOP",
+      "notes": []
+    },
+    {
+      "location_id": 2302,
+      "name": "ReWell",
+      "decision": "needs_review",
+      "reason": "country_mismatch",
+      "low_confidence": false,
+      "query_string": "Unit 3, Health and Fitness, Maudlands, Ireland",
+      "formatted_address": "Ireland",
+      "location_type": "APPROXIMATE",
+      "notes": [
+        "ignored_invalid_postal_code:Fishery Lane",
+        "ignored_country_field:Co. Kildare"
+      ]
+    },
+    {
+      "location_id": 2331,
+      "name": "Breathe Hyperbarics - HBOT",
+      "decision": "write",
+      "reason": "street_level_country_match",
+      "low_confidence": false,
+      "query_string": "Unit 12, Breathe Hyperbarics - HBOT, Lady Bee Enterprise Centre, Southwick, Brighton BN42 4BW, United Kingdom, Brighton, BN42 4BW, Southwick, BN42 4BW, United Kingdom",
+      "formatted_address": "Unit 12, Lady Bee Enterprise Centre, Southwick, Brighton BN42 4BW, UK",
+      "location_type": "ROOFTOP",
+      "notes": []
+    },
+    {
+      "location_id": 2356,
+      "name": "Hyperbaric Physicians of Georgia",
+      "decision": "write",
+      "reason": "street_level_country_match",
+      "low_confidence": false,
+      "query_string": "61 Whitcher Street, Suite 2150, Marietta, GA, 30060, United States",
+      "formatted_address": "61 Whitcher St #2150, Marietta, GA 30060, USA",
+      "location_type": "ROOFTOP",
+      "notes": []
+    },
+    {
+      "location_id": 13387,
+      "name": "La Vie Health",
+      "decision": "write",
+      "reason": "street_level_country_match",
+      "low_confidence": false,
+      "query_string": "100 Queen St Floor 9, Suit 940, Ottawa, ON, K1P 5T8, Canada",
+      "formatted_address": "100 Queen St Fl 9, Suit 940, Ottawa, ON K1P 5T8, Canada",
+      "location_type": "ROOFTOP",
+      "notes": []
+    }
+  ],
+  "proposed_merges": [
+    {
+      "contaminated_location_id": 2195,
+      "contaminated_name": "Kalos Health",
+      "match_location_id": 9101,
+      "match_name": "Kalos Health",
+      "contaminated_org_id": 1517,
+      "match_org_id": 7886,
+      "country_code": "US",
+      "match_locality": "Palo Alto",
+      "match_reason": "same_normalized_name"
+    },
+    {
+      "contaminated_location_id": 2331,
+      "contaminated_name": "Breathe Hyperbarics - HBOT",
+      "match_location_id": 2330,
+      "match_name": "Breathe Hyperbarics - HBOT",
+      "contaminated_org_id": 7748,
+      "match_org_id": 1611,
+      "country_code": "GB",
+      "match_locality": "Southwick",
+      "match_reason": "same_normalized_name"
+    }
+  ]
+}

@@ -1,0 +1,1830 @@
+{
+  "generated_at": "2026-07-10T00:34:00.733Z",
+  "mode": "live_write",
+  "dry_run": false,
+  "schema": "fountain",
+  "raw_schema": "fountain_raw",
+  "checkpoint": "location-geocode-guardrail-backfill-checkpoint-20260709.json",
+  "backup_table": "fountain_raw.location_geocode_coordinate_backup_20260709",
+  "audit_table": "fountain_raw.location_geocode_backfill_20260709",
+  "before": {
+    "null_coordinate_rows": 1938,
+    "zero_zero_rows": 40,
+    "lat_out_of_bounds_rows": 0,
+    "lng_out_of_bounds_rows": 0,
+    "backfill_set_rows": 1978,
+    "null_coordinate_breakdown": [
+      {
+        "country_code": "US",
+        "data_origin": "imported",
+        "count": 1669
+      },
+      {
+        "country_code": "GB",
+        "data_origin": "imported",
+        "count": 42
+      },
+      {
+        "country_code": "DE",
+        "data_origin": "imported",
+        "count": 33
+      },
+      {
+        "country_code": "AU",
+        "data_origin": "imported",
+        "count": 23
+      },
+      {
+        "country_code": "KR",
+        "data_origin": "imported",
+        "count": 21
+      },
+      {
+        "country_code": "CA",
+        "data_origin": "imported",
+        "count": 18
+      },
+      {
+        "country_code": "TH",
+        "data_origin": "imported",
+        "count": 15
+      },
+      {
+        "country_code": "IE",
+        "data_origin": "imported",
+        "count": 13
+      },
+      {
+        "country_code": "CH",
+        "data_origin": "imported",
+        "count": 12
+      },
+      {
+        "country_code": "AE",
+        "data_origin": "imported",
+        "count": 11
+      },
+      {
+        "country_code": "IT",
+        "data_origin": "imported",
+        "count": 11
+      },
+      {
+        "country_code": "ES",
+        "data_origin": "imported",
+        "count": 10
+      },
+      {
+        "country_code": "TR",
+        "data_origin": "imported",
+        "count": 10
+      },
+      {
+        "country_code": "SG",
+        "data_origin": "imported",
+        "count": 6
+      },
+      {
+        "country_code": "FR",
+        "data_origin": "imported",
+        "count": 5
+      },
+      {
+        "country_code": "MX",
+        "data_origin": "imported",
+        "count": 5
+      },
+      {
+        "country_code": "AT",
+        "data_origin": "imported",
+        "count": 3
+      },
+      {
+        "country_code": "GR",
+        "data_origin": "imported",
+        "count": 3
+      },
+      {
+        "country_code": "BR",
+        "data_origin": "imported",
+        "count": 2
+      },
+      {
+        "country_code": "CZ",
+        "data_origin": "imported",
+        "count": 2
+      },
+      {
+        "country_code": "JP",
+        "data_origin": "imported",
+        "count": 2
+      },
+      {
+        "country_code": "MY",
+        "data_origin": "imported",
+        "count": 2
+      },
+      {
+        "country_code": "NL",
+        "data_origin": "imported",
+        "count": 2
+      },
+      {
+        "country_code": "ZA",
+        "data_origin": "imported",
+        "count": 2
+      },
+      {
+        "country_code": "AZ",
+        "data_origin": "imported",
+        "count": 1
+      },
+      {
+        "country_code": "BE",
+        "data_origin": "imported",
+        "count": 1
+      },
+      {
+        "country_code": "CY",
+        "data_origin": "imported",
+        "count": 1
+      },
+      {
+        "country_code": "DK",
+        "data_origin": "imported",
+        "count": 1
+      },
+      {
+        "country_code": "HK",
+        "data_origin": "imported",
+        "count": 1
+      },
+      {
+        "country_code": "ID",
+        "data_origin": "imported",
+        "count": 1
+      },
+      {
+        "country_code": "IN",
+        "data_origin": "imported",
+        "count": 1
+      },
+      {
+        "country_code": "JM",
+        "data_origin": "imported",
+        "count": 1
+      },
+      {
+        "country_code": "ME",
+        "data_origin": "imported",
+        "count": 1
+      },
+      {
+        "country_code": "NO",
+        "data_origin": "imported",
+        "count": 1
+      },
+      {
+        "country_code": "NZ",
+        "data_origin": "imported",
+        "count": 1
+      },
+      {
+        "country_code": "PA",
+        "data_origin": "imported",
+        "count": 1
+      },
+      {
+        "country_code": "PH",
+        "data_origin": "imported",
+        "count": 1
+      },
+      {
+        "country_code": "PT",
+        "data_origin": "imported",
+        "count": 1
+      },
+      {
+        "country_code": "RO",
+        "data_origin": "imported",
+        "count": 1
+      },
+      {
+        "country_code": "SE",
+        "data_origin": "imported",
+        "count": 1
+      }
+    ],
+    "bad_coordinate_breakdown": [
+      {
+        "country_code": "TR",
+        "data_origin": "imported",
+        "count": 14,
+        "zero_zero": 14,
+        "lat_out_of_bounds": 0,
+        "lng_out_of_bounds": 0
+      },
+      {
+        "country_code": "TH",
+        "data_origin": "imported",
+        "count": 12,
+        "zero_zero": 12,
+        "lat_out_of_bounds": 0,
+        "lng_out_of_bounds": 0
+      },
+      {
+        "country_code": "MX",
+        "data_origin": "imported",
+        "count": 10,
+        "zero_zero": 10,
+        "lat_out_of_bounds": 0,
+        "lng_out_of_bounds": 0
+      },
+      {
+        "country_code": "AZ",
+        "data_origin": "imported",
+        "count": 1,
+        "zero_zero": 1,
+        "lat_out_of_bounds": 0,
+        "lng_out_of_bounds": 0
+      },
+      {
+        "country_code": "CH",
+        "data_origin": "imported",
+        "count": 1,
+        "zero_zero": 1,
+        "lat_out_of_bounds": 0,
+        "lng_out_of_bounds": 0
+      },
+      {
+        "country_code": "CO",
+        "data_origin": "imported",
+        "count": 1,
+        "zero_zero": 1,
+        "lat_out_of_bounds": 0,
+        "lng_out_of_bounds": 0
+      },
+      {
+        "country_code": "UA",
+        "data_origin": "imported",
+        "count": 1,
+        "zero_zero": 1,
+        "lat_out_of_bounds": 0,
+        "lng_out_of_bounds": 0
+      }
+    ],
+    "estimated_cost_usd": 9.89
+  },
+  "after": {
+    "null_coordinate_rows": 3,
+    "zero_zero_rows": 0,
+    "lat_out_of_bounds_rows": 0,
+    "lng_out_of_bounds_rows": 0,
+    "backfill_set_rows": 3,
+    "null_coordinate_breakdown": [
+      {
+        "country_code": "DE",
+        "data_origin": "imported",
+        "count": 1
+      },
+      {
+        "country_code": "GR",
+        "data_origin": "imported",
+        "count": 1
+      },
+      {
+        "country_code": "IE",
+        "data_origin": "imported",
+        "count": 1
+      }
+    ],
+    "bad_coordinate_breakdown": [],
+    "estimated_cost_usd": 0.015
+  },
+  "summary": {
+    "backfill_set_before": 1978,
+    "null_coordinate_rows_before": 1938,
+    "zero_zero_rows_before": 40,
+    "lat_out_of_bounds_rows_before": 0,
+    "lng_out_of_bounds_rows_before": 0,
+    "total_google_targets": 1978,
+    "estimated_cost_usd": 9.89,
+    "geocoded_results": 1978,
+    "coordinates_written": 1975,
+    "low_confidence_written": 1270,
+    "needs_review": 3,
+    "backfill_set_after": 3,
+    "null_coordinate_rows_after": 3,
+    "zero_zero_rows_after": 0,
+    "lat_out_of_bounds_rows_after": 0,
+    "lng_out_of_bounds_rows_after": 0
+  },
+  "decisions_by_reason": {
+    "low_confidence_country_match": 1270,
+    "street_level_country_match": 705,
+    "country_mismatch": 3
+  },
+  "provider_statuses": {
+    "OK": 1978
+  },
+  "null_coordinate_breakdown_before": [
+    {
+      "country_code": "US",
+      "data_origin": "imported",
+      "count": 1669
+    },
+    {
+      "country_code": "GB",
+      "data_origin": "imported",
+      "count": 42
+    },
+    {
+      "country_code": "DE",
+      "data_origin": "imported",
+      "count": 33
+    },
+    {
+      "country_code": "AU",
+      "data_origin": "imported",
+      "count": 23
+    },
+    {
+      "country_code": "KR",
+      "data_origin": "imported",
+      "count": 21
+    },
+    {
+      "country_code": "CA",
+      "data_origin": "imported",
+      "count": 18
+    },
+    {
+      "country_code": "TH",
+      "data_origin": "imported",
+      "count": 15
+    },
+    {
+      "country_code": "IE",
+      "data_origin": "imported",
+      "count": 13
+    },
+    {
+      "country_code": "CH",
+      "data_origin": "imported",
+      "count": 12
+    },
+    {
+      "country_code": "AE",
+      "data_origin": "imported",
+      "count": 11
+    },
+    {
+      "country_code": "IT",
+      "data_origin": "imported",
+      "count": 11
+    },
+    {
+      "country_code": "ES",
+      "data_origin": "imported",
+      "count": 10
+    },
+    {
+      "country_code": "TR",
+      "data_origin": "imported",
+      "count": 10
+    },
+    {
+      "country_code": "SG",
+      "data_origin": "imported",
+      "count": 6
+    },
+    {
+      "country_code": "FR",
+      "data_origin": "imported",
+      "count": 5
+    },
+    {
+      "country_code": "MX",
+      "data_origin": "imported",
+      "count": 5
+    },
+    {
+      "country_code": "AT",
+      "data_origin": "imported",
+      "count": 3
+    },
+    {
+      "country_code": "GR",
+      "data_origin": "imported",
+      "count": 3
+    },
+    {
+      "country_code": "BR",
+      "data_origin": "imported",
+      "count": 2
+    },
+    {
+      "country_code": "CZ",
+      "data_origin": "imported",
+      "count": 2
+    },
+    {
+      "country_code": "JP",
+      "data_origin": "imported",
+      "count": 2
+    },
+    {
+      "country_code": "MY",
+      "data_origin": "imported",
+      "count": 2
+    },
+    {
+      "country_code": "NL",
+      "data_origin": "imported",
+      "count": 2
+    },
+    {
+      "country_code": "ZA",
+      "data_origin": "imported",
+      "count": 2
+    },
+    {
+      "country_code": "AZ",
+      "data_origin": "imported",
+      "count": 1
+    },
+    {
+      "country_code": "BE",
+      "data_origin": "imported",
+      "count": 1
+    },
+    {
+      "country_code": "CY",
+      "data_origin": "imported",
+      "count": 1
+    },
+    {
+      "country_code": "DK",
+      "data_origin": "imported",
+      "count": 1
+    },
+    {
+      "country_code": "HK",
+      "data_origin": "imported",
+      "count": 1
+    },
+    {
+      "country_code": "ID",
+      "data_origin": "imported",
+      "count": 1
+    },
+    {
+      "country_code": "IN",
+      "data_origin": "imported",
+      "count": 1
+    },
+    {
+      "country_code": "JM",
+      "data_origin": "imported",
+      "count": 1
+    },
+    {
+      "country_code": "ME",
+      "data_origin": "imported",
+      "count": 1
+    },
+    {
+      "country_code": "NO",
+      "data_origin": "imported",
+      "count": 1
+    },
+    {
+      "country_code": "NZ",
+      "data_origin": "imported",
+      "count": 1
+    },
+    {
+      "country_code": "PA",
+      "data_origin": "imported",
+      "count": 1
+    },
+    {
+      "country_code": "PH",
+      "data_origin": "imported",
+      "count": 1
+    },
+    {
+      "country_code": "PT",
+      "data_origin": "imported",
+      "count": 1
+    },
+    {
+      "country_code": "RO",
+      "data_origin": "imported",
+      "count": 1
+    },
+    {
+      "country_code": "SE",
+      "data_origin": "imported",
+      "count": 1
+    }
+  ],
+  "bad_coordinate_breakdown_before": [
+    {
+      "country_code": "TR",
+      "data_origin": "imported",
+      "count": 14,
+      "zero_zero": 14,
+      "lat_out_of_bounds": 0,
+      "lng_out_of_bounds": 0
+    },
+    {
+      "country_code": "TH",
+      "data_origin": "imported",
+      "count": 12,
+      "zero_zero": 12,
+      "lat_out_of_bounds": 0,
+      "lng_out_of_bounds": 0
+    },
+    {
+      "country_code": "MX",
+      "data_origin": "imported",
+      "count": 10,
+      "zero_zero": 10,
+      "lat_out_of_bounds": 0,
+      "lng_out_of_bounds": 0
+    },
+    {
+      "country_code": "AZ",
+      "data_origin": "imported",
+      "count": 1,
+      "zero_zero": 1,
+      "lat_out_of_bounds": 0,
+      "lng_out_of_bounds": 0
+    },
+    {
+      "country_code": "CH",
+      "data_origin": "imported",
+      "count": 1,
+      "zero_zero": 1,
+      "lat_out_of_bounds": 0,
+      "lng_out_of_bounds": 0
+    },
+    {
+      "country_code": "CO",
+      "data_origin": "imported",
+      "count": 1,
+      "zero_zero": 1,
+      "lat_out_of_bounds": 0,
+      "lng_out_of_bounds": 0
+    },
+    {
+      "country_code": "UA",
+      "data_origin": "imported",
+      "count": 1,
+      "zero_zero": 1,
+      "lat_out_of_bounds": 0,
+      "lng_out_of_bounds": 0
+    }
+  ],
+  "needs_review_sample": [
+    {
+      "location_id": 3250,
+      "location_name": "Oxymed Ireland",
+      "query_string": "Ireland",
+      "returned_latitude": 53.77975540000001,
+      "returned_longitude": -7.3055309,
+      "location_type": "APPROXIMATE",
+      "formatted_address": "Ireland",
+      "country_code": "IE",
+      "returned_country_code": null,
+      "reason": "country_mismatch"
+    },
+    {
+      "location_id": 4187,
+      "location_name": "IronChiro",
+      "query_string": "Greece, NY",
+      "returned_latitude": 43.2097837,
+      "returned_longitude": -77.6930602,
+      "location_type": "APPROXIMATE",
+      "formatted_address": "Greece, NY 14626, USA",
+      "country_code": "GR",
+      "returned_country_code": "US",
+      "reason": "country_mismatch"
+    },
+    {
+      "location_id": 5021,
+      "location_name": "Center of laser vision correction CARE VISION in Nuremberg",
+      "query_string": "Lörrach (Basel), Lörrach, Germany",
+      "returned_latitude": 47.5595986,
+      "returned_longitude": 7.5885761,
+      "location_type": "APPROXIMATE",
+      "formatted_address": "Basel, Switzerland",
+      "country_code": "DE",
+      "returned_country_code": "CH",
+      "reason": "country_mismatch"
+    }
+  ],
+  "low_confidence_sample": [
+    {
+      "location_id": 1382,
+      "location_name": "Fountain Life",
+      "query_string": "Orlando, FL + 15 US/UK locations, Orlando, United States",
+      "returned_latitude": 28.5383832,
+      "returned_longitude": -81.3789269,
+      "location_type": "APPROXIMATE",
+      "formatted_address": "Orlando, FL, USA",
+      "country_code": "US",
+      "returned_country_code": "US",
+      "reason": "low_confidence_country_match"
+    },
+    {
+      "location_id": 1383,
+      "location_name": "Regenexx",
+      "query_string": "Zurich, Switzerland / Broomfield, CO, USA, Broomfield, CO, United States",
+      "returned_latitude": 39.9205411,
+      "returned_longitude": -105.0866504,
+      "location_type": "APPROXIMATE",
+      "formatted_address": "Broomfield, CO, USA",
+      "country_code": "US",
+      "returned_country_code": "US",
+      "reason": "low_confidence_country_match"
+    },
+    {
+      "location_id": 1384,
+      "location_name": "The London Clinic (Longevity Wing)",
+      "query_string": "London, UK (Harley Street), London, United Kingdom",
+      "returned_latitude": 51.5202357,
+      "returned_longitude": -0.1475241,
+      "location_type": "GEOMETRIC_CENTER",
+      "formatted_address": "Harley St, London, UK",
+      "country_code": "GB",
+      "returned_country_code": "GB",
+      "reason": "low_confidence_country_match"
+    },
+    {
+      "location_id": 1385,
+      "location_name": "Human Longevity Inc. (HLI) Clinic",
+      "query_string": "San Diego, CA / New York, NY, San Diego, United States",
+      "returned_latitude": 40.7127753,
+      "returned_longitude": -74.0059728,
+      "location_type": "APPROXIMATE",
+      "formatted_address": "New York, NY, USA",
+      "country_code": "US",
+      "returned_country_code": "US",
+      "reason": "low_confidence_country_match"
+    },
+    {
+      "location_id": 1387,
+      "location_name": "TruDiagnostic",
+      "query_string": "Toronto, Canada / US Telehealth, Canada / US Telehealth, Canada",
+      "returned_latitude": 43.6548253,
+      "returned_longitude": -79.388447,
+      "location_type": "APPROXIMATE",
+      "formatted_address": "Toronto, ON, Canada",
+      "country_code": "CA",
+      "returned_country_code": "CA",
+      "reason": "low_confidence_country_match"
+    },
+    {
+      "location_id": 1388,
+      "location_name": "The Younger You",
+      "query_string": "Telehealth / US-Based, United States",
+      "returned_latitude": 38.7945952,
+      "returned_longitude": -106.5348379,
+      "location_type": "APPROXIMATE",
+      "formatted_address": "United States",
+      "country_code": "US",
+      "returned_country_code": "US",
+      "reason": "low_confidence_country_match"
+    },
+    {
+      "location_id": 1495,
+      "location_name": "Stem Cell Clinics of Mexico | Mexico City",
+      "query_string": "Mexico City, Mexico, Mexico City, Mexico",
+      "returned_latitude": 19.4326077,
+      "returned_longitude": -99.133208,
+      "location_type": "APPROXIMATE",
+      "formatted_address": "Mexico City, CDMX, Mexico",
+      "country_code": "MX",
+      "returned_country_code": "MX",
+      "reason": "low_confidence_country_match"
+    },
+    {
+      "location_id": 1497,
+      "location_name": "Clínica Hiperbárica COLIBRI",
+      "query_string": "Avenida Montevideo, La Loma, San Bartolo Atepehuacan, 07730 Ciudad de México, CDMX, Mexico, Gustavo A. Madero, Mexico City, Mexico",
+      "returned_latitude": 19.4920684,
+      "returned_longitude": -99.14009740000002,
+      "location_type": "GEOMETRIC_CENTER",
+      "formatted_address": "Avenida Montevideo & La Loma, San Bartolo Atepehuacan, 07730 Ciudad de México, CDMX, Mexico",
+      "country_code": "MX",
+      "returned_country_code": "MX",
+      "reason": "low_confidence_country_match"
+    },
+    {
+      "location_id": 1498,
+      "location_name": "Hyperbaric Medicine CENTER TLAHUAC",
+      "query_string": "Eje 10 Sur Carretera a Santa Catarina, Mz. 37 Lt. 266, Tláhuac, Santa Catarina Yecahuitzotl, 13120 Ciudad de México, CDMX, Mexico, Xico, Mexico",
+      "returned_latitude": 19.322103,
+      "returned_longitude": -98.9586801,
+      "location_type": "GEOMETRIC_CENTER",
+      "formatted_address": "Carr. a Sta. Catarina & Eje 10 Sur, Santa Catarina Yecahuizotl, 56619 Xico, Méx., Mexico",
+      "country_code": "MX",
+      "returned_country_code": "MX",
+      "reason": "low_confidence_country_match"
+    },
+    {
+      "location_id": 1512,
+      "location_name": "London Regenerative Institute",
+      "query_string": "Whitehall Pl, London SW1A 2BD, United Kingdom, London, United Kingdom",
+      "returned_latitude": 51.506274,
+      "returned_longitude": -0.1243318,
+      "location_type": "GEOMETRIC_CENTER",
+      "formatted_address": "Whitehall Pl, London SW1A 2BD, UK",
+      "country_code": "GB",
+      "returned_country_code": "GB",
+      "reason": "low_confidence_country_match"
+    },
+    {
+      "location_id": 1528,
+      "location_name": "Vita Longevity",
+      "query_string": "Barcelona, Spain, Barcelona, Spain",
+      "returned_latitude": 41.3874374,
+      "returned_longitude": 2.1686496,
+      "location_type": "APPROXIMATE",
+      "formatted_address": "Barcelona, Spain",
+      "country_code": "ES",
+      "returned_country_code": "ES",
+      "reason": "low_confidence_country_match"
+    },
+    {
+      "location_id": 1675,
+      "location_name": "Biowell Health",
+      "query_string": "Unit 6, Circus West Village, Circus Rd W, London SW11 8EZ, United Kingdom, London, United Kingdom",
+      "returned_latitude": 51.48179560000001,
+      "returned_longitude": -0.1461537,
+      "location_type": "GEOMETRIC_CENTER",
+      "formatted_address": "Circus Rd W, Nine Elms, London SW11 8AH, UK",
+      "country_code": "GB",
+      "returned_country_code": "GB",
+      "reason": "low_confidence_country_match"
+    },
+    {
+      "location_id": 1678,
+      "location_name": "Re:nu Optimum Health",
+      "query_string": "Unit D Woolwich Rd, New Charlton, London SE7 7AJ, United Kingdom, London, United Kingdom",
+      "returned_latitude": 51.4872399,
+      "returned_longitude": 0.0253369,
+      "location_type": "GEOMETRIC_CENTER",
+      "formatted_address": "Woolwich Rd, London SE7 7AJ, UK",
+      "country_code": "GB",
+      "returned_country_code": "GB",
+      "reason": "low_confidence_country_match"
+    },
+    {
+      "location_id": 1689,
+      "location_name": "Sunflower House - Holistic Health Practice",
+      "query_string": "Dufourstrasse, 8008 Zürich, Switzerland, Zürich, Switzerland",
+      "returned_latitude": 47.3587491,
+      "returned_longitude": 8.5517161,
+      "location_type": "GEOMETRIC_CENTER",
+      "formatted_address": "Dufourstrasse, 8008 Zürich, Switzerland",
+      "country_code": "CH",
+      "returned_country_code": "CH",
+      "reason": "low_confidence_country_match"
+    },
+    {
+      "location_id": 1698,
+      "location_name": "Loungevity Genève",
+      "query_string": "Bd Helvétique 16bis, 1207 Genève, Switzerland, Geneva, Switzerland",
+      "returned_latitude": 46.2007246,
+      "returned_longitude": 6.1542481,
+      "location_type": "GEOMETRIC_CENTER",
+      "formatted_address": "Bd Helvétique, 1207 Genève, Switzerland",
+      "country_code": "CH",
+      "returned_country_code": "CH",
+      "reason": "low_confidence_country_match"
+    },
+    {
+      "location_id": 1762,
+      "location_name": "Stem Cells Colombia",
+      "query_string": "Colombia, Medellín, , Medellín, CO, Medellín, Colombia",
+      "returned_latitude": 6.2476376,
+      "returned_longitude": -75.56581530000001,
+      "location_type": "APPROXIMATE",
+      "formatted_address": "Medellín, Medellin, Antioquia, Colombia",
+      "country_code": "CO",
+      "returned_country_code": "CO",
+      "reason": "low_confidence_country_match"
+    },
+    {
+      "location_id": 1766,
+      "location_name": "Medicalpoint International Hospital",
+      "query_string": "Yeni Girne Bulvarı, 1825. Sk. No:12, 35575 Karşıyaka/İzmir, Turkey, İzmir, TR, İzmir, Türkiye",
+      "returned_latitude": 38.4738134,
+      "returned_longitude": 27.1123195,
+      "location_type": "GEOMETRIC_CENTER",
+      "formatted_address": "İmbatlı, 1825. Sk. No:12, 35575 Karşıyaka/İzmir, Türkiye",
+      "country_code": "TR",
+      "returned_country_code": "TR",
+      "reason": "low_confidence_country_match"
+    },
+    {
+      "location_id": 1777,
+      "location_name": "Medipol University Pendik Hospital",
+      "query_string": "Bahçelievler, Pendik Belediyesi, Adnan Menderes Blv. Pendik Belediyesi No: 31 D:33, 34893 Pendik/ Istanbul, Turkey, Istanbul, TR, Istanbul, Türkiye",
+      "returned_latitude": 40.8843822,
+      "returned_longitude": 29.2352566,
+      "location_type": "GEOMETRIC_CENTER",
+      "formatted_address": "Bahçelievler, Adnan Menderes Blv. Pendik Belediyesi No: 31, 34893 Pendik/İstanbul, Türkiye",
+      "country_code": "TR",
+      "returned_country_code": "TR",
+      "reason": "low_confidence_country_match"
+    },
+    {
+      "location_id": 1779,
+      "location_name": "Advanced Regenerative Center - ARC STEM CELLS",
+      "query_string": "Av. José Vasconcelos 345, Santa Engracia, 66267 San Pedro Garza García, N.L., Monterrey, Mexico, Monterrey, MX, Monterrey, Mexico",
+      "returned_latitude": 25.6539386,
+      "returned_longitude": -100.3487369,
+      "location_type": "GEOMETRIC_CENTER",
+      "formatted_address": "Av. José Vasconcelos 345, Zona Santa Engracia, 66267 San Pedro Garza García, N.L., Mexico",
+      "country_code": "MX",
+      "returned_country_code": "MX",
+      "reason": "low_confidence_country_match"
+    },
+    {
+      "location_id": 1786,
+      "location_name": "Juventa Regenerative Medicine",
+      "query_string": "México, Playa del Carmen, , Playa del Carmen, MX, Playa del Carmen, Mexico",
+      "returned_latitude": 20.6295586,
+      "returned_longitude": -87.0738851,
+      "location_type": "APPROXIMATE",
+      "formatted_address": "Playa del Carmen, Quintana Roo, Mexico",
+      "country_code": "MX",
+      "returned_country_code": "MX",
+      "reason": "low_confidence_country_match"
+    },
+    {
+      "location_id": 1793,
+      "location_name": "Avicenna International Hospital",
+      "query_string": "Küçükbakkalköy, Kayışdağı Cd. no:47, 34750 Ataşehir/İstanbul, Türkiye, Istanbul, TR, Istanbul, Türkiye",
+      "returned_latitude": 40.9794405,
+      "returned_longitude": 29.108804,
+      "location_type": "GEOMETRIC_CENTER",
+      "formatted_address": "Küçükbakkalköy, Kayışdağı Cd. no:47, 34750 Ataşehir/İstanbul, Türkiye",
+      "country_code": "TR",
+      "returned_country_code": "TR",
+      "reason": "low_confidence_country_match"
+    },
+    {
+      "location_id": 1807,
+      "location_name": "4everyouthful Medical Studio",
+      "query_string": "Mexico, Playa del Carmen, , Playa del Carmen, MX, Playa del Carmen, Mexico",
+      "returned_latitude": 20.6295586,
+      "returned_longitude": -87.0738851,
+      "location_type": "APPROXIMATE",
+      "formatted_address": "Playa del Carmen, Quintana Roo, Mexico",
+      "country_code": "MX",
+      "returned_country_code": "MX",
+      "reason": "low_confidence_country_match"
+    },
+    {
+      "location_id": 1834,
+      "location_name": "Mantak Chia | Universal Healing Tao | Tao Garden (Tao Garden Health Spa & Resort)",
+      "query_string": "274 Moo 7, Laung Nua, Doi Saket, Chiang Mai, 50220, Thailand, Chiang Mai, TH, Chiang Mai, Thailand",
+      "returned_latitude": 18.7883439,
+      "returned_longitude": 98.98530079999999,
+      "location_type": "APPROXIMATE",
+      "formatted_address": "Chiang Mai, Mueang Chiang Mai District, Chiang Mai, Thailand",
+      "country_code": "TH",
+      "returned_country_code": "TH",
+      "reason": "low_confidence_country_match"
+    },
+    {
+      "location_id": 1936,
+      "location_name": "Багатопрофільний комплекс психіатрії та наркології «Ренесанс-Київ»",
+      "query_string": "Украина, Киев, Озерна. 3, Kyiv, UA, Kyiv, Ukraine",
+      "returned_latitude": 50.3502158,
+      "returned_longitude": 30.6135871,
+      "location_type": "GEOMETRIC_CENTER",
+      "formatted_address": "3-ya Ozerna St, Kyiv, Ukraine, 02000",
+      "country_code": "UA",
+      "returned_country_code": "UA",
+      "reason": "low_confidence_country_match"
+    },
+    {
+      "location_id": 1937,
+      "location_name": "EKOL International HOSPITALS - İzmir",
+      "query_string": "Turquía, Izmir, , İzmir, TR, İzmir, Türkiye",
+      "returned_latitude": 38.423734,
+      "returned_longitude": 27.142826,
+      "location_type": "APPROXIMATE",
+      "formatted_address": "İzmir, Türkiye",
+      "country_code": "TR",
+      "returned_country_code": "TR",
+      "reason": "low_confidence_country_match"
+    },
+    {
+      "location_id": 1966,
+      "location_name": "Dental Del Rio",
+      "query_string": "Mexico, Los Algodones, , Los Algodones, MX, Los Algodones, Mexico",
+      "returned_latitude": 32.7134113,
+      "returned_longitude": -114.7365544,
+      "location_type": "APPROXIMATE",
+      "formatted_address": "21970 Los Algodones, Baja California, Mexico",
+      "country_code": "MX",
+      "returned_country_code": "MX",
+      "reason": "low_confidence_country_match"
+    },
+    {
+      "location_id": 1972,
+      "location_name": "Welida Health Wellness Center",
+      "query_string": "21 Floor, Building253 Asoke, Klongtoey Nuea, Wattana, Bangkok 10110, Thailand, Bangkok, TH, Bangkok, Thailand",
+      "returned_latitude": 13.7365244,
+      "returned_longitude": 100.5612436,
+      "location_type": "GEOMETRIC_CENTER",
+      "formatted_address": "Thanon Asok Montri, Khet Khlong Toei, Krung Thep Maha Nakhon, Thailand",
+      "country_code": "TH",
+      "returned_country_code": "TH",
+      "reason": "low_confidence_country_match"
+    },
+    {
+      "location_id": 1973,
+      "location_name": "Harmony Life Center",
+      "query_string": "Thailand, Bangkok, , Bangkok, TH, Bangkok, Thailand",
+      "returned_latitude": 13.7563309,
+      "returned_longitude": 100.5017651,
+      "location_type": "APPROXIMATE",
+      "formatted_address": "Bangkok, Thailand",
+      "country_code": "TH",
+      "returned_country_code": "TH",
+      "reason": "low_confidence_country_match"
+    },
+    {
+      "location_id": 2002,
+      "location_name": "BodySpec",
+      "query_string": "2045 Pacific Hwy, San Diego, CA, United States",
+      "returned_latitude": 32.7255428,
+      "returned_longitude": -117.1715099,
+      "location_type": "GEOMETRIC_CENTER",
+      "formatted_address": "2045 Pacific Hwy, San Diego, CA 92101, USA",
+      "country_code": "US",
+      "returned_country_code": "US",
+      "reason": "low_confidence_country_match"
+    },
+    {
+      "location_id": 2006,
+      "location_name": "Clean Market Midtown East",
+      "query_string": "Midtown East, New York, NY, United States",
+      "returned_latitude": 40.7571432,
+      "returned_longitude": -73.9718815,
+      "location_type": "APPROXIMATE",
+      "formatted_address": "Midtown East, New York, NY, USA",
+      "country_code": "US",
+      "returned_country_code": "US",
+      "reason": "low_confidence_country_match"
+    },
+    {
+      "location_id": 2008,
+      "location_name": "Clean Market West Loop",
+      "query_string": "West Loop, Chicago, IL, United States",
+      "returned_latitude": 41.8830596,
+      "returned_longitude": -87.6520702,
+      "location_type": "APPROXIMATE",
+      "formatted_address": "West Loop, Chicago, IL, USA",
+      "country_code": "US",
+      "returned_country_code": "US",
+      "reason": "low_confidence_country_match"
+    },
+    {
+      "location_id": 2012,
+      "location_name": "iCRYO Fairfield",
+      "query_string": "iCRYO Fairfield, Fairfield, United States",
+      "returned_latitude": 41.1408363,
+      "returned_longitude": -73.2612615,
+      "location_type": "APPROXIMATE",
+      "formatted_address": "Fairfield, CT, USA",
+      "country_code": "US",
+      "returned_country_code": "US",
+      "reason": "low_confidence_country_match"
+    },
+    {
+      "location_id": 2014,
+      "location_name": "iCRYO Port St. Lucie",
+      "query_string": "iCRYO Port St. Lucie, Port St. Lucie, United States",
+      "returned_latitude": 27.2730492,
+      "returned_longitude": -80.3582261,
+      "location_type": "APPROXIMATE",
+      "formatted_address": "Port St. Lucie, FL, USA",
+      "country_code": "US",
+      "returned_country_code": "US",
+      "reason": "low_confidence_country_match"
+    },
+    {
+      "location_id": 2024,
+      "location_name": "iCRYO Clifton Park",
+      "query_string": "iCRYO Clifton Park, Clifton Park, United States",
+      "returned_latitude": 42.844668,
+      "returned_longitude": -73.8183804,
+      "location_type": "APPROXIMATE",
+      "formatted_address": "Clifton Park, NY, USA",
+      "country_code": "US",
+      "returned_country_code": "US",
+      "reason": "low_confidence_country_match"
+    },
+    {
+      "location_id": 2027,
+      "location_name": "iCRYO Charlotte – Blakeney",
+      "query_string": "iCRYO Charlotte – Blakeney, Charlotte, United States",
+      "returned_latitude": 35.2270768,
+      "returned_longitude": -80.84089329999999,
+      "location_type": "APPROXIMATE",
+      "formatted_address": "Charlotte, NC, USA",
+      "country_code": "US",
+      "returned_country_code": "US",
+      "reason": "low_confidence_country_match"
+    },
+    {
+      "location_id": 2035,
+      "location_name": "iCRYO Baybrook",
+      "query_string": "iCRYO Baybrook, Baybrook, United States",
+      "returned_latitude": 30.51057699999999,
+      "returned_longitude": -87.1675309,
+      "location_type": "APPROXIMATE",
+      "formatted_address": "Baybrook, Ferry Pass, FL 32514, USA",
+      "country_code": "US",
+      "returned_country_code": "US",
+      "reason": "low_confidence_country_match"
+    },
+    {
+      "location_id": 2038,
+      "location_name": "iCRYO Dallas – Preston Hollow",
+      "query_string": "iCRYO Dallas – Preston Hollow, Dallas, United States",
+      "returned_latitude": 32.8800899,
+      "returned_longitude": -96.8138651,
+      "location_type": "APPROXIMATE",
+      "formatted_address": "Preston Hollow, Dallas, TX, USA",
+      "country_code": "US",
+      "returned_country_code": "US",
+      "reason": "low_confidence_country_match"
+    },
+    {
+      "location_id": 2045,
+      "location_name": "iCRYO League City",
+      "query_string": "iCRYO League City, League City, United States",
+      "returned_latitude": 29.5038503,
+      "returned_longitude": -95.09382459999999,
+      "location_type": "APPROXIMATE",
+      "formatted_address": "League City, TX, USA",
+      "country_code": "US",
+      "returned_country_code": "US",
+      "reason": "low_confidence_country_match"
+    },
+    {
+      "location_id": 2046,
+      "location_name": "iCRYO New Braunfels",
+      "query_string": "iCRYO New Braunfels, New Braunfels, United States",
+      "returned_latitude": 29.7049806,
+      "returned_longitude": -98.06834300000001,
+      "location_type": "GEOMETRIC_CENTER",
+      "formatted_address": "New Braunfels, TX 78130, USA",
+      "country_code": "US",
+      "returned_country_code": "US",
+      "reason": "low_confidence_country_match"
+    },
+    {
+      "location_id": 2048,
+      "location_name": "iCRYO Richmond",
+      "query_string": "iCRYO Richmond, Richmond, United States",
+      "returned_latitude": 37.5407246,
+      "returned_longitude": -77.4360481,
+      "location_type": "APPROXIMATE",
+      "formatted_address": "Richmond, VA, USA",
+      "country_code": "US",
+      "returned_country_code": "US",
+      "reason": "low_confidence_country_match"
+    },
+    {
+      "location_id": 2057,
+      "location_name": "Next Health",
+      "query_string": "Next Health, New York City, United States",
+      "returned_latitude": 40.74709319999999,
+      "returned_longitude": -73.9840545,
+      "location_type": "GEOMETRIC_CENTER",
+      "formatted_address": "160 Madison Ave Entrance: The Parlor on 33rd Street Mezzanine Floor, New York, NY 10016, USA",
+      "country_code": "US",
+      "returned_country_code": "US",
+      "reason": "low_confidence_country_match"
+    },
+    {
+      "location_id": 2060,
+      "location_name": "Next Health",
+      "query_string": "Next Health, United Arab Emirates",
+      "returned_latitude": 23.424076,
+      "returned_longitude": 53.847818,
+      "location_type": "APPROXIMATE",
+      "formatted_address": "United Arab Emirates",
+      "country_code": "AE",
+      "returned_country_code": "AE",
+      "reason": "low_confidence_country_match"
+    },
+    {
+      "location_id": 2062,
+      "location_name": "Next Health",
+      "query_string": "Next Health, Miami, United States",
+      "returned_latitude": 25.7616798,
+      "returned_longitude": -80.1917902,
+      "location_type": "APPROXIMATE",
+      "formatted_address": "Miami, FL, USA",
+      "country_code": "US",
+      "returned_country_code": "US",
+      "reason": "low_confidence_country_match"
+    },
+    {
+      "location_id": 2066,
+      "location_name": "Next Health",
+      "query_string": "Next Health, Glendale, United States",
+      "returned_latitude": 34.1463674,
+      "returned_longitude": -118.2488703,
+      "location_type": "APPROXIMATE",
+      "formatted_address": "Glendale, CA, USA",
+      "country_code": "US",
+      "returned_country_code": "US",
+      "reason": "low_confidence_country_match"
+    },
+    {
+      "location_id": 2067,
+      "location_name": "Next Health",
+      "query_string": "Next Health, Elk Grove, United States",
+      "returned_latitude": 38.4089538,
+      "returned_longitude": -121.3788635,
+      "location_type": "APPROXIMATE",
+      "formatted_address": "Elk Grove, CA, USA",
+      "country_code": "US",
+      "returned_country_code": "US",
+      "reason": "low_confidence_country_match"
+    },
+    {
+      "location_id": 2068,
+      "location_name": "Next Health",
+      "query_string": "Next Health, Bellevue, United States",
+      "returned_latitude": 47.6101497,
+      "returned_longitude": -122.2015159,
+      "location_type": "APPROXIMATE",
+      "formatted_address": "Bellevue, WA, USA",
+      "country_code": "US",
+      "returned_country_code": "US",
+      "reason": "low_confidence_country_match"
+    },
+    {
+      "location_id": 2069,
+      "location_name": "Next Health",
+      "query_string": "Next Health, Boulder, United States",
+      "returned_latitude": 40.0189728,
+      "returned_longitude": -105.2747406,
+      "location_type": "APPROXIMATE",
+      "formatted_address": "Boulder, CO, USA",
+      "country_code": "US",
+      "returned_country_code": "US",
+      "reason": "low_confidence_country_match"
+    },
+    {
+      "location_id": 2070,
+      "location_name": "Next Health",
+      "query_string": "Next Health, Roseville, United States",
+      "returned_latitude": 38.7482609,
+      "returned_longitude": -121.2832193,
+      "location_type": "APPROXIMATE",
+      "formatted_address": "Roseville, CA, USA",
+      "country_code": "US",
+      "returned_country_code": "US",
+      "reason": "low_confidence_country_match"
+    },
+    {
+      "location_id": 2071,
+      "location_name": "Next Health",
+      "query_string": "Next Health, Chestnut Hill, United States",
+      "returned_latitude": 42.3328668,
+      "returned_longitude": -71.1727583,
+      "location_type": "APPROXIMATE",
+      "formatted_address": "Chestnut Hill, Newton, MA, USA",
+      "country_code": "US",
+      "returned_country_code": "US",
+      "reason": "low_confidence_country_match"
+    },
+    {
+      "location_id": 2073,
+      "location_name": "Next Health",
+      "query_string": "Next Health, Irvine, United States",
+      "returned_latitude": 33.6845673,
+      "returned_longitude": -117.8265049,
+      "location_type": "APPROXIMATE",
+      "formatted_address": "Irvine, CA, USA",
+      "country_code": "US",
+      "returned_country_code": "US",
+      "reason": "low_confidence_country_match"
+    },
+    {
+      "location_id": 2075,
+      "location_name": "Next Health",
+      "query_string": "Next Health, Tampa, United States",
+      "returned_latitude": 27.9516896,
+      "returned_longitude": -82.45875269999999,
+      "location_type": "APPROXIMATE",
+      "formatted_address": "Tampa, FL, USA",
+      "country_code": "US",
+      "returned_country_code": "US",
+      "reason": "low_confidence_country_match"
+    },
+    {
+      "location_id": 2076,
+      "location_name": "Next Health",
+      "query_string": "Next Health, Fort Lauderdale, United States",
+      "returned_latitude": 26.1224386,
+      "returned_longitude": -80.13731740000001,
+      "location_type": "APPROXIMATE",
+      "formatted_address": "Fort Lauderdale, FL, USA",
+      "country_code": "US",
+      "returned_country_code": "US",
+      "reason": "low_confidence_country_match"
+    },
+    {
+      "location_id": 2077,
+      "location_name": "Next Health",
+      "query_string": "Next Health, Phoenix, United States",
+      "returned_latitude": 33.4482948,
+      "returned_longitude": -112.0725488,
+      "location_type": "APPROXIMATE",
+      "formatted_address": "Phoenix, AZ, USA",
+      "country_code": "US",
+      "returned_country_code": "US",
+      "reason": "low_confidence_country_match"
+    },
+    {
+      "location_id": 2078,
+      "location_name": "Next Health",
+      "query_string": "Next Health, San Diego, United States",
+      "returned_latitude": 32.715738,
+      "returned_longitude": -117.1610838,
+      "location_type": "APPROXIMATE",
+      "formatted_address": "San Diego, CA, USA",
+      "country_code": "US",
+      "returned_country_code": "US",
+      "reason": "low_confidence_country_match"
+    },
+    {
+      "location_id": 2079,
+      "location_name": "Next Health",
+      "query_string": "Next Health, Miami Beach, United States",
+      "returned_latitude": 25.790654,
+      "returned_longitude": -80.1300455,
+      "location_type": "APPROXIMATE",
+      "formatted_address": "Miami Beach, FL, USA",
+      "country_code": "US",
+      "returned_country_code": "US",
+      "reason": "low_confidence_country_match"
+    },
+    {
+      "location_id": 2080,
+      "location_name": "Next Health",
+      "query_string": "Next Health, Las Vegas, United States",
+      "returned_latitude": 36.171563,
+      "returned_longitude": -115.1391009,
+      "location_type": "APPROXIMATE",
+      "formatted_address": "Las Vegas, NV, USA",
+      "country_code": "US",
+      "returned_country_code": "US",
+      "reason": "low_confidence_country_match"
+    },
+    {
+      "location_id": 2110,
+      "location_name": "Prenuvo Clinic - Charleston, SC",
+      "query_string": "Prenuvo Clinic - Charleston, SC, Charleston, United States",
+      "returned_latitude": 32.7833163,
+      "returned_longitude": -79.9319664,
+      "location_type": "APPROXIMATE",
+      "formatted_address": "Charleston, SC, USA",
+      "country_code": "US",
+      "returned_country_code": "US",
+      "reason": "low_confidence_country_match"
+    },
+    {
+      "location_id": 2112,
+      "location_name": "Prenuvo Clinic - Dubai, UAE",
+      "query_string": "Prenuvo Clinic - Dubai, UAE, Dubai, United Arab Emirates",
+      "returned_latitude": 25.2048493,
+      "returned_longitude": 55.2707828,
+      "location_type": "APPROXIMATE",
+      "formatted_address": "Dubai - United Arab Emirates",
+      "country_code": "AE",
+      "returned_country_code": "AE",
+      "reason": "low_confidence_country_match"
+    },
+    {
+      "location_id": 2114,
+      "location_name": "Prenuvo Clinic - Nashville, TN",
+      "query_string": "Prenuvo Clinic - Nashville, TN, Nashville, United States",
+      "returned_latitude": 36.1626638,
+      "returned_longitude": -86.7816016,
+      "location_type": "APPROXIMATE",
+      "formatted_address": "Nashville, TN, USA",
+      "country_code": "US",
+      "returned_country_code": "US",
+      "reason": "low_confidence_country_match"
+    },
+    {
+      "location_id": 2115,
+      "location_name": "Prenuvo Clinic - Sacramento, CA",
+      "query_string": "Prenuvo Clinic - Sacramento, CA, Sacramento, United States",
+      "returned_latitude": 38.5781342,
+      "returned_longitude": -121.4944209,
+      "location_type": "APPROXIMATE",
+      "formatted_address": "Sacramento, CA, USA",
+      "country_code": "US",
+      "returned_country_code": "US",
+      "reason": "low_confidence_country_match"
+    },
+    {
+      "location_id": 2116,
+      "location_name": "Prenuvo Clinic - Sydney, Australia",
+      "query_string": "Prenuvo Clinic - Sydney, Australia, Sydney, Australia",
+      "returned_latitude": -33.8622503,
+      "returned_longitude": 151.207684,
+      "location_type": "APPROXIMATE",
+      "formatted_address": "Sydney NSW, Australia",
+      "country_code": "AU",
+      "returned_country_code": "AU",
+      "reason": "low_confidence_country_match"
+    },
+    {
+      "location_id": 2133,
+      "location_name": "I-MED Radiology Darwin Private Hospital",
+      "query_string": "Rocklands Drive, Tiwi, 810, Australia, Tiwi, 810, Australia",
+      "returned_latitude": -12.3594748,
+      "returned_longitude": 130.8787935,
+      "location_type": "GEOMETRIC_CENTER",
+      "formatted_address": "Rocklands Dr, Tiwi NT 0810, Australia",
+      "country_code": "AU",
+      "returned_country_code": "AU",
+      "reason": "low_confidence_country_match"
+    },
+    {
+      "location_id": 2146,
+      "location_name": "Newcastle Body Scans",
+      "query_string": "Newcastle, NSW, AU, Newcastle, NSW, Australia",
+      "returned_latitude": -32.9282712,
+      "returned_longitude": 151.7816802,
+      "location_type": "APPROXIMATE",
+      "formatted_address": "Newcastle NSW, Australia",
+      "country_code": "AU",
+      "returned_country_code": "AU",
+      "reason": "low_confidence_country_match"
+    },
+    {
+      "location_id": 2181,
+      "location_name": "DexaFit",
+      "query_string": "London, UK, London, United Kingdom",
+      "returned_latitude": 51.5072178,
+      "returned_longitude": -0.1275862,
+      "location_type": "APPROXIMATE",
+      "formatted_address": "London, UK",
+      "country_code": "GB",
+      "returned_country_code": "GB",
+      "reason": "low_confidence_country_match"
+    },
+    {
+      "location_id": 2188,
+      "location_name": "Dexascans.com - Jacksonville, FL",
+      "query_string": "Jacksonville, FL, US, Jacksonville, FL, United States",
+      "returned_latitude": 30.3297566,
+      "returned_longitude": -81.6591529,
+      "location_type": "APPROXIMATE",
+      "formatted_address": "Jacksonville, FL, USA",
+      "country_code": "US",
+      "returned_country_code": "US",
+      "reason": "low_confidence_country_match"
+    },
+    {
+      "location_id": 2193,
+      "location_name": "Dexascans.com - Tampa, FL",
+      "query_string": "Tampa, FL, US, Tampa, FL, United States",
+      "returned_latitude": 27.9516896,
+      "returned_longitude": -82.45875269999999,
+      "location_type": "APPROXIMATE",
+      "formatted_address": "Tampa, FL, USA",
+      "country_code": "US",
+      "returned_country_code": "US",
+      "reason": "low_confidence_country_match"
+    },
+    {
+      "location_id": 2201,
+      "location_name": "1101 Beacon Street",
+      "query_string": "Suite 8W-3 Brookline, MA 02446 United States, Suite 8W-3 Brookline, MA, 02446, United States",
+      "returned_latitude": 42.3421605,
+      "returned_longitude": -71.1240559,
+      "location_type": "APPROXIMATE",
+      "formatted_address": "Brookline, MA 02446, USA",
+      "country_code": "US",
+      "returned_country_code": "US",
+      "reason": "low_confidence_country_match"
+    },
+    {
+      "location_id": 2207,
+      "location_name": "MyBodeeScan",
+      "query_string": "Richardson, TX, US, Richardson, TX, United States",
+      "returned_latitude": 32.9483335,
+      "returned_longitude": -96.7298519,
+      "location_type": "APPROXIMATE",
+      "formatted_address": "Richardson, TX, USA",
+      "country_code": "US",
+      "returned_country_code": "US",
+      "reason": "low_confidence_country_match"
+    },
+    {
+      "location_id": 2210,
+      "location_name": "Dexascans.com - San Jose, CA",
+      "query_string": "San Jose, CA, US, San Jose, CA, United States",
+      "returned_latitude": 37.33874,
+      "returned_longitude": -121.8852525,
+      "location_type": "APPROXIMATE",
+      "formatted_address": "San Jose, CA, USA",
+      "country_code": "US",
+      "returned_country_code": "US",
+      "reason": "low_confidence_country_match"
+    },
+    {
+      "location_id": 2224,
+      "location_name": "Ruby Plastic Surgery",
+      "query_string": "Ruby Plastic Surgery, Seoul, South Korea",
+      "returned_latitude": 37.550263,
+      "returned_longitude": 126.9970831,
+      "location_type": "APPROXIMATE",
+      "formatted_address": "Seoul, South Korea",
+      "country_code": "KR",
+      "returned_country_code": "KR",
+      "reason": "low_confidence_country_match"
+    },
+    {
+      "location_id": 2235,
+      "location_name": "Wink Plastic Surgery",
+      "query_string": "Wink Plastic Surgery, Seoul, South Korea",
+      "returned_latitude": 37.5166146,
+      "returned_longitude": 127.0203342,
+      "location_type": "GEOMETRIC_CENTER",
+      "formatted_address": "South Korea, Seoul, KR 서울특별시 강남구 서울시 강남구 도산대로 107 SYH 9층",
+      "country_code": "KR",
+      "returned_country_code": "KR",
+      "reason": "low_confidence_country_match"
+    },
+    {
+      "location_id": 2252,
+      "location_name": "Australian Clinic of Biological Medicine",
+      "query_string": "South Road, Thebarton, SA, 5031, AU, Thebarton, SA, 5031, Australia",
+      "returned_latitude": -34.916599,
+      "returned_longitude": 138.5670364,
+      "location_type": "GEOMETRIC_CENTER",
+      "formatted_address": "South Rd, Thebarton SA 5031, Australia",
+      "country_code": "AU",
+      "returned_country_code": "AU",
+      "reason": "low_confidence_country_match"
+    },
+    {
+      "location_id": 2286,
+      "location_name": "LondonCryo",
+      "query_string": "London, GB, London, United Kingdom",
+      "returned_latitude": 51.5072178,
+      "returned_longitude": -0.1275862,
+      "location_type": "APPROXIMATE",
+      "formatted_address": "London, UK",
+      "country_code": "GB",
+      "returned_country_code": "GB",
+      "reason": "low_confidence_country_match"
+    },
+    {
+      "location_id": 2300,
+      "location_name": "Hyperbaric Oxygen Therapy Ireland",
+      "query_string": "Naas, Kildare, IE, Naas, Kildare, Ireland",
+      "returned_latitude": 53.2244337,
+      "returned_longitude": -6.653003,
+      "location_type": "APPROXIMATE",
+      "formatted_address": "Naas, Co. Kildare, Ireland",
+      "country_code": "IE",
+      "returned_country_code": "IE",
+      "reason": "low_confidence_country_match"
+    },
+    {
+      "location_id": 2301,
+      "location_name": "OXY Health",
+      "query_string": "Naas, KE, W91 H7EK, IE, Naas, KE, W91 H7EK, Ireland",
+      "returned_latitude": 53.3247803,
+      "returned_longitude": -6.7796569,
+      "location_type": "APPROXIMATE",
+      "formatted_address": "Staplestown, Co. Kildare, W91 H7EK, Ireland",
+      "country_code": "IE",
+      "returned_country_code": "IE",
+      "reason": "low_confidence_country_match"
+    },
+    {
+      "location_id": 2302,
+      "location_name": "ReWell",
+      "query_string": "[{'@type': 'PostalAddress', 'streetAddress': 'Unit 3', 'addressLocality': ' Health and Fitness', 'addressRegion': ' Maudlands', 'postalCode': ' Fishery Lane', 'addressCountry': ' Co. Kildare'}, {'streetAddress': '', 'addressLocality': '', 'addressRegion': '', 'postalCode': '', 'addressCountry': ''}], 'addressCountry': ''}], Ireland",
+      "returned_latitude": 53.22676,
+      "returned_longitude": -6.62914,
+      "location_type": "APPROXIMATE",
+      "formatted_address": "Kingsfurze, Fishery Lane, Co. Kildare, Ireland",
+      "country_code": "IE",
+      "returned_country_code": "IE",
+      "reason": "low_confidence_country_match"
+    },
+    {
+      "location_id": 2310,
+      "location_name": "The Irish Examiner",
+      "query_string": "Linn Dubh, Assumption Road, Blackpool, County Cork, T23 RC6H, IE, Assumption Road, Blackpool, County Cork, T23 RC6H, Ireland",
+      "returned_latitude": 51.9141606,
+      "returned_longitude": -8.4739568,
+      "location_type": "APPROXIMATE",
+      "formatted_address": "Blackpool, Cork, Ireland",
+      "country_code": "IE",
+      "returned_country_code": "IE",
+      "reason": "low_confidence_country_match"
+    },
+    {
+      "location_id": 2314,
+      "location_name": "Athlone Therapy Centre",
+      "query_string": "St. Kieran's Community Centre, Tormey Villas, Athlone, Co. Westmeath, N37 W7P3, Ireland, IE, Co. Westmeath, Ireland",
+      "returned_latitude": 53.43140959999999,
+      "returned_longitude": -7.9427927,
+      "location_type": "GEOMETRIC_CENTER",
+      "formatted_address": "Tormey Villas, Athlone, Co. Westmeath, N37 W7P3, Ireland",
+      "country_code": "IE",
+      "returned_country_code": "IE",
+      "reason": "low_confidence_country_match"
+    },
+    {
+      "location_id": 2315,
+      "location_name": "YOUtherapies",
+      "query_string": "Claureen House, Lahinch Road, Ennis, Co. Clare, V95 Y330, Ireland, IE, Co. Clare, Ireland",
+      "returned_latitude": 52.8517913,
+      "returned_longitude": -9.0056287,
+      "location_type": "GEOMETRIC_CENTER",
+      "formatted_address": "Lahinch Rd, Ennis, Co. Clare, Ireland",
+      "country_code": "IE",
+      "returned_country_code": "IE",
+      "reason": "low_confidence_country_match"
+    },
+    {
+      "location_id": 2316,
+      "location_name": "Oxymed Ireland",
+      "query_string": "IE, Ireland",
+      "returned_latitude": 53.41291,
+      "returned_longitude": -8.24389,
+      "location_type": "APPROXIMATE",
+      "formatted_address": "Ireland",
+      "country_code": "IE",
+      "returned_country_code": "IE",
+      "reason": "low_confidence_country_match"
+    },
+    {
+      "location_id": 2320,
+      "location_name": "Oxygens Hyperbaric Clinic",
+      "query_string": "Halesowen, ENG, B62 8EP, GB, Halesowen, ENG, B62 8EP, United Kingdom",
+      "returned_latitude": 52.4568153,
+      "returned_longitude": -2.0397933,
+      "location_type": "APPROXIMATE",
+      "formatted_address": "Halesowen B62 8EP, UK",
+      "country_code": "GB",
+      "returned_country_code": "GB",
+      "reason": "low_confidence_country_match"
+    },
+    {
+      "location_id": 2328,
+      "location_name": "Breathe",
+      "query_string": "Unit 12, Lady Bee Enterprise Centre, Southwick, Brighton & Hove, East Sussex, BN42 4BW, GB, Brighton & Hove, East Sussex, BN42 4BW, United Kingdom",
+      "returned_latitude": 50.8308751,
+      "returned_longitude": -0.2369751,
+      "location_type": "APPROXIMATE",
+      "formatted_address": "Southwick, Brighton BN42 4BW, UK",
+      "country_code": "GB",
+      "returned_country_code": "GB",
+      "reason": "low_confidence_country_match"
+    },
+    {
+      "location_id": 2348,
+      "location_name": "HBOT UK Ltd",
+      "query_string": "Oslo Road, Sutton Fields Industrial Estate, North Humberside, East Riding Of Yorkshire, North Humberside, East Riding Of Yorkshire, United Kingdom",
+      "returned_latitude": 53.7777327,
+      "returned_longitude": -0.3367278,
+      "location_type": "GEOMETRIC_CENTER",
+      "formatted_address": "Oslo Rd, Hull, UK",
+      "country_code": "GB",
+      "returned_country_code": "GB",
+      "reason": "low_confidence_country_match"
+    },
+    {
+      "location_id": 2376,
+      "location_name": "Atlanta Integrative & Internal Medicine",
+      "query_string": "Roswell, GA, Roswell, GA, United States",
+      "returned_latitude": 34.0232431,
+      "returned_longitude": -84.3615555,
+      "location_type": "APPROXIMATE",
+      "formatted_address": "Roswell, GA, USA",
+      "country_code": "US",
+      "returned_country_code": "US",
+      "reason": "low_confidence_country_match"
+    },
+    {
+      "location_id": 2388,
+      "location_name": "HOOKE London",
+      "query_string": "HOOKE London, United Kingdom",
+      "returned_latitude": 51.3682509,
+      "returned_longitude": -0.305081,
+      "location_type": "APPROXIMATE",
+      "formatted_address": "Hook, Chessington, UK",
+      "country_code": "GB",
+      "returned_country_code": "GB",
+      "reason": "low_confidence_country_match"
+    },
+    {
+      "location_id": 2390,
+      "location_name": "YEARS Preventive Medicine",
+      "query_string": "YEARS Preventive Medicine, Germany",
+      "returned_latitude": 51.165691,
+      "returned_longitude": 10.451526,
+      "location_type": "APPROXIMATE",
+      "formatted_address": "Germany",
+      "country_code": "DE",
+      "returned_country_code": "DE",
+      "reason": "low_confidence_country_match"
+    },
+    {
+      "location_id": 2393,
+      "location_name": "Biograph",
+      "query_string": "Biograph, United States",
+      "returned_latitude": 38.7945952,
+      "returned_longitude": -106.5348379,
+      "location_type": "APPROXIMATE",
+      "formatted_address": "United States",
+      "country_code": "US",
+      "returned_country_code": "US",
+      "reason": "low_confidence_country_match"
+    },
+    {
+      "location_id": 2394,
+      "location_name": "Prenuvo",
+      "query_string": "Prenuvo, United States",
+      "returned_latitude": 38.7945952,
+      "returned_longitude": -106.5348379,
+      "location_type": "APPROXIMATE",
+      "formatted_address": "United States",
+      "country_code": "US",
+      "returned_country_code": "US",
+      "reason": "low_confidence_country_match"
+    },
+    {
+      "location_id": 2406,
+      "location_name": "Melbourne Functional Medicine (Optimise)",
+      "query_string": "Melbourne Functional Medicine (Optimise), Australia",
+      "returned_latitude": -37.8136276,
+      "returned_longitude": 144.9630576,
+      "location_type": "APPROXIMATE",
+      "formatted_address": "Melbourne VIC, Australia",
+      "country_code": "AU",
+      "returned_country_code": "AU",
+      "reason": "low_confidence_country_match"
+    },
+    {
+      "location_id": 2407,
+      "location_name": "Viavi",
+      "query_string": "Viavi, United Kingdom",
+      "returned_latitude": 55.378051,
+      "returned_longitude": -3.435973,
+      "location_type": "APPROXIMATE",
+      "formatted_address": "United Kingdom",
+      "country_code": "GB",
+      "returned_country_code": "GB",
+      "reason": "low_confidence_country_match"
+    },
+    {
+      "location_id": 2409,
+      "location_name": "NEXT Health",
+      "query_string": "NEXT Health, United States",
+      "returned_latitude": 38.7945952,
+      "returned_longitude": -106.5348379,
+      "location_type": "APPROXIMATE",
+      "formatted_address": "United States",
+      "country_code": "US",
+      "returned_country_code": "US",
+      "reason": "low_confidence_country_match"
+    },
+    {
+      "location_id": 2410,
+      "location_name": "Chaum Life Center",
+      "query_string": "Chaum Life Center, South Korea",
+      "returned_latitude": 35.907757,
+      "returned_longitude": 127.766922,
+      "location_type": "APPROXIMATE",
+      "formatted_address": "South Korea",
+      "country_code": "KR",
+      "returned_country_code": "KR",
+      "reason": "low_confidence_country_match"
+    },
+    {
+      "location_id": 2411,
+      "location_name": "Stem Cell Institute Panama",
+      "query_string": "Stem Cell Institute Panama, Panama",
+      "returned_latitude": 8.9759314,
+      "returned_longitude": -79.5223622,
+      "location_type": "GEOMETRIC_CENTER",
+      "formatted_address": "BICSA Financial Tower 63rd Floor, C. Aquilino de la Guardia, Panama City, Panamá Province, Panama",
+      "country_code": "PA",
+      "returned_country_code": "PA",
+      "reason": "low_confidence_country_match"
+    },
+    {
+      "location_id": 2433,
+      "location_name": "Truman Urology Korea - English-speaking & Walk-ins Welcome!",
+      "query_string": "South Korea",
+      "returned_latitude": 35.907757,
+      "returned_longitude": 127.766922,
+      "location_type": "APPROXIMATE",
+      "formatted_address": "South Korea",
+      "country_code": "KR",
+      "returned_country_code": "KR",
+      "reason": "low_confidence_country_match"
+    },
+    {
+      "location_id": 2439,
+      "location_name": "Listings in Health & Medical Tourism Services",
+      "query_string": "Listings in Health & Medical Tourism Services, South Korea",
+      "returned_latitude": 35.907757,
+      "returned_longitude": 127.766922,
+      "location_type": "APPROXIMATE",
+      "formatted_address": "South Korea",
+      "country_code": "KR",
+      "returned_country_code": "KR",
+      "reason": "low_confidence_country_match"
+    },
+    {
+      "location_id": 2442,
+      "location_name": "Seoul Stem Cell Clinic",
+      "query_string": "Seoul Stem Cell Clinic, Seoul, South Korea",
+      "returned_latitude": 37.550263,
+      "returned_longitude": 126.9970831,
+      "location_type": "APPROXIMATE",
+      "formatted_address": "Seoul, South Korea",
+      "country_code": "KR",
+      "returned_country_code": "KR",
+      "reason": "low_confidence_country_match"
+    },
+    {
+      "location_id": 2443,
+      "location_name": "Listings in Best Stem Cell Clinics Seoul Gangnam",
+      "query_string": "Listings in Best Stem Cell Clinics Seoul Gangnam, Seoul, South Korea",
+      "returned_latitude": 37.4966645,
+      "returned_longitude": 127.0629804,
+      "location_type": "APPROXIMATE",
+      "formatted_address": "Gangnam District, Seoul, South Korea",
+      "country_code": "KR",
+      "returned_country_code": "KR",
+      "reason": "low_confidence_country_match"
+    },
+    {
+      "location_id": 2450,
+      "location_name": "Istanbul City Clinic",
+      "query_string": "Istanbul City Clinic, Switzerland",
+      "returned_latitude": 46.818188,
+      "returned_longitude": 8.227511999999999,
+      "location_type": "APPROXIMATE",
+      "formatted_address": "Switzerland",
+      "country_code": "CH",
+      "returned_country_code": "CH",
+      "reason": "low_confidence_country_match"
+    },
+    {
+      "location_id": 2452,
+      "location_name": "Infinite Health Integrative Medicine Center",
+      "query_string": "metairie, United States",
+      "returned_latitude": 29.9840922,
+      "returned_longitude": -90.1528519,
+      "location_type": "APPROXIMATE",
+      "formatted_address": "Metairie, LA, USA",
+      "country_code": "US",
+      "returned_country_code": "US",
+      "reason": "low_confidence_country_match"
+    },
+    {
+      "location_id": 2453,
+      "location_name": "Biolite",
+      "query_string": "dubai, United Arab Emirates",
+      "returned_latitude": 25.2048493,
+      "returned_longitude": 55.2707828,
+      "location_type": "APPROXIMATE",
+      "formatted_address": "Dubai - United Arab Emirates",
+      "country_code": "AE",
+      "returned_country_code": "AE",
+      "reason": "low_confidence_country_match"
+    }
+  ]
+}

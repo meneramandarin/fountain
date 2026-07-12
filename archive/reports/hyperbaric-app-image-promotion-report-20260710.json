@@ -1,0 +1,65 @@
+{
+  "sourceSlug": "hyperbaric_app",
+  "auditTable": "fountain_raw.hyperbaric_app_image_audit_20260710",
+  "phase": "promote",
+  "startedAt": "2026-07-10T19:48:28.324Z",
+  "before": {
+    "active_blob_images": 30794,
+    "active_nonvirtual_zero_image_locations": 3645
+  },
+  "counts": [
+    {
+      "classification": "promote",
+      "outcome": "inserted",
+      "reason": "",
+      "rows": 938
+    },
+    {
+      "classification": "skip_download_failed",
+      "outcome": "skip_download_failed",
+      "reason": "http_403",
+      "rows": 2
+    },
+    {
+      "classification": "skip_download_failed",
+      "outcome": "skip_download_failed",
+      "reason": "http_404",
+      "rows": 1
+    },
+    {
+      "classification": "skip_duplicate",
+      "outcome": "skip_duplicate",
+      "reason": "image_url already active on same location",
+      "rows": 33
+    },
+    {
+      "classification": "skip_junk",
+      "outcome": "skip_junk",
+      "reason": "too_small_bytes",
+      "rows": 4
+    },
+    {
+      "classification": "skip_junk",
+      "outcome": "skip_junk",
+      "reason": "url or alt matched junk asset pattern",
+      "rows": 3
+    },
+    {
+      "classification": "skip_junk",
+      "outcome": "skip_junk",
+      "reason": "unsupported_content_type",
+      "rows": 1
+    },
+    {
+      "classification": "skip_junk",
+      "outcome": "skip_junk",
+      "reason": "too_small_dimensions",
+      "rows": 1
+    }
+  ],
+  "after": {
+    "active_blob_images": 31732,
+    "active_nonvirtual_zero_image_locations": 3339
+  },
+  "finishedAt": "2026-07-10T20:10:27.545Z"
+}
