@@ -58,12 +58,16 @@ export function createLlmClient({
     maxTokens,
     temperature = 0,
     responseFormat,
+    reasoning,
     signal,
   }) {
     const normalizedRunId = normalizeRunId(runId);
     assertOptionalEntityId(entityId);
     assertMessages(messages);
     assertNonEmptyString(callType, "LLM call type");
+    if (reasoning !== undefined) {
+      assertPlainJsonObject(reasoning, "reasoning");
+    }
     const attemptsAllowed = positiveInteger(maxAttempts, "maxAttempts");
     const selectedModel = resolveModel(model || tier, tiers);
 
@@ -83,6 +87,7 @@ export function createLlmClient({
       usage: { include: true },
       ...(maxTokens === undefined ? {} : { max_tokens: nonNegativeInteger(maxTokens, "maxTokens") }),
       ...(responseFormat === undefined ? {} : { response_format: responseFormat }),
+      ...(reasoning === undefined ? {} : { reasoning }),
     };
     const requestFingerprint = fingerprint({ endpoint, callType, requestBody });
 
@@ -193,6 +198,11 @@ export function createLlmClient({
 export function normalizeUsage(usage = {}) {
   const promptTokens = nonNegativeInteger(usage?.prompt_tokens ?? usage?.input_tokens ?? 0, "prompt token count");
   const completionTokens = nonNegativeInteger(usage?.completion_tokens ?? usage?.output_tokens ?? 0, "completion token count");
+  const rawReasoningTokens = usage?.completion_tokens_details?.reasoning_tokens
+    ?? usage?.reasoning_tokens;
+  const reasoningTokens = rawReasoningTokens === undefined || rawReasoningTokens === null
+    ? null
+    : nonNegativeInteger(rawReasoningTokens, "reasoning token count");
   const totalTokens = nonNegativeInteger(
     usage?.total_tokens ?? promptTokens + completionTokens,
     "total token count",
@@ -201,6 +211,7 @@ export function normalizeUsage(usage = {}) {
     prompt_tokens: promptTokens,
     completion_tokens: completionTokens,
     total_tokens: totalTokens,
+    ...(reasoningTokens === null ? {} : { reasoning_tokens: reasoningTokens }),
   };
 }
 
@@ -303,6 +314,44 @@ function assertMessages(messages) {
   if (!Array.isArray(messages) || messages.length === 0) {
     throw new TypeError("LLM messages must be a non-empty array.");
   }
+}
+
+function assertPlainJsonObject(value, label) {
+  if (!isPlainObject(value)) {
+    throw new TypeError(`${label} must be a plain JSON object.`);
+  }
+  assertJsonValue(value, label, new Set());
+}
+
+function assertJsonValue(value, label, ancestors) {
+  if (value === null || typeof value === "string" || typeof value === "boolean") return;
+  if (typeof value === "number") {
+    if (Number.isFinite(value)) return;
+    throw new TypeError(`${label} must contain only JSON-compatible values.`);
+  }
+  if (typeof value !== "object") {
+    throw new TypeError(`${label} must contain only JSON-compatible values.`);
+  }
+  if (ancestors.has(value)) {
+    throw new TypeError(`${label} must not contain circular references.`);
+  }
+  if (!Array.isArray(value) && !isPlainObject(value)) {
+    throw new TypeError(`${label} must contain only plain JSON objects and arrays.`);
+  }
+  if (Object.getOwnPropertySymbols(value).length > 0) {
+    throw new TypeError(`${label} must contain only string-keyed JSON values.`);
+  }
+  ancestors.add(value);
+  for (const child of Object.values(value)) {
+    assertJsonValue(child, label, ancestors);
+  }
+  ancestors.delete(value);
+}
+
+function isPlainObject(value) {
+  if (value === null || typeof value !== "object" || Array.isArray(value)) return false;
+  const prototype = Object.getPrototypeOf(value);
+  return prototype === Object.prototype || prototype === null;
 }
 
 function normalizeRunId(value) {

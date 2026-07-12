@@ -20,7 +20,8 @@ const CANDIDATE_CTES = `
       queue.result->'final'->>'rationale' AS rationale,
       COALESCE(
         NULLIF(queue.result#>>'{stages,stage_2,classification,model}', ''),
-        NULLIF(queue.result#>>'{stages,stage_1,model}', '')
+        NULLIF(queue.result#>>'{stages,stage_1,model}', ''),
+        NULLIF(queue.result#>>'{final,model}', '')
       ) AS model
     FROM fountain_ops.task_queue queue
     WHERE queue.task_type = 'legitimacy_check'
@@ -237,8 +238,8 @@ const INSERT_SOURCE_SUPPRESSIONS_SQL = `
   SELECT
     source.slug,
     source_record.source_listing_id,
-    'pass1_gate_b:' || candidate.class,
-    $1
+    $1::text || ':' || candidate.class,
+    $2::text
   FROM gate_b_suppression_candidates candidate
   JOIN fountain.source_records source_record
     ON source_record.entity_type = 'location'
@@ -259,7 +260,7 @@ const HIDE_LOCATIONS_SQL = `
 
 const STAMP_EVENTS_SQL = `
   UPDATE fountain.entity_change_events event
-  SET reason = 'pass1_gate_b_legitimacy_suppression',
+  SET reason = $6::text,
       metadata = event.metadata || jsonb_build_object(
         'run_id', $1::bigint,
         'campaign', $2::text,
@@ -426,6 +427,10 @@ export async function applyLegitimacyGateBSuppression(
     runId,
     classificationRunIds,
     expectedSuppressionCount,
+    actorId = LEGITIMACY_GATE_B_APPLY_ACTOR_ID,
+    actorLabelPrefix = "pass1_gate_b_apply_run",
+    sourceReasonPrefix = "pass1_gate_b",
+    eventReason = "pass1_gate_b_legitimacy_suppression",
   },
   {
     withTransaction = defaultWithTransaction,
@@ -438,8 +443,12 @@ export async function applyLegitimacyGateBSuppression(
     runId,
     classificationRunIds,
     expectedSuppressionCount,
+    actorId,
+    actorLabelPrefix,
+    sourceReasonPrefix,
+    eventReason,
   });
-  const actorLabel = `pass1_gate_b_apply_run_${normalized.runId}`;
+  const actorLabel = `${normalized.actorLabelPrefix}_${normalized.runId}`;
 
   return withTransaction(async (tx) => {
     await tx.query("SET TRANSACTION ISOLATION LEVEL SERIALIZABLE");
@@ -448,7 +457,7 @@ export async function applyLegitimacyGateBSuppression(
       [`fountain:${normalized.campaign}:${normalized.promptVersion}:suppression_apply`],
     );
     await setActor(tx, {
-      actorId: LEGITIMACY_GATE_B_APPLY_ACTOR_ID,
+      actorId: normalized.actorId,
       actorLabel,
     });
     const startedResult = await tx.query("SELECT transaction_timestamp() AS apply_started_at");
@@ -477,7 +486,10 @@ export async function applyLegitimacyGateBSuppression(
     const preflight = normalizePreflight(rowsFrom(preflightResult)[0]);
     assertPreflight(preflight, normalized.expectedSuppressionCount, { requireNoOverlap: true });
 
-    const inserted = await tx.query(INSERT_SOURCE_SUPPRESSIONS_SQL, [actorLabel]);
+    const inserted = await tx.query(INSERT_SOURCE_SUPPRESSIONS_SQL, [
+      normalized.sourceReasonPrefix,
+      actorLabel,
+    ]);
     assertCount("suppression ledger inserts", inserted, preflight.sourceRecordFanout);
 
     const hidden = await tx.query(HIDE_LOCATIONS_SQL);
@@ -487,8 +499,9 @@ export async function applyLegitimacyGateBSuppression(
       normalized.runId,
       normalized.campaign,
       normalized.promptVersion,
-      LEGITIMACY_GATE_B_APPLY_ACTOR_ID,
+      normalized.actorId,
       applyStartedAt,
+      normalized.eventReason,
     ]);
     assertCount("stamped location events", stamped, normalized.expectedSuppressionCount);
 
@@ -518,7 +531,7 @@ export async function applyLegitimacyGateBSuppression(
       promptVersion: normalized.promptVersion,
       applyRunId: normalized.runId,
       classificationRunIds: normalized.classificationRunIds,
-      actorId: LEGITIMACY_GATE_B_APPLY_ACTOR_ID,
+      actorId: normalized.actorId,
       actorLabel,
       appliedAt: new Date(applyStartedAt).toISOString(),
       expectedSuppressionCount: normalized.expectedSuppressionCount,
@@ -613,11 +626,19 @@ function normalizeOptions({
   runId = null,
   classificationRunIds = null,
   expectedSuppressionCount,
+  actorId = LEGITIMACY_GATE_B_APPLY_ACTOR_ID,
+  actorLabelPrefix = "pass1_gate_b_apply_run",
+  sourceReasonPrefix = "pass1_gate_b",
+  eventReason = "pass1_gate_b_legitimacy_suppression",
 }) {
   const normalized = {
     campaign: nonemptyString(campaign, "campaign"),
     promptVersion: nonemptyString(promptVersion, "promptVersion"),
     expectedSuppressionCount: positiveInteger(expectedSuppressionCount, "expectedSuppressionCount"),
+    actorId: nonemptyString(actorId, "actorId"),
+    actorLabelPrefix: nonemptyString(actorLabelPrefix, "actorLabelPrefix"),
+    sourceReasonPrefix: nonemptyString(sourceReasonPrefix, "sourceReasonPrefix"),
+    eventReason: nonemptyString(eventReason, "eventReason"),
   };
   if (runId != null) normalized.runId = positiveIntegerString(runId, "runId");
   if (classificationRunIds != null) {

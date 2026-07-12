@@ -1,12 +1,13 @@
 const GPT_4O_MINI = "openai/gpt-4o-mini";
+const GEMINI_3_5_FLASH = "google/gemini-3.5-flash";
 
 /**
- * Task code selects a tier, not a provider model name. The escalation tier is
- * deliberately unset until a higher-cost model and its pricing are approved.
+ * Task code selects a tier, not a provider model name. Keep tier mappings on
+ * stable model slugs so routing changes cannot silently change ledger rates.
  */
 export const MODEL_TIERS = Object.freeze({
   default: GPT_4O_MINI,
-  escalation: null,
+  escalation: GEMINI_3_5_FLASH,
 });
 
 /**
@@ -17,6 +18,10 @@ export const MODEL_PRICES_USD_PER_MILLION = Object.freeze({
   [GPT_4O_MINI]: Object.freeze({
     input: 0.15,
     output: 0.6,
+  }),
+  [GEMINI_3_5_FLASH]: Object.freeze({
+    input: 1.5,
+    output: 9,
   }),
 });
 

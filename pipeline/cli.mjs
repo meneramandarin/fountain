@@ -29,7 +29,22 @@ import {
   loadLegitimacyGateAReportData,
   renderLegitimacyGateAReport,
 } from "./lib/legitimacy-sample.mjs";
+import {
+  executeLegitimacyStage3Full,
+  LEGITIMACY_STAGE3_APPLY_ACTOR_ID,
+  renderLegitimacyStage3Completion,
+} from "./lib/legitimacy-stage3-execute.mjs";
+import {
+  LEGITIMACY_STAGE3_FULL_CAMPAIGN,
+  LEGITIMACY_STAGE3_FULL_COMPLETION_PATH,
+  LEGITIMACY_STAGE3_FULL_CONCURRENCY,
+  LEGITIMACY_STAGE3_FULL_HUMAN_REVIEW_PATH,
+  LEGITIMACY_STAGE3_FULL_PROMPT_VERSION,
+  renderLegitimacyStage3HumanReview,
+} from "./lib/legitimacy-stage3-full.mjs";
+import { loadLegitimacyStage3ProposalData } from "./lib/legitimacy-stage3-proposal.mjs";
 import { executeMigrationSql, loadMigrationFile } from "./lib/migrations.mjs";
+import { createOpenRouterAgentWebSearch } from "./lib/openrouter-web-search.mjs";
 import {
   claimTask,
   claimTasks,
@@ -112,6 +127,7 @@ export function validateCommandArgs(parsed) {
     ]),
     report: new Set(["run", "campaign", "output", "apply", "dryRun"]),
     suppress: new Set(["run", "campaign", "expected", "apply", "dryRun"]),
+    stage3: new Set(["concurrency", "batchSize", "budget", "apply", "dryRun"]),
     migrate: new Set(["file", "apply", "dryRun"]),
     census: new Set(["apply", "dryRun"]),
     maintain: new Set(["schema", "output", "apply", "dryRun"]),
@@ -151,6 +167,8 @@ async function dispatchCommand(parsed, run) {
       return runReport(parsed, run);
     case "suppress":
       return runSuppress(parsed, run);
+    case "stage3":
+      return runStage3(parsed, run);
     case "migrate":
       return runMigrate(parsed, run);
     case "maintain":
@@ -690,6 +708,96 @@ export async function runSuppress(parsed, run, operations = {}) {
   };
 }
 
+export async function runStage3(parsed, run, operations = {}) {
+  const loadData = operations.loadLegitimacyStage3ProposalData
+    || loadLegitimacyStage3ProposalData;
+  const data = await loadData();
+  const concurrency = parsed.concurrency == null
+    ? LEGITIMACY_STAGE3_FULL_CONCURRENCY
+    : positiveInteger(parsed.concurrency, "--concurrency");
+  const batchSize = parsed.batchSize == null ? 8 : positiveInteger(parsed.batchSize, "--batch-size");
+  if (run.dry_run) {
+    return {
+      status: "completed",
+      counts: {
+        cohort_rows: data.counts.reviewRows,
+        subjects: data.counts.subjects,
+        external_calls: 0,
+        serving_writes: 0,
+      },
+      result: {
+        dryRun: true,
+        campaign: LEGITIMACY_STAGE3_FULL_CAMPAIGN,
+        promptVersion: LEGITIMACY_STAGE3_FULL_PROMPT_VERSION,
+        concurrency,
+        batchSize,
+        counts: data.counts,
+      },
+    };
+  }
+
+  const webSearch = operations.webSearch || createOpenRouterAgentWebSearch();
+  const execute = operations.executeLegitimacyStage3Full || executeLegitimacyStage3Full;
+  const execution = await execute({
+    data,
+    runId: run.id,
+    webSearch,
+    apply: true,
+    concurrency,
+    batchSize,
+    llmCeilingUsd: parsed.budget == null ? 500 : nonnegativeNumber(parsed.budget, "--budget"),
+  });
+  const suppressionCount = execution.plan.counts.suppressionRows;
+  if (suppressionCount <= 0) {
+    throw new Error("Stage 3 produced no suppression candidates; refusing an unexpected apply.");
+  }
+  const suppress = operations.applyLegitimacyGateBSuppression
+    || applyLegitimacyGateBSuppression;
+  const suppression = await suppress({
+    campaign: LEGITIMACY_STAGE3_FULL_CAMPAIGN,
+    promptVersion: LEGITIMACY_STAGE3_FULL_PROMPT_VERSION,
+    runId: run.id,
+    classificationRunIds: [String(run.id)],
+    expectedSuppressionCount: suppressionCount,
+    actorId: LEGITIMACY_STAGE3_APPLY_ACTOR_ID,
+    actorLabelPrefix: "pass1_stage3_apply_run",
+    sourceReasonPrefix: "pass1_stage3",
+    eventReason: "pass1_stage3_legitimacy_suppression",
+  });
+  const spend = await (operations.getRunSpend || getRunSpend)(run.id);
+  const completionMarkdown = (operations.renderLegitimacyStage3Completion
+    || renderLegitimacyStage3Completion)({ execution, suppression, spendUsd: spend });
+  const reviewMarkdown = (operations.renderLegitimacyStage3HumanReview
+    || renderLegitimacyStage3HumanReview)(execution.plan);
+  const write = operations.writeFile || writeFile;
+  const completionPath = path.resolve(ROOT, LEGITIMACY_STAGE3_FULL_COMPLETION_PATH);
+  const reviewPath = path.resolve(ROOT, LEGITIMACY_STAGE3_FULL_HUMAN_REVIEW_PATH);
+  await write(completionPath, completionMarkdown, "utf8");
+  await write(reviewPath, reviewMarkdown, "utf8");
+
+  return {
+    status: "completed",
+    counts: {
+      cohort_rows: execution.plan.counts.cohortRows,
+      subjects: execution.plan.counts.subjects,
+      keep: execution.plan.counts.keepRows,
+      suppressed: execution.plan.counts.suppressionRows,
+      needs_human_review: execution.plan.counts.humanReviewRows,
+      websites_written: execution.persistence.websitesWritten,
+      source_suppressions: suppression.verification.runSuppressionLedgerRows,
+      reports_written: 2,
+    },
+    result: {
+      dryRun: false,
+      execution,
+      suppression,
+      spendUsd: spend,
+      completionPath,
+      reviewPath,
+    },
+  };
+}
+
 export async function runReport(parsed, run, operations = {}) {
   const targetRunId = required(parsed.run, "--run");
   if (parsed.campaign === LEGITIMACY_GATE_B_CAMPAIGN) {
@@ -1000,7 +1108,7 @@ function nonnegativeNumber(value, flag) {
 function usage() {
   return [
     "Usage: node pipeline/cli.mjs <command> [options]",
-    "Commands: enqueue, drain, report, suppress, migrate, census, maintain",
+    "Commands: enqueue, drain, report, suppress, stage3, migrate, census, maintain",
     "Maintenance: regen-structure-doc, refresh-city-index",
     "Persistent side effects require --apply; dry-run is the default.",
   ].join("\n");
