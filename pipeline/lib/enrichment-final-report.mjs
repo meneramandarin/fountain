@@ -1114,12 +1114,13 @@ function buildFinalReconciliation({
     }
   }
   const redeemedCount = redemption.applied ? redemption.redeemRows : 0;
+  const stageRedeemedCount = stage3.redeemedStageTargetCount ?? redeemedCount;
   if (stage3.activeLocationsAfter !== null) {
     addCheck(
       checks,
       "final_active_locations",
       "Final active locations after redemption",
-      stage3.activeLocationsAfter + redeemedCount,
+      stage3.activeLocationsAfter + stageRedeemedCount,
       servingState.activeLocations,
     );
   }
@@ -1128,7 +1129,7 @@ function buildFinalReconciliation({
       checks,
       "final_hidden_locations",
       "Final hidden locations after redemption",
-      stage3.hiddenLocationsAfter - redeemedCount,
+      stage3.hiddenLocationsAfter - stageRedeemedCount,
       servingState.hiddenLocations,
     );
   }
@@ -1467,6 +1468,9 @@ function normalizeStage3Summary(input) {
     ),
     suppressionLedgerAfter: optionalNonnegativeNumber(
       verification.suppressionLedgerAfter ?? verification.suppression_ledger_after,
+    ),
+    redeemedStageTargetCount: optionalNonnegativeNumber(
+      verification.redeemedStageTargetCount ?? verification.redeemed_stage_target_count,
     ),
   };
 }
