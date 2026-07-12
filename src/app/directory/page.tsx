@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { DirectoryShell, type DirectoryState, type SearchPayload } from "@/components/directory-shell";
-import { getFacets, getStats, MAX_TREATMENT_FILTERS, searchLocations, searchPractitioners, type DirectoryParams } from "@/lib/queries";
+import { MAX_TREATMENT_FILTERS, searchLocations, searchPractitioners, type DirectoryParams } from "@/lib/queries";
 import { ogImage, siteDescription } from "@/lib/site";
 
 export const dynamic = "force-dynamic";
@@ -37,12 +37,10 @@ export default async function DirectoryPage({ searchParams }: DirectoryPageProps
   const initialPayloadPromise = initialState.kind === "practitioners"
     ? searchPractitioners(initialParams, initialState.page)
     : searchLocations(initialParams, initialState.page);
-  const [facets, stats, initialPayload] = await Promise.all([getFacets(), getStats(), initialPayloadPromise]);
+  const initialPayload = await initialPayloadPromise;
   return (
     <DirectoryShell
       key={stateKey(initialState)}
-      initialFacets={facets}
-      initialStats={stats}
       initialPayload={initialPayload as SearchPayload}
       initialState={initialState}
     />

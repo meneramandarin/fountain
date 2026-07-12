@@ -2,16 +2,7 @@
 
 import { LandingFooter } from "@/components/landing-footer";
 import { DirectoryLocationCard, type DirectoryLocationCardData } from "@/components/directory-location-card";
-import {
-  ArrowLeft,
-  ArrowRight,
-  ChevronDown,
-  Filter,
-  Loader2,
-  MapPin,
-  Stethoscope,
-  X,
-} from "lucide-react";
+import { ArrowLeft, ArrowRight, Loader2, MapPin, Stethoscope } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -20,17 +11,6 @@ import { practitionerHref } from "@/lib/directory-urls";
 import { SplitDirectorySearch } from "@/components/split-directory-search";
 import { formatLocationPlace } from "@/lib/location-display";
 
-type Facets = {
-  countries: { code: string; name: string; n: number }[];
-  localities: { country_code: string; value: string; n: number }[];
-  treatment_domains: { domain: string; treatments: { id: number; name: string; n: number }[] }[];
-  location_entity_types: { value: string; n: number }[];
-  location_care_models: { value: string; n: number }[];
-  practitioner_entity_types: { value: string; n: number }[];
-  practitioner_care_models: { value: string; n: number }[];
-};
-
-type Stats = Record<string, number>;
 type Kind = "locations" | "practitioners";
 
 export type DirectoryState = {
@@ -101,21 +81,12 @@ type CachedVisitorLocation = {
   cachedAt: number;
 };
 
-const optionCollator = new Intl.Collator("en", { sensitivity: "base" });
-const countryDividerValue = "__country-divider";
 const visitorLocationCacheKey = "fountain.visitorLocation.v1";
 
-function countryLabel(country: { code: string; name: string }) {
-  return country.code === "US" ? "USA" : country.name || country.code;
-}
-
 export function DirectoryShell({
-  initialFacets,
   initialPayload,
   initialState: seededState,
 }: {
-  initialFacets: Facets;
-  initialStats: Stats;
   initialPayload: SearchPayload;
   initialState: DirectoryState;
 }) {
@@ -251,47 +222,6 @@ export function DirectoryShell({
     router.push(`/directory?${params.toString()}`);
   }, [router, state.kind]);
 
-  const toggleTreatment = useCallback((id: string) => {
-    if (!id) {
-      return;
-    }
-    setLoading(true);
-    setState((current) => {
-      const selected = current.treatment_ids.includes(id)
-        ? current.treatment_ids.filter((existing) => existing !== id)
-        : [...current.treatment_ids, id];
-      return { ...current, treatment_ids: selected, page: 0 };
-    });
-  }, []);
-
-  const entityTypes = state.kind === "locations" ? initialFacets.location_entity_types : initialFacets.practitioner_entity_types;
-  const careModels = state.kind === "locations" ? initialFacets.location_care_models : initialFacets.practitioner_care_models;
-  const allTreatments = useMemo(
-    () => initialFacets.treatment_domains.flatMap((domain) => domain.treatments),
-    [initialFacets.treatment_domains],
-  );
-  const treatmentNameById = useMemo(() => {
-    const map = new Map<string, string>();
-    for (const treatment of allTreatments) {
-      map.set(String(treatment.id), treatment.name);
-    }
-    return map;
-  }, [allTreatments]);
-  const countryOptions = useMemo(() => {
-    const usCountry = initialFacets.countries.find((country) => country.code === "US");
-    const otherCountries = initialFacets.countries
-      .filter((country) => country.code !== "US")
-      .sort((a, b) => optionCollator.compare(countryLabel(a), countryLabel(b)));
-    return { usCountry, otherCountries };
-  }, [initialFacets.countries]);
-  const localityOptions = useMemo(
-    () =>
-      initialFacets.localities
-        .filter((locality) => locality.country_code === state.country)
-        .sort((a, b) => optionCollator.compare(a.value, b.value)),
-    [initialFacets.localities, state.country],
-  );
-
   return (
     <main className="directory-shell">
       <section className="directory-hero" aria-label="Directory search">
@@ -322,106 +252,6 @@ export function DirectoryShell({
       </section>
 
       <div className="directory-layout">
-        <aside className="filter-panel">
-          <div className="filter-heading">
-            <Filter size={18} aria-hidden="true" />
-            <span>Filters</span>
-          </div>
-          <label className="field">
-            <span>Country</span>
-            <span className="select-wrap">
-              <select value={state.country} onChange={(event) => updateState({ country: event.target.value, locality: "" })}>
-                <option value="">All countries</option>
-                {countryOptions.usCountry ? (
-                  <option value={countryOptions.usCountry.code}>
-                    {countryLabel(countryOptions.usCountry)} ({countryOptions.usCountry.n.toLocaleString()})
-                  </option>
-                ) : null}
-                {countryOptions.usCountry && countryOptions.otherCountries.length ? (
-                  <option value={countryDividerValue} disabled>
-                    -----------
-                  </option>
-                ) : null}
-                {countryOptions.otherCountries.map((country) => (
-                  <option value={country.code} key={country.code}>
-                    {countryLabel(country)} ({country.n.toLocaleString()})
-                  </option>
-                ))}
-              </select>
-              <ChevronDown size={16} aria-hidden="true" />
-            </span>
-          </label>
-          <label className="field">
-            <span>City</span>
-            <span className="select-wrap">
-              <select
-                value={state.locality}
-                onChange={(event) => updateState({ locality: event.target.value })}
-                disabled={!state.country || !localityOptions.length}
-              >
-                <option value="">{state.country ? "All cities" : "Select a country first"}</option>
-                {localityOptions.map((locality) => (
-                  <option value={locality.value} key={`${locality.country_code}-${locality.value}`}>
-                    {locality.value} ({locality.n.toLocaleString()})
-                  </option>
-                ))}
-              </select>
-              <ChevronDown size={16} aria-hidden="true" />
-            </span>
-          </label>
-          <label className="field">
-            <span>Treatment</span>
-            {state.treatment_ids.length ? (
-              <div className="selected-treatments">
-                {state.treatment_ids.map((id) => (
-                  <button type="button" key={id} onClick={() => toggleTreatment(id)}>
-                    {treatmentNameById.get(id) || id}
-                    <X size={12} aria-hidden="true" />
-                  </button>
-                ))}
-              </div>
-            ) : null}
-            <span className="select-wrap">
-              <select value="" onChange={(event) => toggleTreatment(event.target.value)}>
-                <option value="">Add a treatment</option>
-                {initialFacets.treatment_domains.map((domain) => (
-                  <optgroup label={domain.domain} key={domain.domain}>
-                    {domain.treatments.map((treatment) => (
-                      <option value={treatment.id} key={treatment.id} disabled={state.treatment_ids.includes(String(treatment.id))}>
-                        {treatment.name} ({treatment.n.toLocaleString()})
-                      </option>
-                    ))}
-                  </optgroup>
-                ))}
-              </select>
-              <ChevronDown size={16} aria-hidden="true" />
-            </span>
-          </label>
-
-          <FacetButtons
-            label="Type"
-            options={entityTypes}
-            value={state.entity_type}
-            onChange={(value) => updateState({ entity_type: value })}
-          />
-          <FacetButtons
-            label="Care model"
-            options={careModels}
-            value={state.care_model}
-            onChange={(value) => updateState({ care_model: value })}
-          />
-          <button
-            className="clear-button"
-            type="button"
-            onClick={() => {
-              setLoading(true);
-              setState({ ...emptyState(), kind: state.kind });
-            }}
-          >
-            Clear filters
-          </button>
-        </aside>
-
         <section className="directory-results" aria-live="polite">
           <DirectorySearchBanner payload={payload} />
 
@@ -542,37 +372,6 @@ function writeCachedVisitorLocation(location: VisitorLocation | null) {
 
 function validVisitorLocation(location: VisitorLocation | null | undefined): location is VisitorLocation {
   return Boolean(location?.country && /^[A-Z][A-Z]$/.test(location.country));
-}
-
-function FacetButtons({
-  label,
-  options,
-  value,
-  onChange,
-}: {
-  label: string;
-  options: { value: string; n: number }[];
-  value: string;
-  onChange: (value: string) => void;
-}) {
-  return (
-    <div className="facet-group">
-      <span>{label}</span>
-      <div className="facet-buttons">
-        {options.slice(0, 8).map((option) => (
-          <button
-            type="button"
-            aria-pressed={value === option.value}
-            key={option.value}
-            onClick={() => onChange(value === option.value ? "" : option.value)}
-          >
-            {option.value}
-            <small>{option.n.toLocaleString()}</small>
-          </button>
-        ))}
-      </div>
-    </div>
-  );
 }
 
 function shouldShowDistance(payload: SearchPayload) {
