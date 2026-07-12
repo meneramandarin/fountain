@@ -49,6 +49,9 @@ describe("enrichment coverage census", () => {
     expect(ENRICHMENT_CENSUS_SQL).toContain("fountain.images");
     expect(ENRICHMENT_CENSUS_SQL).toContain("fountain.offerings");
     expect(ENRICHMENT_CENSUS_SQL).toContain("fountain.reviews");
+    expect(ENRICHMENT_CENSUS_SQL).toContain("queue.task_type = 'reviews_fetch'");
+    expect(ENRICHMENT_CENSUS_SQL).toContain("queue.status = 'done'");
+    expect(ENRICHMENT_CENSUS_SQL).toContain("queue.payload->>'campaign' = 'enrichment_census_v1'");
     expect(ENRICHMENT_CENSUS_SQL).toContain("fountain.external_place_matches");
     expect(ENRICHMENT_CENSUS_SQL).toContain("image.image_kind IS NULL");
     expect(ENRICHMENT_ENQUEUE_SQL).toContain("NOT has_email OR NOT has_address");
@@ -143,7 +146,7 @@ describe("enrichment coverage census", () => {
     expect(renderEnrichmentCensusReport({ before, after, plan })).toBe(rendered);
     expect(rendered).toContain("# Enrichment Coverage Census");
     expect(rendered).toContain("Source groups are multi-attribution");
-    expect(rendered).toContain("| contact_fill | 3 | 2 | 2 | 0 |");
+    expect(rendered).toContain("| contact_fill | 3 | 2 | 2 | 0 | 2 | 0 |");
     expect(rendered).toContain("## Coverage by country");
     expect(rendered).toContain("## Coverage by source");
     expect(rendered).toContain("Apply remains guarded");
@@ -158,6 +161,54 @@ describe("enrichment coverage census", () => {
     expect(() => buildEnrichmentEnqueuePlan(frozenBeforeShape)).not.toThrow();
     expect(() => compareEnrichmentCensuses(frozenBeforeShape, after)).not.toThrow();
     expect(() => renderEnrichmentCensusReport({ before: frozenBeforeShape, after })).not.toThrow();
+  });
+
+  test("splits raw review gaps into attempted-unresolved and enqueueable current-campaign rows", () => {
+    const rows = [
+      row({ id: 1, review_count: 0, review_fetch_attempted: true }),
+      row({ id: 2, review_count: 2, review_fetch_attempted: false }),
+      row({ id: 3, review_count: 3, review_fetch_attempted: true }),
+    ];
+    const snapshot = buildEnrichmentCensus(rows, { label: "after_reviews" });
+    const reviewGap = snapshot.gaps.reviews_fetch;
+
+    expect(reviewGap).toMatchObject({
+      ids: [1, 2],
+      actionableIds: [1, 2],
+      attemptedUnresolvedIds: [1],
+      enqueueableIds: [2],
+      attemptedUnresolvedCount: 1,
+      enqueueableCount: 1,
+    });
+    expect(buildEnrichmentEnqueuePlan(snapshot).tasks
+      .find((task: { taskType: string }) => task.taskType === "reviews_fetch"))
+      .toMatchObject({
+        gapCount: 2,
+        actionableCount: 2,
+        attemptedUnresolvedCount: 1,
+        enqueueableCount: 1,
+        candidateIds: [2],
+      });
+    expect(ENRICHMENT_ENQUEUE_SQL).toContain("AND NOT review_fetch_attempted");
+
+    const unattempted = buildEnrichmentCensus(rows.map((item) => item.id === 1
+      ? { ...item, review_fetch_attempted: false }
+      : item), { label: "after_reviews" });
+    expect(unattempted.digest).not.toBe(snapshot.digest);
+
+    const legacy = structuredClone(snapshot);
+    delete legacy.locations[0].reviewFetchAttempted;
+    for (const key of [
+      "attemptedUnresolvedIds",
+      "attemptedUnresolvedCount",
+      "attemptedUnresolvedDigest",
+      "enqueueableIds",
+      "enqueueableCount",
+      "enqueueableDigest",
+    ]) delete legacy.gaps.reviews_fetch[key];
+    expect(buildEnrichmentEnqueuePlan(legacy).tasks
+      .find((task: { taskType: string }) => task.taskType === "reviews_fetch"))
+      .toMatchObject({ candidateIds: [1, 2], candidateCount: 2 });
   });
 
   test("enforces exact snapshot candidates and explicit task-handler readiness", () => {
