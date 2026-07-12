@@ -413,17 +413,18 @@ function LocationResult({
 
 function DirectorySearchBanner({ payload }: { payload: SearchPayload }) {
   const mode = payload.mode;
-  if (!mode || (mode === "exact_radius" && payload.effective_radius === 25)) {
+  if (
+    !mode
+    || mode === "country_search"
+    || mode === "country_fallback"
+    || (mode === "exact_radius" && payload.effective_radius === 25)
+  ) {
     return null;
   }
 
   let message = "";
   if (mode === "expanded_radius") {
     message = `No clinics in ${payload.searched_city || "that city"} yet. Showing options nearby.`;
-  } else if (mode === "country_fallback") {
-    message = `Showing all clinics in ${payload.searched_country || "this country"}.`;
-  } else if (mode === "country_search") {
-    message = `All clinics in ${payload.searched_country || "this country"}.`;
   } else if (mode === "cross_border") {
     message = `No clinics in ${payload.searched_country || "that country"} yet. Showing options nearby.`;
   } else if (mode === "empty") {
