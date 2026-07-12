@@ -2251,6 +2251,82 @@ input[type="search"]::-webkit-search-cancel-button:hover {
   outline-offset: 2px;
 }
 
+.directory-map-marker.is-active {
+  width: 22px;
+  height: 22px;
+  background: var(--landing-fg);
+  box-shadow: 0 3px 12px rgba(35, 22, 33, 0.42);
+}
+
+.directory-map-popup .maplibregl-popup-content {
+  width: min(340px, calc(100vw - 64px));
+  padding: 0;
+  overflow: hidden;
+  border-radius: 16px;
+  background: var(--landing-card);
+  box-shadow: 0 12px 30px rgba(35, 22, 33, 0.24);
+}
+
+.directory-map-popup .maplibregl-popup-close-button {
+  display: grid;
+  place-items: center;
+  z-index: 1;
+  top: 10px;
+  right: 10px;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.94);
+  color: var(--landing-fg);
+  padding: 0;
+  font-size: 0;
+  line-height: 0;
+}
+
+.directory-map-popup .maplibregl-popup-close-button::before {
+  content: "×";
+  font-size: 25px;
+  font-weight: 300;
+  line-height: 1;
+  transform: translateY(-1px);
+}
+
+.directory-map-popup-card {
+  display: block;
+  color: var(--landing-fg);
+}
+
+.directory-map-popup-image {
+  width: 100%;
+  height: 176px;
+  object-fit: cover;
+}
+
+.directory-map-popup-body {
+  display: grid;
+  gap: 4px;
+  padding: 14px 16px 16px;
+  font-family: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+}
+
+.directory-map-popup-body strong {
+  overflow: hidden;
+  font-size: 16px;
+  line-height: 1.25;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.directory-map-popup-location,
+.directory-map-popup-details {
+  overflow: hidden;
+  color: rgba(30, 26, 15, 0.66);
+  font-size: 13px;
+  line-height: 1.35;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 .kind-tabs {
   display: inline-flex;
   gap: 4px;

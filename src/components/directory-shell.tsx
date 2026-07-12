@@ -98,6 +98,7 @@ export function DirectoryShell({
   const [payload, setPayload] = useState<SearchPayload>(initialPayload);
   const [loading, setLoading] = useState(false);
   const [visitorLocation, setVisitorLocation] = useState<VisitorLocation | null>(null);
+  const [activeLocationId, setActiveLocationId] = useState<number | null>(null);
 
   const queryString = useMemo(() => {
     const params = new URLSearchParams();
@@ -275,6 +276,7 @@ export function DirectoryShell({
                     key={result.id}
                     result={result as LocationResultRow}
                     showDistance={shouldShowDistance(payload)}
+                    onActiveChange={setActiveLocationId}
                   />
                 ))
               : payload.results.map((result) => (
@@ -294,7 +296,7 @@ export function DirectoryShell({
         </section>
         {state.kind === "locations" ? (
           <aside className="directory-map-panel" aria-label="Directory result map">
-            <DirectoryMap locations={payload.results as LocationResultRow[]} />
+            <DirectoryMap locations={payload.results as LocationResultRow[]} activeLocationId={activeLocationId} />
           </aside>
         ) : null}
       </div>
@@ -386,8 +388,16 @@ function shouldShowDistance(payload: SearchPayload) {
   return Boolean(payload.mode && !(payload.mode === "exact_radius" && payload.effective_radius === 25));
 }
 
-function LocationResult({ result, showDistance }: { result: LocationResultRow; showDistance: boolean }) {
-  return <DirectoryLocationCard result={showDistance ? result : { ...result, distance_miles: null }} />;
+function LocationResult({
+  result,
+  showDistance,
+  onActiveChange,
+}: {
+  result: LocationResultRow;
+  showDistance: boolean;
+  onActiveChange: (id: number | null) => void;
+}) {
+  return <DirectoryLocationCard result={showDistance ? result : { ...result, distance_miles: null }} onActiveChange={onActiveChange} />;
 }
 
 function DirectorySearchBanner({ payload }: { payload: SearchPayload }) {
