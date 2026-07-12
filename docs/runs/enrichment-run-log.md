@@ -11,3 +11,4 @@
 - 2026-07-12T07:23:58Z — Geocode run 74 closed cleanly with zero gaps, zero calls, zero spend, and zero failures.
 - 2026-07-12T07:30:01Z — Image harvest run 76 complete: 1,550/1,550 tasks, 1,113 images inserted with exact event/field-ledger reconciliation; zero failures/retries and zero metered spend.
 - 2026-07-12T07:30:48Z — Image classification census run 79 atomically enqueued 6,632 locations covering 12,984 active null-kind images; exact snapshot/candidate digest reconciled.
+- 2026-07-12T07:49:08Z — Image classification run 80 halted exactly at rolling failures 126/500 (25.2%): 1,498 locations completed, 5,122 images classified, 54 failed locations, 5,080 pending, $19.5125. Diagnosis: OpenRouter rejects AVIF URLs; bounded AVIF→JPEG preparation implemented and verified before remediation.

@@ -1,5 +1,6 @@
 import { readFileSync } from "node:fs";
 
+import sharp from "sharp";
 import { describe, expect, test, vi } from "vitest";
 
 // @ts-expect-error -- pipeline runtime intentionally uses native .mjs modules.
@@ -9,8 +10,11 @@ const {
   classifyImageMetadata,
   classifyImageWithLlm,
   handleImageClassify,
+  IMAGE_CLASSIFY_JPEG_MAX_EDGE,
+  IMAGE_CLASSIFY_JPEG_MAX_OUTPUT_BYTES,
   IMAGE_CLASSIFY_RESPONSE_FORMAT,
   IMAGE_KINDS,
+  transcodeAvifToJpegDataUrl,
 } = imageClassifyModule;
 
 describe("image classification task", () => {
@@ -49,9 +53,11 @@ describe("image classification task", () => {
         externalCallId: "800",
       };
     });
+    const download = vi.fn();
     const decision = await classifyImageWithLlm(imageRow(), {
       llmClient: { complete },
       runId: "17",
+      imageClient: { download },
     });
 
     expect(decision).toMatchObject({
@@ -78,6 +84,84 @@ describe("image classification task", () => {
       type: "image_url",
       image_url: { url: "https://store.public.blob.vercel-storage.com/image.jpg" },
     });
+    expect(download).not.toHaveBeenCalled();
+  });
+
+  test("downloads AVIF safely and sends a bounded locally converted JPEG data URL", async () => {
+    const order: string[] = [];
+    const avif = await sharp({
+      create: {
+        width: 32,
+        height: 20,
+        channels: 4,
+        background: { r: 24, g: 90, b: 160, alpha: 0.7 },
+      },
+    }).avif().toBuffer();
+    const imageClient = {
+      download: vi.fn(async (url: string) => {
+        order.push("download");
+        expect(url).toBe("https://store.public.blob.vercel-storage.com/image.avif?download=1");
+        return { ok: true, buffer: avif, contentType: "image/avif" };
+      }),
+    };
+    let providerImageUrl = "";
+    const complete = vi.fn(async (request: {
+      messages: Array<{ content: unknown }>;
+    }) => {
+      order.push("complete");
+      const content = request.messages[1].content as Array<{
+        type: string;
+        image_url?: { url: string };
+      }>;
+      providerImageUrl = content.find((part) => part.type === "image_url")?.image_url?.url || "";
+      return {
+        content: JSON.stringify({
+          image_kind: "photo",
+          confidence: 0.91,
+          rationale: "A clinic photograph.",
+        }),
+        model: "openai/gpt-4o-mini",
+        externalCallId: "802",
+      };
+    });
+
+    const decision = await classifyImageWithLlm(imageRow({
+      blob_url: "https://store.public.blob.vercel-storage.com/image.avif?download=1",
+    }), {
+      llmClient: { complete },
+      runId: "20",
+      imageClient,
+    });
+
+    expect(order).toEqual(["download", "complete"]);
+    expect(decision).toMatchObject({ image_kind: "photo", external_call_id: "802" });
+    expect(providerImageUrl).toMatch(/^data:image\/jpeg;base64,/u);
+    const jpeg = Buffer.from(providerImageUrl.split(",", 2)[1], "base64");
+    const metadata = await sharp(jpeg).metadata();
+    expect(metadata.format).toBe("jpeg");
+    expect(Math.max(metadata.width || 0, metadata.height || 0))
+      .toBeLessThanOrEqual(IMAGE_CLASSIFY_JPEG_MAX_EDGE);
+    expect(jpeg.length).toBeLessThanOrEqual(IMAGE_CLASSIFY_JPEG_MAX_OUTPUT_BYTES);
+  });
+
+  test("fails before the provider call when an AVIF cannot be downloaded", async () => {
+    const complete = vi.fn();
+    await expect(classifyImageWithLlm(imageRow({
+      blob_url: "https://store.public.blob.vercel-storage.com/missing.avif",
+    }), {
+      llmClient: { complete },
+      runId: "21",
+      imageClient: {
+        download: vi.fn(async () => ({ ok: false, outcome: "http_error" })),
+      },
+    })).rejects.toThrow("AVIF vision input download failed: http_error");
+    expect(complete).not.toHaveBeenCalled();
+  });
+
+  test("enforces the AVIF input bound before sharp decoding", async () => {
+    await expect(transcodeAvifToJpegDataUrl(Buffer.alloc(5), {
+      maxInputBytes: 4,
+    })).rejects.toThrow("AVIF input exceeds the 4-byte limit");
   });
 
   test("classifies junk through the guarded write while preserving active, undeleted data", async () => {
