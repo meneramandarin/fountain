@@ -18,6 +18,7 @@ const invalidRelatedSearchLocalities = new Set([
 
 type ImageCandidate = {
   blob_url: string | null;
+  image_kind?: string | null;
 };
 
 export type ExternalReviewGroup = {
@@ -131,6 +132,7 @@ export type LandingFeaturedDirectoryCard = {
   rating: number | null;
   review_count: number | null;
   image: string | null;
+  image_kind?: string | null;
   tags: { facet: string; value: string }[];
   treatments: { name: string; domain: string }[];
 };
@@ -1010,7 +1012,7 @@ async function hydrateLandingDirectoryCards(
   const marks = placeholders(ids.length);
   const images = await rows<{ lid: number } & ImageCandidate>(
     `
-    SELECT entity_id AS lid, blob_url
+    SELECT entity_id AS lid, blob_url, image_kind
     FROM images
     WHERE entity_type = 'location' AND entity_id IN (${marks})
       AND ${activeImageCondition("images")}
@@ -1019,11 +1021,11 @@ async function hydrateLandingDirectoryCards(
   `,
     ids,
   );
-  const imageMap = new Map<number, string>();
+  const imageMap = new Map<number, ImageCandidate>();
   for (const image of images) {
     const src = usableImageSource(image);
     if (!imageMap.has(image.lid) && src) {
-      imageMap.set(image.lid, src);
+      imageMap.set(image.lid, image);
     }
   }
 
@@ -1086,7 +1088,8 @@ async function hydrateLandingDirectoryCards(
       country_name: (card.country_name as string | null) || null,
       rating: (card.rating as number | null) || null,
       review_count: (card.review_count as number | null) || null,
-      image: imageMap.get(id) || null,
+      image: imageMap.get(id)?.blob_url || null,
+      image_kind: imageMap.get(id)?.image_kind || null,
       tags: tagMap.get(id) || [],
       treatments: (treatmentMap.get(id) || []).slice(0, 3),
     };
@@ -1571,7 +1574,7 @@ async function hydrateLocationRows(results: AnyRow[]) {
     }
     const images = await rows<{ lid: number } & ImageCandidate>(
       `
-      SELECT entity_id AS lid, blob_url
+      SELECT entity_id AS lid, blob_url, image_kind
       FROM images
       WHERE entity_type = 'location' AND entity_id IN (${marks})
         AND ${activeImageCondition("images")}
@@ -1580,18 +1583,19 @@ async function hydrateLocationRows(results: AnyRow[]) {
     `,
       ids,
     );
-    const imageMap = new Map<number, string>();
+    const imageMap = new Map<number, ImageCandidate>();
     for (const image of images) {
       const src = usableImageSource(image);
       if (!imageMap.has(image.lid) && src) {
-        imageMap.set(image.lid, src);
+        imageMap.set(image.lid, image);
       }
     }
     for (const result of results) {
       const id = result.id as number;
       result.treatments = (treatmentMap.get(id) || []).slice(0, 6);
       result.tags = tagMap.get(id) || [];
-      result.image = imageMap.get(id) || null;
+      result.image = imageMap.get(id)?.blob_url || null;
+      result.image_kind = imageMap.get(id)?.image_kind || null;
     }
   }
 }
@@ -2065,9 +2069,10 @@ export async function getLocationDetail(ref: number | string) {
   const locationImages = await rows<{
     blob_url: string | null;
     alt: string | null;
+    image_kind: string | null;
   }>(
     `
-    SELECT blob_url, alt
+    SELECT blob_url, alt, image_kind
     FROM images
     WHERE entity_type = 'location' AND entity_id = ?
       AND ${activeImageCondition("images")}

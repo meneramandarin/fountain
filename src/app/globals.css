@@ -3086,6 +3086,27 @@ blockquote p {
   object-fit: cover;
 }
 
+/* Text graphics must remain legible: show the entire asset, with a softened
+   version behind it to preserve the card's intended aspect ratio. */
+.image-frame-text-graphic {
+  isolation: isolate;
+  background: rgba(247, 240, 225, 0.9);
+}
+
+.image-frame-text-graphic .image-frame-backdrop {
+  z-index: 0;
+  object-fit: cover;
+  filter: blur(18px) brightness(0.82);
+  transform: scale(1.12);
+  opacity: 0.72;
+}
+
+.image-frame-text-graphic .image-frame-content {
+  z-index: 1;
+  object-fit: contain;
+  padding: 10px;
+}
+
 .listing-gallery-empty {
   display: grid;
   place-items: center;

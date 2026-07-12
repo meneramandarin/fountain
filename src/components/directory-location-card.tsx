@@ -23,6 +23,7 @@ export type DirectoryLocationCardData = {
   treatments?: { name: string; domain: string }[];
   tags?: { facet: string; value: string }[];
   image?: string | null;
+  image_kind?: string | null;
   distance_miles?: number | null;
 };
 
@@ -70,16 +71,20 @@ export function DirectoryLocationCard({ result, from = "search" }: { result: Dir
 
   return (
     <Link className="result-card" href={`${locationHref(result)}?from=${encodeURIComponent(from)}`}>
-      <span className="result-photo">
+      <span className={`result-photo${result.image_kind === "text_graphic" ? " image-frame-text-graphic" : ""}`}>
         {result.image && !imageFailed ? (
-          <Image
-            src={imageSource(result.image)}
-            alt=""
-            fill
-            unoptimized
-            sizes="(max-width: 640px) 92vw, (max-width: 980px) 46vw, 360px"
-            onError={() => setImageFailed(true)}
-          />
+          <>
+            {result.image_kind === "text_graphic" ? <Image className="image-frame-backdrop" src={imageSource(result.image)} alt="" fill unoptimized aria-hidden="true" sizes="100vw" /> : null}
+            <Image
+              className={result.image_kind === "text_graphic" ? "image-frame-content" : undefined}
+              src={imageSource(result.image)}
+              alt=""
+              fill
+              unoptimized
+              sizes="(max-width: 640px) 92vw, (max-width: 980px) 46vw, 360px"
+              onError={() => setImageFailed(true)}
+            />
+          </>
         ) : (
           <span className="result-photo-fallback" aria-hidden="true">
             <Building2 size={26} aria-hidden="true" />
