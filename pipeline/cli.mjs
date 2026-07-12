@@ -78,6 +78,7 @@ import {
 import { loadLegitimacyStage3ProposalData } from "./lib/legitimacy-stage3-proposal.mjs";
 import { executeMigrationSql, loadMigrationFile } from "./lib/migrations.mjs";
 import { createOpenRouterAgentWebSearch } from "./lib/openrouter-web-search.mjs";
+import { recomputeOfferingDisplay } from "./lib/offering-display.mjs";
 import {
   applyLegitimacyRedemptions,
   LEGITIMACY_REDEMPTION_REPORT_PATH,
@@ -208,6 +209,7 @@ export function validateCommandArgs(parsed) {
     census: new Set(["scope", "apply", "dryRun"]),
     maintain: new Set(["schema", "output", "apply", "dryRun"]),
     "taxonomy-present": new Set(["model", "batchSize", "concurrency", "limit", "budget", "apply", "dryRun"]),
+    "offering-display": new Set(["locationId", "apply", "dryRun"]),
   };
   const allowed = allowedByCommand[parsed.command];
   if (!allowed) throw new Error(`Unknown command: ${parsed.command}\n${usage()}`);
@@ -258,6 +260,8 @@ async function dispatchCommand(parsed, run) {
       return runCensus(parsed, run);
     case "taxonomy-present":
       return runTaxonomyPresent(parsed, run);
+    case "offering-display":
+      return runOfferingDisplay(parsed, run);
     default:
       throw new Error(`Unknown command: ${parsed.command}\n${usage()}`);
   }
@@ -1503,6 +1507,35 @@ export async function runTaxonomyPresent(parsed, run, operations = {}) {
   };
 }
 
+export async function runOfferingDisplay(parsed, run, operations = {}) {
+  const locationId = parsed.locationId == null
+    ? null
+    : positiveInteger(parsed.locationId, "--location-id");
+  const recompute = operations.recomputeOfferingDisplay || recomputeOfferingDisplay;
+  const outcome = await recompute({
+    query: operations.query || dbQuery,
+    locationId,
+    apply: !run.dry_run,
+  });
+  return {
+    status: "completed",
+    counts: {
+      locations_scanned: outcome.locations_scanned,
+      offerings_scanned: outcome.offerings_scanned,
+      suppressions: outcome.summary.suppressions,
+      price_conflicts: outcome.summary.price_conflicts,
+      suppressions_written: outcome.write.active_suppressions,
+      suppressions_deactivated: outcome.write.deactivated_suppressions,
+    },
+    result: {
+      dryRun: run.dry_run,
+      locationId,
+      summary: outcome.summary,
+      price_conflicts: outcome.price_conflicts,
+    },
+  };
+}
+
 export async function runMaintenance(parsed, run, operations = {}) {
   const subcommand = parsed.positional[0];
   if (subcommand === "regen-structure-doc") {
@@ -1762,9 +1795,10 @@ function nonnegativeNumber(value, flag) {
 function usage() {
   return [
     "Usage: node pipeline/cli.mjs <command> [options]",
-    "Commands: enqueue, drain, report, suppress, stage3, redemption, final-report, migrate, census, maintain, taxonomy-present",
+    "Commands: enqueue, drain, report, suppress, stage3, redemption, final-report, migrate, census, maintain, taxonomy-present, offering-display",
     "Final closeout: final-report --runs-file <selection.json> [--before <json>] [--after <json>] [--menu-prices-before <json>] [--output <md>] [--apply]",
     "Taxonomy presentation: taxonomy-present [--model <slug>] [--batch-size <n>] [--concurrency <n>] [--limit <n>] [--budget <usd>] [--apply]",
+    "Offering display: offering-display [--location-id <id>] [--apply]",
     "Maintenance: regen-structure-doc, refresh-city-index",
     "Persistent side effects require --apply; dry-run is the default.",
   ].join("\n");

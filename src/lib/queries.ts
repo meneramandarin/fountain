@@ -2017,6 +2017,12 @@ export async function getLocationDetail(ref: number | string) {
     ) presentation ON true
     WHERE o.location_id = ?
       AND ${activeOfferingCondition("o")}
+      AND NOT EXISTS (
+        SELECT 1
+        FROM offering_display_suppressions suppression
+        WHERE suppression.offering_id = o.id
+          AND suppression.active
+      )
     ORDER BY (t.category IS NULL), t.category, t.canonical_name, o.raw_name
   `,
     [id],

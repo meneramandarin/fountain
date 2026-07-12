@@ -4,6 +4,7 @@ import { query as defaultQuery, setMutationActor } from "../lib/db.mjs";
 import { recordWrite as defaultRecordWrite } from "../lib/ledger.mjs";
 import { createLlmClient } from "../lib/llm.mjs";
 import { normalizeName, normalizeWebsiteDomain } from "../lib/matcher.mjs";
+import { recomputeOfferingDisplay } from "../lib/offering-display.mjs";
 import { createWebClient } from "../lib/web.mjs";
 
 export const MENU_EXTRACT_SCHEMA_VERSION = 1;
@@ -211,6 +212,7 @@ export async function handleMenuExtract(
     crawl = crawlMenuPages,
     extract = extractOfferingsWithLlm,
     apply = guardedApplyMenuExtraction,
+    recomputeDisplay = recomputeOfferingDisplay,
   } = {},
 ) {
   const taskId = positiveIntegerString(task?.id, "task.id");
@@ -276,6 +278,9 @@ export async function handleMenuExtract(
     taskId,
     runId,
   }, { recordWrite, setActor });
+  const displayResolution = applied.serving_write?.written
+    ? await recomputeDisplay({ query, locationId, apply: true })
+    : null;
 
   return {
     schema_version: MENU_EXTRACT_SCHEMA_VERSION,
@@ -295,6 +300,14 @@ export async function handleMenuExtract(
     rejected: normalized.rejected,
     apply: applied,
     serving_write: applied.serving_write,
+    display_resolution: displayResolution
+      ? {
+          suppressions: displayResolution.summary.suppressions,
+          price_conflicts: displayResolution.summary.price_conflicts,
+          suppressions_written: displayResolution.write.active_suppressions,
+          suppressions_deactivated: displayResolution.write.deactivated_suppressions,
+        }
+      : null,
   };
 }
 
