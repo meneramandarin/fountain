@@ -1,10 +1,24 @@
 import { handleLlmSmoke } from "../tasks/llm_smoke.mjs";
+import { createContactFillHandler } from "../tasks/contact_fill.mjs";
+import { createGeocodeHandler } from "../tasks/geocode.mjs";
+import { handleImageClassify } from "../tasks/image_classify.mjs";
+import { handleImageHarvest } from "../tasks/image_harvest.mjs";
 import {
   handleLegitimacyBatch,
   LEGITIMACY_STAGE_1_BATCH_SIZE,
   LEGITIMACY_STAGE_2_BATCH_SIZE,
 } from "../tasks/legitimacy.mjs";
 import { handleNoop } from "../tasks/noop.mjs";
+import { handleMenuExtract } from "../tasks/menu_extract.mjs";
+import { createReviewsFetchHandler } from "../tasks/reviews_fetch.mjs";
+import { createOpenRouterAgentWebSearch } from "../lib/openrouter-web-search.mjs";
+
+const contactFillHandler = createContactFillHandler({
+  agentSearch: createOpenRouterAgentWebSearch(),
+  getRunSpend: getCanonicalContactPlacesSpend,
+});
+const geocodeHandler = createGeocodeHandler({ detailsCostUsd: 0.005 });
+const reviewsFetchHandler = createReviewsFetchHandler();
 
 export const TASK_TYPES = [
   "legitimacy_check",
@@ -31,12 +45,12 @@ export const TASKS = Object.freeze({
     production: true,
     implemented: true,
   },
-  contact_fill: pendingTask(),
-  geocode: pendingTask(),
-  image_harvest: pendingTask(),
-  image_classify: pendingTask(),
-  menu_extract: pendingTask(),
-  reviews_fetch: pendingTask(),
+  contact_fill: implementedTask(contactFillHandler),
+  geocode: implementedTask(geocodeHandler),
+  image_harvest: implementedTask(handleImageHarvest),
+  image_classify: implementedTask(handleImageClassify),
+  menu_extract: implementedTask(handleMenuExtract),
+  reviews_fetch: implementedTask(reviewsFetchHandler),
   dedup_scan: pendingTask(),
   freshness_check: pendingTask(),
   noop: { handler: handleNoop, maxAttempts: 3, production: false },
@@ -63,4 +77,23 @@ export function getTaskDefinition(taskType, { requireHandler = false } = {}) {
 
 function pendingTask() {
   return { handler: null, maxAttempts: 3, production: true, implemented: false };
+}
+
+function implementedTask(handler) {
+  return { handler, maxAttempts: 3, production: true, implemented: true };
+}
+
+async function getCanonicalContactPlacesSpend() {
+  const { query } = await import("../lib/db.mjs");
+  const result = await query(`
+    SELECT COALESCE(sum(call.cost_estimate_usd), 0)::numeric AS spend
+    FROM fountain_ops.external_calls call
+    JOIN fountain_ops.runs run ON run.id = call.run_id
+    WHERE call.provider = 'google_places'
+      AND (
+        run.command IN ('stage3', 'redemption')
+        OR (run.command = 'drain' AND run.args->>'task' = 'contact_fill')
+      )
+  `);
+  return Number(result.rows[0]?.spend || 0);
 }

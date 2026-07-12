@@ -1,13 +1,28 @@
 #!/usr/bin/env node
 
-import { writeFile } from "node:fs/promises";
+import { readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 import process from "node:process";
 import { fileURLToPath, pathToFileURL } from "node:url";
 
 import { getTaskDefinition } from "./config/tasks.mjs";
 import { inspectCityIndex, refreshCityIndex } from "./lib/city-index.mjs";
-import { closePool, withTransaction } from "./lib/db.mjs";
+import {
+  buildEnrichmentEnqueuePlan,
+  buildImageClassifyEnqueuePlan,
+  ENRICHMENT_IMAGE_CLASSIFY_TASK_TYPE,
+  ENRICHMENT_POST_CONTACT_TASK_TYPES,
+  ENRICHMENT_TASK_TYPES,
+  enqueueEnrichmentPlan,
+  enqueueImageClassifyPlan,
+  enqueuePostContactPlan,
+  loadEnrichmentCensus,
+  loadPostContactEnqueuePlan,
+  renderEnrichmentCensusReport,
+  renderImageClassifyEnqueueReport,
+  renderPostContactEnqueueReport,
+} from "./lib/enrichment-census.mjs";
+import { closePool, query as dbQuery, withTransaction } from "./lib/db.mjs";
 import {
   enqueueLegitimacyGateBFull,
   LEGITIMACY_GATE_B_CAMPAIGN,
@@ -46,6 +61,14 @@ import { loadLegitimacyStage3ProposalData } from "./lib/legitimacy-stage3-propos
 import { executeMigrationSql, loadMigrationFile } from "./lib/migrations.mjs";
 import { createOpenRouterAgentWebSearch } from "./lib/openrouter-web-search.mjs";
 import {
+  applyLegitimacyRedemptions,
+  LEGITIMACY_REDEMPTION_REPORT_PATH,
+  loadLegitimacyRedemptionCohort,
+  renderLegitimacyRedemptionReport,
+  runLegitimacyRedemptionPass,
+} from "./lib/legitimacy-redemption.mjs";
+import { createRedemptionAgentLookup } from "./lib/legitimacy-redemption-execute.mjs";
+import {
   claimTask,
   claimTasks,
   completeTask,
@@ -62,6 +85,9 @@ import { getRun, getRunSpend, isBudgetExhausted, withRun } from "./lib/runs.mjs"
 import { DEFAULT_SCHEMAS, regenerateStructureDocument } from "./lib/structure-doc.mjs";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
+export const DEFAULT_DRAIN_CONCURRENCY = 24;
+export const DRAIN_FAILURE_WINDOW_SIZE = 500;
+export const DRAIN_FAILURE_RATE_LIMIT = 0.25;
 
 export async function main(argv = process.argv.slice(2)) {
   const parsed = parseCliArgs(argv);
@@ -128,8 +154,9 @@ export function validateCommandArgs(parsed) {
     report: new Set(["run", "campaign", "output", "apply", "dryRun"]),
     suppress: new Set(["run", "campaign", "expected", "apply", "dryRun"]),
     stage3: new Set(["concurrency", "batchSize", "budget", "apply", "dryRun"]),
+    redemption: new Set(["concurrency", "batchSize", "budget", "apply", "dryRun"]),
     migrate: new Set(["file", "apply", "dryRun"]),
-    census: new Set(["apply", "dryRun"]),
+    census: new Set(["scope", "apply", "dryRun"]),
     maintain: new Set(["schema", "output", "apply", "dryRun"]),
   };
   const allowed = allowedByCommand[parsed.command];
@@ -169,17 +196,14 @@ async function dispatchCommand(parsed, run) {
       return runSuppress(parsed, run);
     case "stage3":
       return runStage3(parsed, run);
+    case "redemption":
+      return runRedemption(parsed, run);
     case "migrate":
       return runMigrate(parsed, run);
     case "maintain":
       return runMaintenance(parsed, run);
     case "census":
-      return {
-        status: "completed",
-        counts: { implemented: 0 },
-        notes: `${parsed.command} not implemented`,
-        result: { message: "not implemented" },
-      };
+      return runCensus(parsed, run);
     default:
       throw new Error(`Unknown command: ${parsed.command}\n${usage()}`);
   }
@@ -277,7 +301,9 @@ export async function runDrain(parsed, run, operations = {}) {
   const campaign = parsed.campaign || null;
   const promptVersion = parsed.promptVersion || null;
   const limit = optionalPositiveInteger(parsed.limit, "--limit");
-  const concurrency = parsed.concurrency == null ? 1 : positiveInteger(parsed.concurrency, "--concurrency");
+  const concurrency = parsed.concurrency == null
+    ? DEFAULT_DRAIN_CONCURRENCY
+    : positiveInteger(parsed.concurrency, "--concurrency");
   const budgetUsd = parsed.budget == null ? null : nonnegativeNumber(parsed.budget, "--budget");
   if (run.dry_run) {
     const tasks = await previewDrainStages(
@@ -287,7 +313,7 @@ export async function runDrain(parsed, run, operations = {}) {
     return {
       status: "completed",
       counts: { claimable_preview: tasks.length },
-      result: { dryRun: true, taskType, stage, campaign, promptVersion, tasks },
+      result: { dryRun: true, taskType, stage, campaign, promptVersion, concurrency, tasks },
     };
   }
   const definition = getTaskDefinition(taskType);
@@ -308,13 +334,19 @@ export async function runDrain(parsed, run, operations = {}) {
   const queueCounts = await loadTaskCounts(run.id);
   const backlog = await loadBacklog(taskType);
   const retryPending = Math.max(0, Number(queueCounts.pending || 0) - Number(drained.deferred || 0));
-  const status = drained.budgetExhausted
-    ? "budget_exhausted"
-    : drained.failed > 0 || retryPending > 0
-      ? "failed"
-      : "completed";
+  const status = drained.failureRateHalted
+    ? "failed"
+    : drained.budgetExhausted
+      ? "budget_exhausted"
+      : drained.failed > 0 || retryPending > 0
+        ? "failed"
+        : "completed";
+  const notes = drained.failureRateHalted
+    ? `stage_halted_rolling_failure_rate:${drained.failureRateWindowFailures}/${drained.failureRateWindowTasks}=${drained.failureRate.toFixed(4)}`
+    : null;
   return {
     status,
+    notes,
     counts: { ...drained, retryPending, queue: queueCounts, backlog },
     result: {
       dryRun: false,
@@ -373,6 +405,7 @@ async function drainAllTaskStages(args, operations) {
   const stage1 = await drainTaskStage({ ...args, stage: "stage_1" }, operations);
   const remainingLimit = args.limit == null ? null : Math.max(0, args.limit - stage1.dispatched);
   const canStartStage2 = !stage1.budgetExhausted
+    && !stage1.failureRateHalted
     && stage1.queueDrained
     && remainingLimit !== 0;
   const stage2 = canStartStage2
@@ -386,6 +419,20 @@ async function drainAllTaskStages(args, operations) {
     failed: stage1.failed + Number(stage2?.failed || 0),
     retried: stage1.retried + Number(stage2?.retried || 0),
     budgetExhausted: stage1.budgetExhausted || Boolean(stage2?.budgetExhausted),
+    failureRateHalted: stage1.failureRateHalted || Boolean(stage2?.failureRateHalted),
+    failureRateWindowTasks: Number(
+      stage2?.failureRateHalted
+        ? stage2.failureRateWindowTasks
+        : stage1.failureRateWindowTasks,
+    ),
+    failureRateWindowFailures: Number(
+      stage2?.failureRateHalted
+        ? stage2.failureRateWindowFailures
+        : stage1.failureRateWindowFailures,
+    ),
+    failureRate: Number(
+      stage2?.failureRateHalted ? stage2.failureRate : stage1.failureRate,
+    ),
     spendUsd: Number(stage2?.spendUsd ?? stage1.spendUsd),
     queueDrained: Boolean(stage2?.queueDrained),
     stages: {
@@ -397,9 +444,11 @@ async function drainAllTaskStages(args, operations) {
       : {
           stage2SkippedReason: stage1.budgetExhausted
             ? "budget_exhausted"
-            : stage1.queueDrained
-              ? "dispatch_limit_reached"
-              : "stage_1_not_drained",
+            : stage1.failureRateHalted
+              ? "rolling_failure_rate_exceeded"
+              : stage1.queueDrained
+                ? "dispatch_limit_reached"
+                : "stage_1_not_drained",
         }),
   };
 }
@@ -437,9 +486,12 @@ async function drainTaskStage(
     budgetExhausted: false,
     spendUsd: 0,
     queueDrained: false,
+    failureOutcomes: [],
+    failureRateHalted: false,
+    failureRateHalt: null,
   };
   const reserve = (requested) => {
-    if (state.budgetExhausted) return 0;
+    if (state.budgetExhausted || state.failureRateHalted) return 0;
     const remaining = limit == null ? requested : Math.min(requested, limit - state.reserved);
     if (remaining <= 0) return 0;
     state.reserved += remaining;
@@ -449,6 +501,27 @@ async function drainTaskStage(
   const recordFailure = (failed) => {
     if (failed.status === "pending") state.retried += 1;
     else state.failed += 1;
+    recordOutcome(true);
+  };
+
+  const recordOutcome = (failed) => {
+    state.failureOutcomes.push(Boolean(failed));
+    if (state.failureOutcomes.length > DRAIN_FAILURE_WINDOW_SIZE) {
+      state.failureOutcomes.shift();
+    }
+    if (!state.failureRateHalted
+        && state.failureOutcomes.length === DRAIN_FAILURE_WINDOW_SIZE) {
+      const failures = state.failureOutcomes.filter(Boolean).length;
+      const rate = failures / DRAIN_FAILURE_WINDOW_SIZE;
+      if (rate > DRAIN_FAILURE_RATE_LIMIT) {
+        state.failureRateHalted = true;
+        state.failureRateHalt = {
+          tasks: DRAIN_FAILURE_WINDOW_SIZE,
+          failures,
+          rate,
+        };
+      }
+    }
   };
 
   async function checkRunBudget() {
@@ -474,6 +547,7 @@ async function drainTaskStage(
       const result = await definition.handler({ task, run, workerId, stage });
       await complete({ taskId: task.id, workerId, runId: run.id, result });
       state.done += 1;
+      recordOutcome(false);
     } catch (error) {
       await failClaimedTask(task, workerId, error);
     }
@@ -509,6 +583,7 @@ async function drainTaskStage(
             result: outcome.result,
           });
           state.done += 1;
+          recordOutcome(false);
         } else {
           await transition({
             taskId: task.id,
@@ -517,6 +592,7 @@ async function drainTaskStage(
             payload: outcome.payload,
           });
           state.deferred += 1;
+          recordOutcome(false);
         }
       } catch (error) {
         await failClaimedTask(task, workerId, error);
@@ -558,6 +634,11 @@ async function drainTaskStage(
 
   await Promise.all(Array.from({ length: concurrency }, (_, index) => worker(index + 1)));
   state.spendUsd = await loadSpend(run.id);
+  const failureRateWindowTasks = state.failureRateHalt?.tasks ?? state.failureOutcomes.length;
+  const failureRateWindowFailures = state.failureRateHalt?.failures
+    ?? state.failureOutcomes.filter(Boolean).length;
+  const failureRate = state.failureRateHalt?.rate
+    ?? (failureRateWindowTasks === 0 ? 0 : failureRateWindowFailures / failureRateWindowTasks);
   return {
     dispatched: state.dispatched,
     done: state.done,
@@ -566,7 +647,11 @@ async function drainTaskStage(
     retried: state.retried,
     budgetExhausted: state.budgetExhausted,
     spendUsd: state.spendUsd,
-    queueDrained: state.queueDrained,
+    queueDrained: state.queueDrained && !state.failureRateHalted,
+    failureRateHalted: state.failureRateHalted,
+    failureRateWindowTasks,
+    failureRateWindowFailures,
+    failureRate,
   };
 }
 
@@ -795,6 +880,241 @@ export async function runStage3(parsed, run, operations = {}) {
       completionPath,
       reviewPath,
     },
+  };
+}
+
+export async function runRedemption(parsed, run, operations = {}) {
+  const loadCohort = operations.loadLegitimacyRedemptionCohort
+    || loadLegitimacyRedemptionCohort;
+  const cohort = await loadCohort();
+  const concurrency = parsed.concurrency == null ? 24 : positiveInteger(parsed.concurrency, "--concurrency");
+  const batchSize = parsed.batchSize == null ? 8 : positiveInteger(parsed.batchSize, "--batch-size");
+  if (run.dry_run) {
+    return {
+      status: "completed",
+      counts: { ...cohort.counts, external_calls: 0, serving_writes: 0 },
+      result: { dryRun: true, cohort: cohort.counts, concurrency, batchSize },
+    };
+  }
+
+  const webSearch = operations.webSearch || createOpenRouterAgentWebSearch();
+  const priorContactSpendResult = await (operations.query || dbQuery)(`
+    SELECT COALESCE(sum(call.cost_estimate_usd), 0)::numeric AS spend
+    FROM fountain_ops.external_calls call
+    JOIN fountain_ops.runs prior_run ON prior_run.id = call.run_id
+    WHERE prior_run.command = 'redemption'
+      AND prior_run.id <> $1::bigint
+      AND call.provider = 'google_places'
+  `, [run.id]);
+  const priorContactSpendUsd = Number(priorContactSpendResult.rows[0]?.spend || 0);
+  const remainingContactBudgetUsd = Math.max(0, 50 - priorContactSpendUsd);
+  const agentLookup = operations.agentLookup || createRedemptionAgentLookup({
+    runId: run.id,
+    webSearch,
+    placesContactCeilingUsd: remainingContactBudgetUsd,
+  });
+  const execute = operations.runLegitimacyRedemptionPass || runLegitimacyRedemptionPass;
+  const pass = await execute({
+    cohort,
+    runId: run.id,
+    agentLookup,
+    concurrency,
+    batchSize,
+  });
+  pass.lookupStats = typeof agentLookup.stats === "function" ? {
+    ...agentLookup.stats(),
+    priorPlacesContactSpendUsd: priorContactSpendUsd,
+    cumulativePlacesContactSpendUsd: priorContactSpendUsd + agentLookup.stats().placesReservedUsd,
+  } : null;
+  const spendBeforeApply = await (operations.getRunSpend || getRunSpend)(run.id);
+  const ceiling = parsed.budget == null ? 500 : nonnegativeNumber(parsed.budget, "--budget");
+  if (spendBeforeApply > ceiling) {
+    throw new Error(`Redemption LLM/provider ceiling exceeded: $${spendBeforeApply.toFixed(4)} > $${ceiling.toFixed(2)}.`);
+  }
+  const redemptionCount = pass.counts.redeem;
+  const apply = redemptionCount > 0
+    ? await (operations.applyLegitimacyRedemptions || applyLegitimacyRedemptions)({
+        pass,
+        runId: run.id,
+        expectedRedemptionCount: redemptionCount,
+      })
+    : null;
+  const markdown = (operations.renderLegitimacyRedemptionReport
+    || renderLegitimacyRedemptionReport)({ cohort, pass, apply });
+  const outputPath = path.resolve(ROOT, LEGITIMACY_REDEMPTION_REPORT_PATH);
+  await (operations.writeFile || writeFile)(outputPath, markdown, "utf8");
+  return {
+    status: "completed",
+    counts: {
+      suppressed_rows_read: cohort.counts.suppressedRowsRead,
+      lookup_candidates: cohort.counts.candidates,
+      skipped: cohort.counts.skipped,
+      official_websites: pass.counts.officialWebsites,
+      redeemed: redemptionCount,
+      retained_suppressed: pass.counts.retainSuppressed,
+      websites_written: pass.lookupStats?.websitesWritten || 0,
+      reports_written: 1,
+    },
+    result: {
+      dryRun: false,
+      cohort: cohort.counts,
+      pass,
+      apply,
+      spendUsd: spendBeforeApply,
+      outputPath,
+    },
+  };
+}
+
+export async function runCensus(parsed, run, operations = {}) {
+  const scope = parsed.scope || "before";
+  if (!new Set(["before", "post-contact", "image-classify", "after"]).has(scope)) {
+    throw new Error("--scope for census must be before, post-contact, image-classify, or after.");
+  }
+  const load = operations.loadEnrichmentCensus || loadEnrichmentCensus;
+  const snapshot = await load({
+    label: `${scope.replaceAll("-", "_")}_enrichment`,
+    capturedAt: new Date().toISOString(),
+  });
+  const beforeJsonPath = path.resolve(ROOT, "docs/runs/enrichment-before-census.json");
+  const reportPath = path.resolve(ROOT, `docs/runs/enrichment-${scope}-census.md`);
+  const jsonPath = path.resolve(ROOT, `docs/runs/enrichment-${scope}-census.json`);
+  const write = operations.writeFile || writeFile;
+
+  if (scope === "before") {
+    const plan = (operations.buildEnrichmentEnqueuePlan || buildEnrichmentEnqueuePlan)(snapshot);
+    if (run.dry_run) {
+      return {
+        status: "completed",
+        counts: {
+          eligible: snapshot.population.eligible,
+          expected_tasks: plan.expectedInsertions,
+          inserted: 0,
+        },
+        result: { dryRun: true, scope, snapshot, plan },
+      };
+    }
+    const enqueue = await (operations.enqueueEnrichmentPlan || enqueueEnrichmentPlan)({
+      plan,
+      liveSnapshot: snapshot,
+      runId: run.id,
+      implementedTaskTypes: ENRICHMENT_TASK_TYPES,
+      apply: true,
+    });
+    const markdown = (operations.renderEnrichmentCensusReport
+      || renderEnrichmentCensusReport)({ before: snapshot, plan });
+    await write(reportPath, markdown, "utf8");
+    await write(jsonPath, `${JSON.stringify(snapshot, null, 2)}\n`, "utf8");
+    return {
+      status: "completed",
+      counts: {
+        eligible: snapshot.population.eligible,
+        expected_tasks: plan.expectedInsertions,
+        inserted: enqueue.insertedCount,
+        reports_written: 2,
+      },
+      result: { dryRun: false, scope, snapshot, plan, enqueue, reportPath, jsonPath },
+    };
+  }
+
+  if (scope === "image-classify") {
+    const plan = (operations.buildImageClassifyEnqueuePlan
+      || buildImageClassifyEnqueuePlan)(snapshot);
+    if (run.dry_run) {
+      return {
+        status: "completed",
+        counts: {
+          eligible: snapshot.population.eligible,
+          unclassified_images: plan.unclassifiedImageCount,
+          expected_tasks: plan.expectedInsertions,
+          inserted: 0,
+        },
+        result: { dryRun: true, scope, snapshot, plan },
+      };
+    }
+    const enqueue = await (operations.enqueueImageClassifyPlan
+      || enqueueImageClassifyPlan)({
+      plan,
+      liveSnapshot: snapshot,
+      runId: run.id,
+      implementedTaskTypes: [ENRICHMENT_IMAGE_CLASSIFY_TASK_TYPE],
+      apply: true,
+    });
+    const markdown = (operations.renderImageClassifyEnqueueReport
+      || renderImageClassifyEnqueueReport)({ snapshot, plan, enqueue });
+    await write(reportPath, markdown, "utf8");
+    await write(jsonPath, `${JSON.stringify({ snapshot, plan, enqueue }, null, 2)}\n`, "utf8");
+    return {
+      status: "completed",
+      counts: {
+        eligible: snapshot.population.eligible,
+        unclassified_images: plan.unclassifiedImageCount,
+        expected_tasks: plan.expectedInsertions,
+        inserted: enqueue.insertedCount,
+        reports_written: 2,
+      },
+      result: { dryRun: false, scope, snapshot, plan, enqueue, reportPath, jsonPath },
+    };
+  }
+
+  if (scope === "post-contact") {
+    const plan = await (operations.loadPostContactEnqueuePlan
+      || loadPostContactEnqueuePlan)(snapshot);
+    if (run.dry_run) {
+      return {
+        status: "completed",
+        counts: {
+          eligible: snapshot.population.eligible,
+          expected_tasks: plan.expectedInsertions,
+          inserted: 0,
+        },
+        result: { dryRun: true, scope, snapshot, plan },
+      };
+    }
+    const enqueue = await (operations.enqueuePostContactPlan
+      || enqueuePostContactPlan)({
+      plan,
+      liveSnapshot: snapshot,
+      runId: run.id,
+      implementedTaskTypes: ENRICHMENT_POST_CONTACT_TASK_TYPES,
+      apply: true,
+    });
+    const markdown = (operations.renderPostContactEnqueueReport
+      || renderPostContactEnqueueReport)({ snapshot, plan, enqueue });
+    await write(reportPath, markdown, "utf8");
+    await write(jsonPath, `${JSON.stringify({ snapshot, plan, enqueue }, null, 2)}\n`, "utf8");
+    return {
+      status: "completed",
+      counts: {
+        eligible: snapshot.population.eligible,
+        expected_tasks: plan.expectedInsertions,
+        inserted: enqueue.insertedCount,
+        reports_written: 2,
+      },
+      result: { dryRun: false, scope, snapshot, plan, enqueue, reportPath, jsonPath },
+    };
+  }
+
+  let before;
+  try {
+    before = JSON.parse(await (operations.readFile || readFile)(beforeJsonPath, "utf8"));
+  } catch (error) {
+    throw new Error(`Before-census evidence is unavailable at ${beforeJsonPath}: ${error.message}`);
+  }
+  const markdown = (operations.renderEnrichmentCensusReport
+    || renderEnrichmentCensusReport)({ before, after: snapshot });
+  if (!run.dry_run) {
+    await write(reportPath, markdown, "utf8");
+    await write(jsonPath, `${JSON.stringify(snapshot, null, 2)}\n`, "utf8");
+  }
+  return {
+    status: "completed",
+    counts: {
+      eligible_before: before.population.eligible,
+      eligible_after: snapshot.population.eligible,
+      reports_written: run.dry_run ? 0 : 2,
+    },
+    result: { dryRun: Boolean(run.dry_run), scope, before, after: snapshot, reportPath, jsonPath },
   };
 }
 
@@ -1108,7 +1428,7 @@ function nonnegativeNumber(value, flag) {
 function usage() {
   return [
     "Usage: node pipeline/cli.mjs <command> [options]",
-    "Commands: enqueue, drain, report, suppress, stage3, migrate, census, maintain",
+    "Commands: enqueue, drain, report, suppress, stage3, redemption, migrate, census, maintain",
     "Maintenance: regen-structure-doc, refresh-city-index",
     "Persistent side effects require --apply; dry-run is the default.",
   ].join("\n");

@@ -9,7 +9,13 @@ const TASK_STATUS_ORDER = ["pending", "claimed", "done", "failed", "skipped"];
  * This function is deliberately pure: it does not query the database, inspect
  * the environment, or write a report file.
  */
-export function renderRunReport({ run, externalCalls = [], taskSummary = {}, backlogSummary = null }) {
+export function renderRunReport({
+  run,
+  externalCalls = [],
+  taskSummary = {},
+  backlogSummary = null,
+  changeEvents = [],
+}) {
   if (!run || typeof run !== "object") {
     throw new TypeError("renderRunReport requires a run object.");
   }
@@ -17,6 +23,7 @@ export function renderRunReport({ run, externalCalls = [], taskSummary = {}, bac
   const runId = normalizeRunId(run.id);
   const calls = Array.isArray(externalCalls) ? externalCalls : [];
   const outcomes = normalizeTaskSummary(taskSummary);
+  const changes = normalizeChangeEvents(changeEvents);
   const callTotals = summarizeExternalCalls(calls);
   const lines = [
     `# Pipeline Run ${runId}`,
@@ -42,6 +49,7 @@ export function renderRunReport({ run, externalCalls = [], taskSummary = {}, bac
   appendCountsSection(lines, run.counts);
   appendTaskOutcomes(lines, outcomes);
   appendTaskBacklog(lines, backlogSummary);
+  appendChangeEvents(lines, changes);
   appendExternalCallTotals(lines, callTotals);
   appendExternalCallDetails(lines, calls);
 
@@ -81,7 +89,7 @@ export async function loadRunReportData(runId, { query: queryOverride } = {}) {
   }
 
   const taskType = typeof run.args?.task === "string" ? run.args.task : null;
-  const [callsResult, tasksResult, backlogResult] = await Promise.all([
+  const [callsResult, tasksResult, backlogResult, changesResult] = await Promise.all([
     executeQuery(
       query,
       `
@@ -128,6 +136,21 @@ export async function loadRunReportData(runId, { query: queryOverride } = {}) {
         [taskType],
       )
       : Promise.resolve({ rows: [] }),
+    executeQuery(
+      query,
+      `
+        SELECT
+          entity_type,
+          action,
+          COALESCE(reason, '_none') AS reason,
+          count(*)::integer AS count
+        FROM fountain.entity_change_events
+        WHERE metadata->>'run_id' = $1::text
+        GROUP BY entity_type, action, COALESCE(reason, '_none')
+        ORDER BY entity_type, action, reason
+      `,
+      [normalizedRunId],
+    ),
   ]);
 
   return {
@@ -137,6 +160,7 @@ export async function loadRunReportData(runId, { query: queryOverride } = {}) {
     backlogSummary: taskType
       ? { taskType, counts: rowsFrom(backlogResult) }
       : null,
+    changeEvents: rowsFrom(changesResult),
   };
 }
 
@@ -251,6 +275,26 @@ function appendTaskBacklog(lines, backlogSummary) {
   lines.push(tableRow("**Total**", `**${total}**`, { escape: false }));
 }
 
+function appendChangeEvents(lines, changes) {
+  lines.push("", "## Entity change events", "");
+  if (changes.length === 0) {
+    lines.push("_No run-linked serving mutations were recorded._");
+    return;
+  }
+  lines.push(
+    "| Entity type | Action | Reason | Count |",
+    "| --- | --- | --- | ---: |",
+  );
+  let total = 0;
+  for (const change of changes) {
+    total += change.count;
+    lines.push(
+      `| ${escapeTableCell(change.entityType)} | ${escapeTableCell(change.action)} | ${escapeTableCell(change.reason)} | ${change.count} |`,
+    );
+  }
+  lines.push(`| **Total** |  |  | **${total}** |`);
+}
+
 function appendExternalCallTotals(lines, totals) {
   lines.push(
     "",
@@ -332,6 +376,31 @@ function normalizeTaskSummary(taskSummary) {
       const rightRank = statusRank.get(right.status) ?? Number.MAX_SAFE_INTEGER;
       return leftRank - rightRank || left.status.localeCompare(right.status);
     });
+}
+
+function normalizeChangeEvents(changeEvents) {
+  if (!Array.isArray(changeEvents)) return [];
+  const changes = new Map();
+  for (const row of changeEvents) {
+    const entityType = displayValue(row?.entity_type ?? row?.entityType, "unknown");
+    const action = displayValue(row?.action, "unknown");
+    const reason = displayValue(row?.reason, "_none");
+    const count = finiteNumber(row?.count ?? 1);
+    if (count == null || !Number.isInteger(count) || count < 0) continue;
+    const key = JSON.stringify([entityType, action, reason]);
+    const previous = changes.get(key);
+    changes.set(key, {
+      entityType,
+      action,
+      reason,
+      count: (previous?.count || 0) + count,
+    });
+  }
+  return [...changes.values()].sort((left, right) => (
+    left.entityType.localeCompare(right.entityType)
+      || left.action.localeCompare(right.action)
+      || left.reason.localeCompare(right.reason)
+  ));
 }
 
 function normalizeTokens(tokens) {
