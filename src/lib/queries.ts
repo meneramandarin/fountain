@@ -1995,7 +1995,7 @@ export async function getLocationDetail(ref: number | string) {
     SELECT o.raw_name, o.price_amount, o.price_currency,
            t.canonical_name AS treatment, t.category AS domain
     FROM offerings o
-    LEFT JOIN treatments t ON t.id = o.treatment_id
+    JOIN treatments t ON t.id = o.treatment_id
     WHERE o.location_id = ?
       AND ${activeOfferingCondition("o")}
     ORDER BY (t.category IS NULL), t.category, t.canonical_name, o.raw_name

@@ -1,24 +1,10 @@
 import { rows } from "@/lib/db";
-import { countryDisplayName, iso2ToDisplay } from "@/lib/countries";
+import { countryDisplayName } from "@/lib/countries";
+import { mergeCitySuggestions, parseGooglePlaceLabel, type CitySuggestion } from "@/lib/city-suggestions";
 import { NextResponse } from "next/server";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
-
-type CitySuggestion = {
-  id: string;
-  source: "inventory" | "google";
-  place_type: "locality" | "country";
-  label: string;
-  city: string;
-  region?: string | null;
-  country_code?: string | null;
-  country_name?: string | null;
-  lat?: number | null;
-  lng?: number | null;
-  has_inventory: boolean;
-  place_id?: string;
-};
 
 type CityIndexRow = {
   city: string;
@@ -47,7 +33,7 @@ export async function GET(request: Request) {
   const googlePromise = query ? googleCitySuggestions(query, sessionToken) : Promise.resolve([]);
   const [inventory, countries, google] = await Promise.all([inventoryPromise, countryPromise, googlePromise]);
 
-  const suggestions = mergeSuggestions([
+  const suggestions = mergeCitySuggestions([
     ...inventory.map(cityRowToSuggestion),
     ...google.filter((suggestion) => suggestion.place_type !== "country"),
     ...countries.map(countryRowToSuggestion),
@@ -190,7 +176,7 @@ async function googleCitySuggestions(query: string, sessionToken: string | null)
       .map((prediction) => {
         const label = prediction.text?.text || "Unknown city";
         const placeType = prediction.types?.includes("country") ? "country" : "locality";
-        const parsed = parseGoogleLabel(label, placeType);
+        const parsed = parseGooglePlaceLabel(label, placeType);
         return {
           id: `google:${prediction.placeId}`,
           source: "google",
@@ -211,25 +197,6 @@ async function googleCitySuggestions(query: string, sessionToken: string | null)
   } finally {
     clearTimeout(timeout);
   }
-}
-
-function mergeSuggestions(suggestions: CitySuggestion[], limit: number) {
-  const seen = new Set<string>();
-  const merged: CitySuggestion[] = [];
-  for (const suggestion of suggestions) {
-    const key = suggestion.place_type === "country" && suggestion.country_code
-      ? `country:${suggestion.country_code}`
-      : `${normalizeText(suggestion.city)}:${suggestion.country_code || normalizeText(suggestion.country_name || "")}`;
-    if (seen.has(key)) {
-      continue;
-    }
-    seen.add(key);
-    merged.push(suggestion);
-    if (merged.length >= limit) {
-      break;
-    }
-  }
-  return merged;
 }
 
 function cityLabel(city: string, region: string | null | undefined, countryCode: string | null | undefined) {
@@ -266,33 +233,4 @@ function cleanToken(value: string | null) {
 
 function googleApiKey() {
   return process.env.GOOGLE_PLACES_API_KEY || process.env.GOOGLE_MAPS_API_KEY || process.env.GOOGLE_API_KEY || "";
-}
-
-function normalizeText(value: string) {
-  return value.trim().toLowerCase().replace(/\s+/g, " ");
-}
-
-function parseGoogleLabel(label: string, placeType: "locality" | "country") {
-  const parts = label.split(",").map((part) => part.trim()).filter(Boolean);
-  const countryName = parts.at(-1);
-  if (placeType === "country") {
-    const countryCode = iso2FromDisplay(label);
-    return {
-      city: label,
-      region: undefined,
-      countryName: label,
-      countryCode,
-    };
-  }
-  return {
-    city: parts[0],
-    region: parts.length > 2 ? parts.at(-2) : undefined,
-    countryName,
-    countryCode: countryName === "USA" || countryName === "United States" ? "US" : undefined,
-  };
-}
-
-function iso2FromDisplay(value: string) {
-  const normalized = normalizeText(value);
-  return Object.entries(iso2ToDisplay).find(([, label]) => normalizeText(label) === normalized)?.[0];
 }
