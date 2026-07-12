@@ -1,7 +1,7 @@
 import { describe, expect, test, vi } from "vitest";
 
 // @ts-expect-error -- the pipeline runtime intentionally uses native .mjs modules.
-import { drainTasks, parseCliArgs, runEnqueue, runReport, validateCommandArgs } from "../pipeline/cli.mjs";
+import { drainTasks, parseCliArgs, runDrain, runEnqueue, runReport, validateCommandArgs } from "../pipeline/cli.mjs";
 
 describe("pipeline CLI parsing", () => {
   test("defaults to dry-run by leaving apply false", () => {
@@ -73,10 +73,18 @@ describe("pipeline CLI parsing", () => {
       "legitimacy_check",
       "--stage",
       "all",
+      "--campaign",
+      "pass1_gate_b_dry_run",
+      "--prompt-version",
+      "pass1-legitimacy-v2",
       "--budget",
       "3",
       "--apply",
-    ]))).toMatchObject({ stage: "all" });
+    ]))).toMatchObject({
+      stage: "all",
+      campaign: "pass1_gate_b_dry_run",
+      promptVersion: "pass1-legitimacy-v2",
+    });
     expect(validateCommandArgs(parseCliArgs([
       "enqueue",
       "--task",
@@ -85,6 +93,14 @@ describe("pipeline CLI parsing", () => {
       "gate-a",
       "--apply",
     ]))).toMatchObject({ sample: "gate-a" });
+    expect(validateCommandArgs(parseCliArgs([
+      "enqueue",
+      "--task",
+      "legitimacy_check",
+      "--scope",
+      "full",
+      "--apply",
+    ]))).toMatchObject({ scope: "full" });
 
     expect(() => validateCommandArgs(parseCliArgs([
       "drain", "--task", "legitimacy_check", "--stage", "stage-3",
@@ -99,6 +115,28 @@ describe("pipeline CLI parsing", () => {
       "drain", "--task", "legitimacy_check", "--stage", "stage_1",
     ]))).toThrow("requires an explicit --budget");
     expect(() => validateCommandArgs(parseCliArgs([
+      "drain",
+      "--task",
+      "legitimacy_check",
+      "--stage",
+      "stage_1",
+      "--budget",
+      "3",
+      "--campaign",
+      "pass1_gate_b_dry_run",
+    ]))).toThrow("requires --campaign and --prompt-version together");
+    expect(() => validateCommandArgs(parseCliArgs([
+      "drain",
+      "--task",
+      "legitimacy_check",
+      "--stage",
+      "stage_1",
+      "--budget",
+      "3",
+      "--prompt-version",
+      "pass1-legitimacy-v2",
+    ]))).toThrow("requires --campaign and --prompt-version together");
+    expect(() => validateCommandArgs(parseCliArgs([
       "enqueue", "--task", "noop", "--sample", "gate-a",
     ]))).toThrow("only for --task legitimacy_check");
     expect(() => validateCommandArgs(parseCliArgs([
@@ -107,9 +145,85 @@ describe("pipeline CLI parsing", () => {
     expect(() => validateCommandArgs(parseCliArgs([
       "enqueue", "--task", "noop",
     ]))).toThrow("--where is required");
+    expect(() => validateCommandArgs(parseCliArgs([
+      "enqueue", "--task", "noop", "--scope", "full",
+    ]))).toThrow("only for --task legitimacy_check");
+    expect(() => validateCommandArgs(parseCliArgs([
+      "enqueue", "--task", "legitimacy_check", "--scope", "full", "--where", "id > 0",
+    ]))).toThrow("mutually exclusive");
+    expect(() => validateCommandArgs(parseCliArgs([
+      "enqueue", "--task", "legitimacy_check", "--scope", "full", "--sample", "gate-a",
+    ]))).toThrow("--sample and --scope are mutually exclusive");
     expect(validateCommandArgs(parseCliArgs([
       "report", "--campaign", "pass1_gate_a", "--run", "21", "--apply",
     ]))).toMatchObject({ campaign: "pass1_gate_a", run: "21" });
+    expect(validateCommandArgs(parseCliArgs([
+      "report", "--campaign", "pass1_gate_b_dry_run", "--run", "31,32",
+    ]))).toMatchObject({ campaign: "pass1_gate_b_dry_run", run: "31,32" });
+    expect(() => validateCommandArgs(parseCliArgs([
+      "report",
+      "--campaign",
+      "pass1_gate_b_dry_run",
+      "--run",
+      "31,32",
+      "--output",
+      "somewhere.md",
+    ]))).toThrow("paths are fixed");
+  });
+
+  test("threads drain campaign and prompt filters into previews and claims", async () => {
+    const campaign = "pass1_gate_b_dry_run";
+    const promptVersion = "pass1-legitimacy-v2";
+    const previewDrain = vi.fn(async () => [{ id: "701" }]);
+
+    const preview = await runDrain({
+      task: "legitimacy_check",
+      stage: "stage_2",
+      campaign,
+      promptVersion,
+      budget: "15",
+      limit: "20",
+    }, { id: "31", dry_run: true }, { previewDrain });
+
+    expect(previewDrain).toHaveBeenCalledWith({
+      taskType: "legitimacy_check",
+      stage: "stage_2",
+      campaign,
+      promptVersion,
+      limit: 20,
+    });
+    expect(preview).toMatchObject({
+      result: { dryRun: true, campaign, promptVersion, tasks: [{ id: "701" }] },
+    });
+
+    const claimTasks = vi.fn(async () => []);
+    const applied = await runDrain({
+      task: "legitimacy_check",
+      stage: "stage_2",
+      campaign,
+      promptVersion,
+      concurrency: "1",
+      budget: "15",
+    }, { id: "32", dry_run: false }, {
+      claimTasks,
+      isBudgetExhausted: vi.fn(async () => ({ exhausted: false, spendUsd: 0 })),
+      getRunSpend: vi.fn(async () => 0),
+      taskCountsForRun: vi.fn(async () => ({})),
+      taskBacklogSummary: vi.fn(async () => ({})),
+    });
+
+    expect(claimTasks).toHaveBeenCalledOnce();
+    expect(claimTasks).toHaveBeenCalledWith(expect.objectContaining({
+      taskType: "legitimacy_check",
+      stage: "stage_2",
+      campaign,
+      promptVersion,
+      limit: 8,
+    }));
+    expect(applied).toMatchObject({
+      status: "completed",
+      result: { dryRun: false, campaign, promptVersion, queueDrained: true },
+    });
   });
 
   test("renders the Gate A campaign report and writes it only in apply mode", async () => {
@@ -172,6 +286,104 @@ describe("pipeline CLI parsing", () => {
     });
   });
 
+  test("routes Gate B full scope through its specialized dry/apply helper", async () => {
+    const enqueueLegitimacyGateBFull = vi.fn(async ({ apply }: { apply: boolean }) => ({
+      selectedCount: 12_345,
+      insertedCount: apply ? 12_345 : 0,
+      insertedEntityIds: apply ? [1, 2, 3] : [],
+      excludedCount: 120,
+      sampleAlreadyFinalCount: 300,
+    }));
+
+    const preview = await runEnqueue(
+      { task: "legitimacy_check", scope: "full", positional: [] },
+      { id: "32", dry_run: true },
+      { enqueueLegitimacyGateBFull },
+    );
+    expect(enqueueLegitimacyGateBFull).toHaveBeenNthCalledWith(1, expect.objectContaining({
+      runId: "32",
+      apply: false,
+    }));
+    expect(preview).toMatchObject({
+      counts: { selected: 12_345, inserted: 0 },
+      result: { dryRun: true, scope: "full" },
+    });
+
+    const applied = await runEnqueue(
+      { task: "legitimacy_check", scope: "full", positional: [] },
+      { id: "33", dry_run: false },
+      { enqueueLegitimacyGateBFull },
+    );
+
+    expect(enqueueLegitimacyGateBFull).toHaveBeenNthCalledWith(2, {
+      campaign: "pass1_gate_b_dry_run",
+      promptVersion: "pass1-legitimacy-v2",
+      runId: "33",
+      maxAttempts: 3,
+      priority: 100,
+      apply: true,
+    });
+    expect(applied).toMatchObject({
+      counts: { selected: 12_345, inserted: 12_345 },
+      result: { dryRun: false, scope: "full", excludedCount: 120 },
+    });
+  });
+
+  test("renders Gate B summary/review reports and writes only with apply", async () => {
+    const stdout = vi.spyOn(process.stdout, "write").mockImplementation(() => true);
+    const reportData = {
+      classCounts: { in_scope: 8_000, junk: 2_000, plain_hospital: 500, review: 100 },
+      suppressionCount: 2_500,
+      reviewRows: [{ id: 1 }, { id: 2 }],
+    };
+    const loadLegitimacyGateBReportData = vi.fn(async () => reportData);
+    const renderLegitimacyGateBReport = vi.fn(() => "# Gate B dry run\n");
+    const renderLegitimacyReviewQueue = vi.fn(() => "# Review queue\n");
+    const writeFile = vi.fn(async () => undefined);
+    const operations = {
+      loadLegitimacyGateBReportData,
+      renderLegitimacyGateBReport,
+      renderLegitimacyReviewQueue,
+      writeFile,
+    };
+
+    const preview = await runReport(
+      { campaign: "pass1_gate_b_dry_run", run: "31,32" },
+      { dry_run: true },
+      operations,
+    );
+    expect(loadLegitimacyGateBReportData).toHaveBeenLastCalledWith({
+      campaign: "pass1_gate_b_dry_run",
+      promptVersion: "pass1-legitimacy-v2",
+      runIds: ["31", "32"],
+    });
+    expect(writeFile).not.toHaveBeenCalled();
+    expect(stdout).toHaveBeenLastCalledWith("# Gate B dry run\n\n# Review queue\n");
+    expect(preview).toMatchObject({
+      counts: { reports_rendered: 2, files_written: 0, review_rows: 2 },
+      result: { outputPath: null, reviewOutputPath: null, suppressionCount: 2_500 },
+    });
+
+    const applied = await runReport(
+      { campaign: "pass1_gate_b_dry_run", run: "31,32" },
+      { dry_run: false },
+      operations,
+    );
+    expect(writeFile).toHaveBeenCalledTimes(2);
+    expect(writeFile).toHaveBeenCalledWith(
+      expect.stringMatching(/docs\/runs\/pass1-gate-b-dry-run\.md$/u),
+      "# Gate B dry run\n",
+      "utf8",
+    );
+    expect(writeFile).toHaveBeenCalledWith(
+      expect.stringMatching(/docs\/runs\/pass1-review-queue\.md$/u),
+      "# Review queue\n",
+      "utf8",
+    );
+    expect(applied).toMatchObject({ counts: { files_written: 2 } });
+    stdout.mockRestore();
+  });
+
   test("budget exhaustion prevents a second claim without a dispatch cap", async () => {
     const claimTask = vi.fn()
       .mockResolvedValueOnce({ id: "1", entity_id: 997 })
@@ -200,6 +412,56 @@ describe("pipeline CLI parsing", () => {
     });
     expect(claimTask).toHaveBeenCalledOnce();
     expect(handler).toHaveBeenCalledOnce();
+  });
+
+  test("concurrent batch overshoot is bounded to batches already started by workers", async () => {
+    const firstBatch = [{ id: "61" }, { id: "62" }];
+    const secondBatch = [{ id: "63" }, { id: "64" }];
+    const claimTasks = vi.fn()
+      .mockResolvedValueOnce(firstBatch)
+      .mockResolvedValueOnce(secondBatch);
+    let handlersStarted = 0;
+    let releaseHandlers = () => {};
+    const bothHandlersStarted = new Promise<void>((resolve) => {
+      releaseHandlers = resolve;
+    });
+    const batchHandler = vi.fn(async ({ tasks }: { tasks: Array<{ id: string }> }) => {
+      handlersStarted += 1;
+      if (handlersStarted === 2) releaseHandlers();
+      await bothHandlersStarted;
+      return tasks.map((task) => ({ taskId: task.id, disposition: "complete", result: {} }));
+    });
+    let budgetChecks = 0;
+    const isBudgetExhausted = vi.fn(async () => {
+      budgetChecks += 1;
+      return budgetChecks <= 2
+        ? { exhausted: false, spendUsd: 0 }
+        : { exhausted: true, spendUsd: 3.01 };
+    });
+
+    const result = await drainTasks({
+      run: { id: "17" },
+      taskType: "legitimacy_check",
+      definition: { batchHandler, batchSize: 2 },
+      stage: "stage_1",
+      concurrency: 2,
+      budgetUsd: 3,
+      limit: null,
+    }, {
+      claimTasks,
+      completeTask: vi.fn(async () => ({ status: "done" })),
+      isBudgetExhausted,
+      getRunSpend: vi.fn(async () => 3.01),
+    });
+
+    expect(claimTasks).toHaveBeenCalledTimes(2);
+    expect(batchHandler).toHaveBeenCalledTimes(2);
+    expect(result).toMatchObject({
+      dispatched: 4,
+      done: 4,
+      budgetExhausted: true,
+      spendUsd: 3.01,
+    });
   });
 
   test("non-retryable handler failure is terminal and does not claim task two", async () => {

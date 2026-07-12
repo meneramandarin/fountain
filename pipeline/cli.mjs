@@ -9,6 +9,14 @@ import { getTaskDefinition } from "./config/tasks.mjs";
 import { inspectCityIndex, refreshCityIndex } from "./lib/city-index.mjs";
 import { closePool, withTransaction } from "./lib/db.mjs";
 import {
+  enqueueLegitimacyGateBFull,
+  LEGITIMACY_GATE_B_CAMPAIGN,
+  LEGITIMACY_GATE_B_PROMPT_VERSION,
+  loadLegitimacyGateBReportData,
+  renderLegitimacyGateBReport,
+  renderLegitimacyReviewQueue,
+} from "./lib/legitimacy-full.mjs";
+import {
   enqueueLegitimacyGateASample,
   LEGITIMACY_GATE_A_CAMPAIGN,
   LEGITIMACY_PROMPT_VERSION,
@@ -84,8 +92,18 @@ export function parseCliArgs(argv) {
 
 export function validateCommandArgs(parsed) {
   const allowedByCommand = {
-    enqueue: new Set(["task", "where", "sample", "entityType", "priority", "limit", "apply", "dryRun"]),
-    drain: new Set(["task", "stage", "concurrency", "budget", "limit", "apply", "dryRun"]),
+    enqueue: new Set(["task", "where", "sample", "scope", "entityType", "priority", "limit", "apply", "dryRun"]),
+    drain: new Set([
+      "task",
+      "stage",
+      "campaign",
+      "promptVersion",
+      "concurrency",
+      "budget",
+      "limit",
+      "apply",
+      "dryRun",
+    ]),
     report: new Set(["run", "campaign", "output", "apply", "dryRun"]),
     migrate: new Set(["file", "apply", "dryRun"]),
     census: new Set(["apply", "dryRun"]),
@@ -172,6 +190,31 @@ export async function runEnqueue(parsed, run, operations = {}) {
       },
     };
   }
+  if (parsed.scope === "full") {
+    const enqueueFull = operations.enqueueLegitimacyGateBFull || enqueueLegitimacyGateBFull;
+    const result = await enqueueFull({
+      campaign: LEGITIMACY_GATE_B_CAMPAIGN,
+      promptVersion: LEGITIMACY_GATE_B_PROMPT_VERSION,
+      runId: run.id,
+      maxAttempts: definition.maxAttempts,
+      priority,
+      apply: !run.dry_run,
+    });
+    return {
+      status: "completed",
+      counts: {
+        selected: Number(result.selectedCount ?? result.selected_count ?? 0),
+        inserted: Number(result.insertedCount ?? result.inserted_count ?? 0),
+      },
+      result: {
+        dryRun: Boolean(run.dry_run),
+        taskType,
+        entityType,
+        scope: parsed.scope,
+        ...result,
+      },
+    };
+  }
 
   const where = required(parsed.where, "--where");
   if (run.dry_run) {
@@ -201,18 +244,23 @@ export async function runEnqueue(parsed, run, operations = {}) {
   };
 }
 
-async function runDrain(parsed, run) {
+export async function runDrain(parsed, run, operations = {}) {
   const taskType = required(parsed.task, "--task");
   const stage = parsed.stage || null;
+  const campaign = parsed.campaign || null;
+  const promptVersion = parsed.promptVersion || null;
   const limit = optionalPositiveInteger(parsed.limit, "--limit");
   const concurrency = parsed.concurrency == null ? 1 : positiveInteger(parsed.concurrency, "--concurrency");
   const budgetUsd = parsed.budget == null ? null : nonnegativeNumber(parsed.budget, "--budget");
   if (run.dry_run) {
-    const tasks = await previewDrainStages({ taskType, stage, limit: limit || 10 });
+    const tasks = await previewDrainStages(
+      { taskType, stage, campaign, promptVersion, limit: limit || 10 },
+      operations,
+    );
     return {
       status: "completed",
       counts: { claimable_preview: tasks.length },
-      result: { dryRun: true, taskType, stage, tasks },
+      result: { dryRun: true, taskType, stage, campaign, promptVersion, tasks },
     };
   }
   const definition = getTaskDefinition(taskType);
@@ -222,12 +270,16 @@ async function runDrain(parsed, run) {
     taskType,
     definition,
     stage,
+    campaign,
+    promptVersion,
     concurrency,
     budgetUsd,
     limit,
-  });
-  const queueCounts = await taskCountsForRun(run.id);
-  const backlog = await taskBacklogSummary(taskType);
+  }, operations);
+  const loadTaskCounts = operations.taskCountsForRun || taskCountsForRun;
+  const loadBacklog = operations.taskBacklogSummary || taskBacklogSummary;
+  const queueCounts = await loadTaskCounts(run.id);
+  const backlog = await loadBacklog(taskType);
   const retryPending = Math.max(0, Number(queueCounts.pending || 0) - Number(drained.deferred || 0));
   const status = drained.budgetExhausted
     ? "budget_exhausted"
@@ -237,12 +289,32 @@ async function runDrain(parsed, run) {
   return {
     status,
     counts: { ...drained, retryPending, queue: queueCounts, backlog },
-    result: { dryRun: false, taskType, stage, ...drained, retryPending, queueCounts, backlog },
+    result: {
+      dryRun: false,
+      taskType,
+      stage,
+      campaign,
+      promptVersion,
+      ...drained,
+      retryPending,
+      queueCounts,
+      backlog,
+    },
   };
 }
 
 export async function drainTasks(
-  { run, taskType, definition, stage = null, concurrency, budgetUsd, limit },
+  {
+    run,
+    taskType,
+    definition,
+    stage = null,
+    campaign = null,
+    promptVersion = null,
+    concurrency,
+    budgetUsd,
+    limit,
+  },
   operations = {},
 ) {
   if (stage === "all") {
@@ -250,6 +322,8 @@ export async function drainTasks(
       run,
       taskType,
       definition,
+      campaign,
+      promptVersion,
       concurrency,
       budgetUsd,
       limit,
@@ -260,6 +334,8 @@ export async function drainTasks(
     taskType,
     definition,
     stage,
+    campaign,
+    promptVersion,
     concurrency,
     budgetUsd,
     limit,
@@ -302,7 +378,17 @@ async function drainAllTaskStages(args, operations) {
 }
 
 async function drainTaskStage(
-  { run, taskType, definition, stage, concurrency, budgetUsd, limit },
+  {
+    run,
+    taskType,
+    definition,
+    stage,
+    campaign,
+    promptVersion,
+    concurrency,
+    budgetUsd,
+    limit,
+  },
   operations,
 ) {
   const claim = operations.claimTask || claimTask;
@@ -426,6 +512,8 @@ async function drainTaskStage(
 
       const claimArgs = { taskType, workerId, runId: run.id };
       if (stage != null) claimArgs.stage = stage;
+      if (campaign != null) claimArgs.campaign = campaign;
+      if (promptVersion != null) claimArgs.promptVersion = promptVersion;
       const tasks = usesBatchHandler
         ? await claimBatch({ ...claimArgs, limit: reserved })
         : [await claim(claimArgs)].filter(Boolean);
@@ -455,15 +543,20 @@ async function drainTaskStage(
   };
 }
 
-async function previewDrainStages({ taskType, stage, limit }) {
+async function previewDrainStages(
+  { taskType, stage, campaign = null, promptVersion = null, limit },
+  operations = {},
+) {
+  const preview = operations.previewDrain || previewDrain;
+  const filters = { taskType, campaign, promptVersion };
   if (stage !== "all") {
-    return previewDrain({ taskType, stage, limit });
+    return preview({ ...filters, stage, limit });
   }
 
-  const stage1 = await previewDrain({ taskType, stage: "stage_1", limit });
+  const stage1 = await preview({ ...filters, stage: "stage_1", limit });
   const remaining = limit - stage1.length;
   if (remaining <= 0) return stage1;
-  const stage2 = await previewDrain({ taskType, stage: "stage_2", limit: remaining });
+  const stage2 = await preview({ ...filters, stage: "stage_2", limit: remaining });
   return [...stage1, ...stage2];
 }
 
@@ -524,6 +617,53 @@ function requireTaskHandler(taskType, definition) {
 
 export async function runReport(parsed, run, operations = {}) {
   const targetRunId = required(parsed.run, "--run");
+  if (parsed.campaign === LEGITIMACY_GATE_B_CAMPAIGN) {
+    const loadFull = operations.loadLegitimacyGateBReportData
+      || loadLegitimacyGateBReportData;
+    const renderFull = operations.renderLegitimacyGateBReport
+      || renderLegitimacyGateBReport;
+    const renderReviewQueue = operations.renderLegitimacyReviewQueue
+      || renderLegitimacyReviewQueue;
+    const write = operations.writeFile || writeFile;
+    const runIds = parseRunIds(targetRunId);
+    const data = await loadFull({
+      campaign: LEGITIMACY_GATE_B_CAMPAIGN,
+      promptVersion: LEGITIMACY_GATE_B_PROMPT_VERSION,
+      runIds,
+    });
+    const markdown = renderFull(data);
+    const reviewMarkdown = renderReviewQueue(data);
+    const outputPath = run.dry_run
+      ? null
+      : path.resolve(ROOT, "docs/runs/pass1-gate-b-dry-run.md");
+    const reviewOutputPath = run.dry_run
+      ? null
+      : path.resolve(ROOT, "docs/runs/pass1-review-queue.md");
+    if (outputPath) {
+      await Promise.all([
+        write(outputPath, markdown, "utf8"),
+        write(reviewOutputPath, reviewMarkdown, "utf8"),
+      ]);
+    }
+    process.stdout.write(`${markdown.trimEnd()}\n\n${reviewMarkdown.trimEnd()}\n`);
+    return {
+      status: "completed",
+      counts: {
+        reports_rendered: 2,
+        files_written: outputPath ? 2 : 0,
+        review_rows: Array.isArray(data.reviewRows) ? data.reviewRows.length : 0,
+      },
+      result: {
+        dryRun: run.dry_run,
+        campaign: parsed.campaign,
+        targetRunIds: runIds,
+        outputPath,
+        reviewOutputPath,
+        classCounts: data.classCounts,
+        suppressionCount: data.suppressionCount,
+      },
+    };
+  }
   if (parsed.campaign === LEGITIMACY_GATE_A_CAMPAIGN) {
     const loadSample = operations.loadLegitimacyGateAReportData || loadLegitimacyGateAReportData;
     const renderSample = operations.renderLegitimacyGateAReport || renderLegitimacyGateAReport;
@@ -680,19 +820,50 @@ function optionalPositiveInteger(value, flag) {
 
 function validateCampaignOptions(parsed) {
   if (parsed.command === "enqueue") {
-    if (parsed.sample == null) {
-      if (parsed.where == null) throw new Error("--where is required unless using the legitimacy Gate A sample.");
+    if (parsed.sample != null && parsed.scope != null) {
+      throw new Error("--sample and --scope are mutually exclusive.");
+    }
+    if (parsed.sample != null) {
+      if (parsed.sample !== "gate-a") throw new Error("--sample must be gate-a.");
+      if (parsed.task !== "legitimacy_check") {
+        throw new Error("--sample gate-a is supported only for --task legitimacy_check.");
+      }
+      if (parsed.where != null) throw new Error("--sample gate-a and --where are mutually exclusive.");
+      if (parsed.limit != null) {
+        throw new Error("--sample gate-a always selects its fixed 300-row cohort; omit --limit.");
+      }
       return;
     }
-    if (parsed.sample !== "gate-a") throw new Error("--sample must be gate-a.");
-    if (parsed.task !== "legitimacy_check") {
-      throw new Error("--sample gate-a is supported only for --task legitimacy_check.");
+    if (parsed.scope != null) {
+      if (parsed.scope !== "full") throw new Error("--scope must be full.");
+      if (parsed.task !== "legitimacy_check") {
+        throw new Error("--scope full is supported only for --task legitimacy_check.");
+      }
+      if (parsed.where != null) throw new Error("--scope full and --where are mutually exclusive.");
+      if (parsed.limit != null) throw new Error("--scope full selects the complete eligible cohort; omit --limit.");
+      return;
     }
-    if (parsed.where != null) throw new Error("--sample gate-a and --where are mutually exclusive.");
-    if (parsed.limit != null) throw new Error("--sample gate-a always selects its fixed 300-row cohort; omit --limit.");
+    if (parsed.where == null) {
+      throw new Error("--where is required unless using the legitimacy Gate A sample or Gate B full scope.");
+    }
   }
 
   if (parsed.command === "drain") {
+    if (parsed.task === "legitimacy_check") {
+      const hasCampaign = parsed.campaign != null;
+      const hasPromptVersion = parsed.promptVersion != null;
+      if (hasCampaign !== hasPromptVersion) {
+        throw new Error(
+          "--task legitimacy_check requires --campaign and --prompt-version together when either is provided.",
+        );
+      }
+      if (hasCampaign && !String(parsed.campaign).trim()) {
+        throw new Error("--campaign must be a non-empty string.");
+      }
+      if (hasPromptVersion && !String(parsed.promptVersion).trim()) {
+        throw new Error("--prompt-version must be a non-empty string.");
+      }
+    }
     if (parsed.stage == null) {
       if (parsed.task === "legitimacy_check") {
         throw new Error("--task legitimacy_check requires --stage stage_1, stage_2, or all.");
@@ -717,8 +888,13 @@ function validateCampaignOptions(parsed) {
       }
       return;
     }
-    if (parsed.campaign !== LEGITIMACY_GATE_A_CAMPAIGN) {
-      throw new Error(`--campaign must be ${LEGITIMACY_GATE_A_CAMPAIGN}.`);
+    if (![LEGITIMACY_GATE_A_CAMPAIGN, LEGITIMACY_GATE_B_CAMPAIGN].includes(parsed.campaign)) {
+      throw new Error(
+        `--campaign must be ${LEGITIMACY_GATE_A_CAMPAIGN} or ${LEGITIMACY_GATE_B_CAMPAIGN}.`,
+      );
+    }
+    if (parsed.campaign === LEGITIMACY_GATE_B_CAMPAIGN && parsed.output != null) {
+      throw new Error("Gate B report paths are fixed; omit --output.");
     }
   }
 }

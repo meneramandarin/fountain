@@ -1,7 +1,7 @@
 import { describe, expect, test, vi } from "vitest";
 
 // @ts-expect-error -- the pipeline runtime intentionally uses native .mjs modules.
-import { claimTask, claimTasks, enqueueTasks, failTask, previewDrain, transitionTaskStage, validateWherePredicate } from "../pipeline/lib/queue.mjs";
+import { claimTask, claimTasks, completeTask, enqueueTasks, failTask, previewDrain, transitionTaskStage, validateWherePredicate } from "../pipeline/lib/queue.mjs";
 
 describe("pipeline queue", () => {
   test("accepts one trusted-operator predicate and rejects statement injection", () => {
@@ -88,6 +88,74 @@ describe("pipeline queue", () => {
     }, { query: claimQuery });
   });
 
+  test("parameterizes campaign and prompt filters for previews and both claim paths", async () => {
+    const campaign = "pass1_gate_b_dry_run";
+    const promptVersion = "pass1-legitimacy-v2";
+    const previewQuery = vi.fn(async (sql: string, params: unknown[]) => {
+      expect(sql).toContain("payload->>'stage' = $2");
+      expect(sql).toContain("payload->>'campaign' = $3");
+      expect(sql).toContain("payload->>'prompt_version' = $4");
+      expect(sql).toContain("LIMIT $5");
+      expect(params).toEqual(["legitimacy_check", "stage_2", campaign, promptVersion, 8]);
+      return { rows: [{ id: "51", payload: { campaign, prompt_version: promptVersion } }] };
+    });
+    await previewDrain({
+      taskType: "legitimacy_check",
+      stage: "stage_2",
+      campaign,
+      promptVersion,
+      limit: 8,
+    }, { query: previewQuery });
+
+    const singleQuery = vi.fn(async (sql: string, params: unknown[]) => {
+      expect(sql).toContain("payload->>'stage' = $4");
+      expect(sql).toContain("payload->>'campaign' = $5");
+      expect(sql).toContain("payload->>'prompt_version' = $6");
+      expect(params).toEqual([
+        "legitimacy_check",
+        "worker-single",
+        "31",
+        "stage_2",
+        campaign,
+        promptVersion,
+      ]);
+      return { rows: [{ id: "51", status: "claimed" }] };
+    });
+    await claimTask({
+      taskType: "legitimacy_check",
+      workerId: "worker-single",
+      runId: "31",
+      stage: "stage_2",
+      campaign,
+      promptVersion,
+    }, { query: singleQuery });
+
+    const batchQuery = vi.fn(async (sql: string, params: unknown[]) => {
+      expect(sql).toContain("payload->>'campaign' = $6");
+      expect(sql).toContain("payload->>'prompt_version' = $7");
+      expect(sql).toContain("LIMIT $5");
+      expect(params).toEqual([
+        "legitimacy_check",
+        "worker-batch",
+        "32",
+        "stage_2",
+        8,
+        campaign,
+        promptVersion,
+      ]);
+      return { rows: [{ id: "52", status: "claimed" }] };
+    });
+    await claimTasks({
+      taskType: "legitimacy_check",
+      workerId: "worker-batch",
+      runId: "32",
+      stage: "stage_2",
+      campaign,
+      promptVersion,
+      limit: 8,
+    }, { query: batchQuery });
+  });
+
   test("claims a stage-filtered batch atomically and returns queue order", async () => {
     const query = vi.fn(async (sql: string, params: unknown[]) => {
       expect(sql).toContain("FOR UPDATE SKIP LOCKED");
@@ -169,6 +237,39 @@ describe("pipeline queue", () => {
     await expect(previewDrain({ taskType: "legitimacy_check", stage: " " }, { query }))
       .rejects.toThrow("stage must be a non-empty string");
     expect(query).toHaveBeenCalledOnce();
+  });
+
+  test("sanitizes NUL characters from JSONB stage payload and result writes", async () => {
+    const nul = String.fromCharCode(0);
+    const query = vi.fn(async (_sql: string, params: unknown[]) => ({
+      rows: [{ id: String(params[0]), stored: JSON.parse(String(params[3])) }],
+    }));
+
+    await transitionTaskStage({
+      taskId: "43",
+      workerId: "worker-stage",
+      runId: "12",
+      payload: {
+        stage: "stage_2",
+        website: { [`title${nul}part`]: `Alpha${nul}Beta`, literal: "\\u0000" },
+      },
+    }, { query });
+    await completeTask({
+      taskId: "44",
+      workerId: "worker-stage",
+      runId: "12",
+      result: { website: { text: `One${nul}Two` } },
+    }, { query });
+
+    const payloadJson = String(query.mock.calls[0]![1][3]);
+    const resultJson = String(query.mock.calls[1]![1][3]);
+    expect(JSON.parse(payloadJson)).toEqual({
+      stage: "stage_2",
+      website: { "title�part": "Alpha�Beta", literal: "\\u0000" },
+    });
+    expect(JSON.parse(resultJson)).toEqual({ website: { text: "One�Two" } });
+    expect(payloadJson).not.toContain(`${nul}`);
+    expect(resultJson).not.toContain(`${nul}`);
   });
 
   test("non-retryable failure forces a terminal state", async () => {
