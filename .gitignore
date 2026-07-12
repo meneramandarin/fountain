@@ -32,8 +32,12 @@ blob-cleanup-report*.json
 !docs/runs/enrichment-before-census.md
 !docs/runs/enrichment-post-contact-census.md
 !docs/runs/enrichment-image-classify-census.md
+!docs/runs/enrichment-menu-prices-census.md
 !docs/runs/enrichment-after-census.md
 !docs/runs/enrichment-final-report.md
+!docs/runs/image-classification-completion.md
+!docs/runs/menu-price-completion.md
+!docs/runs/reviews-fetch-completion.md
 !docs/runs/run-21.md
 
 # SQLite runtime sidecars
