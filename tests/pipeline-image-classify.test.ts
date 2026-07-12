@@ -14,7 +14,9 @@ const {
   IMAGE_CLASSIFY_JPEG_MAX_OUTPUT_BYTES,
   IMAGE_CLASSIFY_RESPONSE_FORMAT,
   IMAGE_KINDS,
+  prepareVisionImageUrl,
   transcodeAvifToJpegDataUrl,
+  transcodeProviderUnsupportedImageToJpegDataUrl,
 } = imageClassifyModule;
 
 describe("image classification task", () => {
@@ -142,6 +144,89 @@ describe("image classification task", () => {
     expect(Math.max(metadata.width || 0, metadata.height || 0))
       .toBeLessThanOrEqual(IMAGE_CLASSIFY_JPEG_MAX_EDGE);
     expect(jpeg.length).toBeLessThanOrEqual(IMAGE_CLASSIFY_JPEG_MAX_OUTPUT_BYTES);
+  });
+
+  test("downloads an opaque .img blob whose source is SVG and sends a bounded JPEG", async () => {
+    const svg = Buffer.from(`
+      <svg xmlns="http://www.w3.org/2000/svg" width="48" height="32" viewBox="0 0 48 32">
+        <rect width="48" height="32" fill="#ffffff"/>
+        <circle cx="24" cy="11" r="7" fill="#7890a0"/>
+        <path d="M8 32c2-10 10-14 16-14s14 4 16 14" fill="#456070"/>
+      </svg>
+    `);
+    const blobUrl = "https://store.public.blob.vercel-storage.com/mmt-empty-doctor-list.img";
+    const download = vi.fn(async (url: string) => {
+      expect(url).toBe(blobUrl);
+      return { ok: true, buffer: svg, contentType: "application/octet-stream" };
+    });
+    let providerImageUrl = "";
+    const complete = vi.fn(async (request: {
+      messages: Array<{ content: unknown }>;
+    }) => {
+      const content = request.messages[1].content as Array<{
+        type: string;
+        image_url?: { url: string };
+      }>;
+      providerImageUrl = content.find((part) => part.type === "image_url")?.image_url?.url || "";
+      return {
+        content: JSON.stringify({
+          image_kind: "junk",
+          confidence: 0.99,
+          rationale: "An empty-doctor placeholder illustration.",
+        }),
+        model: "openai/gpt-4o-mini",
+        externalCallId: "803",
+      };
+    });
+
+    const decision = await classifyImageWithLlm(imageRow({
+      image_url: "https://www.mymeditravel.com/images/mmt/mmt-empty-doctor-list.svg",
+      blob_url: blobUrl,
+    }), {
+      llmClient: { complete },
+      runId: "22",
+      imageClient: { download },
+    });
+
+    expect(download).toHaveBeenCalledOnce();
+    expect(decision).toMatchObject({ image_kind: "junk", external_call_id: "803" });
+    expect(providerImageUrl).toMatch(/^data:image\/jpeg;base64,/u);
+    const jpeg = Buffer.from(providerImageUrl.split(",", 2)[1], "base64");
+    const metadata = await sharp(jpeg).metadata();
+    expect(metadata.format).toBe("jpeg");
+    expect(Math.max(metadata.width || 0, metadata.height || 0))
+      .toBeLessThanOrEqual(IMAGE_CLASSIFY_JPEG_MAX_EDGE);
+    expect(jpeg.length).toBeLessThanOrEqual(IMAGE_CLASSIFY_JPEG_MAX_OUTPUT_BYTES);
+  });
+
+  test("downloads direct SVG URLs while leaving provider-supported remote URLs untouched", async () => {
+    const svg = Buffer.from(`
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20">
+        <rect width="20" height="20" fill="#345678"/>
+      </svg>
+    `);
+    const download = vi.fn(async () => ({ ok: true, buffer: svg, contentType: "image/svg+xml" }));
+    const converted = await prepareVisionImageUrl("https://clinic.example/team.svg?version=2", {
+      imageClient: { download },
+    });
+    const remote = await prepareVisionImageUrl("https://clinic.example/team.webp?version=2", {
+      imageClient: { download },
+    });
+
+    expect(converted).toMatch(/^data:image\/jpeg;base64,/u);
+    expect(remote).toBe("https://clinic.example/team.webp?version=2");
+    expect(download).toHaveBeenCalledOnce();
+  });
+
+  test("rejects external SVG resource references before Sharp rendering", async () => {
+    const svg = Buffer.from(`
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20">
+        <image href="https://private.example/image.png" width="20" height="20"/>
+      </svg>
+    `);
+    await expect(transcodeProviderUnsupportedImageToJpegDataUrl(svg, {
+      contentType: "image/svg+xml",
+    })).rejects.toThrow("SVG input contains a disallowed external resource reference");
   });
 
   test("fails before the provider call when an AVIF cannot be downloaded", async () => {
