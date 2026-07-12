@@ -9,3 +9,4 @@
 - 2026-07-12T07:22:12Z — Contact fill run 70 complete: 5,518/5,518 tasks, zero failures/retries, 1,343 locations improved and 1,569 guarded writes (113 website, 1,165 email, 252 phone, 39 address); 272 agent searches, zero Places calls, $1.5336.
 - 2026-07-12T07:23:33Z — Post-contact refresh run 73 reconciled 45 newly unlocked tasks: 38 image harvest, 7 menu extraction, zero geocode; exact candidate match and atomic insert verified.
 - 2026-07-12T07:23:58Z — Geocode run 74 closed cleanly with zero gaps, zero calls, zero spend, and zero failures.
+- 2026-07-12T07:30:01Z — Image harvest run 76 complete: 1,550/1,550 tasks, 1,113 images inserted with exact event/field-ledger reconciliation; zero failures/retries and zero metered spend.
