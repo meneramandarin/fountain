@@ -135,8 +135,75 @@ describe("pipeline OpenRouter client", () => {
     expect(query).toHaveBeenCalledTimes(1);
   });
 
-  test("keeps escalation unconfigured and rejects unpriced models before fetch", async () => {
-    expect(() => resolveModel("escalation")).toThrow(/not configured/);
+  test("fingerprints reasoning config and records reasoning tokens without double-counting cost", async () => {
+    const queryCalls: QueryCall[] = [];
+    const query = vi.fn(async (text: string, values: unknown[] = []) => {
+      queryCalls.push({ text, values });
+      return { rows: [{ id: 94 + queryCalls.length }] };
+    });
+    const fetchImpl = vi.fn<FetchImpl>(async () => jsonResponse({
+      model: "google/gemini-3.5-flash",
+      choices: [{ message: { role: "assistant", content: "classified" } }],
+      usage: {
+        prompt_tokens: 2_000,
+        completion_tokens: 400,
+        total_tokens: 2_400,
+        completion_tokens_details: { reasoning_tokens: 300 },
+      },
+    }));
+    const client = createLlmClient({ apiKey: "test-key", fetchImpl, query });
+
+    const medium = await client.complete({
+      runId: 16,
+      tier: "escalation",
+      messages: [{ role: "user", content: "Classify this organization." }],
+      reasoning: { effort: "medium", exclude: true },
+      maxAttempts: 1,
+    });
+    await client.complete({
+      runId: 16,
+      tier: "escalation",
+      messages: [{ role: "user", content: "Classify this organization." }],
+      reasoning: { effort: "low", exclude: true },
+      maxAttempts: 1,
+    });
+
+    expect(fetchImpl).toHaveBeenCalledTimes(2);
+    expect(JSON.parse(String(fetchImpl.mock.calls[0]![1]?.body))).toMatchObject({
+      model: "google/gemini-3.5-flash",
+      reasoning: { effort: "medium", exclude: true },
+    });
+    expect(medium.usage).toEqual({
+      prompt_tokens: 2_000,
+      completion_tokens: 400,
+      total_tokens: 2_400,
+      reasoning_tokens: 300,
+    });
+    expect(medium.costEstimateUsd).toBeCloseTo(0.0066, 10);
+    expect(JSON.parse(String(queryCalls[0].values[8]))).toEqual(medium.usage);
+    expect(queryCalls[0].values[5]).not.toBe(queryCalls[1].values[5]);
+  });
+
+  test("rejects a non-object reasoning configuration before fetch", async () => {
+    const fetchImpl = vi.fn();
+    const query = vi.fn();
+    const client = createLlmClient({ apiKey: "test-key", fetchImpl, query });
+
+    await expect(client.complete({
+      runId: 17,
+      messages: [{ role: "user", content: "Do not send." }],
+      reasoning: [],
+    })).rejects.toThrow(/plain JSON object/);
+    expect(fetchImpl).not.toHaveBeenCalled();
+    expect(query).not.toHaveBeenCalled();
+  });
+
+  test("prices the configured escalation tier and rejects unpriced models before fetch", async () => {
+    expect(resolveModel("escalation")).toBe("google/gemini-3.5-flash");
+    expect(estimateModelCostUsd("google/gemini-3.5-flash", {
+      prompt_tokens: 1_000,
+      completion_tokens: 500,
+    })).toBeCloseTo(0.006, 10);
     expect(estimateModelCostUsd("openai/gpt-4o-mini", {
       prompt_tokens: 1_000,
       completion_tokens: 500,

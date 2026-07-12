@@ -1,6 +1,6 @@
 # File Structure
 
-Snapshot: 2026-07-11 (post Phase 3 + Pass 1 Gate B dry run; suppression pending approval)
+Snapshot: 2026-07-11 (post Phase 3 + Pass 1 Gate B apply; Stage 3 proposal awaiting approval)
 
 This is the active repository structure after the conservative Phase 3 cleanup.
 Git records the legacy moves. The retained review assets remain active until a
@@ -149,15 +149,22 @@ manifest. archive/reports/ and archive/scripts-legacy/ each contain 41 files.
 - pipeline/lib/ledger.mjs
 - pipeline/lib/legitimacy-full.mjs
 - pipeline/lib/legitimacy-sample.mjs
+- pipeline/lib/legitimacy-stage3-proposal.mjs
+- pipeline/lib/legitimacy-stage3-execute.mjs
+- pipeline/lib/legitimacy-stage3-full.mjs
+- pipeline/lib/legitimacy-stage3-sample.mjs
+- pipeline/lib/legitimacy-suppression.mjs
 - pipeline/lib/llm.mjs
 - pipeline/lib/matcher.mjs
 - pipeline/lib/migrations.mjs
+- pipeline/lib/openrouter-web-search.mjs
 - pipeline/lib/places.mjs
 - pipeline/lib/queue.mjs
 - pipeline/lib/report.mjs
 - pipeline/lib/runs.mjs
 - pipeline/lib/structure-doc.mjs
 - pipeline/lib/web.mjs
+- pipeline/lib/website-discovery.mjs
 - pipeline/tasks/legitimacy.mjs
 - pipeline/tasks/llm_smoke.mjs
 - pipeline/tasks/noop.mjs
@@ -176,25 +183,37 @@ manifest. archive/reports/ and archive/scripts-legacy/ each contain 41 files.
 - tests/pipeline-db.test.ts
 - tests/pipeline-ledger.test.ts
 - tests/pipeline-legitimacy-sample.test.ts
+- tests/pipeline-legitimacy-stage3-proposal.test.ts
+- tests/pipeline-legitimacy-stage3-execute.test.ts
+- tests/pipeline-legitimacy-stage3-full.test.ts
+- tests/pipeline-legitimacy-stage3-sample.test.ts
+- tests/pipeline-legitimacy-suppression.test.ts
 - tests/pipeline-legitimacy-full.test.ts
 - tests/pipeline-legitimacy.test.ts
 - tests/pipeline-llm.test.ts
 - tests/pipeline-maintenance.test.ts
 - tests/pipeline-migrations.test.ts
 - tests/pipeline-places.test.ts
+- tests/pipeline-openrouter-web-search.test.ts
 - tests/pipeline-queue.test.ts
 - tests/pipeline-report.test.ts
 - tests/pipeline-runs.test.ts
 - tests/pipeline-tasks.test.ts
 - tests/pipeline-web.test.ts
+- tests/pipeline-website-discovery.test.ts
 - tests/url-sanitize.test.ts
 
 ## Run documents
 
 - docs/runs/phase3-inventory.md
+- docs/runs/pass1-gate-b-completion.md
 - docs/runs/pass1-gate-b-dry-run.md
 - docs/runs/pass1-review-queue.md
 - docs/runs/pass1-sample-review.md
+- docs/runs/pass1-stage3-proposal.md
+- docs/runs/pass1-stage3-completion.md
+- docs/runs/pass1-stage3-final-human-review.md
+- docs/runs/enrichment-run-log.md
 - docs/runs/run-4.md
 - docs/runs/run-7.md
 - docs/runs/run-21.md
