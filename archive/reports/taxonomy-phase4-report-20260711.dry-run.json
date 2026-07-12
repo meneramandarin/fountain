@@ -1,0 +1,671 @@
+{
+  "phase_date": "20260711",
+  "mode": "dry-run",
+  "backups": [],
+  "audit_tables": [],
+  "before": {
+    "treatments": 43,
+    "aliases": 3080,
+    "active_offerings": 100352,
+    "active_mapped_offerings": 21388,
+    "active_unmapped_offerings": 78964,
+    "active_mapped_pct": 21.31
+  },
+  "after": {
+    "treatments": 43,
+    "aliases": 3080,
+    "active_offerings": 100352,
+    "active_mapped_offerings": 21388,
+    "active_unmapped_offerings": 78964,
+    "active_mapped_pct": 21.31
+  },
+  "expected_treatment_count": 62,
+  "treatment_count_ok": true,
+  "inserted_treatments": [
+    {
+      "name": "Physical therapy",
+      "category": "Recovery & performance",
+      "description": "Rehabilitation and movement therapy provided to restore mobility, function, and recovery.",
+      "aliases": [
+        "Physical therapy",
+        "physical therapy",
+        "orthopedic physical therapy",
+        "pediatric physical therapy",
+        "physical therapy and rehabilitation",
+        "pelvic floor physical therapy",
+        "sports physical therapy",
+        "physical therapy clinic",
+        "outpatient physical therapy",
+        "physical therapy services",
+        "physical therapy telehealth",
+        "manual physical therapy",
+        "neurological physical therapy"
+      ]
+    },
+    {
+      "name": "Chiropractic care",
+      "category": "Lifestyle & foundational",
+      "description": "Manual spine and musculoskeletal care including chiropractic adjustments and related services.",
+      "aliases": [
+        "Chiropractic care",
+        "chiropractic care",
+        "chiropractic",
+        "chiropractic adjustments",
+        "chiropractic adjustment",
+        "chiropractic services",
+        "chiropractic care for kids",
+        "pediatric chiropractic",
+        "pediatric chiropractic care",
+        "chiropractic therapy",
+        "pregnancy chiropractic",
+        "prenatal chiropractic",
+        "chiropractic manipulation"
+      ]
+    },
+    {
+      "name": "Acupuncture",
+      "category": "Lifestyle & foundational",
+      "description": "Needle-based traditional or medical acupuncture services.",
+      "aliases": [
+        "Acupuncture",
+        "acupuncture",
+        "acupuncture clinic",
+        "acupuncture therapy",
+        "acupuncture treatment",
+        "electro acupuncture",
+        "medical acupuncture",
+        "acupuncture visit",
+        "auricular acupuncture",
+        "facial rejuvenation acupuncture",
+        "acupuncture and dry needling",
+        "acupuncture and herbal medicine",
+        "acupuncture follow up"
+      ]
+    },
+    {
+      "name": "Microneedling",
+      "category": "Aesthetic",
+      "description": "Collagen-induction skin treatment, including RF microneedling brands and devices.",
+      "aliases": [
+        "Microneedling",
+        "microneedling",
+        "rf microneedling",
+        "skinpen microneedling",
+        "micro needling",
+        "potenza rf microneedling",
+        "skinpen",
+        "skinpen microneedling skinpen",
+        "aquagold microneedling",
+        "facial microneedling",
+        "microneedling skinpen",
+        "microneedling with radio frequency",
+        "microneedling with skinpen",
+        "morpheus8",
+        "morpheus 8",
+        "morpheus8 body",
+        "morpheus8 morpheus8",
+        "morpheus8 rf microneedling",
+        "potenza",
+        "radiofrequency microneedling",
+        "secret rf microneedling secret rf",
+        "virtue rf microneedling",
+        "exion rf microneedling"
+      ]
+    },
+    {
+      "name": "Body contouring",
+      "category": "Aesthetic",
+      "description": "Non-surgical body sculpting, fat reduction, and contouring treatments.",
+      "aliases": [
+        "Body contouring",
+        "body contouring",
+        "emsculpt neo",
+        "coolsculpting",
+        "body sculpting",
+        "emsculpt",
+        "coolsculpting elite",
+        "coolsculpting coolsculpting",
+        "coolsculpting elite coolsculpting elite",
+        "cool sculpting",
+        "emsculpt neo emsculpt neo",
+        "evolve body contouring",
+        "trusculpt id"
+      ]
+    },
+    {
+      "name": "Massage therapy",
+      "category": "Recovery & performance",
+      "description": "Therapeutic, medical, sports, and recovery-focused massage services.",
+      "aliases": [
+        "Massage therapy",
+        "massage therapy",
+        "deep tissue massage",
+        "sports massage",
+        "therapeutic massage",
+        "medical massage therapy",
+        "massage therapy deep tissue",
+        "clinical massage therapy",
+        "deep tissue massage 60",
+        "deep tissue massage therapy",
+        "massage therapy prenatal",
+        "massage therapy swedish",
+        "medical and massage therapy"
+      ]
+    },
+    {
+      "name": "Laser hair removal",
+      "category": "Aesthetic",
+      "description": "Laser-based hair reduction and removal services.",
+      "aliases": [
+        "Laser hair removal",
+        "laser hair removal",
+        "laser hair removal bikini",
+        "laser hair removal brazilian",
+        "laser hair removal chin",
+        "laser hair removal full face",
+        "laser hair removal neck",
+        "laser hair removal upper lip",
+        "laser hair removal back",
+        "laser hair removal chest",
+        "laser hair removal chin plus upper lip",
+        "laser hair removal full beard",
+        "laser hair removal full legs both"
+      ]
+    },
+    {
+      "name": "Hair restoration",
+      "category": "Regenerative & cellular",
+      "description": "Hair loss, regrowth, and restoration services.",
+      "aliases": [
+        "Hair restoration",
+        "hair restoration",
+        "hair loss treatment",
+        "hair loss",
+        "hair loss therapy",
+        "hair restoration therapy",
+        "hair rejuvenation",
+        "keralase hair restoration",
+        "prf hair restoration",
+        "hair loss restoration",
+        "hair regrowth",
+        "non surgical hair restoration",
+        "post cancer hair loss treatment"
+      ]
+    },
+    {
+      "name": "Skin tightening",
+      "category": "Aesthetic",
+      "description": "Non-surgical skin tightening treatments using energy-based or related modalities.",
+      "aliases": [
+        "Skin tightening",
+        "skin tightening",
+        "ultherapy",
+        "rf skin tightening",
+        "xerf skin tightening",
+        "venus freeze skin tightening butt and thighs",
+        "venus freeze skin tightening face",
+        "venus freeze skin tightening stomach and flanks",
+        "sofwave skin tightening",
+        "thermage flx",
+        "forma skin tightening",
+        "laser skin tightening",
+        "thermage"
+      ]
+    },
+    {
+      "name": "Hydrafacial",
+      "category": "Aesthetic",
+      "description": "Hydrafacial, hydradermabrasion, and comparable branded facial treatments.",
+      "aliases": [
+        "Hydrafacial",
+        "hydrafacial",
+        "hydrafacial hydrafacial",
+        "diamondglow",
+        "hydra facial",
+        "signature hydrafacial",
+        "deluxe hydrafacial",
+        "diamondglow facial",
+        "hydrafacial md",
+        "platinum hydrafacial",
+        "deluxe hydra facial",
+        "diamondglow diamondglow",
+        "hydrafacial keravive"
+      ]
+    },
+    {
+      "name": "Ozone therapy",
+      "category": "Regenerative & cellular",
+      "description": "Ozone-based medical or wellness therapies including EBOO and related protocols.",
+      "aliases": [
+        "Ozone therapy",
+        "ozone therapy",
+        "eboo therapy",
+        "ebo2 therapy",
+        "eboo",
+        "ebo2",
+        "eboo f apheresis",
+        "eboo ozone therapy",
+        "major autohemotherapy",
+        "oxygen ozone therapy",
+        "ozone and eboo",
+        "ozone therapy for fatigue and inflammation",
+        "10 pass ozone clinical ozone therapy md only"
+      ]
+    },
+    {
+      "name": "Laser skin resurfacing",
+      "category": "Aesthetic",
+      "description": "Laser resurfacing and fractional laser skin treatments.",
+      "aliases": [
+        "Laser skin resurfacing",
+        "laser skin resurfacing",
+        "laser resurfacing",
+        "co2 laser",
+        "halo laser",
+        "co2 fractional laser",
+        "co2 laser resurfacing",
+        "fraxel",
+        "fraxel laser",
+        "halo laser treatment",
+        "co2 laser skin resurfacing",
+        "fractional co2 laser",
+        "fraxel dual"
+      ]
+    },
+    {
+      "name": "Lymphatic drainage",
+      "category": "Recovery & performance",
+      "description": "Manual or device-assisted lymphatic drainage and lymphatic massage.",
+      "aliases": [
+        "Lymphatic drainage",
+        "lymphatic drainage massage",
+        "lymphatic drainage",
+        "lymphatic massage",
+        "manual lymphatic drainage",
+        "lymphatic drainage therapy",
+        "full body lymphatic drainage",
+        "lift plus sculpt lymphatic drainage facial",
+        "manual lymphatic drainage mld",
+        "post op lymphatic drainage",
+        "ballancerpro lymphatic drainage",
+        "ballancerpro lymphatic drainage massage healing services",
+        "body ballancer lymphatic drainage body ballancer"
+      ]
+    },
+    {
+      "name": "Chemical peel",
+      "category": "Aesthetic",
+      "description": "Chemical peel treatments including branded and customized peel protocols.",
+      "aliases": [
+        "Chemical peel",
+        "chemical peel",
+        "vi peel",
+        "vi peel vi peel",
+        "perfect derma peel",
+        "customized chemical peel",
+        "tca peel",
+        "the perfect derma peel",
+        "aura 365 chemical peel",
+        "back facial with chemical peel 45 plus min 2 options",
+        "biorepeel chemical peel",
+        "biorepeel italian made 30 tca peel",
+        "chemical peel add on"
+      ]
+    },
+    {
+      "name": "Colon hydrotherapy",
+      "category": "Lifestyle & foundational",
+      "description": "Colonic and colon hydrotherapy services.",
+      "aliases": [
+        "Colon hydrotherapy",
+        "colon hydrotherapy",
+        "3 pack colonics",
+        "colon hydrotherapy 1 colonic session",
+        "colon hydrotherapy first session includes half hour consultation",
+        "colon hydrotherapy follow up",
+        "colon hydrotherapy of",
+        "colon hydrotherapy series of 10",
+        "colon hydrotherapy series of 15",
+        "colon hydrotherapy series of 3",
+        "colon hydrotherapy series of 5",
+        "colon hydrotherapy visit",
+        "colonic"
+      ]
+    },
+    {
+      "name": "Laser tattoo removal",
+      "category": "Aesthetic",
+      "description": "Laser tattoo and pigment-removal services.",
+      "aliases": [
+        "Laser tattoo removal",
+        "laser tattoo removal",
+        "laser tattoo removal and dark pigment correction",
+        "no ragrets laser tattoo removal",
+        "picosure laser tattoo removal"
+      ]
+    },
+    {
+      "name": "Testosterone replacement therapy (TRT)",
+      "category": "Hormone & metabolic",
+      "description": "Testosterone-specific hormone replacement and optimization therapy.",
+      "aliases": [
+        "Testosterone replacement therapy (TRT)",
+        "trt",
+        "testosterone therapy",
+        "testosterone replacement therapy",
+        "testosterone replacement therapy trt",
+        "testosterone replacement",
+        "testosterone optimization",
+        "testosterone treatment",
+        "testosterone injections",
+        "testosterone pellets",
+        "low t therapy",
+        "low t",
+        "male hormone therapy"
+      ]
+    },
+    {
+      "name": "Menopause hormone therapy (HRT)",
+      "category": "Hormone & metabolic",
+      "description": "Hormone therapy for menopause, perimenopause, and female hormone replacement.",
+      "aliases": [
+        "Menopause hormone therapy (HRT)",
+        "hrt",
+        "menopause hormone therapy",
+        "hormone therapy for women",
+        "female hormone replacement",
+        "female hormone replacement therapy",
+        "perimenopause treatment",
+        "menopause treatment",
+        "menopause therapy",
+        "women's hormone therapy",
+        "womens hormone therapy"
+      ]
+    },
+    {
+      "name": "Medical weight loss",
+      "category": "Hormone & metabolic",
+      "description": "Clinician-guided weight loss and weight management programs not limited to GLP-1 drugs.",
+      "aliases": [
+        "Medical weight loss",
+        "medical weight loss",
+        "weight loss program",
+        "weight loss management",
+        "weight management",
+        "medically supervised weight loss",
+        "weight loss consultation",
+        "medical weight loss program",
+        "medical weight loss programs",
+        "weight loss therapy",
+        "supervised medical weight loss",
+        "medical weight loss injections"
+      ]
+    }
+  ],
+  "inserted_aliases": 0,
+  "remapped_aliases": 0,
+  "offering_rows_changed": 7738,
+  "new_treatments": [
+    {
+      "id": 44,
+      "canonical_name": "Physical therapy",
+      "category": "Recovery & performance",
+      "alias_count": 12,
+      "offering_rows_changed": 1087,
+      "distinct_locations_changed": 684
+    },
+    {
+      "id": 45,
+      "canonical_name": "Chiropractic care",
+      "category": "Lifestyle & foundational",
+      "alias_count": 12,
+      "offering_rows_changed": 753,
+      "distinct_locations_changed": 442
+    },
+    {
+      "id": 46,
+      "canonical_name": "Acupuncture",
+      "category": "Lifestyle & foundational",
+      "alias_count": 11,
+      "offering_rows_changed": 531,
+      "distinct_locations_changed": 319
+    },
+    {
+      "id": 47,
+      "canonical_name": "Microneedling",
+      "category": "Aesthetic",
+      "alias_count": 22,
+      "offering_rows_changed": 724,
+      "distinct_locations_changed": 449
+    },
+    {
+      "id": 48,
+      "canonical_name": "Body contouring",
+      "category": "Aesthetic",
+      "alias_count": 12,
+      "offering_rows_changed": 435,
+      "distinct_locations_changed": 303
+    },
+    {
+      "id": 49,
+      "canonical_name": "Massage therapy",
+      "category": "Recovery & performance",
+      "alias_count": 12,
+      "offering_rows_changed": 399,
+      "distinct_locations_changed": 292
+    },
+    {
+      "id": 50,
+      "canonical_name": "Laser hair removal",
+      "category": "Aesthetic",
+      "alias_count": 12,
+      "offering_rows_changed": 359,
+      "distinct_locations_changed": 241
+    },
+    {
+      "id": 51,
+      "canonical_name": "Hair restoration",
+      "category": "Regenerative & cellular",
+      "alias_count": 12,
+      "offering_rows_changed": 501,
+      "distinct_locations_changed": 388
+    },
+    {
+      "id": 52,
+      "canonical_name": "Skin tightening",
+      "category": "Aesthetic",
+      "alias_count": 12,
+      "offering_rows_changed": 248,
+      "distinct_locations_changed": 161
+    },
+    {
+      "id": 53,
+      "canonical_name": "Hydrafacial",
+      "category": "Aesthetic",
+      "alias_count": 12,
+      "offering_rows_changed": 203,
+      "distinct_locations_changed": 153
+    },
+    {
+      "id": 54,
+      "canonical_name": "Ozone therapy",
+      "category": "Regenerative & cellular",
+      "alias_count": 12,
+      "offering_rows_changed": 182,
+      "distinct_locations_changed": 143
+    },
+    {
+      "id": 55,
+      "canonical_name": "Laser skin resurfacing",
+      "category": "Aesthetic",
+      "alias_count": 12,
+      "offering_rows_changed": 140,
+      "distinct_locations_changed": 110
+    },
+    {
+      "id": 56,
+      "canonical_name": "Lymphatic drainage",
+      "category": "Recovery & performance",
+      "alias_count": 12,
+      "offering_rows_changed": 137,
+      "distinct_locations_changed": 103
+    },
+    {
+      "id": 57,
+      "canonical_name": "Chemical peel",
+      "category": "Aesthetic",
+      "alias_count": 12,
+      "offering_rows_changed": 114,
+      "distinct_locations_changed": 87
+    },
+    {
+      "id": 58,
+      "canonical_name": "Colon hydrotherapy",
+      "category": "Lifestyle & foundational",
+      "alias_count": 11,
+      "offering_rows_changed": 49,
+      "distinct_locations_changed": 23
+    },
+    {
+      "id": 59,
+      "canonical_name": "Laser tattoo removal",
+      "category": "Aesthetic",
+      "alias_count": 4,
+      "offering_rows_changed": 29,
+      "distinct_locations_changed": 29
+    },
+    {
+      "id": 60,
+      "canonical_name": "Testosterone replacement therapy (TRT)",
+      "category": "Hormone & metabolic",
+      "alias_count": 12,
+      "offering_rows_changed": 317,
+      "distinct_locations_changed": 250
+    },
+    {
+      "id": 61,
+      "canonical_name": "Menopause hormone therapy (HRT)",
+      "category": "Hormone & metabolic",
+      "alias_count": 11,
+      "offering_rows_changed": 184,
+      "distinct_locations_changed": 144
+    },
+    {
+      "id": 62,
+      "canonical_name": "Medical weight loss",
+      "category": "Hormone & metabolic",
+      "alias_count": 18,
+      "offering_rows_changed": 1046,
+      "distinct_locations_changed": 858
+    }
+  ],
+  "hormone_split": [
+    {
+      "target": "Testosterone replacement therapy (TRT)",
+      "rows_moved_from_hormone_optimization": 276,
+      "total_rows_changed_to_target": 317
+    },
+    {
+      "target": "Menopause hormone therapy (HRT)",
+      "rows_moved_from_hormone_optimization": 97,
+      "total_rows_changed_to_target": 184
+    },
+    {
+      "target": "Medical weight loss",
+      "rows_moved_from_glp1_weight_management": 55,
+      "total_rows_changed_to_target": 1046
+    }
+  ],
+  "decisions": [
+    {
+      "reason": "phase4_new_treatment_alias",
+      "rows": 3925
+    },
+    {
+      "reason": "proposal_family_rule",
+      "rows": 2500
+    },
+    {
+      "reason": "medical_weight_loss_rule",
+      "rows": 704
+    },
+    {
+      "reason": "trt_rule",
+      "rows": 163
+    },
+    {
+      "reason": "approved_lab_testing_family",
+      "rows": 149
+    },
+    {
+      "reason": "hrt_rule",
+      "rows": 127
+    },
+    {
+      "reason": "redirect_ambiguous_injectables",
+      "rows": 49
+    },
+    {
+      "reason": "approved_facial_rejuvenation_family",
+      "rows": 32
+    },
+    {
+      "reason": "approved_biomarker_family",
+      "rows": 25
+    },
+    {
+      "reason": "approved_redirect_weight_loss",
+      "rows": 19
+    },
+    {
+      "reason": "hormone_generic_kept",
+      "rows": 14
+    },
+    {
+      "reason": "approved_infusion_services",
+      "rows": 12
+    },
+    {
+      "reason": "approved_metabolic_testing_family",
+      "rows": 8
+    },
+    {
+      "reason": "approved_wellness_exam_family",
+      "rows": 4
+    },
+    {
+      "reason": "glp1_drug_explicit_rule",
+      "rows": 4
+    },
+    {
+      "reason": "redirect_vitamin_injectables",
+      "rows": 3
+    }
+  ],
+  "rejected_terms": [
+    {
+      "normalized": "sports injury rehabilitation",
+      "reason": "rejected_hbot_mapping"
+    },
+    {
+      "normalized": "cardiac rehabilitation",
+      "reason": "rejected_cardiac_screening_mapping"
+    },
+    {
+      "normalized": "supportive injectables",
+      "reason": "rejected_ambiguous_injectables"
+    },
+    {
+      "normalized": "medical abortion non per televisit medications labs imaging additional",
+      "reason": "out_of_scope_medical_abortion"
+    }
+  ],
+  "search_index": {
+    "affected_locations": 2801,
+    "locations_refreshed": 0
+  },
+  "sitemap": {
+    "treatment_feed": false,
+    "note": "src/app/sitemap.ts does not enumerate treatments; no sitemap regeneration needed."
+  }
+}

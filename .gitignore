@@ -12,9 +12,13 @@ out/
 .env*.local
 *.tsbuildinfo
 blob-cleanup-report*.json
+*-report-*.json
+*-checkpoint-*.json
+*.dry-run.*
 
 # Local task prompts and generated reports
 *.md
+!docs/runs/phase3-inventory.md
 
 # SQLite runtime sidecars
 *.sqlite-wal
@@ -22,6 +26,17 @@ blob-cleanup-report*.json
 *.db-wal
 *.db-shm
 
-archive/*
+# Commit archive metadata and convenience copies. Keep only database dump
+# payloads local; each dump directory's MANIFEST.md remains versioned.
+archive/db-dumps/**
+!archive/db-dumps/
+!archive/db-dumps/**/
+!archive/db-dumps/**/MANIFEST.md
 !archive/.gitignore
 !archive/README.md
+!archive/scripts-legacy/
+!archive/scripts-legacy/**
+!archive/reports/
+!archive/reports/**
+!archive/swarm-browser-output/
+!archive/swarm-browser-output/**

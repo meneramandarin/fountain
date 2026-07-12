@@ -1,0 +1,394 @@
+{
+  "bucketCounts": [
+    {
+      "bucket": "cross_listing_duplicate",
+      "entity_type": "organization",
+      "rows": 11076,
+      "entities": 4706
+    },
+    {
+      "bucket": "cross_listing_duplicate",
+      "entity_type": "location",
+      "rows": 248,
+      "entities": 38
+    },
+    {
+      "bucket": "junk_pattern",
+      "entity_type": "organization",
+      "rows": 155,
+      "entities": 55
+    },
+    {
+      "bucket": "junk_pattern",
+      "entity_type": "location",
+      "rows": 3,
+      "entities": 3
+    },
+    {
+      "bucket": "no_entity",
+      "entity_type": "none",
+      "rows": 5723,
+      "entities": 0
+    },
+    {
+      "bucket": "promotable",
+      "entity_type": "organization",
+      "rows": 4457,
+      "entities": 398
+    },
+    {
+      "bucket": "promotable",
+      "entity_type": "location",
+      "rows": 1628,
+      "entities": 164
+    }
+  ],
+  "outcomes": [
+    {
+      "outcome": "capped",
+      "reason": "entity already has 11 active images",
+      "rows": 1896,
+      "bytes": "0"
+    },
+    {
+      "outcome": "capped",
+      "reason": "entity already has 13 active images",
+      "rows": 521,
+      "bytes": "0"
+    },
+    {
+      "outcome": "capped",
+      "reason": "entity already has 52 active images",
+      "rows": 252,
+      "bytes": "0"
+    },
+    {
+      "outcome": "capped",
+      "reason": "entity already has 12 active images",
+      "rows": 105,
+      "bytes": "0"
+    },
+    {
+      "outcome": "capped",
+      "reason": "entity already has 8 active images",
+      "rows": 97,
+      "bytes": "0"
+    },
+    {
+      "outcome": "capped",
+      "reason": "entity already has 20 active images",
+      "rows": 97,
+      "bytes": "0"
+    },
+    {
+      "outcome": "capped",
+      "reason": "entity already has 138 active images",
+      "rows": 95,
+      "bytes": "0"
+    },
+    {
+      "outcome": "capped",
+      "reason": "entity already has 10 active images",
+      "rows": 94,
+      "bytes": "0"
+    },
+    {
+      "outcome": "capped",
+      "reason": "entity already has 28 active images",
+      "rows": 92,
+      "bytes": "0"
+    },
+    {
+      "outcome": "capped",
+      "reason": "entity already has 88 active images",
+      "rows": 72,
+      "bytes": "0"
+    },
+    {
+      "outcome": "capped",
+      "reason": "entity already has 48 active images",
+      "rows": 72,
+      "bytes": "0"
+    },
+    {
+      "outcome": "capped",
+      "reason": "entity already has 92 active images",
+      "rows": 68,
+      "bytes": "0"
+    },
+    {
+      "outcome": "capped",
+      "reason": "entity already has 9 active images",
+      "rows": 42,
+      "bytes": "0"
+    },
+    {
+      "outcome": "capped",
+      "reason": "entity already has 22 active images",
+      "rows": 34,
+      "bytes": "0"
+    },
+    {
+      "outcome": "capped",
+      "reason": "entity already has 31 active images",
+      "rows": 30,
+      "bytes": "0"
+    },
+    {
+      "outcome": "capped",
+      "reason": "entity already has 14 active images",
+      "rows": 29,
+      "bytes": "0"
+    },
+    {
+      "outcome": "capped",
+      "reason": "entity already has 44 active images",
+      "rows": 28,
+      "bytes": "0"
+    },
+    {
+      "outcome": "capped",
+      "reason": "entity already has 23 active images",
+      "rows": 23,
+      "bytes": "0"
+    },
+    {
+      "outcome": "capped",
+      "reason": "entity already has 19 active images",
+      "rows": 19,
+      "bytes": "0"
+    },
+    {
+      "outcome": "capped",
+      "reason": "entity already has 26 active images",
+      "rows": 18,
+      "bytes": "0"
+    },
+    {
+      "outcome": "capped",
+      "reason": "entity already has 16 active images",
+      "rows": 16,
+      "bytes": "0"
+    },
+    {
+      "outcome": "capped",
+      "reason": "entity already has 15 active images",
+      "rows": 13,
+      "bytes": "0"
+    },
+    {
+      "outcome": "capped",
+      "reason": "entity already has 18 active images",
+      "rows": 11,
+      "bytes": "0"
+    },
+    {
+      "outcome": "capped",
+      "reason": "entity already has 24 active images",
+      "rows": 10,
+      "bytes": "0"
+    },
+    {
+      "outcome": "capped",
+      "reason": "entity already has 25 active images",
+      "rows": 8,
+      "bytes": "0"
+    },
+    {
+      "outcome": "capped",
+      "reason": "entity already has 17 active images",
+      "rows": 6,
+      "bytes": "0"
+    },
+    {
+      "outcome": "capped",
+      "reason": "entity already has 21 active images",
+      "rows": 5,
+      "bytes": "0"
+    },
+    {
+      "outcome": "capped",
+      "reason": "entity already has 72 active images",
+      "rows": 4,
+      "bytes": "0"
+    },
+    {
+      "outcome": "capped",
+      "reason": "entity already has 36 active images",
+      "rows": 4,
+      "bytes": "0"
+    },
+    {
+      "outcome": "capped",
+      "reason": "entity already has 37 active images",
+      "rows": 4,
+      "bytes": "0"
+    },
+    {
+      "outcome": "capped",
+      "reason": "entity already has 32 active images",
+      "rows": 2,
+      "bytes": "0"
+    },
+    {
+      "outcome": "dead_link",
+      "reason": "http_428",
+      "rows": 276,
+      "bytes": "0"
+    },
+    {
+      "outcome": "dead_link",
+      "reason": "http_403",
+      "rows": 44,
+      "bytes": "0"
+    },
+    {
+      "outcome": "dead_link",
+      "reason": "http_429",
+      "rows": 12,
+      "bytes": "0"
+    },
+    {
+      "outcome": "dead_link",
+      "reason": "http_404",
+      "rows": 5,
+      "bytes": "0"
+    },
+    {
+      "outcome": "duplicate_content",
+      "reason": "content_sha256 already exists on same entity",
+      "rows": 354,
+      "bytes": "10488970"
+    },
+    {
+      "outcome": "failed_validation",
+      "reason": "too_small_bytes",
+      "rows": 190,
+      "bytes": "1342714"
+    },
+    {
+      "outcome": "failed_validation",
+      "reason": "too_small_dimensions",
+      "rows": 47,
+      "bytes": "1067737"
+    },
+    {
+      "outcome": "failed_validation",
+      "reason": "too_large_bytes",
+      "rows": 3,
+      "bytes": "70996330"
+    },
+    {
+      "outcome": "promoted",
+      "reason": "",
+      "rows": 1133,
+      "bytes": "103695107"
+    },
+    {
+      "outcome": "promoted",
+      "reason": "shared_content",
+      "rows": 254,
+      "bytes": "37766757"
+    }
+  ],
+  "totals": {
+    "processed": 6085,
+    "promoted": 1387,
+    "shared_content": 254,
+    "dead_link": 337,
+    "duplicate_content": 354,
+    "capped": 3767,
+    "failed_validation": 240,
+    "bytes_uploaded": "141461864"
+  },
+  "baseline": {
+    "active_images": 27415,
+    "locations_with_active_image": 8807,
+    "locations_with_zero_images": 4297
+  },
+  "after": {
+    "active_images": 28803,
+    "locations_with_active_image": 8839,
+    "locations_with_zero_images": 4265
+  },
+  "zeroPromoted": {
+    "zero_image_locations_promoted": 32
+  },
+  "insertedByType": [
+    {
+      "entity_type": "organization",
+      "promoted": 1046
+    },
+    {
+      "entity_type": "location",
+      "promoted": 341
+    }
+  ],
+  "spotChecks": [
+    {
+      "location_id": 1732,
+      "name": "Memorial Antalya Hospital",
+      "url": "/directory/locations/memorial-antalya-hospital",
+      "blob_url": "https://4tz9nkaz3fd0fh3k.public.blob.vercel-storage.com/listing-images/location/1732/745eaface7849ac7a467.webp"
+    },
+    {
+      "location_id": 1735,
+      "name": "Wiener Privatklinik",
+      "url": "/directory/locations/wiener-privatklinik-vienna",
+      "blob_url": "https://4tz9nkaz3fd0fh3k.public.blob.vercel-storage.com/listing-images/location/1735/7a87c76f266a430d412f.webp"
+    },
+    {
+      "location_id": 1736,
+      "name": "Memorial Ataşehir Hospital",
+      "url": "/directory/locations/memorial-ata-ehir-hospital-istanbul",
+      "blob_url": "https://4tz9nkaz3fd0fh3k.public.blob.vercel-storage.com/listing-images/location/1736/93390903cfa1c19e385f.webp"
+    },
+    {
+      "location_id": 1744,
+      "name": "Memorial Ankara Hospital",
+      "url": "/directory/locations/memorial-ankara-hospital",
+      "blob_url": "https://4tz9nkaz3fd0fh3k.public.blob.vercel-storage.com/listing-images/location/1744/ab5dcca14c6ada8409dc.webp"
+    },
+    {
+      "location_id": 1784,
+      "name": "Liv Hospital Ulus",
+      "url": "/directory/locations/liv-hospital-ulus-istanbul",
+      "blob_url": "https://4tz9nkaz3fd0fh3k.public.blob.vercel-storage.com/listing-images/location/1784/bf20207185c03b59139f.webp"
+    },
+    {
+      "location_id": 1809,
+      "name": "Hospital Havelhoehe",
+      "url": "/directory/locations/hospital-havelhoehe-berlin",
+      "blob_url": "https://4tz9nkaz3fd0fh3k.public.blob.vercel-storage.com/listing-images/location/1809/2a833d4785fd23d2c171.webp"
+    },
+    {
+      "location_id": 1810,
+      "name": "Kerckhoff clinic",
+      "url": "/directory/locations/kerckhoff-clinic-bad-nauheim",
+      "blob_url": "https://4tz9nkaz3fd0fh3k.public.blob.vercel-storage.com/listing-images/location/1810/58d2ba85ef86b10ce3bc.webp"
+    },
+    {
+      "location_id": 1811,
+      "name": "Medical Center Rechts der Isar",
+      "url": "/directory/locations/medical-center-rechts-der-isar-munich",
+      "blob_url": "https://4tz9nkaz3fd0fh3k.public.blob.vercel-storage.com/listing-images/location/1811/0aad096a57e093b4cfc1.webp"
+    },
+    {
+      "location_id": 1812,
+      "name": "Hospital Matopat",
+      "url": "/directory/locations/hospital-matopat-torun",
+      "blob_url": "https://4tz9nkaz3fd0fh3k.public.blob.vercel-storage.com/listing-images/location/1812/e57ca189683c5d95c0f8.webp"
+    },
+    {
+      "location_id": 1813,
+      "name": "Wockhardt Hospital",
+      "url": "/directory/locations/wockhardt-hospital-mumbai",
+      "blob_url": "https://4tz9nkaz3fd0fh3k.public.blob.vercel-storage.com/listing-images/location/1813/a5bddf12b66eaeb7fe99.webp"
+    }
+  ],
+  "orphanDb": {
+    "promoted_result_blob_urls_missing_image_row": 0
+  },
+  "mb_uploaded": 134.91,
+  "estimated_monthly_storage_cost_delta_usd": 0.0198
+}

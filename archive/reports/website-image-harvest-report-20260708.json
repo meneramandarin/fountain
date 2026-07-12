@@ -1,0 +1,301 @@
+{
+  "phaseDate": "20260708",
+  "candidateTable": "fountain_raw.website_image_harvest_candidates_20260708",
+  "resultTable": "fountain_raw.website_image_harvest_results_20260708",
+  "coverageBefore": {
+    "zero_image_locations": 4263,
+    "locations_with_images": 8833,
+    "active_images": 28803
+  },
+  "coverageAfter": {
+    "zero_image_locations": 3212,
+    "locations_with_images": 9884,
+    "active_images": 29854
+  },
+  "noUsableWebsiteCount": 115,
+  "outcomes": [
+    {
+      "outcome": "bot_blocked",
+      "reason": "challenge_or_bot_block_page",
+      "rows": 1350
+    },
+    {
+      "outcome": "bot_blocked",
+      "reason": "http_403",
+      "rows": 24
+    },
+    {
+      "outcome": "failed_validation",
+      "reason": "too_small_bytes",
+      "rows": 114
+    },
+    {
+      "outcome": "failed_validation",
+      "reason": "too_small_dimensions",
+      "rows": 42
+    },
+    {
+      "outcome": "failed_validation",
+      "reason": "logo_like_aspect_ratio",
+      "rows": 14
+    },
+    {
+      "outcome": "failed_validation",
+      "reason": "unsupported_content_type",
+      "rows": 10
+    },
+    {
+      "outcome": "fetch_failed",
+      "reason": "fetch failed",
+      "rows": 36
+    },
+    {
+      "outcome": "fetch_failed",
+      "reason": "http_404",
+      "rows": 31
+    },
+    {
+      "outcome": "fetch_failed",
+      "reason": "timeout",
+      "rows": 9
+    },
+    {
+      "outcome": "fetch_failed",
+      "reason": "http_429",
+      "rows": 3
+    },
+    {
+      "outcome": "fetch_failed",
+      "reason": "http_500",
+      "rows": 2
+    },
+    {
+      "outcome": "fetch_failed",
+      "reason": "http_526",
+      "rows": 1
+    },
+    {
+      "outcome": "fetch_failed",
+      "reason": "http_403",
+      "rows": 1
+    },
+    {
+      "outcome": "fetch_failed",
+      "reason": "http_402",
+      "rows": 1
+    },
+    {
+      "outcome": "harvested",
+      "reason": "",
+      "rows": 412
+    },
+    {
+      "outcome": "harvested",
+      "reason": "shared_content",
+      "rows": 140
+    },
+    {
+      "outcome": "no_candidate_found",
+      "reason": "no acceptable meta/jsonld/img candidate",
+      "rows": 84
+    },
+    {
+      "outcome": "robots_disallowed",
+      "reason": "homepage_disallowed_by_robots",
+      "rows": 9
+    }
+  ],
+  "failedValidation": [
+    {
+      "reason": "too_small_bytes",
+      "rows": 114
+    },
+    {
+      "reason": "too_small_dimensions",
+      "rows": 42
+    },
+    {
+      "reason": "logo_like_aspect_ratio",
+      "rows": 14
+    },
+    {
+      "reason": "unsupported_content_type",
+      "rows": 10
+    }
+  ],
+  "bytesUploaded": 152695990,
+  "estimatedMonthlyStorageCostDeltaUsd": 0.0213,
+  "spotChecks": [
+    {
+      "location_id": 3755,
+      "name": "Aspire Rejuvenation Clinic – Plano",
+      "country_code": "AE",
+      "locality": "Dubai",
+      "url": "/directory/locations/aspire-rejuvenation-clinic-plano-dubai",
+      "blob_url": "https://4tz9nkaz3fd0fh3k.public.blob.vercel-storage.com/listing-images/website-harvest/location/3755/d96264eda71b336333ec.jpg"
+    },
+    {
+      "location_id": 2133,
+      "name": "I-MED Radiology Darwin Private Hospital",
+      "country_code": "AU",
+      "locality": "Tiwi",
+      "url": "/directory/locations/i-med-radiology-darwin-private-hospital-tiwi",
+      "blob_url": "https://4tz9nkaz3fd0fh3k.public.blob.vercel-storage.com/listing-images/website-harvest/location/2133/b6099b758531b81d80df.jpg"
+    },
+    {
+      "location_id": 2141,
+      "name": "Atlas Medical Imaging",
+      "country_code": "AU",
+      "locality": "Deakin",
+      "url": "/directory/locations/atlas-medical-imaging-deakin",
+      "blob_url": "https://4tz9nkaz3fd0fh3k.public.blob.vercel-storage.com/listing-images/website-harvest/location/2141/f44d8420f046e1178a37.png"
+    },
+    {
+      "location_id": 2142,
+      "name": "I-MED Radiology Thuringowa",
+      "country_code": "AU",
+      "locality": "Thuringowa",
+      "url": "/directory/locations/i-med-radiology-thuringowa",
+      "blob_url": "https://4tz9nkaz3fd0fh3k.public.blob.vercel-storage.com/listing-images/website-harvest/location/2142/b6099b758531b81d80df.jpg"
+    },
+    {
+      "location_id": 2148,
+      "name": "I-MED Radiology Cairns",
+      "country_code": "AU",
+      "locality": "Cairns",
+      "url": "/directory/locations/i-med-radiology-cairns",
+      "blob_url": "https://4tz9nkaz3fd0fh3k.public.blob.vercel-storage.com/listing-images/website-harvest/location/2148/b6099b758531b81d80df.jpg"
+    },
+    {
+      "location_id": 2244,
+      "name": "Wesley Hyperbaric",
+      "country_code": "AU",
+      "locality": "Auchenflower",
+      "url": "/directory/locations/wesley-hyperbaric-auchenflower",
+      "blob_url": "https://4tz9nkaz3fd0fh3k.public.blob.vercel-storage.com/listing-images/website-harvest/location/2244/af7db45cf57c1ec8b793.jpg"
+    },
+    {
+      "location_id": 3234,
+      "name": "Element Health Centres",
+      "country_code": "AU",
+      "locality": "Duncraig",
+      "url": "/directory/locations/element-health-centres-duncraig",
+      "blob_url": "https://4tz9nkaz3fd0fh3k.public.blob.vercel-storage.com/listing-images/website-harvest/location/3234/ca6c570706985aa14a05.png"
+    },
+    {
+      "location_id": 5634,
+      "name": "Radiology SA",
+      "country_code": "AU",
+      "locality": "Kent Town",
+      "url": "/directory/locations/radiology-sa-kent-town-2",
+      "blob_url": "https://4tz9nkaz3fd0fh3k.public.blob.vercel-storage.com/listing-images/website-harvest/location/5634/4d851c113f45a773c3a4.jpg"
+    },
+    {
+      "location_id": 5635,
+      "name": "Radiology SA",
+      "country_code": "AU",
+      "locality": "Bedford Park",
+      "url": "/directory/locations/radiology-sa-bedford-park",
+      "blob_url": "https://4tz9nkaz3fd0fh3k.public.blob.vercel-storage.com/listing-images/website-harvest/location/5635/4d851c113f45a773c3a4.jpg"
+    },
+    {
+      "location_id": 5636,
+      "name": "Radiology SA",
+      "country_code": "AU",
+      "locality": "Cairns",
+      "url": "/directory/locations/radiology-sa-cairns",
+      "blob_url": "https://4tz9nkaz3fd0fh3k.public.blob.vercel-storage.com/listing-images/website-harvest/location/5636/4d851c113f45a773c3a4.jpg"
+    },
+    {
+      "location_id": 5637,
+      "name": "Radiology SA",
+      "country_code": "AU",
+      "locality": "Campbelltown",
+      "url": "/directory/locations/radiology-sa-campbelltown",
+      "blob_url": "https://4tz9nkaz3fd0fh3k.public.blob.vercel-storage.com/listing-images/website-harvest/location/5637/4d851c113f45a773c3a4.jpg"
+    },
+    {
+      "location_id": 5638,
+      "name": "Radiology SA",
+      "country_code": "AU",
+      "locality": "Darwin",
+      "url": "/directory/locations/radiology-sa-darwin",
+      "blob_url": "https://4tz9nkaz3fd0fh3k.public.blob.vercel-storage.com/listing-images/website-harvest/location/5638/4d851c113f45a773c3a4.jpg"
+    },
+    {
+      "location_id": 5639,
+      "name": "Radiology SA",
+      "country_code": "AU",
+      "locality": "Dulwich",
+      "url": "/directory/locations/radiology-sa-dulwich",
+      "blob_url": "https://4tz9nkaz3fd0fh3k.public.blob.vercel-storage.com/listing-images/website-harvest/location/5639/4d851c113f45a773c3a4.jpg"
+    },
+    {
+      "location_id": 5640,
+      "name": "Radiology SA",
+      "country_code": "AU",
+      "locality": "Elizabeth Vale",
+      "url": "/directory/locations/radiology-sa-elizabeth-vale",
+      "blob_url": "https://4tz9nkaz3fd0fh3k.public.blob.vercel-storage.com/listing-images/website-harvest/location/5640/4d851c113f45a773c3a4.jpg"
+    },
+    {
+      "location_id": 5641,
+      "name": "Radiology SA",
+      "country_code": "AU",
+      "locality": "North Adelaide",
+      "url": "/directory/locations/radiology-sa-north-adelaide",
+      "blob_url": "https://4tz9nkaz3fd0fh3k.public.blob.vercel-storage.com/listing-images/website-harvest/location/5641/4d851c113f45a773c3a4.jpg"
+    }
+  ],
+  "extraMetrics": {
+    "harvestedSites": 552,
+    "sourceBreakdown": [
+      {
+        "rows": 284,
+        "selected_source": "meta",
+        "promoted_locations": 532
+      },
+      {
+        "rows": 250,
+        "selected_source": "img",
+        "promoted_locations": 488
+      },
+      {
+        "rows": 18,
+        "selected_source": "jsonld",
+        "promoted_locations": 31
+      }
+    ],
+    "actualHarvestRows": 1051,
+    "candidateBreakdown": [
+      {
+        "rows": 4148,
+        "reason": "",
+        "candidate_status": "candidate"
+      },
+      {
+        "rows": 81,
+        "reason": "missing_or_invalid_website",
+        "candidate_status": "no_usable_website"
+      },
+      {
+        "rows": 34,
+        "reason": "profile_marketplace_or_junk_domain",
+        "candidate_status": "no_usable_website"
+      }
+    ],
+    "sharedContentSites": 140,
+    "sharedContentLocations": 639,
+    "actualHarvestDistinctBlobUrls": 1051
+  },
+  "finalInvariants": {
+    "blobStoreCount": 18604,
+    "blobStoreBytes": 1684276057,
+    "referencedBlobUrls": 18604,
+    "everyImageRowHasLiveBlob": true,
+    "everyBlobHasImageRow": true,
+    "imageRowsPointingAtMissingBlobCount": 0,
+    "orphanBlobCount": 0,
+    "orphanBlobBytes": 0
+  }
+}

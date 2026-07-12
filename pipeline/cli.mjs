@@ -1,13 +1,13 @@
 #!/usr/bin/env node
 
-import { spawn } from "node:child_process";
-import { existsSync, readFileSync } from "node:fs";
 import path from "node:path";
 import process from "node:process";
 import { fileURLToPath, pathToFileURL } from "node:url";
 
 import { getTaskDefinition } from "./config/tasks.mjs";
+import { inspectCityIndex, refreshCityIndex } from "./lib/city-index.mjs";
 import { closePool, withTransaction } from "./lib/db.mjs";
+import { executeMigrationSql, loadMigrationFile } from "./lib/migrations.mjs";
 import {
   claimTask,
   completeTask,
@@ -20,6 +20,7 @@ import {
 } from "./lib/queue.mjs";
 import { loadRunReport, writeRunReport } from "./lib/report.mjs";
 import { getRun, getRunSpend, isBudgetExhausted, withRun } from "./lib/runs.mjs";
+import { DEFAULT_SCHEMAS, regenerateStructureDocument } from "./lib/structure-doc.mjs";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 
@@ -78,7 +79,7 @@ export function validateCommandArgs(parsed) {
     report: new Set(["run", "apply", "dryRun"]),
     migrate: new Set(["file", "apply", "dryRun"]),
     census: new Set(["apply", "dryRun"]),
-    maintain: new Set(["apply", "dryRun"]),
+    maintain: new Set(["schema", "output", "apply", "dryRun"]),
   };
   const allowed = allowedByCommand[parsed.command];
   if (!allowed) throw new Error(`Unknown command: ${parsed.command}\n${usage()}`);
@@ -88,7 +89,16 @@ export function validateCommandArgs(parsed) {
   }
   const positional = parsed.positional || [];
   if (parsed.command === "maintain") {
-    if (positional.length > 1) throw new Error("maintain accepts at most one subcommand.");
+    if (positional.length !== 1) {
+      throw new Error("maintain requires exactly one subcommand: regen-structure-doc or refresh-city-index.");
+    }
+    const subcommand = positional[0];
+    if (!["regen-structure-doc", "refresh-city-index"].includes(subcommand)) {
+      throw new Error(`Unknown maintain subcommand: ${subcommand}`);
+    }
+    if (subcommand === "refresh-city-index" && parsed.output != null) {
+      throw new Error("Unknown option for maintain refresh-city-index: --output");
+    }
   } else if (positional.length > 0) {
     throw new Error(`${parsed.command} does not accept positional arguments.`);
   }
@@ -105,8 +115,9 @@ async function dispatchCommand(parsed, run) {
       return runReport(parsed, run);
     case "migrate":
       return runMigrate(parsed, run);
-    case "census":
     case "maintain":
+      return runMaintenance(parsed, run);
+    case "census":
       return {
         status: "completed",
         counts: { implemented: 0 },
@@ -285,13 +296,11 @@ async function runReport(parsed, run) {
   };
 }
 
-async function runMigrate(parsed, run) {
+export async function runMigrate(parsed, run, operations = {}) {
   const file = path.resolve(ROOT, parsed.file || "migrations/20260711_fountain_ops.sql");
-  if (!file.endsWith(".sql") || !existsSync(file)) throw new Error(`Migration file not found: ${file}`);
-  const sql = readFileSync(file, "utf8");
-  if (!/\bBEGIN\s*;/i.test(sql) || !/\bCOMMIT\s*;/i.test(sql)) {
-    throw new Error("Migration must contain explicit BEGIN; and COMMIT; statements.");
-  }
+  const load = operations.loadMigrationFile || loadMigrationFile;
+  const execute = operations.executeMigrationSql || executeMigrationSql;
+  const sql = load(file);
   if (run.dry_run) {
     return {
       status: "completed",
@@ -299,7 +308,7 @@ async function runMigrate(parsed, run) {
       result: { dryRun: true, file: path.relative(ROOT, file), bytes: Buffer.byteLength(sql) },
     };
   }
-  await spawnMigration(file);
+  await execute(sql);
   return {
     status: "completed",
     counts: { migrations_applied: 1 },
@@ -307,19 +316,42 @@ async function runMigrate(parsed, run) {
   };
 }
 
-function spawnMigration(file) {
-  return new Promise((resolve, reject) => {
-    const child = spawn(process.execPath, ["scripts/run-sql-migration.mjs", "--file", file], {
-      cwd: ROOT,
-      env: process.env,
-      stdio: "inherit",
+export async function runMaintenance(parsed, run, operations = {}) {
+  const subcommand = parsed.positional[0];
+  if (subcommand === "regen-structure-doc") {
+    const regenerate = operations.regenerateStructureDocument || regenerateStructureDocument;
+    const outputPath = path.resolve(ROOT, parsed.output || "docs/NEON_DATABASE_STRUCTURE_CURRENT.md");
+    const schemas = parsed.schema
+      ? String(parsed.schema).split(",").map((value) => value.trim()).filter(Boolean)
+      : DEFAULT_SCHEMAS;
+    const generated = await regenerate({
+      outputPath,
+      schemas,
+      apply: !run.dry_run,
     });
-    child.once("error", reject);
-    child.once("exit", (code, signal) => {
-      if (code === 0) resolve();
-      else reject(new Error(`Migration runner exited with ${signal || code}.`));
-    });
-  });
+    return {
+      status: "completed",
+      counts: { documents_generated: 1, files_written: run.dry_run ? 0 : 1 },
+      result: {
+        dryRun: run.dry_run,
+        output: path.relative(ROOT, outputPath),
+        schemas,
+        bytes: generated.bytes,
+      },
+    };
+  }
+
+  const schema = parsed.schema || "fountain";
+  const inspect = operations.inspectCityIndex || inspectCityIndex;
+  const refresh = operations.refreshCityIndex || refreshCityIndex;
+  const cityIndex = run.dry_run
+    ? await inspect({ schema })
+    : await refresh({ schema });
+  return {
+    status: "completed",
+    counts: { refreshes_applied: run.dry_run ? 0 : 1, cities_indexed: cityIndex.count },
+    result: { dryRun: run.dry_run, ...cityIndex },
+  };
 }
 
 function redactArgs(parsed) {
@@ -378,6 +410,7 @@ function usage() {
   return [
     "Usage: node pipeline/cli.mjs <command> [options]",
     "Commands: enqueue, drain, report, migrate, census, maintain",
+    "Maintenance: regen-structure-doc, refresh-city-index",
     "Persistent side effects require --apply; dry-run is the default.",
   ].join("\n");
 }

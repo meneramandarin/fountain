@@ -1,0 +1,2604 @@
+{
+  "phase_date": "20260710",
+  "mode": "dry-run",
+  "llm": {
+    "provider": "OpenRouter",
+    "available": true,
+    "model": "openai/gpt-4o-mini",
+    "classified_terms": 20,
+    "high_confidence_terms": 0,
+    "medium_confidence_terms": 1,
+    "requests": 2,
+    "errors": [],
+    "spend_usd": 0.0009118500000000001,
+    "budget_gate_usd": 1,
+    "status": "completed_within_budget"
+  },
+  "tables": {
+    "corpus": null,
+    "audit": null,
+    "proposals": null
+  },
+  "before": {
+    "active_offerings": 100019,
+    "mapped_active_offerings": 15185,
+    "unmapped_active_offerings": 84834,
+    "mapped_pct": 15.18
+  },
+  "after": {
+    "active_offerings": 100019,
+    "mapped_active_offerings": 15185,
+    "unmapped_active_offerings": 84834,
+    "mapped_pct": 15.18
+  },
+  "corpus_summary": {
+    "normalized_terms": 42922,
+    "terms_with_active_location_coverage": 42866,
+    "active_location_weight_sum": 82307,
+    "unmapped_term_occurrences": 89463,
+    "top_terms": [
+      {
+        "normalized": "physical therapy",
+        "location_count": 461,
+        "examples": [
+          "Physical Therapy",
+          "Virtual Physical Therapy",
+          "Physical therapy"
+        ]
+      },
+      {
+        "normalized": "regenerative medicine",
+        "location_count": 242,
+        "examples": [
+          "Regenerative Medicine",
+          "Regenerative medicine",
+          "REGENERATIVE MEDICINE"
+        ]
+      },
+      {
+        "normalized": "sports medicine",
+        "location_count": 235,
+        "examples": [
+          "Sports Medicine",
+          "Sports medicine",
+          "SPORTS MEDICINE"
+        ]
+      },
+      {
+        "normalized": "acupuncture",
+        "location_count": 231,
+        "examples": [
+          "Acupuncture",
+          "Acupuncture Follow Up",
+          "Acupuncture Membership"
+        ]
+      },
+      {
+        "normalized": "primary care",
+        "location_count": 214,
+        "examples": [
+          "Primary Care",
+          "Primary care",
+          "Mobile Primary Care"
+        ]
+      },
+      {
+        "normalized": "chiropractic care",
+        "location_count": 208,
+        "examples": [
+          "Chiropractic Care",
+          "Chiropractic care",
+          "CHIROPRACTIC CARE"
+        ]
+      },
+      {
+        "normalized": "weight loss",
+        "location_count": 203,
+        "examples": [
+          "Weight Loss",
+          "Weight Loss Membership",
+          "WEIGHT LOSS"
+        ]
+      },
+      {
+        "normalized": "laser hair removal",
+        "location_count": 193,
+        "examples": [
+          "Laser Hair Removal",
+          "laser hair removal",
+          "LASER HAIR REMOVAL"
+        ]
+      },
+      {
+        "normalized": "pain management",
+        "location_count": 185,
+        "examples": [
+          "Pain Management",
+          "Pain management",
+          "PAIN MANAGEMENT"
+        ]
+      },
+      {
+        "normalized": "microneedling",
+        "location_count": 178,
+        "examples": [
+          "Microneedling",
+          "Microneedling Packages",
+          "MicroNeedling"
+        ]
+      },
+      {
+        "normalized": "massage therapy",
+        "location_count": 177,
+        "examples": [
+          "Massage Therapy",
+          "Massage Therapy - 60 Minutes",
+          "Massage Therapy - 75 Minutes"
+        ]
+      },
+      {
+        "normalized": "occupational therapy",
+        "location_count": 177,
+        "examples": [
+          "Occupational Therapy",
+          "Occupational therapy",
+          "OCCUPATIONAL THERAPY"
+        ]
+      },
+      {
+        "normalized": "dry needling",
+        "location_count": 168,
+        "examples": [
+          "Dry Needling",
+          "Dry Needling - 30 minutes",
+          "Dry needling"
+        ]
+      },
+      {
+        "normalized": "anti aging",
+        "location_count": 146,
+        "examples": [
+          "Anti-Aging",
+          "Anti Aging",
+          "Anti-aging"
+        ]
+      },
+      {
+        "normalized": "chemical peels",
+        "location_count": 144,
+        "examples": [
+          "Chemical Peels",
+          "CHEMICAL PEELS",
+          "Chemical peels"
+        ]
+      },
+      {
+        "normalized": "medical weight loss",
+        "location_count": 141,
+        "examples": [
+          "Medical Weight Loss",
+          "Medical weight loss",
+          "MEDICAL WEIGHT LOSS"
+        ]
+      },
+      {
+        "normalized": "trigger point injections",
+        "location_count": 139,
+        "examples": [
+          "Trigger Point Injections",
+          "Trigger point injections",
+          "TRIGGER POINT INJECTIONS"
+        ]
+      },
+      {
+        "normalized": "women s health",
+        "location_count": 127,
+        "examples": [
+          "Women's Health",
+          "Women's health",
+          "Women’s Health"
+        ]
+      },
+      {
+        "normalized": "plastic surgery",
+        "location_count": 125,
+        "examples": [
+          "Plastic Surgery",
+          "Plastic surgery",
+          "PLASTIC SURGERY"
+        ]
+      },
+      {
+        "normalized": "spinal decompression",
+        "location_count": 125,
+        "examples": [
+          "Spinal Decompression",
+          "SPINAL DECOMPRESSION",
+          "spinal decompression"
+        ]
+      },
+      {
+        "normalized": "back pain treatment",
+        "location_count": 117,
+        "examples": [
+          "Back Pain Treatment",
+          "Back pain treatment",
+          "back pain treatment"
+        ]
+      },
+      {
+        "normalized": "prolotherapy",
+        "location_count": 116,
+        "examples": [
+          "Prolotherapy",
+          "PROLOTHERAPY",
+          "prolotherapy"
+        ]
+      },
+      {
+        "normalized": "manual therapy",
+        "location_count": 113,
+        "examples": [
+          "Manual Therapy",
+          "Manual Therapy Package - 3 sessions",
+          "Manual Therapy Package - 5 sessions"
+        ]
+      },
+      {
+        "normalized": "hair restoration",
+        "location_count": 108,
+        "examples": [
+          "Hair restoration",
+          "Hair Restoration",
+          "HAIR RESTORATION"
+        ]
+      },
+      {
+        "normalized": "neck pain treatment",
+        "location_count": 108,
+        "examples": [
+          "Neck Pain Treatment",
+          "Neck pain treatment"
+        ]
+      },
+      {
+        "normalized": "knee pain treatment",
+        "location_count": 108,
+        "examples": [
+          "Knee Pain Treatment",
+          "knee pain treatment"
+        ]
+      },
+      {
+        "normalized": "generic diagnostic",
+        "location_count": 101,
+        "examples": [
+          "generic diagnostic"
+        ]
+      },
+      {
+        "normalized": "cardiovascular",
+        "location_count": 101,
+        "examples": [
+          "cardiovascular",
+          "Cardiovascular"
+        ]
+      },
+      {
+        "normalized": "food as medicine",
+        "location_count": 100,
+        "examples": [
+          "food as medicine",
+          "Food as Medicine"
+        ]
+      },
+      {
+        "normalized": "hydrafacial",
+        "location_count": 100,
+        "examples": [
+          "HYDRAFACIAL",
+          "Hydrafacial",
+          "HydraFacial"
+        ]
+      }
+    ]
+  },
+  "phase_2": {
+    "high_confidence_terms": 2990,
+    "medium_confidence_terms": 353,
+    "aliases_inserted": 0,
+    "offerings_newly_linked": 0,
+    "top_auto_mappings": [
+      {
+        "term": "Sculptra",
+        "normalized": "sculptra",
+        "treatment": "Dermal fillers",
+        "location_count": 85,
+        "method": "deterministic_synonym",
+        "confidence": 0.93
+      },
+      {
+        "term": "Dysport",
+        "normalized": "dysport",
+        "treatment": "Botox",
+        "location_count": 64,
+        "method": "deterministic_synonym",
+        "confidence": 0.93
+      },
+      {
+        "term": "Nutritional counseling",
+        "normalized": "nutritional counseling",
+        "treatment": "Personalized nutrition",
+        "location_count": 60,
+        "method": "deterministic_synonym",
+        "confidence": 0.93
+      },
+      {
+        "term": "Platelet Rich Plasma",
+        "normalized": "prp",
+        "treatment": "PRP therapy",
+        "location_count": 57,
+        "method": "exact_alias",
+        "confidence": 1
+      },
+      {
+        "term": "PRP Platelet Rich Plasma",
+        "normalized": "prp prp",
+        "treatment": "PRP therapy",
+        "location_count": 55,
+        "method": "deterministic_synonym",
+        "confidence": 0.93
+      },
+      {
+        "term": "Radiesse",
+        "normalized": "radiesse",
+        "treatment": "Dermal fillers",
+        "location_count": 48,
+        "method": "deterministic_synonym",
+        "confidence": 0.93
+      },
+      {
+        "term": "Testosterone Therapy",
+        "normalized": "testosterone therapy",
+        "treatment": "Hormone optimization",
+        "location_count": 48,
+        "method": "deterministic_synonym",
+        "confidence": 0.93
+      },
+      {
+        "term": "iV Drip infusion - 60-90 minutes",
+        "normalized": "iv drip infusion 60",
+        "treatment": "IV nutrient therapy",
+        "location_count": 45,
+        "method": "deterministic_synonym",
+        "confidence": 0.93
+      },
+      {
+        "term": "Semaglutide",
+        "normalized": "semaglutide",
+        "treatment": "GLP-1 weight management",
+        "location_count": 44,
+        "method": "deterministic_synonym",
+        "confidence": 0.93
+      },
+      {
+        "term": "Exosomes",
+        "normalized": "exosomes",
+        "treatment": "Exosome therapy",
+        "location_count": 43,
+        "method": "deterministic_synonym",
+        "confidence": 0.93
+      },
+      {
+        "term": "Hormone replacement therapy",
+        "normalized": "hormone replacement therapy",
+        "treatment": "Hormone optimization",
+        "location_count": 40,
+        "method": "deterministic_synonym",
+        "confidence": 0.93
+      },
+      {
+        "term": "Testosterone replacement therapy",
+        "normalized": "testosterone replacement therapy",
+        "treatment": "Hormone optimization",
+        "location_count": 40,
+        "method": "deterministic_synonym",
+        "confidence": 0.93
+      },
+      {
+        "term": "Xeomin",
+        "normalized": "xeomin",
+        "treatment": "Botox",
+        "location_count": 38,
+        "method": "deterministic_synonym",
+        "confidence": 0.93
+      },
+      {
+        "term": "Nutrition counseling",
+        "normalized": "nutrition counseling",
+        "treatment": "Personalized nutrition",
+        "location_count": 35,
+        "method": "deterministic_synonym",
+        "confidence": 0.93
+      },
+      {
+        "term": "Personal training",
+        "normalized": "personal training",
+        "treatment": "Exercise programming",
+        "location_count": 35,
+        "method": "deterministic_synonym",
+        "confidence": 0.93
+      },
+      {
+        "term": "Tirzepatide",
+        "normalized": "tirzepatide",
+        "treatment": "GLP-1 weight management",
+        "location_count": 35,
+        "method": "deterministic_synonym",
+        "confidence": 0.93
+      },
+      {
+        "term": "Testosterone Replacement Therapy (TRT)",
+        "normalized": "testosterone replacement therapy trt",
+        "treatment": "Hormone optimization",
+        "location_count": 30,
+        "method": "deterministic_synonym",
+        "confidence": 0.93
+      },
+      {
+        "term": "Platelet Rich Plasma Therapy",
+        "normalized": "prp therapy",
+        "treatment": "PRP therapy",
+        "location_count": 29,
+        "method": "exact_alias",
+        "confidence": 1
+      },
+      {
+        "term": "Juvederm",
+        "normalized": "juvederm",
+        "treatment": "Dermal fillers",
+        "location_count": 28,
+        "method": "deterministic_synonym",
+        "confidence": 0.93
+      },
+      {
+        "term": "IV Hydration",
+        "normalized": "iv hydration",
+        "treatment": "IV nutrient therapy",
+        "location_count": 27,
+        "method": "deterministic_synonym",
+        "confidence": 0.93
+      },
+      {
+        "term": "Supplements",
+        "normalized": "supplements",
+        "treatment": "Supplementation",
+        "location_count": 26,
+        "method": "deterministic_synonym",
+        "confidence": 0.93
+      },
+      {
+        "term": "Medical spa",
+        "normalized": "medical spa",
+        "treatment": "Med spa",
+        "location_count": 25,
+        "method": "deterministic_synonym",
+        "confidence": 0.93
+      },
+      {
+        "term": "Jeuveau",
+        "normalized": "jeuveau",
+        "treatment": "Botox",
+        "location_count": 24,
+        "method": "deterministic_synonym",
+        "confidence": 0.93
+      },
+      {
+        "term": "Sermorelin",
+        "normalized": "sermorelin",
+        "treatment": "Peptide therapy",
+        "location_count": 24,
+        "method": "deterministic_synonym",
+        "confidence": 0.93
+      },
+      {
+        "term": "PRP injections",
+        "normalized": "prp injections",
+        "treatment": "PRP therapy",
+        "location_count": 23,
+        "method": "deterministic_synonym",
+        "confidence": 0.93
+      },
+      {
+        "term": "Platelet rich plasma (PRP) therapy",
+        "normalized": "prp prp therapy",
+        "treatment": "PRP therapy",
+        "location_count": 23,
+        "method": "deterministic_synonym",
+        "confidence": 0.93
+      },
+      {
+        "term": "Hormone Replacement",
+        "normalized": "hormone replacement",
+        "treatment": "Hormone optimization",
+        "location_count": 22,
+        "method": "deterministic_synonym",
+        "confidence": 0.93
+      },
+      {
+        "term": "NAD Injections",
+        "normalized": "nad injections",
+        "treatment": "NAD+ IV therapy",
+        "location_count": 22,
+        "method": "deterministic_synonym",
+        "confidence": 0.93
+      },
+      {
+        "term": "Semaglutide Weight Loss",
+        "normalized": "semaglutide weight loss",
+        "treatment": "GLP-1 weight management",
+        "location_count": 22,
+        "method": "deterministic_synonym",
+        "confidence": 0.93
+      },
+      {
+        "term": "Dysport - Dysport",
+        "normalized": "dysport dysport",
+        "treatment": "Botox",
+        "location_count": 20,
+        "method": "deterministic_synonym",
+        "confidence": 0.93
+      },
+      {
+        "term": "Myers cocktail",
+        "normalized": "myers cocktail",
+        "treatment": "IV nutrient therapy",
+        "location_count": 20,
+        "method": "deterministic_synonym",
+        "confidence": 0.93
+      },
+      {
+        "term": "Sculptra - Sculptra",
+        "normalized": "sculptra sculptra",
+        "treatment": "Dermal fillers",
+        "location_count": 20,
+        "method": "deterministic_synonym",
+        "confidence": 0.93
+      },
+      {
+        "term": "Stem Cell Hair Restoration",
+        "normalized": "stem cell hair restoration",
+        "treatment": "Stem cell therapy",
+        "location_count": 20,
+        "method": "deterministic_synonym",
+        "confidence": 0.93
+      },
+      {
+        "term": "NAD+",
+        "normalized": "nad",
+        "treatment": "NAD+ IV therapy",
+        "location_count": 19,
+        "method": "deterministic_synonym",
+        "confidence": 0.93
+      },
+      {
+        "term": "Glutathione Injection",
+        "normalized": "glutathione injection",
+        "treatment": "Vitamin infusion",
+        "location_count": 18,
+        "method": "deterministic_synonym",
+        "confidence": 0.93
+      },
+      {
+        "term": "NAD Injection",
+        "normalized": "nad injection",
+        "treatment": "NAD+ IV therapy",
+        "location_count": 18,
+        "method": "deterministic_synonym",
+        "confidence": 0.93
+      },
+      {
+        "term": "IV Vitamin Therapy",
+        "normalized": "iv vitamin therapy",
+        "treatment": "Vitamin infusion",
+        "location_count": 17,
+        "method": "deterministic_synonym",
+        "confidence": 0.93
+      },
+      {
+        "term": "Hyperbaric medicine physician",
+        "normalized": "hyperbaric medicine physician",
+        "treatment": "Hyperbaric oxygen therapy",
+        "location_count": 16,
+        "method": "deterministic_synonym",
+        "confidence": 0.93
+      },
+      {
+        "term": "Softwave Therapy",
+        "normalized": "softwave therapy",
+        "treatment": "Shockwave therapy",
+        "location_count": 16,
+        "method": "deterministic_synonym",
+        "confidence": 0.93
+      },
+      {
+        "term": "Bioidentical Hormone Replacement",
+        "normalized": "bioidentical hormone replacement",
+        "treatment": "Hormone optimization",
+        "location_count": 15,
+        "method": "deterministic_synonym",
+        "confidence": 0.93
+      },
+      {
+        "term": "Stem Cell Treatment",
+        "normalized": "stem cell treatment",
+        "treatment": "Stem cell therapy",
+        "location_count": 15,
+        "method": "deterministic_synonym",
+        "confidence": 0.93
+      },
+      {
+        "term": "Botox Membership",
+        "normalized": "botox",
+        "treatment": "Botox",
+        "location_count": 14,
+        "method": "exact_alias",
+        "confidence": 1
+      },
+      {
+        "term": "NAD Therapy",
+        "normalized": "nad therapy",
+        "treatment": "NAD+ IV therapy",
+        "location_count": 13,
+        "method": "exact_alias",
+        "confidence": 1
+      },
+      {
+        "term": "Testosterone Replacement",
+        "normalized": "testosterone replacement",
+        "treatment": "Hormone optimization",
+        "location_count": 13,
+        "method": "deterministic_synonym",
+        "confidence": 0.93
+      },
+      {
+        "term": "Bioidentical Hormone Replacement Therapy",
+        "normalized": "bioidentical hormone replacement therapy",
+        "treatment": "Hormone optimization",
+        "location_count": 12,
+        "method": "deterministic_synonym",
+        "confidence": 0.93
+      },
+      {
+        "term": "IV Drip Therapy",
+        "normalized": "iv drip therapy",
+        "treatment": "IV nutrient therapy",
+        "location_count": 12,
+        "method": "deterministic_synonym",
+        "confidence": 0.93
+      },
+      {
+        "term": "Myers Cocktail IV",
+        "normalized": "myers cocktail iv",
+        "treatment": "IV nutrient therapy",
+        "location_count": 12,
+        "method": "deterministic_synonym",
+        "confidence": 0.93
+      },
+      {
+        "term": "Vitamins and Supplements",
+        "normalized": "vitamins and supplements",
+        "treatment": "Supplementation",
+        "location_count": 12,
+        "method": "deterministic_synonym",
+        "confidence": 0.93
+      },
+      {
+        "term": "B12 Injection",
+        "normalized": "b12 injection",
+        "treatment": "Vitamin infusion",
+        "location_count": 11,
+        "method": "deterministic_synonym",
+        "confidence": 0.93
+      },
+      {
+        "term": "GLP1 Weight Loss",
+        "normalized": "glp 1 weight loss",
+        "treatment": "GLP-1 weight management",
+        "location_count": 11,
+        "method": "deterministic_synonym",
+        "confidence": 0.93
+      },
+      {
+        "term": "IV infusion",
+        "normalized": "iv infusion",
+        "treatment": "IV nutrient therapy",
+        "location_count": 11,
+        "method": "deterministic_synonym",
+        "confidence": 0.93
+      },
+      {
+        "term": "NAD+ infusions",
+        "normalized": "nad infusions",
+        "treatment": "NAD+ IV therapy",
+        "location_count": 11,
+        "method": "deterministic_synonym",
+        "confidence": 0.93
+      },
+      {
+        "term": "Radiesse - Radiesse",
+        "normalized": "radiesse radiesse",
+        "treatment": "Dermal fillers",
+        "location_count": 11,
+        "method": "deterministic_synonym",
+        "confidence": 0.93
+      },
+      {
+        "term": "Testosterone Therapy - TRT",
+        "normalized": "testosterone therapy trt",
+        "treatment": "Hormone optimization",
+        "location_count": 11,
+        "method": "deterministic_synonym",
+        "confidence": 0.93
+      },
+      {
+        "term": "BPC 157",
+        "normalized": "bpc 157",
+        "treatment": "Peptide therapy",
+        "location_count": 10,
+        "method": "deterministic_synonym",
+        "confidence": 0.93
+      },
+      {
+        "term": "Nutritional supplements",
+        "normalized": "nutritional supplements",
+        "treatment": "Supplementation",
+        "location_count": 10,
+        "method": "deterministic_synonym",
+        "confidence": 0.93
+      },
+      {
+        "term": "Xeomin - Xeomin",
+        "normalized": "xeomin xeomin",
+        "treatment": "Botox",
+        "location_count": 10,
+        "method": "deterministic_synonym",
+        "confidence": 0.93
+      },
+      {
+        "term": "BHRT for Men",
+        "normalized": "bhrt for men",
+        "treatment": "Hormone optimization",
+        "location_count": 9,
+        "method": "deterministic_synonym",
+        "confidence": 0.93
+      },
+      {
+        "term": "BHRT for Women",
+        "normalized": "bhrt for women",
+        "treatment": "Hormone optimization",
+        "location_count": 9,
+        "method": "deterministic_synonym",
+        "confidence": 0.93
+      },
+      {
+        "term": "Bio-identical Hormone Replacement",
+        "normalized": "bio identical hormone replacement",
+        "treatment": "Hormone optimization",
+        "location_count": 9,
+        "method": "deterministic_synonym",
+        "confidence": 0.93
+      },
+      {
+        "term": "Hyperbaric chamber",
+        "normalized": "hyperbaric chamber",
+        "treatment": "Hyperbaric oxygen therapy",
+        "location_count": 9,
+        "method": "deterministic_synonym",
+        "confidence": 0.93
+      },
+      {
+        "term": "IV nutrition",
+        "normalized": "iv nutrition",
+        "treatment": "IV nutrient therapy",
+        "location_count": 9,
+        "method": "deterministic_synonym",
+        "confidence": 0.93
+      },
+      {
+        "term": "NAD+ Drip",
+        "normalized": "nad drip",
+        "treatment": "NAD+ IV therapy",
+        "location_count": 9,
+        "method": "deterministic_synonym",
+        "confidence": 0.93
+      },
+      {
+        "term": "NAD+ Infusion",
+        "normalized": "nad infusion",
+        "treatment": "NAD+ IV therapy",
+        "location_count": 9,
+        "method": "deterministic_synonym",
+        "confidence": 0.93
+      },
+      {
+        "term": "Nutrition Coaching",
+        "normalized": "nutrition coaching",
+        "treatment": "Personalized nutrition",
+        "location_count": 9,
+        "method": "deterministic_synonym",
+        "confidence": 0.93
+      },
+      {
+        "term": "PEMF",
+        "normalized": "pemf",
+        "treatment": "PEMF therapy",
+        "location_count": 9,
+        "method": "deterministic_synonym",
+        "confidence": 0.93
+      },
+      {
+        "term": "Stem Cell Banking",
+        "normalized": "stem cell banking",
+        "treatment": "Stem cell therapy",
+        "location_count": 9,
+        "method": "deterministic_synonym",
+        "confidence": 0.93
+      },
+      {
+        "term": "Tirzepatide Weight Loss",
+        "normalized": "tirzepatide weight loss",
+        "treatment": "GLP-1 weight management",
+        "location_count": 9,
+        "method": "deterministic_synonym",
+        "confidence": 0.93
+      },
+      {
+        "term": "Vitamin B12 Injection",
+        "normalized": "vitamin b12 injection",
+        "treatment": "Vitamin infusion",
+        "location_count": 9,
+        "method": "deterministic_synonym",
+        "confidence": 0.93
+      },
+      {
+        "term": "Whole Body Cryotherapy",
+        "normalized": "whole body cryotherapy",
+        "treatment": "Cryotherapy",
+        "location_count": 9,
+        "method": "deterministic_synonym",
+        "confidence": 0.93
+      },
+      {
+        "term": "Coronary Calcium Score",
+        "normalized": "coronary calcium score",
+        "treatment": "Cardiac screening",
+        "location_count": 8,
+        "method": "deterministic_synonym",
+        "confidence": 0.93
+      },
+      {
+        "term": "DNA Testing",
+        "normalized": "dna testing",
+        "treatment": "Genetic testing",
+        "location_count": 8,
+        "method": "deterministic_synonym",
+        "confidence": 0.93
+      },
+      {
+        "term": "Heart scan",
+        "normalized": "heart scan",
+        "treatment": "Cardiac screening",
+        "location_count": 8,
+        "method": "deterministic_synonym",
+        "confidence": 0.93
+      },
+      {
+        "term": "Immunity IV Drip",
+        "normalized": "immunity iv drip",
+        "treatment": "IV nutrient therapy",
+        "location_count": 8,
+        "method": "deterministic_synonym",
+        "confidence": 0.93
+      },
+      {
+        "term": "Juvederm - Juvederm",
+        "normalized": "juvederm juvederm",
+        "treatment": "Dermal fillers",
+        "location_count": 8,
+        "method": "deterministic_synonym",
+        "confidence": 0.93
+      },
+      {
+        "term": "Myers' Cocktail - Hangovers",
+        "normalized": "myers cocktail hangovers",
+        "treatment": "IV nutrient therapy",
+        "location_count": 8,
+        "method": "deterministic_synonym",
+        "confidence": 0.93
+      },
+      {
+        "term": "PRP Treatment",
+        "normalized": "prp treatment",
+        "treatment": "PRP therapy",
+        "location_count": 8,
+        "method": "deterministic_synonym",
+        "confidence": 0.93
+      },
+      {
+        "term": "PRP treatments",
+        "normalized": "prp treatments",
+        "treatment": "PRP therapy",
+        "location_count": 8,
+        "method": "deterministic_synonym",
+        "confidence": 0.93
+      },
+      {
+        "term": "B12 Shot",
+        "normalized": "b12 shot",
+        "treatment": "Vitamin infusion",
+        "location_count": 7,
+        "method": "deterministic_synonym",
+        "confidence": 0.93
+      },
+      {
+        "term": "BHRT",
+        "normalized": "bhrt",
+        "treatment": "Hormone optimization",
+        "location_count": 7,
+        "method": "deterministic_synonym",
+        "confidence": 0.93
+      }
+    ],
+    "medium_confidence_review": [
+      {
+        "term": "Regenerative medicine",
+        "normalized": "regenerative medicine",
+        "proposed_treatment_id": 17,
+        "proposed_treatment": "Stem cell therapy",
+        "location_count": 242,
+        "confidence": 0.8,
+        "reason": "llm_openrouter: Maps to regenerative treatments like stem cell therapy."
+      },
+      {
+        "term": "Medical weight loss",
+        "normalized": "medical weight loss",
+        "proposed_treatment_id": 25,
+        "proposed_treatment": "GLP-1 weight management",
+        "location_count": 141,
+        "confidence": 0.72,
+        "reason": "possible_glp1_or_general_weight_loss"
+      },
+      {
+        "term": "Injectables",
+        "normalized": "injectables",
+        "proposed_treatment_id": 34,
+        "proposed_treatment": "Botox",
+        "location_count": 45,
+        "confidence": 0.62,
+        "reason": "ambiguous_botox_or_fillers"
+      },
+      {
+        "term": "Weight Loss Program",
+        "normalized": "weight loss program",
+        "proposed_treatment_id": 25,
+        "proposed_treatment": "GLP-1 weight management",
+        "location_count": 40,
+        "confidence": 0.72,
+        "reason": "possible_glp1_or_general_weight_loss"
+      },
+      {
+        "term": "Weight loss management",
+        "normalized": "weight loss management",
+        "proposed_treatment_id": 25,
+        "proposed_treatment": "GLP-1 weight management",
+        "location_count": 32,
+        "confidence": 0.72,
+        "reason": "possible_glp1_or_general_weight_loss"
+      },
+      {
+        "term": "Lab testing",
+        "normalized": "lab testing",
+        "proposed_treatment_id": 6,
+        "proposed_treatment": "Advanced blood panel",
+        "location_count": 27,
+        "confidence": 0.74,
+        "reason": "possible_advanced_blood_panel"
+      },
+      {
+        "term": "Facial rejuvenation",
+        "normalized": "facial rejuvenation",
+        "proposed_treatment_id": 36,
+        "proposed_treatment": "Aesthetic medicine",
+        "location_count": 24,
+        "confidence": 0.64,
+        "reason": "possible_aesthetic_medicine"
+      },
+      {
+        "term": "Medical Weight Loss Program",
+        "normalized": "medical weight loss program",
+        "proposed_treatment_id": 25,
+        "proposed_treatment": "GLP-1 weight management",
+        "location_count": 14,
+        "confidence": 0.72,
+        "reason": "possible_glp1_or_general_weight_loss"
+      },
+      {
+        "term": "Lab work",
+        "normalized": "lab work",
+        "proposed_treatment_id": 6,
+        "proposed_treatment": "Advanced blood panel",
+        "location_count": 12,
+        "confidence": 0.74,
+        "reason": "possible_advanced_blood_panel"
+      },
+      {
+        "term": "Blood Testing",
+        "normalized": "blood testing",
+        "proposed_treatment_id": 6,
+        "proposed_treatment": "Advanced blood panel",
+        "location_count": 10,
+        "confidence": 0.74,
+        "reason": "possible_advanced_blood_panel"
+      },
+      {
+        "term": "Blood work",
+        "normalized": "blood work",
+        "proposed_treatment_id": 6,
+        "proposed_treatment": "Advanced blood panel",
+        "location_count": 9,
+        "confidence": 0.74,
+        "reason": "possible_advanced_blood_panel"
+      },
+      {
+        "term": "Labs",
+        "normalized": "labs",
+        "proposed_treatment_id": 6,
+        "proposed_treatment": "Advanced blood panel",
+        "location_count": 7,
+        "confidence": 0.74,
+        "reason": "possible_advanced_blood_panel"
+      },
+      {
+        "term": "Weight Loss Therapy",
+        "normalized": "weight loss therapy",
+        "proposed_treatment_id": 25,
+        "proposed_treatment": "GLP-1 weight management",
+        "location_count": 7,
+        "confidence": 0.72,
+        "reason": "possible_glp1_or_general_weight_loss"
+      },
+      {
+        "term": "Blood testing service",
+        "normalized": "blood testing service",
+        "proposed_treatment_id": 6,
+        "proposed_treatment": "Advanced blood panel",
+        "location_count": 6,
+        "confidence": 0.74,
+        "reason": "possible_advanced_blood_panel"
+      },
+      {
+        "term": "Metabolic Testing",
+        "normalized": "metabolic testing",
+        "proposed_treatment_id": 15,
+        "proposed_treatment": "Cardiometabolic testing",
+        "location_count": 6,
+        "confidence": 0.72,
+        "reason": "possible_cardiometabolic_testing"
+      },
+      {
+        "term": "Comprehensive Labs",
+        "normalized": "comprehensive labs",
+        "proposed_treatment_id": 6,
+        "proposed_treatment": "Advanced blood panel",
+        "location_count": 5,
+        "confidence": 0.74,
+        "reason": "possible_advanced_blood_panel"
+      },
+      {
+        "term": "Functional lab testing",
+        "normalized": "functional lab testing",
+        "proposed_treatment_id": 6,
+        "proposed_treatment": "Advanced blood panel",
+        "location_count": 5,
+        "confidence": 0.74,
+        "reason": "possible_advanced_blood_panel"
+      },
+      {
+        "term": "Medically Supervised Weight Loss Program",
+        "normalized": "medically supervised weight loss program",
+        "proposed_treatment_id": 25,
+        "proposed_treatment": "GLP-1 weight management",
+        "location_count": 5,
+        "confidence": 0.72,
+        "reason": "possible_glp1_or_general_weight_loss"
+      },
+      {
+        "term": "Facial Rejuvenation Treatment",
+        "normalized": "facial rejuvenation treatment",
+        "proposed_treatment_id": 36,
+        "proposed_treatment": "Aesthetic medicine",
+        "location_count": 5,
+        "confidence": 0.64,
+        "reason": "possible_aesthetic_medicine"
+      },
+      {
+        "term": "Advanced Heart Labs",
+        "normalized": "advanced heart labs",
+        "proposed_treatment_id": 6,
+        "proposed_treatment": "Advanced blood panel",
+        "location_count": 4,
+        "confidence": 0.74,
+        "reason": "possible_advanced_blood_panel"
+      },
+      {
+        "term": "Advanced Lab Testing",
+        "normalized": "advanced lab testing",
+        "proposed_treatment_id": 6,
+        "proposed_treatment": "Advanced blood panel",
+        "location_count": 4,
+        "confidence": 0.74,
+        "reason": "possible_advanced_blood_panel"
+      },
+      {
+        "term": "Medical Weight Loss programs",
+        "normalized": "medical weight loss programs",
+        "proposed_treatment_id": 25,
+        "proposed_treatment": "GLP-1 weight management",
+        "location_count": 4,
+        "confidence": 0.72,
+        "reason": "possible_glp1_or_general_weight_loss"
+      },
+      {
+        "term": "Weight loss consultation",
+        "normalized": "weight loss consultation",
+        "proposed_treatment_id": 25,
+        "proposed_treatment": "GLP-1 weight management",
+        "location_count": 4,
+        "confidence": 0.72,
+        "reason": "possible_glp1_or_general_weight_loss"
+      },
+      {
+        "term": "Facial Rejuvenation Acupuncture",
+        "normalized": "facial rejuvenation acupuncture",
+        "proposed_treatment_id": 36,
+        "proposed_treatment": "Aesthetic medicine",
+        "location_count": 4,
+        "confidence": 0.64,
+        "reason": "possible_aesthetic_medicine"
+      },
+      {
+        "term": "Cosmetic Injectables",
+        "normalized": "cosmetic injectables",
+        "proposed_treatment_id": 34,
+        "proposed_treatment": "Botox",
+        "location_count": 4,
+        "confidence": 0.62,
+        "reason": "ambiguous_botox_or_fillers"
+      },
+      {
+        "term": "Anti-Aging Treatment & Labs",
+        "normalized": "anti aging treatment and labs",
+        "proposed_treatment_id": 6,
+        "proposed_treatment": "Advanced blood panel",
+        "location_count": 3,
+        "confidence": 0.74,
+        "reason": "possible_advanced_blood_panel"
+      },
+      {
+        "term": "Blood Test",
+        "normalized": "blood test",
+        "proposed_treatment_id": 6,
+        "proposed_treatment": "Advanced blood panel",
+        "location_count": 3,
+        "confidence": 0.74,
+        "reason": "possible_advanced_blood_panel"
+      },
+      {
+        "term": "Insulin & Thyroid Labs",
+        "normalized": "insulin and thyroid labs",
+        "proposed_treatment_id": 6,
+        "proposed_treatment": "Advanced blood panel",
+        "location_count": 3,
+        "confidence": 0.74,
+        "reason": "possible_advanced_blood_panel"
+      },
+      {
+        "term": "Lab Testing at Home",
+        "normalized": "lab testing at home",
+        "proposed_treatment_id": 6,
+        "proposed_treatment": "Advanced blood panel",
+        "location_count": 3,
+        "confidence": 0.74,
+        "reason": "possible_advanced_blood_panel"
+      },
+      {
+        "term": "Metabolic Weight Loss Program",
+        "normalized": "metabolic weight loss program",
+        "proposed_treatment_id": 25,
+        "proposed_treatment": "GLP-1 weight management",
+        "location_count": 3,
+        "confidence": 0.72,
+        "reason": "possible_glp1_or_general_weight_loss"
+      },
+      {
+        "term": "MinuteClinic - Weight loss program",
+        "normalized": "minuteclinic weight loss program",
+        "proposed_treatment_id": 25,
+        "proposed_treatment": "GLP-1 weight management",
+        "location_count": 3,
+        "confidence": 0.72,
+        "reason": "possible_glp1_or_general_weight_loss"
+      },
+      {
+        "term": "New Wave Weight Loss Program",
+        "normalized": "new wave weight loss program",
+        "proposed_treatment_id": 25,
+        "proposed_treatment": "GLP-1 weight management",
+        "location_count": 3,
+        "confidence": 0.72,
+        "reason": "possible_glp1_or_general_weight_loss"
+      },
+      {
+        "term": "Supportive Injectables",
+        "normalized": "supportive injectables",
+        "proposed_treatment_id": 34,
+        "proposed_treatment": "Botox",
+        "location_count": 3,
+        "confidence": 0.62,
+        "reason": "ambiguous_botox_or_fillers"
+      },
+      {
+        "term": "Vitamin Injectables",
+        "normalized": "vitamin injectables",
+        "proposed_treatment_id": 34,
+        "proposed_treatment": "Botox",
+        "location_count": 3,
+        "confidence": 0.62,
+        "reason": "ambiguous_botox_or_fillers"
+      },
+      {
+        "term": "Biomarker Testing",
+        "normalized": "biomarker testing",
+        "proposed_treatment_id": 7,
+        "proposed_treatment": "Advanced biomarker panel",
+        "location_count": 2,
+        "confidence": 0.76,
+        "reason": "possible_biomarker_panel"
+      },
+      {
+        "term": "Biomarkers",
+        "normalized": "biomarkers",
+        "proposed_treatment_id": 7,
+        "proposed_treatment": "Advanced biomarker panel",
+        "location_count": 2,
+        "confidence": 0.76,
+        "reason": "possible_biomarker_panel"
+      },
+      {
+        "term": "Advanced Functional Lab Testing",
+        "normalized": "advanced functional lab testing",
+        "proposed_treatment_id": 6,
+        "proposed_treatment": "Advanced blood panel",
+        "location_count": 2,
+        "confidence": 0.74,
+        "reason": "possible_advanced_blood_panel"
+      },
+      {
+        "term": "Comprehensive Blood Work",
+        "normalized": "comprehensive blood work",
+        "proposed_treatment_id": 6,
+        "proposed_treatment": "Advanced blood panel",
+        "location_count": 2,
+        "confidence": 0.74,
+        "reason": "possible_advanced_blood_panel"
+      },
+      {
+        "term": "Comprehensive Lab Testing",
+        "normalized": "comprehensive lab testing",
+        "proposed_treatment_id": 6,
+        "proposed_treatment": "Advanced blood panel",
+        "location_count": 2,
+        "confidence": 0.74,
+        "reason": "possible_advanced_blood_panel"
+      },
+      {
+        "term": "Diagnostic Labs",
+        "normalized": "diagnostic labs",
+        "proposed_treatment_id": 6,
+        "proposed_treatment": "Advanced blood panel",
+        "location_count": 2,
+        "confidence": 0.74,
+        "reason": "possible_advanced_blood_panel"
+      },
+      {
+        "term": "In-House Labs",
+        "normalized": "in house labs",
+        "proposed_treatment_id": 6,
+        "proposed_treatment": "Advanced blood panel",
+        "location_count": 2,
+        "confidence": 0.74,
+        "reason": "possible_advanced_blood_panel"
+      },
+      {
+        "term": "In-house labs & tests",
+        "normalized": "in house labs and tests",
+        "proposed_treatment_id": 6,
+        "proposed_treatment": "Advanced blood panel",
+        "location_count": 2,
+        "confidence": 0.74,
+        "reason": "possible_advanced_blood_panel"
+      },
+      {
+        "term": "Laboratory blood work",
+        "normalized": "laboratory blood work",
+        "proposed_treatment_id": 6,
+        "proposed_treatment": "Advanced blood panel",
+        "location_count": 2,
+        "confidence": 0.74,
+        "reason": "possible_advanced_blood_panel"
+      },
+      {
+        "term": "Medical Abortion - Non-Member, per televisit (medications/labs/imaging additional)",
+        "normalized": "medical abortion non per televisit medications labs imaging additional",
+        "proposed_treatment_id": 6,
+        "proposed_treatment": "Advanced blood panel",
+        "location_count": 2,
+        "confidence": 0.74,
+        "reason": "possible_advanced_blood_panel"
+      },
+      {
+        "term": "On-site Lab Testing",
+        "normalized": "on site lab testing",
+        "proposed_treatment_id": 6,
+        "proposed_treatment": "Advanced blood panel",
+        "location_count": 2,
+        "confidence": 0.74,
+        "reason": "possible_advanced_blood_panel"
+      },
+      {
+        "term": "Onsite X-Rays & Labs",
+        "normalized": "onsite x rays and labs",
+        "proposed_treatment_id": 6,
+        "proposed_treatment": "Advanced blood panel",
+        "location_count": 2,
+        "confidence": 0.74,
+        "reason": "possible_advanced_blood_panel"
+      },
+      {
+        "term": "Routine lab work",
+        "normalized": "routine lab work",
+        "proposed_treatment_id": 6,
+        "proposed_treatment": "Advanced blood panel",
+        "location_count": 2,
+        "confidence": 0.74,
+        "reason": "possible_advanced_blood_panel"
+      },
+      {
+        "term": "Specialty Labs",
+        "normalized": "specialty labs",
+        "proposed_treatment_id": 6,
+        "proposed_treatment": "Advanced blood panel",
+        "location_count": 2,
+        "confidence": 0.74,
+        "reason": "possible_advanced_blood_panel"
+      },
+      {
+        "term": "ChiroThin Weight Loss Program",
+        "normalized": "chirothin weight loss program",
+        "proposed_treatment_id": 25,
+        "proposed_treatment": "GLP-1 weight management",
+        "location_count": 2,
+        "confidence": 0.72,
+        "reason": "possible_glp1_or_general_weight_loss"
+      },
+      {
+        "term": "Medical Weight Loss Injections",
+        "normalized": "medical weight loss injections",
+        "proposed_treatment_id": 25,
+        "proposed_treatment": "GLP-1 weight management",
+        "location_count": 2,
+        "confidence": 0.72,
+        "reason": "possible_glp1_or_general_weight_loss"
+      },
+      {
+        "term": "Onsite Medical Weight Loss Program",
+        "normalized": "onsite medical weight loss program",
+        "proposed_treatment_id": 25,
+        "proposed_treatment": "GLP-1 weight management",
+        "location_count": 2,
+        "confidence": 0.72,
+        "reason": "possible_glp1_or_general_weight_loss"
+      },
+      {
+        "term": "PNOE Metabolic Testing",
+        "normalized": "pnoe metabolic testing",
+        "proposed_treatment_id": 15,
+        "proposed_treatment": "Cardiometabolic testing",
+        "location_count": 2,
+        "confidence": 0.72,
+        "reason": "possible_cardiometabolic_testing"
+      },
+      {
+        "term": "Supervised Medical Weight Loss",
+        "normalized": "supervised medical weight loss",
+        "proposed_treatment_id": 25,
+        "proposed_treatment": "GLP-1 weight management",
+        "location_count": 2,
+        "confidence": 0.72,
+        "reason": "possible_glp1_or_general_weight_loss"
+      },
+      {
+        "term": "Synergy Weight Loss Program",
+        "normalized": "synergy weight loss program",
+        "proposed_treatment_id": 25,
+        "proposed_treatment": "GLP-1 weight management",
+        "location_count": 2,
+        "confidence": 0.72,
+        "reason": "possible_glp1_or_general_weight_loss"
+      },
+      {
+        "term": "Annual Wellness Exam",
+        "normalized": "annual wellness exam",
+        "proposed_treatment_id": 16,
+        "proposed_treatment": "Executive health checkup",
+        "location_count": 2,
+        "confidence": 0.68,
+        "reason": "possible_executive_checkup"
+      },
+      {
+        "term": "Wellness Exam",
+        "normalized": "wellness exam",
+        "proposed_treatment_id": 16,
+        "proposed_treatment": "Executive health checkup",
+        "location_count": 2,
+        "confidence": 0.68,
+        "reason": "possible_executive_checkup"
+      },
+      {
+        "term": "PRF Facial Rejuvenation",
+        "normalized": "prf facial rejuvenation",
+        "proposed_treatment_id": 36,
+        "proposed_treatment": "Aesthetic medicine",
+        "location_count": 2,
+        "confidence": 0.64,
+        "reason": "possible_aesthetic_medicine"
+      },
+      {
+        "term": "INJECTABLES-STEROIDS, B-12, TORADOL & MORE",
+        "normalized": "injectables steroids b 12 toradol and more",
+        "proposed_treatment_id": 34,
+        "proposed_treatment": "Botox",
+        "location_count": 2,
+        "confidence": 0.62,
+        "reason": "ambiguous_botox_or_fillers"
+      },
+      {
+        "term": "350+ Biomarkers",
+        "normalized": "350 plus biomarkers",
+        "proposed_treatment_id": 7,
+        "proposed_treatment": "Advanced biomarker panel",
+        "location_count": 1,
+        "confidence": 0.76,
+        "reason": "possible_biomarker_panel"
+      },
+      {
+        "term": "450+ Biomarker Panel",
+        "normalized": "450 plus biomarker panel",
+        "proposed_treatment_id": 7,
+        "proposed_treatment": "Advanced biomarker panel",
+        "location_count": 1,
+        "confidence": 0.76,
+        "reason": "possible_biomarker_panel"
+      },
+      {
+        "term": "Advanced Biomarker Testing",
+        "normalized": "advanced biomarker testing",
+        "proposed_treatment_id": 7,
+        "proposed_treatment": "Advanced biomarker panel",
+        "location_count": 1,
+        "confidence": 0.76,
+        "reason": "possible_biomarker_panel"
+      },
+      {
+        "term": "Advanced Inflammatory & Biomarker Testing",
+        "normalized": "advanced inflammatory and biomarker testing",
+        "proposed_treatment_id": 7,
+        "proposed_treatment": "Advanced biomarker panel",
+        "location_count": 1,
+        "confidence": 0.76,
+        "reason": "possible_biomarker_panel"
+      },
+      {
+        "term": "Bioanalytical Sciences – Biomarker Analysis Services",
+        "normalized": "bioanalytical sciences biomarker analysis services",
+        "proposed_treatment_id": 7,
+        "proposed_treatment": "Advanced biomarker panel",
+        "location_count": 1,
+        "confidence": 0.76,
+        "reason": "possible_biomarker_panel"
+      },
+      {
+        "term": "Biomarker Analysis",
+        "normalized": "biomarker analysis",
+        "proposed_treatment_id": 7,
+        "proposed_treatment": "Advanced biomarker panel",
+        "location_count": 1,
+        "confidence": 0.76,
+        "reason": "possible_biomarker_panel"
+      },
+      {
+        "term": "Biomarker Assessments",
+        "normalized": "biomarker assessments",
+        "proposed_treatment_id": 7,
+        "proposed_treatment": "Advanced biomarker panel",
+        "location_count": 1,
+        "confidence": 0.76,
+        "reason": "possible_biomarker_panel"
+      },
+      {
+        "term": "Biomarker Lab Analysis - DexaFit",
+        "normalized": "biomarker lab analysis dexafit",
+        "proposed_treatment_id": 7,
+        "proposed_treatment": "Advanced biomarker panel",
+        "location_count": 1,
+        "confidence": 0.76,
+        "reason": "possible_biomarker_panel"
+      },
+      {
+        "term": "Biomarker Medical Assessment",
+        "normalized": "biomarker medical assessment",
+        "proposed_treatment_id": 7,
+        "proposed_treatment": "Advanced biomarker panel",
+        "location_count": 1,
+        "confidence": 0.76,
+        "reason": "possible_biomarker_panel"
+      },
+      {
+        "term": "Biomarker Panel (100+)",
+        "normalized": "biomarker panel 100 plus",
+        "proposed_treatment_id": 7,
+        "proposed_treatment": "Advanced biomarker panel",
+        "location_count": 1,
+        "confidence": 0.76,
+        "reason": "possible_biomarker_panel"
+      },
+      {
+        "term": "Blood Biomarker Testing - 80+ biomarkers, 80+ biomarkers",
+        "normalized": "blood biomarker testing 80 plus biomarkers 80 plus biomarkers",
+        "proposed_treatment_id": 7,
+        "proposed_treatment": "Advanced biomarker panel",
+        "location_count": 1,
+        "confidence": 0.76,
+        "reason": "possible_biomarker_panel"
+      },
+      {
+        "term": "Comprehensive Blood Biomarker Panel",
+        "normalized": "comprehensive blood biomarker panel",
+        "proposed_treatment_id": 7,
+        "proposed_treatment": "Advanced biomarker panel",
+        "location_count": 1,
+        "confidence": 0.76,
+        "reason": "possible_biomarker_panel"
+      },
+      {
+        "term": "Extensive Biomarker Testing",
+        "normalized": "extensive biomarker testing",
+        "proposed_treatment_id": 7,
+        "proposed_treatment": "Advanced biomarker panel",
+        "location_count": 1,
+        "confidence": 0.76,
+        "reason": "possible_biomarker_panel"
+      },
+      {
+        "term": "Free Biomarker Testing",
+        "normalized": "free biomarker testing",
+        "proposed_treatment_id": 7,
+        "proposed_treatment": "Advanced biomarker panel",
+        "location_count": 1,
+        "confidence": 0.76,
+        "reason": "possible_biomarker_panel"
+      },
+      {
+        "term": "Inflammatory Biomarkers and Cytokine Profiling",
+        "normalized": "inflammatory biomarkers and cytokine profiling",
+        "proposed_treatment_id": 7,
+        "proposed_treatment": "Advanced biomarker panel",
+        "location_count": 1,
+        "confidence": 0.76,
+        "reason": "possible_biomarker_panel"
+      },
+      {
+        "term": "Longitudinal Lab Monitoring (100+ biomarkers tracked)",
+        "normalized": "longitudinal lab monitoring 100 plus biomarkers tracked",
+        "proposed_treatment_id": 7,
+        "proposed_treatment": "Advanced biomarker panel",
+        "location_count": 1,
+        "confidence": 0.76,
+        "reason": "possible_biomarker_panel"
+      },
+      {
+        "term": "Molecular Oncology and Biomarkers Research Program",
+        "normalized": "molecular oncology and biomarkers research program",
+        "proposed_treatment_id": 7,
+        "proposed_treatment": "Advanced biomarker panel",
+        "location_count": 1,
+        "confidence": 0.76,
+        "reason": "possible_biomarker_panel"
+      },
+      {
+        "term": "Access to discounted labs",
+        "normalized": "access to discounted labs",
+        "proposed_treatment_id": 6,
+        "proposed_treatment": "Advanced blood panel",
+        "location_count": 1,
+        "confidence": 0.74,
+        "reason": "possible_advanced_blood_panel"
+      },
+      {
+        "term": "Affordable Lab Testing",
+        "normalized": "affordable lab testing",
+        "proposed_treatment_id": 6,
+        "proposed_treatment": "Advanced blood panel",
+        "location_count": 1,
+        "confidence": 0.74,
+        "reason": "possible_advanced_blood_panel"
+      },
+      {
+        "term": "Basic & Advanced lab testing",
+        "normalized": "basic and advanced lab testing",
+        "proposed_treatment_id": 6,
+        "proposed_treatment": "Advanced blood panel",
+        "location_count": 1,
+        "confidence": 0.74,
+        "reason": "possible_advanced_blood_panel"
+      },
+      {
+        "term": "Basic labs",
+        "normalized": "basic labs",
+        "proposed_treatment_id": 6,
+        "proposed_treatment": "Advanced blood panel",
+        "location_count": 1,
+        "confidence": 0.74,
+        "reason": "possible_advanced_blood_panel"
+      },
+      {
+        "term": "Biomarker Lab Testing",
+        "normalized": "biomarker lab testing",
+        "proposed_treatment_id": 6,
+        "proposed_treatment": "Advanced blood panel",
+        "location_count": 1,
+        "confidence": 0.74,
+        "reason": "possible_advanced_blood_panel"
+      },
+      {
+        "term": "Blood and Salivary Lab Testing",
+        "normalized": "blood and salivary lab testing",
+        "proposed_treatment_id": 6,
+        "proposed_treatment": "Advanced blood panel",
+        "location_count": 1,
+        "confidence": 0.74,
+        "reason": "possible_advanced_blood_panel"
+      },
+      {
+        "term": "BLOOD LABS",
+        "normalized": "blood labs",
+        "proposed_treatment_id": 6,
+        "proposed_treatment": "Advanced blood panel",
+        "location_count": 1,
+        "confidence": 0.74,
+        "reason": "possible_advanced_blood_panel"
+      },
+      {
+        "term": "Blood Panel Review",
+        "normalized": "blood panel review",
+        "proposed_treatment_id": 6,
+        "proposed_treatment": "Advanced blood panel",
+        "location_count": 1,
+        "confidence": 0.74,
+        "reason": "possible_advanced_blood_panel"
+      },
+      {
+        "term": "Blood Panel Testing",
+        "normalized": "blood panel testing",
+        "proposed_treatment_id": 6,
+        "proposed_treatment": "Advanced blood panel",
+        "location_count": 1,
+        "confidence": 0.74,
+        "reason": "possible_advanced_blood_panel"
+      },
+      {
+        "term": "blood testing & complete metabolic assessment",
+        "normalized": "blood testing and complete metabolic assessment",
+        "proposed_treatment_id": 6,
+        "proposed_treatment": "Advanced blood panel",
+        "location_count": 1,
+        "confidence": 0.74,
+        "reason": "possible_advanced_blood_panel"
+      },
+      {
+        "term": "Blood Testing for Causes of Acquired Neuropathies (autoimmune, infectious, metabolic, nutritional, toxic, paraneoplastic)",
+        "normalized": "blood testing for causes of acquired neuropathies autoimmune infectious metabolic nutritional toxic paraneoplastic",
+        "proposed_treatment_id": 6,
+        "proposed_treatment": "Advanced blood panel",
+        "location_count": 1,
+        "confidence": 0.74,
+        "reason": "possible_advanced_blood_panel"
+      },
+      {
+        "term": "Blood Testing Kit",
+        "normalized": "blood testing kit",
+        "proposed_treatment_id": 6,
+        "proposed_treatment": "Advanced blood panel",
+        "location_count": 1,
+        "confidence": 0.74,
+        "reason": "possible_advanced_blood_panel"
+      },
+      {
+        "term": "Blood Testing Services",
+        "normalized": "blood testing services",
+        "proposed_treatment_id": 6,
+        "proposed_treatment": "Advanced blood panel",
+        "location_count": 1,
+        "confidence": 0.74,
+        "reason": "possible_advanced_blood_panel"
+      },
+      {
+        "term": "Blood Tests Female Full Panel Blood Test",
+        "normalized": "blood tests female full panel blood test",
+        "proposed_treatment_id": 6,
+        "proposed_treatment": "Advanced blood panel",
+        "location_count": 1,
+        "confidence": 0.74,
+        "reason": "possible_advanced_blood_panel"
+      },
+      {
+        "term": "Blood Tests Male Full Panel Blood Test",
+        "normalized": "blood tests male full panel blood test",
+        "proposed_treatment_id": 6,
+        "proposed_treatment": "Advanced blood panel",
+        "location_count": 1,
+        "confidence": 0.74,
+        "reason": "possible_advanced_blood_panel"
+      },
+      {
+        "term": "Blood Work / Advanced Lab Panels",
+        "normalized": "blood work advanced lab panels",
+        "proposed_treatment_id": 6,
+        "proposed_treatment": "Advanced blood panel",
+        "location_count": 1,
+        "confidence": 0.74,
+        "reason": "possible_advanced_blood_panel"
+      },
+      {
+        "term": "Blood Work and ECG",
+        "normalized": "blood work and ecg",
+        "proposed_treatment_id": 6,
+        "proposed_treatment": "Advanced blood panel",
+        "location_count": 1,
+        "confidence": 0.74,
+        "reason": "possible_advanced_blood_panel"
+      },
+      {
+        "term": "Blood Work / Full Lab Panel",
+        "normalized": "blood work full lab panel",
+        "proposed_treatment_id": 6,
+        "proposed_treatment": "Advanced blood panel",
+        "location_count": 1,
+        "confidence": 0.74,
+        "reason": "possible_advanced_blood_panel"
+      },
+      {
+        "term": "Blood Work Panel",
+        "normalized": "blood work panel",
+        "proposed_treatment_id": 6,
+        "proposed_treatment": "Advanced blood panel",
+        "location_count": 1,
+        "confidence": 0.74,
+        "reason": "possible_advanced_blood_panel"
+      },
+      {
+        "term": "Blood Work-up with Extensive Report",
+        "normalized": "blood work up with extensive report",
+        "proposed_treatment_id": 6,
+        "proposed_treatment": "Advanced blood panel",
+        "location_count": 1,
+        "confidence": 0.74,
+        "reason": "possible_advanced_blood_panel"
+      },
+      {
+        "term": "Cash labs",
+        "normalized": "cash labs",
+        "proposed_treatment_id": 6,
+        "proposed_treatment": "Advanced blood panel",
+        "location_count": 1,
+        "confidence": 0.74,
+        "reason": "possible_advanced_blood_panel"
+      },
+      {
+        "term": "CIMT & Advanced Lab Testing",
+        "normalized": "cimt and advanced lab testing",
+        "proposed_treatment_id": 6,
+        "proposed_treatment": "Advanced blood panel",
+        "location_count": 1,
+        "confidence": 0.74,
+        "reason": "possible_advanced_blood_panel"
+      },
+      {
+        "term": "Complete Lab Testing",
+        "normalized": "complete lab testing",
+        "proposed_treatment_id": 6,
+        "proposed_treatment": "Advanced blood panel",
+        "location_count": 1,
+        "confidence": 0.74,
+        "reason": "possible_advanced_blood_panel"
+      },
+      {
+        "term": "Comprehensive Blood Panel",
+        "normalized": "comprehensive blood panel",
+        "proposed_treatment_id": 6,
+        "proposed_treatment": "Advanced blood panel",
+        "location_count": 1,
+        "confidence": 0.74,
+        "reason": "possible_advanced_blood_panel"
+      },
+      {
+        "term": "Comprehensive Blood Panel (50+ biomarkers)",
+        "normalized": "comprehensive blood panel 50 plus biomarkers",
+        "proposed_treatment_id": 6,
+        "proposed_treatment": "Advanced blood panel",
+        "location_count": 1,
+        "confidence": 0.74,
+        "reason": "possible_advanced_blood_panel"
+      },
+      {
+        "term": "COMPREHENSIVE BLOOD TESTING",
+        "normalized": "comprehensive blood testing",
+        "proposed_treatment_id": 6,
+        "proposed_treatment": "Advanced blood panel",
+        "location_count": 1,
+        "confidence": 0.74,
+        "reason": "possible_advanced_blood_panel"
+      },
+      {
+        "term": "Comprehensive Evaluation (labs with over 40 biomarkers + provider consultation + medical evaluation)",
+        "normalized": "comprehensive evaluation labs with over 40 biomarkers plus provider consultation plus medical evaluation",
+        "proposed_treatment_id": 6,
+        "proposed_treatment": "Advanced blood panel",
+        "location_count": 1,
+        "confidence": 0.74,
+        "reason": "possible_advanced_blood_panel"
+      },
+      {
+        "term": "Comprehensive Lab Bloodwork / Baseline Labs",
+        "normalized": "comprehensive lab bloodwork baseline labs",
+        "proposed_treatment_id": 6,
+        "proposed_treatment": "Advanced blood panel",
+        "location_count": 1,
+        "confidence": 0.74,
+        "reason": "possible_advanced_blood_panel"
+      },
+      {
+        "term": "Comprehensive Lab Panel",
+        "normalized": "comprehensive lab panel",
+        "proposed_treatment_id": 6,
+        "proposed_treatment": "Advanced blood panel",
+        "location_count": 1,
+        "confidence": 0.74,
+        "reason": "possible_advanced_blood_panel"
+      },
+      {
+        "term": "Comprehensive Lab Panel - 60+ biomarkers",
+        "normalized": "comprehensive lab panel 60 plus biomarkers",
+        "proposed_treatment_id": 6,
+        "proposed_treatment": "Advanced blood panel",
+        "location_count": 1,
+        "confidence": 0.74,
+        "reason": "possible_advanced_blood_panel"
+      },
+      {
+        "term": "Comprehensive Lab Work",
+        "normalized": "comprehensive lab work",
+        "proposed_treatment_id": 6,
+        "proposed_treatment": "Advanced blood panel",
+        "location_count": 1,
+        "confidence": 0.74,
+        "reason": "possible_advanced_blood_panel"
+      },
+      {
+        "term": "comprehensive medical exam and full blood work panel",
+        "normalized": "comprehensive medical exam and full blood work panel",
+        "proposed_treatment_id": 6,
+        "proposed_treatment": "Advanced blood panel",
+        "location_count": 1,
+        "confidence": 0.74,
+        "reason": "possible_advanced_blood_panel"
+      },
+      {
+        "term": "Comprehensive Membership - Whole Body Scan + Comprehensive Panel + follow-up labs at 6 months, Scan time ~60 minutes; annually billed",
+        "normalized": "comprehensive whole body scan plus comprehensive panel plus follow up labs at 6 months scan time annually billed",
+        "proposed_treatment_id": 6,
+        "proposed_treatment": "Advanced blood panel",
+        "location_count": 1,
+        "confidence": 0.74,
+        "reason": "possible_advanced_blood_panel"
+      },
+      {
+        "term": "customized labs",
+        "normalized": "customized labs",
+        "proposed_treatment_id": 6,
+        "proposed_treatment": "Advanced blood panel",
+        "location_count": 1,
+        "confidence": 0.74,
+        "reason": "possible_advanced_blood_panel"
+      },
+      {
+        "term": "DexaStrong Advanced Lab Panel - DexaStrong",
+        "normalized": "dexastrong advanced lab panel dexastrong",
+        "proposed_treatment_id": 6,
+        "proposed_treatment": "Advanced blood panel",
+        "location_count": 1,
+        "confidence": 0.74,
+        "reason": "possible_advanced_blood_panel"
+      },
+      {
+        "term": "DexaStrong Core Lab Panel - DexaStrong",
+        "normalized": "dexastrong core lab panel dexastrong",
+        "proposed_treatment_id": 6,
+        "proposed_treatment": "Advanced blood panel",
+        "location_count": 1,
+        "confidence": 0.74,
+        "reason": "possible_advanced_blood_panel"
+      },
+      {
+        "term": "Diagnostic Blood Testing",
+        "normalized": "diagnostic blood testing",
+        "proposed_treatment_id": 6,
+        "proposed_treatment": "Advanced blood panel",
+        "location_count": 1,
+        "confidence": 0.74,
+        "reason": "possible_advanced_blood_panel"
+      },
+      {
+        "term": "Diagnostic Lab Panel Test",
+        "normalized": "diagnostic lab panel test",
+        "proposed_treatment_id": 6,
+        "proposed_treatment": "Advanced blood panel",
+        "location_count": 1,
+        "confidence": 0.74,
+        "reason": "possible_advanced_blood_panel"
+      },
+      {
+        "term": "Diagnostic Lab Testing",
+        "normalized": "diagnostic lab testing",
+        "proposed_treatment_id": 6,
+        "proposed_treatment": "Advanced blood panel",
+        "location_count": 1,
+        "confidence": 0.74,
+        "reason": "possible_advanced_blood_panel"
+      },
+      {
+        "term": "Diagnostic Services - Blood Work",
+        "normalized": "diagnostic services blood work",
+        "proposed_treatment_id": 6,
+        "proposed_treatment": "Advanced blood panel",
+        "location_count": 1,
+        "confidence": 0.74,
+        "reason": "possible_advanced_blood_panel"
+      },
+      {
+        "term": "Diagnostic Services – Labs",
+        "normalized": "diagnostic services labs",
+        "proposed_treatment_id": 6,
+        "proposed_treatment": "Advanced blood panel",
+        "location_count": 1,
+        "confidence": 0.74,
+        "reason": "possible_advanced_blood_panel"
+      },
+      {
+        "term": "Diagnostics & Functional Lab Testing",
+        "normalized": "diagnostics and functional lab testing",
+        "proposed_treatment_id": 6,
+        "proposed_treatment": "Advanced blood panel",
+        "location_count": 1,
+        "confidence": 0.74,
+        "reason": "possible_advanced_blood_panel"
+      },
+      {
+        "term": "Diagnostics and Lab Testing",
+        "normalized": "diagnostics and lab testing",
+        "proposed_treatment_id": 6,
+        "proposed_treatment": "Advanced blood panel",
+        "location_count": 1,
+        "confidence": 0.74,
+        "reason": "possible_advanced_blood_panel"
+      },
+      {
+        "term": "Early Cancer Detection Blood Test",
+        "normalized": "early cancer detection blood test",
+        "proposed_treatment_id": 6,
+        "proposed_treatment": "Advanced blood panel",
+        "location_count": 1,
+        "confidence": 0.74,
+        "reason": "possible_advanced_blood_panel"
+      },
+      {
+        "term": "Fourth of July Flash Sale: Free Labs with New Wellness Program",
+        "normalized": "fourth of july flash sale free labs with new wellness program",
+        "proposed_treatment_id": 6,
+        "proposed_treatment": "Advanced blood panel",
+        "location_count": 1,
+        "confidence": 0.74,
+        "reason": "possible_advanced_blood_panel"
+      }
+    ]
+  },
+  "phase_3": {
+    "proposed_candidates": 17,
+    "borderline_candidates": 0,
+    "out_of_scope_groups": 3,
+    "candidates": [
+      {
+        "proposed_canonical_name": "Physical therapy",
+        "category": "Recovery & performance",
+        "location_count": 1048,
+        "top_aliases": [
+          "physical therapy",
+          "orthopedic physical therapy",
+          "pediatric physical therapy",
+          "physical therapy and rehabilitation",
+          "pelvic floor physical therapy",
+          "sports physical therapy",
+          "physical therapy clinic",
+          "outpatient physical therapy",
+          "physical therapy services",
+          "physical therapy telehealth",
+          "manual physical therapy",
+          "neurological physical therapy"
+        ],
+        "example_raw_names": [
+          "Physical Therapy",
+          "Virtual Physical Therapy",
+          "Physical therapy",
+          "Online Physical Therapy",
+          "Physical Therapy Packages"
+        ],
+        "status": "candidate",
+        "reason": ""
+      },
+      {
+        "proposed_canonical_name": "Chiropractic care",
+        "category": "Lifestyle & foundational",
+        "location_count": 746,
+        "top_aliases": [
+          "chiropractic care",
+          "chiropractic",
+          "chiropractic adjustments",
+          "chiropractic adjustment",
+          "chiropractic services",
+          "chiropractic care for kids",
+          "pediatric chiropractic",
+          "pediatric chiropractic care",
+          "chiropractic therapy",
+          "pregnancy chiropractic",
+          "prenatal chiropractic",
+          "chiropractic manipulation"
+        ],
+        "example_raw_names": [
+          "Chiropractic Care",
+          "Chiropractic care",
+          "CHIROPRACTIC CARE",
+          "Chiropractic",
+          "New Patient Chiropractic Special"
+        ],
+        "status": "candidate",
+        "reason": ""
+      },
+      {
+        "proposed_canonical_name": "Acupuncture",
+        "category": "Lifestyle & foundational",
+        "location_count": 522,
+        "top_aliases": [
+          "acupuncture",
+          "acupuncture clinic",
+          "acupuncture therapy",
+          "acupuncture treatment",
+          "electro acupuncture",
+          "medical acupuncture",
+          "acupuncture visit",
+          "auricular acupuncture",
+          "facial rejuvenation acupuncture",
+          "acupuncture and dry needling",
+          "acupuncture and herbal medicine",
+          "acupuncture follow up"
+        ],
+        "example_raw_names": [
+          "Acupuncture",
+          "Acupuncture Follow Up",
+          "Acupuncture Membership",
+          "Initial Acupuncture",
+          "Follow up Acupuncture"
+        ],
+        "status": "candidate",
+        "reason": ""
+      },
+      {
+        "proposed_canonical_name": "Microneedling",
+        "category": "Aesthetic",
+        "location_count": 516,
+        "top_aliases": [
+          "microneedling",
+          "rf microneedling",
+          "skinpen microneedling",
+          "micro needling",
+          "potenza rf microneedling",
+          "skinpen",
+          "skinpen microneedling skinpen",
+          "aquagold microneedling",
+          "facial microneedling",
+          "microneedling skinpen",
+          "microneedling with radio frequency",
+          "microneedling with skinpen"
+        ],
+        "example_raw_names": [
+          "Microneedling",
+          "Microneedling Packages",
+          "MicroNeedling",
+          "Microneedling - Package of 4",
+          "Microneedling package of 3"
+        ],
+        "status": "candidate",
+        "reason": ""
+      },
+      {
+        "proposed_canonical_name": "Body contouring",
+        "category": "Aesthetic",
+        "location_count": 413,
+        "top_aliases": [
+          "body contouring",
+          "emsculpt neo",
+          "coolsculpting",
+          "body sculpting",
+          "emsculpt",
+          "coolsculpting elite",
+          "coolsculpting coolsculpting",
+          "coolsculpting elite coolsculpting elite",
+          "cool sculpting",
+          "emsculpt neo emsculpt neo",
+          "evolve body contouring",
+          "trusculpt id"
+        ],
+        "example_raw_names": [
+          "Body Contouring",
+          "Body contouring",
+          "BODY CONTOURING",
+          "body Contouring",
+          "Emsculpt Neo"
+        ],
+        "status": "candidate",
+        "reason": ""
+      },
+      {
+        "proposed_canonical_name": "Massage therapy",
+        "category": "Recovery & performance",
+        "location_count": 357,
+        "top_aliases": [
+          "massage therapy",
+          "deep tissue massage",
+          "sports massage",
+          "therapeutic massage",
+          "medical massage therapy",
+          "massage therapy deep tissue",
+          "clinical massage therapy",
+          "deep tissue massage 60",
+          "deep tissue massage therapy",
+          "massage therapy prenatal",
+          "massage therapy swedish",
+          "medical and massage therapy"
+        ],
+        "example_raw_names": [
+          "Massage Therapy",
+          "Massage Therapy - 60 Minutes",
+          "Massage Therapy - 75 Minutes",
+          "Massage Therapy - 90 Minutes",
+          "Massage Therapy - 120 Minutes"
+        ],
+        "status": "candidate",
+        "reason": ""
+      },
+      {
+        "proposed_canonical_name": "Laser hair removal",
+        "category": "Aesthetic",
+        "location_count": 345,
+        "top_aliases": [
+          "laser hair removal",
+          "laser hair removal bikini",
+          "laser hair removal brazilian",
+          "laser hair removal chin",
+          "laser hair removal full face",
+          "laser hair removal neck",
+          "laser hair removal upper lip",
+          "laser hair removal back",
+          "laser hair removal chest",
+          "laser hair removal chin plus upper lip",
+          "laser hair removal full beard",
+          "laser hair removal full legs both"
+        ],
+        "example_raw_names": [
+          "Laser Hair Removal",
+          "laser hair removal",
+          "LASER HAIR REMOVAL",
+          "Laser hair removal",
+          "Laser Hair removal"
+        ],
+        "status": "candidate",
+        "reason": ""
+      },
+      {
+        "proposed_canonical_name": "Hair restoration",
+        "category": "Regenerative & cellular",
+        "location_count": 317,
+        "top_aliases": [
+          "hair restoration",
+          "hair loss treatment",
+          "hair loss",
+          "hair loss therapy",
+          "hair restoration therapy",
+          "hair rejuvenation",
+          "keralase hair restoration",
+          "prf hair restoration",
+          "hair loss restoration",
+          "hair regrowth",
+          "non surgical hair restoration",
+          "post cancer hair loss treatment"
+        ],
+        "example_raw_names": [
+          "Hair restoration",
+          "Hair Restoration",
+          "HAIR RESTORATION",
+          "Hair Loss Treatment",
+          "Hair Loss"
+        ],
+        "status": "candidate",
+        "reason": ""
+      },
+      {
+        "proposed_canonical_name": "Skin tightening",
+        "category": "Aesthetic",
+        "location_count": 239,
+        "top_aliases": [
+          "skin tightening",
+          "ultherapy",
+          "rf skin tightening",
+          "xerf skin tightening",
+          "venus freeze skin tightening butt and thighs",
+          "venus freeze skin tightening face",
+          "venus freeze skin tightening stomach and flanks",
+          "sofwave skin tightening",
+          "thermage flx",
+          "forma skin tightening",
+          "laser skin tightening",
+          "thermage"
+        ],
+        "example_raw_names": [
+          "Skin Tightening",
+          "Skin tightening",
+          "SKIN TIGHTENING",
+          "Ultherapy",
+          "Ultherapy®"
+        ],
+        "status": "candidate",
+        "reason": ""
+      },
+      {
+        "proposed_canonical_name": "RF microneedling",
+        "category": "Aesthetic",
+        "location_count": 221,
+        "top_aliases": [
+          "morpheus8",
+          "rf microneedling",
+          "potenza rf microneedling",
+          "morpheus 8",
+          "morpheus8 body",
+          "morpheus8 morpheus8",
+          "morpheus8 rf microneedling",
+          "potenza",
+          "radiofrequency microneedling",
+          "secret rf microneedling secret rf",
+          "virtue rf microneedling",
+          "exion rf microneedling"
+        ],
+        "example_raw_names": [
+          "Morpheus8",
+          "Morpheus8™",
+          "Morpheus8®",
+          "MORPHEUS8",
+          "RF Microneedling"
+        ],
+        "status": "candidate",
+        "reason": ""
+      },
+      {
+        "proposed_canonical_name": "Hydrafacial",
+        "category": "Aesthetic",
+        "location_count": 204,
+        "top_aliases": [
+          "hydrafacial",
+          "hydrafacial hydrafacial",
+          "diamondglow",
+          "hydra facial",
+          "signature hydrafacial",
+          "deluxe hydrafacial",
+          "diamondglow facial",
+          "hydrafacial md",
+          "platinum hydrafacial",
+          "deluxe hydra facial",
+          "diamondglow diamondglow",
+          "hydrafacial keravive"
+        ],
+        "example_raw_names": [
+          "HYDRAFACIAL",
+          "Hydrafacial",
+          "HydraFacial",
+          "Hydrafacial®",
+          "HydraFacial®"
+        ],
+        "status": "candidate",
+        "reason": ""
+      },
+      {
+        "proposed_canonical_name": "Ozone therapy",
+        "category": "Regenerative & cellular",
+        "location_count": 168,
+        "top_aliases": [
+          "ozone therapy",
+          "eboo therapy",
+          "ebo2 therapy",
+          "eboo",
+          "ebo2",
+          "eboo f apheresis",
+          "eboo ozone therapy",
+          "major autohemotherapy",
+          "oxygen ozone therapy",
+          "ozone and eboo",
+          "ozone therapy for fatigue and inflammation",
+          "10 pass ozone clinical ozone therapy md only"
+        ],
+        "example_raw_names": [
+          "Ozone Therapy",
+          "Ozone therapy",
+          "ozone therapy",
+          "OZONE THERAPY",
+          "EBOO Therapy"
+        ],
+        "status": "candidate",
+        "reason": ""
+      },
+      {
+        "proposed_canonical_name": "Laser skin resurfacing",
+        "category": "Aesthetic",
+        "location_count": 141,
+        "top_aliases": [
+          "laser skin resurfacing",
+          "laser resurfacing",
+          "co2 laser",
+          "halo laser",
+          "co2 fractional laser",
+          "co2 laser resurfacing",
+          "fraxel",
+          "fraxel laser",
+          "halo laser treatment",
+          "co2 laser skin resurfacing",
+          "fractional co2 laser",
+          "fraxel dual"
+        ],
+        "example_raw_names": [
+          "Laser Skin Resurfacing",
+          "Laser Resurfacing",
+          "CO2 Laser",
+          "HALO Laser",
+          "Halo Laser"
+        ],
+        "status": "candidate",
+        "reason": ""
+      },
+      {
+        "proposed_canonical_name": "Lymphatic drainage",
+        "category": "Recovery & performance",
+        "location_count": 129,
+        "top_aliases": [
+          "lymphatic drainage massage",
+          "lymphatic drainage",
+          "lymphatic massage",
+          "manual lymphatic drainage",
+          "lymphatic drainage therapy",
+          "full body lymphatic drainage",
+          "lift plus sculpt lymphatic drainage facial",
+          "manual lymphatic drainage mld",
+          "post op lymphatic drainage",
+          "ballancerpro lymphatic drainage",
+          "ballancerpro lymphatic drainage massage healing services",
+          "body ballancer lymphatic drainage body ballancer"
+        ],
+        "example_raw_names": [
+          "Lymphatic Drainage Massage",
+          "LYMPHATIC DRAINAGE MASSAGE",
+          "Lymphatic Drainage",
+          "Lymphatic drainage",
+          "Lymphatic Drainage - 30 min"
+        ],
+        "status": "candidate",
+        "reason": ""
+      },
+      {
+        "proposed_canonical_name": "Chemical peel",
+        "category": "Aesthetic",
+        "location_count": 114,
+        "top_aliases": [
+          "chemical peel",
+          "vi peel",
+          "vi peel vi peel",
+          "perfect derma peel",
+          "customized chemical peel",
+          "tca peel",
+          "the perfect derma peel",
+          "aura 365 chemical peel",
+          "back facial with chemical peel 45 plus min 2 options",
+          "biorepeel chemical peel",
+          "biorepeel italian made 30 tca peel",
+          "chemical peel add on"
+        ],
+        "example_raw_names": [
+          "Chemical Peel",
+          "CHEMICAL PEEL",
+          "VI Peel",
+          "VI Peel®",
+          "VI Peel - VI Peel"
+        ],
+        "status": "candidate",
+        "reason": ""
+      },
+      {
+        "proposed_canonical_name": "Colon hydrotherapy",
+        "category": "Lifestyle & foundational",
+        "location_count": 41,
+        "top_aliases": [
+          "colon hydrotherapy",
+          "3 pack colonics",
+          "colon hydrotherapy 1 colonic session",
+          "colon hydrotherapy first session includes half hour consultation",
+          "colon hydrotherapy follow up",
+          "colon hydrotherapy of",
+          "colon hydrotherapy series of 10",
+          "colon hydrotherapy series of 15",
+          "colon hydrotherapy series of 3",
+          "colon hydrotherapy series of 5",
+          "colon hydrotherapy visit",
+          "colonic"
+        ],
+        "example_raw_names": [
+          "Colon Hydrotherapy - 1 session, 1 session",
+          "Colon Hydrotherapy - 3 sessions, 3 sessions",
+          "Colon Hydrotherapy - 6 sessions, 6 sessions",
+          "Colon Hydrotherapy",
+          "Colon Hydrotherapy (Package of 3)"
+        ],
+        "status": "candidate",
+        "reason": ""
+      },
+      {
+        "proposed_canonical_name": "Laser tattoo removal",
+        "category": "Aesthetic",
+        "location_count": 29,
+        "top_aliases": [
+          "laser tattoo removal",
+          "laser tattoo removal and dark pigment correction",
+          "no ragrets laser tattoo removal",
+          "picosure laser tattoo removal"
+        ],
+        "example_raw_names": [
+          "Laser Tattoo Removal",
+          "LASER TATTOO REMOVAL",
+          "Laser Tattoo Removal & Dark Pigment Correction",
+          "No RAGRETS Laser Tattoo Removal™",
+          "PicoSure Laser Tattoo Removal"
+        ],
+        "status": "candidate",
+        "reason": ""
+      }
+    ],
+    "borderline": [],
+    "out_of_scope": [
+      {
+        "proposed_canonical_name": "Retail products",
+        "category": "Lifestyle & foundational",
+        "location_count": 208,
+        "top_aliases": [
+          "skincare products",
+          "skin care products",
+          "health and beauty shop",
+          "zo skin health products zo",
+          "arthritis center of riverside gift card",
+          "cbd products",
+          "collagen based products",
+          "hair loss products",
+          "hair retention product consultation",
+          "holistic skincare products",
+          "human cellular tissue product therapy",
+          "human cellular tissue products hct ps"
+        ],
+        "example_raw_names": [
+          "Skincare Products",
+          "SKINCARE PRODUCTS",
+          "Skin Care Products",
+          "Health and beauty shop",
+          "ZO Skin Health Products - ZO"
+        ],
+        "status": "out_of_scope",
+        "reason": "retail or gift-card commerce"
+      },
+      {
+        "proposed_canonical_name": "Memberships and packages",
+        "category": "Lifestyle & foundational",
+        "location_count": 30,
+        "top_aliases": [
+          "memberships",
+          "monthly memberships",
+          "vip memberships",
+          "wellness memberships",
+          "chiropractic memberships and",
+          "concierge longevity memberships",
+          "concierge memberships",
+          "direct primary care monthly memberships",
+          "executive memberships",
+          "family memberships",
+          "gym memberships",
+          "h2o memberships"
+        ],
+        "example_raw_names": [
+          "Memberships",
+          "Monthly memberships",
+          "MONTHLY MEMBERSHIPS",
+          "VIP Memberships",
+          "Wellness Memberships"
+        ],
+        "status": "out_of_scope",
+        "reason": "pricing/package construct, not a treatment"
+      },
+      {
+        "proposed_canonical_name": "Tanning",
+        "category": "Aesthetic",
+        "location_count": 29,
+        "top_aliases": [
+          "spray tanning",
+          "airbrush tanning",
+          "brazilian tanning",
+          "dolce glow sunless tanning",
+          "euromist sunless tanning",
+          "faster tanning bed visit faster",
+          "fastest tanning bed visit fastest",
+          "mystic spray tan",
+          "organic sunless spray tan",
+          "personal spray tan",
+          "spray tan annual spray tan",
+          "spray tan limited time offer spray tan"
+        ],
+        "example_raw_names": [
+          "Spray Tanning",
+          "Airbrush Tanning",
+          "Brazilian Tanning",
+          "Dolce Glow Sunless Tanning",
+          "EuroMist™ Sunless Tanning"
+        ],
+        "status": "out_of_scope",
+        "reason": "commerce/beauty service outside longevity treatment taxonomy"
+      }
+    ]
+  },
+  "guardrails": [
+    "No rows were inserted into fountain.treatments.",
+    "Medium-confidence mappings were not applied to offerings.",
+    "Candidate new treatments were written only to the raw proposal table.",
+    "High-confidence writes were limited to treatment_aliases inserts and offerings.treatment_id updates."
+  ]
+}
