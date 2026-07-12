@@ -261,7 +261,7 @@ export function DirectoryShell({
 
           <div className="resultbar">
             <span>
-              {loading ? "Searching..." : `${payload.total.toLocaleString()} result${payload.total === 1 ? "" : "s"}`}
+              {loading ? "Searching..." : `${payload.total.toLocaleString()} Result${payload.total === 1 ? "" : "s"}`}
             </span>
             {loading ? <Loader2 className="spin" size={18} aria-hidden="true" /> : null}
           </div>
