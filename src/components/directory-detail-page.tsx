@@ -17,6 +17,7 @@ import { locationHref, practitionerHref } from "@/lib/directory-urls";
 import { formatLocationPlace } from "@/lib/location-display";
 import { OutboundClinicLink } from "@/components/outbound-clinic-link";
 import { SplitDirectorySearch } from "@/components/split-directory-search";
+import { getOfferingLabels, type TreatmentDisplayMode } from "@/lib/offering-labels";
 
 type Tag = { facet: string; value: string };
 type ImageRef = { blob_url?: string | null; alt?: string | null };
@@ -35,6 +36,7 @@ type OfferingRef = {
   price_currency?: string | null;
   treatment?: string | null;
   domain?: string | null;
+  treatment_display_mode?: TreatmentDisplayMode | null;
 };
 type AffiliationRef = {
   id?: number;
@@ -543,15 +545,6 @@ function getImageSources(images: ImageRef[]) {
 
 function imageSource(src: string) {
   return src;
-}
-
-function getOfferingLabels(offering: OfferingRef) {
-  const rawName = offering.raw_name?.trim();
-  const treatment = offering.treatment?.trim();
-  const primary = rawName || treatment || "Offering";
-  const secondary = rawName && treatment && rawName.toLocaleLowerCase() !== treatment.toLocaleLowerCase() ? treatment : null;
-
-  return { primary, secondary };
 }
 
 function formatPrice(amount?: number | null, currency?: string | null) {

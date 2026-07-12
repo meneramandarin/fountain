@@ -8,7 +8,8 @@
     "test": "vitest run",
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
-    "city-index:refresh": "node pipeline/cli.mjs maintain refresh-city-index"
+    "city-index:refresh": "node pipeline/cli.mjs maintain refresh-city-index",
+    "taxonomy:present": "node pipeline/cli.mjs taxonomy-present"
   },
   "dependencies": {
     "@vercel/blob": "2.5.0",

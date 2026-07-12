@@ -42,6 +42,21 @@ describe("pipeline CLI parsing", () => {
     );
   });
 
+  test("supports incremental taxonomy presentation and requires a live-run budget", () => {
+    expect(validateCommandArgs(parseCliArgs([
+      "taxonomy-present",
+      "--model", "openai/gpt-4o-mini",
+      "--batch-size", "40",
+      "--limit", "100",
+    ]))).toMatchObject({ command: "taxonomy-present", batchSize: "40", limit: "100" });
+    expect(() => validateCommandArgs(parseCliArgs([
+      "taxonomy-present", "--apply",
+    ]))).toThrow("requires an explicit --budget");
+    expect(validateCommandArgs(parseCliArgs([
+      "taxonomy-present", "--budget", "1", "--apply",
+    ]))).toMatchObject({ command: "taxonomy-present", apply: true, budget: "1" });
+  });
+
   test("requires an exact Gate B campaign, evidence runs, and expected count for suppression", () => {
     expect(validateCommandArgs(parseCliArgs([
       "suppress",

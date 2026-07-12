@@ -1993,9 +1993,28 @@ export async function getLocationDetail(ref: number | string) {
   location.offerings = await rows(
     `
     SELECT o.raw_name, o.price_amount, o.price_currency,
-           t.canonical_name AS treatment, t.category AS domain
+           t.canonical_name AS treatment, t.category AS domain,
+           presentation.display_mode AS treatment_display_mode
     FROM offerings o
     JOIN treatments t ON t.id = o.treatment_id
+    LEFT JOIN LATERAL (
+      SELECT term_presentation.display_mode
+      FROM fountain_raw.treatment_aliases alias
+      JOIN treatment_term_presentations term_presentation
+        ON term_presentation.treatment_id = alias.treatment_id
+       AND term_presentation.term_normalized = alias.alias_normalized
+      WHERE alias.treatment_id = t.id
+        AND LOWER(BTRIM(alias.alias_text)) = LOWER(BTRIM(o.raw_name))
+        AND term_presentation.review_status IN ('auto_approved', 'human_approved')
+      ORDER BY
+        CASE term_presentation.review_status
+          WHEN 'human_approved' THEN 0
+          WHEN 'auto_approved' THEN 1
+          ELSE 2
+        END,
+        term_presentation.updated_at DESC
+      LIMIT 1
+    ) presentation ON true
     WHERE o.location_id = ?
       AND ${activeOfferingCondition("o")}
     ORDER BY (t.category IS NULL), t.category, t.canonical_name, o.raw_name
