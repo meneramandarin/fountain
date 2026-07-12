@@ -17,7 +17,7 @@ import { locationHref, practitionerHref } from "@/lib/directory-urls";
 import { formatLocationPlace } from "@/lib/location-display";
 import { OutboundClinicLink } from "@/components/outbound-clinic-link";
 import { SplitDirectorySearch } from "@/components/split-directory-search";
-import { getOfferingLabels, type TreatmentDisplayMode } from "@/lib/offering-labels";
+import { getOfferingLabels } from "@/lib/offering-labels";
 
 type Tag = { facet: string; value: string };
 type ImageRef = { blob_url?: string | null; alt?: string | null; image_kind?: string | null };
@@ -36,7 +36,6 @@ type OfferingRef = {
   price_currency?: string | null;
   treatment?: string | null;
   domain?: string | null;
-  treatment_display_mode?: TreatmentDisplayMode | null;
 };
 type AffiliationRef = {
   id?: number;
@@ -399,12 +398,11 @@ function Offerings({ offerings }: { offerings: OfferingRef[] }) {
       </h2>
       <div className="offer-list listing-offer-list">
         {offerings.slice(0, 60).map((offering, index) => {
-          const { primary, secondary } = getOfferingLabels(offering);
+          const { primary } = getOfferingLabels(offering);
           return (
             <div className="offer-item" key={`${offering.raw_name || offering.treatment}-${index}`}>
               <div className="offer-copy">
                 <span className="offer-name">{primary}</span>
-                {secondary ? <small>{secondary}</small> : null}
               </div>
               {offering.price_amount != null ? <b>{formatPrice(offering.price_amount, offering.price_currency)}</b> : null}
             </div>

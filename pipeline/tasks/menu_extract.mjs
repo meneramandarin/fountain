@@ -140,6 +140,7 @@ export const MENU_TREATMENT_MAP_SQL = `
     alias.alias_normalized AS normalized_term,
     'alias'::text AS mapping_source
   FROM fountain_raw.treatment_aliases alias
+  WHERE alias.mapping_status = 'active'
   ORDER BY treatment_id, mapping_source, term
 `;
 
