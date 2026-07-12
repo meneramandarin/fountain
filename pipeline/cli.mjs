@@ -15,11 +15,14 @@ import {
   ENRICHMENT_TASK_TYPES,
   enqueueEnrichmentPlan,
   enqueueImageClassifyPlan,
+  enqueueMenuPricesPlan,
   enqueuePostContactPlan,
   loadEnrichmentCensus,
+  loadMenuPricesEnqueuePlan,
   loadPostContactEnqueuePlan,
   renderEnrichmentCensusReport,
   renderImageClassifyEnqueueReport,
+  renderMenuPricesEnqueueReport,
   renderPostContactEnqueueReport,
 } from "./lib/enrichment-census.mjs";
 import {
@@ -30,9 +33,11 @@ import {
 import {
   assertEnrichmentFinalReconciliation,
   ENRICHMENT_FINAL_REPORT_FILENAME,
+  ENRICHMENT_MENU_PRICES_CENSUS_FILENAME,
   loadEnrichmentFinalReportData,
   normalizeFinalReportRunIds,
   renderEnrichmentFinalReport,
+  selectedMenuExtractRunIds,
   writeEnrichmentFinalReport,
 } from "./lib/enrichment-final-report.mjs";
 import { closePool, query as dbQuery, withTransaction } from "./lib/db.mjs";
@@ -186,6 +191,7 @@ export function validateCommandArgs(parsed) {
     "final-report": new Set([
       "before",
       "after",
+      "menuPricesBefore",
       "runsFile",
       "runSelection",
       "output",
@@ -1036,6 +1042,26 @@ export async function runFinalReport(parsed, run, operations = {}) {
     parsed.runsFile ? path.resolve(ROOT, parsed.runsFile) : "--run-selection",
   );
   const runIds = finalRunSelection(rawSelection);
+  const menuRunIds = selectedMenuExtractRunIds(runIds);
+  const menuPricesBeforePath = path.resolve(
+    ROOT,
+    parsed.menuPricesBefore
+      || path.join("docs", "runs", ENRICHMENT_MENU_PRICES_CENSUS_FILENAME),
+  );
+  let menuPricesBefore = null;
+  if (menuRunIds.length > 0 || parsed.menuPricesBefore) {
+    let menuPricesText;
+    try {
+      menuPricesText = await read(menuPricesBeforePath, "utf8");
+    } catch (error) {
+      throw new Error(`Final-report input evidence is unavailable: ${error.message}`);
+    }
+    menuPricesBefore = parseCensusEvidence(
+      menuPricesText,
+      "menu-prices",
+      menuPricesBeforePath,
+    );
+  }
   const transact = operations.withTransaction || withTransaction;
   const loadPersisted = operations.loadPersistedLegitimacyCloseout
     || loadPersistedLegitimacyCloseout;
@@ -1053,6 +1079,7 @@ export async function runFinalReport(parsed, run, operations = {}) {
       stage3: persisted.stage3,
       redemption: persisted.redemption,
       runIds,
+      menuPricesBefore,
       generatedAt: (operations.now || (() => new Date()))().toISOString(),
     }, { query: tx });
   });
@@ -1087,6 +1114,7 @@ export async function runFinalReport(parsed, run, operations = {}) {
       redemptionRunId: FINAL_REDEMPTION_RUN_ID,
       beforePath,
       afterPath,
+      menuPricesBeforePath: menuPricesBefore ? menuPricesBeforePath : null,
       runSelection: data.runSelection,
       reconciliation: data.reconciliation,
       outputPath: writtenPath,
@@ -1096,8 +1124,10 @@ export async function runFinalReport(parsed, run, operations = {}) {
 
 export async function runCensus(parsed, run, operations = {}) {
   const scope = parsed.scope || "before";
-  if (!new Set(["before", "post-contact", "image-classify", "after"]).has(scope)) {
-    throw new Error("--scope for census must be before, post-contact, image-classify, or after.");
+  if (!new Set(["before", "post-contact", "menu-prices", "image-classify", "after"]).has(scope)) {
+    throw new Error(
+      "--scope for census must be before, post-contact, menu-prices, image-classify, or after.",
+    );
   }
   const load = operations.loadEnrichmentCensus || loadEnrichmentCensus;
   const snapshot = await load({
@@ -1178,6 +1208,53 @@ export async function runCensus(parsed, run, operations = {}) {
         eligible: snapshot.population.eligible,
         unclassified_images: plan.unclassifiedImageCount,
         expected_tasks: plan.expectedInsertions,
+        inserted: enqueue.insertedCount,
+        reports_written: 2,
+      },
+      result: { dryRun: false, scope, snapshot, plan, enqueue, reportPath, jsonPath },
+    };
+  }
+
+  if (scope === "menu-prices") {
+    const plan = await (operations.loadMenuPricesEnqueuePlan
+      || loadMenuPricesEnqueuePlan)(snapshot);
+    if (run.dry_run) {
+      return {
+        status: "completed",
+        counts: {
+          eligible: snapshot.population.eligible,
+          menu_missing_raw: plan.menuMissing.rawCount,
+          menu_missing_adoptions: plan.expectedAdoptions,
+          prices_missing_raw: plan.pricesMissing.rawCount,
+          prices_missing_insertions: plan.expectedInsertions,
+          expected_tasks: plan.expectedTasks,
+          adopted: 0,
+          inserted: 0,
+        },
+        result: { dryRun: true, scope, snapshot, plan },
+      };
+    }
+    const enqueue = await (operations.enqueueMenuPricesPlan || enqueueMenuPricesPlan)({
+      plan,
+      liveSnapshot: snapshot,
+      runId: run.id,
+      implementedTaskTypes: ["menu_extract"],
+      apply: true,
+    });
+    const markdown = (operations.renderMenuPricesEnqueueReport
+      || renderMenuPricesEnqueueReport)({ snapshot, plan, enqueue });
+    await write(reportPath, markdown, "utf8");
+    await write(jsonPath, `${JSON.stringify({ snapshot, plan, enqueue }, null, 2)}\n`, "utf8");
+    return {
+      status: "completed",
+      counts: {
+        eligible: snapshot.population.eligible,
+        menu_missing_raw: plan.menuMissing.rawCount,
+        menu_missing_adoptions: plan.expectedAdoptions,
+        prices_missing_raw: plan.pricesMissing.rawCount,
+        prices_missing_insertions: plan.expectedInsertions,
+        expected_tasks: plan.expectedTasks,
+        adopted: enqueue.adoptedCount,
         inserted: enqueue.insertedCount,
         reports_written: 2,
       },
@@ -1621,7 +1698,7 @@ function usage() {
   return [
     "Usage: node pipeline/cli.mjs <command> [options]",
     "Commands: enqueue, drain, report, suppress, stage3, redemption, final-report, migrate, census, maintain",
-    "Final closeout: final-report --runs-file <selection.json> [--before <json>] [--after <json>] [--output <md>] [--apply]",
+    "Final closeout: final-report --runs-file <selection.json> [--before <json>] [--after <json>] [--menu-prices-before <json>] [--output <md>] [--apply]",
     "Maintenance: regen-structure-doc, refresh-city-index",
     "Persistent side effects require --apply; dry-run is the default.",
   ].join("\n");

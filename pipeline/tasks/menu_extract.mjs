@@ -13,6 +13,8 @@ export const MENU_EXTRACT_SOURCE_SLUG = "clinic_websites";
 export const MENU_EXTRACT_PAGE_LIMIT = 4;
 export const MENU_EXTRACT_ITEM_LIMIT = 40;
 export const MENU_EXTRACT_CONFIDENCE_THRESHOLD = 0.85;
+export const MENU_EXTRACT_MAX_TOKENS_BY_ATTEMPT = Object.freeze([2_400, 4_800, 9_600]);
+export const MENU_EXTRACT_MAX_TOKENS_CAP = 9_600;
 
 const MENU_PAGE_CHAR_LIMIT = 6_000;
 const MENU_TOTAL_CHAR_LIMIT = 18_000;
@@ -243,6 +245,7 @@ export async function handleMenuExtract(
     location: initial,
     pages: usablePages,
     runId,
+    attempts: task?.attempts,
     llmClient,
   });
   const mappingResult = await executeQuery(query, MENU_TREATMENT_MAP_SQL, []);
@@ -358,10 +361,17 @@ export function extractMenuPageUrls(html, baseUrl, { limit = MENU_EXTRACT_PAGE_L
     .slice(0, limit);
 }
 
-export async function extractOfferingsWithLlm({ location, pages, runId, llmClient }) {
+export async function extractOfferingsWithLlm({
+  location,
+  pages,
+  runId,
+  attempts = 1,
+  llmClient,
+}) {
   if (!llmClient || typeof llmClient.complete !== "function") {
     throw new TypeError("llmClient must expose complete().");
   }
+  const maxTokens = menuExtractMaxTokens(attempts);
   const completion = await llmClient.complete({
     runId,
     entityId: positiveInteger(location.id, "location id"),
@@ -387,7 +397,7 @@ export async function extractOfferingsWithLlm({ location, pages, runId, llmClien
         }),
       },
     ],
-    maxTokens: 2_400,
+    maxTokens,
     temperature: 0,
     responseFormat: MENU_EXTRACT_RESPONSE_FORMAT,
   });
@@ -397,6 +407,12 @@ export async function extractOfferingsWithLlm({ location, pages, runId, llmClien
     external_call_id: completion?.externalCallId ?? null,
     cost_estimate_usd: finiteNonnegative(completion?.costEstimateUsd) ?? null,
   };
+}
+
+export function menuExtractMaxTokens(attempts = 1) {
+  const attempt = positiveInteger(attempts, "attempts");
+  const index = Math.min(attempt, MENU_EXTRACT_MAX_TOKENS_BY_ATTEMPT.length) - 1;
+  return Math.min(MENU_EXTRACT_MAX_TOKENS_BY_ATTEMPT[index], MENU_EXTRACT_MAX_TOKENS_CAP);
 }
 
 export function buildTreatmentMap(rows) {
@@ -663,6 +679,33 @@ export async function guardedApplyMenuExtraction(
                   });
                   priceWrite = { ...priceWrite, conflict_recorded: true };
                 }
+              } else if (
+                existing.price_amount == null
+                && matchingCurrency(existing.price_currency, item.price_currency)
+                && !protectedOffering
+              ) {
+                priceWrite = await guardedBackfillPriceAmountOnly({
+                  tx,
+                  recordWrite,
+                  offeringId: Number(existing.id),
+                  item,
+                  taskId: normalizedTaskId,
+                  runId: normalizedRunId,
+                  actorLabel,
+                  writeStartedAt,
+                });
+                if (!priceWrite.written) {
+                  await upsertPriceConflict(tx, {
+                    locationId: normalizedLocationId,
+                    existing,
+                    item,
+                    reason: `field_ledger_refused:${priceWrite.reason}`,
+                    actorLabel,
+                    taskId: normalizedTaskId,
+                    runId: normalizedRunId,
+                  });
+                  priceWrite = { ...priceWrite, conflict_recorded: true };
+                }
               } else if (!pricesEqual(existing, item)) {
                 await upsertPriceConflict(tx, {
                   locationId: normalizedLocationId,
@@ -739,6 +782,9 @@ export async function guardedApplyMenuExtraction(
 
         const insertedCount = outcomes.filter((item) => item.action === "inserted").length;
         const priceBackfills = outcomes.filter((item) => item.price_write?.written).length;
+        const priceAmountOnlyBackfills = outcomes.filter((item) => (
+          item.price_write?.written && item.price_write?.amount_only === true
+        )).length;
         const treatmentBackfills = outcomes.filter((item) => item.treatment_write?.written).length;
         const conflicts = outcomes.filter((item) => item.price_write?.reason === "price_conflict_recorded"
           || item.price_write?.conflict_recorded === true).length;
@@ -746,6 +792,7 @@ export async function guardedApplyMenuExtraction(
           outcomes,
           insertedCount,
           priceBackfills,
+          priceAmountOnlyBackfills,
           treatmentBackfills,
           conflicts,
           reviewCount: priceReviews.length,
@@ -767,6 +814,7 @@ export async function guardedApplyMenuExtraction(
       counts: {
         inserted: result.insertedCount,
         prices_backfilled: result.priceBackfills,
+        price_amount_only_backfills: result.priceAmountOnlyBackfills,
         treatments_backfilled: result.treatmentBackfills,
         price_conflicts: result.conflicts,
         price_reviews: result.reviewCount,
@@ -777,6 +825,7 @@ export async function guardedApplyMenuExtraction(
         written: servingWrites > 0,
         offerings_inserted: result.insertedCount,
         prices_backfilled: result.priceBackfills,
+        price_amount_only_backfills: result.priceAmountOnlyBackfills,
         treatments_backfilled: result.treatmentBackfills,
         existing_prices_overwritten: 0,
       },
@@ -908,11 +957,95 @@ async function guardedBackfillPrice({
       },
     });
     return amountGuard?.written
-      ? { attempted: true, written: true, reason: null, event_stamped: true }
-      : { attempted: true, written: false, reason: amountGuard?.reason || "field_ledger_refused" };
+      ? {
+          attempted: true,
+          written: true,
+          reason: null,
+          event_stamped: true,
+          amount_only: false,
+        }
+      : {
+          attempted: true,
+          written: false,
+          reason: amountGuard?.reason || "field_ledger_refused",
+          amount_only: false,
+        };
   } catch (error) {
     if (error instanceof MenuFieldWriteRefusal || error instanceof MenuNestedLedgerRefusal) {
-      return { attempted: true, written: false, reason: error.reason };
+      return { attempted: true, written: false, reason: error.reason, amount_only: false };
+    }
+    throw error;
+  }
+}
+
+async function guardedBackfillPriceAmountOnly({
+  tx,
+  recordWrite,
+  offeringId,
+  item,
+  taskId,
+  runId,
+  actorLabel,
+  writeStartedAt,
+}) {
+  try {
+    const amountGuard = await recordWrite({
+      entity: { entity_type: "offering", entity_id: offeringId },
+      field: "price_amount",
+      verification: "agent_verified",
+      actor: actorLabel,
+      tx,
+      mutate: async (amountTx) => {
+        const state = rowsFrom(await amountTx.query(MENU_OFFERING_RECHECK_SQL, [offeringId]))[0];
+        const refusal = offeringUpdateRefusal(state, {
+          requireEmptyAmount: true,
+          expectedCurrency: item.price_currency,
+        });
+        if (refusal) throw new MenuFieldWriteRefusal(refusal);
+        const updated = await amountTx.query(`
+          UPDATE fountain.offerings
+          SET price_amount = $2,
+              source_offer_url = COALESCE(source_offer_url, $3),
+              updated_at = now()
+          WHERE id = $1
+            AND status = 'active'
+            AND deleted_at IS NULL
+            AND price_amount IS NULL
+            AND upper(btrim(price_currency)) = upper(btrim($4))
+          RETURNING id, price_amount, price_currency
+        `, [offeringId, item.price_amount, item.source_url, item.price_currency]);
+        assertCount("offering price amount backfill", updated, 1);
+        await stampOfferingEvent(amountTx, {
+          offeringId,
+          action: "update",
+          reason: "menu_extract:price_amount_backfill",
+          field: "price_amount",
+          value: String(item.price_amount),
+          taskId,
+          runId,
+          writeStartedAt,
+          metadata: eventMetadata(item),
+        });
+        return { eventStamped: true };
+      },
+    });
+    return amountGuard?.written
+      ? {
+          attempted: true,
+          written: true,
+          reason: null,
+          event_stamped: true,
+          amount_only: true,
+        }
+      : {
+          attempted: true,
+          written: false,
+          reason: amountGuard?.reason || "field_ledger_refused",
+          amount_only: true,
+        };
+  } catch (error) {
+    if (error instanceof MenuFieldWriteRefusal) {
+      return { attempted: true, written: false, reason: error.reason, amount_only: true };
     }
     throw error;
   }
@@ -1261,11 +1394,20 @@ function recheckedLocationRefusal(row, websiteDomain, sourceId) {
   return null;
 }
 
-function offeringUpdateRefusal(row, { requireEmptyPrice = false, requireEmptyTreatment = false } = {}) {
+function offeringUpdateRefusal(row, {
+  requireEmptyPrice = false,
+  requireEmptyAmount = false,
+  expectedCurrency = null,
+  requireEmptyTreatment = false,
+} = {}) {
   if (!row) return "offering_missing";
   if (row.status !== "active" || row.deleted_at) return "offering_not_active";
   if (isProtectedOffering(row)) return "offering_owner_or_human_protected";
   if (requireEmptyPrice && (row.price_amount != null || row.price_currency != null)) return "price_already_present";
+  if (requireEmptyAmount && row.price_amount != null) return "price_amount_already_present";
+  if (requireEmptyAmount && !matchingCurrency(row.price_currency, expectedCurrency)) {
+    return "price_currency_changed";
+  }
   if (requireEmptyTreatment && row.treatment_id != null) return "treatment_already_present";
   return null;
 }
@@ -1288,6 +1430,12 @@ function groupOfferings(rows) {
 function pricesEqual(existing, item) {
   return Number(existing.price_amount) === Number(item.price_amount)
     && String(existing.price_currency || "").toUpperCase() === String(item.price_currency || "").toUpperCase();
+}
+
+function matchingCurrency(left, right) {
+  const normalizedLeft = String(left || "").trim().toUpperCase();
+  const normalizedRight = String(right || "").trim().toUpperCase();
+  return Boolean(normalizedLeft) && normalizedLeft === normalizedRight;
 }
 
 function samePrice(left, right) {

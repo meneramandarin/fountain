@@ -10,6 +10,7 @@ import {
 
 export const ENRICHMENT_FINAL_REPORT_VERSION = 1;
 export const ENRICHMENT_FINAL_REPORT_FILENAME = "enrichment-final-report.md";
+export const ENRICHMENT_MENU_PRICES_CENSUS_FILENAME = "enrichment-menu-prices-census.json";
 
 export const FINAL_REPORT_EXTERNAL_CALLS_SQL = `
   SELECT
@@ -49,7 +50,53 @@ export const FINAL_REPORT_TASKS_SQL = `
       WHERE task.result->>'needs_human_review' = 'true'
          OR task.result->>'outcome' = 'needs_human_review'
          OR task.result->>'resolution' = 'needs_human_review'
-    )::integer AS needs_human_count
+    )::integer AS needs_human_count,
+    COALESCE(sum(
+      CASE WHEN task.task_type = 'menu_extract'
+        THEN COALESCE((task.result#>>'{serving_write,prices_backfilled}')::integer, 0)
+        ELSE 0
+      END
+    ), 0)::integer AS price_backfill_count,
+    COALESCE(sum(
+      CASE WHEN task.task_type = 'menu_extract'
+        THEN COALESCE((task.result#>>'{serving_write,price_amount_only_backfills}')::integer, 0)
+        ELSE 0
+      END
+    ), 0)::integer AS price_amount_only_backfill_count,
+    count(*) FILTER (
+      WHERE task.task_type = 'menu_extract'
+        AND task.result#>>'{apply,written}' = 'true'
+    )::integer AS menu_application_count,
+    COALESCE(sum(
+      CASE WHEN task.task_type = 'menu_extract'
+        THEN COALESCE((task.result#>>'{serving_write,offerings_inserted}')::integer, 0)
+        ELSE 0
+      END
+    ), 0)::integer AS offering_insert_count,
+    COALESCE(sum(
+      CASE WHEN task.task_type = 'menu_extract'
+        THEN COALESCE((task.result#>>'{serving_write,treatments_backfilled}')::integer, 0)
+        ELSE 0
+      END
+    ), 0)::integer AS treatment_backfill_count,
+    COALESCE(sum(
+      CASE WHEN task.task_type = 'menu_extract'
+        THEN COALESCE((task.result#>>'{apply,counts,price_conflicts}')::integer, 0)
+        ELSE 0
+      END
+    ), 0)::integer AS price_conflict_count,
+    COALESCE(sum(
+      CASE WHEN task.task_type = 'menu_extract'
+        THEN COALESCE((task.result#>>'{apply,counts,price_reviews}')::integer, 0)
+        ELSE 0
+      END
+    ), 0)::integer AS price_review_count,
+    COALESCE(sum(
+      CASE WHEN task.task_type = 'menu_extract'
+        THEN COALESCE((task.result#>>'{serving_write,existing_prices_overwritten}')::integer, 0)
+        ELSE 0
+      END
+    ), 0)::integer AS existing_price_overwrite_count
   FROM fountain_ops.task_queue task
   WHERE task.run_id = ANY($1::bigint[])
   GROUP BY task.run_id, task.task_type, task.status,
@@ -106,6 +153,26 @@ export const FINAL_REPORT_EVENTS_SQL = `
   ORDER BY run_id, event.entity_type, event.action, reason
 `;
 
+export const FINAL_REPORT_MENU_FIELD_STATUS_SQL = `
+  SELECT
+    substring(status.verified_by FROM '^menu_extract_run_([1-9][0-9]*)$') AS run_id,
+    status.entity_type,
+    status.field,
+    count(*)::integer AS count
+  FROM fountain_ops.field_status status
+  WHERE status.verified_by = ANY($1::text[])
+    AND status.verification = 'agent_verified'
+    AND (
+      (status.entity_type = 'location' AND status.field = 'offerings')
+      OR (
+        status.entity_type = 'offering'
+        AND status.field IN ('price_amount', 'price_currency', 'treatment_id')
+      )
+    )
+  GROUP BY run_id, status.entity_type, status.field
+  ORDER BY run_id, status.entity_type, status.field
+`;
+
 /**
  * Load the immutable evidence needed by the campaign's final report. The
  * census and campaign summaries are caller-owned snapshots; every database
@@ -118,16 +185,24 @@ export async function loadEnrichmentFinalReportData(
     stage3,
     redemption,
     runIds,
+    menuPricesBefore = null,
     generatedAt = null,
   } = {},
   { query = defaultQuery } = {},
 ) {
   const runSelection = normalizeFinalReportRunIds(runIds, { stage3, redemption });
-  const [externalResult, taskResult, stateResult, eventResult] = await Promise.all([
+  const menuRunIds = selectedMenuExtractRunIds(runSelection);
+  assertMenuPriceEvidenceAvailability(menuPricesBefore, after, menuRunIds);
+  const [externalResult, taskResult, stateResult, eventResult, fieldStatusResult] = await Promise.all([
     executeQuery(query, FINAL_REPORT_EXTERNAL_CALLS_SQL, [runSelection.ids]),
     executeQuery(query, FINAL_REPORT_TASKS_SQL, [runSelection.ids]),
     executeQuery(query, FINAL_REPORT_STATE_SQL, []),
     executeQuery(query, FINAL_REPORT_EVENTS_SQL, [runSelection.ids]),
+    menuRunIds.length > 0
+      ? executeQuery(query, FINAL_REPORT_MENU_FIELD_STATUS_SQL, [
+          menuRunIds.map((runId) => `menu_extract_run_${runId}`),
+        ])
+      : Promise.resolve({ rows: [] }),
   ]);
   const stateRows = rowsFrom(stateResult);
   if (stateRows.length !== 1) {
@@ -139,11 +214,13 @@ export async function loadEnrichmentFinalReportData(
     stage3,
     redemption,
     runIds: runSelection,
+    menuPricesBefore,
     generatedAt,
     externalCalls: rowsFrom(externalResult),
     taskRows: rowsFrom(taskResult),
     state: stateRows[0],
     eventRows: rowsFrom(eventResult),
+    fieldStatusRows: rowsFrom(fieldStatusResult),
   });
 }
 
@@ -181,21 +258,29 @@ export function buildEnrichmentFinalReportData({
   stage3,
   redemption,
   runIds,
+  menuPricesBefore = null,
   generatedAt = null,
   externalCalls = [],
   taskRows = [],
   state = {},
   eventRows = [],
+  fieldStatusRows = [],
 } = {}) {
   const comparison = compareEnrichmentCensuses(before, after);
   const normalizedStage3 = normalizeStage3Summary(stage3);
   const normalizedRedemption = normalizeRedemptionSummary(redemption);
   const runSelection = normalizeFinalReportRunIds(runIds, { stage3, redemption });
+  const menuRunIds = selectedMenuExtractRunIds(runSelection);
+  const menuPrices = compareMenuPriceCoverage(menuPricesBefore, after, {
+    required: menuRunIds.length > 0,
+  });
   const external = summarizeFinalExternalCalls(externalCalls, runSelection);
   const tasks = summarizeFinalTaskOutcomes(taskRows);
   const servingState = normalizeServingState(state);
   const events = summarizeFinalEvents(eventRows);
+  const menuFieldStatus = summarizeFinalMenuFieldStatus(fieldStatusRows);
   const reconciliation = buildFinalReconciliation({
+    before,
     after,
     stage3: normalizedStage3,
     redemption: normalizedRedemption,
@@ -204,6 +289,9 @@ export function buildEnrichmentFinalReportData({
     tasks,
     servingState,
     events,
+    menuRunIds,
+    menuPrices,
+    menuFieldStatus,
   });
   const data = {
     schemaVersion: ENRICHMENT_FINAL_REPORT_VERSION,
@@ -214,10 +302,13 @@ export function buildEnrichmentFinalReportData({
     stage3: normalizedStage3,
     redemption: normalizedRedemption,
     runSelection,
+    menuRunIds,
+    menuPrices,
     external,
     tasks,
     servingState,
     events,
+    menuFieldStatus,
     reconciliation,
   };
   data.followUps = buildFollowUps(data);
@@ -346,6 +437,15 @@ export function summarizeFinalTaskOutcomes(rows = []) {
   let attempted = 0;
   let written = 0;
   let needsHuman = 0;
+  let menuTaskRows = 0;
+  let menuApplications = 0;
+  let offeringsInserted = 0;
+  let priceBackfills = 0;
+  let priceAmountOnlyBackfills = 0;
+  let treatmentBackfills = 0;
+  let priceConflicts = 0;
+  let priceReviews = 0;
+  let existingPricesOverwritten = 0;
   for (const row of rows) {
     const count = nonnegativeInteger(row?.count ?? 1, "task count");
     const taskType = text(row?.task_type ?? row?.taskType) || "_unknown_task";
@@ -370,18 +470,109 @@ export function summarizeFinalTaskOutcomes(rows = []) {
         || result.resolution === "needs_human_review",
       count,
     );
+    const isMenuTask = taskType === "menu_extract";
+    const menuTaskCount = isMenuTask ? count : 0;
+    const menuApplicationCount = isMenuTask
+      ? aggregateCount(
+          row?.menu_application_count,
+          result?.apply?.written === true,
+          count,
+        )
+      : 0;
+    const offeringInsertCount = menuMetric(
+      isMenuTask,
+      row?.offering_insert_count,
+      result?.serving_write?.offerings_inserted,
+      "offering insert count",
+    );
+    const priceBackfillCount = menuMetric(
+      isMenuTask,
+      row?.price_backfill_count,
+      result?.serving_write?.prices_backfilled,
+      "price backfill count",
+    );
+    const priceAmountOnlyBackfillCount = menuMetric(
+      isMenuTask,
+      row?.price_amount_only_backfill_count,
+      result?.serving_write?.price_amount_only_backfills,
+      "price amount-only backfill count",
+    );
+    const treatmentBackfillCount = menuMetric(
+      isMenuTask,
+      row?.treatment_backfill_count,
+      result?.serving_write?.treatments_backfilled,
+      "treatment backfill count",
+    );
+    const priceConflictCount = menuMetric(
+      isMenuTask,
+      row?.price_conflict_count,
+      result?.apply?.counts?.price_conflicts,
+      "price conflict count",
+    );
+    const priceReviewCount = menuMetric(
+      isMenuTask,
+      row?.price_review_count,
+      result?.apply?.counts?.price_reviews,
+      "price review count",
+    );
+    const existingPriceOverwriteCount = menuMetric(
+      isMenuTask,
+      row?.existing_price_overwrite_count,
+      result?.serving_write?.existing_prices_overwritten,
+      "existing price overwrite count",
+    );
+    if (priceAmountOnlyBackfillCount > priceBackfillCount) {
+      throw new Error("Amount-only price backfills cannot exceed total price backfills.");
+    }
     if (!tasks.has(taskType)) tasks.set(taskType, taskAccumulator(taskType));
     if (!runs.has(runId)) runs.set(runId, taskAccumulator(runId));
     addTaskAggregate(tasks.get(taskType), {
-      count, status, outcome, attemptedCount, writtenCount, needsHumanCount,
+      count,
+      status,
+      outcome,
+      attemptedCount,
+      writtenCount,
+      needsHumanCount,
+      menuTaskCount,
+      menuApplicationCount,
+      offeringInsertCount,
+      priceBackfillCount,
+      priceAmountOnlyBackfillCount,
+      treatmentBackfillCount,
+      priceConflictCount,
+      priceReviewCount,
+      existingPriceOverwriteCount,
     });
     addTaskAggregate(runs.get(runId), {
-      count, status, outcome, attemptedCount, writtenCount, needsHumanCount,
+      count,
+      status,
+      outcome,
+      attemptedCount,
+      writtenCount,
+      needsHumanCount,
+      menuTaskCount,
+      menuApplicationCount,
+      offeringInsertCount,
+      priceBackfillCount,
+      priceAmountOnlyBackfillCount,
+      treatmentBackfillCount,
+      priceConflictCount,
+      priceReviewCount,
+      existingPriceOverwriteCount,
     });
     total += count;
     attempted += attemptedCount;
     written += writtenCount;
     needsHuman += needsHumanCount;
+    menuTaskRows += menuTaskCount;
+    menuApplications += menuApplicationCount;
+    offeringsInserted += offeringInsertCount;
+    priceBackfills += priceBackfillCount;
+    priceAmountOnlyBackfills += priceAmountOnlyBackfillCount;
+    treatmentBackfills += treatmentBackfillCount;
+    priceConflicts += priceConflictCount;
+    priceReviews += priceReviewCount;
+    existingPricesOverwritten += existingPriceOverwriteCount;
     statuses[status] = (statuses[status] || 0) + count;
     outcomes[outcome] = (outcomes[outcome] || 0) + count;
   }
@@ -392,6 +583,16 @@ export function summarizeFinalTaskOutcomes(rows = []) {
     attempted,
     written,
     needsHuman,
+    menuTaskRows,
+    menuApplications,
+    offeringsInserted,
+    priceBackfills,
+    priceAmountOnlyBackfills,
+    fullPairPriceBackfills: priceBackfills - priceAmountOnlyBackfills,
+    treatmentBackfills,
+    priceConflicts,
+    priceReviews,
+    existingPricesOverwritten,
     statuses: sortedObject(statuses),
     outcomes: sortedObject(outcomes),
     byTask: [...tasks.values()].sort((left, right) => left.key.localeCompare(right.key)),
@@ -410,16 +611,19 @@ export function summarizeFinalEvents(rows = []) {
   const byRun = new Map();
   const byEntity = {};
   const byReason = {};
+  const entries = [];
   let total = 0;
   for (const row of rows) {
     const count = nonnegativeInteger(row?.count ?? 1, "event count");
     const runId = optionalRunId(row?.run_id ?? row?.runId) || "_unattributed";
     const entityType = text(row?.entity_type ?? row?.entityType) || "unknown";
+    const action = text(row?.action) || "unknown";
     const reason = text(row?.reason) || "_none";
     if (!byRun.has(runId)) byRun.set(runId, { runId, count: 0 });
     byRun.get(runId).count += count;
     byEntity[entityType] = (byEntity[entityType] || 0) + count;
     byReason[reason] = (byReason[reason] || 0) + count;
+    entries.push({ runId, entityType, action, reason, count });
     total += count;
   }
   return {
@@ -427,7 +631,63 @@ export function summarizeFinalEvents(rows = []) {
     byRun: [...byRun.values()].sort((left, right) => compareRunIds(left.runId, right.runId)),
     byEntity: sortedObject(byEntity),
     byReason: sortedObject(byReason),
+    entries: entries.sort((left, right) => (
+      compareRunIds(left.runId, right.runId)
+      || left.entityType.localeCompare(right.entityType)
+      || left.action.localeCompare(right.action)
+      || left.reason.localeCompare(right.reason)
+    )),
   };
+}
+
+export function summarizeFinalMenuFieldStatus(rows = []) {
+  if (!Array.isArray(rows)) throw new TypeError("fieldStatusRows must be an array.");
+  const byRun = new Map();
+  const entries = [];
+  let total = 0;
+  for (const row of rows) {
+    const runId = optionalRunId(row?.run_id ?? row?.runId);
+    if (!runId) throw new TypeError("menu field-status evidence has an invalid run ID.");
+    const entityType = text(row?.entity_type ?? row?.entityType);
+    const field = text(row?.field);
+    const count = nonnegativeInteger(row?.count ?? 1, "menu field-status count");
+    if (!byRun.has(runId)) byRun.set(runId, menuFieldStatusAccumulator(runId));
+    const bucket = byRun.get(runId);
+    if (entityType === "location" && field === "offerings") {
+      bucket.locationOfferings += count;
+    } else if (entityType === "offering" && field === "price_amount") {
+      bucket.priceAmount += count;
+    } else if (entityType === "offering" && field === "price_currency") {
+      bucket.priceCurrency += count;
+    } else if (entityType === "offering" && field === "treatment_id") {
+      bucket.treatment += count;
+    } else {
+      throw new Error(`Unexpected menu field-status evidence: ${entityType}.${field}.`);
+    }
+    bucket.total += count;
+    total += count;
+    entries.push({ runId, entityType, field, count });
+  }
+  return {
+    total,
+    entries: entries.sort((left, right) => (
+      compareRunIds(left.runId, right.runId)
+      || left.entityType.localeCompare(right.entityType)
+      || left.field.localeCompare(right.field)
+    )),
+    byRun: [...byRun.values()].sort((left, right) => compareRunIds(left.runId, right.runId)),
+  };
+}
+
+export function selectedMenuExtractRunIds(runIds) {
+  const selection = isRunSelection(runIds)
+    ? runIds
+    : normalizeFinalReportRunIds(runIds);
+  return selection.entries
+    .filter((entry) => entry.roles.some((role) => (
+      /(?:^|\.)menu_extract(?:\.|$)/u.test(role)
+    )))
+    .map((entry) => entry.runId);
 }
 
 export function normalizeFinalReportRunIds(runIds, { stage3 = null, redemption = null } = {}) {
@@ -455,6 +715,37 @@ export function normalizeFinalReportRunIds(runIds, { stage3 = null, redemption =
     ids: entries.map((entry) => entry.runId),
     entries,
   };
+}
+
+export function compareMenuPriceCoverage(menuPricesBefore, after, { required = false } = {}) {
+  const beforeSnapshot = unwrapCensusSnapshot(menuPricesBefore);
+  const afterSnapshot = unwrapCensusSnapshot(after);
+  if (!beforeSnapshot) {
+    if (required) {
+      throw new Error(
+        `Selected menu_extract runs require ${ENRICHMENT_MENU_PRICES_CENSUS_FILENAME} as the supplemental pre-menu baseline.`,
+      );
+    }
+    return deepFreeze({ available: false, before: null, after: null, delta: null });
+  }
+  if (!afterSnapshot?.menuPrices) {
+    throw new Error("Menu price closeout requires after-census menuPrices evidence.");
+  }
+  const before = normalizeMenuPriceCoverage(beforeSnapshot, "pre-menu baseline");
+  const later = normalizeMenuPriceCoverage(afterSnapshot, "after census");
+  return deepFreeze({
+    available: true,
+    before,
+    after: later,
+    delta: {
+      menuPresentLocations: later.menuPresentLocations - before.menuPresentLocations,
+      pricedLocations: later.pricedLocations - before.pricedLocations,
+      menuMissingLocations: later.menuMissingLocations - before.menuMissingLocations,
+      pricesMissingLocations: later.pricesMissingLocations - before.pricesMissingLocations,
+      pricedOverallPercentagePoints: later.pricedOverallPct - before.pricedOverallPct,
+      pricedAmongMenusPercentagePoints: later.pricedAmongMenusPct - before.pricedAmongMenusPct,
+    },
+  });
 }
 
 export function assertEnrichmentFinalReconciliation(data) {
@@ -512,6 +803,7 @@ export function renderEnrichmentFinalReport(data) {
   appendLegitimacySummary(lines, data);
   appendRedeemedLocations(lines, data.redemption.redeemed);
   appendTaskSummary(lines, data.tasks);
+  appendMenuPriceSummary(lines, data);
   appendExternalSummary(lines, data.external);
   appendServingState(lines, data.servingState, data.events);
   appendReconciliation(lines, data.reconciliation);
@@ -564,7 +856,6 @@ function appendTaskSummary(lines, tasks) {
     "## Queue task outcomes and serving writes",
     "",
     `Selected-run task rows: ${integer(tasks.total)}; serving writes attempted by ${integer(tasks.attempted)} task(s), completed by ${integer(tasks.written)} task(s); needs_human_review outcomes: ${integer(tasks.needsHuman)}.`,
-    "",
     "| Task | Total | Pending | Claimed | Done | Failed | Skipped | Write attempted | Written | Needs human |",
     "| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |",
   );
@@ -574,6 +865,45 @@ function appendTaskSummary(lines, tasks) {
     );
   }
   if (tasks.byTask.length === 0) lines.push("| _none_ | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |");
+}
+
+function appendMenuPriceSummary(lines, data) {
+  if (!data.menuPrices.available && data.menuRunIds.length === 0) return;
+  lines.push("", "## Menu and price enrichment", "");
+  if (data.menuPrices.available) {
+    const before = data.menuPrices.before;
+    const after = data.menuPrices.after;
+    const delta = data.menuPrices.delta;
+    lines.push(
+      `Supplemental pre-menu baseline: ${code(before.label)} (${before.capturedAt || "capture time not supplied"}). The frozen initial census remains unchanged.`,
+      "",
+      "| Location-level coverage | Pre-menu | Final | Δ |",
+      "| --- | ---: | ---: | ---: |",
+      `| Eligible locations | ${integer(before.eligible)} | ${integer(after.eligible)} | ${signedInteger(after.eligible - before.eligible)} |`,
+      `| Locations with a menu | ${integer(before.menuPresentLocations)} | ${integer(after.menuPresentLocations)} | ${signedInteger(delta.menuPresentLocations)} |`,
+      `| Locations with at least one priced offering | ${integer(before.pricedLocations)} | ${integer(after.pricedLocations)} | ${signedInteger(delta.pricedLocations)} |`,
+      `| Missing menus | ${integer(before.menuMissingLocations)} | ${integer(after.menuMissingLocations)} | ${signedInteger(delta.menuMissingLocations)} |`,
+      `| Menu present, zero priced offerings | ${integer(before.pricesMissingLocations)} | ${integer(after.pricesMissingLocations)} | ${signedInteger(delta.pricesMissingLocations)} |`,
+      `| Priced coverage of all eligible locations | ${percentage(before.pricedOverallPct)} | ${percentage(after.pricedOverallPct)} | ${signedNumber(delta.pricedOverallPercentagePoints)} pp |`,
+      `| Priced coverage among menu-bearing locations | ${percentage(before.pricedAmongMenusPct)} | ${percentage(after.pricedAmongMenusPct)} | ${signedNumber(delta.pricedAmongMenusPercentagePoints)} pp |`,
+      "",
+    );
+  }
+  lines.push(
+    `Selected menu tasks: ${integer(data.tasks.menuTaskRows)}; guarded location applications: ${integer(data.tasks.menuApplications)}.`,
+    "",
+    "| Run | Tasks | Location applications | Offerings inserted | Full-pair price backfills | Amount-only price backfills | Total price backfills | Treatment backfills | Price conflicts | Price reviews | Existing prices overwritten |",
+    "| ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |",
+  );
+  for (const runId of data.menuRunIds) {
+    const task = taskRun(data.tasks, runId) || taskAccumulator(runId);
+    lines.push(
+      `| ${runId} | ${integer(task.menuTaskRows)} | ${integer(task.menuApplications)} | ${integer(task.offeringsInserted)} | ${integer(task.fullPairPriceBackfills)} | ${integer(task.priceAmountOnlyBackfills)} | ${integer(task.priceBackfills)} | ${integer(task.treatmentBackfills)} | ${integer(task.priceConflicts)} | ${integer(task.priceReviews)} | ${integer(task.existingPricesOverwritten)} |`,
+    );
+  }
+  if (data.menuRunIds.length === 0) {
+    lines.push("| — | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |");
+  }
 }
 
 function appendExternalSummary(lines, external) {
@@ -684,6 +1014,7 @@ function appendRemainingGaps(lines, after) {
 }
 
 function buildFinalReconciliation({
+  before,
   after,
   stage3,
   redemption,
@@ -691,6 +1022,9 @@ function buildFinalReconciliation({
   tasks,
   servingState,
   events,
+  menuRunIds,
+  menuPrices,
+  menuFieldStatus,
 }) {
   const checks = [];
   addCheck(checks, "external_call_partition", "External calls partitioned", external.calls, external.partition.calls);
@@ -719,6 +1053,15 @@ function buildFinalReconciliation({
   );
   addCheck(checks, "task_status_partition", "Task rows partitioned by status", tasks.total, tasks.partition.statusTotal);
   addCheck(checks, "task_outcome_partition", "Task rows partitioned by outcome", tasks.total, tasks.partition.outcomeTotal);
+  appendMenuPriceReconciliation(checks, {
+    before,
+    after,
+    tasks,
+    events,
+    menuRunIds,
+    menuPrices,
+    menuFieldStatus,
+  });
   addCheck(
     checks,
     "location_status_partition",
@@ -846,10 +1189,279 @@ function buildFinalReconciliation({
   return { ok: failures.length === 0, checks, failures };
 }
 
+function appendMenuPriceReconciliation(checks, {
+  before,
+  after,
+  tasks,
+  events,
+  menuRunIds,
+  menuPrices,
+  menuFieldStatus,
+}) {
+  if (menuPrices.available) {
+    addCheck(
+      checks,
+      "menu_prices_baseline_population",
+      "Supplemental pre-menu population matches frozen before census",
+      before.population.eligible,
+      menuPrices.before.eligible,
+    );
+    addCheck(
+      checks,
+      "menu_prices_after_population",
+      "Final menu-price population matches after census",
+      after.population.eligible,
+      menuPrices.after.eligible,
+    );
+    addCheck(
+      checks,
+      "menu_prices_population_stable",
+      "Pre-menu and final menu-price populations match",
+      menuPrices.before.eligible,
+      menuPrices.after.eligible,
+    );
+    appendMenuCoverageSnapshotChecks(checks, "before", menuPrices.before);
+    appendMenuCoverageSnapshotChecks(checks, "after", menuPrices.after);
+  }
+
+  for (const runId of menuRunIds) {
+    const suffix = `run_${runId}`;
+    const task = taskRun(tasks, runId) || taskAccumulator(runId);
+    const ledger = menuFieldStatusRun(menuFieldStatus, runId);
+    const fullPairEvents = exactEventCount(events, {
+      runId,
+      entityType: "offerings",
+      action: "update",
+      reason: "menu_extract:price_backfill",
+    });
+    const amountOnlyEvents = exactEventCount(events, {
+      runId,
+      entityType: "offerings",
+      action: "update",
+      reason: "menu_extract:price_amount_backfill",
+    });
+    addCheck(
+      checks,
+      `menu_task_evidence_${suffix}`,
+      `Menu run ${runId} has task evidence`,
+      1,
+      task.menuTaskRows > 0 ? 1 : 0,
+    );
+    addCheck(
+      checks,
+      `menu_offering_insert_events_${suffix}`,
+      `Menu run ${runId} offering inserts have exact events`,
+      task.offeringsInserted,
+      exactEventCount(events, {
+        runId,
+        entityType: "offerings",
+        action: "insert",
+        reason: "menu_extract:offering_insert",
+      }),
+    );
+    addCheck(
+      checks,
+      `menu_full_pair_price_events_${suffix}`,
+      `Menu run ${runId} full-pair price backfills have exact events`,
+      task.fullPairPriceBackfills,
+      fullPairEvents,
+    );
+    addCheck(
+      checks,
+      `menu_amount_only_price_events_${suffix}`,
+      `Menu run ${runId} amount-only price backfills have exact events`,
+      task.priceAmountOnlyBackfills,
+      amountOnlyEvents,
+    );
+    addCheck(
+      checks,
+      `menu_total_price_events_${suffix}`,
+      `Menu run ${runId} total price backfills have exact events`,
+      task.priceBackfills,
+      fullPairEvents + amountOnlyEvents,
+    );
+    addCheck(
+      checks,
+      `menu_treatment_events_${suffix}`,
+      `Menu run ${runId} treatment backfills have exact events`,
+      task.treatmentBackfills,
+      exactEventCount(events, {
+        runId,
+        entityType: "offerings",
+        action: "update",
+        reason: "menu_extract:treatment_backfill",
+      }),
+    );
+    addCheck(
+      checks,
+      `menu_location_offerings_ledger_${suffix}`,
+      `Menu run ${runId} guarded applications have location offerings ledger rows`,
+      task.menuApplications,
+      ledger.locationOfferings,
+    );
+    addCheck(
+      checks,
+      `menu_price_amount_ledger_${suffix}`,
+      `Menu run ${runId} price backfills have price_amount ledger rows`,
+      task.priceBackfills,
+      ledger.priceAmount,
+    );
+    addCheck(
+      checks,
+      `menu_price_currency_ledger_${suffix}`,
+      `Menu run ${runId} full-pair price events have price_currency ledger rows`,
+      fullPairEvents,
+      ledger.priceCurrency,
+    );
+    addCheck(
+      checks,
+      `menu_treatment_ledger_${suffix}`,
+      `Menu run ${runId} treatment backfills have treatment ledger rows`,
+      task.treatmentBackfills,
+      ledger.treatment,
+    );
+    addCheck(
+      checks,
+      `menu_existing_price_overwrites_${suffix}`,
+      `Menu run ${runId} existing prices overwritten`,
+      0,
+      task.existingPricesOverwritten,
+    );
+  }
+}
+
+function appendMenuCoverageSnapshotChecks(checks, period, coverage) {
+  addCheck(
+    checks,
+    `menu_prices_${period}_partition`,
+    `${period === "before" ? "Pre-menu" : "Final"} price-coverage population partition`,
+    coverage.eligible,
+    coverage.menuMissingLocations
+      + coverage.pricesMissingLocations
+      + coverage.pricedLocations,
+  );
+  if (coverage.observedLocationCount !== null) {
+    addCheck(
+      checks,
+      `menu_prices_${period}_location_count`,
+      `${period === "before" ? "Pre-menu" : "Final"} price-coverage location rows`,
+      coverage.eligible,
+      coverage.observedLocationCount,
+    );
+    addCheck(
+      checks,
+      `menu_prices_${period}_menu_missing`,
+      `${period === "before" ? "Pre-menu" : "Final"} missing-menu cohort matches rows`,
+      coverage.menuMissingLocations,
+      coverage.observedMenuMissingLocations,
+    );
+    addCheck(
+      checks,
+      `menu_prices_${period}_prices_missing`,
+      `${period === "before" ? "Pre-menu" : "Final"} zero-priced-menu cohort matches rows`,
+      coverage.pricesMissingLocations,
+      coverage.observedPricesMissingLocations,
+    );
+  }
+}
+
 function eventReasonCount(events, predicate) {
   return Object.entries(events.byReason)
     .filter(([reason]) => predicate(reason))
     .reduce((total, [, count]) => total + count, 0);
+}
+
+function exactEventCount(events, { runId, entityType, action, reason }) {
+  return events.entries
+    .filter((entry) => (
+      entry.runId === runId
+      && entry.entityType === entityType
+      && entry.action === action
+      && entry.reason === reason
+    ))
+    .reduce((total, entry) => total + entry.count, 0);
+}
+
+function assertMenuPriceEvidenceAvailability(menuPricesBefore, after, menuRunIds) {
+  if (menuRunIds.length === 0) return;
+  if (!unwrapCensusSnapshot(menuPricesBefore)) {
+    throw new Error(
+      `Selected menu_extract runs require ${ENRICHMENT_MENU_PRICES_CENSUS_FILENAME} as the supplemental pre-menu baseline.`,
+    );
+  }
+  if (!unwrapCensusSnapshot(after)?.menuPrices) {
+    throw new Error("Selected menu_extract runs require after-census menuPrices evidence.");
+  }
+}
+
+function normalizeMenuPriceCoverage(snapshot, label) {
+  const population = object(snapshot?.population);
+  const menuPrices = object(snapshot?.menuPrices);
+  const menuMissing = object(menuPrices.menuMissing);
+  const pricesMissing = object(menuPrices.pricesMissing);
+  const eligible = nonnegativeInteger(population.eligible, `${label} eligible population`);
+  const menuMissingLocations = nonnegativeInteger(
+    menuMissing.count,
+    `${label} missing-menu count`,
+  );
+  const pricesMissingLocations = nonnegativeInteger(
+    pricesMissing.count,
+    `${label} prices-missing count`,
+  );
+  if (menuMissingLocations + pricesMissingLocations > eligible) {
+    throw new Error(`${label} menu-price cohorts exceed the eligible population.`);
+  }
+  const menuPresentLocations = eligible - menuMissingLocations;
+  const pricedLocations = eligible - menuMissingLocations - pricesMissingLocations;
+  const locations = Array.isArray(snapshot?.locations) ? snapshot.locations : null;
+  const observed = locations ? observeMenuPriceCoverage(locations) : null;
+  return {
+    label: text(snapshot?.label) || label,
+    capturedAt: optionalIsoTimestamp(snapshot?.capturedAt),
+    eligible,
+    menuMissingLocations,
+    pricesMissingLocations,
+    menuPresentLocations,
+    pricedLocations,
+    pricedOverallPct: percentageValue(pricedLocations, eligible),
+    pricedAmongMenusPct: percentageValue(pricedLocations, menuPresentLocations),
+    observedLocationCount: observed?.locationCount ?? null,
+    observedMenuMissingLocations: observed?.menuMissingLocations ?? null,
+    observedPricesMissingLocations: observed?.pricesMissingLocations ?? null,
+  };
+}
+
+function observeMenuPriceCoverage(locations) {
+  let menuMissingLocations = 0;
+  let pricesMissingLocations = 0;
+  for (const location of locations) {
+    const menuCount = nonnegativeInteger(
+      location?.menuCount ?? location?.menu_count,
+      "menu-price location menu count",
+    );
+    const pricedCount = nonnegativeInteger(
+      location?.pricedCount ?? location?.priced_count,
+      "menu-price location priced count",
+    );
+    if (pricedCount > menuCount) {
+      throw new Error("menu-price location priced count exceeds menu count.");
+    }
+    if (menuCount === 0) menuMissingLocations += 1;
+    else if (pricedCount === 0) pricesMissingLocations += 1;
+  }
+  return { locationCount: locations.length, menuMissingLocations, pricesMissingLocations };
+}
+
+function unwrapCensusSnapshot(value) {
+  if (!value || typeof value !== "object" || Array.isArray(value)) return null;
+  const snapshot = value.snapshot ?? value;
+  return snapshot && typeof snapshot === "object" && !Array.isArray(snapshot)
+    ? snapshot
+    : null;
+}
+
+function percentageValue(numerator, denominator) {
+  return denominator === 0 ? 0 : (numerator / denominator) * 100;
 }
 
 function normalizeStage3Summary(input) {
@@ -1087,6 +1699,16 @@ function taskAccumulator(key) {
     attempted: 0,
     written: 0,
     needsHuman: 0,
+    menuTaskRows: 0,
+    menuApplications: 0,
+    offeringsInserted: 0,
+    priceBackfills: 0,
+    priceAmountOnlyBackfills: 0,
+    fullPairPriceBackfills: 0,
+    treatmentBackfills: 0,
+    priceConflicts: 0,
+    priceReviews: 0,
+    existingPricesOverwritten: 0,
     statuses: { pending: 0, claimed: 0, done: 0, failed: 0, skipped: 0 },
     outcomes: {},
   };
@@ -1097,8 +1719,34 @@ function addTaskAggregate(target, value) {
   target.attempted += value.attemptedCount;
   target.written += value.writtenCount;
   target.needsHuman += value.needsHumanCount;
+  target.menuTaskRows += value.menuTaskCount;
+  target.menuApplications += value.menuApplicationCount;
+  target.offeringsInserted += value.offeringInsertCount;
+  target.priceBackfills += value.priceBackfillCount;
+  target.priceAmountOnlyBackfills += value.priceAmountOnlyBackfillCount;
+  target.fullPairPriceBackfills = target.priceBackfills - target.priceAmountOnlyBackfills;
+  target.treatmentBackfills += value.treatmentBackfillCount;
+  target.priceConflicts += value.priceConflictCount;
+  target.priceReviews += value.priceReviewCount;
+  target.existingPricesOverwritten += value.existingPriceOverwriteCount;
   target.statuses[value.status] = (target.statuses[value.status] || 0) + value.count;
   target.outcomes[value.outcome] = (target.outcomes[value.outcome] || 0) + value.count;
+}
+
+function menuFieldStatusAccumulator(runId) {
+  return {
+    runId,
+    total: 0,
+    locationOfferings: 0,
+    priceAmount: 0,
+    priceCurrency: 0,
+    treatment: 0,
+  };
+}
+
+function menuFieldStatusRun(summary, runId) {
+  return summary.byRun.find((row) => row.runId === runId)
+    || menuFieldStatusAccumulator(runId);
 }
 
 function taskRun(tasks, runId) {
@@ -1166,6 +1814,11 @@ function aggregateCount(value, derived, count) {
   const normalized = nonnegativeInteger(value, "aggregate count");
   if (normalized > count) throw new Error(`Aggregate count ${normalized} exceeds row count ${count}.`);
   return normalized;
+}
+
+function menuMetric(isMenuTask, aggregate, raw, label) {
+  if (!isMenuTask) return 0;
+  return nonnegativeInteger(aggregate ?? raw ?? 0, label);
 }
 
 function sumObject(value) {

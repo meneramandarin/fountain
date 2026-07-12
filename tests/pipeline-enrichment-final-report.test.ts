@@ -12,11 +12,13 @@ const {
   assertEnrichmentFinalReconciliation,
   buildEnrichmentFinalReport,
   buildEnrichmentFinalReportData,
+  compareMenuPriceCoverage,
   ENRICHMENT_FINAL_REPORT_FILENAME,
   loadEnrichmentFinalReportData,
   normalizeFinalReportRunIds,
   renderEnrichmentFinalReport,
   summarizeFinalExternalCalls,
+  summarizeFinalMenuFieldStatus,
   summarizeFinalTaskOutcomes,
   writeEnrichmentFinalReport,
 } = finalReport;
@@ -190,6 +192,212 @@ describe("final enrichment ledger report", () => {
     });
   });
 
+  test("reconciles the supplemental price baseline and every menu mutation ledger per run", () => {
+    const menuTask = {
+      run_id: "60",
+      task_type: "menu_extract",
+      status: "done",
+      outcome: "menu_applied",
+      count: 1,
+      attempted_count: 1,
+      written_count: 1,
+      needs_human_count: 0,
+      menu_application_count: 1,
+      offering_insert_count: 2,
+      price_backfill_count: 2,
+      price_amount_only_backfill_count: 1,
+      treatment_backfill_count: 1,
+      price_conflict_count: 3,
+      price_review_count: 4,
+      existing_price_overwrite_count: 0,
+    };
+    const menuEvents = [
+      { run_id: "60", entity_type: "offerings", action: "insert", reason: "menu_extract:offering_insert", count: 2 },
+      { run_id: "60", entity_type: "offerings", action: "update", reason: "menu_extract:price_backfill", count: 1 },
+      { run_id: "60", entity_type: "offerings", action: "update", reason: "menu_extract:price_amount_backfill", count: 1 },
+      { run_id: "60", entity_type: "offerings", action: "update", reason: "menu_extract:treatment_backfill", count: 1 },
+    ];
+    const data = buildEnrichmentFinalReportData({
+      ...reportInput(),
+      runIds: {
+        enrichment: { menu_extract: 60, reviews_fetch: 61, geocode: 62 },
+      },
+      menuPricesBefore: menuPricesBeforeCensus(),
+      externalCalls: externalCallRows(),
+      taskRows: [...taskRows(), menuTask],
+      state: servingState(),
+      eventRows: [...eventRows(), ...menuEvents],
+      fieldStatusRows: menuFieldStatusRows(),
+    });
+
+    expect(data.tasks).toMatchObject({
+      menuTaskRows: 1,
+      menuApplications: 1,
+      offeringsInserted: 2,
+      priceBackfills: 2,
+      priceAmountOnlyBackfills: 1,
+      fullPairPriceBackfills: 1,
+      treatmentBackfills: 1,
+      priceConflicts: 3,
+      priceReviews: 4,
+      existingPricesOverwritten: 0,
+    });
+    expect(data.menuPrices).toMatchObject({
+      available: true,
+      before: { menuMissingLocations: 1, pricesMissingLocations: 1, pricedLocations: 1 },
+      after: { menuMissingLocations: 0, pricesMissingLocations: 0, pricedLocations: 3 },
+      delta: { pricedLocations: 2 },
+    });
+    expect(data.reconciliation.checks).toEqual(expect.arrayContaining([
+      expect.objectContaining({ id: "menu_offering_insert_events_run_60", expected: 2, actual: 2, ok: true }),
+      expect.objectContaining({ id: "menu_total_price_events_run_60", expected: 2, actual: 2, ok: true }),
+      expect.objectContaining({ id: "menu_price_amount_ledger_run_60", expected: 2, actual: 2, ok: true }),
+      expect.objectContaining({ id: "menu_price_currency_ledger_run_60", expected: 1, actual: 1, ok: true }),
+      expect.objectContaining({ id: "menu_treatment_ledger_run_60", expected: 1, actual: 1, ok: true }),
+      expect.objectContaining({ id: "menu_location_offerings_ledger_run_60", expected: 1, actual: 1, ok: true }),
+      expect.objectContaining({ id: "menu_existing_price_overwrites_run_60", expected: 0, actual: 0, ok: true }),
+    ]));
+    expect(data.reconciliation.ok).toBe(true);
+    const markdown = renderEnrichmentFinalReport(data);
+    expect(markdown).toContain("## Menu and price enrichment");
+    expect(markdown).toContain("The frozen initial census remains unchanged");
+    expect(markdown).toContain("| Locations with at least one priced offering | 1 | 3 | +2 |");
+    expect(markdown).toContain("| 60 | 1 | 1 | 2 | 1 | 1 | 2 | 1 | 3 | 4 | 0 |");
+  });
+
+  test("aggregates raw nested menu task results and field-status evidence", () => {
+    const tasks = summarizeFinalTaskOutcomes([{
+      run_id: "88",
+      task_type: "menu_extract",
+      status: "done",
+      result: {
+        outcome: "menu_applied",
+        apply: {
+          written: true,
+          counts: { price_conflicts: 2, price_reviews: 5 },
+        },
+        serving_write: {
+          attempted: true,
+          written: true,
+          offerings_inserted: 3,
+          prices_backfilled: 4,
+          price_amount_only_backfills: 1,
+          treatments_backfilled: 2,
+          existing_prices_overwritten: 0,
+        },
+      },
+    }]);
+    expect(tasks).toMatchObject({
+      menuTaskRows: 1,
+      menuApplications: 1,
+      offeringsInserted: 3,
+      priceBackfills: 4,
+      priceAmountOnlyBackfills: 1,
+      fullPairPriceBackfills: 3,
+      treatmentBackfills: 2,
+      priceConflicts: 2,
+      priceReviews: 5,
+      existingPricesOverwritten: 0,
+    });
+    expect(tasks.byRun[0]).toMatchObject({ menuTaskRows: 1, fullPairPriceBackfills: 3 });
+    expect(summarizeFinalMenuFieldStatus([
+      { run_id: "88", entity_type: "location", field: "offerings", count: 1 },
+      { run_id: "88", entity_type: "offering", field: "price_amount", count: 4 },
+      { run_id: "88", entity_type: "offering", field: "price_currency", count: 3 },
+      { run_id: "88", entity_type: "offering", field: "treatment_id", count: 2 },
+    ])).toMatchObject({
+      total: 10,
+      byRun: [{
+        runId: "88",
+        total: 10,
+        locationOfferings: 1,
+        priceAmount: 4,
+        priceCurrency: 3,
+        treatment: 2,
+      }],
+    });
+  });
+
+  test("requires the supplemental census only for selected menu runs", async () => {
+    const noMenuInput = reportInput();
+    expect(compareMenuPriceCoverage(null, noMenuInput.after)).toEqual({
+      available: false,
+      before: null,
+      after: null,
+      delta: null,
+    });
+    const query = reportQuery();
+    await expect(loadEnrichmentFinalReportData({
+      ...noMenuInput,
+      runIds: { enrichment: { menu_extract: 60 } },
+    }, { query })).rejects.toThrow("require enrichment-menu-prices-census.json");
+    expect(query).not.toHaveBeenCalled();
+  });
+
+  test("queries menu field ledgers only for selected menu actors", async () => {
+    const query = reportQuery();
+    const data = await loadEnrichmentFinalReportData({
+      ...reportInput(),
+      runIds: { enrichment: { menu_extract: 60 }, stage3: 57, redemption: 61 },
+      menuPricesBefore: menuPricesBeforeCensus(),
+    }, { query });
+
+    expect(query).toHaveBeenCalledTimes(5);
+    expect(query).toHaveBeenCalledWith(
+      expect.stringContaining("FROM fountain_ops.field_status status"),
+      [["menu_extract_run_60"]],
+    );
+    expect(data.menuFieldStatus.byRun[0]).toMatchObject({ runId: "60" });
+  });
+
+  test("menu ledger mismatch blocks closeout writes", async () => {
+    const data = buildEnrichmentFinalReportData({
+      ...reportInput(),
+      runIds: { enrichment: { menu_extract: 60 }, stage3: 57, redemption: 61 },
+      menuPricesBefore: menuPricesBeforeCensus(),
+      externalCalls: externalCallRows(),
+      taskRows: [...taskRows(), {
+        run_id: "60",
+        task_type: "menu_extract",
+        status: "done",
+        outcome: "menu_applied",
+        count: 1,
+        attempted_count: 1,
+        written_count: 1,
+        menu_application_count: 1,
+        offering_insert_count: 0,
+        price_backfill_count: 1,
+        price_amount_only_backfill_count: 0,
+        treatment_backfill_count: 0,
+        price_conflict_count: 0,
+        price_review_count: 0,
+        existing_price_overwrite_count: 1,
+      }],
+      state: servingState(),
+      eventRows: [...eventRows(), {
+        run_id: "60",
+        entity_type: "offerings",
+        action: "update",
+        reason: "menu_extract:price_backfill",
+        count: 1,
+      }],
+      fieldStatusRows: [
+        { run_id: "60", entity_type: "location", field: "offerings", count: 1 },
+        { run_id: "60", entity_type: "offering", field: "price_amount", count: 0 },
+        { run_id: "60", entity_type: "offering", field: "price_currency", count: 1 },
+      ],
+    });
+    expect(data.reconciliation.failures.map((check: { id: string }) => check.id)).toEqual(
+      expect.arrayContaining([
+        "menu_price_amount_ledger_run_60",
+        "menu_existing_price_overwrites_run_60",
+      ]),
+    );
+    await expect(writeEnrichmentFinalReport(data, {
+      outputPath: path.join(tmpdir(), "must-not-write.md"),
+    })).rejects.toThrow("menu_price_amount_ledger_run_60");
+  });
+
   test("rejects unsafe or empty run selections before querying", async () => {
     expect(() => normalizeFinalReportRunIds({ report: "57/../../secrets" })).toThrow(
       "Invalid run ID",
@@ -246,6 +454,14 @@ function afterCensus() {
   ], { label: "after", capturedAt: "2026-07-12T11:00:00.000Z" });
 }
 
+function menuPricesBeforeCensus() {
+  return buildEnrichmentCensus([
+    coverageRow({ id: 1, complete: true, menu_count: 2, priced_count: 0 }),
+    coverageRow({ id: 2, complete: true, menu_count: 0, priced_count: 0 }),
+    coverageRow({ id: 3, complete: true, menu_count: 1, priced_count: 1 }),
+  ], { label: "menu_prices_enrichment", capturedAt: "2026-07-12T08:00:00.000Z" });
+}
+
 function coverageRow({
   id,
   complete = false,
@@ -274,6 +490,7 @@ function coverageRow({
     has_geocode: complete,
     image_count: complete ? 1 : 0,
     menu_count: complete ? 1 : 0,
+    priced_count: complete ? 1 : 0,
     review_count: complete ? 3 : 0,
     place_match_count: complete ? 1 : 0,
     ...overrides,
@@ -357,8 +574,20 @@ function reportQuery({ stateRows = [servingState()] } = {}) {
     if (sql.includes("FROM fountain_ops.task_queue task")) return { rows: taskRows() };
     if (sql.includes("WITH location_state AS MATERIALIZED")) return { rows: stateRows };
     if (sql.includes("FROM fountain.entity_change_events event")) return { rows: eventRows() };
+    if (sql.includes("FROM fountain_ops.field_status status")) {
+      return { rows: menuFieldStatusRows() };
+    }
     throw new Error(`Unexpected final-report query: ${sql}`);
   });
+}
+
+function menuFieldStatusRows() {
+  return [
+    { run_id: "60", entity_type: "location", field: "offerings", count: 1 },
+    { run_id: "60", entity_type: "offering", field: "price_amount", count: 2 },
+    { run_id: "60", entity_type: "offering", field: "price_currency", count: 1 },
+    { run_id: "60", entity_type: "offering", field: "treatment_id", count: 1 },
+  ];
 }
 
 function externalCallRows() {
