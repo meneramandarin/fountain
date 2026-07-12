@@ -1,11 +1,18 @@
+import sharp from "sharp";
+
 import { query as defaultQuery, setMutationActor } from "../lib/db.mjs";
 import { recordWrite as defaultRecordWrite } from "../lib/ledger.mjs";
 import { createLlmClient } from "../lib/llm.mjs";
+import { createCachedImageClient } from "./image_harvest.mjs";
 
 export const IMAGE_CLASSIFY_SCHEMA_VERSION = 1;
 export const IMAGE_CLASSIFY_ACTOR_ID = "b5c71897-83d0-4c30-a7a3-202607120012";
 export const IMAGE_CLASSIFY_PROMPT_VERSION = "image-kind-v1";
 export const IMAGE_KINDS = Object.freeze(["photo", "logo", "text_graphic", "junk"]);
+export const IMAGE_CLASSIFY_AVIF_MAX_INPUT_BYTES = 15 * 1024 * 1024;
+export const IMAGE_CLASSIFY_JPEG_MAX_OUTPUT_BYTES = 4 * 1024 * 1024;
+export const IMAGE_CLASSIFY_JPEG_MAX_EDGE = 1_600;
+export const IMAGE_CLASSIFY_MAX_INPUT_PIXELS = 20_000_000;
 
 const IMAGE_KIND_SET = new Set(IMAGE_KINDS);
 const PROTECTED_VERIFICATIONS = new Set(["human_verified", "owner_verified"]);
@@ -154,6 +161,8 @@ export async function handleImageClassify(
   {
     query = defaultQuery,
     llmClient = createLlmClient(),
+    imageClient,
+    transcodeAvif = transcodeAvifToJpegDataUrl,
     recordWrite = defaultRecordWrite,
     setActor = setMutationActor,
   } = {},
@@ -192,6 +201,8 @@ export async function handleImageClassify(
     const decision = deterministic || await classifyImageWithLlm(row, {
       llmClient,
       runId,
+      imageClient,
+      transcodeAvif,
     });
     const write = await guardedWriteImageKind({
       imageId: positiveInteger(row.image_id, "image id"),
@@ -268,12 +279,24 @@ export function classifyImageMetadata(image) {
   return null;
 }
 
-export async function classifyImageWithLlm(image, { llmClient, runId }) {
+export async function classifyImageWithLlm(
+  image,
+  {
+    llmClient,
+    runId,
+    imageClient,
+    transcodeAvif = transcodeAvifToJpegDataUrl,
+  },
+) {
   if (!llmClient || typeof llmClient.complete !== "function") {
     throw new TypeError("llmClient must expose complete().");
   }
   const imageUrl = publicImageUrl(image?.blob_url) || publicImageUrl(image?.image_url);
   if (!imageUrl) throw new Error(`Image ${image?.image_id ?? "<unknown>"} has no public HTTP image URL.`);
+  const visionImageUrl = await prepareVisionImageUrl(imageUrl, {
+    imageClient,
+    transcodeAvif,
+  });
   const completion = await llmClient.complete({
     runId,
     entityId: positiveInteger(image.image_id, "image id"),
@@ -294,7 +317,7 @@ export async function classifyImageWithLlm(image, { llmClient, runId }) {
               alt: cleanText(image.alt, 500) || null,
             }),
           },
-          { type: "image_url", image_url: { url: imageUrl } },
+          { type: "image_url", image_url: { url: visionImageUrl } },
         ],
       },
     ],
@@ -309,6 +332,90 @@ export async function classifyImageWithLlm(image, { llmClient, runId }) {
     model: cleanText(completion?.model, 200) || null,
     external_call_id: completion?.externalCallId ?? null,
   };
+}
+
+/**
+ * OpenRouter's current vision route rejects AVIF URLs even when they are
+ * public. Fetch those assets through the standing SSRF/redirect/size-guarded
+ * image client, then send a bounded provider-supported JPEG data URL. Other
+ * formats stay remote so their successful request path is unchanged.
+ */
+export async function prepareVisionImageUrl(
+  input,
+  {
+    imageClient,
+    transcodeAvif = transcodeAvifToJpegDataUrl,
+  } = {},
+) {
+  const imageUrl = publicImageUrl(input);
+  if (!imageUrl) throw new TypeError("Vision image URL must be a public HTTP or HTTPS URL.");
+  if (!isAvifUrl(imageUrl)) return imageUrl;
+  if (typeof transcodeAvif !== "function") {
+    throw new TypeError("transcodeAvif must be a function.");
+  }
+
+  const downloader = imageClient || createCachedImageClient({
+    maxBytes: IMAGE_CLASSIFY_AVIF_MAX_INPUT_BYTES,
+  });
+  if (!downloader || typeof downloader.download !== "function") {
+    throw new TypeError("imageClient must expose download().");
+  }
+  const downloaded = await downloader.download(imageUrl);
+  if (!downloaded?.ok) {
+    const outcome = cleanText(downloaded?.outcome || downloaded?.reason, 160) || "unknown_error";
+    throw new Error(`AVIF vision input download failed: ${outcome}.`);
+  }
+  if (!Buffer.isBuffer(downloaded.buffer)) {
+    throw new TypeError("AVIF vision input download did not return a Buffer.");
+  }
+
+  const dataUrl = await transcodeAvif(downloaded.buffer);
+  return boundedJpegDataUrl(dataUrl);
+}
+
+export async function transcodeAvifToJpegDataUrl(
+  input,
+  {
+    maxInputBytes = IMAGE_CLASSIFY_AVIF_MAX_INPUT_BYTES,
+    maxOutputBytes = IMAGE_CLASSIFY_JPEG_MAX_OUTPUT_BYTES,
+    maxEdge = IMAGE_CLASSIFY_JPEG_MAX_EDGE,
+    maxInputPixels = IMAGE_CLASSIFY_MAX_INPUT_PIXELS,
+  } = {},
+) {
+  if (!Buffer.isBuffer(input)) throw new TypeError("AVIF input must be a Buffer.");
+  const inputLimit = positiveInteger(maxInputBytes, "maxInputBytes");
+  const outputLimit = positiveInteger(maxOutputBytes, "maxOutputBytes");
+  const edgeLimit = positiveInteger(maxEdge, "maxEdge");
+  const pixelLimit = positiveInteger(maxInputPixels, "maxInputPixels");
+  if (input.length === 0) throw new Error("AVIF input is empty.");
+  if (input.length > inputLimit) {
+    throw new Error(`AVIF input exceeds the ${inputLimit}-byte limit.`);
+  }
+
+  const source = sharp(input, {
+    animated: false,
+    failOn: "error",
+    limitInputPixels: pixelLimit,
+  });
+  const metadata = await source.metadata();
+  if (!new Set(["avif", "heif"]).has(String(metadata.format || "").toLowerCase())) {
+    throw new Error("Vision input URL ended in .avif but its decoded format is not AVIF/HEIF.");
+  }
+  const jpeg = await source
+    .rotate()
+    .resize({
+      width: edgeLimit,
+      height: edgeLimit,
+      fit: "inside",
+      withoutEnlargement: true,
+    })
+    .flatten({ background: "#ffffff" })
+    .jpeg({ quality: 82, mozjpeg: true })
+    .toBuffer();
+  if (jpeg.length > outputLimit) {
+    throw new Error(`Converted JPEG exceeds the ${outputLimit}-byte limit.`);
+  }
+  return `data:image/jpeg;base64,${jpeg.toString("base64")}`;
 }
 
 export async function guardedWriteImageKind(
@@ -576,6 +683,35 @@ function publicImageUrl(value) {
   } catch {
     return null;
   }
+}
+
+function isAvifUrl(value) {
+  try {
+    return new URL(value).pathname.toLowerCase().endsWith(".avif");
+  } catch {
+    return false;
+  }
+}
+
+function boundedJpegDataUrl(value) {
+  const prefix = "data:image/jpeg;base64,";
+  if (typeof value !== "string" || !value.startsWith(prefix)) {
+    throw new TypeError("AVIF transcoder must return a JPEG base64 data URL.");
+  }
+  const encoded = value.slice(prefix.length);
+  if (!encoded || encoded.length % 4 !== 0 || !/^[a-z0-9+/]*={0,2}$/iu.test(encoded)) {
+    throw new TypeError("AVIF transcoder returned invalid base64 JPEG data.");
+  }
+  const jpeg = Buffer.from(encoded, "base64");
+  if (jpeg.length < 4 || jpeg[0] !== 0xff || jpeg[1] !== 0xd8) {
+    throw new TypeError("AVIF transcoder output is not a JPEG image.");
+  }
+  if (jpeg.length > IMAGE_CLASSIFY_JPEG_MAX_OUTPUT_BYTES) {
+    throw new Error(
+      `Converted JPEG exceeds the ${IMAGE_CLASSIFY_JPEG_MAX_OUTPUT_BYTES}-byte limit.`,
+    );
+  }
+  return value;
 }
 
 function cleanText(value, maxLength) {
