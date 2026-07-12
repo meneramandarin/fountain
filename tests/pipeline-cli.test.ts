@@ -1,7 +1,7 @@
 import { describe, expect, test, vi } from "vitest";
 
 // @ts-expect-error -- the pipeline runtime intentionally uses native .mjs modules.
-import { drainTasks, parseCliArgs, runDrain, runEnqueue, runReport, validateCommandArgs } from "../pipeline/cli.mjs";
+import { drainTasks, parseCliArgs, runDrain, runEnqueue, runReport, runSuppress, validateCommandArgs } from "../pipeline/cli.mjs";
 
 describe("pipeline CLI parsing", () => {
   test("defaults to dry-run by leaving apply false", () => {
@@ -28,6 +28,18 @@ describe("pipeline CLI parsing", () => {
     expect(() => parseCliArgs(["drain", "--apply", "--dry-run"])).toThrow(
       "--apply and --dry-run are mutually exclusive",
     );
+  });
+
+  test("requires an exact Gate B campaign, evidence runs, and expected count for suppression", () => {
+    expect(validateCommandArgs(parseCliArgs([
+      "suppress",
+      "--campaign", "pass1_gate_b_dry_run",
+      "--run", "39,40",
+      "--expected", "5212",
+    ]))).toMatchObject({ command: "suppress", expected: "5212" });
+    expect(() => validateCommandArgs(parseCliArgs([
+      "suppress", "--campaign", "pass1_gate_a", "--run", "39", "--expected", "5212",
+    ]))).toThrow("--campaign must be pass1_gate_b_dry_run");
   });
 
   test("rejects unknown, duplicate, and unexpected arguments before execution", () => {
@@ -381,6 +393,62 @@ describe("pipeline CLI parsing", () => {
       "utf8",
     );
     expect(applied).toMatchObject({ counts: { files_written: 2 } });
+    stdout.mockRestore();
+  });
+
+  test("previews and applies Gate B suppression only through the dedicated command", async () => {
+    const stdout = vi.spyOn(process.stdout, "write").mockImplementation(() => true);
+    const previewLegitimacyGateBSuppression = vi.fn(async () => ({
+      apply: false,
+      candidateCount: 5_212,
+      sourceRecordFanout: 8_175,
+    }));
+    const applyLegitimacyGateBSuppression = vi.fn(async () => ({
+      apply: true,
+      preflight: { candidateCount: 5_212, hardExcludedCandidateCount: 0 },
+      verification: {
+        hiddenCount: 5_212,
+        runSuppressionLedgerRows: 8_175,
+        stampedEventCount: 5_212,
+      },
+    }));
+    const renderLegitimacyGateBCompletion = vi.fn(() => "# Gate B complete\n");
+    const writeFile = vi.fn(async () => undefined);
+    const operations = {
+      previewLegitimacyGateBSuppression,
+      applyLegitimacyGateBSuppression,
+      renderLegitimacyGateBCompletion,
+      writeFile,
+    };
+
+    const preview = await runSuppress({
+      campaign: "pass1_gate_b_dry_run",
+      run: "39,40",
+      expected: "5212",
+    }, { id: "47", dry_run: true }, operations);
+    expect(preview).toMatchObject({
+      counts: { selected: 5_212, hidden: 0, suppression_ledger_rows_inserted: 0 },
+    });
+    expect(applyLegitimacyGateBSuppression).not.toHaveBeenCalled();
+    expect(writeFile).not.toHaveBeenCalled();
+
+    const applied = await runSuppress({
+      campaign: "pass1_gate_b_dry_run",
+      run: "39,40",
+      expected: "5212",
+    }, { id: "48", dry_run: false }, operations);
+    expect(applyLegitimacyGateBSuppression).toHaveBeenCalledWith(expect.objectContaining({
+      runId: "48",
+      classificationRunIds: ["39", "40"],
+      expectedSuppressionCount: 5_212,
+    }));
+    expect(writeFile).toHaveBeenCalledWith(
+      expect.stringMatching(/docs\/runs\/pass1-gate-b-completion\.md$/u),
+      "# Gate B complete\n",
+      "utf8",
+    );
+    expect(applied).toMatchObject({ counts: { hidden: 5_212, entity_change_events: 5_212 } });
+    expect(stdout).toHaveBeenCalledWith("# Gate B complete\n");
     stdout.mockRestore();
   });
 
