@@ -58,7 +58,15 @@ function formatPrice(amount?: number | null, currency?: string | null) {
   return `${formatted} ${trimmedCurrency}`;
 }
 
-export function DirectoryLocationCard({ result, from = "search" }: { result: DirectoryLocationCardData; from?: string }) {
+export function DirectoryLocationCard({
+  result,
+  from = "search",
+  onActiveChange,
+}: {
+  result: DirectoryLocationCardData;
+  from?: string;
+  onActiveChange?: (id: number | null) => void;
+}) {
   const [imageFailed, setImageFailed] = useState(false);
   const isContainedGraphic = result.image_kind === "text_graphic" || result.image_kind === "logo";
   const place = formatLocationPlace({
@@ -71,7 +79,14 @@ export function DirectoryLocationCard({ result, from = "search" }: { result: Dir
   const price = formatPrice(result.min_price_amount, result.min_price_currency);
 
   return (
-    <Link className="result-card" href={`${locationHref(result)}?from=${encodeURIComponent(from)}`}>
+    <Link
+      className="result-card"
+      href={`${locationHref(result)}?from=${encodeURIComponent(from)}`}
+      onMouseEnter={() => onActiveChange?.(result.id)}
+      onMouseLeave={() => onActiveChange?.(null)}
+      onFocus={() => onActiveChange?.(result.id)}
+      onBlur={() => onActiveChange?.(null)}
+    >
       <span className={`result-photo${isContainedGraphic ? " image-frame-text-graphic" : ""}`}>
         {result.image && !imageFailed ? (
           <>
