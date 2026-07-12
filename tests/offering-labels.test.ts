@@ -1,0 +1,40 @@
+import { describe, expect, test } from "vitest";
+
+import { getOfferingLabels } from "../src/lib/offering-labels";
+
+describe("offering labels", () => {
+  test.each([
+    ["Full Body MRI", "Full-body MRI"],
+    ["Biological Age Snapshot", "Epigenetic age clock"],
+    ["Epigenetic Clock Testing", "Epigenetic age clock"],
+  ])("defaults to one source-facing label for %s", (rawName, treatment) => {
+    expect(getOfferingLabels({ raw_name: rawName, treatment })).toEqual({
+      primary: rawName,
+      secondary: null,
+    });
+  });
+
+  test("shows reviewed brand context", () => {
+    expect(getOfferingLabels({
+      raw_name: "Dysport",
+      treatment: "Botox",
+      treatment_display_mode: "raw_and_canonical",
+    })).toEqual({ primary: "Dysport", secondary: "Botox" });
+  });
+
+  test("does not repeat equivalent labels even when dual display is requested", () => {
+    expect(getOfferingLabels({
+      raw_name: "Full Body MRI",
+      treatment: "Full-body MRI",
+      treatment_display_mode: "raw_and_canonical",
+    })).toEqual({ primary: "Full Body MRI", secondary: null });
+  });
+
+  test("can prefer the canonical label for an overly broad source term", () => {
+    expect(getOfferingLabels({
+      raw_name: "exercise",
+      treatment: "Exercise programming",
+      treatment_display_mode: "canonical_only",
+    })).toEqual({ primary: "Exercise programming", secondary: null });
+  });
+});

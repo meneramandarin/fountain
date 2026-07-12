@@ -101,6 +101,12 @@ import {
 import { loadRunReport, writeRunReport } from "./lib/report.mjs";
 import { getRun, getRunSpend, isBudgetExhausted, withRun } from "./lib/runs.mjs";
 import { DEFAULT_SCHEMAS, regenerateStructureDocument } from "./lib/structure-doc.mjs";
+import {
+  runTaxonomyPresentationClassification,
+  TAXONOMY_PRESENTATION_DEFAULT_BATCH_SIZE,
+  TAXONOMY_PRESENTATION_DEFAULT_CONCURRENCY,
+  TAXONOMY_PRESENTATION_DEFAULT_MODEL,
+} from "./lib/taxonomy-presentation.mjs";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 export const DEFAULT_DRAIN_CONCURRENCY = 24;
@@ -201,6 +207,7 @@ export function validateCommandArgs(parsed) {
     migrate: new Set(["file", "apply", "dryRun"]),
     census: new Set(["scope", "apply", "dryRun"]),
     maintain: new Set(["schema", "output", "apply", "dryRun"]),
+    "taxonomy-present": new Set(["model", "batchSize", "concurrency", "limit", "budget", "apply", "dryRun"]),
   };
   const allowed = allowedByCommand[parsed.command];
   if (!allowed) throw new Error(`Unknown command: ${parsed.command}\n${usage()}`);
@@ -249,6 +256,8 @@ async function dispatchCommand(parsed, run) {
       return runMaintenance(parsed, run);
     case "census":
       return runCensus(parsed, run);
+    case "taxonomy-present":
+      return runTaxonomyPresent(parsed, run);
     default:
       throw new Error(`Unknown command: ${parsed.command}\n${usage()}`);
   }
@@ -1442,6 +1451,58 @@ export async function runMigrate(parsed, run, operations = {}) {
   };
 }
 
+export async function runTaxonomyPresent(parsed, run, operations = {}) {
+  const model = parsed.model || TAXONOMY_PRESENTATION_DEFAULT_MODEL;
+  const batchSize = parsed.batchSize == null
+    ? TAXONOMY_PRESENTATION_DEFAULT_BATCH_SIZE
+    : positiveInteger(parsed.batchSize, "--batch-size");
+  const limit = parsed.limit == null ? 100_000 : positiveInteger(parsed.limit, "--limit");
+  const concurrency = parsed.concurrency == null
+    ? TAXONOMY_PRESENTATION_DEFAULT_CONCURRENCY
+    : positiveInteger(parsed.concurrency, "--concurrency");
+  const budgetUsd = parsed.budget == null ? null : nonnegativeNumber(parsed.budget, "--budget");
+  const execute = operations.runTaxonomyPresentationClassification || runTaxonomyPresentationClassification;
+  const outcome = await execute({
+    runId: run.id,
+    apply: !run.dry_run,
+    model,
+    batchSize,
+    concurrency,
+    limit,
+    budgetUsd,
+    query: operations.query || dbQuery,
+    ...(operations.llmClient ? { llmClient: operations.llmClient } : {}),
+    getSpend: operations.getRunSpend || ((runId) => getRunSpend(runId)),
+    onProgress: operations.onProgress || ((progress) => {
+      console.error(
+        `taxonomy-present batch ${progress.completedBatches}/${progress.totalBatches}; classified ${progress.classified}`,
+      );
+    }),
+  });
+  return {
+    status: outcome.budget_exhausted ? "budget_exhausted" : "completed",
+    counts: {
+      pending: outcome.pending,
+      deterministic: outcome.deterministic,
+      llm_terms: outcome.llm_terms,
+      llm_batches: outcome.llm_batches,
+      completed_batches: outcome.completed_batches || 0,
+      written: outcome.written,
+      needs_review: outcome.summary?.needs_review || 0,
+    },
+    result: {
+      dryRun: run.dry_run,
+      model,
+      batchSize,
+      concurrency,
+      limit,
+      budgetUsd,
+      budget_exhausted: outcome.budget_exhausted,
+      summary: outcome.summary || null,
+    },
+  };
+}
+
 export async function runMaintenance(parsed, run, operations = {}) {
   const subcommand = parsed.positional[0];
   if (subcommand === "regen-structure-doc") {
@@ -1564,6 +1625,10 @@ function validateCampaignOptions(parsed) {
     if (parsed.where == null) {
       throw new Error("--where is required unless using the legitimacy Gate A sample or Gate B full scope.");
     }
+  }
+
+  if (parsed.command === "taxonomy-present" && parsed.apply && parsed.budget == null) {
+    throw new Error("taxonomy-present --apply requires an explicit --budget.");
   }
 
   if (parsed.command === "drain") {
@@ -1697,8 +1762,9 @@ function nonnegativeNumber(value, flag) {
 function usage() {
   return [
     "Usage: node pipeline/cli.mjs <command> [options]",
-    "Commands: enqueue, drain, report, suppress, stage3, redemption, final-report, migrate, census, maintain",
+    "Commands: enqueue, drain, report, suppress, stage3, redemption, final-report, migrate, census, maintain, taxonomy-present",
     "Final closeout: final-report --runs-file <selection.json> [--before <json>] [--after <json>] [--menu-prices-before <json>] [--output <md>] [--apply]",
+    "Taxonomy presentation: taxonomy-present [--model <slug>] [--batch-size <n>] [--concurrency <n>] [--limit <n>] [--budget <usd>] [--apply]",
     "Maintenance: regen-structure-doc, refresh-city-index",
     "Persistent side effects require --apply; dry-run is the default.",
   ].join("\n");

@@ -1,6 +1,6 @@
 # Neon Database Structure Current
 
-Generated: 2026-07-12T16:13:05.330Z
+Generated: 2026-07-12T17:20:21.157Z
 Snapshot source: live Neon database
 
 This document is generated from the live Neon database. It records structural metadata and point-in-time row counts for the configured schemas.
@@ -11,7 +11,7 @@ This document is generated from the live Neon database. It records structural me
 | --- | --- | --- |
 | fountain | function | 96 |
 | fountain | sequence | 16 |
-| fountain | table | 20 |
+| fountain | table | 21 |
 | fountain_ops | sequence | 3 |
 | fountain_ops | table | 4 |
 | fountain_raw | sequence | 6 |
@@ -43,17 +43,18 @@ This document is generated from the live Neon database. It records structural me
 | fountain | locations | 13878 |
 | fountain | offerings | 106792 |
 | fountain | organizations | 8195 |
-| fountain | outbound_clicks | 93 |
+| fountain | outbound_clicks | 94 |
 | fountain | practitioners | 1303 |
 | fountain | reviews | 33606 |
 | fountain | search_index | 8481 |
 | fountain | source_records | 47317 |
 | fountain | sources | 257 |
 | fountain | tags | 36 |
+| fountain | treatment_term_presentations | 3562 |
 | fountain | treatments | 103 |
-| fountain_ops | external_calls | 41828 |
+| fountain_ops | external_calls | 41915 |
 | fountain_ops | field_status | 29545 |
-| fountain_ops | runs | 113 |
+| fountain_ops | runs | 120 |
 | fountain_ops | task_queue | 40793 |
 | fountain_raw | browser_swarm_image_ingest_20260708 | 1673 |
 | fountain_raw | browser_swarm_menu_ingest_20260708 | 25198 |
@@ -645,7 +646,7 @@ Rows: 8195
 
 ### fountain.outbound_clicks
 
-Rows: 93
+Rows: 94
 
 #### Columns
 
@@ -912,6 +913,50 @@ Rows: 36
 
 _None._
 
+### fountain.treatment_term_presentations
+
+Rows: 3562
+
+#### Columns
+
+| pos | column | type | udt | nullable | default |
+| --- | --- | --- | --- | --- | --- |
+| 1 | treatment_id | integer | int4 | NO |  |
+| 2 | term_normalized | text | text | NO |  |
+| 3 | relationship_type | text | text | NO |  |
+| 4 | display_mode | text | text | NO |  |
+| 5 | mapping_valid | boolean | bool | NO |  |
+| 6 | confidence | double precision | float8 | NO |  |
+| 7 | rationale | text | text | YES |  |
+| 8 | model | text | text | YES |  |
+| 9 | prompt_version | text | text | NO |  |
+| 10 | review_status | text | text | NO |  |
+| 11 | created_at | timestamp with time zone | timestamptz | NO | now() |
+| 12 | updated_at | timestamp with time zone | timestamptz | NO | now() |
+
+#### Constraints
+
+| name | type | definition |
+| --- | --- | --- |
+| treatment_term_presentations_confidence_valid | c | CHECK (confidence >= 0::double precision AND confidence <= 1::double precision) |
+| treatment_term_presentations_display_mode_valid | c | CHECK (display_mode = ANY (ARRAY['raw_only'::text, 'raw_and_canonical'::text, 'canonical_only'::text])) |
+| treatment_term_presentations_pkey | p | PRIMARY KEY (treatment_id, term_normalized) |
+| treatment_term_presentations_relationship_valid | c | CHECK (relationship_type = ANY (ARRAY['format_variant'::text, 'equivalent'::text, 'brand'::text, 'subtype'::text, 'broader_match'::text, 'compound'::text, 'suspect'::text])) |
+| treatment_term_presentations_review_status_valid | c | CHECK (review_status = ANY (ARRAY['auto_approved'::text, 'needs_review'::text, 'human_approved'::text, 'human_rejected'::text])) |
+| treatment_term_presentations_term_nonempty | c | CHECK (btrim(term_normalized) <> ''::text) |
+| treatment_term_presentations_treatment_id_fkey | f | FOREIGN KEY (treatment_id) REFERENCES treatments(id) |
+
+#### Indexes
+
+| name | definition |
+| --- | --- |
+| treatment_term_presentations_pkey | CREATE UNIQUE INDEX treatment_term_presentations_pkey ON fountain.treatment_term_presentations USING btree (treatment_id, term_normalized) |
+| treatment_term_presentations_review_idx | CREATE INDEX treatment_term_presentations_review_idx ON fountain.treatment_term_presentations USING btree (review_status, relationship_type) |
+
+#### Triggers
+
+_None._
+
 ### fountain.treatments
 
 Rows: 103
@@ -947,7 +992,7 @@ Rows: 103
 
 ### fountain_ops.external_calls
 
-Rows: 41828
+Rows: 41915
 
 #### Columns
 
@@ -1031,7 +1076,7 @@ _None._
 
 ### fountain_ops.runs
 
-Rows: 113
+Rows: 120
 
 #### Columns
 
@@ -1845,6 +1890,7 @@ Rows: 3577
 | name | definition |
 | --- | --- |
 | idx_aliases_norm | CREATE INDEX idx_aliases_norm ON fountain_raw.treatment_aliases USING btree (alias_normalized) |
+| idx_treatment_aliases_treatment_term | CREATE INDEX idx_treatment_aliases_treatment_term ON fountain_raw.treatment_aliases USING btree (treatment_id, alias_normalized) |
 | treatment_aliases_alias_normalized_source_slug_key | CREATE UNIQUE INDEX treatment_aliases_alias_normalized_source_slug_key ON fountain_raw.treatment_aliases USING btree (alias_normalized, source_slug) |
 | treatment_aliases_pkey | CREATE UNIQUE INDEX treatment_aliases_pkey ON fountain_raw.treatment_aliases USING btree (id) |
 
