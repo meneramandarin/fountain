@@ -1,4 +1,9 @@
 import { handleLlmSmoke } from "../tasks/llm_smoke.mjs";
+import {
+  handleLegitimacyBatch,
+  LEGITIMACY_STAGE_1_BATCH_SIZE,
+  LEGITIMACY_STAGE_2_BATCH_SIZE,
+} from "../tasks/legitimacy.mjs";
 import { handleNoop } from "../tasks/noop.mjs";
 
 export const TASK_TYPES = [
@@ -16,7 +21,16 @@ export const TASK_TYPES = [
 ];
 
 export const TASKS = Object.freeze({
-  legitimacy_check: pendingTask(),
+  legitimacy_check: {
+    batchHandler: handleLegitimacyBatch,
+    batchSizeByStage: {
+      stage_1: LEGITIMACY_STAGE_1_BATCH_SIZE,
+      stage_2: LEGITIMACY_STAGE_2_BATCH_SIZE,
+    },
+    maxAttempts: 3,
+    production: true,
+    implemented: true,
+  },
   contact_fill: pendingTask(),
   geocode: pendingTask(),
   image_harvest: pendingTask(),
@@ -37,7 +51,11 @@ export const TASKS = Object.freeze({
 export function getTaskDefinition(taskType, { requireHandler = false } = {}) {
   const task = TASKS[taskType];
   if (!task) throw new Error(`Unknown task type: ${taskType}`);
-  if (requireHandler && typeof task.handler !== "function") {
+  if (
+    requireHandler
+    && typeof task.handler !== "function"
+    && typeof task.batchHandler !== "function"
+  ) {
     throw new Error(`Task type ${taskType} is not implemented in Phase B.`);
   }
   return task;

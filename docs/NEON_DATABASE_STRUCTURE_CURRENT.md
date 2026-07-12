@@ -1,6 +1,6 @@
 # Neon Database Structure Current
 
-Generated: 2026-07-12T01:36:42.493Z
+Generated: 2026-07-12T02:27:27.502Z
 Snapshot source: live Neon database
 
 This document is generated from the live Neon database. It records structural metadata and point-in-time row counts for the configured schemas.
@@ -12,8 +12,10 @@ This document is generated from the live Neon database. It records structural me
 | fountain | function | 96 |
 | fountain | sequence | 16 |
 | fountain | table | 20 |
-| fountain_raw | sequence | 10 |
-| fountain_raw | table | 49 |
+| fountain_ops | sequence | 3 |
+| fountain_ops | table | 4 |
+| fountain_raw | sequence | 5 |
+| fountain_raw | table | 21 |
 | neon_auth | table | 9 |
 
 ## Installed Extensions
@@ -41,7 +43,7 @@ This document is generated from the live Neon database. It records structural me
 | fountain | locations | 13878 |
 | fountain | offerings | 100712 |
 | fountain | organizations | 8195 |
-| fountain | outbound_clicks | 79 |
+| fountain | outbound_clicks | 80 |
 | fountain | practitioners | 1303 |
 | fountain | reviews | 15563 |
 | fountain | search_index | 14824 |
@@ -49,35 +51,18 @@ This document is generated from the live Neon database. It records structural me
 | fountain | sources | 256 |
 | fountain | tags | 36 |
 | fountain | treatments | 103 |
-| fountain_raw | bookimed_website_backfill_location_actions_20260708 | 266 |
+| fountain_ops | external_calls | 21 |
+| fountain_ops | field_status | 0 |
+| fountain_ops | runs | 27 |
+| fountain_ops | task_queue | 316 |
 | fountain_raw | browser_swarm_image_ingest_20260708 | 1673 |
 | fountain_raw | browser_swarm_menu_ingest_20260708 | 25198 |
-| fountain_raw | clinic_website_offering_extractions_20260711 | 636 |
 | fountain_raw | dedup_candidates_20260711 | 1300 |
-| fountain_raw | field_corrections_backup_20260711 | 43 |
-| fountain_raw | final_closeout_offerings_backup_20260711 | 100535 |
-| fountain_raw | final_closeout_search_function_backup_20260711 | 1 |
-| fountain_raw | final_closeout_search_index_backup_20260711 | 14824 |
-| fountain_raw | final_closeout_treatment_aliases_backup_20260711 | 3399 |
-| fountain_raw | final_closeout_treatments_backup_20260711 | 62 |
-| fountain_raw | hyperbaric_app_image_audit_20260710 | 983 |
-| fountain_raw | hyperbaric_app_promotion_audit_20260710 | 1220 |
-| fountain_raw | hyperbaric_cleanup_call_ledger_20260711 | 3926 |
-| fountain_raw | hyperbaric_cleanup_queue_20260710 | 983 |
-| fountain_raw | hyperbaric_cleanup_queue_20260711 | 946 |
-| fountain_raw | hyperbaric_cleanup_results_20260710 | 983 |
 | fountain_raw | hyperbaric_cleanup_results_20260711 | 946 |
-| fountain_raw | hyperbaric_cleanup_website_fetches_20260711 | 1806 |
-| fountain_raw | hyperbaric_dedup_candidates_20260710 | 4 |
-| fountain_raw | hyperbaric_field_corrections_backup_20260710 | 66 |
-| fountain_raw | hyperbaric_price_review_20260710 | 0 |
-| fountain_raw | hyperbaric_task_d_contact_fills_20260711 | 3 |
-| fountain_raw | hyperbaric_task_d_review_backfill_20260711 | 119 |
 | fountain_raw | import_metadata | 3 |
 | fountain_raw | import_runs | 288 |
 | fountain_raw | location_geocode_backfill_20260709 | 1978 |
 | fountain_raw | location_geocode_low_confidence_20260707 | 1265 |
-| fountain_raw | location_geocode_wrong_branch_address_20260707 | 13 |
 | fountain_raw | location_jsonld_recovery_20260709 | 6 |
 | fountain_raw | location_normalization_review_20260707 | 406 |
 | fountain_raw | price_conflicts_20260711 | 21 |
@@ -88,13 +73,6 @@ This document is generated from the live Neon database. It records structural me
 | fountain_raw | source_listings | 23378 |
 | fountain_raw | source_reviews | 7591 |
 | fountain_raw | suppressed_source_listings | 345 |
-| fountain_raw | taxonomy_dedup_merge_audit_20260712 | 9 |
-| fountain_raw | taxonomy_dedup_offerings_backup_20260712 | 1260 |
-| fountain_raw | taxonomy_dedup_treatment_aliases_backup_20260712 | 32 |
-| fountain_raw | taxonomy_dedup_treatments_backup_20260712 | 15 |
-| fountain_raw | taxonomy_final_corpus_20260711 | 43647 |
-| fountain_raw | taxonomy_final_llm_ledger_20260711 | 546 |
-| fountain_raw | taxonomy_final_remap_audit_20260711 | 1816 |
 | fountain_raw | taxonomy_final_triage_20260711 | 43647 |
 | fountain_raw | treatment_aliases | 3577 |
 | fountain_raw | unmapped_terms | 71013 |
@@ -664,7 +642,7 @@ Rows: 8195
 
 ### fountain.outbound_clicks
 
-Rows: 79
+Rows: 80
 
 #### Columns
 
@@ -964,37 +942,182 @@ Rows: 103
 | --- | --- |
 | trg_refresh_treatment_search_index | CREATE TRIGGER trg_refresh_treatment_search_index AFTER DELETE OR UPDATE ON treatments FOR EACH ROW EXECUTE FUNCTION refresh_treatment_search_index_trigger() |
 
-### fountain_raw.bookimed_website_backfill_location_actions_20260708
+### fountain_ops.external_calls
 
-Rows: 266
+Rows: 21
 
 #### Columns
 
 | pos | column | type | udt | nullable | default |
 | --- | --- | --- | --- | --- | --- |
-| 1 | location_id | integer | int4 | NO |  |
-| 2 | place_id | text | text | YES |  |
-| 3 | tier | integer | int4 | YES |  |
-| 4 | resolution_method | text | text | YES |  |
-| 5 | action | text | text | NO |  |
-| 6 | old_website | text | text | YES |  |
-| 7 | new_website | text | text | YES |  |
-| 8 | old_phone | text | text | YES |  |
-| 9 | new_phone | text | text | YES |  |
-| 10 | api_display_name | text | text | YES |  |
-| 11 | verification | jsonb | jsonb | YES |  |
-| 12 | raw_payload | jsonb | jsonb | YES |  |
-| 13 | error | jsonb | jsonb | YES |  |
-| 14 | source_urls | ARRAY | _text | YES |  |
-| 15 | created_at | timestamp with time zone | timestamptz | YES | now() |
+| 1 | id | bigint | int8 | NO | nextval('fountain_ops.external_calls_id_seq'::regclass) |
+| 2 | run_id | bigint | int8 | NO |  |
+| 3 | provider | text | text | NO |  |
+| 4 | call_type | text | text | NO |  |
+| 5 | entity_id | integer | int4 | YES |  |
+| 6 | model | text | text | YES |  |
+| 7 | request_fingerprint | text | text | NO |  |
+| 8 | status | text | text | NO |  |
+| 9 | http_status | integer | int4 | YES |  |
+| 10 | tokens | jsonb | jsonb | NO | '{}'::jsonb |
+| 11 | cost_estimate_usd | numeric | numeric | NO | 0 |
+| 12 | created_at | timestamp with time zone | timestamptz | NO | now() |
 
 #### Constraints
 
-_None._
+| name | type | definition |
+| --- | --- | --- |
+| external_calls_call_type_nonempty_check | c | CHECK (btrim(call_type) <> ''::text) |
+| external_calls_cost_nonnegative_check | c | CHECK (cost_estimate_usd >= 0::numeric) |
+| external_calls_http_status_check | c | CHECK (http_status IS NULL OR http_status >= 100 AND http_status <= 599) |
+| external_calls_pkey | p | PRIMARY KEY (id) |
+| external_calls_provider_nonempty_check | c | CHECK (btrim(provider) <> ''::text) |
+| external_calls_request_fingerprint_nonempty_check | c | CHECK (btrim(request_fingerprint) <> ''::text) |
+| external_calls_run_id_fkey | f | FOREIGN KEY (run_id) REFERENCES fountain_ops.runs(id) ON DELETE RESTRICT |
+| external_calls_status_nonempty_check | c | CHECK (btrim(status) <> ''::text) |
+| external_calls_tokens_object_check | c | CHECK (jsonb_typeof(tokens) = 'object'::text) |
 
 #### Indexes
 
+| name | definition |
+| --- | --- |
+| external_calls_pkey | CREATE UNIQUE INDEX external_calls_pkey ON fountain_ops.external_calls USING btree (id) |
+| external_calls_provider_created_idx | CREATE INDEX external_calls_provider_created_idx ON fountain_ops.external_calls USING btree (provider, created_at) |
+| external_calls_request_fingerprint_idx | CREATE INDEX external_calls_request_fingerprint_idx ON fountain_ops.external_calls USING btree (request_fingerprint, created_at DESC) |
+| external_calls_run_idx | CREATE INDEX external_calls_run_idx ON fountain_ops.external_calls USING btree (run_id) |
+
+#### Triggers
+
 _None._
+
+### fountain_ops.field_status
+
+Rows: 0
+
+#### Columns
+
+| pos | column | type | udt | nullable | default |
+| --- | --- | --- | --- | --- | --- |
+| 1 | entity_type | text | text | NO |  |
+| 2 | entity_id | integer | int4 | NO |  |
+| 3 | field | text | text | NO |  |
+| 4 | verification | text | text | NO | 'unverified'::text |
+| 5 | locked | boolean | bool | NO | false |
+| 6 | verified_by | text | text | YES |  |
+| 7 | verified_at | timestamp with time zone | timestamptz | YES |  |
+| 8 | source_note | text | text | YES |  |
+
+#### Constraints
+
+| name | type | definition |
+| --- | --- | --- |
+| field_status_entity_type_nonempty_check | c | CHECK (btrim(entity_type) <> ''::text) |
+| field_status_field_nonempty_check | c | CHECK (btrim(field) <> ''::text) |
+| field_status_pkey | p | PRIMARY KEY (entity_type, entity_id, field) |
+| field_status_verification_check | c | CHECK (verification = ANY (ARRAY['unverified'::text, 'agent_verified'::text, 'human_verified'::text, 'owner_verified'::text])) |
+
+#### Indexes
+
+| name | definition |
+| --- | --- |
+| field_status_pkey | CREATE UNIQUE INDEX field_status_pkey ON fountain_ops.field_status USING btree (entity_type, entity_id, field) |
+
+#### Triggers
+
+_None._
+
+### fountain_ops.runs
+
+Rows: 27
+
+#### Columns
+
+| pos | column | type | udt | nullable | default |
+| --- | --- | --- | --- | --- | --- |
+| 1 | id | bigint | int8 | NO | nextval('fountain_ops.runs_id_seq'::regclass) |
+| 2 | command | text | text | NO |  |
+| 3 | args | jsonb | jsonb | NO | '{}'::jsonb |
+| 4 | started_at | timestamp with time zone | timestamptz | NO | now() |
+| 5 | finished_at | timestamp with time zone | timestamptz | YES |  |
+| 6 | status | text | text | NO | 'running'::text |
+| 7 | counts | jsonb | jsonb | NO | '{}'::jsonb |
+| 8 | budget_usd | numeric | numeric | YES |  |
+| 9 | spent_usd_estimate | numeric | numeric | NO | 0 |
+| 10 | notes | text | text | YES |  |
+| 11 | dry_run | boolean | bool | NO | true |
+
+#### Constraints
+
+| name | type | definition |
+| --- | --- | --- |
+| runs_args_object_check | c | CHECK (jsonb_typeof(args) = 'object'::text) |
+| runs_budget_nonnegative_check | c | CHECK (budget_usd IS NULL OR budget_usd >= 0::numeric) |
+| runs_command_nonempty_check | c | CHECK (btrim(command) <> ''::text) |
+| runs_counts_object_check | c | CHECK (jsonb_typeof(counts) = 'object'::text) |
+| runs_finished_after_started_check | c | CHECK (finished_at IS NULL OR finished_at >= started_at) |
+| runs_lifecycle_check | c | CHECK (status = 'running'::text AND finished_at IS NULL OR status <> 'running'::text AND finished_at IS NOT NULL) |
+| runs_pkey | p | PRIMARY KEY (id) |
+| runs_spent_nonnegative_check | c | CHECK (spent_usd_estimate >= 0::numeric) |
+| runs_status_check | c | CHECK (status = ANY (ARRAY['running'::text, 'completed'::text, 'failed'::text, 'budget_exhausted'::text, 'cancelled'::text])) |
+
+#### Indexes
+
+| name | definition |
+| --- | --- |
+| runs_pkey | CREATE UNIQUE INDEX runs_pkey ON fountain_ops.runs USING btree (id) |
+
+#### Triggers
+
+_None._
+
+### fountain_ops.task_queue
+
+Rows: 316
+
+#### Columns
+
+| pos | column | type | udt | nullable | default |
+| --- | --- | --- | --- | --- | --- |
+| 1 | id | bigint | int8 | NO | nextval('fountain_ops.task_queue_id_seq'::regclass) |
+| 2 | task_type | text | text | NO |  |
+| 3 | entity_type | text | text | NO |  |
+| 4 | entity_id | integer | int4 | NO |  |
+| 5 | priority | integer | int4 | NO | 100 |
+| 6 | payload | jsonb | jsonb | NO | '{}'::jsonb |
+| 7 | status | text | text | NO | 'pending'::text |
+| 8 | attempts | integer | int4 | NO | 0 |
+| 9 | max_attempts | integer | int4 | NO | 3 |
+| 10 | claimed_by | text | text | YES |  |
+| 11 | claimed_at | timestamp with time zone | timestamptz | YES |  |
+| 12 | result | jsonb | jsonb | YES |  |
+| 13 | error | text | text | YES |  |
+| 14 | run_id | bigint | int8 | YES |  |
+| 15 | created_at | timestamp with time zone | timestamptz | NO | now() |
+| 16 | updated_at | timestamp with time zone | timestamptz | NO | now() |
+
+#### Constraints
+
+| name | type | definition |
+| --- | --- | --- |
+| task_queue_attempts_check | c | CHECK (attempts >= 0 AND max_attempts > 0 AND attempts <= max_attempts) |
+| task_queue_claim_check | c | CHECK (status <> 'claimed'::text OR claimed_by IS NOT NULL AND claimed_at IS NOT NULL) |
+| task_queue_entity_type_nonempty_check | c | CHECK (btrim(entity_type) <> ''::text) |
+| task_queue_payload_object_check | c | CHECK (jsonb_typeof(payload) = 'object'::text) |
+| task_queue_pkey | p | PRIMARY KEY (id) |
+| task_queue_run_id_fkey | f | FOREIGN KEY (run_id) REFERENCES fountain_ops.runs(id) ON DELETE RESTRICT |
+| task_queue_status_check | c | CHECK (status = ANY (ARRAY['pending'::text, 'claimed'::text, 'done'::text, 'failed'::text, 'skipped'::text])) |
+| task_queue_task_type_check | c | CHECK (task_type = ANY (ARRAY['legitimacy_check'::text, 'contact_fill'::text, 'geocode'::text, 'image_harvest'::text, 'image_classify'::text, 'menu_extract'::text, 'reviews_fetch'::text, 'dedup_scan'::text, 'freshness_check'::text, 'noop'::text, 'llm_smoke'::text])) |
+| task_queue_updated_after_created_check | c | CHECK (updated_at >= created_at) |
+
+#### Indexes
+
+| name | definition |
+| --- | --- |
+| task_queue_active_unique_idx | CREATE UNIQUE INDEX task_queue_active_unique_idx ON fountain_ops.task_queue USING btree (task_type, entity_type, entity_id) WHERE (status = ANY (ARRAY['pending'::text, 'claimed'::text])) |
+| task_queue_claim_idx | CREATE INDEX task_queue_claim_idx ON fountain_ops.task_queue USING btree (task_type, status, priority, id) |
+| task_queue_entity_idx | CREATE INDEX task_queue_entity_idx ON fountain_ops.task_queue USING btree (entity_type, entity_id) |
+| task_queue_pkey | CREATE UNIQUE INDEX task_queue_pkey ON fountain_ops.task_queue USING btree (id) |
+| task_queue_run_idx | CREATE INDEX task_queue_run_idx ON fountain_ops.task_queue USING btree (run_id) |
 
 #### Triggers
 
@@ -1081,41 +1204,6 @@ Rows: 25198
 
 _None._
 
-### fountain_raw.clinic_website_offering_extractions_20260711
-
-Rows: 636
-
-#### Columns
-
-| pos | column | type | udt | nullable | default |
-| --- | --- | --- | --- | --- | --- |
-| 1 | location_id | integer | int4 | NO |  |
-| 2 | source_listing_id | bigint | int8 | YES |  |
-| 3 | website | text | text | YES |  |
-| 4 | status | text | text | NO |  |
-| 5 | raw_offering_count | integer | int4 | NO | 0 |
-| 6 | capped | boolean | bool | NO | false |
-| 7 | extraction_json | jsonb | jsonb | YES |  |
-| 8 | error_message | text | text | YES |  |
-| 9 | processed_at | timestamp with time zone | timestamptz | NO | now() |
-| 10 | actor_label | text | text | NO |  |
-
-#### Constraints
-
-| name | type | definition |
-| --- | --- | --- |
-| clinic_website_offering_extractions_20260711_pkey | p | PRIMARY KEY (location_id) |
-
-#### Indexes
-
-| name | definition |
-| --- | --- |
-| clinic_website_offering_extractions_20260711_pkey | CREATE UNIQUE INDEX clinic_website_offering_extractions_20260711_pkey ON fountain_raw.clinic_website_offering_extractions_20260711 USING btree (location_id) |
-
-#### Triggers
-
-_None._
-
 ### fountain_raw.dedup_candidates_20260711
 
 Rows: 1300
@@ -1148,434 +1236,6 @@ Rows: 1300
 
 _None._
 
-### fountain_raw.field_corrections_backup_20260711
-
-Rows: 43
-
-#### Columns
-
-| pos | column | type | udt | nullable | default |
-| --- | --- | --- | --- | --- | --- |
-| 1 | location_id | integer | int4 | NO |  |
-| 2 | field_name | text | text | NO |  |
-| 3 | old_value | text | text | YES |  |
-| 4 | new_value | text | text | YES |  |
-| 5 | old_row | jsonb | jsonb | NO |  |
-| 6 | result_json | jsonb | jsonb | NO |  |
-| 7 | decision | text | text | NO |  |
-| 8 | reason | text | text | YES |  |
-| 9 | backed_up_at | timestamp with time zone | timestamptz | NO | now() |
-| 10 | actor_label | text | text | NO |  |
-
-#### Constraints
-
-| name | type | definition |
-| --- | --- | --- |
-| field_corrections_backup_20260711_pkey | p | PRIMARY KEY (location_id, field_name) |
-
-#### Indexes
-
-| name | definition |
-| --- | --- |
-| field_corrections_backup_20260711_pkey | CREATE UNIQUE INDEX field_corrections_backup_20260711_pkey ON fountain_raw.field_corrections_backup_20260711 USING btree (location_id, field_name) |
-
-#### Triggers
-
-_None._
-
-### fountain_raw.final_closeout_offerings_backup_20260711
-
-Rows: 100535
-
-#### Columns
-
-| pos | column | type | udt | nullable | default |
-| --- | --- | --- | --- | --- | --- |
-| 1 | id | integer | int4 | YES |  |
-| 2 | location_id | integer | int4 | YES |  |
-| 3 | treatment_id | integer | int4 | YES |  |
-| 4 | raw_name | text | text | YES |  |
-| 5 | price_amount | double precision | float8 | YES |  |
-| 6 | price_currency | text | text | YES |  |
-| 7 | source_offer_url | text | text | YES |  |
-| 8 | source_id | integer | int4 | YES |  |
-| 9 | status | text | text | YES |  |
-| 10 | data_origin | text | text | YES |  |
-| 11 | verification_status | text | text | YES |  |
-| 12 | created_at | timestamp with time zone | timestamptz | YES |  |
-| 13 | updated_at | timestamp with time zone | timestamptz | YES |  |
-| 14 | deleted_at | timestamp with time zone | timestamptz | YES |  |
-| 15 | owner_account_id | uuid | uuid | YES |  |
-
-#### Constraints
-
-_None._
-
-#### Indexes
-
-_None._
-
-#### Triggers
-
-_None._
-
-### fountain_raw.final_closeout_search_function_backup_20260711
-
-Rows: 1
-
-#### Columns
-
-| pos | column | type | udt | nullable | default |
-| --- | --- | --- | --- | --- | --- |
-| 1 | function_def | text | text | YES |  |
-| 2 | backed_up_at | timestamp with time zone | timestamptz | YES |  |
-
-#### Constraints
-
-_None._
-
-#### Indexes
-
-_None._
-
-#### Triggers
-
-_None._
-
-### fountain_raw.final_closeout_search_index_backup_20260711
-
-Rows: 14824
-
-#### Columns
-
-| pos | column | type | udt | nullable | default |
-| --- | --- | --- | --- | --- | --- |
-| 1 | entity_type | text | text | YES |  |
-| 2 | entity_id | integer | int4 | YES |  |
-| 3 | name | text | text | YES |  |
-| 4 | locality | text | text | YES |  |
-| 5 | country | text | text | YES |  |
-| 6 | treatments | text | text | YES |  |
-| 7 | specialties | text | text | YES |  |
-| 8 | tags | text | text | YES |  |
-| 9 | search_text | tsvector | tsvector | YES |  |
-
-#### Constraints
-
-_None._
-
-#### Indexes
-
-_None._
-
-#### Triggers
-
-_None._
-
-### fountain_raw.final_closeout_treatment_aliases_backup_20260711
-
-Rows: 3399
-
-#### Columns
-
-| pos | column | type | udt | nullable | default |
-| --- | --- | --- | --- | --- | --- |
-| 1 | id | integer | int4 | YES |  |
-| 2 | treatment_id | integer | int4 | YES |  |
-| 3 | alias_text | text | text | YES |  |
-| 4 | alias_normalized | text | text | YES |  |
-| 5 | source_slug | text | text | YES |  |
-
-#### Constraints
-
-_None._
-
-#### Indexes
-
-_None._
-
-#### Triggers
-
-_None._
-
-### fountain_raw.final_closeout_treatments_backup_20260711
-
-Rows: 62
-
-#### Columns
-
-| pos | column | type | udt | nullable | default |
-| --- | --- | --- | --- | --- | --- |
-| 1 | id | integer | int4 | YES |  |
-| 2 | canonical_name | text | text | YES |  |
-| 3 | description | text | text | YES |  |
-| 4 | category | text | text | YES |  |
-
-#### Constraints
-
-_None._
-
-#### Indexes
-
-_None._
-
-#### Triggers
-
-_None._
-
-### fountain_raw.hyperbaric_app_image_audit_20260710
-
-Rows: 983
-
-#### Columns
-
-| pos | column | type | udt | nullable | default |
-| --- | --- | --- | --- | --- | --- |
-| 1 | audit_id | bigint | int8 | NO |  |
-| 2 | source_slug | text | text | NO |  |
-| 3 | source_listing_id | bigint | int8 | NO |  |
-| 4 | image_url | text | text | NO |  |
-| 5 | source_page_url | text | text | YES |  |
-| 6 | alt | text | text | YES |  |
-| 7 | source_id | integer | int4 | YES |  |
-| 8 | location_id | integer | int4 | YES |  |
-| 9 | location_name | text | text | YES |  |
-| 10 | classification | text | text | NO |  |
-| 11 | outcome | text | text | NO |  |
-| 12 | reason | text | text | YES |  |
-| 13 | blob_url | text | text | YES |  |
-| 14 | image_id | integer | int4 | YES |  |
-| 15 | content_sha256 | text | text | YES |  |
-| 16 | bytes | integer | int4 | YES |  |
-| 17 | width | integer | int4 | YES |  |
-| 18 | height | integer | int4 | YES |  |
-| 19 | content_type | text | text | YES |  |
-| 20 | cache_path | text | text | YES |  |
-| 21 | classified_at | timestamp with time zone | timestamptz | NO | now() |
-| 22 | downloaded_at | timestamp with time zone | timestamptz | YES |  |
-| 23 | promoted_at | timestamp with time zone | timestamptz | YES |  |
-| 24 | updated_at | timestamp with time zone | timestamptz | NO | now() |
-
-#### Constraints
-
-| name | type | definition |
-| --- | --- | --- |
-| hyperbaric_app_image_audit_20260710_pkey | p | PRIMARY KEY (audit_id) |
-
-#### Indexes
-
-| name | definition |
-| --- | --- |
-| hyperbaric_app_image_audit_20260710_classification_idx | CREATE INDEX hyperbaric_app_image_audit_20260710_classification_idx ON fountain_raw.hyperbaric_app_image_audit_20260710 USING btree (classification, outcome) |
-| hyperbaric_app_image_audit_20260710_location_idx | CREATE INDEX hyperbaric_app_image_audit_20260710_location_idx ON fountain_raw.hyperbaric_app_image_audit_20260710 USING btree (location_id) |
-| hyperbaric_app_image_audit_20260710_pkey | CREATE UNIQUE INDEX hyperbaric_app_image_audit_20260710_pkey ON fountain_raw.hyperbaric_app_image_audit_20260710 USING btree (audit_id) |
-
-#### Triggers
-
-_None._
-
-### fountain_raw.hyperbaric_app_promotion_audit_20260710
-
-Rows: 1220
-
-#### Columns
-
-| pos | column | type | udt | nullable | default |
-| --- | --- | --- | --- | --- | --- |
-| 1 | id | bigint | int8 | NO | nextval('fountain_raw.hyperbaric_app_promotion_audit_20260710_id_seq'::regclass) |
-| 2 | source_slug | text | text | NO |  |
-| 3 | source_listing_id | bigint | int8 | NO |  |
-| 4 | source_url | text | text | YES |  |
-| 5 | name | text | text | YES |  |
-| 6 | matched_existing_location | boolean | bool | NO | false |
-| 7 | match_method | text | text | YES |  |
-| 8 | created_org | boolean | bool | NO | false |
-| 9 | org_reused | boolean | bool | NO | false |
-| 10 | org_id | integer | int4 | YES |  |
-| 11 | location_id | integer | int4 | YES |  |
-| 12 | offerings_added | integer | int4 | NO | 0 |
-| 13 | reviews_added | integer | int4 | NO | 0 |
-| 14 | reviews_deduped | integer | int4 | NO | 0 |
-| 15 | images_landed | integer | int4 | NO | 0 |
-| 16 | failure | text | text | YES |  |
-| 17 | dry_run | boolean | bool | NO | true |
-| 18 | audited_at | timestamp with time zone | timestamptz | NO | now() |
-
-#### Constraints
-
-| name | type | definition |
-| --- | --- | --- |
-| hyperbaric_app_promotion_audit_20260710_pkey | p | PRIMARY KEY (id) |
-
-#### Indexes
-
-| name | definition |
-| --- | --- |
-| hyperbaric_app_promotion_audit_20260710_pkey | CREATE UNIQUE INDEX hyperbaric_app_promotion_audit_20260710_pkey ON fountain_raw.hyperbaric_app_promotion_audit_20260710 USING btree (id) |
-
-#### Triggers
-
-_None._
-
-### fountain_raw.hyperbaric_cleanup_call_ledger_20260711
-
-Rows: 3926
-
-#### Columns
-
-| pos | column | type | udt | nullable | default |
-| --- | --- | --- | --- | --- | --- |
-| 1 | id | bigint | int8 | NO | nextval('fountain_raw.hyperbaric_cleanup_call_ledger_20260711_id_seq'::regclass) |
-| 2 | location_id | integer | int4 | YES |  |
-| 3 | call_type | text | text | NO |  |
-| 4 | provider | text | text | YES |  |
-| 5 | request_fingerprint | text | text | YES |  |
-| 6 | status | text | text | NO |  |
-| 7 | http_status | integer | int4 | YES |  |
-| 8 | error_message | text | text | YES |  |
-| 9 | response_summary | jsonb | jsonb | YES |  |
-| 10 | created_at | timestamp with time zone | timestamptz | NO | now() |
-
-#### Constraints
-
-| name | type | definition |
-| --- | --- | --- |
-| hyperbaric_cleanup_call_ledger_20260711_pkey | p | PRIMARY KEY (id) |
-
-#### Indexes
-
-| name | definition |
-| --- | --- |
-| hyperbaric_cleanup_call_ledger_20260711_pkey | CREATE UNIQUE INDEX hyperbaric_cleanup_call_ledger_20260711_pkey ON fountain_raw.hyperbaric_cleanup_call_ledger_20260711 USING btree (id) |
-
-#### Triggers
-
-_None._
-
-### fountain_raw.hyperbaric_cleanup_queue_20260710
-
-Rows: 983
-
-#### Columns
-
-| pos | column | type | udt | nullable | default |
-| --- | --- | --- | --- | --- | --- |
-| 1 | location_id | integer | int4 | NO |  |
-| 2 | source_listing_id | bigint | int8 | NO |  |
-| 3 | status | text | text | NO | 'pending'::text |
-| 4 | claimed_by | text | text | YES |  |
-| 5 | claimed_at | timestamp with time zone | timestamptz | YES |  |
-| 6 | completed_at | timestamp with time zone | timestamptz | YES |  |
-| 7 | error | text | text | YES |  |
-
-#### Constraints
-
-| name | type | definition |
-| --- | --- | --- |
-| hyperbaric_cleanup_queue_20260710_pkey | p | PRIMARY KEY (location_id) |
-
-#### Indexes
-
-| name | definition |
-| --- | --- |
-| hyperbaric_cleanup_queue_20260710_pkey | CREATE UNIQUE INDEX hyperbaric_cleanup_queue_20260710_pkey ON fountain_raw.hyperbaric_cleanup_queue_20260710 USING btree (location_id) |
-
-#### Triggers
-
-_None._
-
-### fountain_raw.hyperbaric_cleanup_queue_20260711
-
-Rows: 946
-
-#### Columns
-
-| pos | column | type | udt | nullable | default |
-| --- | --- | --- | --- | --- | --- |
-| 1 | location_id | integer | int4 | NO |  |
-| 2 | source_listing_id | bigint | int8 | NO |  |
-| 3 | source_url | text | text | YES |  |
-| 4 | slug | text | text | NO |  |
-| 5 | name | text | text | YES |  |
-| 6 | address | text | text | YES |  |
-| 7 | locality | text | text | YES |  |
-| 8 | region | text | text | YES |  |
-| 9 | postal_code | text | text | YES |  |
-| 10 | country_code | text | text | YES |  |
-| 11 | latitude | double precision | float8 | YES |  |
-| 12 | longitude | double precision | float8 | YES |  |
-| 13 | phone | text | text | YES |  |
-| 14 | website | text | text | YES |  |
-| 15 | status | text | text | NO | 'pending'::text |
-| 16 | error_message | text | text | YES |  |
-| 17 | failure_count | integer | int4 | NO | 0 |
-| 18 | place_match_inserted | boolean | bool | NO | false |
-| 19 | source_images_inserted | integer | int4 | NO | 0 |
-| 20 | website_outcome | text | text | YES |  |
-| 21 | claimed_at | timestamp with time zone | timestamptz | YES |  |
-| 22 | processed_at | timestamp with time zone | timestamptz | YES |  |
-| 23 | created_at | timestamp with time zone | timestamptz | NO | now() |
-| 24 | updated_at | timestamp with time zone | timestamptz | NO | now() |
-
-#### Constraints
-
-| name | type | definition |
-| --- | --- | --- |
-| hyperbaric_cleanup_queue_20260711_pkey | p | PRIMARY KEY (location_id) |
-
-#### Indexes
-
-| name | definition |
-| --- | --- |
-| hyperbaric_cleanup_queue_20260711_pkey | CREATE UNIQUE INDEX hyperbaric_cleanup_queue_20260711_pkey ON fountain_raw.hyperbaric_cleanup_queue_20260711 USING btree (location_id) |
-
-#### Triggers
-
-_None._
-
-### fountain_raw.hyperbaric_cleanup_results_20260710
-
-Rows: 983
-
-#### Columns
-
-| pos | column | type | udt | nullable | default |
-| --- | --- | --- | --- | --- | --- |
-| 1 | location_id | integer | int4 | NO |  |
-| 2 | source_listing_id | bigint | int8 | NO |  |
-| 3 | legitimacy | text | text | YES |  |
-| 4 | legitimacy_confidence | text | text | YES |  |
-| 5 | legitimacy_evidence | jsonb | jsonb | YES |  |
-| 6 | address_verdict | text | text | YES |  |
-| 7 | address_corrected | jsonb | jsonb | YES |  |
-| 8 | phone_verdict | text | text | YES |  |
-| 9 | phone_corrected | text | text | YES |  |
-| 10 | website_verdict | text | text | YES |  |
-| 11 | website_corrected | text | text | YES |  |
-| 12 | place_id | text | text | YES |  |
-| 13 | business_status | text | text | YES |  |
-| 14 | price_found | boolean | bool | YES |  |
-| 15 | price_payload | jsonb | jsonb | YES |  |
-| 16 | images_found | integer | int4 | YES |  |
-| 17 | worker_id | text | text | YES |  |
-| 18 | completed_at | timestamp with time zone | timestamptz | YES |  |
-
-#### Constraints
-
-| name | type | definition |
-| --- | --- | --- |
-| hyperbaric_cleanup_results_20260710_pkey | p | PRIMARY KEY (location_id) |
-
-#### Indexes
-
-| name | definition |
-| --- | --- |
-| hyperbaric_cleanup_results_20260710_pkey | CREATE UNIQUE INDEX hyperbaric_cleanup_results_20260710_pkey ON fountain_raw.hyperbaric_cleanup_results_20260710 USING btree (location_id) |
-
-#### Triggers
-
-_None._
-
 ### fountain_raw.hyperbaric_cleanup_results_20260711
 
 Rows: 946
@@ -1601,220 +1261,6 @@ Rows: 946
 | name | definition |
 | --- | --- |
 | hyperbaric_cleanup_results_20260711_pkey | CREATE UNIQUE INDEX hyperbaric_cleanup_results_20260711_pkey ON fountain_raw.hyperbaric_cleanup_results_20260711 USING btree (location_id) |
-
-#### Triggers
-
-_None._
-
-### fountain_raw.hyperbaric_cleanup_website_fetches_20260711
-
-Rows: 1806
-
-#### Columns
-
-| pos | column | type | udt | nullable | default |
-| --- | --- | --- | --- | --- | --- |
-| 1 | id | bigint | int8 | NO | nextval('fountain_raw.hyperbaric_cleanup_website_fetches_20260711_id_seq'::regclass) |
-| 2 | location_id | integer | int4 | NO |  |
-| 3 | domain | text | text | YES |  |
-| 4 | requested_url | text | text | NO |  |
-| 5 | final_url | text | text | YES |  |
-| 6 | page_role | text | text | YES |  |
-| 7 | outcome | text | text | NO |  |
-| 8 | http_status | integer | int4 | YES |  |
-| 9 | title | text | text | YES |  |
-| 10 | cache_path | text | text | YES |  |
-| 11 | text_path | text | text | YES |  |
-| 12 | error_message | text | text | YES |  |
-| 13 | created_at | timestamp with time zone | timestamptz | NO | now() |
-
-#### Constraints
-
-| name | type | definition |
-| --- | --- | --- |
-| hyperbaric_cleanup_website_fetches_20260711_pkey | p | PRIMARY KEY (id) |
-
-#### Indexes
-
-| name | definition |
-| --- | --- |
-| hyperbaric_cleanup_website_fetches_20260711_pkey | CREATE UNIQUE INDEX hyperbaric_cleanup_website_fetches_20260711_pkey ON fountain_raw.hyperbaric_cleanup_website_fetches_20260711 USING btree (id) |
-
-#### Triggers
-
-_None._
-
-### fountain_raw.hyperbaric_dedup_candidates_20260710
-
-Rows: 4
-
-#### Columns
-
-| pos | column | type | udt | nullable | default |
-| --- | --- | --- | --- | --- | --- |
-| 1 | keep_id | integer | int4 | NO |  |
-| 2 | merge_id | integer | int4 | NO |  |
-| 3 | method | text | text | NO |  |
-| 4 | confidence | double precision | float8 | YES |  |
-| 5 | evidence | jsonb | jsonb | YES |  |
-| 6 | decision | text | text | NO | 'pending'::text |
-| 7 | created_at | timestamp with time zone | timestamptz | NO | now() |
-
-#### Constraints
-
-| name | type | definition |
-| --- | --- | --- |
-| hyperbaric_dedup_candidates_20260710_pkey | p | PRIMARY KEY (keep_id, merge_id, method) |
-
-#### Indexes
-
-| name | definition |
-| --- | --- |
-| hyperbaric_dedup_candidates_20260710_pkey | CREATE UNIQUE INDEX hyperbaric_dedup_candidates_20260710_pkey ON fountain_raw.hyperbaric_dedup_candidates_20260710 USING btree (keep_id, merge_id, method) |
-
-#### Triggers
-
-_None._
-
-### fountain_raw.hyperbaric_field_corrections_backup_20260710
-
-Rows: 66
-
-#### Columns
-
-| pos | column | type | udt | nullable | default |
-| --- | --- | --- | --- | --- | --- |
-| 1 | id | integer | int4 | YES |  |
-| 2 | org_id | integer | int4 | YES |  |
-| 3 | name | text | text | YES |  |
-| 4 | address | text | text | YES |  |
-| 5 | locality | text | text | YES |  |
-| 6 | region | text | text | YES |  |
-| 7 | postal_code | text | text | YES |  |
-| 8 | country_code | text | text | YES |  |
-| 9 | country_name | text | text | YES |  |
-| 10 | latitude | double precision | float8 | YES |  |
-| 11 | longitude | double precision | float8 | YES |  |
-| 12 | phone | text | text | YES |  |
-| 13 | email | text | text | YES |  |
-| 14 | website | text | text | YES |  |
-| 15 | dedup_key | text | text | YES |  |
-| 16 | public_id | uuid | uuid | YES |  |
-| 17 | status | text | text | YES |  |
-| 18 | data_origin | text | text | YES |  |
-| 19 | verification_status | text | text | YES |  |
-| 20 | created_at | timestamp with time zone | timestamptz | YES |  |
-| 21 | updated_at | timestamp with time zone | timestamptz | YES |  |
-| 22 | deleted_at | timestamp with time zone | timestamptz | YES |  |
-| 23 | owner_account_id | uuid | uuid | YES |  |
-| 24 | slug | text | text | YES |  |
-| 25 | is_virtual | boolean | bool | YES |  |
-| 26 | backed_up_at | timestamp with time zone | timestamptz | YES |  |
-| 27 | correction_type | text | text | YES |  |
-
-#### Constraints
-
-_None._
-
-#### Indexes
-
-_None._
-
-#### Triggers
-
-_None._
-
-### fountain_raw.hyperbaric_price_review_20260710
-
-Rows: 0
-
-#### Columns
-
-| pos | column | type | udt | nullable | default |
-| --- | --- | --- | --- | --- | --- |
-| 1 | location_id | integer | int4 | NO |  |
-| 2 | source_listing_id | bigint | int8 | YES |  |
-| 3 | price_payload | jsonb | jsonb | YES |  |
-| 4 | reason | text | text | YES |  |
-| 5 | created_at | timestamp with time zone | timestamptz | NO | now() |
-
-#### Constraints
-
-| name | type | definition |
-| --- | --- | --- |
-| hyperbaric_price_review_20260710_pkey | p | PRIMARY KEY (location_id) |
-
-#### Indexes
-
-| name | definition |
-| --- | --- |
-| hyperbaric_price_review_20260710_pkey | CREATE UNIQUE INDEX hyperbaric_price_review_20260710_pkey ON fountain_raw.hyperbaric_price_review_20260710 USING btree (location_id) |
-
-#### Triggers
-
-_None._
-
-### fountain_raw.hyperbaric_task_d_contact_fills_20260711
-
-Rows: 3
-
-#### Columns
-
-| pos | column | type | udt | nullable | default |
-| --- | --- | --- | --- | --- | --- |
-| 1 | location_id | integer | int4 | NO |  |
-| 2 | field_name | text | text | NO |  |
-| 3 | new_value | text | text | YES |  |
-| 4 | provider_place_id | text | text | YES |  |
-| 5 | source | text | text | NO |  |
-| 6 | filled_at | timestamp with time zone | timestamptz | NO | now() |
-| 7 | actor_label | text | text | NO |  |
-
-#### Constraints
-
-| name | type | definition |
-| --- | --- | --- |
-| hyperbaric_task_d_contact_fills_20260711_pkey | p | PRIMARY KEY (location_id, field_name) |
-
-#### Indexes
-
-| name | definition |
-| --- | --- |
-| hyperbaric_task_d_contact_fills_20260711_pkey | CREATE UNIQUE INDEX hyperbaric_task_d_contact_fills_20260711_pkey ON fountain_raw.hyperbaric_task_d_contact_fills_20260711 USING btree (location_id, field_name) |
-
-#### Triggers
-
-_None._
-
-### fountain_raw.hyperbaric_task_d_review_backfill_20260711
-
-Rows: 119
-
-#### Columns
-
-| pos | column | type | udt | nullable | default |
-| --- | --- | --- | --- | --- | --- |
-| 1 | location_id | integer | int4 | NO |  |
-| 2 | provider_place_id | text | text | NO |  |
-| 3 | reviews_seen | integer | int4 | NO |  |
-| 4 | reviews_inserted | integer | int4 | NO |  |
-| 5 | reviews_deduped | integer | int4 | NO |  |
-| 6 | status | text | text | NO |  |
-| 7 | error_message | text | text | YES |  |
-| 8 | processed_at | timestamp with time zone | timestamptz | NO | now() |
-| 9 | actor_label | text | text | NO |  |
-
-#### Constraints
-
-| name | type | definition |
-| --- | --- | --- |
-| hyperbaric_task_d_review_backfill_20260711_pkey | p | PRIMARY KEY (location_id, provider_place_id) |
-
-#### Indexes
-
-| name | definition |
-| --- | --- |
-| hyperbaric_task_d_review_backfill_20260711_pkey | CREATE UNIQUE INDEX hyperbaric_task_d_review_backfill_20260711_pkey ON fountain_raw.hyperbaric_task_d_review_backfill_20260711 USING btree (location_id, provider_place_id) |
 
 #### Triggers
 
@@ -1965,44 +1411,6 @@ Rows: 1265
 | name | definition |
 | --- | --- |
 | location_geocode_low_confidence_20260707_pkey | CREATE UNIQUE INDEX location_geocode_low_confidence_20260707_pkey ON fountain_raw.location_geocode_low_confidence_20260707 USING btree (location_id) |
-
-#### Triggers
-
-_None._
-
-### fountain_raw.location_geocode_wrong_branch_address_20260707
-
-Rows: 13
-
-#### Columns
-
-| pos | column | type | udt | nullable | default |
-| --- | --- | --- | --- | --- | --- |
-| 1 | location_id | integer | int4 | NO |  |
-| 2 | location_name | text | text | YES |  |
-| 3 | current_locality | text | text | YES |  |
-| 4 | current_region | text | text | YES |  |
-| 5 | current_country_code | text | text | YES |  |
-| 6 | formatted_address | text | text | YES |  |
-| 7 | result_country_code | text | text | YES |  |
-| 8 | location_type | text | text | YES |  |
-| 9 | result_types | ARRAY | _text | YES |  |
-| 10 | reason | text | text | NO |  |
-| 11 | claimed_place | text | text | YES |  |
-| 12 | detail | jsonb | jsonb | YES |  |
-| 13 | created_at | timestamp with time zone | timestamptz | YES | now() |
-
-#### Constraints
-
-| name | type | definition |
-| --- | --- | --- |
-| location_geocode_wrong_branch_address_20260707_pkey | p | PRIMARY KEY (location_id) |
-
-#### Indexes
-
-| name | definition |
-| --- | --- |
-| location_geocode_wrong_branch_address_20260707_pkey | CREATE UNIQUE INDEX location_geocode_wrong_branch_address_20260707_pkey ON fountain_raw.location_geocode_wrong_branch_address_20260707 USING btree (location_id) |
 
 #### Triggers
 
@@ -2360,226 +1768,6 @@ Rows: 345
 | name | definition |
 | --- | --- |
 | suppressed_source_listings_pkey | CREATE UNIQUE INDEX suppressed_source_listings_pkey ON fountain_raw.suppressed_source_listings USING btree (source_slug, source_listing_id) |
-
-#### Triggers
-
-_None._
-
-### fountain_raw.taxonomy_dedup_merge_audit_20260712
-
-Rows: 9
-
-#### Columns
-
-| pos | column | type | udt | nullable | default |
-| --- | --- | --- | --- | --- | --- |
-| 1 | group_name | text | text | NO |  |
-| 2 | keep_treatment_id | integer | int4 | NO |  |
-| 3 | duplicate_treatment_id | integer | int4 | NO |  |
-| 4 | duplicate_canonical_name | text | text | NO |  |
-| 5 | duplicate_offerings | integer | int4 | NO |  |
-| 6 | created_at | timestamp with time zone | timestamptz | NO | now() |
-
-#### Constraints
-
-_None._
-
-#### Indexes
-
-_None._
-
-#### Triggers
-
-_None._
-
-### fountain_raw.taxonomy_dedup_offerings_backup_20260712
-
-Rows: 1260
-
-#### Columns
-
-| pos | column | type | udt | nullable | default |
-| --- | --- | --- | --- | --- | --- |
-| 1 | id | integer | int4 | YES |  |
-| 2 | location_id | integer | int4 | YES |  |
-| 3 | treatment_id | integer | int4 | YES |  |
-| 4 | raw_name | text | text | YES |  |
-| 5 | price_amount | double precision | float8 | YES |  |
-| 6 | price_currency | text | text | YES |  |
-| 7 | source_offer_url | text | text | YES |  |
-| 8 | source_id | integer | int4 | YES |  |
-| 9 | status | text | text | YES |  |
-| 10 | data_origin | text | text | YES |  |
-| 11 | verification_status | text | text | YES |  |
-| 12 | created_at | timestamp with time zone | timestamptz | YES |  |
-| 13 | updated_at | timestamp with time zone | timestamptz | YES |  |
-| 14 | deleted_at | timestamp with time zone | timestamptz | YES |  |
-| 15 | owner_account_id | uuid | uuid | YES |  |
-
-#### Constraints
-
-_None._
-
-#### Indexes
-
-_None._
-
-#### Triggers
-
-_None._
-
-### fountain_raw.taxonomy_dedup_treatment_aliases_backup_20260712
-
-Rows: 32
-
-#### Columns
-
-| pos | column | type | udt | nullable | default |
-| --- | --- | --- | --- | --- | --- |
-| 1 | id | integer | int4 | YES |  |
-| 2 | treatment_id | integer | int4 | YES |  |
-| 3 | alias_text | text | text | YES |  |
-| 4 | alias_normalized | text | text | YES |  |
-| 5 | source_slug | text | text | YES |  |
-
-#### Constraints
-
-_None._
-
-#### Indexes
-
-_None._
-
-#### Triggers
-
-_None._
-
-### fountain_raw.taxonomy_dedup_treatments_backup_20260712
-
-Rows: 15
-
-#### Columns
-
-| pos | column | type | udt | nullable | default |
-| --- | --- | --- | --- | --- | --- |
-| 1 | id | integer | int4 | YES |  |
-| 2 | canonical_name | text | text | YES |  |
-| 3 | description | text | text | YES |  |
-| 4 | category | text | text | YES |  |
-
-#### Constraints
-
-_None._
-
-#### Indexes
-
-_None._
-
-#### Triggers
-
-_None._
-
-### fountain_raw.taxonomy_final_corpus_20260711
-
-Rows: 43647
-
-#### Columns
-
-| pos | column | type | udt | nullable | default |
-| --- | --- | --- | --- | --- | --- |
-| 1 | normalized | text | text | NO |  |
-| 2 | display_term | text | text | NO |  |
-| 3 | combined_occurrences | integer | int4 | NO |  |
-| 4 | unmapped_occurrences | integer | int4 | NO |  |
-| 5 | active_offering_rows | integer | int4 | NO |  |
-| 6 | clinic_extraction_rows | integer | int4 | NO |  |
-| 7 | example_terms | ARRAY | _text | NO |  |
-| 8 | sources | ARRAY | _text | NO |  |
-| 9 | created_at | timestamp with time zone | timestamptz | NO | now() |
-
-#### Constraints
-
-| name | type | definition |
-| --- | --- | --- |
-| taxonomy_final_corpus_20260711_pkey | p | PRIMARY KEY (normalized) |
-
-#### Indexes
-
-| name | definition |
-| --- | --- |
-| taxonomy_final_corpus_20260711_pkey | CREATE UNIQUE INDEX taxonomy_final_corpus_20260711_pkey ON fountain_raw.taxonomy_final_corpus_20260711 USING btree (normalized) |
-
-#### Triggers
-
-_None._
-
-### fountain_raw.taxonomy_final_llm_ledger_20260711
-
-Rows: 546
-
-#### Columns
-
-| pos | column | type | udt | nullable | default |
-| --- | --- | --- | --- | --- | --- |
-| 1 | id | bigint | int8 | NO | nextval('fountain_raw.taxonomy_final_llm_ledger_20260711_id_seq'::regclass) |
-| 2 | batch_key | text | text | NO |  |
-| 3 | model | text | text | NO |  |
-| 4 | term_count | integer | int4 | NO |  |
-| 5 | status | text | text | NO |  |
-| 6 | http_status | integer | int4 | YES |  |
-| 7 | error_message | text | text | YES |  |
-| 8 | usage_json | jsonb | jsonb | YES |  |
-| 9 | request_json | jsonb | jsonb | YES |  |
-| 10 | response_json | jsonb | jsonb | YES |  |
-| 11 | created_at | timestamp with time zone | timestamptz | NO | now() |
-
-#### Constraints
-
-| name | type | definition |
-| --- | --- | --- |
-| taxonomy_final_llm_ledger_20260711_batch_key_key | u | UNIQUE (batch_key) |
-| taxonomy_final_llm_ledger_20260711_pkey | p | PRIMARY KEY (id) |
-
-#### Indexes
-
-| name | definition |
-| --- | --- |
-| taxonomy_final_llm_ledger_20260711_batch_key_key | CREATE UNIQUE INDEX taxonomy_final_llm_ledger_20260711_batch_key_key ON fountain_raw.taxonomy_final_llm_ledger_20260711 USING btree (batch_key) |
-| taxonomy_final_llm_ledger_20260711_pkey | CREATE UNIQUE INDEX taxonomy_final_llm_ledger_20260711_pkey ON fountain_raw.taxonomy_final_llm_ledger_20260711 USING btree (id) |
-
-#### Triggers
-
-_None._
-
-### fountain_raw.taxonomy_final_remap_audit_20260711
-
-Rows: 1816
-
-#### Columns
-
-| pos | column | type | udt | nullable | default |
-| --- | --- | --- | --- | --- | --- |
-| 1 | id | bigint | int8 | NO | nextval('fountain_raw.taxonomy_final_remap_audit_20260711_id_seq'::regclass) |
-| 2 | source_kind | text | text | NO |  |
-| 3 | offering_id | integer | int4 | YES |  |
-| 4 | location_id | integer | int4 | YES |  |
-| 5 | raw_name | text | text | NO |  |
-| 6 | normalized | text | text | NO |  |
-| 7 | treatment_id | integer | int4 | NO |  |
-| 8 | action | text | text | NO |  |
-| 9 | created_at | timestamp with time zone | timestamptz | NO | now() |
-
-#### Constraints
-
-| name | type | definition |
-| --- | --- | --- |
-| taxonomy_final_remap_audit_20260711_pkey | p | PRIMARY KEY (id) |
-
-#### Indexes
-
-| name | definition |
-| --- | --- |
-| taxonomy_final_remap_audit_20260711_pkey | CREATE UNIQUE INDEX taxonomy_final_remap_audit_20260711_pkey ON fountain_raw.taxonomy_final_remap_audit_20260711 USING btree (id) |
 
 #### Triggers
 

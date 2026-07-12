@@ -19,6 +19,8 @@ blob-cleanup-report*.json
 # Local task prompts and generated reports
 *.md
 !docs/runs/phase3-inventory.md
+!docs/runs/pass1-sample-review.md
+!docs/runs/run-21.md
 
 # SQLite runtime sidecars
 *.sqlite-wal
