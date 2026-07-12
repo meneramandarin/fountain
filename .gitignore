@@ -27,7 +27,13 @@ blob-cleanup-report*.json
 !docs/runs/pass1-stage3-proposal.md
 !docs/runs/pass1-stage3-completion.md
 !docs/runs/pass1-stage3-final-human-review.md
+!docs/runs/pass1-redemption-completion.md
 !docs/runs/enrichment-run-log.md
+!docs/runs/enrichment-before-census.md
+!docs/runs/enrichment-post-contact-census.md
+!docs/runs/enrichment-image-classify-census.md
+!docs/runs/enrichment-after-census.md
+!docs/runs/enrichment-final-report.md
 !docs/runs/run-21.md
 
 # SQLite runtime sidecars

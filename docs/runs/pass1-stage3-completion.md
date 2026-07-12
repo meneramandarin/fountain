@@ -49,7 +49,7 @@ Partition: 570 + 1,304 + 282 = 2,156.
 
 - LLM calls/subjects: 149/1,187.
 - Provider/parser failures: 8; rolling-500 halt threshold was not breached.
-- Ledgered run spend at report time: $6.6516.
+- Reconciled run spend: $6.9516. This includes the $0.005 OpenRouter web-search tool fee for citation-bearing responses whose original provider usage omitted `server_tool_use.web_search_requests`.
 - AAI Rejuvenation (location 9390): `in_scope` at 0.95.
 
 All keep-class rows remained active. Ambiguous, invalid, below-threshold, or hard-excluded rows remained active with `needs_human_review` task evidence.

@@ -114,6 +114,7 @@ export function createOpenRouterAgentWebSearch({
           max_characters: normalizedMaxCharacters,
         },
       }],
+      tool_choice: "required",
       temperature: 0,
       max_tokens: normalizedMaxTokens,
       usage: { include: true },
@@ -156,11 +157,15 @@ export function createOpenRouterAgentWebSearch({
       const { body, text } = await readResponse(response);
       if (response.ok) {
         const usage = normalizeUsage(body?.usage);
-        const webSearchRequests = nonnegativeInteger(
+        const reportedWebSearchRequests = nonnegativeInteger(
           body?.usage?.server_tool_use?.web_search_requests ?? 0,
           "web-search request count",
         );
         const results = extractUrlCitationResults(body, normalizedMaxResults);
+        // Some OpenRouter routes currently return URL citations while omitting
+        // server_tool_use. A non-empty citation set proves at least one search
+        // request, so fail toward complete cost accounting instead of $0.
+        const webSearchRequests = Math.max(reportedWebSearchRequests, results.length > 0 ? 1 : 0);
         const modelCostUsd = estimateModelCostUsd(selectedModel, usage, prices);
         const webSearchCostUsd = webSearchRequests * searchUnitCostUsd;
         const costEstimateUsd = modelCostUsd + webSearchCostUsd;

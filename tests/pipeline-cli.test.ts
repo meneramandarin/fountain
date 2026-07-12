@@ -1,7 +1,18 @@
 import { describe, expect, test, vi } from "vitest";
 
 // @ts-expect-error -- the pipeline runtime intentionally uses native .mjs modules.
-import { drainTasks, parseCliArgs, runDrain, runEnqueue, runReport, runSuppress, validateCommandArgs } from "../pipeline/cli.mjs";
+import * as cli from "../pipeline/cli.mjs";
+
+const {
+  drainTasks,
+  parseCliArgs,
+  runCensus,
+  runDrain,
+  runEnqueue,
+  runReport,
+  runSuppress,
+  validateCommandArgs,
+} = cli;
 
 describe("pipeline CLI parsing", () => {
   test("defaults to dry-run by leaving apply false", () => {
@@ -76,6 +87,147 @@ describe("pipeline CLI parsing", () => {
       "--output",
       "unused.md",
     ]))).toThrow("Unknown option for maintain refresh-city-index: --output");
+  });
+
+  test("orchestrates the guarded before census with all five initial task handlers", async () => {
+    const snapshot = { population: { eligible: 12 } };
+    const plan = { expectedInsertions: 25 };
+    const loadEnrichmentCensus = vi.fn(async () => snapshot);
+    const buildEnrichmentEnqueuePlan = vi.fn(() => plan);
+    const enqueueEnrichmentPlan = vi.fn(async () => ({ insertedCount: 25 }));
+    const renderEnrichmentCensusReport = vi.fn(() => "# before\n");
+    const writeFile = vi.fn(async (...args: [string, string, string]) => {
+      void args;
+    });
+
+    const outcome = await runCensus(
+      { scope: "before" },
+      { id: "101", dry_run: false },
+      {
+        loadEnrichmentCensus,
+        buildEnrichmentEnqueuePlan,
+        enqueueEnrichmentPlan,
+        renderEnrichmentCensusReport,
+        writeFile,
+      },
+    );
+
+    expect(loadEnrichmentCensus).toHaveBeenCalledWith(expect.objectContaining({
+      label: "before_enrichment",
+    }));
+    expect(enqueueEnrichmentPlan).toHaveBeenCalledWith(expect.objectContaining({
+      plan,
+      liveSnapshot: snapshot,
+      runId: "101",
+      implementedTaskTypes: [
+        "contact_fill",
+        "geocode",
+        "image_harvest",
+        "menu_extract",
+        "reviews_fetch",
+      ],
+      apply: true,
+    }));
+    expect(writeFile).toHaveBeenCalledTimes(2);
+    expect(outcome).toMatchObject({
+      counts: { eligible: 12, expected_tasks: 25, inserted: 25, reports_written: 2 },
+    });
+  });
+
+  test("orchestrates post-harvest image classification with a dry-run and guarded apply", async () => {
+    const snapshot = { population: { eligible: 12 } };
+    const plan = { expectedInsertions: 3, unclassifiedImageCount: 7 };
+    const loadEnrichmentCensus = vi.fn(async () => snapshot);
+    const buildImageClassifyEnqueuePlan = vi.fn(() => plan);
+    const enqueueImageClassifyPlan = vi.fn(async () => ({ insertedCount: 3 }));
+    const renderImageClassifyEnqueueReport = vi.fn(() => "# image classify\n");
+    const writeFile = vi.fn(async (...args: [string, string, string]) => {
+      void args;
+    });
+    const operations = {
+      loadEnrichmentCensus,
+      buildImageClassifyEnqueuePlan,
+      enqueueImageClassifyPlan,
+      renderImageClassifyEnqueueReport,
+      writeFile,
+    };
+
+    const preview = await runCensus(
+      { scope: "image-classify" },
+      { id: "102", dry_run: true },
+      operations,
+    );
+    expect(preview).toMatchObject({
+      counts: { unclassified_images: 7, expected_tasks: 3, inserted: 0 },
+      result: { dryRun: true, scope: "image-classify" },
+    });
+    expect(enqueueImageClassifyPlan).not.toHaveBeenCalled();
+    expect(writeFile).not.toHaveBeenCalled();
+
+    const applied = await runCensus(
+      { scope: "image-classify" },
+      { id: "103", dry_run: false },
+      operations,
+    );
+    expect(enqueueImageClassifyPlan).toHaveBeenCalledWith(expect.objectContaining({
+      plan,
+      liveSnapshot: snapshot,
+      runId: "103",
+      implementedTaskTypes: ["image_classify"],
+      apply: true,
+    }));
+    expect(renderImageClassifyEnqueueReport).toHaveBeenCalledWith(expect.objectContaining({
+      snapshot,
+      plan,
+    }));
+    expect(writeFile).toHaveBeenCalledTimes(2);
+    expect(writeFile.mock.calls.map((call) => String(call[0]))).toEqual(expect.arrayContaining([
+      expect.stringContaining("enrichment-image-classify-census.md"),
+      expect.stringContaining("enrichment-image-classify-census.json"),
+    ]));
+    expect(applied).toMatchObject({
+      counts: { unclassified_images: 7, expected_tasks: 3, inserted: 3, reports_written: 2 },
+    });
+  });
+
+  test("orchestrates a post-contact refresh for newly unlocked downstream work", async () => {
+    const snapshot = { population: { eligible: 12 } };
+    const plan = { expectedInsertions: 4 };
+    const loadEnrichmentCensus = vi.fn(async () => snapshot);
+    const loadPostContactEnqueuePlan = vi.fn(async () => plan);
+    const enqueuePostContactPlan = vi.fn(async () => ({ insertedCount: 4 }));
+    const renderPostContactEnqueueReport = vi.fn(() => "# post contact\n");
+    const writeFile = vi.fn(async (...args: [string, string, string]) => {
+      void args;
+    });
+
+    const outcome = await runCensus(
+      { scope: "post-contact" },
+      { id: "104", dry_run: false },
+      {
+        loadEnrichmentCensus,
+        loadPostContactEnqueuePlan,
+        enqueuePostContactPlan,
+        renderPostContactEnqueueReport,
+        writeFile,
+      },
+    );
+
+    expect(loadPostContactEnqueuePlan).toHaveBeenCalledWith(snapshot);
+    expect(enqueuePostContactPlan).toHaveBeenCalledWith(expect.objectContaining({
+      plan,
+      liveSnapshot: snapshot,
+      runId: "104",
+      implementedTaskTypes: ["geocode", "image_harvest", "menu_extract"],
+      apply: true,
+    }));
+    expect(writeFile.mock.calls.map((call) => String(call[0]))).toEqual(expect.arrayContaining([
+      expect.stringContaining("enrichment-post-contact-census.md"),
+      expect.stringContaining("enrichment-post-contact-census.json"),
+    ]));
+    expect(outcome).toMatchObject({
+      counts: { expected_tasks: 4, inserted: 4, reports_written: 2 },
+    });
   });
 
   test("validates the legitimacy stage and fixed Gate A sample surfaces", () => {
@@ -205,7 +357,13 @@ describe("pipeline CLI parsing", () => {
       limit: 20,
     });
     expect(preview).toMatchObject({
-      result: { dryRun: true, campaign, promptVersion, tasks: [{ id: "701" }] },
+      result: {
+        dryRun: true,
+        campaign,
+        promptVersion,
+        concurrency: 24,
+        tasks: [{ id: "701" }],
+      },
     });
 
     const claimTasks = vi.fn(async () => []);
@@ -480,6 +638,50 @@ describe("pipeline CLI parsing", () => {
     });
     expect(claimTask).toHaveBeenCalledOnce();
     expect(handler).toHaveBeenCalledOnce();
+  });
+
+  test("halts a stage when failures exceed 25 percent over a rolling 500 tasks", async () => {
+    let claimed = 0;
+    const claimTask = vi.fn(async () => {
+      claimed += 1;
+      return { id: String(claimed), entity_id: claimed };
+    });
+    const handler = vi.fn(async ({ task }: { task: { id: string } }) => {
+      if (Number(task.id) <= 126) throw new Error("provider failure");
+      return { ok: true };
+    });
+    const completeTask = vi.fn(async () => ({ status: "done" }));
+    const failTask = vi.fn(async () => ({ status: "pending" }));
+    const isBudgetExhausted = vi.fn(async () => ({ exhausted: false, spendUsd: 0 }));
+    const getRunSpend = vi.fn(async () => 0);
+
+    const result = await drainTasks({
+      run: { id: "75" },
+      taskType: "noop",
+      definition: { handler, maxAttempts: 3, retryable: true },
+      concurrency: 1,
+      budgetUsd: null,
+      limit: 1_000,
+    }, {
+      claimTask,
+      completeTask,
+      failTask,
+      isBudgetExhausted,
+      getRunSpend,
+    });
+
+    expect(result).toMatchObject({
+      dispatched: 500,
+      done: 374,
+      retried: 126,
+      failed: 0,
+      queueDrained: false,
+      failureRateHalted: true,
+      failureRateWindowTasks: 500,
+      failureRateWindowFailures: 126,
+      failureRate: 0.252,
+    });
+    expect(claimTask).toHaveBeenCalledTimes(500);
   });
 
   test("concurrent batch overshoot is bounded to batches already started by workers", async () => {

@@ -75,6 +75,7 @@ describe("OpenRouter agent website search", () => {
           max_characters: 2_000,
         },
       }],
+      tool_choice: "required",
       max_tokens: 350,
       usage: { include: true },
     });

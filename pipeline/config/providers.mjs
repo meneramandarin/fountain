@@ -31,8 +31,9 @@ export const PLACES_TASK_CONFIG = deepFreeze({
   geocode: {
     searchText: ID_ONLY_SEARCH,
     details: {
-      fieldMask: "id,displayName,formattedAddress,location",
-      estimatedCostUsd: null,
+      fieldMask: "id,formattedAddress,location",
+      // Current Place Details Essentials gross price: $5 / 1,000 calls.
+      estimatedCostUsd: 0.005,
     },
   },
   image_harvest: {
@@ -45,7 +46,10 @@ export const PLACES_TASK_CONFIG = deepFreeze({
   reviews_fetch: {
     searchText: ID_ONLY_SEARCH,
     details: {
-      fieldMask: "id,displayName,rating,userRatingCount,reviews",
+      // formattedAddress is required for branch-level identity validation.
+      // The reviews field already selects the higher Enterprise + Atmosphere
+      // SKU, so this does not raise the approved per-call price.
+      fieldMask: "id,displayName,formattedAddress,rating,userRatingCount,reviews",
       estimatedCostUsd: null,
     },
   },

@@ -47,6 +47,21 @@ const externalCalls = [
   },
 ];
 
+const changeEvents = [
+  {
+    entity_type: "locations",
+    action: "update",
+    reason: "contact_fill:website",
+    count: 2,
+  },
+  {
+    entity_type: "locations",
+    action: "update",
+    reason: "contact_fill:phone",
+    count: 1,
+  },
+];
+
 describe("pipeline run reports", () => {
   test("pure renderer includes task outcomes and external call totals", () => {
     const markdown = renderRunReport({
@@ -54,6 +69,7 @@ describe("pipeline run reports", () => {
       externalCalls,
       taskSummary: { done: 1, pending: 1 },
       backlogSummary: { taskType: "llm_smoke", counts: { done: 1, pending: 1 } },
+      changeEvents,
     });
 
     expect(markdown).toContain("# Pipeline Run 42");
@@ -62,6 +78,9 @@ describe("pipeline run reports", () => {
     expect(markdown).toContain("| pending | 1 |");
     expect(markdown).toContain("| done | 1 |");
     expect(markdown).toContain("## Current `llm_smoke` backlog");
+    expect(markdown).toContain("## Entity change events");
+    expect(markdown).toContain("| locations | update | contact_fill:website | 2 |");
+    expect(markdown).toContain("| **Total** |  |  | **3** |");
     expect(markdown).toContain("| Calls | 2 |");
     expect(markdown).toContain("| Input tokens | 10 |");
     expect(markdown).toContain("| Output tokens | 5 |");
@@ -101,6 +120,10 @@ describe("pipeline run reports", () => {
     const query = vi.fn(async (sql: string, params: unknown[]) => {
       if (sql.includes("FROM fountain_ops.runs")) return { rows: [run] };
       if (sql.includes("FROM fountain_ops.external_calls")) return { rows: externalCalls };
+      if (sql.includes("FROM fountain.entity_change_events")) {
+        expect(params).toEqual(["42"]);
+        return { rows: changeEvents };
+      }
       if (sql.includes("WHERE run_id = $1")) {
         expect(params).toEqual(["42"]);
         return { rows: [{ status: "done", count: 1 }, { status: "pending", count: 1 }] };
@@ -114,11 +137,12 @@ describe("pipeline run reports", () => {
 
     const markdown = await loadRunReport(42, { query });
 
-    expect(query).toHaveBeenCalledTimes(4);
+    expect(query).toHaveBeenCalledTimes(5);
     expect(markdown).toContain("# Pipeline Run 42");
     expect(markdown).toContain("| done | 1 |");
     expect(markdown).toContain("| pending | 1 |");
     expect(markdown).toContain("## Current `llm_smoke` backlog");
+    expect(markdown).toContain("| locations | update | contact_fill:phone | 1 |");
     expect(markdown).toContain("| Estimated cost | $0.0013 |");
   });
 
