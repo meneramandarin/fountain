@@ -65,15 +65,19 @@ export function LandingFeaturedDirectoryCarousel({ cards, title }: LandingFeatur
 
           return (
             <Link className="landing-featured-card" href={locationHref(card)} key={card.id}>
-              <span className="landing-featured-photo">
+              <span className={`landing-featured-photo${card.image_kind === "text_graphic" ? " image-frame-text-graphic" : ""}`}>
                 {card.image ? (
-                  <Image
-                    src={imageSource(card.image)}
-                    alt=""
-                    fill
-                    unoptimized
-                    sizes="(max-width: 640px) 82vw, (max-width: 980px) 42vw, 320px"
-                  />
+                  <>
+                    {card.image_kind === "text_graphic" ? <Image className="image-frame-backdrop" src={imageSource(card.image)} alt="" fill unoptimized aria-hidden="true" sizes="100vw" /> : null}
+                    <Image
+                      className={card.image_kind === "text_graphic" ? "image-frame-content" : undefined}
+                      src={imageSource(card.image)}
+                      alt=""
+                      fill
+                      unoptimized
+                      sizes="(max-width: 640px) 82vw, (max-width: 980px) 42vw, 320px"
+                    />
+                  </>
                 ) : (
                   <span className="landing-featured-photo-fallback" aria-hidden="true">
                     <Building2 size={28} />

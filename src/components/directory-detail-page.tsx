@@ -20,7 +20,7 @@ import { SplitDirectorySearch } from "@/components/split-directory-search";
 import { getOfferingLabels, type TreatmentDisplayMode } from "@/lib/offering-labels";
 
 type Tag = { facet: string; value: string };
-type ImageRef = { blob_url?: string | null; alt?: string | null };
+type ImageRef = { blob_url?: string | null; alt?: string | null; image_kind?: string | null };
 type ReviewRef = { author?: string | null; rating?: string | number | null; review_date?: string | null; text?: string | null };
 type ExternalReviewGroup = {
   provider: string;
@@ -194,7 +194,7 @@ function ListingStats({ kind, data }: DetailProps) {
   );
 }
 
-function ImageGallery({ images, title, kind }: { images: string[]; title: string; kind: "locations" | "practitioners" }) {
+function ImageGallery({ images, title, kind }: { images: ImageRef[]; title: string; kind: "locations" | "practitioners" }) {
   const visible = images.slice(0, 5);
   if (!visible.length) {
     return (
@@ -206,9 +206,14 @@ function ImageGallery({ images, title, kind }: { images: string[]; title: string
 
   return (
     <div className="listing-gallery">
-      {visible.map((src, index) => (
-        <div className={index === 0 ? "listing-gallery-primary" : "listing-gallery-secondary"} key={`${src}-${index}`}>
+      {visible.map((image, index) => {
+        const src = imageSource(image.blob_url || "");
+        const isTextGraphic = image.image_kind === "text_graphic";
+        return (
+        <div className={`${index === 0 ? "listing-gallery-primary" : "listing-gallery-secondary"}${isTextGraphic ? " image-frame-text-graphic" : ""}`} key={`${src}-${index}`}>
+          {isTextGraphic ? <Image className="image-frame-backdrop" src={src} alt="" fill unoptimized aria-hidden="true" sizes="100vw" /> : null}
           <Image
+            className={isTextGraphic ? "image-frame-content" : undefined}
             src={imageSource(src)}
             alt={index === 0 ? title : ""}
             fill
@@ -216,7 +221,7 @@ function ImageGallery({ images, title, kind }: { images: string[]; title: string
             sizes={index === 0 ? "(max-width: 980px) 100vw, 540px" : "(max-width: 980px) 48vw, 170px"}
           />
         </div>
-      ))}
+      )})}
     </div>
   );
 }
@@ -538,8 +543,7 @@ function TagPills({ tags }: { tags: Tag[] }) {
 
 function getImageSources(images: ImageRef[]) {
   return images
-    .map((image) => image.blob_url)
-    .filter((src): src is string => Boolean(src))
+    .filter((image): image is ImageRef & { blob_url: string } => Boolean(image.blob_url))
     .slice(0, 5);
 }
 
