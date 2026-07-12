@@ -528,7 +528,11 @@ export async function persistReviewPayload(
   const actorLabel = `reviews_fetch_run_${normalizedRunId}`;
 
   return withTransaction(async (tx) => {
-    await tx.query("SET TRANSACTION ISOLATION LEVEL SERIALIZABLE");
+    // Location and shared raw-source writes are serialized explicitly below.
+    // READ COMMITTED is intentional: workers that wait on the shared source
+    // lock must see the preceding worker's newly allocated listing id instead
+    // of retaining a pre-lock SERIALIZABLE snapshot and aborting at commit.
+    await tx.query("SET TRANSACTION ISOLATION LEVEL READ COMMITTED");
     await tx.query(
       "SELECT pg_advisory_xact_lock(hashtextextended($1::text, 0))",
       [`reviews_fetch:location:${normalizedLocationId}`],

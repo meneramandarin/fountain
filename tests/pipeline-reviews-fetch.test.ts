@@ -110,6 +110,10 @@ describe("reviews_fetch queue handler", () => {
     const rawListingCall = harness.calls.find((call) => (
       call.sql.includes("INSERT INTO fountain_raw.source_listings")
     ));
+    const isolationCall = harness.calls.find((call) => (
+      call.sql.includes("SET TRANSACTION ISOLATION LEVEL")
+    ));
+    expect(isolationCall?.sql).toContain("READ COMMITTED");
     expect(rawListingCall?.sql).toContain("$7::timestamptz");
     expect(rawListingCall?.params).toHaveLength(7);
     expect(rawListingCall?.params[4]).toBe(rawListingCall?.params[6]);
