@@ -1,6 +1,7 @@
 import { hasTable, isPostgres, row, rows } from "@/lib/db";
 
 export const PAGE_SIZE = 18;
+export const KOREA_PAGE_SIZE = 32;
 
 const invalidRelatedSearchLocalities = new Set([
   "USA",
@@ -65,6 +66,12 @@ export type DirectoryParams = {
   care_model?: string;
   visitor?: VisitorLocationParams;
 };
+
+function directoryPageSize(params: DirectoryParams) {
+  return normalizedCountryCode(params.country) === "KR" || params.city_country === "KR"
+    ? KOREA_PAGE_SIZE
+    : PAGE_SIZE;
+}
 
 export type VisitorLocationParams = {
   country?: string;
@@ -1399,6 +1406,7 @@ export async function searchLocations(params: DirectoryParams, page = 0) {
   }
 
   const match = ftsMatch(params.q);
+  const pageSize = directoryPageSize(params);
   const matchJoin = match ? searchMatchJoin("l", "location") : "";
   const { clause, values } = locationWhere(params, { includeText: !match });
   const queryValues = match ? searchMatchValues(match, values) : values;
@@ -1466,14 +1474,15 @@ export async function searchLocations(params: DirectoryParams, page = 0) {
     ORDER BY ${orderBy}
     LIMIT ? OFFSET ?
   `,
-    [...queryValues, ...(defaultOrder?.values || []), PAGE_SIZE, page * PAGE_SIZE],
+    [...queryValues, ...(defaultOrder?.values || []), pageSize, page * pageSize],
   );
 
   await hydrateLocationRows(results);
-  return { results, total, page, page_size: PAGE_SIZE };
+  return { results, total, page, page_size: pageSize };
 }
 
 async function searchLocationsByCountry(params: DirectoryParams, countryCode: string, page: number) {
+  const pageSize = directoryPageSize(params);
   const match = ftsMatch(params.q);
   const matchJoin = match ? searchMatchJoin("l", "location") : "";
   const filteredParams: DirectoryParams = {
@@ -1518,7 +1527,7 @@ async function searchLocationsByCountry(params: DirectoryParams, countryCode: st
       ${orderNoCase("l.name")}
     LIMIT ? OFFSET ?
   `,
-    [...queryValues, PAGE_SIZE, page * PAGE_SIZE],
+    [...queryValues, pageSize, page * pageSize],
   );
   await hydrateLocationRows(results);
   const searchedCountry = params.city_label || params.city_country || countryCode;
@@ -1526,7 +1535,7 @@ async function searchLocationsByCountry(params: DirectoryParams, countryCode: st
     results,
     total,
     page,
-    page_size: PAGE_SIZE,
+    page_size: pageSize,
     mode: "country_search" as const,
     effective_radius: null,
     searched_city: null,
@@ -1605,11 +1614,12 @@ type RadiusSearchMode = "exact_radius" | "expanded_radius" | "country_fallback" 
 async function searchLocationsByCityRadius(params: DirectoryParams, latitude: number, longitude: number, page: number) {
   await warnRadiusCoordinateExclusions();
   const countryCode = normalizedCountryCode(params.city_country || params.country);
+  const pageSize = directoryPageSize(params);
   const radii = [25, 50, 100];
   let lastRadiusPayload: Awaited<ReturnType<typeof radiusLocationPayload>> | null = null;
 
   for (const radius of radii) {
-    const payload = await radiusLocationPayload(params, latitude, longitude, radius, countryCode, page);
+    const payload = await radiusLocationPayload(params, latitude, longitude, radius, countryCode, page, pageSize);
     lastRadiusPayload = payload;
     if (payload.total >= 5) {
       await hydrateLocationRows(payload.results);
@@ -1626,7 +1636,7 @@ async function searchLocationsByCityRadius(params: DirectoryParams, latitude: nu
   if (countryCode) {
     const countryTotal = await activeLocationCountryCount(countryCode);
     if (countryTotal <= 10 && countryTotal > 0) {
-      const payload = await fallbackLocationPayload(latitude, longitude, page, {
+      const payload = await fallbackLocationPayload(latitude, longitude, page, pageSize, {
         mode: "country_fallback",
         countryCode,
       });
@@ -1641,7 +1651,7 @@ async function searchLocationsByCityRadius(params: DirectoryParams, latitude: nu
     }
 
     if (countryTotal === 0) {
-      const payload = await fallbackLocationPayload(latitude, longitude, page, {
+      const payload = await fallbackLocationPayload(latitude, longitude, page, pageSize, {
         mode: "cross_border",
         radius: 500,
       });
@@ -1667,7 +1677,7 @@ async function searchLocationsByCityRadius(params: DirectoryParams, latitude: nu
     };
   }
 
-  return emptyLocationPayload(page, params.city_label || null, countryCode || null);
+  return emptyLocationPayload(page, params.city_label || null, countryCode || null, pageSize);
 }
 
 function radiusBox(latitude: number, longitude: number, radiusMiles: number) {
@@ -1689,6 +1699,7 @@ async function radiusLocationPayload(
   radius: number,
   countryCode: string | undefined,
   page: number,
+  pageSize: number,
 ) {
   const match = ftsMatch(params.q);
   const matchJoin = match ? searchMatchJoin("l", "location") : "";
@@ -1712,6 +1723,7 @@ async function radiusLocationPayload(
     where,
     values: queryValues,
     page,
+    pageSize,
   });
 }
 
@@ -1719,6 +1731,7 @@ async function fallbackLocationPayload(
   latitude: number,
   longitude: number,
   page: number,
+  pageSize: number,
   options: { mode: Exclude<RadiusSearchMode, "exact_radius" | "expanded_radius" | "empty">; countryCode?: string; radius?: number },
 ) {
   const where = [
@@ -1747,6 +1760,7 @@ async function fallbackLocationPayload(
     where,
     values,
     page,
+    pageSize,
   });
 }
 
@@ -1757,6 +1771,7 @@ async function locationPayloadFromWhere({
   where,
   values,
   page,
+  pageSize,
 }: {
   latitude: number;
   longitude: number;
@@ -1764,6 +1779,7 @@ async function locationPayloadFromWhere({
   where: string[];
   values: unknown[];
   page: number;
+  pageSize: number;
 }) {
   const clause = where.length ? `WHERE ${where.join(" AND ")}` : "";
   const total = (await row<{ count: number }>(
