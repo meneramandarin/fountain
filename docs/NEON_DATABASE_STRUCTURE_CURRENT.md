@@ -1,6 +1,6 @@
 # Neon Database Structure Current
 
-Generated: 2026-07-12T05:50:44.327Z
+Generated: 2026-07-12T16:13:05.330Z
 Snapshot source: live Neon database
 
 This document is generated from the live Neon database. It records structural metadata and point-in-time row counts for the configured schemas.
@@ -14,7 +14,7 @@ This document is generated from the live Neon database. It records structural me
 | fountain | table | 20 |
 | fountain_ops | sequence | 3 |
 | fountain_ops | table | 4 |
-| fountain_raw | sequence | 5 |
+| fountain_raw | sequence | 6 |
 | fountain_raw | table | 21 |
 | neon_auth | table | 9 |
 
@@ -35,26 +35,26 @@ This document is generated from the live Neon database. It records structural me
 | fountain | affiliations | 96 |
 | fountain | city_index | 2272 |
 | fountain | clinic_claims | 0 |
-| fountain | entity_change_events | 77701 |
+| fountain | entity_change_events | 119044 |
 | fountain | entity_tags | 5478 |
-| fountain | external_place_matches | 3600 |
-| fountain | images | 31721 |
+| fountain | external_place_matches | 7554 |
+| fountain | images | 32834 |
 | fountain | listing_submissions | 0 |
 | fountain | locations | 13878 |
-| fountain | offerings | 100712 |
+| fountain | offerings | 106792 |
 | fountain | organizations | 8195 |
-| fountain | outbound_clicks | 82 |
+| fountain | outbound_clicks | 93 |
 | fountain | practitioners | 1303 |
-| fountain | reviews | 15563 |
-| fountain | search_index | 9612 |
-| fountain | source_records | 43032 |
-| fountain | sources | 256 |
+| fountain | reviews | 33606 |
+| fountain | search_index | 8481 |
+| fountain | source_records | 47317 |
+| fountain | sources | 257 |
 | fountain | tags | 36 |
 | fountain | treatments | 103 |
-| fountain_ops | external_calls | 2978 |
-| fountain_ops | field_status | 5212 |
-| fountain_ops | runs | 54 |
-| fountain_ops | task_queue | 13887 |
+| fountain_ops | external_calls | 41828 |
+| fountain_ops | field_status | 29545 |
+| fountain_ops | runs | 113 |
+| fountain_ops | task_queue | 40793 |
 | fountain_raw | browser_swarm_image_ingest_20260708 | 1673 |
 | fountain_raw | browser_swarm_menu_ingest_20260708 | 25198 |
 | fountain_raw | dedup_candidates_20260711 | 1300 |
@@ -66,16 +66,16 @@ This document is generated from the live Neon database. It records structural me
 | fountain_raw | location_jsonld_recovery_20260709 | 6 |
 | fountain_raw | location_normalization_review_20260707 | 406 |
 | fountain_raw | price_conflicts_20260711 | 21 |
-| fountain_raw | price_review_20260711 | 38 |
-| fountain_raw | source_databases | 256 |
+| fountain_raw | price_review_20260711 | 186 |
+| fountain_raw | source_databases | 257 |
 | fountain_raw | source_images | 30000 |
 | fountain_raw | source_listing_fields | 154050 |
-| fountain_raw | source_listings | 23378 |
-| fountain_raw | source_reviews | 7591 |
-| fountain_raw | suppressed_source_listings | 8520 |
+| fountain_raw | source_listings | 27452 |
+| fountain_raw | source_reviews | 24749 |
+| fountain_raw | suppressed_source_listings | 10116 |
 | fountain_raw | taxonomy_final_triage_20260711 | 43647 |
 | fountain_raw | treatment_aliases | 3577 |
-| fountain_raw | unmapped_terms | 71013 |
+| fountain_raw | unmapped_terms | 74329 |
 | neon_auth | account | 0 |
 | neon_auth | invitation | 0 |
 | neon_auth | jwks | 0 |
@@ -266,7 +266,7 @@ Rows: 0
 
 ### fountain.entity_change_events
 
-Rows: 77701
+Rows: 119044
 
 #### Columns
 
@@ -338,7 +338,7 @@ Rows: 5478
 
 ### fountain.external_place_matches
 
-Rows: 3600
+Rows: 7554
 
 #### Columns
 
@@ -377,7 +377,7 @@ _None._
 
 ### fountain.images
 
-Rows: 31721
+Rows: 32834
 
 #### Columns
 
@@ -398,6 +398,7 @@ Rows: 31721
 | 14 | updated_at | timestamp with time zone | timestamptz | YES | now() |
 | 15 | deleted_at | timestamp with time zone | timestamptz | YES |  |
 | 16 | owner_account_id | uuid | uuid | YES |  |
+| 17 | image_kind | text | text | YES |  |
 
 #### Constraints
 
@@ -405,6 +406,7 @@ Rows: 31721
 | --- | --- | --- |
 | images_blob_backed | c | CHECK (blob_url IS NOT NULL AND blob_url <> ''::text) |
 | images_data_origin_valid | c | CHECK (data_origin = ANY (ARRAY['imported'::text, 'scraped'::text, 'manual'::text, 'owner'::text, 'system'::text])) |
+| images_image_kind_valid | c | CHECK (image_kind IS NULL OR (image_kind = ANY (ARRAY['photo'::text, 'logo'::text, 'text_graphic'::text, 'junk'::text]))) |
 | images_owner_account_fk | f | FOREIGN KEY (owner_account_id) REFERENCES accounts(id) ON DELETE SET NULL |
 | images_pkey | p | PRIMARY KEY (id) |
 | images_source_id_fkey | f | FOREIGN KEY (source_id) REFERENCES sources(id) |
@@ -416,6 +418,7 @@ Rows: 31721
 | --- | --- |
 | idx_images_blob_url | CREATE INDEX idx_images_blob_url ON fountain.images USING btree (blob_url) |
 | idx_images_entity | CREATE INDEX idx_images_entity ON fountain.images USING btree (entity_type, entity_id) |
+| idx_images_unclassified_active_location | CREATE INDEX idx_images_unclassified_active_location ON fountain.images USING btree (id) WHERE ((entity_type = 'location'::text) AND (status = 'active'::text) AND (deleted_at IS NULL) AND (image_kind IS NULL)) |
 | images_pkey | CREATE UNIQUE INDEX images_pkey ON fountain.images USING btree (id) |
 
 #### Triggers
@@ -540,7 +543,7 @@ Rows: 13878
 
 ### fountain.offerings
 
-Rows: 100712
+Rows: 106792
 
 #### Columns
 
@@ -642,7 +645,7 @@ Rows: 8195
 
 ### fountain.outbound_clicks
 
-Rows: 82
+Rows: 93
 
 #### Columns
 
@@ -732,7 +735,7 @@ Rows: 1303
 
 ### fountain.reviews
 
-Rows: 15563
+Rows: 33606
 
 #### Columns
 
@@ -783,7 +786,7 @@ Rows: 15563
 
 ### fountain.search_index
 
-Rows: 9612
+Rows: 8481
 
 #### Columns
 
@@ -817,7 +820,7 @@ _None._
 
 ### fountain.source_records
 
-Rows: 43032
+Rows: 47317
 
 #### Columns
 
@@ -851,7 +854,7 @@ _None._
 
 ### fountain.sources
 
-Rows: 256
+Rows: 257
 
 #### Columns
 
@@ -944,7 +947,7 @@ Rows: 103
 
 ### fountain_ops.external_calls
 
-Rows: 2978
+Rows: 41828
 
 #### Columns
 
@@ -992,7 +995,7 @@ _None._
 
 ### fountain_ops.field_status
 
-Rows: 5212
+Rows: 29545
 
 #### Columns
 
@@ -1028,7 +1031,7 @@ _None._
 
 ### fountain_ops.runs
 
-Rows: 54
+Rows: 113
 
 #### Columns
 
@@ -1072,7 +1075,7 @@ _None._
 
 ### fountain_ops.task_queue
 
-Rows: 13887
+Rows: 40793
 
 #### Columns
 
@@ -1539,7 +1542,7 @@ _None._
 
 ### fountain_raw.price_review_20260711
 
-Rows: 38
+Rows: 186
 
 #### Columns
 
@@ -1570,7 +1573,7 @@ _None._
 
 ### fountain_raw.source_databases
 
-Rows: 256
+Rows: 257
 
 #### Columns
 
@@ -1674,7 +1677,7 @@ _None._
 
 ### fountain_raw.source_listings
 
-Rows: 23378
+Rows: 27452
 
 #### Columns
 
@@ -1710,7 +1713,7 @@ _None._
 
 ### fountain_raw.source_reviews
 
-Rows: 7591
+Rows: 24749
 
 #### Columns
 
@@ -1745,7 +1748,7 @@ _None._
 
 ### fountain_raw.suppressed_source_listings
 
-Rows: 8520
+Rows: 10116
 
 #### Columns
 
@@ -1851,7 +1854,7 @@ _None._
 
 ### fountain_raw.unmapped_terms
 
-Rows: 71013
+Rows: 74329
 
 #### Columns
 

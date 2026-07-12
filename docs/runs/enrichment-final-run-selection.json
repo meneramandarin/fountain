@@ -1,0 +1,44 @@
+{
+  "runIds": {
+    "stage3": 57,
+    "redemption": 61,
+    "redemption_partial": {
+      "cancelled_59": 59,
+      "cancelled_60": 60
+    },
+    "enrichment": {
+      "before_census": 69,
+      "contact_fill": 70,
+      "post_contact_census": 73,
+      "geocode": 74,
+      "image_harvest": 76,
+      "image_classify_census": {
+        "initial_79": 79,
+        "retry_enqueue_85": 85,
+        "zero_verify_88": 88
+      },
+      "image_classify": {
+        "halted_80": 80,
+        "remediation_82": 82,
+        "retry_86": 86
+      },
+      "menu_prices_census": 90,
+      "menu_extract": {
+        "main_91": 91,
+        "retry_96": 96
+      },
+      "menu_retry_enqueue": 95,
+      "reviews_fetch": {
+        "halted_98": 98,
+        "smoke_100": 100,
+        "contention_halt_101": 101,
+        "pre_sequence_validation_104": 104,
+        "post_sequence_validation_108": 108,
+        "completion_109": 109
+      },
+      "after_census": {
+        "apply_113": 113
+      }
+    }
+  }
+}

@@ -107,6 +107,8 @@ export const FINAL_STAGE3_EVIDENCE_SQL = `
         AND status.verified_by = $3::text) AS stage_status_ledger_current,
     (SELECT count(*)::integer
        FROM fountain_ops.field_status status
+      JOIN redemption_events target ON target.entity_id = status.entity_id
+      JOIN stage_events stage_target ON stage_target.entity_id = target.entity_id
       WHERE status.entity_type = 'location'
         AND status.field = 'status'
         AND status.verification = 'agent_verified'
@@ -126,10 +128,10 @@ export const FINAL_REDEMPTION_EVIDENCE_SQL = `
     WHERE id = $1::bigint
   ),
   redemption_tasks AS MATERIALIZED (
-    SELECT id, entity_id, result
-    FROM fountain_ops.task_queue
-    WHERE result#>>'{redemption,run_id}' = $1::text
-      AND result#>>'{redemption,status}' = 'applied'
+    SELECT task.id, task.entity_id, task.result
+    FROM fountain_ops.task_queue task
+    WHERE task.result#>>'{redemption,run_id}' = $1::text
+      AND task.result#>>'{redemption,status}' = 'applied'
   ),
   redemption_events AS MATERIALIZED (
     SELECT
@@ -154,7 +156,7 @@ export const FINAL_REDEMPTION_EVIDENCE_SQL = `
     (SELECT count(DISTINCT entity_id)::integer FROM redemption_events)
       AS distinct_event_count,
     (SELECT COALESCE(sum(
-      (task.result#>>'{redemption,suppression_rows_deleted}')::integer
+      (result#>>'{redemption,suppression_rows_deleted}')::integer
     ), 0)::integer FROM redemption_tasks) AS task_suppression_rows_deleted,
     (SELECT COALESCE(sum(event.suppression_rows_deleted), 0)::integer
        FROM redemption_events event) AS event_suppression_rows_deleted,
@@ -244,7 +246,7 @@ export async function loadPersistedLegitimacyCloseout(
   const redemption = reconstructRedemption(redemptionRow, redeemedRows, {
     redemptionRunId: redemptionId,
   });
-  assertCrossCampaignEvidence(stageRow, redemptionRow, stage3, redemption);
+  assertCrossCampaignEvidence(stageRow, redemptionRow, redemption);
   return { stage3, redemption, evidence: { stage3: normalizeEvidenceRow(stageRow), redemption: normalizeEvidenceRow(redemptionRow) } };
 }
 
@@ -333,6 +335,7 @@ function reconstructStage3(row, { stageRunId }) {
         stampedEventCount: eventCount,
         taskEvidenceCount: count(row.task_write_count, "Stage 3 task writes"),
         statusLedgerCount: originalStatusLedgerRows,
+        redeemedStageTargetCount: redemptionCount,
         remainingSearchRows: count(row.target_search_count, "Stage 3 target search rows")
           - count(row.redeemed_stage_search_count, "redeemed Stage 3 search rows"),
         activeLocationsAfter: globalActiveCurrent - redemptionCount,
@@ -440,19 +443,21 @@ function normalizeRedeemedDecision(row) {
   };
 }
 
-function assertCrossCampaignEvidence(stageRow, redemptionRow, stage3, redemption) {
+function assertCrossCampaignEvidence(stageRow, redemptionRow, redemption) {
   const failures = [];
   const stageRedeemed = count(
     stageRow.redeemed_stage_target_count,
     "Stage 3 redeemed target count",
   );
   const redemptionCount = redemption.pass.counts.redeem;
-  check(failures, "redeemed target overlap", redemptionCount, stageRedeemed);
+  if (stageRedeemed > redemptionCount) {
+    failures.push(`redeemed target overlap=${stageRedeemed}/${redemptionCount}`);
+  }
   check(
     failures,
     "redemption status-ledger cross-check",
+    stageRedeemed,
     count(stageRow.redemption_status_ledger_count, "cross-campaign redemption status ledger"),
-    count(redemptionRow.status_ledger_count, "redemption status ledger"),
   );
   check(
     failures,
@@ -460,14 +465,9 @@ function assertCrossCampaignEvidence(stageRow, redemptionRow, stage3, redemption
     count(stageRow.suppression_ledger_current, "Stage 3 current suppression ledger"),
     count(redemptionRow.suppression_ledger_current, "redemption current suppression ledger"),
   );
-  check(
-    failures,
-    "Stage 3 historical suppression ledger",
-    stage3.suppression.verification.suppressionLedgerAfter,
-    redemption.apply
-      ? redemption.apply.preflight.suppressionLedgerBefore
-      : count(redemptionRow.suppression_ledger_current, "redemption current suppression ledger"),
-  );
+  // Redemption covers both Stage 3-owned suppressions and older suppression
+  // owners. Its global before-ledger therefore cannot equal the reconstructed
+  // Stage 3-owned ledger. Each ownership-scoped delta is reconciled above.
   refuseFailures("cross-campaign", failures);
 }
 

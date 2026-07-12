@@ -1,10 +1,11 @@
 # File Structure
 
-Snapshot: 2026-07-11 (post Phase 3 + Pass 1 Gate B apply; Stage 3 proposal awaiting approval)
+Snapshot: 2026-07-12 (post Phase 3, Pass 1 Stage 3/redemption, and enrichment closeout)
 
-This is the active repository structure after the conservative Phase 3 cleanup.
-Git records the legacy moves. The retained review assets remain active until a
-separate closure or migration decision.
+This is the active repository structure after the approved conservative Phase 3
+cleanup and the completed standing pipeline. Git records the legacy moves. The
+retained browser/image-review assets remain under the approved Phase 3 review
+hold pending a separate closure or migration decision.
 
 Omitted from the listings below:
 
@@ -15,7 +16,7 @@ Omitted from the listings below:
   payloads under fountain_raw_archive_20260711_pass1_step0/. Their committed
   MANIFEST.md files record every payload.
 - The 84 worker JSONL files under swarm-browser-output/results/. The entire swarm
-  directory remains at the repository root as a Gate A hold.
+  directory remains at the repository root as an approved Phase 3 review hold.
 - Individual files in the unchanged public/ and most historical docs/ trees.
 
 ## Top-level layout
@@ -146,8 +147,13 @@ manifest. archive/reports/ and archive/scripts-legacy/ each contain 41 files.
 - pipeline/config/tasks.mjs
 - pipeline/lib/city-index.mjs
 - pipeline/lib/db.mjs
+- pipeline/lib/enrichment-census.mjs
+- pipeline/lib/enrichment-final-evidence.mjs
+- pipeline/lib/enrichment-final-report.mjs
 - pipeline/lib/ledger.mjs
 - pipeline/lib/legitimacy-full.mjs
+- pipeline/lib/legitimacy-redemption-execute.mjs
+- pipeline/lib/legitimacy-redemption.mjs
 - pipeline/lib/legitimacy-sample.mjs
 - pipeline/lib/legitimacy-stage3-proposal.mjs
 - pipeline/lib/legitimacy-stage3-execute.mjs
@@ -165,9 +171,15 @@ manifest. archive/reports/ and archive/scripts-legacy/ each contain 41 files.
 - pipeline/lib/structure-doc.mjs
 - pipeline/lib/web.mjs
 - pipeline/lib/website-discovery.mjs
+- pipeline/tasks/contact_fill.mjs
+- pipeline/tasks/geocode.mjs
+- pipeline/tasks/image_classify.mjs
+- pipeline/tasks/image_harvest.mjs
 - pipeline/tasks/legitimacy.mjs
 - pipeline/tasks/llm_smoke.mjs
+- pipeline/tasks/menu_extract.mjs
 - pipeline/tasks/noop.mjs
+- pipeline/tasks/reviews_fetch.mjs
 
 ## Active scripts
 
@@ -180,9 +192,17 @@ manifest. archive/reports/ and archive/scripts-legacy/ each contain 41 files.
 - tests/country-search.test.ts
 - tests/matcher.test.ts
 - tests/pipeline-cli.test.ts
+- tests/pipeline-contact-fill.test.ts
 - tests/pipeline-db.test.ts
+- tests/pipeline-enrichment-census.test.ts
+- tests/pipeline-enrichment-final-evidence.test.ts
+- tests/pipeline-enrichment-final-report.test.ts
+- tests/pipeline-geocode.test.ts
+- tests/pipeline-image-classify.test.ts
+- tests/pipeline-image-harvest.test.ts
 - tests/pipeline-ledger.test.ts
 - tests/pipeline-legitimacy-sample.test.ts
+- tests/pipeline-legitimacy-redemption.test.ts
 - tests/pipeline-legitimacy-stage3-proposal.test.ts
 - tests/pipeline-legitimacy-stage3-execute.test.ts
 - tests/pipeline-legitimacy-stage3-full.test.ts
@@ -192,11 +212,13 @@ manifest. archive/reports/ and archive/scripts-legacy/ each contain 41 files.
 - tests/pipeline-legitimacy.test.ts
 - tests/pipeline-llm.test.ts
 - tests/pipeline-maintenance.test.ts
+- tests/pipeline-menu-extract.test.ts
 - tests/pipeline-migrations.test.ts
 - tests/pipeline-places.test.ts
 - tests/pipeline-openrouter-web-search.test.ts
 - tests/pipeline-queue.test.ts
 - tests/pipeline-report.test.ts
+- tests/pipeline-reviews-fetch.test.ts
 - tests/pipeline-runs.test.ts
 - tests/pipeline-tasks.test.ts
 - tests/pipeline-web.test.ts
@@ -213,10 +235,19 @@ manifest. archive/reports/ and archive/scripts-legacy/ each contain 41 files.
 - docs/runs/pass1-stage3-proposal.md
 - docs/runs/pass1-stage3-completion.md
 - docs/runs/pass1-stage3-final-human-review.md
+- docs/runs/pass1-redemption-completion.md
 - docs/runs/enrichment-run-log.md
-- docs/runs/run-4.md
-- docs/runs/run-7.md
-- docs/runs/run-21.md
+- docs/runs/enrichment-before-census.{json,md}
+- docs/runs/enrichment-post-contact-census.{json,md}
+- docs/runs/enrichment-image-classify-census.{json,md}
+- docs/runs/enrichment-menu-prices-census.{json,md}
+- docs/runs/enrichment-after-census.{json,md}
+- docs/runs/image-classification-completion.md
+- docs/runs/menu-price-completion.md
+- docs/runs/reviews-fetch-completion.md
+- docs/runs/enrichment-final-run-selection.json
+- docs/runs/enrichment-final-report.md
+- docs/runs/run-*.md (durable per-run evidence; selected reports are force-added when generated)
 
 ## Migrations
 
@@ -226,6 +257,10 @@ manifest. archive/reports/ and archive/scripts-legacy/ each contain 41 files.
 - migrations/20260709_city_index_radius_search.sql
 - migrations/20260709_outbound_param_skipped.sql
 - migrations/20260711_fountain_ops.sql
+- migrations/20260711_google_places_reviews_source.sql
+- migrations/20260711_image_kind.sql
+- migrations/20260712_google_places_reviews_listing_sequence.sql
+- migrations/20260712_openrouter_web_search_fee_reconciliation.sql
 
 ## Active application directories
 
@@ -253,11 +288,10 @@ manifest. archive/reports/ and archive/scripts-legacy/ each contain 41 files.
 - swarm-browser-output/
 - swarm-browser-output/results/ (84 worker JSONL files across campaign run directories)
 
-## Database shape after Pass 1 Gate A
+## Live database snapshot
 
-The generated docs/NEON_DATABASE_STRUCTURE_CURRENT.md is the authoritative live
-schema snapshot. fountain_raw now contains 21 tables: the 10 permanent raw
-keep-list tables plus 11 unresolved workflow/review holds. It contains five owned
-sequences and zero orphan sequences. fountain_ops contains the 300-row Gate A task
-cohort plus its run and external-call ledger evidence; no Gate A serving writes were
-performed.
+[NEON_DATABASE_STRUCTURE_CURRENT.md](NEON_DATABASE_STRUCTURE_CURRENT.md) is the
+authoritative generated schema and row-count snapshot. Campaign outcomes,
+selected-run cost, and ledger reconciliation are maintained in
+[runs/enrichment-final-report.md](runs/enrichment-final-report.md); avoid copying
+those volatile values into this structural inventory.
