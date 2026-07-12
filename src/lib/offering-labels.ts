@@ -17,10 +17,10 @@ export function getOfferingLabels(offering: OfferingLabelInput) {
   const mode = offering.treatment_display_mode || "raw_only";
 
   if (mode === "canonical_only") {
-    return { primary: treatment || rawName || "Offering", secondary: null };
+    return { primary: capitalizeOfferingLabel(treatment || rawName || "Offering"), secondary: null };
   }
 
-  const primary = rawName || treatment || "Offering";
+  const primary = capitalizeOfferingLabel(rawName || treatment || "Offering");
   const secondary = mode === "raw_and_canonical"
     && rawName
     && treatment
@@ -29,6 +29,11 @@ export function getOfferingLabels(offering: OfferingLabelInput) {
     : null;
 
   return { primary, secondary };
+}
+
+function capitalizeOfferingLabel(value: string) {
+  const [first, ...rest] = Array.from(value);
+  return first ? `${first.toLocaleUpperCase()}${rest.join("")}` : value;
 }
 
 function normalizeDisplayLabel(value: string) {

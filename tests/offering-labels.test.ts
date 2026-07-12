@@ -37,4 +37,11 @@ describe("offering labels", () => {
       treatment_display_mode: "canonical_only",
     })).toEqual({ primary: "Exercise programming", secondary: null });
   });
+
+  test("capitalizes the source-facing offering label without changing its casing", () => {
+    expect(getOfferingLabels({ raw_name: "biological age", treatment: "Epigenetic age clock" }))
+      .toEqual({ primary: "Biological age", secondary: null });
+    expect(getOfferingLabels({ raw_name: "NAD+ IV Therapy", treatment: "NAD+ IV therapy" }))
+      .toEqual({ primary: "NAD+ IV Therapy", secondary: null });
+  });
 });
