@@ -1368,6 +1368,7 @@ function locationAwareDefaultOrder(
 
   return {
     sql: `
+      ${locationDirectoryCompletenessRank()} ASC,
       has_image DESC,
       ${proximityRank} ASC,
       (${distanceRank} IS NULL),
@@ -1384,6 +1385,59 @@ function locationAwareDefaultOrder(
       ? [...values, latitude, latitude, longitude]
       : values,
   };
+}
+
+// A complete directory listing is materially more useful when its offerings and
+// contact details let a visitor make a decision without leaving Fountain. Keep
+// these tiers ahead of every result ordering; the caller's normal relevance,
+// proximity, and review ordering then breaks ties within a tier.
+function locationDirectoryCompletenessRank() {
+  const hasCompleteListingDetails = `
+    COALESCE(image_flags.has_image, false)
+    AND google_reviews.rating IS NOT NULL
+    AND NULLIF(TRIM(l.address), '') IS NOT NULL
+    AND NULLIF(TRIM(l.phone), '') IS NOT NULL
+    AND NULLIF(TRIM(l.website), '') IS NOT NULL
+  `;
+
+  return `
+    CASE
+      WHEN COALESCE(menu_flags.has_treatment_menu, false)
+        AND COALESCE(price_flags.has_priced_offering, false)
+        AND (${hasCompleteListingDetails}) THEN 0
+      WHEN COALESCE(menu_flags.has_treatment_menu, false)
+        AND NOT COALESCE(price_flags.has_priced_offering, false)
+        AND (${hasCompleteListingDetails}) THEN 1
+      ELSE 2
+    END
+  `;
+}
+
+function locationDirectoryRankingJoins() {
+  return `
+    LEFT JOIN (
+      SELECT img.entity_id AS location_id, true AS has_image
+      FROM images img
+      WHERE img.entity_type = 'location'
+        AND ${activeImageCondition("img")}
+        AND img.blob_url IS NOT NULL
+        AND img.blob_url != ''
+      GROUP BY img.entity_id
+    ) image_flags ON image_flags.location_id = l.id
+    LEFT JOIN (
+      SELECT menu_o.location_id, true AS has_treatment_menu
+      FROM offerings menu_o
+      WHERE ${activeOfferingCondition("menu_o")}
+      GROUP BY menu_o.location_id
+    ) menu_flags ON menu_flags.location_id = l.id
+    LEFT JOIN (
+      SELECT priced_o.location_id, true AS has_priced_offering
+      FROM offerings priced_o
+      WHERE priced_o.price_amount IS NOT NULL
+        AND ${activeOfferingCondition("priced_o")}
+      GROUP BY priced_o.location_id
+    ) price_flags ON price_flags.location_id = l.id
+  `;
 }
 
 export async function searchLocations(params: DirectoryParams, page = 0) {
@@ -1411,8 +1465,8 @@ export async function searchLocations(params: DirectoryParams, page = 0) {
     ? locationAwareDefaultOrder(params.visitor, visitorCountryListingCount)
     : null;
   const orderBy = defaultOrder?.sql || (match
-    ? `search_match.fts_rank ASC, (google_reviews.rating IS NULL), google_reviews.rating DESC, (google_reviews.review_count IS NULL), google_reviews.review_count DESC, ${orderNoCase("l.name")}`
-    : `(google_reviews.review_count IS NULL), google_reviews.review_count DESC, ${orderNoCase("l.name")}`);
+    ? `${locationDirectoryCompletenessRank()} ASC, search_match.fts_rank ASC, (google_reviews.rating IS NULL), google_reviews.rating DESC, (google_reviews.review_count IS NULL), google_reviews.review_count DESC, ${orderNoCase("l.name")}`
+    : `${locationDirectoryCompletenessRank()} ASC, (google_reviews.review_count IS NULL), google_reviews.review_count DESC, ${orderNoCase("l.name")}`);
   const total =
     (await row<{ count: number }>(
     `SELECT COUNT(*) AS count FROM locations l${matchJoin}${clause}`,
@@ -1440,21 +1494,7 @@ export async function searchLocations(params: DirectoryParams, page = 0) {
     FROM locations l
     LEFT JOIN organizations org ON org.id = l.org_id
     ${googleReviewMatchJoin()}
-    LEFT JOIN (
-      SELECT img.entity_id AS location_id, true AS has_image
-      FROM images img
-      WHERE img.entity_type = 'location'
-        AND ${activeImageCondition("img")}
-        AND img.blob_url IS NOT NULL
-        AND img.blob_url != ''
-      GROUP BY img.entity_id
-    ) image_flags ON image_flags.location_id = l.id
-    LEFT JOIN (
-      SELECT menu_o.location_id, true AS has_treatment_menu
-      FROM offerings menu_o
-      WHERE ${activeOfferingCondition("menu_o")}
-      GROUP BY menu_o.location_id
-    ) menu_flags ON menu_flags.location_id = l.id
+    ${locationDirectoryRankingJoins()}
     LEFT JOIN (
       SELECT a.location_id, true AS has_practitioner
       FROM affiliations a
@@ -1508,9 +1548,11 @@ async function searchLocationsByCountry(params: DirectoryParams, countryCode: st
     FROM locations l
     LEFT JOIN organizations org ON org.id = l.org_id
     ${googleReviewMatchJoin()}
+    ${locationDirectoryRankingJoins()}
     ${matchJoin}
     ${clause}
     ORDER BY
+      ${locationDirectoryCompletenessRank()} ASC,
       (google_reviews.rating IS NULL),
       google_reviews.rating DESC,
       (google_reviews.review_count IS NULL),
@@ -1791,9 +1833,11 @@ async function locationPayloadFromWhere({
     FROM locations l
     LEFT JOIN organizations org ON org.id = l.org_id
     ${googleReviewMatchJoin()}
+    ${locationDirectoryRankingJoins()}
     ${matchJoin}
     ${clause}
-    ORDER BY distance_miles ASC,
+    ORDER BY ${locationDirectoryCompletenessRank()} ASC,
+      distance_miles ASC,
       (google_reviews.rating IS NULL),
       google_reviews.rating DESC,
       (google_reviews.review_count IS NULL),
