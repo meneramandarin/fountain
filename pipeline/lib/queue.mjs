@@ -4,6 +4,8 @@ const UNSAFE_PREDICATE = /;|--|\/\*|\*\//;
 const STATEMENT_KEYWORD = /\b(select|insert|update|delete|merge|copy|call|do|create|alter|drop|truncate|grant|revoke|execute|vacuum|analyze|refresh|set|reset|listen|notify|load)\b/i;
 const FUNCTION_CALL = /\b([a-z_][a-z0-9_.]*)\s*\(/gi;
 const SAFE_PAREN_KEYWORDS = new Set(["in", "any", "all"]);
+const NUL_CHARACTER = String.fromCharCode(0);
+const NUL_REPLACEMENT = "\uFFFD";
 
 export function validateWherePredicate(predicate) {
   const value = String(predicate || "").trim();
@@ -102,13 +104,27 @@ export async function enqueueTasks({
   };
 }
 
-export async function previewDrain({ taskType, limit = 10, stage = null }, options = {}) {
+export async function previewDrain({
+  taskType,
+  limit = 10,
+  stage = null,
+  campaign = null,
+  promptVersion = null,
+}, options = {}) {
   const query = options.query || defaultQuery;
   const normalizedStage = optionalStage(stage);
+  const normalizedCampaign = optionalPayloadFilter(campaign, "campaign");
+  const normalizedPromptVersion = optionalPayloadFilter(promptVersion, "promptVersion");
   const params = [taskType];
   const stageClause = normalizedStage === null
     ? ""
     : `AND payload->>'stage' = $${params.push(normalizedStage)}`;
+  const campaignClause = normalizedCampaign === null
+    ? ""
+    : `AND payload->>'campaign' = $${params.push(normalizedCampaign)}`;
+  const promptVersionClause = normalizedPromptVersion === null
+    ? ""
+    : `AND payload->>'prompt_version' = $${params.push(normalizedPromptVersion)}`;
   const limitParameter = `$${params.push(positiveInteger(limit, "limit"))}`;
   const result = await query(
     `
@@ -116,6 +132,8 @@ export async function previewDrain({ taskType, limit = 10, stage = null }, optio
       FROM fountain_ops.task_queue
       WHERE task_type = $1 AND status = 'pending' AND attempts < max_attempts
         ${stageClause}
+        ${campaignClause}
+        ${promptVersionClause}
       ORDER BY priority, id
       LIMIT ${limitParameter}
     `,
@@ -124,13 +142,28 @@ export async function previewDrain({ taskType, limit = 10, stage = null }, optio
   return result.rows;
 }
 
-export async function claimTask({ taskType, workerId, runId, stage = null }, options = {}) {
+export async function claimTask({
+  taskType,
+  workerId,
+  runId,
+  stage = null,
+  campaign = null,
+  promptVersion = null,
+}, options = {}) {
   const query = options.query || defaultQuery;
   const normalizedStage = optionalStage(stage);
+  const normalizedCampaign = optionalPayloadFilter(campaign, "campaign");
+  const normalizedPromptVersion = optionalPayloadFilter(promptVersion, "promptVersion");
   const params = [taskType, workerId, runId];
   const stageClause = normalizedStage === null
     ? ""
     : `AND payload->>'stage' = $${params.push(normalizedStage)}`;
+  const campaignClause = normalizedCampaign === null
+    ? ""
+    : `AND payload->>'campaign' = $${params.push(normalizedCampaign)}`;
+  const promptVersionClause = normalizedPromptVersion === null
+    ? ""
+    : `AND payload->>'prompt_version' = $${params.push(normalizedPromptVersion)}`;
   const result = await query(
     `
       WITH next_task AS (
@@ -140,6 +173,8 @@ export async function claimTask({ taskType, workerId, runId, stage = null }, opt
           AND status = 'pending'
           AND attempts < max_attempts
           ${stageClause}
+          ${campaignClause}
+          ${promptVersionClause}
         ORDER BY priority, id
         FOR UPDATE SKIP LOCKED
         LIMIT 1
@@ -161,10 +196,27 @@ export async function claimTask({ taskType, workerId, runId, stage = null }, opt
   return result.rows[0] || null;
 }
 
-export async function claimTasks({ taskType, workerId, runId, limit, stage = null }, options = {}) {
+export async function claimTasks({
+  taskType,
+  workerId,
+  runId,
+  limit,
+  stage = null,
+  campaign = null,
+  promptVersion = null,
+}, options = {}) {
   const query = options.query || defaultQuery;
   const normalizedStage = optionalStage(stage);
+  const normalizedCampaign = optionalPayloadFilter(campaign, "campaign");
+  const normalizedPromptVersion = optionalPayloadFilter(promptVersion, "promptVersion");
   const batchSize = positiveInteger(limit, "limit");
+  const params = [taskType, workerId, runId, normalizedStage, batchSize];
+  const campaignClause = normalizedCampaign === null
+    ? ""
+    : `AND payload->>'campaign' = $${params.push(normalizedCampaign)}`;
+  const promptVersionClause = normalizedPromptVersion === null
+    ? ""
+    : `AND payload->>'prompt_version' = $${params.push(normalizedPromptVersion)}`;
   const result = await query(
     `
       WITH next_tasks AS (
@@ -174,6 +226,8 @@ export async function claimTasks({ taskType, workerId, runId, limit, stage = nul
           AND status = 'pending'
           AND attempts < max_attempts
           AND ($4::text IS NULL OR payload->>'stage' = $4)
+          ${campaignClause}
+          ${promptVersionClause}
         ORDER BY priority, id
         FOR UPDATE SKIP LOCKED
         LIMIT $5
@@ -195,7 +249,7 @@ export async function claimTasks({ taskType, workerId, runId, limit, stage = nul
       JOIN next_tasks ON next_tasks.id = claimed.id
       ORDER BY next_tasks.priority, next_tasks.id
     `,
-    [taskType, workerId, runId, normalizedStage, batchSize],
+    params,
   );
   return result.rows;
 }
@@ -217,7 +271,7 @@ export async function transitionTaskStage({ taskId, workerId, runId, payload }, 
       WHERE id = $1 AND status = 'claimed' AND claimed_by = $2 AND run_id = $3
       RETURNING *
     `,
-    [taskId, workerId, runId, JSON.stringify(normalizedPayload)],
+    [taskId, workerId, runId, stringifyJsonb(normalizedPayload)],
   );
   if (!updated.rows[0]) throw new Error(`Worker ${workerId} no longer owns task ${taskId}.`);
   return updated.rows[0];
@@ -232,7 +286,7 @@ export async function completeTask({ taskId, workerId, runId, result }, options 
       WHERE id = $1 AND status = 'claimed' AND claimed_by = $2 AND run_id = $3
       RETURNING *
     `,
-    [taskId, workerId, runId, JSON.stringify(result ?? {})],
+    [taskId, workerId, runId, stringifyJsonb(result ?? {})],
   );
   if (!updated.rows[0]) throw new Error(`Worker ${workerId} no longer owns task ${taskId}.`);
   return updated.rows[0];
@@ -341,6 +395,14 @@ function optionalStage(value) {
   return value.trim();
 }
 
+function optionalPayloadFilter(value, name) {
+  if (value == null) return null;
+  if (typeof value !== "string" || !value.trim()) {
+    throw new Error(`${name} must be a non-empty string when provided.`);
+  }
+  return value.trim();
+}
+
 function stagePayload(value) {
   if (!value || typeof value !== "object" || Array.isArray(value)) {
     throw new Error("payload must be an object.");
@@ -350,4 +412,23 @@ function stagePayload(value) {
     throw new Error("payload.stage is required for a stage transition.");
   }
   return { ...value, stage };
+}
+
+function stringifyJsonb(value) {
+  return JSON.stringify(value, (_key, candidate) => {
+    if (typeof candidate === "string") return replaceNul(candidate);
+    if (!candidate || typeof candidate !== "object" || Array.isArray(candidate)) return candidate;
+
+    const sanitized = Object.create(null);
+    for (const [key, nestedValue] of Object.entries(candidate)) {
+      sanitized[replaceNul(key)] = nestedValue;
+    }
+    return sanitized;
+  });
+}
+
+function replaceNul(value) {
+  return value.includes(NUL_CHARACTER)
+    ? value.split(NUL_CHARACTER).join(NUL_REPLACEMENT)
+    : value;
 }

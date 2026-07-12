@@ -3,6 +3,7 @@ __pycache__/
 *.py[cod]
 
 .venv/
+.cache/
 node_modules/
 .next/
 out/
@@ -20,6 +21,8 @@ blob-cleanup-report*.json
 *.md
 !docs/runs/phase3-inventory.md
 !docs/runs/pass1-sample-review.md
+!docs/runs/pass1-gate-b-dry-run.md
+!docs/runs/pass1-review-queue.md
 !docs/runs/run-21.md
 
 # SQLite runtime sidecars

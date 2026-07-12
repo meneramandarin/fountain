@@ -1,6 +1,6 @@
 # Neon Database Structure Current
 
-Generated: 2026-07-12T02:27:27.502Z
+Generated: 2026-07-12T03:54:40.093Z
 Snapshot source: live Neon database
 
 This document is generated from the live Neon database. It records structural metadata and point-in-time row counts for the configured schemas.
@@ -43,7 +43,7 @@ This document is generated from the live Neon database. It records structural me
 | fountain | locations | 13878 |
 | fountain | offerings | 100712 |
 | fountain | organizations | 8195 |
-| fountain | outbound_clicks | 80 |
+| fountain | outbound_clicks | 81 |
 | fountain | practitioners | 1303 |
 | fountain | reviews | 15563 |
 | fountain | search_index | 14824 |
@@ -51,10 +51,10 @@ This document is generated from the live Neon database. It records structural me
 | fountain | sources | 256 |
 | fountain | tags | 36 |
 | fountain | treatments | 103 |
-| fountain_ops | external_calls | 21 |
+| fountain_ops | external_calls | 2923 |
 | fountain_ops | field_status | 0 |
-| fountain_ops | runs | 27 |
-| fountain_ops | task_queue | 316 |
+| fountain_ops | runs | 44 |
+| fountain_ops | task_queue | 13837 |
 | fountain_raw | browser_swarm_image_ingest_20260708 | 1673 |
 | fountain_raw | browser_swarm_menu_ingest_20260708 | 25198 |
 | fountain_raw | dedup_candidates_20260711 | 1300 |
@@ -642,7 +642,7 @@ Rows: 8195
 
 ### fountain.outbound_clicks
 
-Rows: 80
+Rows: 81
 
 #### Columns
 
@@ -944,7 +944,7 @@ Rows: 103
 
 ### fountain_ops.external_calls
 
-Rows: 21
+Rows: 2923
 
 #### Columns
 
@@ -1028,7 +1028,7 @@ _None._
 
 ### fountain_ops.runs
 
-Rows: 27
+Rows: 44
 
 #### Columns
 
@@ -1072,7 +1072,7 @@ _None._
 
 ### fountain_ops.task_queue
 
-Rows: 316
+Rows: 13837
 
 #### Columns
 

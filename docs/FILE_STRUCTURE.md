@@ -1,6 +1,6 @@
 # File Structure
 
-Snapshot: 2026-07-11 (post Phase 3 + Pass 1 Gate A)
+Snapshot: 2026-07-11 (post Phase 3 + Pass 1 Gate B dry run; suppression pending approval)
 
 This is the active repository structure after the conservative Phase 3 cleanup.
 Git records the legacy moves. The retained review assets remain active until a
@@ -147,6 +147,7 @@ manifest. archive/reports/ and archive/scripts-legacy/ each contain 41 files.
 - pipeline/lib/city-index.mjs
 - pipeline/lib/db.mjs
 - pipeline/lib/ledger.mjs
+- pipeline/lib/legitimacy-full.mjs
 - pipeline/lib/legitimacy-sample.mjs
 - pipeline/lib/llm.mjs
 - pipeline/lib/matcher.mjs
@@ -175,6 +176,7 @@ manifest. archive/reports/ and archive/scripts-legacy/ each contain 41 files.
 - tests/pipeline-db.test.ts
 - tests/pipeline-ledger.test.ts
 - tests/pipeline-legitimacy-sample.test.ts
+- tests/pipeline-legitimacy-full.test.ts
 - tests/pipeline-legitimacy.test.ts
 - tests/pipeline-llm.test.ts
 - tests/pipeline-maintenance.test.ts
@@ -190,6 +192,8 @@ manifest. archive/reports/ and archive/scripts-legacy/ each contain 41 files.
 ## Run documents
 
 - docs/runs/phase3-inventory.md
+- docs/runs/pass1-gate-b-dry-run.md
+- docs/runs/pass1-review-queue.md
 - docs/runs/pass1-sample-review.md
 - docs/runs/run-4.md
 - docs/runs/run-7.md
