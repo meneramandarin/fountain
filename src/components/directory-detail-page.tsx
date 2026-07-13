@@ -37,6 +37,23 @@ type OfferingRef = {
   treatment?: string | null;
   domain?: string | null;
 };
+type ChainLocationRef = {
+  id: number;
+  slug?: string | null;
+  name?: string | null;
+  org_name?: string | null;
+  locality?: string | null;
+  region?: string | null;
+  country_code?: string | null;
+  country_name?: string | null;
+  rating?: number | null;
+  review_count?: number | null;
+  min_price_amount?: number | null;
+  min_price_currency?: string | null;
+  treatments?: { name: string; domain: string }[];
+  image?: string | null;
+  image_kind?: string | null;
+};
 type AffiliationRef = {
   id?: number;
   slug?: string | null;
@@ -67,6 +84,7 @@ export type LocationDetailRecord = {
   images?: ImageRef[];
   reviews?: ReviewRef[];
   external_reviews?: ExternalReviewGroup[];
+  other_locations?: ChainLocationRef[];
   practitioners?: { id: number; slug?: string | null; full_name: string; primary_specialty?: string | null; role?: string | null }[];
   tags?: Tag[];
 };
@@ -229,6 +247,7 @@ function LocationMain({ data }: { data: LocationDetailRecord }) {
   return (
     <>
       <Offerings offerings={data.offerings || []} />
+      <ChainLocations title={data.org_name || data.name || "This clinic"} locations={data.other_locations || []} />
       <LocationPractitioners practitioners={data.practitioners || []} />
       <ReviewList reviews={data.reviews || []} />
       <ExternalReviewList groups={data.external_reviews || []} />
@@ -411,6 +430,94 @@ function Offerings({ offerings }: { offerings: OfferingRef[] }) {
       </div>
     </section>
   );
+}
+
+function ChainLocations({ title, locations }: { title: string; locations: ChainLocationRef[] }) {
+  if (!locations.length) {
+    return null;
+  }
+
+  return (
+    <section className="listing-section listing-chain-locations" aria-labelledby="listing-chain-locations-title">
+      <div className="listing-chain-header">
+        <h2 id="listing-chain-locations-title">{possessive(title)} other locations</h2>
+        <small>{locations.length}</small>
+      </div>
+      <div className="listing-chain-rail" aria-label={`${title} other locations`}>
+        {locations.map((location) => (
+          <ChainLocationCard location={location} key={location.id} />
+        ))}
+      </div>
+    </section>
+  );
+}
+
+function ChainLocationCard({ location }: { location: ChainLocationRef }) {
+  const place = formatLocationPlace({
+    locality: location.locality,
+    region: location.region,
+    countryCode: location.country_code,
+    countryName: location.country_name,
+  });
+  const isContainedGraphic = location.image_kind === "text_graphic" || location.image_kind === "logo";
+  const price = formatPrice(location.min_price_amount, location.min_price_currency);
+  const treatments = (location.treatments || []).slice(0, 3);
+
+  return (
+    <Link className="listing-chain-card" href={locationHref(location)}>
+      <span className={`listing-chain-photo${isContainedGraphic ? " image-frame-text-graphic" : ""}`}>
+        {location.image ? (
+          <>
+            {isContainedGraphic ? <Image className="image-frame-backdrop" src={imageSource(location.image)} alt="" fill unoptimized aria-hidden="true" sizes="100vw" /> : null}
+            <Image
+              className={isContainedGraphic ? "image-frame-content" : undefined}
+              src={imageSource(location.image)}
+              alt=""
+              fill
+              unoptimized
+              sizes="(max-width: 640px) 72vw, 210px"
+            />
+          </>
+        ) : (
+          <span className="listing-chain-photo-fallback" aria-hidden="true">
+            <Building2 size={22} aria-hidden="true" />
+          </span>
+        )}
+        {location.rating ? (
+          <span className="listing-chain-rating">
+            <Star size={11} aria-hidden="true" />
+            {Number(location.rating).toFixed(1)}
+          </span>
+        ) : null}
+      </span>
+      <span className="listing-chain-body">
+        <b>{location.name || location.org_name || "Unnamed location"}</b>
+        <small>
+          <MapPin size={13} aria-hidden="true" />
+          {place || "Location unavailable"}
+        </small>
+        <span className="listing-chain-meta">
+          {price ? <small>From {price}</small> : null}
+          {location.review_count ? <small>{Number(location.review_count).toLocaleString()} reviews</small> : null}
+        </span>
+        {treatments.length ? (
+          <span className="listing-chain-treatments">
+            {treatments.map((treatment) => (
+              <span key={`${location.id}-${treatment.name}`}>{treatment.name}</span>
+            ))}
+          </span>
+        ) : null}
+      </span>
+    </Link>
+  );
+}
+
+function possessive(value: string) {
+  const trimmed = value.trim();
+  if (!trimmed) {
+    return "This clinic's";
+  }
+  return /s$/i.test(trimmed) ? `${trimmed}'` : `${trimmed}'s`;
 }
 
 function LocationPractitioners({
