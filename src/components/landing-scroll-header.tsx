@@ -4,7 +4,36 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { SplitDirectorySearch } from "@/components/split-directory-search";
 
-export function LandingScrollHeader({ alwaysVisible = false }: { alwaysVisible?: boolean }) {
+type LandingScrollHeaderProps = {
+  alwaysVisible?: boolean;
+  initialWhat?: string;
+  initialWhere?: string;
+  initialCityCountry?: string;
+  initialPlaceType?: string;
+  initialCityLat?: number;
+  initialCityLng?: number;
+  kind?: "locations" | "practitioners";
+  onSubmit?: (payload: {
+    what: string;
+    city_label: string;
+    city_country: string;
+    place_type?: string;
+    city_lat?: number;
+    city_lng?: number;
+  }) => void;
+};
+
+export function LandingScrollHeader({
+  alwaysVisible = false,
+  initialWhat,
+  initialWhere,
+  initialCityCountry,
+  initialPlaceType,
+  initialCityLat,
+  initialCityLng,
+  kind,
+  onSubmit,
+}: LandingScrollHeaderProps) {
   const [isVisible, setIsVisible] = useState(false);
   const headerIsVisible = alwaysVisible || isVisible;
 
@@ -45,7 +74,18 @@ export function LandingScrollHeader({ alwaysVisible = false }: { alwaysVisible?:
       <Link className="landing-brand landing-scroll-brand" href="/">
         fountain
       </Link>
-      <SplitDirectorySearch className="landing-scroll-search" compact />
+      <SplitDirectorySearch
+        className="landing-scroll-search"
+        initialWhat={initialWhat}
+        initialWhere={initialWhere}
+        initialCityCountry={initialCityCountry}
+        initialPlaceType={initialPlaceType}
+        initialCityLat={initialCityLat}
+        initialCityLng={initialCityLng}
+        kind={kind}
+        compact
+        onSubmit={onSubmit}
+      />
       <button className="coming-soon-pill landing-scroll-join" type="button">
         Coming Soon <span aria-hidden="true">|</span> Join
       </button>
