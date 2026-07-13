@@ -20,9 +20,27 @@ type MapLocation = {
   longitude?: number | null;
 };
 
-export function DirectoryMap({ locations, activeLocationId }: { locations: MapLocation[]; activeLocationId: number | null }) {
+type MapBounds = { north: number; south: number; east: number; west: number };
+
+export function DirectoryMap({
+  locations,
+  activeLocationId,
+  onBoundsChange,
+}: {
+  locations: MapLocation[];
+  activeLocationId: number | null;
+  onBoundsChange: (bounds: MapBounds) => void;
+}) {
   const containerRef = useRef<HTMLDivElement>(null);
+  const mapRef = useRef<import("maplibre-gl").Map | null>(null);
+  const maplibreRef = useRef<typeof import("maplibre-gl") | null>(null);
+  const mapLoadedRef = useRef(false);
+  const didSetInitialViewRef = useRef(false);
+  const onBoundsChangeRef = useRef(onBoundsChange);
   const markerElements = useRef(new Map<number, HTMLButtonElement>());
+  const mapMarkers = useRef(new Map<number, import("maplibre-gl").Marker>());
+  const openPopupRef = useRef<import("maplibre-gl").Popup | null>(null);
+  const syncMarkersRef = useRef<() => void>(() => undefined);
   const activeLocationIdRef = useRef(activeLocationId);
   const mappedLocations = useMemo(
     () => locations.filter(
@@ -37,79 +55,106 @@ export function DirectoryMap({ locations, activeLocationId }: { locations: MapLo
   }, [activeLocationId]);
 
   useEffect(() => {
+    onBoundsChangeRef.current = onBoundsChange;
+  }, [onBoundsChange]);
+
+  useEffect(() => {
     const container = containerRef.current;
-    const markers = markerElements.current;
-    if (!container || !mappedLocations.length) {
+    const markerElementMap = markerElements.current;
+    const markerMap = mapMarkers.current;
+    if (!container || mapRef.current) {
       return;
     }
-
-    let map: import("maplibre-gl").Map | undefined;
     let cancelled = false;
-    let openPopup: import("maplibre-gl").Popup | undefined;
-    let activeMarker: HTMLButtonElement | undefined;
 
     void import("maplibre-gl").then((maplibregl) => {
       if (cancelled) {
         return;
       }
-
-      map = new maplibregl.Map({
+      maplibreRef.current = maplibregl;
+      const first = mappedLocations[0];
+      const map = new maplibregl.Map({
         container,
         style: "https://tiles.openfreemap.org/styles/liberty",
-        center: [mappedLocations[0].longitude, mappedLocations[0].latitude],
-        zoom: 10,
+        center: first ? [first.longitude, first.latitude] : [0, 20],
+        zoom: first ? 10 : 1.5,
       });
+      mapRef.current = map;
       map.addControl(new maplibregl.NavigationControl({ showCompass: false }), "top-right");
-      markers.clear();
-
-      const bounds = new maplibregl.LngLatBounds();
-      for (const location of mappedLocations) {
-        bounds.extend([location.longitude, location.latitude]);
-        const marker = document.createElement("button");
-        marker.type = "button";
-        marker.className = "directory-map-marker";
-        marker.classList.toggle("is-active", activeLocationIdRef.current === location.id);
-        marker.setAttribute("aria-label", `View ${location.name || location.org_name || "clinic"}`);
-        marker.title = location.name || location.org_name || "Clinic";
-        marker.addEventListener("click", () => {
-          openPopup?.remove();
-          marker.classList.add("is-active");
-          activeMarker = marker;
-          openPopup = new maplibregl.Popup({
-            closeButton: true,
-            closeOnClick: false,
-            className: "directory-map-popup",
-            offset: 18,
-          })
-            .setLngLat([location.longitude, location.latitude])
-            .setDOMContent(createPopupContent(location))
-            .addTo(map!);
-          openPopup.on("close", () => {
-            marker.classList.remove("is-active");
-            if (activeMarker === marker) {
-              activeMarker = undefined;
-              openPopup = undefined;
-            }
-          });
+      map.on("load", () => {
+        mapLoadedRef.current = true;
+        syncMarkersRef.current();
+      });
+      map.on("moveend", (event) => {
+        // Programmatic fitBounds calls have no original browser event.
+        if (!event.originalEvent) return;
+        const bounds = map.getBounds();
+        onBoundsChangeRef.current({
+          north: bounds.getNorth(), south: bounds.getSouth(),
+          east: bounds.getEast(), west: bounds.getWest(),
         });
-        markers.set(location.id, marker);
-        new maplibregl.Marker({ element: marker, anchor: "center" })
-          .setLngLat([location.longitude, location.latitude])
-          .addTo(map);
-      }
-
-      if (mappedLocations.length > 1) {
-        map.fitBounds(bounds, { padding: 72, maxZoom: 13, duration: 0 });
-      }
+      });
     });
 
     return () => {
       cancelled = true;
-      markers.clear();
-      openPopup?.remove();
-      map?.remove();
+      markerElementMap.clear();
+      markerMap.clear();
+      openPopupRef.current?.remove();
+      mapRef.current?.remove();
+      mapRef.current = null;
     };
+    // The map is intentionally mounted once; results are synchronized below.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    syncMarkers();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [mappedLocations]);
+
+  function syncMarkers() {
+    const map = mapRef.current;
+    const maplibregl = maplibreRef.current;
+    if (!map || !maplibregl || !mapLoadedRef.current) return;
+
+    openPopupRef.current?.remove();
+    for (const marker of mapMarkers.current.values()) marker.remove();
+    mapMarkers.current.clear();
+    markerElements.current.clear();
+    const bounds = new maplibregl.LngLatBounds();
+    for (const location of mappedLocations) {
+      bounds.extend([location.longitude, location.latitude]);
+      const element = document.createElement("button");
+      element.type = "button";
+      element.className = "directory-map-marker";
+      element.classList.toggle("is-active", activeLocationIdRef.current === location.id);
+      element.setAttribute("aria-label", `View ${location.name || location.org_name || "clinic"}`);
+      element.title = location.name || location.org_name || "Clinic";
+      element.addEventListener("click", () => {
+        openPopupRef.current?.remove();
+        element.classList.add("is-active");
+        const popup = new maplibregl.Popup({ closeButton: true, closeOnClick: false, className: "directory-map-popup", offset: 18 })
+          .setLngLat([location.longitude, location.latitude])
+          .setDOMContent(createPopupContent(location))
+          .addTo(map);
+        openPopupRef.current = popup;
+        popup.on("close", () => element.classList.remove("is-active"));
+      });
+      markerElements.current.set(location.id, element);
+      mapMarkers.current.set(location.id, new maplibregl.Marker({ element, anchor: "center" })
+        .setLngLat([location.longitude, location.latitude]).addTo(map));
+    }
+    if (!didSetInitialViewRef.current && mappedLocations.length) {
+      didSetInitialViewRef.current = true;
+      if (mappedLocations.length > 1) map.fitBounds(bounds, { padding: 72, maxZoom: 13, duration: 0 });
+      else map.jumpTo({ center: [mappedLocations[0].longitude, mappedLocations[0].latitude], zoom: 10 });
+    }
+  }
+
+  useEffect(() => {
+    syncMarkersRef.current = syncMarkers;
+  });
 
   useEffect(() => {
     for (const [id, marker] of markerElements.current) {
@@ -117,11 +162,12 @@ export function DirectoryMap({ locations, activeLocationId }: { locations: MapLo
     }
   }, [activeLocationId]);
 
-  if (!mappedLocations.length) {
-    return <div className="directory-map-empty">Map locations aren’t available for these results yet.</div>;
-  }
-
-  return <div ref={containerRef} className="directory-map" aria-label="Map of directory results" />;
+  return (
+    <div className="directory-map-wrap">
+      <div ref={containerRef} className="directory-map" aria-label="Map of directory results" />
+      {!mappedLocations.length ? <div className="directory-map-empty">No listings in this map area.</div> : null}
+    </div>
+  );
 }
 
 function createPopupContent(location: MapLocation) {

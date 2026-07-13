@@ -2313,7 +2313,15 @@ input[type="search"]::-webkit-search-cancel-button:hover {
   height: 100%;
 }
 
+.directory-map-wrap {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
 .directory-map-empty {
+  position: absolute;
+  inset: 0;
   display: grid;
   place-items: center;
   padding: 32px;

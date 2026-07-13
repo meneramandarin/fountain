@@ -60,6 +60,10 @@ export type DirectoryParams = {
   place_type?: string;
   city_lat?: number;
   city_lng?: number;
+  map_north?: number;
+  map_south?: number;
+  map_east?: number;
+  map_west?: number;
   treatment_ids?: number[];
   entity_type?: string;
   care_model?: string;
@@ -1565,6 +1569,9 @@ function locationDirectoryRankingJoins() {
 }
 
 export async function searchLocations(params: DirectoryParams, page = 0) {
+  if (hasMapBounds(params)) {
+    return searchLocationsByMapBounds(params, page);
+  }
   const selectedCountryCode = normalizedCountryCode(params.city_country || params.country);
   if (params.place_type === "country" && selectedCountryCode) {
     return searchLocationsByCountry(params, selectedCountryCode, page);
@@ -1635,6 +1642,61 @@ export async function searchLocations(params: DirectoryParams, page = 0) {
 
   await hydrateLocationRows(results);
   return { results, total, page, page_size: PAGE_SIZE };
+}
+
+function hasMapBounds(params: DirectoryParams): params is DirectoryParams & {
+  map_north: number;
+  map_south: number;
+  map_east: number;
+  map_west: number;
+} {
+  return [params.map_north, params.map_south, params.map_east, params.map_west]
+    .every((value) => typeof value === "number" && Number.isFinite(value))
+    && params.map_north! > params.map_south!;
+}
+
+async function searchLocationsByMapBounds(
+  params: DirectoryParams & { map_north: number; map_south: number; map_east: number; map_west: number },
+  page: number,
+) {
+  const match = ftsMatch(params.q);
+  const matchJoin = match ? searchMatchJoin("l", "location") : "";
+  const filteredParams: DirectoryParams = {
+    ...params,
+    country: undefined,
+    locality: undefined,
+    city_lat: undefined,
+    city_lng: undefined,
+  };
+  const { clause, values } = locationWhere(filteredParams, { includeText: !match });
+  const where = clause ? [clause.replace(/^\s*WHERE\s+/i, "")] : [];
+  const queryValues = match ? searchMatchValues(match, values) : [...values];
+  where.push("COALESCE(l.is_virtual, false) = false");
+  where.push("l.latitude IS NOT NULL AND l.longitude IS NOT NULL");
+  where.push("l.latitude BETWEEN ? AND ?");
+  queryValues.push(params.map_south, params.map_north);
+  if (params.map_west <= params.map_east) {
+    where.push("l.longitude BETWEEN ? AND ?");
+  } else {
+    // MapLibre represents a viewport crossing the antimeridian with west > east.
+    where.push("(l.longitude >= ? OR l.longitude <= ?)");
+  }
+  queryValues.push(params.map_west, params.map_east);
+
+  const centerLatitude = (params.map_north + params.map_south) / 2;
+  const centerLongitude = params.map_west <= params.map_east
+    ? (params.map_west + params.map_east) / 2
+    : ((((params.map_west + params.map_east + 360) / 2) + 540) % 360) - 180;
+  const payload = await locationPayloadFromWhere({
+    latitude: centerLatitude,
+    longitude: centerLongitude,
+    matchJoin,
+    where,
+    values: queryValues,
+    page,
+  });
+  await hydrateLocationRows(payload.results);
+  return { ...payload, mode: "map_bounds" as const, effective_radius: null };
 }
 
 async function searchLocationsByCountry(params: DirectoryParams, countryCode: string, page: number) {
@@ -2372,6 +2434,10 @@ export function parseDirectoryParams(searchParams: URLSearchParams): DirectoryPa
     place_type: searchParams.get("place_type") === "country" ? "country" : undefined,
     city_lat: parseFiniteNumber(searchParams.get("city_lat")),
     city_lng: parseFiniteNumber(searchParams.get("city_lng")),
+    map_north: boundedCoordinate(searchParams.get("map_north"), -90, 90),
+    map_south: boundedCoordinate(searchParams.get("map_south"), -90, 90),
+    map_east: boundedCoordinate(searchParams.get("map_east"), -180, 180),
+    map_west: boundedCoordinate(searchParams.get("map_west"), -180, 180),
     treatment_ids: treatmentIds.length ? treatmentIds : undefined,
     entity_type: searchParams.get("entity_type") || undefined,
     care_model: searchParams.get("care_model") || undefined,
@@ -2405,4 +2471,9 @@ function parseFiniteNumber(raw: string | null) {
   }
   const value = Number.parseFloat(raw);
   return Number.isFinite(value) ? value : undefined;
+}
+
+function boundedCoordinate(raw: string | null, min: number, max: number) {
+  const value = parseFiniteNumber(raw);
+  return value !== undefined && value >= min && value <= max ? value : undefined;
 }

@@ -42,7 +42,9 @@ export type SearchPayload = {
   searched_country?: string | null;
 };
 
-type SearchMode = "exact_radius" | "expanded_radius" | "country_fallback" | "country_search" | "cross_border" | "empty";
+type SearchMode = "exact_radius" | "expanded_radius" | "country_fallback" | "country_search" | "cross_border" | "empty" | "map_bounds";
+
+type MapBounds = { north: number; south: number; east: number; west: number };
 
 type Tag = { facet: string; value: string };
 type TreatmentChip = { name: string; domain: string };
@@ -100,7 +102,9 @@ export function DirectoryShell({
   const [loading, setLoading] = useState(false);
   const [visitorLocation, setVisitorLocation] = useState<VisitorLocation | null>(null);
   const [activeLocationId, setActiveLocationId] = useState<number | null>(null);
+  const [mapBounds, setMapBounds] = useState<MapBounds | null>(null);
   const resultsRef = useRef<HTMLElement>(null);
+  const searchRequestRef = useRef<AbortController | null>(null);
 
   const queryString = useMemo(() => {
     const params = new URLSearchParams();
@@ -127,18 +131,26 @@ export function DirectoryShell({
     if (state.page) {
       params.set("page", String(state.page));
     }
+    if (state.kind === "locations" && mapBounds) {
+      params.set("map_north", String(mapBounds.north));
+      params.set("map_south", String(mapBounds.south));
+      params.set("map_east", String(mapBounds.east));
+      params.set("map_west", String(mapBounds.west));
+    }
     if (usesPersonalizedDefaultSort(state) && visitorLocation?.country) {
       appendVisitorLocationParams(params, visitorLocation);
     }
     return params.toString();
-  }, [state, visitorLocation]);
+  }, [state, visitorLocation, mapBounds]);
   const initialQueryString = useRef(queryString);
 
   useEffect(() => {
     if (queryString === initialQueryString.current) {
       return;
     }
+    searchRequestRef.current?.abort();
     const controller = new AbortController();
+    searchRequestRef.current = controller;
     setLoading(true);
     fetch(`/api/search?${queryString}`, { signal: controller.signal })
       .then((response) => {
@@ -153,9 +165,18 @@ export function DirectoryShell({
           setPayload({ results: [], total: 0, page: 0, page_size: 18 });
         }
       })
-      .finally(() => setLoading(false));
+      .finally(() => {
+        if (searchRequestRef.current === controller) setLoading(false);
+      });
     return () => controller.abort();
   }, [queryString]);
+
+  const searchMapBounds = useCallback((bounds: MapBounds) => {
+    if (state.kind !== "locations") return;
+    setLoading(true);
+    setMapBounds(bounds);
+    setState((current) => ({ ...current, page: 0 }));
+  }, [state.kind]);
 
   useEffect(() => {
     const cached = readCachedVisitorLocation();
@@ -232,6 +253,7 @@ export function DirectoryShell({
     }
 
     setLoading(true);
+    setMapBounds(null);
     setState(nextState);
     router.push(`/directory?${params.toString()}`);
   }, [router, state.kind]);
@@ -307,7 +329,11 @@ export function DirectoryShell({
         </section>
         {state.kind === "locations" ? (
           <aside className="directory-map-panel" aria-label="Directory result map">
-            <DirectoryMap locations={payload.results as LocationResultRow[]} activeLocationId={activeLocationId} />
+            <DirectoryMap
+              locations={payload.results as LocationResultRow[]}
+              activeLocationId={activeLocationId}
+              onBoundsChange={searchMapBounds}
+            />
           </aside>
         ) : null}
       </div>
@@ -417,6 +443,7 @@ function DirectorySearchBanner({ payload }: { payload: SearchPayload }) {
     !mode
     || mode === "country_search"
     || mode === "country_fallback"
+    || mode === "map_bounds"
     || (mode === "exact_radius" && payload.effective_radius === 25)
   ) {
     return null;
