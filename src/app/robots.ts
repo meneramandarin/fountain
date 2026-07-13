@@ -1,15 +1,21 @@
 import type { MetadataRoute } from "next";
+import {
+  discoveryCrawlerUserAgents,
+  trainingAndCollectionCrawlerUserAgents,
+} from "@/lib/crawler-policy";
 import { siteUrl } from "@/lib/site";
+
+const privatePaths = ["/api/", "/docs/", "/go/"];
 
 export default function robots(): MetadataRoute.Robots {
   return {
     rules: [
-      { userAgent: "GPTBot", disallow: "/" },
-      { userAgent: "CCBot", disallow: "/" },
-      { userAgent: "ClaudeBot", disallow: "/" },
-      { userAgent: "anthropic-ai", disallow: "/" },
-      { userAgent: "PerplexityBot", disallow: "/" },
-      { userAgent: "Bytespider", disallow: "/" },
+      ...discoveryCrawlerUserAgents.map((userAgent) => ({
+        userAgent,
+        allow: "/",
+        disallow: privatePaths,
+      })),
+      ...trainingAndCollectionCrawlerUserAgents.map((userAgent) => ({ userAgent, disallow: "/" })),
       { userAgent: "SemrushBot", disallow: "/" },
       { userAgent: "AhrefsBot", disallow: "/" },
       { userAgent: "MJ12bot", disallow: "/" },
@@ -17,7 +23,8 @@ export default function robots(): MetadataRoute.Robots {
       { userAgent: "PetalBot", disallow: "/" },
       {
         userAgent: "*",
-        disallow: ["/api/", "/docs/", "/go/"],
+        allow: "/",
+        disallow: privatePaths,
         crawlDelay: 10,
       },
     ],

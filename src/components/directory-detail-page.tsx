@@ -18,6 +18,7 @@ import { formatLocationPlace } from "@/lib/location-display";
 import { OutboundClinicLink } from "@/components/outbound-clinic-link";
 import { SplitDirectorySearch } from "@/components/split-directory-search";
 import { getOfferingLabels } from "@/lib/offering-labels";
+import { findPilotTreatmentLocationHref } from "@/lib/treatment-location-pages";
 
 type Tag = { facet: string; value: string };
 type ImageRef = { blob_url?: string | null; alt?: string | null; image_kind?: string | null };
@@ -395,6 +396,18 @@ function RelatedOptions({ searches }: { searches: RelatedTreatmentSearches | nul
 }
 
 function relatedTreatmentHref(searches: RelatedTreatmentSearches, treatment: { id: number; name: string }) {
+  if (searches.scope === "city" && searches.locality) {
+    const pilotHref = findPilotTreatmentLocationHref({
+      treatmentId: treatment.id,
+      locality: searches.locality,
+      region: searches.region_code,
+      countryCode: searches.country_code,
+    });
+    if (pilotHref) {
+      return pilotHref;
+    }
+  }
+
   const params = new URLSearchParams({ kind: "locations" });
   params.set("country", searches.country_code);
   if (searches.scope === "city" && searches.locality) {
