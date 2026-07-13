@@ -3,6 +3,12 @@
 import { MapPin, Search, Sparkles, X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 
+declare global {
+  interface Window {
+    gtag?: (...args: unknown[]) => void;
+  }
+}
+
 type SuggestedCity = {
   id: string;
   source: "inventory" | "google";
@@ -145,6 +151,7 @@ export function SplitDirectorySearch({
     setActiveField(null);
     setCitySessionToken(null);
     setIsResolvingPlace(false);
+    trackSearch(payload, kind);
 
     if (onSubmit) {
       onSubmit(payload);
@@ -328,6 +335,19 @@ export function SplitDirectorySearch({
       ) : null}
     </form>
   );
+}
+
+function trackSearch(
+  payload: SplitSearchSubmit,
+  kind?: "locations" | "practitioners",
+) {
+  window.gtag?.("event", "search", {
+    search_term: payload.what || "all treatments",
+    search_location: payload.where || "any location",
+    search_kind: kind || "locations",
+    source_page: `${window.location.pathname}${window.location.search}`,
+    transport_type: "beacon",
+  });
 }
 
 async function cityFromTypedQuery(query: string, sessionToken: string | null) {
