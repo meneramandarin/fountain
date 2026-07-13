@@ -21,14 +21,19 @@ type MapLocation = {
 };
 
 type MapBounds = { north: number; south: number; east: number; west: number };
+type MapFocusLocation = { latitude: number; longitude: number };
+
+const VISITOR_MAP_ZOOM = 9.5;
 
 export function DirectoryMap({
   locations,
   activeLocationId,
+  focusLocation,
   onBoundsChange,
 }: {
   locations: MapLocation[];
   activeLocationId: number | null;
+  focusLocation?: MapFocusLocation;
   onBoundsChange: (bounds: MapBounds) => void;
 }) {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -36,6 +41,9 @@ export function DirectoryMap({
   const maplibreRef = useRef<typeof import("maplibre-gl") | null>(null);
   const mapLoadedRef = useRef(false);
   const didSetInitialViewRef = useRef(false);
+  const didApplyFocusRef = useRef(false);
+  const userMovedMapRef = useRef(false);
+  const focusLocationRef = useRef(focusLocation);
   const onBoundsChangeRef = useRef(onBoundsChange);
   const markerElements = useRef(new Map<number, HTMLButtonElement>());
   const mapMarkers = useRef(new Map<number, import("maplibre-gl").Marker>());
@@ -57,6 +65,17 @@ export function DirectoryMap({
   useEffect(() => {
     onBoundsChangeRef.current = onBoundsChange;
   }, [onBoundsChange]);
+
+  useEffect(() => {
+    focusLocationRef.current = focusLocation;
+    const map = mapRef.current;
+    if (!mapLoadedRef.current || !map || !focusLocation || didApplyFocusRef.current || userMovedMapRef.current) {
+      return;
+    }
+    didApplyFocusRef.current = true;
+    didSetInitialViewRef.current = true;
+    focusMapOnVisitor(map, focusLocation, onBoundsChangeRef.current);
+  }, [focusLocation]);
 
   useEffect(() => {
     const container = containerRef.current;
@@ -83,16 +102,20 @@ export function DirectoryMap({
       map.addControl(new maplibregl.NavigationControl({ showCompass: false }), "top-right");
       map.on("load", () => {
         mapLoadedRef.current = true;
+        const focus = focusLocationRef.current;
+        if (focus && !userMovedMapRef.current) {
+          didApplyFocusRef.current = true;
+          didSetInitialViewRef.current = true;
+          focusMapOnVisitor(map, focus, onBoundsChangeRef.current);
+        }
         syncMarkersRef.current();
       });
       map.on("moveend", (event) => {
         // Programmatic fitBounds calls have no original browser event.
         if (!event.originalEvent) return;
+        userMovedMapRef.current = true;
         const bounds = map.getBounds();
-        onBoundsChangeRef.current({
-          north: bounds.getNorth(), south: bounds.getSouth(),
-          east: bounds.getEast(), west: bounds.getWest(),
-        });
+        onBoundsChangeRef.current(mapBoundsValue(bounds));
       });
     });
 
@@ -168,6 +191,24 @@ export function DirectoryMap({
       {!mappedLocations.length ? <div className="directory-map-empty">No listings in this map area.</div> : null}
     </div>
   );
+}
+
+function focusMapOnVisitor(
+  map: import("maplibre-gl").Map,
+  focus: MapFocusLocation,
+  onBoundsChange: (bounds: MapBounds) => void,
+) {
+  map.jumpTo({ center: [focus.longitude, focus.latitude], zoom: VISITOR_MAP_ZOOM });
+  onBoundsChange(mapBoundsValue(map.getBounds()));
+}
+
+function mapBoundsValue(bounds: import("maplibre-gl").LngLatBounds) {
+  return {
+    north: bounds.getNorth(),
+    south: bounds.getSouth(),
+    east: bounds.getEast(),
+    west: bounds.getWest(),
+  };
 }
 
 function createPopupContent(location: MapLocation) {

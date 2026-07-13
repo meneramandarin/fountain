@@ -142,6 +142,18 @@ export function DirectoryShell({
     return params.toString();
   }, [state, visitorLocation, mapBounds]);
   const initialQueryString = useRef(queryString);
+  const mapFocusLocation = useMemo(() => {
+    if (
+      !usesPersonalizedDefaultSort(state)
+      || typeof visitorLocation?.latitude !== "number"
+      || !Number.isFinite(visitorLocation.latitude)
+      || typeof visitorLocation.longitude !== "number"
+      || !Number.isFinite(visitorLocation.longitude)
+    ) {
+      return undefined;
+    }
+    return { latitude: visitorLocation.latitude, longitude: visitorLocation.longitude };
+  }, [state, visitorLocation]);
 
   useEffect(() => {
     if (queryString === initialQueryString.current) {
@@ -315,6 +327,7 @@ export function DirectoryShell({
             <DirectoryMap
               locations={payload.results as LocationResultRow[]}
               activeLocationId={activeLocationId}
+              focusLocation={mapFocusLocation}
               onBoundsChange={searchMapBounds}
             />
           </aside>
