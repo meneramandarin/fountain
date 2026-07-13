@@ -1,0 +1,25 @@
+.directoryLink {
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+}
+
+.directoryLink:hover {
+  color: var(--landing-fg);
+}
+
+.treatmentSection {
+  padding-bottom: clamp(16px, 2vw, 28px);
+}
+
+.locationSection {
+  padding-top: clamp(16px, 2vw, 28px);
+}
+
+@media (min-width: 1200px) {
+  .treatmentColumns {
+    grid-auto-flow: row;
+    grid-template-columns: repeat(7, minmax(0, 1fr));
+    overflow-x: visible;
+  }
+}

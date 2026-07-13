@@ -1,4 +1,5 @@
 import { hasTable, isPostgres, row, rows } from "@/lib/db";
+import type { TreatmentCatalogItem } from "@/lib/treatment-pages";
 
 export const PAGE_SIZE = 18;
 
@@ -95,25 +96,6 @@ export type LandingCityTreatment = {
   location_count: number;
 };
 
-export type LandingCitySearch = {
-  locality: string;
-  country_code: string;
-  country_name: string;
-  region_code: string | null;
-  location_count: number;
-  treatment_count: number;
-  treatments: LandingCityTreatment[];
-};
-
-export type LandingCountrySearch = {
-  country_code: string;
-  country_name: string;
-  location_count: number;
-  treatment_count: number;
-  treatments: LandingCityTreatment[];
-  cities: LandingCitySearch[];
-};
-
 export type RelatedTreatmentSearches = {
   scope: "city" | "country";
   locality: string | null;
@@ -172,6 +154,27 @@ export type TreatmentLocationLandingData = {
   }>;
 };
 
+export type TreatmentLandingData = {
+  totalLocations: number;
+  totalCities: number;
+  totalCountries: number;
+  providers: LandingFeaturedDirectoryCard[];
+  topCities: Array<{
+    locality: string;
+    region: string | null;
+    countryCode: string;
+    countryName: string | null;
+    locationCount: number;
+  }>;
+  priceSummaries: Array<{
+    currency: string | null;
+    minimum: number;
+    maximum: number;
+    offeringCount: number;
+    locationCount: number;
+  }>;
+};
+
 type AnyRow = Record<string, unknown>;
 
 type LandingTreatmentCardOptions = {
@@ -192,24 +195,12 @@ function placeholders(count: number) {
   return Array.from({ length: count }, () => "?").join(",");
 }
 
-function noDigitsCondition(expression: string) {
-  return isPostgres() ? `${expression} !~ '[0-9]'` : `${expression} NOT GLOB '*[0-9]*'`;
-}
-
-function twoUpperLettersCondition(expression: string) {
-  return isPostgres() ? `${expression} ~ '^[A-Z][A-Z]$'` : `${expression} GLOB '[A-Z][A-Z]'`;
-}
-
 function orderNoCase(expression: string) {
   return isPostgres() ? `lower(${expression})` : `${expression} COLLATE NOCASE`;
 }
 
 function equalsNoCase(expression: string) {
   return isPostgres() ? `lower(${expression}) = lower(?)` : `${expression} = ? COLLATE NOCASE`;
-}
-
-function capAt(expression: string, cap: number) {
-  return isPostgres() ? `LEAST(${expression}, ${cap})` : `MIN(${expression}, ${cap})`;
 }
 
 function containsNoCase(expression: string, termExpression: string) {
@@ -465,300 +456,134 @@ export async function getStats(): Promise<Stats> {
   };
 }
 
-export async function getLandingCityTreatmentSearches(
-  cityLimitPerCountry = 10,
-  treatmentLimit = 8,
-  countryLimit = 20,
-): Promise<LandingCountrySearch[]> {
-  const cityTreatmentRows = await rows<{
-    locality: string;
-    country_code: string;
-    country_name: string;
-    region_code: string | null;
+export async function getTreatmentCatalog(minimumLocations = 1): Promise<TreatmentCatalogItem[]> {
+  const treatments = await rows<{
+    id: number;
+    name: string;
+    category: string | null;
     location_count: number;
-    treatment_count: number;
-    treatment_id: number;
-    treatment_name: string;
-    treatment_location_count: number;
   }>(
     `
-    WITH valid_locations AS (
+    SELECT
+      t.id,
+      t.canonical_name AS name,
+      t.category,
+      COUNT(DISTINCT l.id) AS location_count
+    FROM treatments t
+    JOIN offerings o ON o.treatment_id = t.id AND ${activeOfferingCondition("o")}
+    JOIN locations l ON l.id = o.location_id AND ${activeEntityCondition("l")}
+    WHERE COALESCE(l.is_virtual, false) = false
+    GROUP BY t.id, t.canonical_name, t.category
+    HAVING COUNT(DISTINCT l.id) >= ?
+    ORDER BY location_count DESC, ${orderNoCase("t.canonical_name")}
+  `,
+    [minimumLocations],
+  );
+
+  return treatments.map((treatment) => ({
+    id: treatment.id,
+    name: treatment.name,
+    category: treatment.category?.trim() || "Other treatments",
+    locationCount: Number(treatment.location_count),
+  }));
+}
+
+export async function getTreatmentLandingData(treatment: Pick<TreatmentCatalogItem, "id" | "name">): Promise<TreatmentLandingData> {
+  const [summary, topCities, priceRows, providers] = await Promise.all([
+    row<{ total_locations: number; total_cities: number; total_countries: number }>(
+      `
       SELECT
-        l.id,
-        l.country_code,
-        l.country_name,
-        l.locality,
-        l.region
-      FROM locations l
-      WHERE ${activeEntityCondition("l")}
+        COUNT(DISTINCT l.id) AS total_locations,
+        COUNT(DISTINCT l.locality) AS total_cities,
+        COUNT(DISTINCT l.country_code) AS total_countries
+      FROM offerings o
+      JOIN locations l ON l.id = o.location_id
+      WHERE o.treatment_id = ?
+        AND ${activeOfferingCondition("o")}
+        AND ${activeEntityCondition("l")}
         AND COALESCE(l.is_virtual, false) = false
-        AND l.country_code IS NOT NULL
-        AND TRIM(l.country_code) <> ''
+    `,
+      [treatment.id],
+    ),
+    rows<{
+      locality: string;
+      region: string | null;
+      country_code: string;
+      country_name: string | null;
+      location_count: number;
+    }>(
+      `
+      SELECT
+        l.locality,
+        MAX(l.region) AS region,
+        l.country_code,
+        MAX(l.country_name) AS country_name,
+        COUNT(DISTINCT l.id) AS location_count
+      FROM offerings o
+      JOIN locations l ON l.id = o.location_id
+      WHERE o.treatment_id = ?
+        AND ${activeOfferingCondition("o")}
+        AND ${activeEntityCondition("l")}
+        AND COALESCE(l.is_virtual, false) = false
         AND l.locality IS NOT NULL
         AND TRIM(l.locality) <> ''
-        AND LENGTH(TRIM(l.locality)) BETWEEN 3 AND 40
-        AND l.locality NOT IN (
-          'USA',
-          'Virtual',
-          'Various Virtual',
-          'Switzerland',
-          'Connecticut',
-          'D.C. Metro Area (DMV)',
-          'Miami-Ft. Lauderdale',
-          'New Jersey',
-          'Orange County',
-          'St Miami',
-          'St N Saint Petersburg'
-        )
-        AND ${noDigitsCondition("l.locality")}
-        AND l.locality NOT LIKE '%,%'
-        AND l.locality NOT LIKE '% Ave%'
-        AND l.locality NOT LIKE '%Road%'
-        AND l.locality NOT LIKE '%Street%'
-        AND l.locality NOT LIKE '%Avenue%'
-        AND l.locality NOT LIKE '%Blvd%'
-        AND l.locality NOT LIKE '%Bulvarı%'
-        AND l.locality NOT LIKE '%Caddesi%'
-        AND l.locality NOT LIKE '%Suite%'
-        AND l.locality NOT LIKE '%-Ro%'
-    ),
-    city_counts AS (
-      SELECT
-        l.country_code,
-        COALESCE(MAX(l.country_name), l.country_code) AS country_name,
-        l.locality,
-        MAX(
-          CASE
-            WHEN l.country_code = 'US'
-              AND LENGTH(TRIM(l.region)) = 2
-              AND ${twoUpperLettersCondition("TRIM(l.region)")}
-            THEN TRIM(l.region)
-          END
-        ) AS region_code,
-        COUNT(DISTINCT l.id) AS location_count,
-        COUNT(DISTINCT o.treatment_id) AS treatment_count,
-        COUNT(DISTINCT o.treatment_id) * 10 + ${capAt("COUNT(DISTINCT l.id)", 80)} AS score
-      FROM valid_locations l
-      JOIN offerings o ON o.location_id = l.id AND o.treatment_id IS NOT NULL AND ${activeOfferingCondition("o")}
+        AND l.country_code IS NOT NULL
+        AND TRIM(l.country_code) <> ''
       GROUP BY l.country_code, l.locality
+      ORDER BY location_count DESC, ${orderNoCase("l.locality")}
+      LIMIT 12
+    `,
+      [treatment.id],
     ),
-    ranked_cities AS (
+    rows<{
+      currency: string | null;
+      minimum: number;
+      maximum: number;
+      offering_count: number;
+      location_count: number;
+    }>(
+      `
       SELECT
-        *,
-        ROW_NUMBER() OVER (
-          PARTITION BY country_code
-          ORDER BY score DESC, treatment_count DESC, location_count DESC, locality
-        ) AS city_rank
-      FROM city_counts
-    ),
-    ranked_treatments AS (
-      SELECT
-        c.locality,
-        c.country_code,
-        c.country_name,
-        c.region_code,
-        c.location_count,
-        c.treatment_count,
-        c.score,
-        t.id AS treatment_id,
-        t.canonical_name AS treatment_name,
-        COUNT(DISTINCT l.id) AS treatment_location_count,
-        ROW_NUMBER() OVER (
-          PARTITION BY c.country_code, c.locality
-          ORDER BY COUNT(DISTINCT l.id) DESC, t.canonical_name
-        ) AS treatment_rank
-      FROM ranked_cities c
-      JOIN valid_locations l ON l.country_code = c.country_code AND l.locality = c.locality
-      JOIN offerings o ON o.location_id = l.id AND o.treatment_id IS NOT NULL AND ${activeOfferingCondition("o")}
-      JOIN treatments t ON t.id = o.treatment_id
-      WHERE c.city_rank <= ?
-      GROUP BY
-        c.country_code,
-        c.locality,
-        c.country_name,
-        c.region_code,
-        c.location_count,
-        c.treatment_count,
-        c.score,
-        t.id,
-        t.canonical_name
-    )
-    SELECT
-      locality,
-      country_code,
-      country_name,
-      region_code,
-      location_count,
-      treatment_count,
-      treatment_id,
-      treatment_name,
-      treatment_location_count
-    FROM ranked_treatments
-    WHERE treatment_rank <= ?
-    ORDER BY ${orderNoCase("country_name")}, country_code, score DESC, treatment_count DESC, location_count DESC, locality, treatment_rank
-  `,
-    [cityLimitPerCountry, treatmentLimit],
-  );
-
-  const countryTreatmentRows = await rows<{
-    country_code: string;
-    country_name: string;
-    location_count: number;
-    treatment_count: number;
-    treatment_id: number;
-    treatment_name: string;
-    treatment_location_count: number;
-  }>(
-    `
-    WITH valid_locations AS (
-      SELECT
-        l.id,
-        l.country_code,
-        l.country_name,
-        l.locality
-      FROM locations l
-      WHERE ${activeEntityCondition("l")}
+        NULLIF(TRIM(o.price_currency), '') AS currency,
+        MIN(o.price_amount) AS minimum,
+        MAX(o.price_amount) AS maximum,
+        COUNT(*) AS offering_count,
+        COUNT(DISTINCT l.id) AS location_count
+      FROM offerings o
+      JOIN locations l ON l.id = o.location_id
+      WHERE o.treatment_id = ?
+        AND o.price_amount > 0
+        AND ${activeOfferingCondition("o")}
+        AND ${activeEntityCondition("l")}
         AND COALESCE(l.is_virtual, false) = false
-        AND l.country_code IS NOT NULL
-        AND TRIM(l.country_code) <> ''
-        AND l.locality IS NOT NULL
-        AND TRIM(l.locality) <> ''
-        AND LENGTH(TRIM(l.locality)) BETWEEN 3 AND 40
-        AND l.locality NOT IN (
-          'USA',
-          'Virtual',
-          'Various Virtual',
-          'Switzerland',
-          'Connecticut',
-          'D.C. Metro Area (DMV)',
-          'Miami-Ft. Lauderdale',
-          'New Jersey',
-          'Orange County',
-          'St Miami',
-          'St N Saint Petersburg'
-        )
-        AND ${noDigitsCondition("l.locality")}
-        AND l.locality NOT LIKE '%,%'
-        AND l.locality NOT LIKE '% Ave%'
-        AND l.locality NOT LIKE '%Road%'
-        AND l.locality NOT LIKE '%Street%'
-        AND l.locality NOT LIKE '%Avenue%'
-        AND l.locality NOT LIKE '%Blvd%'
-        AND l.locality NOT LIKE '%Bulvarı%'
-        AND l.locality NOT LIKE '%Caddesi%'
-        AND l.locality NOT LIKE '%Suite%'
-        AND l.locality NOT LIKE '%-Ro%'
+      GROUP BY NULLIF(TRIM(o.price_currency), '')
+      ORDER BY offering_count DESC, currency
+    `,
+      [treatment.id],
     ),
-    country_counts AS (
-      SELECT
-        l.country_code,
-        COALESCE(MAX(l.country_name), l.country_code) AS country_name,
-        COUNT(DISTINCT l.id) AS location_count,
-        COUNT(DISTINCT o.treatment_id) AS treatment_count
-      FROM valid_locations l
-      JOIN offerings o ON o.location_id = l.id AND o.treatment_id IS NOT NULL AND ${activeOfferingCondition("o")}
-      GROUP BY l.country_code
-    ),
-    ranked_treatments AS (
-      SELECT
-        c.country_code,
-        c.country_name,
-        c.location_count,
-        c.treatment_count,
-        t.id AS treatment_id,
-        t.canonical_name AS treatment_name,
-        COUNT(DISTINCT l.id) AS treatment_location_count,
-        ROW_NUMBER() OVER (
-          PARTITION BY c.country_code
-          ORDER BY COUNT(DISTINCT l.id) DESC, t.canonical_name
-        ) AS treatment_rank
-      FROM country_counts c
-      JOIN valid_locations l ON l.country_code = c.country_code
-      JOIN offerings o ON o.location_id = l.id AND o.treatment_id IS NOT NULL AND ${activeOfferingCondition("o")}
-      JOIN treatments t ON t.id = o.treatment_id
-      GROUP BY
-        c.country_code,
-        c.country_name,
-        c.location_count,
-        c.treatment_count,
-        t.id,
-        t.canonical_name
-    )
-    SELECT
-      country_code,
-      country_name,
-      location_count,
-      treatment_count,
-      treatment_id,
-      treatment_name,
-      treatment_location_count
-    FROM ranked_treatments
-    WHERE treatment_rank <= ?
-    ORDER BY ${orderNoCase("country_name")}, country_code, treatment_rank
-  `,
-    [treatmentLimit],
-  );
+    getLandingTreatmentDirectoryCards(treatment.name, 18, { requireImage: false }),
+  ]);
 
-  const byCity = new Map<string, LandingCitySearch>();
-  for (const row of cityTreatmentRows) {
-    const key = `${row.country_code}:${row.locality}`;
-    let city = byCity.get(key);
-    if (!city) {
-      city = {
-        locality: row.locality,
-        country_code: row.country_code,
-        country_name: row.country_name,
-        region_code: row.region_code,
-        location_count: row.location_count,
-        treatment_count: row.treatment_count,
-        treatments: [],
-      };
-      byCity.set(key, city);
-    }
-    city.treatments.push({
-      id: row.treatment_id,
-      name: row.treatment_name,
-      location_count: row.treatment_location_count,
-    });
-  }
-
-  const byCountry = new Map<string, LandingCountrySearch>();
-  for (const row of countryTreatmentRows) {
-    let country = byCountry.get(row.country_code);
-    if (!country) {
-      country = {
-        country_code: row.country_code,
-        country_name: row.country_name,
-        location_count: row.location_count,
-        treatment_count: row.treatment_count,
-        treatments: [],
-        cities: [],
-      };
-      byCountry.set(row.country_code, country);
-    }
-    country.treatments.push({
-      id: row.treatment_id,
-      name: row.treatment_name,
-      location_count: row.treatment_location_count,
-    });
-  }
-
-  for (const city of byCity.values()) {
-    const country = byCountry.get(city.country_code);
-    if (country) {
-      country.cities.push(city);
-    }
-  }
-
-  return Array.from(byCountry.values())
-    .sort(
-      (a, b) =>
-        b.location_count - a.location_count ||
-        b.treatment_count - a.treatment_count ||
-        b.cities.length - a.cities.length ||
-        a.country_name.localeCompare(b.country_name),
-    )
-    .slice(0, countryLimit);
+  return {
+    totalLocations: Number(summary?.total_locations || 0),
+    totalCities: Number(summary?.total_cities || 0),
+    totalCountries: Number(summary?.total_countries || 0),
+    providers,
+    topCities: topCities.map((city) => ({
+      locality: city.locality,
+      region: city.region,
+      countryCode: city.country_code,
+      countryName: city.country_name,
+      locationCount: Number(city.location_count),
+    })),
+    priceSummaries: priceRows.map((price) => ({
+      currency: price.currency,
+      minimum: Number(price.minimum),
+      maximum: Number(price.maximum),
+      offeringCount: Number(price.offering_count),
+      locationCount: Number(price.location_count),
+    })),
+  };
 }
 
 export async function getRelatedTreatmentSearches(

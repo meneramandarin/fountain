@@ -1,16 +1,16 @@
 import Image from "next/image";
 import { headers } from "next/headers";
-import { CityTreatmentSearches } from "@/components/city-treatment-searches";
 import { LandingExploreCarousel, type LandingExploreItem } from "@/components/landing-explore-carousel";
 import { LandingFeaturedDirectoryCarousel } from "@/components/landing-featured-directory-carousel";
 import { LandingFooter } from "@/components/landing-footer";
+import { LandingSeoDiscovery } from "@/components/landing-seo-discovery";
 import { LandingScrollHeader } from "@/components/landing-scroll-header";
 import { LandingTopbar } from "@/components/landing-topbar";
 import { SplitDirectorySearch } from "@/components/split-directory-search";
 import {
-  getLandingCityTreatmentSearches,
   getLandingFeaturedDirectoryCards,
   getLandingTreatmentDirectoryCards,
+  getTreatmentCatalog,
   type VisitorLocationParams,
 } from "@/lib/queries";
 
@@ -46,8 +46,7 @@ const fallbackNearMeLocalities = ["New York", "Brooklyn", "Long Island City", "J
 
 export default async function HomePage() {
   const visitorLocation = landingVisitorLocation(await headers());
-  const [countrySearches, featuredCards, ivCards, mriCards] = await Promise.all([
-    safeLandingSection("city treatment searches", () => getLandingCityTreatmentSearches()),
+  const [featuredCards, ivCards, mriCards, treatments] = await Promise.all([
     safeLandingSection("featured directory cards", () => getLandingFeaturedDirectoryCards(10)),
     safeLandingSection("IV drip cards", () =>
       getLandingTreatmentDirectoryCards("IV nutrient therapy", 10, {
@@ -65,6 +64,7 @@ export default async function HomePage() {
         visitor: visitorLocation,
       }),
     ),
+    safeLandingSection("treatment catalog", () => getTreatmentCatalog()),
   ]);
 
   return (
@@ -103,14 +103,7 @@ export default async function HomePage() {
 
       <LandingExploreCarousel items={exploreItems} />
 
-      <section className="landing-discover">
-        <div className="discover-card">
-          <h2>Explore searches by location</h2>
-          <p>Browse treatments by country and city</p>
-
-          <CityTreatmentSearches countries={countrySearches} />
-        </div>
-      </section>
+      <LandingSeoDiscovery treatments={treatments} />
 
       <LandingFooter />
     </main>
