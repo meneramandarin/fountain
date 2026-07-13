@@ -12,6 +12,7 @@ type MapLocation = {
   region?: string | null;
   country_name?: string | null;
   image?: string | null;
+  image_kind?: string | null;
   rating?: number | null;
   review_count?: number | null;
   treatments?: { name: string; domain: string }[];
@@ -129,11 +130,32 @@ function createPopupContent(location: MapLocation) {
   card.href = locationHref(location);
 
   if (location.image) {
-    const image = document.createElement("img");
-    image.className = "directory-map-popup-image";
-    image.src = location.image;
-    image.alt = "";
-    card.append(image);
+    const isContainedGraphic = location.image_kind === "text_graphic" || location.image_kind === "logo";
+    if (isContainedGraphic) {
+      const frame = document.createElement("span");
+      frame.className = "directory-map-popup-image-frame image-frame-text-graphic";
+
+      const backdrop = document.createElement("img");
+      backdrop.className = "directory-map-popup-image image-frame-backdrop";
+      backdrop.src = location.image;
+      backdrop.alt = "";
+      backdrop.setAttribute("aria-hidden", "true");
+      frame.append(backdrop);
+
+      const image = document.createElement("img");
+      image.className = "directory-map-popup-image image-frame-content";
+      image.src = location.image;
+      image.alt = "";
+      frame.append(image);
+
+      card.append(frame);
+    } else {
+      const image = document.createElement("img");
+      image.className = "directory-map-popup-image";
+      image.src = location.image;
+      image.alt = "";
+      card.append(image);
+    }
   }
 
   const body = document.createElement("span");
