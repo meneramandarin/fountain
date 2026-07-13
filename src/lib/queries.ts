@@ -141,6 +141,37 @@ export type LandingFeaturedDirectoryCard = {
   treatments: { name: string; domain: string }[];
 };
 
+export type TreatmentLocationLandingResult = {
+  id: number;
+  slug: string | null;
+  name: string | null;
+  org_name: string | null;
+  locality: string | null;
+  region: string | null;
+  country_code: string | null;
+  country_name: string | null;
+  rating: number | null;
+  review_count: number | null;
+  min_price_amount: number | null;
+  min_price_currency: string | null;
+  image: string | null;
+  image_kind: string | null;
+  treatments: { name: string; domain: string }[];
+  tags: { facet: string; value: string }[];
+};
+
+export type TreatmentLocationLandingData = {
+  total: number;
+  results: TreatmentLocationLandingResult[];
+  priceSummaries: Array<{
+    currency: string | null;
+    minimum: number;
+    maximum: number;
+    offeringCount: number;
+    locationCount: number;
+  }>;
+};
+
 type AnyRow = Record<string, unknown>;
 
 type LandingTreatmentCardOptions = {
@@ -1566,6 +1597,138 @@ function locationDirectoryRankingJoins() {
       GROUP BY priced_o.location_id
     ) price_flags ON price_flags.location_id = l.id
   `;
+}
+
+export async function getTreatmentLocationLandingData(params: {
+  treatmentId: number;
+  treatmentName: string;
+  countryCode: string;
+  locality: string;
+  resultLimit?: number;
+}): Promise<TreatmentLocationLandingData> {
+  const resultLimit = Math.min(24, Math.max(1, params.resultLimit || PAGE_SIZE));
+  const locationFilter = `
+    ${activeEntityCondition("l")}
+    AND COALESCE(l.is_virtual, false) = false
+    AND l.country_code = ?
+    AND ${equalsNoCase("TRIM(l.locality)")}
+    AND EXISTS (
+      SELECT 1
+      FROM offerings matching_o
+      WHERE matching_o.location_id = l.id
+        AND matching_o.treatment_id = ?
+        AND ${activeOfferingCondition("matching_o")}
+    )
+  `;
+  const filterValues = [params.countryCode, params.locality, params.treatmentId];
+  const total =
+    (await row<{ count: number }>(
+      `SELECT COUNT(DISTINCT l.id) AS count FROM locations l WHERE ${locationFilter}`,
+      filterValues,
+    ))?.count || 0;
+
+  const results = await rows<AnyRow>(
+    `
+    SELECT
+      l.id,
+      ${locationSlugSelect("l")} AS slug,
+      l.name,
+      l.locality,
+      l.region,
+      l.country_code,
+      l.country_name,
+      org.canonical_name AS org_name,
+      google_reviews.rating,
+      google_reviews.review_count,
+      COALESCE(image_flags.has_image, false) AS has_image,
+      COALESCE(menu_flags.has_treatment_menu, false) AS has_treatment_menu,
+      (
+        SELECT treatment_o.price_amount
+        FROM offerings treatment_o
+        WHERE treatment_o.location_id = l.id
+          AND treatment_o.treatment_id = ?
+          AND treatment_o.price_amount > 0
+          AND ${activeOfferingCondition("treatment_o")}
+        ORDER BY treatment_o.price_amount ASC
+        LIMIT 1
+      ) AS min_price_amount,
+      (
+        SELECT treatment_o.price_currency
+        FROM offerings treatment_o
+        WHERE treatment_o.location_id = l.id
+          AND treatment_o.treatment_id = ?
+          AND treatment_o.price_amount > 0
+          AND ${activeOfferingCondition("treatment_o")}
+        ORDER BY treatment_o.price_amount ASC
+        LIMIT 1
+      ) AS min_price_currency
+    FROM locations l
+    LEFT JOIN organizations org ON org.id = l.org_id
+    ${googleReviewMatchJoin()}
+    ${locationDirectoryRankingJoins()}
+    WHERE ${locationFilter}
+    ORDER BY
+      ${locationDirectoryCompletenessRank()} ASC,
+      (google_reviews.rating IS NULL),
+      google_reviews.rating DESC,
+      (google_reviews.review_count IS NULL),
+      google_reviews.review_count DESC,
+      ${orderNoCase("l.name")}
+    LIMIT ?
+  `,
+    [params.treatmentId, params.treatmentId, ...filterValues, resultLimit],
+  );
+
+  await hydrateLocationRows(results);
+  for (const result of results) {
+    const treatments = (result.treatments as Array<{ name: string; domain: string }> | undefined) || [];
+    const target = treatments.find((treatment) => treatment.name === params.treatmentName);
+    result.treatments = [
+      target || { name: params.treatmentName, domain: "" },
+      ...treatments.filter((treatment) => treatment.name !== params.treatmentName),
+    ].slice(0, 6);
+  }
+
+  const priceRows = await rows<{
+    currency: string | null;
+    minimum: number;
+    maximum: number;
+    offering_count: number;
+    location_count: number;
+  }>(
+    `
+    SELECT
+      NULLIF(TRIM(o.price_currency), '') AS currency,
+      MIN(o.price_amount) AS minimum,
+      MAX(o.price_amount) AS maximum,
+      COUNT(*) AS offering_count,
+      COUNT(DISTINCT l.id) AS location_count
+    FROM offerings o
+    JOIN locations l ON l.id = o.location_id
+    WHERE o.treatment_id = ?
+      AND o.price_amount > 0
+      AND ${activeOfferingCondition("o")}
+      AND ${activeEntityCondition("l")}
+      AND COALESCE(l.is_virtual, false) = false
+      AND l.country_code = ?
+      AND ${equalsNoCase("TRIM(l.locality)")}
+    GROUP BY NULLIF(TRIM(o.price_currency), '')
+    ORDER BY offering_count DESC, currency
+  `,
+    [params.treatmentId, params.countryCode, params.locality],
+  );
+
+  return {
+    total,
+    results: results as TreatmentLocationLandingResult[],
+    priceSummaries: priceRows.map((price) => ({
+      currency: price.currency,
+      minimum: Number(price.minimum),
+      maximum: Number(price.maximum),
+      offeringCount: Number(price.offering_count),
+      locationCount: Number(price.location_count),
+    })),
+  };
 }
 
 export async function searchLocations(params: DirectoryParams, page = 0) {

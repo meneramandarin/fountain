@@ -81,7 +81,7 @@ export function DirectoryLocationCard({
   return (
     <Link
       className="result-card"
-      href={`${locationHref(result)}?from=${encodeURIComponent(from)}`}
+      href={from ? `${locationHref(result)}?from=${encodeURIComponent(from)}` : locationHref(result)}
       onMouseEnter={() => onActiveChange?.(result.id)}
       onMouseLeave={() => onActiveChange?.(null)}
       onFocus={() => onActiveChange?.(result.id)}

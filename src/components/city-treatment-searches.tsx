@@ -1,6 +1,7 @@
 "use client";
 
 import type { LandingCitySearch, LandingCityTreatment, LandingCountrySearch } from "@/lib/queries";
+import { findPilotTreatmentLocationHref } from "@/lib/treatment-location-pages";
 import Link from "next/link";
 import { useState } from "react";
 
@@ -21,6 +22,16 @@ function citySeoName(city: LandingCitySearch) {
 }
 
 function cityDirectoryHref(city: LandingCitySearch, treatment: LandingCityTreatment) {
+  const pilotHref = findPilotTreatmentLocationHref({
+    treatmentId: treatment.id,
+    locality: city.locality,
+    region: city.region_code,
+    countryCode: city.country_code,
+  });
+  if (pilotHref) {
+    return pilotHref;
+  }
+
   const params = new URLSearchParams({ kind: "locations" });
   params.set("country", city.country_code);
   params.set("locality", city.locality);

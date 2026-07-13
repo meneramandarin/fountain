@@ -1,4 +1,5 @@
 import { NextResponse, type NextRequest } from "next/server";
+import { isBlockedAutomationUserAgent } from "@/lib/crawler-policy";
 
 type RouteKind = "page" | "docs" | "api" | "api-search" | "api-detail";
 type RateBucket = {
@@ -16,32 +17,6 @@ const RATE_LIMITS: Record<RouteKind, number> = {
   "api-search": 45,
   "api-detail": 80,
 };
-
-const BLOCKED_USER_AGENTS = [
-  /\bcurl\b/i,
-  /\bwget\b/i,
-  /\bscrapy\b/i,
-  /\bpython-requests\b/i,
-  /\bpython-urllib\b/i,
-  /\baiohttp\b/i,
-  /\bhttpx\b/i,
-  /\bgo-http-client\b/i,
-  /\bokhttp\b/i,
-  /\blibwww-perl\b/i,
-  /\bmechanize\b/i,
-  /\bphantomjs\b/i,
-  /\bbytespider\b/i,
-  /\bgptbot\b/i,
-  /\bccbot\b/i,
-  /\bclaudebot\b/i,
-  /\banthropic-ai\b/i,
-  /\bperplexitybot\b/i,
-  /\bsemrushbot\b/i,
-  /\bahrefsbot\b/i,
-  /\bmj12bot\b/i,
-  /\bdotbot\b/i,
-  /\bpetalbot\b/i,
-];
 
 const buckets = new Map<string, RateBucket>();
 let lastCleanup = 0;
@@ -91,8 +66,7 @@ function getRouteKind(pathname: string): RouteKind {
 }
 
 function isBlockedUserAgent(request: NextRequest) {
-  const userAgent = request.headers.get("user-agent")?.trim() || "";
-  return !userAgent || BLOCKED_USER_AGENTS.some((pattern) => pattern.test(userAgent));
+  return isBlockedAutomationUserAgent(request.headers.get("user-agent"));
 }
 
 function isLikelySameOriginApiRequest(request: NextRequest) {
