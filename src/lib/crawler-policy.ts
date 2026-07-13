@@ -10,6 +10,7 @@ export const discoveryCrawlerUserAgents = [
   "BingPreview",
   "DuckDuckBot",
   "Applebot",
+  "PetalBot",
   "OAI-SearchBot",
   "ChatGPT-User",
   "Claude-SearchBot",
@@ -32,34 +33,27 @@ export const trainingAndCollectionCrawlerUserAgents = [
   "cohere-ai",
 ] as const;
 
-const blockedAutomationPatterns = [
-  /\bcurl\b/i,
-  /\bwget\b/i,
-  /\bscrapy\b/i,
-  /\bpython-requests\b/i,
-  /\bpython-urllib\b/i,
-  /\baiohttp\b/i,
-  /\bhttpx\b/i,
-  /\bgo-http-client\b/i,
-  /\bokhttp\b/i,
-  /\blibwww-perl\b/i,
-  /\bmechanize\b/i,
-  /\bphantomjs\b/i,
-  /\bbytespider\b/i,
-  /\bgptbot\b/i,
-  /\bccbot\b/i,
-  /\bclaudebot\b/i,
-  /\banthropic-ai\b/i,
-  /\bmeta-externalagent\b/i,
-  /\bcohere-ai\b/i,
-  /\bsemrushbot\b/i,
-  /\bahrefsbot\b/i,
-  /\bmj12bot\b/i,
-  /\bdotbot\b/i,
-  /\bpetalbot\b/i,
-];
+const otherDisallowedCrawlerUserAgents = [
+  "SemrushBot",
+  "AhrefsBot",
+  "MJ12bot",
+  "DotBot",
+] as const;
 
-export function isBlockedAutomationUserAgent(userAgent: string | null) {
-  const normalized = userAgent?.trim() || "";
-  return !normalized || blockedAutomationPatterns.some((pattern) => pattern.test(normalized));
+/**
+ * Enforce explicit crawler policy at the application boundary. Generic tools
+ * and unknown clients are handled by Vercel Bot Protection instead: the edge
+ * can verify real crawlers and challenge browsers, while a User-Agent check
+ * cannot.
+ */
+export function isDisallowedCrawlerUserAgent(userAgent: string | null) {
+  const normalized = userAgent?.trim().toLocaleLowerCase("en-US") || "";
+  return normalized
+    ? [
+        ...trainingAndCollectionCrawlerUserAgents,
+        ...otherDisallowedCrawlerUserAgents,
+      ].some((crawler) =>
+        normalized.includes(crawler.toLocaleLowerCase("en-US")),
+      )
+    : false;
 }

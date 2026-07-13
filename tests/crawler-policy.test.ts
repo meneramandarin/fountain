@@ -9,6 +9,7 @@ describe("crawler lanes", () => {
     "Mozilla/5.0 (compatible; OAI-SearchBot/1.0; +https://openai.com/searchbot)",
     "Mozilla/5.0 (compatible; Claude-SearchBot/1.0; +https://anthropic.com/searchbot)",
     "Mozilla/5.0 (compatible; PerplexityBot/1.0; +https://perplexity.ai/perplexitybot)",
+    "Mozilla/5.0 (compatible; PetalBot; +https://aspiegel.com/petalbot)",
   ])("allows discovery crawler %s", (userAgent) => {
     expect(proxyRequest(userAgent).status).toBe(200);
   });
@@ -21,22 +22,57 @@ describe("crawler lanes", () => {
     expect(proxyRequest(userAgent).status).toBe(403);
   });
 
-  test("publishes separate robots rules for Perplexity discovery and GPTBot training", () => {
+  test.each([
+    "curl/8.7.1",
+    "python-requests/2.32.0",
+    "Mozilla/5.0 (compatible browser)",
+    "",
+  ])(
+    "leaves generic automation detection to verified edge protection for %s",
+    (userAgent) => {
+      expect(proxyRequest(userAgent).status).toBe(200);
+    },
+  );
+
+  test("does not apply a process-local request counter", () => {
+    for (let requestNumber = 0; requestNumber < 150; requestNumber += 1) {
+      expect(
+        proxyRequest("Mozilla/5.0 repeated browser", "192.0.2.10").status,
+      ).toBe(200);
+    }
+  });
+
+  test("publishes separate robots rules for discovery and training crawlers", () => {
     const rules = robots().rules;
     const groups = Array.isArray(rules) ? rules : [rules];
-    const perplexity = groups.find((rule) => rule.userAgent === "PerplexityBot");
+    const perplexity = groups.find(
+      (rule) => rule.userAgent === "PerplexityBot",
+    );
+    const petal = groups.find((rule) => rule.userAgent === "PetalBot");
     const gptBot = groups.find((rule) => rule.userAgent === "GPTBot");
 
-    expect(perplexity).toMatchObject({ allow: "/", disallow: ["/api/", "/docs/", "/go/"] });
+    expect(perplexity).toMatchObject({
+      allow: "/",
+      disallow: ["/api/", "/docs/", "/go/"],
+    });
+    expect(petal).toMatchObject({
+      allow: "/",
+      disallow: ["/api/", "/docs/", "/go/"],
+    });
     expect(gptBot).toMatchObject({ disallow: "/" });
   });
 });
 
-function proxyRequest(userAgent: string) {
-  return proxy(new NextRequest("https://fountain.clinic/treatments/dexa-scan/austin-tx", {
-    headers: {
-      "user-agent": userAgent,
-      "x-forwarded-for": `192.0.2.${Math.floor(Math.random() * 200) + 1}`,
-    },
-  }));
+function proxyRequest(
+  userAgent: string,
+  clientIp = `192.0.2.${Math.floor(Math.random() * 200) + 1}`,
+) {
+  return proxy(
+    new NextRequest("https://fountain.clinic/treatments/dexa-scan/austin-tx", {
+      headers: {
+        "user-agent": userAgent,
+        "x-forwarded-for": clientIp,
+      },
+    }),
+  );
 }

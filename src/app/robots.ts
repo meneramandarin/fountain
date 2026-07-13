@@ -15,12 +15,14 @@ export default function robots(): MetadataRoute.Robots {
         allow: "/",
         disallow: privatePaths,
       })),
-      ...trainingAndCollectionCrawlerUserAgents.map((userAgent) => ({ userAgent, disallow: "/" })),
+      ...trainingAndCollectionCrawlerUserAgents.map((userAgent) => ({
+        userAgent,
+        disallow: "/",
+      })),
       { userAgent: "SemrushBot", disallow: "/" },
       { userAgent: "AhrefsBot", disallow: "/" },
       { userAgent: "MJ12bot", disallow: "/" },
       { userAgent: "DotBot", disallow: "/" },
-      { userAgent: "PetalBot", disallow: "/" },
       {
         userAgent: "*",
         allow: "/",
