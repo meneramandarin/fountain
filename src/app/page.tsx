@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { headers } from "next/headers";
 import { CityTreatmentSearches } from "@/components/city-treatment-searches";
 import { LandingExploreCarousel, type LandingExploreItem } from "@/components/landing-explore-carousel";
 import { LandingFeaturedDirectoryCarousel } from "@/components/landing-featured-directory-carousel";
@@ -10,6 +11,7 @@ import {
   getLandingCityTreatmentSearches,
   getLandingFeaturedDirectoryCards,
   getLandingTreatmentDirectoryCards,
+  type VisitorLocationParams,
 } from "@/lib/queries";
 
 export const dynamic = "force-dynamic";
@@ -40,18 +42,29 @@ const exploreItems: LandingExploreItem[] = [
   { label: "Biological Age", image: "/domains/Biologicalage.avif", href: searchHref("Biological Age") },
 ];
 
+const fallbackNearMeLocalities = ["New York", "Brooklyn", "Long Island City", "Jackson Heights", "Rego Park", "Staten Island"];
+
 export default async function HomePage() {
-  const [countrySearches, featuredCards, nadCards, mriCards] = await Promise.all([
+  const visitorLocation = landingVisitorLocation(await headers());
+  const [countrySearches, featuredCards, ivCards, mriCards] = await Promise.all([
     safeLandingSection("city treatment searches", () => getLandingCityTreatmentSearches()),
-    safeLandingSection("featured directory cards", () => getLandingFeaturedDirectoryCards(5)),
-    safeLandingSection("NAD+ IV therapy cards", () =>
-      getLandingTreatmentDirectoryCards("NAD+ IV therapy", 5, {
+    safeLandingSection("featured directory cards", () => getLandingFeaturedDirectoryCards(10)),
+    safeLandingSection("IV drip cards", () =>
+      getLandingTreatmentDirectoryCards("IV nutrient therapy", 10, {
         countryCode: "US",
-        localities: ["New York", "Brooklyn", "Long Island City", "Jackson Heights", "Rego Park", "Staten Island"],
+        localities: fallbackNearMeLocalities,
         requireImage: false,
+        visitor: visitorLocation,
       }),
     ),
-    safeLandingSection("full-body MRI cards", () => getLandingTreatmentDirectoryCards("Full-body MRI", 5)),
+    safeLandingSection("full-body MRI cards", () =>
+      getLandingTreatmentDirectoryCards("Full-body MRI", 10, {
+        countryCode: "US",
+        localities: fallbackNearMeLocalities,
+        requireImage: false,
+        visitor: visitorLocation,
+      }),
+    ),
   ]);
 
   return (
@@ -73,9 +86,9 @@ export default async function HomePage() {
 
       <LandingFeaturedDirectoryCarousel cards={featuredCards} title="Top Rated Longevity Clinics" />
 
-      <LandingFeaturedDirectoryCarousel cards={nadCards} title="NAD+ IV Therapy Near You" />
+      <LandingFeaturedDirectoryCarousel cards={ivCards} title="IV Drip Clinics Near Me" />
 
-      <LandingFeaturedDirectoryCarousel cards={mriCards} title="Where to get a full body MRI" />
+      <LandingFeaturedDirectoryCarousel cards={mriCards} title="Get an MRI Scan in Your Area" />
 
       <section className="landing-banner" aria-hidden="true">
         <Image src="/fountainofyouth.jpg" alt="" fill sizes="100vw" />
@@ -102,4 +115,46 @@ export default async function HomePage() {
       <LandingFooter />
     </main>
   );
+}
+
+function landingVisitorLocation(requestHeaders: Pick<Headers, "get">): VisitorLocationParams | undefined {
+  const location = {
+    country: countryCode(requestHeaders.get("x-vercel-ip-country")),
+    region: textValue(requestHeaders.get("x-vercel-ip-country-region")),
+    city: textValue(decodeHeaderValue(requestHeaders.get("x-vercel-ip-city"))),
+    latitude: finiteNumber(requestHeaders.get("x-vercel-ip-latitude")),
+    longitude: finiteNumber(requestHeaders.get("x-vercel-ip-longitude")),
+  };
+
+  return location.country || location.region || location.city || location.latitude !== undefined || location.longitude !== undefined
+    ? location
+    : undefined;
+}
+
+function countryCode(value: string | null) {
+  const normalized = value?.trim().toUpperCase();
+  return normalized && /^[A-Z][A-Z]$/.test(normalized) ? normalized : undefined;
+}
+
+function textValue(value: string | null | undefined) {
+  return value?.trim() || undefined;
+}
+
+function finiteNumber(value: string | null | undefined) {
+  if (value == null || value === "") {
+    return undefined;
+  }
+  const numberValue = Number.parseFloat(value);
+  return Number.isFinite(numberValue) ? numberValue : undefined;
+}
+
+function decodeHeaderValue(value: string | null) {
+  if (!value) {
+    return value;
+  }
+  try {
+    return decodeURIComponent(value);
+  } catch {
+    return value;
+  }
 }

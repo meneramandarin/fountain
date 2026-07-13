@@ -143,7 +143,10 @@ type LandingTreatmentCardOptions = {
   countryCode?: string;
   localities?: string[];
   requireImage?: boolean;
+  visitor?: VisitorLocationParams;
 };
+
+const landingLongevityClinicSourceSlugs = ["longevity_technology_clinics", "world_longevity_clinics"];
 
 function ftsMatch(query?: string | null) {
   const tokens = (query || "").toLowerCase().match(/[a-z0-9]+/g);
@@ -210,10 +213,10 @@ function activeTableClause(table: string) {
     : "";
 }
 
-function googleReviewMatchJoin(alias = "google_reviews") {
+function googleReviewMatchJoin(alias = "google_reviews", locationAlias = "l") {
   return `
     LEFT JOIN external_place_matches ${alias}
-      ON ${alias}.location_id = l.id
+      ON ${alias}.location_id = ${locationAlias}.id
      AND ${alias}.provider = 'google'
      AND ${alias}.match_status = 'matched'
   `;
@@ -239,6 +242,25 @@ function entityLookup(alias: string, ref: number | string) {
   }
 
   return { clause: "1=0", values: [] as unknown[] };
+}
+
+function locationEntityLookup(alias: string, ref: number | string) {
+  const text = String(ref).trim();
+  if (isPostgres() && text && !/^\d+$/.test(text)) {
+    return {
+      clause: `(
+        ${alias}.slug = ?
+        OR ${alias}.id = (
+          SELECT alias.location_id
+          FROM location_slug_aliases alias
+          WHERE alias.slug = ?
+        )
+      )`,
+      values: [text, text] as unknown[],
+    };
+  }
+
+  return entityLookup(alias, ref);
 }
 
 function searchIndexMatchCondition(entityType: "location" | "practitioner") {
@@ -840,6 +862,7 @@ function usableRelatedSearchLocality(locality?: string | null) {
 export async function getLandingFeaturedDirectoryCards(
   limit = 5,
 ): Promise<LandingFeaturedDirectoryCard[]> {
+  const sourceFilter = landingLongevityClinicSourceFilter("l");
   const preferredCandidates = await rows<AnyRow>(
     `
     WITH preferred(term, rank) AS (
@@ -869,6 +892,7 @@ export async function getLandingFeaturedDirectoryCards(
       LEFT JOIN organizations org ON org.id = l.org_id
       ${googleReviewMatchJoin()}
       WHERE ${activeEntityCondition("l")}
+        AND ${sourceFilter.sql}
         AND EXISTS (
         SELECT 1
         FROM images img
@@ -884,7 +908,9 @@ export async function getLandingFeaturedDirectoryCards(
     WHERE match_rank = 1
     ORDER BY rank
   `,
+    sourceFilter.values,
   );
+  const fallbackSourceFilter = landingLongevityClinicSourceFilter("l");
   const fallbackCandidates = await rows<AnyRow>(
     `
     SELECT l.id, ${locationSlugSelect("l")} AS slug, l.name, l.locality, l.region, l.country_code, l.country_name,
@@ -894,6 +920,7 @@ export async function getLandingFeaturedDirectoryCards(
     LEFT JOIN organizations org ON org.id = l.org_id
     ${googleReviewMatchJoin()}
     WHERE ${activeEntityCondition("l")}
+      AND ${fallbackSourceFilter.sql}
       AND EXISTS (
       SELECT 1
       FROM images img
@@ -912,6 +939,7 @@ export async function getLandingFeaturedDirectoryCards(
       ${orderNoCase("l.name")}
     LIMIT 600
   `,
+    fallbackSourceFilter.values,
   );
   const candidateMap = new Map<number, AnyRow>();
   for (const candidate of [...preferredCandidates, ...fallbackCandidates]) {
@@ -920,6 +948,22 @@ export async function getLandingFeaturedDirectoryCards(
   const candidates = Array.from(candidateMap.values());
 
   return await hydrateLandingDirectoryCards(candidates, limit);
+}
+
+function landingLongevityClinicSourceFilter(locationAlias: string) {
+  return {
+    sql: `
+      EXISTS (
+        SELECT 1
+        FROM source_records sr
+        JOIN sources s ON s.id = sr.source_id
+        WHERE sr.entity_type = 'location'
+          AND sr.entity_id = ${locationAlias}.id
+          AND s.slug IN (${placeholders(landingLongevityClinicSourceSlugs.length)})
+      )
+    `,
+    values: [...landingLongevityClinicSourceSlugs] as unknown[],
+  };
 }
 
 export async function getLandingTreatmentDirectoryCards(
@@ -936,16 +980,40 @@ export async function getLandingTreatmentDirectoryCards(
 
   const filters: string[] = ["o.treatment_id = ?"];
   const values: unknown[] = [treatment.id];
+  const visitorCountry = normalizedCountryCode(options.visitor?.country);
+  const visitorRegion = normalizedLocationText(options.visitor?.region);
+  const visitorCity = normalizedLocationText(options.visitor?.city);
+  const visitorLatitude = finiteCoordinate(options.visitor?.latitude);
+  const visitorLongitude = finiteCoordinate(options.visitor?.longitude);
+  const hasVisitorLocation = Boolean(
+    visitorCountry || visitorRegion || visitorCity || (visitorLatitude !== undefined && visitorLongitude !== undefined),
+  );
 
-  if (options.countryCode) {
+  if (!hasVisitorLocation && options.countryCode) {
     filters.push("l.country_code = ?");
     values.push(options.countryCode);
   }
 
-  if (options.localities?.length) {
-    filters.push(`l.locality IN (${placeholders(options.localities.length)})`);
-    values.push(...options.localities);
+  let distanceSelect = "NULL AS distance_miles";
+  let distanceOrder = "CASE WHEN false THEN 1 ELSE 0 END";
+  const distanceSelectValues: unknown[] = [];
+  const distanceOrderValues: unknown[] = [];
+  if (visitorLatitude !== undefined && visitorLongitude !== undefined) {
+    const distanceSql = distanceMilesExpression();
+    distanceSelect = `(${distanceSql}) AS distance_miles`;
+    distanceOrder = `(${distanceSql} IS NULL), ${distanceSql} ASC`;
+    distanceSelectValues.push(visitorLatitude, visitorLatitude, visitorLongitude);
+    distanceOrderValues.push(visitorLatitude, visitorLatitude, visitorLongitude, visitorLatitude, visitorLatitude, visitorLongitude);
   }
+
+  const locationRank = landingLocationRankExpression({
+    city: visitorCity,
+    country: visitorCountry,
+    region: visitorRegion,
+  });
+  const fallbackLocalityRank = !hasVisitorLocation
+    ? landingFallbackLocalityRankExpression(options.localities)
+    : { sql: "0", values: [] as unknown[] };
 
   const requireImage = options.requireImage ?? true;
   const imageRequirement = requireImage
@@ -966,6 +1034,9 @@ export async function getLandingTreatmentDirectoryCards(
     `
     SELECT l.id, ${locationSlugSelect("l")} AS slug, l.name, l.locality, l.region, l.country_code, l.country_name,
            google_reviews.rating, google_reviews.review_count,
+           ${distanceSelect},
+           ${locationRank.sql} AS location_rank,
+           ${fallbackLocalityRank.sql} AS fallback_location_rank,
            org.canonical_name AS org_name
     FROM locations l
     LEFT JOIN organizations org ON org.id = l.org_id
@@ -982,10 +1053,15 @@ export async function getLandingTreatmentDirectoryCards(
       l.region,
       l.country_code,
       l.country_name,
+      l.latitude,
+      l.longitude,
       google_reviews.rating,
       google_reviews.review_count,
       org.canonical_name
     ORDER BY
+      location_rank ASC,
+      fallback_location_rank ASC,
+      ${distanceOrder},
       (google_reviews.rating IS NULL),
       google_reviews.rating DESC,
       (google_reviews.review_count IS NULL),
@@ -993,10 +1069,58 @@ export async function getLandingTreatmentDirectoryCards(
       ${orderNoCase("l.name")}
     LIMIT 80
   `,
-    values,
+    [...distanceSelectValues, ...locationRank.values, ...fallbackLocalityRank.values, ...values, ...distanceOrderValues],
   );
 
   return await hydrateLandingDirectoryCards(candidates, limit, { requireImage: options.requireImage });
+}
+
+function landingLocationRankExpression(visitor: { country?: string; region?: string; city?: string }) {
+  const values: unknown[] = [];
+  const cases: string[] = [];
+
+  if (visitor.country && visitor.city) {
+    cases.push(`WHEN l.country_code = ? AND ${trimLower("l.locality")} = ${trimLower("?")} THEN 0`);
+    values.push(visitor.country, visitor.city);
+  }
+  if (visitor.country && visitor.region) {
+    cases.push(`WHEN l.country_code = ? AND ${trimLower("l.region")} = ${trimLower("?")} THEN 1`);
+    values.push(visitor.country, visitor.region);
+  }
+  if (visitor.country) {
+    cases.push("WHEN l.country_code = ? THEN 2");
+    values.push(visitor.country);
+  }
+  if (!cases.length) {
+    return {
+      sql: "0",
+      values,
+    };
+  }
+
+  return {
+    sql: `
+      CASE
+        ${cases.join("\n        ")}
+        ELSE 3
+      END
+    `,
+    values,
+  };
+}
+
+function landingFallbackLocalityRankExpression(localities: string[] | undefined) {
+  if (!localities?.length) {
+    return {
+      sql: "0",
+      values: [] as unknown[],
+    };
+  }
+
+  return {
+    sql: `CASE WHEN l.locality IN (${placeholders(localities.length)}) THEN 0 ELSE 1 END`,
+    values: localities as unknown[],
+  };
 }
 
 async function hydrateLandingDirectoryCards(
@@ -2018,7 +2142,7 @@ export async function searchPractitioners(params: DirectoryParams, page = 0) {
 }
 
 export async function getLocationDetail(ref: number | string) {
-  const lookup = entityLookup("l", ref);
+  const lookup = locationEntityLookup("l", ref);
   const location = await row<AnyRow>(
     `
     SELECT l.*, org.canonical_name AS org_name, org.website_domain AS org_domain,
@@ -2099,6 +2223,7 @@ export async function getLocationDetail(ref: number | string) {
     [id],
   );
   location.external_reviews = await getExternalReviewGroups(id);
+  location.other_locations = await getOtherOrganizationLocations(location);
   const locationImages = await rows<{
     blob_url: string | null;
     alt: string | null;
@@ -2117,6 +2242,63 @@ export async function getLocationDetail(ref: number | string) {
   );
   location.images = locationImages.filter((image) => usableImageSource(image));
   return location;
+}
+
+async function getOtherOrganizationLocations(location: AnyRow) {
+  const orgId = location.org_id as number | null | undefined;
+  const locationId = location.id as number;
+  if (!orgId) {
+    return [];
+  }
+
+  const siblings = await rows<AnyRow>(
+    `
+    SELECT sibling.id,
+           ${locationSlugSelect("sibling")} AS slug,
+           sibling.name,
+           sibling.locality,
+           sibling.region,
+           sibling.country_code,
+           sibling.country_name,
+           sibling_google_reviews.rating,
+           sibling_google_reviews.review_count,
+           org.canonical_name AS org_name,
+           (
+             SELECT MIN(o.price_amount)
+             FROM offerings o
+             WHERE o.location_id = sibling.id
+               AND o.price_amount IS NOT NULL
+               AND ${activeOfferingCondition("o")}
+           ) AS min_price_amount,
+           (
+             SELECT o.price_currency
+             FROM offerings o
+             WHERE o.location_id = sibling.id
+               AND o.price_amount IS NOT NULL
+               AND ${activeOfferingCondition("o")}
+             ORDER BY o.price_amount ASC
+             LIMIT 1
+           ) AS min_price_currency
+    FROM locations sibling
+    LEFT JOIN organizations org ON org.id = sibling.org_id
+    ${googleReviewMatchJoin("sibling_google_reviews", "sibling")}
+    WHERE sibling.org_id = ?
+      AND sibling.id <> ?
+      AND ${activeEntityCondition("sibling")}
+    ORDER BY
+      (sibling_google_reviews.review_count IS NULL),
+      sibling_google_reviews.review_count DESC,
+      (sibling_google_reviews.rating IS NULL),
+      sibling_google_reviews.rating DESC,
+      ${orderNoCase("sibling.locality")},
+      ${orderNoCase("sibling.name")}
+    LIMIT 12
+  `,
+    [orgId, locationId],
+  );
+
+  await hydrateLocationRows(siblings);
+  return siblings;
 }
 
 export async function getPractitionerDetail(ref: number | string) {
