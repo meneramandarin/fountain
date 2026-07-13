@@ -2121,7 +2121,7 @@ input[type="search"]::-webkit-search-cancel-button:hover {
   gap: 32px;
   max-width: 1800px;
   margin: 0 auto;
-  padding: 24px clamp(16px, 3vw, 32px) 56px;
+  padding: 100px clamp(16px, 3vw, 32px) 56px;
 }
 
 .field,
@@ -3812,6 +3812,10 @@ blockquote p {
 }
 
 @media (max-width: 640px) {
+  .directory-layout {
+    padding-top: 138px;
+  }
+
   .editorial-page {
     padding-top: 184px;
   }

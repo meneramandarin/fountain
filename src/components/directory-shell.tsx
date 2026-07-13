@@ -10,7 +10,6 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { practitionerHref } from "@/lib/directory-urls";
-import { SplitDirectorySearch } from "@/components/split-directory-search";
 import { formatLocationPlace } from "@/lib/location-display";
 
 type Kind = "locations" | "practitioners";
@@ -260,33 +259,17 @@ export function DirectoryShell({
 
   return (
     <main className="directory-shell">
-      <LandingScrollHeader />
-      <section className="directory-hero" aria-label="Directory search">
-        <header className="directory-topbar">
-          <Link className="landing-brand directory-brand" href="/">
-            fountain
-          </Link>
-          <button className="coming-soon-pill" type="button">
-            Coming Soon <span aria-hidden="true">|</span> Join
-          </button>
-        </header>
-
-        <div className="directory-search-row">
-          <SplitDirectorySearch
-            key={`${state.kind}:${state.q}:${state.country}:${state.locality}:${state.city_label}:${state.city_country}:${state.place_type}:${state.city_lat}:${state.city_lng}`}
-            className="directory-search"
-            initialWhat={state.q}
-            initialWhere={state.city_label || state.locality}
-            initialCityCountry={state.city_country}
-            initialPlaceType={state.place_type}
-            initialCityLat={state.city_lat}
-            initialCityLng={state.city_lng}
-            kind={state.kind}
-            onSubmit={submitSearch}
-          />
-        </div>
-
-      </section>
+      <LandingScrollHeader
+        alwaysVisible
+        initialWhat={state.q}
+        initialWhere={state.city_label || state.locality}
+        initialCityCountry={state.city_country}
+        initialPlaceType={state.place_type}
+        initialCityLat={state.city_lat}
+        initialCityLng={state.city_lng}
+        kind={state.kind}
+        onSubmit={submitSearch}
+      />
 
       <div className="directory-layout">
         <section ref={resultsRef} className="directory-results" aria-live="polite">
