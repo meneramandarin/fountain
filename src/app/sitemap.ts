@@ -1,13 +1,32 @@
 import type { MetadataRoute } from "next";
 import { editorialArticles } from "@/lib/editorial-articles";
 import { legalDocuments } from "@/lib/legal-documents";
+import { getTreatmentCatalog } from "@/lib/queries";
 import { siteUrl } from "@/lib/site";
 import {
   pilotTreatmentLocationHref,
   pilotTreatmentLocationPages,
 } from "@/lib/treatment-location-pages";
+import {
+  minimumTreatmentPageLocations,
+  treatmentHref,
+  type TreatmentCatalogItem,
+} from "@/lib/treatment-pages";
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export const revalidate = 3600;
+
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  let treatments: TreatmentCatalogItem[] = [];
+  try {
+    treatments = await getTreatmentCatalog(minimumTreatmentPageLocations);
+  } catch (error) {
+    console.error("[sitemap] treatment catalog failed", error);
+  }
+
+  return buildSitemap(treatments);
+}
+
+export function buildSitemap(treatments: TreatmentCatalogItem[] = []): MetadataRoute.Sitemap {
   const now = new Date();
 
   return [
@@ -23,6 +42,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "daily",
       priority: 0.9,
     },
+    {
+      url: new URL("/treatments", siteUrl).toString(),
+      lastModified: now,
+      changeFrequency: "weekly",
+      priority: 0.85,
+    },
     ...editorialArticles.map((article) => ({
       url: new URL(`/${article.slug}`, siteUrl).toString(),
       lastModified: new Date(article.updated),
@@ -33,6 +58,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
       url: new URL(pilotTreatmentLocationHref(page), siteUrl).toString(),
       changeFrequency: "weekly" as const,
       priority: 0.8,
+    })),
+    ...treatments.map((treatment) => ({
+      url: new URL(treatmentHref(treatment), siteUrl).toString(),
+      changeFrequency: "weekly" as const,
+      priority: 0.75,
     })),
     ...legalDocuments.map((document) => ({
       url: new URL(`/${document.slug}`, siteUrl).toString(),

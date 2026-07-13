@@ -1,5 +1,5 @@
 import { describe, expect, test } from "vitest";
-import sitemap from "../src/app/sitemap";
+import { buildSitemap } from "../src/app/sitemap";
 import {
   findPilotTreatmentLocationHref,
   findPilotTreatmentLocationPage,
@@ -38,7 +38,7 @@ describe("treatment location SEO pilot", () => {
   });
 
   test("adds all 20 pilot routes to the sitemap", () => {
-    const sitemapUrls = new Set(sitemap().map((entry) => new URL(entry.url).pathname));
+    const sitemapUrls = new Set(buildSitemap().map((entry) => new URL(entry.url).pathname));
     for (const page of pilotTreatmentLocationPages) {
       expect(sitemapUrls.has(pilotTreatmentLocationHref(page))).toBe(true);
     }
