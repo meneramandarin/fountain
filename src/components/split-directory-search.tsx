@@ -60,6 +60,8 @@ export function SplitDirectorySearch({
   const [where, setWhere] = useState(initialWhere);
   const [activeField, setActiveField] = useState<"what" | "where" | null>(null);
   const [citySuggestions, setCitySuggestions] = useState<SuggestedCity[]>([]);
+  const [cityError, setCityError] = useState("");
+  const [isResolvingPlace, setIsResolvingPlace] = useState(false);
   const [selectedCity, setSelectedCity] = useState<SuggestedCity | null>(() =>
     initialWhere && (initialPlaceType === "country" || (initialCityLat != null && initialCityLng != null))
       ? {
@@ -121,10 +123,28 @@ export function SplitDirectorySearch({
 
   async function submit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    const city = await resolvedSelectedCity(selectedCity, citySessionToken);
+    if (isResolvingPlace) {
+      return;
+    }
+
+    const whereDraft = where.trim();
+    setCityError("");
+    setIsResolvingPlace(true);
+    let city = selectedCity;
+    if (!city && whereDraft) {
+      city = await cityFromTypedQuery(whereDraft, citySessionToken);
+    }
+    city = await resolvedSelectedCity(city, citySessionToken);
+    if (whereDraft && !isUsableCity(city)) {
+      setCityError("Choose a suggested city or country.");
+      setActiveField("where");
+      setIsResolvingPlace(false);
+      return;
+    }
     const payload = payloadFromDrafts(what, where, city);
     setActiveField(null);
     setCitySessionToken(null);
+    setIsResolvingPlace(false);
 
     if (onSubmit) {
       onSubmit(payload);
@@ -166,6 +186,7 @@ export function SplitDirectorySearch({
   function selectCity(city: SuggestedCity) {
     setWhere(city.place_type === "country" ? city.label : city.city || city.label);
     setSelectedCity(city);
+    setCityError("");
     if (city.source === "inventory") {
       setCitySessionToken(null);
     }
@@ -227,6 +248,7 @@ export function SplitDirectorySearch({
               onChange={(event) => {
                 setWhere(event.target.value);
                 setSelectedCity(null);
+                setCityError("");
               }}
               onFocus={focusWhere}
               type="search"
@@ -244,6 +266,7 @@ export function SplitDirectorySearch({
                 onClick={() => {
                   setWhere("");
                   setSelectedCity(null);
+                  setCityError("");
                 }}
               >
                 <X size={14} aria-hidden="true" />
@@ -251,7 +274,7 @@ export function SplitDirectorySearch({
             ) : null}
           </label>
 
-          <button className="split-search-submit" type="submit" aria-label="Search">
+          <button className="split-search-submit" type="submit" aria-label="Search" disabled={isResolvingPlace}>
             <Search size={compact ? 16 : 18} aria-hidden="true" />
             <span>Search</span>
           </button>
@@ -283,7 +306,7 @@ export function SplitDirectorySearch({
 
       {whereIsActive ? (
         <div className="split-search-menu split-search-menu-where">
-          <p>Suggested Places</p>
+          <p>{cityError || (isResolvingPlace ? "Finding that place…" : "Suggested Places")}</p>
           <div className="split-search-suggestions" role="listbox" aria-label="Suggested places">
             {citySuggestions.map((city) => (
               <button
@@ -305,6 +328,42 @@ export function SplitDirectorySearch({
       ) : null}
     </form>
   );
+}
+
+async function cityFromTypedQuery(query: string, sessionToken: string | null) {
+  const params = new URLSearchParams({ q: query });
+  if (sessionToken) {
+    params.set("session_token", sessionToken);
+  }
+  try {
+    const response = await fetch(`/api/cities/suggest?${params.toString()}`);
+    if (!response.ok) {
+      return null;
+    }
+    const data = await response.json() as { suggestions?: SuggestedCity[] };
+    const suggestions = data.suggestions || [];
+    const normalizedQuery = normalizePlace(query);
+    return suggestions.find((suggestion) =>
+      normalizePlace(suggestion.city) === normalizedQuery
+      || normalizePlace(suggestion.label) === normalizedQuery
+    ) || suggestions[0] || null;
+  } catch {
+    return null;
+  }
+}
+
+function isUsableCity(city: SuggestedCity | null) {
+  return Boolean(
+    city
+    && (
+      (city.place_type === "country" && city.country_code)
+      || (finiteNumber(city.lat) !== undefined && finiteNumber(city.lng) !== undefined)
+    ),
+  );
+}
+
+function normalizePlace(value: string) {
+  return value.trim().toLocaleLowerCase().replace(/\s+/g, " ");
 }
 
 async function resolvedSelectedCity(city: SuggestedCity | null, sessionToken: string | null) {
