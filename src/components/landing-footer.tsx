@@ -14,9 +14,6 @@ export function LandingFooter() {
               <Link href="/directory?kind=locations">Clinics &amp; Med Spas</Link>
             </li>
             <li>
-              <Link href="/directory?kind=practitioners">Practitioners</Link>
-            </li>
-            <li>
               <Link href="/directory">Treatments</Link>
             </li>
             <li>

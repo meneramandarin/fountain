@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import { DirectoryShell, type DirectoryState, type SearchPayload } from "@/components/directory-shell";
-import { MAX_TREATMENT_FILTERS, searchLocations, searchPractitioners, type DirectoryParams } from "@/lib/queries";
+import { MAX_TREATMENT_FILTERS, searchLocations, type DirectoryParams } from "@/lib/queries";
 import { ogImage, siteDescription } from "@/lib/site";
+import { redirect } from "next/navigation";
 
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
@@ -32,12 +33,12 @@ type DirectoryPageProps = {
 
 export default async function DirectoryPage({ searchParams }: DirectoryPageProps) {
   const params = await searchParams;
+  if (value(params, "kind") === "practitioners") {
+    redirect(directoryHrefWithoutPractitionerKind(params));
+  }
   const initialState = stateFromSearchParams(params);
   const initialParams = paramsFromState(initialState);
-  const initialPayloadPromise = initialState.kind === "practitioners"
-    ? searchPractitioners(initialParams, initialState.page)
-    : searchLocations(initialParams, initialState.page);
-  const initialPayload = await initialPayloadPromise;
+  const initialPayload = await searchLocations(initialParams, initialState.page);
   return (
     <DirectoryShell
       key={stateKey(initialState)}
@@ -52,9 +53,25 @@ function value(params: Record<string, string | string[] | undefined>, key: strin
   return Array.isArray(raw) ? raw[0] || "" : raw || "";
 }
 
+function directoryHrefWithoutPractitionerKind(params: Record<string, string | string[] | undefined>) {
+  const query = new URLSearchParams();
+  for (const [key, raw] of Object.entries(params)) {
+    if (key === "kind") {
+      continue;
+    }
+    for (const item of Array.isArray(raw) ? raw : [raw]) {
+      if (item) {
+        query.append(key, item);
+      }
+    }
+  }
+  const suffix = query.toString();
+  return suffix ? `/directory?${suffix}` : "/directory";
+}
+
 function stateFromSearchParams(params: Record<string, string | string[] | undefined>): DirectoryState {
   return {
-    kind: value(params, "kind") === "practitioners" ? "practitioners" : "locations",
+    kind: "locations",
     q: value(params, "q"),
     country: value(params, "country"),
     locality: value(params, "locality"),
