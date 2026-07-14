@@ -50,6 +50,6 @@ If any provision of these Terms is found unenforceable, the remaining provisions
 
 ## 12. Contact
 
-For questions about these Terms, contact us at hello@playbyear.xyz.
+For questions about these Terms, contact us at hello@fountain.clinic.
 
 Fountain is operated by Play by Ear LLC, Delaware, USA.

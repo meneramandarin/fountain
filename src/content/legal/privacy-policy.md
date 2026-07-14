@@ -48,6 +48,6 @@ We may update this Privacy Policy from time to time. The effective date at the t
 
 ## Contact
 
-For questions about this Privacy Policy, contact us at hello@playbyear.xyz.
+For questions about this Privacy Policy, contact us at hello@fountain.clinic.
 
 Fountain is operated by Play by Ear LLC, Delaware, USA.
