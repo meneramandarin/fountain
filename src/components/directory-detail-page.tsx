@@ -13,7 +13,7 @@ import {
 import Image from "next/image";
 import Link from "next/link";
 import { BackPillLink } from "@/components/back-pill-link";
-import { locationHref, practitionerHref } from "@/lib/directory-urls";
+import { locationHref } from "@/lib/directory-urls";
 import { formatLocationPlace } from "@/lib/location-display";
 import { OutboundClinicLink } from "@/components/outbound-clinic-link";
 import { SplitDirectorySearch } from "@/components/split-directory-search";
@@ -86,7 +86,6 @@ export type LocationDetailRecord = {
   reviews?: ReviewRef[];
   external_reviews?: ExternalReviewGroup[];
   other_locations?: ChainLocationRef[];
-  practitioners?: { id: number; slug?: string | null; full_name: string; primary_specialty?: string | null; role?: string | null }[];
   tags?: Tag[];
 };
 
@@ -183,7 +182,6 @@ function ListingStats({ kind, data }: DetailProps) {
           data.rating ? { label: "Rating", value: Number(data.rating).toFixed(1), icon: "star" } : null,
           data.review_count ? { label: "Reviews", value: Number(data.review_count).toLocaleString() } : null,
           data.offerings?.length ? { label: "Offerings", value: data.offerings.length.toLocaleString() } : null,
-          data.practitioners?.length ? { label: "Practitioners", value: data.practitioners.length.toLocaleString() } : null,
         ]
       : [
           data.primary_specialty ? { label: "Specialty", value: data.primary_specialty } : null,
@@ -246,7 +244,6 @@ function LocationMain({ data }: { data: LocationDetailRecord }) {
     <>
       <Offerings offerings={data.offerings || []} />
       <ChainLocations title={data.org_name || data.name || "This clinic"} locations={data.other_locations || []} />
-      <LocationPractitioners practitioners={data.practitioners || []} />
       <ReviewList reviews={data.reviews || []} />
       <ExternalReviewList groups={data.external_reviews || []} />
     </>
@@ -528,34 +525,6 @@ function possessive(value: string) {
     return "This clinic's";
   }
   return /s$/i.test(trimmed) ? `${trimmed}'` : `${trimmed}'s`;
-}
-
-function LocationPractitioners({
-  practitioners,
-}: {
-  practitioners: { id: number; slug?: string | null; full_name: string; primary_specialty?: string | null; role?: string | null }[];
-}) {
-  if (!practitioners.length) {
-    return null;
-  }
-  return (
-    <section className="listing-section">
-      <h2>
-        Practitioners <small>{practitioners.length}</small>
-      </h2>
-      <div className="listing-row-list">
-        {practitioners.slice(0, 16).map((practitioner) => {
-          const detail = [practitioner.primary_specialty, practitioner.role].filter(Boolean).join(" · ");
-          return (
-            <Link className="listing-row-item" href={practitionerHref(practitioner)} key={practitioner.id}>
-              <b>{practitioner.full_name}</b>
-              {detail ? <span>{detail}</span> : null}
-            </Link>
-          );
-        })}
-      </div>
-    </section>
-  );
 }
 
 function ReviewList({ reviews }: { reviews: ReviewRef[] }) {
