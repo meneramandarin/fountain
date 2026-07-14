@@ -42,6 +42,9 @@ export function LandingFooter() {
           <h4>Company</h4>
           <ul>
             <li>
+              <a href="/fountain-wordmark.png" target="_blank" rel="noreferrer">Wordmark</a>
+            </li>
+            <li>
               <a href="mailto:hello@fountain.clinic">Contact</a>
             </li>
           </ul>
