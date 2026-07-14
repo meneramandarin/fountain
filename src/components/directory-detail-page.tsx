@@ -146,9 +146,7 @@ export function DirectoryDetailPage(props: DetailProps) {
                 Back to results
               </BackPillLink>
             ) : null}
-            <span className="listing-eyebrow">
-              {props.kind === "locations" ? "Clinic & med spa" : "Doctor & practitioner"}
-            </span>
+            {props.kind === "practitioners" ? <span className="listing-eyebrow">Doctor & practitioner</span> : null}
             <h1>{title}</h1>
             <p>
               {props.kind === "locations" ? <MapPin size={17} aria-hidden="true" /> : <Stethoscope size={17} aria-hidden="true" />}
