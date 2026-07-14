@@ -28,13 +28,13 @@ export function LandingFooter() {
           <h4>For Providers</h4>
           <ul>
             <li>
-              <a href="#">List Your Clinic</a>
+              <a href="mailto:hellp@fountain.clinic">List Your Clinic</a>
             </li>
             <li>
-              <a href="#">Claim Your Listing</a>
+              <a href="mailto:hellp@fountain.clinic">Claim Your Listing</a>
             </li>
             <li>
-              <a href="#">Advertise With Us</a>
+              <a href="mailto:hellp@fountain.clinic">Advertise With Us</a>
             </li>
           </ul>
         </div>
@@ -42,25 +42,13 @@ export function LandingFooter() {
           <h4>Company</h4>
           <ul>
             <li>
-              <a href="#">About Fountain</a>
-            </li>
-            <li>
-              <a href="#">Careers</a>
-            </li>
-            <li>
-              <a href="#">Press</a>
-            </li>
-            <li>
-              <a href="#">Contact</a>
+              <a href="mailto:hellp@fountain.clinic">Contact</a>
             </li>
           </ul>
         </div>
         <div>
           <h4>Resources</h4>
           <ul>
-            <li>
-              <a href="#">Help Center</a>
-            </li>
             <li>
               <Link href="/privacy-policy">Privacy Policy</Link>
             </li>
