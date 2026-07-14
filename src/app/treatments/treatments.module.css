@@ -22,22 +22,6 @@
   margin-inline: auto;
 }
 
-.breadcrumbs {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin-bottom: 28px;
-  color: rgba(30, 26, 15, 0.56);
-  font-family: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
-  font-size: 12px;
-}
-
-.breadcrumbs a:hover {
-  color: var(--landing-fg);
-  text-decoration: underline;
-  text-underline-offset: 3px;
-}
-
 .hero h1 {
   max-width: 900px;
   margin: 0;

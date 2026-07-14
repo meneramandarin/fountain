@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { cache } from "react";
+import { BackPillLink } from "@/components/back-pill-link";
 import { LandingFooter } from "@/components/landing-footer";
 import { LandingScrollHeader } from "@/components/landing-scroll-header";
 import { getTreatmentCatalog } from "@/lib/queries";
@@ -28,11 +29,7 @@ export default async function TreatmentsPage() {
 
       <header className={styles.hero}>
         <div className={styles.heroInner}>
-          <nav className={styles.breadcrumbs} aria-label="Breadcrumb">
-            <Link href="/">Home</Link>
-            <span aria-hidden="true">/</span>
-            <span>Treatments</span>
-          </nav>
+          <BackPillLink href="/">Home</BackPillLink>
           <h1>Explore treatments</h1>
           <p className={styles.heroCopy}>
             Browse {treatments.length.toLocaleString()} treatments and compare clinics, locations, and published

@@ -1,7 +1,6 @@
 import { LandingFooter } from "@/components/landing-footer";
 import type { RelatedTreatmentSearches } from "@/lib/queries";
 import {
-  ArrowLeft,
   Building2,
   ExternalLink,
   Globe,
@@ -13,6 +12,7 @@ import {
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { BackPillLink } from "@/components/back-pill-link";
 import { locationHref, practitionerHref } from "@/lib/directory-urls";
 import { formatLocationPlace } from "@/lib/location-display";
 import { OutboundClinicLink } from "@/components/outbound-clinic-link";
@@ -142,10 +142,9 @@ export function DirectoryDetailPage(props: DetailProps) {
         <div className="listing-detail-hero-grid">
           <div className="listing-hero-copy">
             {props.showBackLink ? (
-              <Link className="listing-back-link" href={`/directory?kind=${props.kind}`}>
-                <ArrowLeft size={16} aria-hidden="true" />
+              <BackPillLink href={`/directory?kind=${props.kind}`} tone="dark">
                 Back to results
-              </Link>
+              </BackPillLink>
             ) : null}
             <span className="listing-eyebrow">
               {props.kind === "locations" ? "Clinic & med spa" : "Doctor & practitioner"}

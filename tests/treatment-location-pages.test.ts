@@ -3,6 +3,7 @@ import { buildSitemap } from "../src/app/sitemap";
 import {
   findPilotTreatmentLocationHref,
   findPilotTreatmentLocationPage,
+  pilotTreatmentHref,
   pilotTreatmentLocationHref,
   pilotTreatmentLocationPages,
 } from "../src/lib/treatment-location-pages";
@@ -35,6 +36,12 @@ describe("treatment location SEO pilot", () => {
       region: null,
       countryCode: "US",
     })).toBe("/treatments/iv-drip/san-francisco-ca");
+  });
+
+  test("maps pilot pages back to their parent treatment page", () => {
+    const page = findPilotTreatmentLocationPage("dexa-scan", "miami-fl");
+
+    expect(page && pilotTreatmentHref(page)).toBe("/treatments/dexa-scan");
   });
 
   test("adds all 20 pilot routes to the sitemap", () => {

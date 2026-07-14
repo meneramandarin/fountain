@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { cache } from "react";
+import { BackPillLink } from "@/components/back-pill-link";
 import { DirectoryLocationCard } from "@/components/directory-location-card";
 import { LandingFooter } from "@/components/landing-footer";
 import { LandingScrollHeader } from "@/components/landing-scroll-header";
@@ -67,13 +68,7 @@ export default async function TreatmentPage({ params }: TreatmentPageProps) {
 
       <header className={styles.hero}>
         <div className={styles.heroInner}>
-          <nav className={styles.breadcrumbs} aria-label="Breadcrumb">
-            <Link href="/">Home</Link>
-            <span aria-hidden="true">/</span>
-            <Link href="/treatments">Treatments</Link>
-            <span aria-hidden="true">/</span>
-            <span>{treatment.name}</span>
-          </nav>
+          <BackPillLink href="/treatments">All treatments</BackPillLink>
           <h1>{treatment.name}</h1>
           <p className={styles.heroCopy}>{pageDescription(treatment, data.totalLocations, data.totalCities)}</p>
 
@@ -209,9 +204,8 @@ function structuredData(
       {
         "@type": "BreadcrumbList",
         itemListElement: [
-          { "@type": "ListItem", position: 1, name: "Home", item: siteUrl.toString() },
-          { "@type": "ListItem", position: 2, name: "Treatments", item: new URL("/treatments", siteUrl).toString() },
-          { "@type": "ListItem", position: 3, name: treatment.name, item: url },
+          { "@type": "ListItem", position: 1, name: "Treatments", item: new URL("/treatments", siteUrl).toString() },
+          { "@type": "ListItem", position: 2, name: treatment.name, item: url },
         ],
       },
       {

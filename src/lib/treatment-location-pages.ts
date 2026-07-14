@@ -89,6 +89,10 @@ export function pilotTreatmentLocationHref(page: PilotTreatmentLocationPage) {
   return `/treatments/${page.treatment.slug}/${page.place.slug}`;
 }
 
+export function pilotTreatmentHref(page: PilotTreatmentLocationPage) {
+  return `/treatments/${page.treatment.slug}`;
+}
+
 export function findPilotTreatmentLocationHref(input: {
   treatmentId: number;
   locality: string;
