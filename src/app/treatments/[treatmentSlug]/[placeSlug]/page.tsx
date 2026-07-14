@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { cache } from "react";
+import { BackPillLink } from "@/components/back-pill-link";
 import { DirectoryLocationCard } from "@/components/directory-location-card";
 import { LandingFooter } from "@/components/landing-footer";
 import { SplitDirectorySearch } from "@/components/split-directory-search";
@@ -12,6 +13,7 @@ import {
   findPilotTreatmentLocationPage,
   pilotPageTitle,
   pilotPlaceLabel,
+  pilotTreatmentHref,
   pilotTreatmentLocationHref,
   pilotTreatmentLocationPages,
   type PilotTreatmentLocationPage,
@@ -109,13 +111,9 @@ export default async function TreatmentLocationPage({ params }: TreatmentLocatio
         </header>
 
         <div className="treatment-location-hero-inner">
-          <nav className="treatment-location-breadcrumbs" aria-label="Breadcrumb">
-            <Link href="/">Home</Link>
-            <span aria-hidden="true">/</span>
-            <Link href={directoryUrl}>Treatments</Link>
-            <span aria-hidden="true">/</span>
-            <span>{definition.treatment.searchLabel}</span>
-          </nav>
+          <BackPillLink href={pilotTreatmentHref(definition)}>
+            {definition.treatment.searchLabel}
+          </BackPillLink>
           <p className="treatment-location-eyebrow">Compare local providers</p>
           <h1>{title}</h1>
           <p className="treatment-location-dek">{pageDescription(definition, data.total)}</p>
@@ -272,9 +270,13 @@ function structuredData(
         "@type": "BreadcrumbList",
         "@id": `${url}#breadcrumbs`,
         itemListElement: [
-          { "@type": "ListItem", position: 1, name: "Home", item: siteUrl.toString() },
-          { "@type": "ListItem", position: 2, name: "Treatments", item: new URL("/directory", siteUrl).toString() },
-          { "@type": "ListItem", position: 3, name: pilotPageTitle(page), item: url },
+          {
+            "@type": "ListItem",
+            position: 1,
+            name: page.treatment.searchLabel,
+            item: new URL(pilotTreatmentHref(page), siteUrl).toString(),
+          },
+          { "@type": "ListItem", position: 2, name: pilotPageTitle(page), item: url },
         ],
       },
       {
