@@ -8,7 +8,6 @@ import { LandingScrollHeader } from "@/components/landing-scroll-header";
 import { LandingTopbar } from "@/components/landing-topbar";
 import { SplitDirectorySearch } from "@/components/split-directory-search";
 import {
-  getLandingFeaturedDirectoryCards,
   getLandingTreatmentDirectoryCards,
   getTreatmentCatalog,
   type VisitorLocationParams,
@@ -46,8 +45,15 @@ const fallbackNearMeLocalities = ["New York", "Brooklyn", "Long Island City", "J
 
 export default async function HomePage() {
   const visitorLocation = landingVisitorLocation(await headers());
-  const [featuredCards, ivCards, mriCards, treatments] = await Promise.all([
-    safeLandingSection("featured directory cards", () => getLandingFeaturedDirectoryCards(10)),
+  const [dexaCards, ivCards, mriCards, treatments] = await Promise.all([
+    safeLandingSection("DEXA scan cards", () =>
+      getLandingTreatmentDirectoryCards("DEXA scan", 10, {
+        countryCode: "US",
+        localities: fallbackNearMeLocalities,
+        requireImage: false,
+        visitor: visitorLocation,
+      }),
+    ),
     safeLandingSection("IV drip cards", () =>
       getLandingTreatmentDirectoryCards("IV nutrient therapy", 10, {
         countryCode: "US",
@@ -84,7 +90,7 @@ export default async function HomePage() {
         </div>
       </section>
 
-      <LandingFeaturedDirectoryCarousel cards={featuredCards} title="Top Rated Longevity Clinics" />
+      <LandingFeaturedDirectoryCarousel cards={dexaCards} title="Book a DEXA Scan Today" />
 
       <LandingFeaturedDirectoryCarousel cards={ivCards} title="IV Drip Clinics Near Me" />
 
