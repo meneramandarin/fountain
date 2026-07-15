@@ -129,6 +129,12 @@ export const editorialArticles: EditorialArticle[] = [
         dynamicSearchQuery: "Fertility",
         dynamicTreatmentIds: [9],
         dynamicTreatmentNames: ["Genetic testing"],
+        locationSlugs: [
+          "no-pauze-new-york",
+          "ovealth",
+          "riverdale-holistic-center-riverdale-usa",
+          "sunfert-international-fertility-centre-selangor",
+        ],
         cta: {
           label: "Browse fertility preservation providers on Fountain →",
           href: "/directory?kind=locations&q=Fertility&treatment_id=9",
