@@ -37,7 +37,7 @@ function prioritizeTreatments(card: DirectoryLocationCardData, treatmentNames: s
 }
 
 type LocationDetailCardSource = DirectoryLocationCardData & {
-  images?: { blob_url?: string | null }[];
+  images?: { blob_url?: string | null; image_kind?: string | null }[];
   offerings?: {
     domain?: string | null;
     price_amount?: number | null;
@@ -78,6 +78,7 @@ function locationDetailToDirectoryCard(location: LocationDetailCardSource): Dire
     treatments: Array.from(treatmentMap.values()),
     tags: location.tags || [],
     image: location.images?.[0]?.blob_url || null,
+    image_kind: location.images?.[0]?.image_kind || null,
   };
 }
 
