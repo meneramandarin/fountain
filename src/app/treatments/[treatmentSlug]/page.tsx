@@ -1,12 +1,11 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { notFound } from "next/navigation";
 import { cache } from "react";
-import { SplitDirectorySearch } from "@/components/split-directory-search";
-import { cityLabel, getTreatmentHub } from "@/lib/treatment-hubs";
+import { DirectoryShell, type DirectoryState, type SearchPayload } from "@/components/directory-shell";
+import { directoryParamsFromState } from "@/lib/directory-search-state";
+import { getTreatmentCatalog, searchLocations } from "@/lib/queries";
 import { siteUrl } from "@/lib/site";
-import { isTreatmentPageIndexable } from "@/lib/treatment-pages";
-import styles from "../treatments.module.css";
+import { treatmentHref, treatmentSlug } from "@/lib/treatment-pages";
 
 export const revalidate = 86_400;
 export const dynamicParams = true;
@@ -19,69 +18,71 @@ type TreatmentPageProps = {
   params: Promise<{ treatmentSlug: string }>;
 };
 
-const loadTreatmentHub = cache(getTreatmentHub);
+const loadTreatmentPage = cache(async (slug: string) => {
+  const treatment = (await getTreatmentCatalog(0)).find((candidate) => treatmentSlug(candidate.name) === slug);
+  if (!treatment) {
+    return null;
+  }
+
+  const state: DirectoryState = {
+    kind: "locations",
+    q: "",
+    country: "",
+    locality: "",
+    city_label: "",
+    city_country: "",
+    place_type: "",
+    city_lat: undefined,
+    city_lng: undefined,
+    treatment_ids: [String(treatment.id)],
+    entity_type: "",
+    care_model: "",
+    page: 0,
+  };
+  const payload = await searchLocations(directoryParamsFromState(state), state.page);
+  return { treatment, state, payload };
+});
 
 export async function generateMetadata({ params }: TreatmentPageProps): Promise<Metadata> {
-  const hub = await loadTreatmentHub((await params).treatmentSlug);
-  if (!hub) {
+  const page = await loadTreatmentPage((await params).treatmentSlug);
+  if (!page) {
     return { robots: { index: false, follow: false } };
   }
 
-  const title = `${hub.treatment.name} Clinics & Locations | Fountain`;
-  const description = pageDescription(hub.totalLocations, hub.totalCities);
-  const canonical = hub.href;
+  const title = `${page.treatment.name} Clinics & Locations | Fountain`;
+  const description = `${page.payload.total.toLocaleString()} locations for ${page.treatment.name} are listed on Fountain.`;
+  const canonical = treatmentHref(page.treatment);
 
   return {
     title: { absolute: title },
     description,
     alternates: { canonical },
-    robots: { index: isTreatmentPageIndexable(hub.totalCities), follow: true },
+    robots: { index: page.payload.total > 0, follow: true },
     openGraph: { type: "website", title, description, url: canonical },
   };
 }
 
 export default async function TreatmentPage({ params }: TreatmentPageProps) {
-  const hub = await loadTreatmentHub((await params).treatmentSlug);
-  if (!hub) {
+  const page = await loadTreatmentPage((await params).treatmentSlug);
+  if (!page) {
     notFound();
   }
 
   return (
-    <main className={styles.page}>
-      <div className={styles.hub}>
-        <h1>{hub.treatment.name}</h1>
-
-        <SplitDirectorySearch
-          className={styles.hubSearch}
-          initialWhat={hub.treatment.name}
-          initialTreatmentId={String(hub.treatment.id)}
-          initialWhere=""
-          kind="locations"
-        />
-
-        <ul className={styles.cityList}>
-          {hub.cities.map((city) => (
-            <li key={city.href}>
-              <Link href={city.href}>
-                <span>
-                  {cityLabel(city)} · {city.locationCount.toLocaleString()} locations
-                </span>
-              </Link>
-            </li>
-          ))}
-        </ul>
-      </div>
-
+    <>
+      <DirectoryShell
+        key={String(page.treatment.id)}
+        initialPayload={page.payload as SearchPayload}
+        initialState={page.state}
+        initialTreatmentLabel={page.treatment.name}
+        searchHeading={{ treatmentLabel: page.treatment.name }}
+      />
       <script
-        dangerouslySetInnerHTML={{ __html: breadcrumbStructuredData(hub.treatment.name, hub.href) }}
+        dangerouslySetInnerHTML={{ __html: breadcrumbStructuredData(page.treatment.name, treatmentHref(page.treatment)) }}
         type="application/ld+json"
       />
-    </main>
+    </>
   );
-}
-
-function pageDescription(locations: number, cities: number) {
-  return `${locations.toLocaleString()} locations across ${cities.toLocaleString()} cities.`;
 }
 
 function breadcrumbStructuredData(treatment: string, canonical: string) {

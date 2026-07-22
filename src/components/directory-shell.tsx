@@ -99,8 +99,8 @@ export function DirectoryShell({
   initialTreatmentLabel?: string;
   searchHeading?: {
     treatmentLabel: string;
-    treatmentHref: string;
-    cityLabel: string;
+    treatmentHref?: string;
+    cityLabel?: string;
   };
 }) {
   const router = useRouter();
@@ -302,7 +302,8 @@ export function DirectoryShell({
           <div className="resultbar">
             {searchHeading ? (
               <h1>
-                {searchHeading.treatmentLabel} in {searchHeading.cityLabel} · {payload.total.toLocaleString()} results
+                {searchHeading.treatmentLabel}
+                {searchHeading.cityLabel ? ` in ${searchHeading.cityLabel}` : ""} · {payload.total.toLocaleString()} results
               </h1>
             ) : (
               <span>

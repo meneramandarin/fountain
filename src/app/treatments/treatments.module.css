@@ -5,31 +5,11 @@
   color: var(--landing-fg);
 }
 
-.hub,
 .index {
   width: min(1180px, 100%);
   margin-inline: auto;
 }
 
-.breadcrumbs {
-  display: flex;
-  align-items: center;
-  gap: 9px;
-  margin-bottom: clamp(34px, 6vw, 68px);
-  font-family: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
-  font-size: 13px;
-}
-
-.breadcrumbs a {
-  text-decoration: underline;
-  text-underline-offset: 4px;
-}
-
-.breadcrumbs span:last-child {
-  color: rgba(30, 26, 15, 0.56);
-}
-
-.hub h1,
 .index h1 {
   margin: 0;
   font-family: var(--font-dm-serif-display), Georgia, serif;
@@ -39,12 +19,6 @@
   line-height: 0.98;
 }
 
-.hubSearch {
-  width: min(780px, 100%);
-  margin-top: clamp(28px, 4vw, 42px);
-}
-
-.cityList,
 .treatmentList {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -55,7 +29,6 @@
   list-style: none;
 }
 
-.cityList a,
 .treatmentList a {
   display: grid;
   min-height: 100%;
@@ -68,12 +41,10 @@
   line-height: 1.35;
 }
 
-.cityList a:hover,
 .treatmentList a:hover {
   background: var(--landing-card);
 }
 
-.cityList small,
 .treatmentList small {
   color: rgba(30, 26, 15, 0.5);
   font-size: 11px;
@@ -84,14 +55,12 @@
 }
 
 @media (max-width: 900px) {
-  .cityList,
   .treatmentList {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 
 @media (max-width: 600px) {
-  .cityList,
   .treatmentList {
     grid-template-columns: 1fr;
   }
