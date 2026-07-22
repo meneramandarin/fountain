@@ -4,11 +4,10 @@ import { cache } from "react";
 import { DirectoryShell, type DirectoryState, type SearchPayload } from "@/components/directory-shell";
 import { directoryParamsFromState } from "@/lib/directory-search-state";
 import { getCityIndexPlace, searchLocations } from "@/lib/queries";
-import { ogImage, siteName, siteUrl } from "@/lib/site";
+import { ogImage, siteName } from "@/lib/site";
 import {
   findPilotTreatmentLocationPage,
   pilotPlaceLabel,
-  pilotTreatmentHref,
   pilotTreatmentLocationHref,
   pilotTreatmentLocationPages,
 } from "@/lib/treatment-location-pages";
@@ -112,58 +111,18 @@ export default async function TreatmentLocationPage({ params }: TreatmentLocatio
 
   const treatment = page.definition.treatment.searchLabel;
   return (
-    <>
-      <DirectoryShell
-        key={`${treatmentSlug}:${placeSlug}`}
-        initialPayload={page.payload as SearchPayload}
-        initialState={page.state}
-        searchHeading={{
-          treatmentLabel: treatment,
-          treatmentHref: pilotTreatmentHref(page.definition),
-          cityLabel: page.cityLabel,
-        }}
-      />
-      <script
-        dangerouslySetInnerHTML={{
-          __html: breadcrumbStructuredData(page.definition, page.cityLabel),
-        }}
-        type="application/ld+json"
-      />
-    </>
+    <DirectoryShell
+      key={`${treatmentSlug}:${placeSlug}`}
+      initialPayload={page.payload as SearchPayload}
+      initialState={page.state}
+      searchHeading={{
+        treatmentLabel: treatment,
+        cityLabel: page.cityLabel,
+      }}
+    />
   );
 }
 
 function pageDescription(treatment: string, city: string, total: number) {
   return `${total.toLocaleString()} locations for ${treatment} are listed in ${city}.`;
-}
-
-function breadcrumbStructuredData(
-  page: NonNullable<ReturnType<typeof findPilotTreatmentLocationPage>>,
-  cityLabel: string,
-) {
-  const canonical = new URL(pilotTreatmentLocationHref(page), siteUrl).toString();
-  return JSON.stringify({
-    "@context": "https://schema.org",
-    "@type": "BreadcrumbList",
-    itemListElement: [
-      {
-        "@type": "ListItem",
-        position: 1,
-        name: "All treatments",
-        item: new URL("/treatments", siteUrl).toString(),
-      },
-      {
-        "@type": "ListItem",
-        position: 2,
-        name: page.treatment.searchLabel,
-        item: new URL(pilotTreatmentHref(page), siteUrl).toString(),
-      },
-      {
-        "@type": "ListItem",
-        position: 3,
-        name: cityLabel,
-        item: canonical,
-      },
-    ],
-  }).replace(/</g, "\\u003c");
 }
