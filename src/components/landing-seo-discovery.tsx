@@ -12,7 +12,6 @@ export type TreatmentLocationDiscoveryLink = {
   treatmentLabel: string;
   cityLabel: string;
   city: string;
-  locationCount: number;
 };
 
 type LandingSeoDiscoveryProps = {
@@ -110,13 +109,7 @@ function groupByCity(pages: TreatmentLocationDiscoveryLink[]): CityGroup[] {
     group.pages.push(page);
     groups.set(page.cityLabel, group);
   }
-  return Array.from(groups.values())
-    .sort((a, b) => {
-      const aCount = a.pages.reduce((sum, page) => sum + page.locationCount, 0);
-      const bCount = b.pages.reduce((sum, page) => sum + page.locationCount, 0);
-      return bCount - aCount || a.label.localeCompare(b.label);
-    })
-    .slice(0, 8);
+  return Array.from(groups.values());
 }
 
 function groupTopTreatments(treatments: TreatmentCatalogItem[]) {

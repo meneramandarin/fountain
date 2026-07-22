@@ -4,7 +4,6 @@ import { buildTreatmentHubs } from "../src/lib/treatment-hubs";
 import {
   isTreatmentPageIndexable,
   treatmentHref,
-  treatmentRouteHref,
   treatmentSlug,
   type TreatmentCatalogItem,
 } from "../src/lib/treatment-pages";
@@ -16,9 +15,8 @@ describe("treatment pages", () => {
     expect(treatmentSlug("Emtone®")).toBe("emtone");
   });
 
-  test("builds direct treatment directory links", () => {
-    expect(treatmentHref({ name: "NAD+ IV therapy" })).toBe("/directory?q=NAD%2B+IV+therapy");
-    expect(treatmentRouteHref({ name: "NAD+ IV therapy" })).toBe("/treatments/nad-iv-therapy");
+  test("builds clean treatment hub links", () => {
+    expect(treatmentHref({ name: "NAD+ IV therapy" })).toBe("/treatments/nad-iv-therapy");
   });
 
   test("keeps treatment pages out of the index when no city passes the threshold", () => {
@@ -26,11 +24,29 @@ describe("treatment pages", () => {
     expect(isTreatmentPageIndexable(1)).toBe(true);
   });
 
-  test("keeps retired treatment pages out of the sitemap", () => {
-    const urls = new Set(buildSitemap().map((entry) => new URL(entry.url).pathname));
+  test("adds live treatment hubs but no unrelated surface types to the sitemap", () => {
+    const treatment: TreatmentCatalogItem = {
+      id: 20,
+      name: "Peptide therapy",
+      category: "Regenerative medicine",
+      locationCount: 3,
+    };
+    const [hub] = buildTreatmentHubs([treatment], [{
+      treatmentId: 20,
+      city: "Seattle",
+      region: "WA",
+      countryCode: "US",
+      countryName: "United States",
+      latitude: 47.6062,
+      longitude: -122.3321,
+      locationCount: 3,
+    }]);
+    const urls = new Set(buildSitemap([hub]).map((entry) => new URL(entry.url).pathname));
 
     expect(urls).toContain("/treatments");
-    expect(urls).not.toContain("/treatments/peptide-therapy");
+    expect(urls).toContain("/treatments/peptide-therapy");
+    expect(urls).not.toContain("/directory");
+    expect(urls).not.toContain("/privacy-policy");
   });
 
   test("builds hubs only from linkable city-index rows and sorts by location count", () => {
@@ -74,7 +90,7 @@ describe("treatment pages", () => {
     ]);
 
     expect(hub.cities.map((city) => city.city)).toEqual(["Austin", "Denver"]);
-    expect(hub.href).toBe("/directory?q=DEXA+scan");
+    expect(hub.href).toBe("/treatments/dexa-scan");
     expect(hub.totalLocations).toBe(16);
     expect(hub.totalCities).toBe(2);
   });

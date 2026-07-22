@@ -1,5 +1,6 @@
 import { hasTable, isPostgres, row, rows } from "@/lib/db";
 import {
+  type CityIndexPlace,
   type TreatmentCatalogItem,
   type TreatmentCityCount,
 } from "@/lib/treatment-pages";
@@ -540,6 +541,30 @@ export async function getEligibleTreatmentCities(
   }));
 }
 
+export async function getCityIndexPlaces(): Promise<CityIndexPlace[]> {
+  const places = await rows<{
+    city: string;
+    region: string | null;
+    country_code: string;
+    country_name: string | null;
+    latitude: number;
+    longitude: number;
+  }>(`
+    SELECT city, region, country_code, country_name, latitude, longitude
+    FROM city_index
+    ORDER BY ${orderNoCase("city")}, ${orderNoCase("region")}, country_code
+  `);
+
+  return places.map((place) => ({
+    city: place.city,
+    region: place.region,
+    countryCode: place.country_code,
+    countryName: place.country_name,
+    latitude: Number(place.latitude),
+    longitude: Number(place.longitude),
+  }));
+}
+
 export async function getTreatmentNameById(id: number) {
   const treatment = await row<{ name: string }>(
     "SELECT canonical_name AS name FROM treatments WHERE id = ?",
@@ -887,14 +912,16 @@ function landingLongevityClinicSourceFilter(locationAlias: string) {
 }
 
 export async function getLandingTreatmentDirectoryCards(
-  treatmentName: string,
+  treatmentReference: string | number,
   limit = 5,
   options: LandingTreatmentCardOptions = {},
 ): Promise<LandingFeaturedDirectoryCard[]> {
-  const treatment = await row<{ id: number }>("SELECT id FROM treatments WHERE canonical_name = ?", [treatmentName]);
+  const treatment = typeof treatmentReference === "number"
+    ? await row<{ id: number }>("SELECT id FROM treatments WHERE id = ?", [treatmentReference])
+    : await row<{ id: number }>("SELECT id FROM treatments WHERE canonical_name = ?", [treatmentReference]);
 
   if (!treatment) {
-    console.warn(`[landing] treatment not found: ${treatmentName}`);
+    console.warn(`[landing] treatment not found: ${treatmentReference}`);
     return [];
   }
 

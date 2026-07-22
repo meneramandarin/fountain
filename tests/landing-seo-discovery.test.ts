@@ -2,6 +2,7 @@ import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, test } from "vitest";
 import { LandingSeoDiscovery } from "../src/components/landing-seo-discovery";
+import { fixedTreatmentLocationPages } from "../src/lib/fixed-treatment-location-pages";
 import {
   treatmentHref,
   type TreatmentCatalogItem,
@@ -53,16 +54,17 @@ const treatments: TreatmentCatalogItem[] = [
 ];
 
 describe("landing SEO discovery", () => {
-  test("links every live indexable city page once through the city-first section", () => {
+  test("links exactly the fixed 30 location pages once", () => {
     const markup = renderDiscovery();
 
     for (const page of locationPages) {
       const href = `href="${page.href}"`;
       expect(markup.split(href)).toHaveLength(2);
     }
+    expect(markup.match(/href="\/treatments\/[^\"]+\/[^\"]+"/g)).toHaveLength(30);
   });
 
-  test("links every displayed treatment directly to its directory results", () => {
+  test("links every displayed treatment to its clean hub", () => {
     const markup = renderDiscovery();
 
     for (const treatment of treatments.slice(0, 6)) {
@@ -72,7 +74,7 @@ describe("landing SEO discovery", () => {
     expect(markup).toContain('href="/treatments"');
   });
 
-  test("uses parameterized directory-search links for treatments", () => {
+  test("uses only clean treatment links in discovery", () => {
     const markup = renderDiscovery();
 
     expect(markup).toContain("Explore by location");
@@ -80,15 +82,15 @@ describe("landing SEO discovery", () => {
     expect(markup).toContain("Browse 6 popular treatments");
     expect(markup).toContain("Browse treatment guides available by city");
     expect(markup).not.toContain("currently available by city");
-    expect(markup).toContain("/directory?q=DEXA+scan");
-    expect(markup).not.toContain("/treatments/dexa-scan\"");
+    expect(markup).not.toContain("/directory?");
+    expect(markup).toContain("/treatments/dexa-scan\"");
     expect(markup).not.toContain("eyebrow");
   });
 
   test("uses flat text columns without reusing editorial imagery", () => {
     const markup = renderDiscovery();
 
-    expect(markup.match(/class="location-search-column"/g)).toHaveLength(5);
+    expect(markup.match(/class="location-search-column"/g)).toHaveLength(9);
     expect(markup).not.toContain("<img");
     expect(markup).not.toContain("/domains/");
     expect(markup).not.toContain("cityShortcuts");
@@ -101,19 +103,9 @@ function renderDiscovery() {
   );
 }
 
-const locationPages = [
-  {
-    href: "/treatments/dexa-scan/austin-tx",
-    treatmentLabel: "DEXA scan",
-    cityLabel: "Austin, TX",
-    city: "Austin",
-    locationCount: 7,
-  },
-  {
-    href: "/treatments/nad-iv-therapy/miami-fl",
-    treatmentLabel: "NAD+ IV therapy",
-    cityLabel: "Miami, FL",
-    city: "Miami",
-    locationCount: 5,
-  },
-];
+const locationPages = fixedTreatmentLocationPages.map((page) => ({
+  href: page.href,
+  treatmentLabel: page.treatment.name,
+  cityLabel: `${page.city.city}, ${page.city.region}`,
+  city: page.city.city,
+}));
