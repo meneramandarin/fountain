@@ -40,8 +40,10 @@ describe("treatment location SEO pilot", () => {
 
   test("maps pilot pages back to their parent treatment page", () => {
     const page = findPilotTreatmentLocationPage("dexa-scan", "miami-fl");
+    const ivPage = findPilotTreatmentLocationPage("iv-drip", "miami-fl");
 
     expect(page && pilotTreatmentHref(page)).toBe("/treatments/dexa-scan");
+    expect(ivPage && pilotTreatmentHref(ivPage)).toBe("/treatments/iv-nutrient-therapy");
   });
 
   test("adds all 20 pilot routes to the sitemap", () => {

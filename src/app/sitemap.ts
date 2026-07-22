@@ -1,24 +1,22 @@
 import type { MetadataRoute } from "next";
 import { editorialArticles } from "@/lib/editorial-articles";
 import { legalDocuments } from "@/lib/legal-documents";
-import { getTreatmentCatalog } from "@/lib/queries";
+import { getTreatmentHubs } from "@/lib/treatment-hubs";
 import { siteUrl } from "@/lib/site";
 import {
   pilotTreatmentLocationHref,
   pilotTreatmentLocationPages,
 } from "@/lib/treatment-location-pages";
-import {
-  minimumTreatmentPageLocations,
-  treatmentHref,
-  type TreatmentCatalogItem,
-} from "@/lib/treatment-pages";
+import { treatmentHref, type TreatmentCatalogItem } from "@/lib/treatment-pages";
 
 export const revalidate = 3600;
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   let treatments: TreatmentCatalogItem[] = [];
   try {
-    treatments = await getTreatmentCatalog(minimumTreatmentPageLocations);
+    treatments = (await getTreatmentHubs())
+      .filter((hub) => hub.totalCities > 0)
+      .map((hub) => ({ ...hub.treatment, href: hub.href }));
   } catch (error) {
     console.error("[sitemap] treatment catalog failed", error);
   }
@@ -26,7 +24,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   return buildSitemap(treatments);
 }
 
-export function buildSitemap(treatments: TreatmentCatalogItem[] = []): MetadataRoute.Sitemap {
+export function buildSitemap(treatments: Array<TreatmentCatalogItem & { href?: string }> = []): MetadataRoute.Sitemap {
   const now = new Date();
 
   return [
@@ -60,7 +58,7 @@ export function buildSitemap(treatments: TreatmentCatalogItem[] = []): MetadataR
       priority: 0.8,
     })),
     ...treatments.map((treatment) => ({
-      url: new URL(treatmentHref(treatment), siteUrl).toString(),
+      url: new URL(treatment.href || treatmentHref(treatment), siteUrl).toString(),
       changeFrequency: "weekly" as const,
       priority: 0.75,
     })),

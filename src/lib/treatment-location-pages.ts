@@ -1,3 +1,5 @@
+import { treatmentSlug } from "@/lib/treatment-pages";
+
 export type PilotTreatment = {
   id: number;
   slug: string;
@@ -90,7 +92,7 @@ export function pilotTreatmentLocationHref(page: PilotTreatmentLocationPage) {
 }
 
 export function pilotTreatmentHref(page: PilotTreatmentLocationPage) {
-  return `/treatments/${page.treatment.slug}`;
+  return `/treatments/${treatmentSlug(page.treatment.name)}`;
 }
 
 export function findPilotTreatmentLocationHref(input: {
