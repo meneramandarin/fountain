@@ -29,7 +29,9 @@ export default async function TreatmentsPage() {
             <li key={hub.treatment.id}>
               <Link href={hub.href}>
                 <span>{hub.treatment.name}</span>
-                <small>{hub.totalLocations.toLocaleString()} locations</small>
+                <small>
+                  {hub.totalLocations.toLocaleString()} {hub.totalLocations === 1 ? "location" : "locations"}
+                </small>
               </Link>
             </li>
           ))}
