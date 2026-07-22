@@ -1,7 +1,6 @@
 import { getEligibleTreatmentCities, getTreatmentCatalog } from "@/lib/queries";
 import {
   minimumTreatmentCityLocations,
-  treatmentCityHref,
   treatmentCitySlug,
   treatmentHref,
   treatmentSlug,
@@ -58,9 +57,7 @@ export function buildTreatmentHubs(
       continue;
     }
     const indexable = city.locationCount >= minimumTreatmentCityLocations;
-    const href = indexable
-      ? treatmentCityHref(treatment, city)
-      : directoryTreatmentCityHref(treatment, city);
+    const href = directoryTreatmentCityHref(treatment, city);
     const treatmentCities = citiesByTreatment.get(city.treatmentId) || [];
     treatmentCities.push({ ...city, href, indexable });
     citiesByTreatment.set(city.treatmentId, treatmentCities);

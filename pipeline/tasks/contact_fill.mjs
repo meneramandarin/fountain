@@ -720,7 +720,7 @@ export function extractContactFields(pages, { countryCode = "" } = {}) {
   return {
     email: extractEmail(combined),
     phone: extractPhone(combined, countryCode),
-    address: extractAddress(combined),
+    address: extractAddress(combined, countryCode),
   };
 }
 
@@ -951,13 +951,18 @@ function validE164Digits(value) {
   return /^[1-9]\d{7,14}$/u.test(value);
 }
 
-function extractAddress(value) {
+function extractAddress(value, countryCode = "") {
   const normalized = String(value || "").replace(/\s+/gu, " ").trim();
   if (!normalized) return null;
-  const patterns = [
-    /\b\d{1,6}\s+[A-Z0-9][A-Z0-9 .'-]{2,80}\s+(?:Street|St|Avenue|Ave|Road|Rd|Boulevard|Blvd|Drive|Dr|Lane|Ln|Way|Highway|Hwy|Court|Ct|Place|Pl)\b(?:[^|;]{0,100})/iu,
-    /\b[A-Z][A-Z .'-]{2,80}\s+(?:Straße|Strasse|Str\.?|Weg|Platz|Rue|Avenida|Via)\s*\d{1,6}\b(?:[^|;]{0,100})/iu,
-  ];
+  const street = String.raw`\b\d{1,6}\s+(?:(?!\d{1,6}\s)[A-Z0-9 .'-]){2,80}?\s+(?:Street|St|Avenue|Ave|Road|Rd|Boulevard|Blvd|Drive|Dr|Lane|Ln|Way|Highway|Hwy|Court|Ct|Place|Pl)\.?(?:\s+[NSEW])?\s*(?:,?\s*(?:Suite|Ste|Unit|#)\s*[A-Z0-9-]+)?\s*,?\s*[A-Z][A-Z .'-]{1,50}?\s*,?\s*`;
+  const usPattern = new RegExp(`${street}[A-Z]{2}\\s*,?\\s*\\d{5}(?:-\\d{4})?\\b`, "iu");
+  const caPattern = new RegExp(`${street}(?:ON|BC|AB|QC|MB|SK|NS|NB|NL|PE|NT|NU|YT)\\s+[A-Z]\\d[A-Z]\\s*\\d[A-Z]\\d\\b`, "iu");
+  const country = text(countryCode).toUpperCase();
+  const patterns = country === "US"
+    ? [usPattern]
+    : country === "CA"
+      ? [caPattern]
+      : [usPattern, caPattern, /\b[A-Z][A-Z .'-]{2,80}\s+(?:Straße|Strasse|Str\.?|Weg|Platz|Rue|Avenida|Via)\s*\d{1,6}\b(?:[^|;]{0,80})/iu];
   for (const pattern of patterns) {
     const match = normalized.match(pattern)?.[0];
     if (match) {
@@ -973,7 +978,7 @@ function extractAddress(value) {
 
 function normalizeAddress(value) {
   const address = text(value).replace(/\s+/gu, " ").replace(/^[,;\s]+|[,;\s]+$/gu, "");
-  return address.length >= 8 && address.length <= 500 ? address : null;
+  return address.length >= 8 && address.length <= 200 ? address : null;
 }
 
 function normalizeContactField(field) {

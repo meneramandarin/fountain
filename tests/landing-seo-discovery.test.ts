@@ -62,7 +62,7 @@ describe("landing SEO discovery", () => {
     }
   });
 
-  test("links every displayed treatment to its treatment-only page", () => {
+  test("links every displayed treatment directly to its directory results", () => {
     const markup = renderDiscovery();
 
     for (const treatment of treatments.slice(0, 6)) {
@@ -72,7 +72,7 @@ describe("landing SEO discovery", () => {
     expect(markup).toContain('href="/treatments"');
   });
 
-  test("contains no parameterized directory-search links", () => {
+  test("uses parameterized directory-search links for treatments", () => {
     const markup = renderDiscovery();
 
     expect(markup).toContain("Explore by location");
@@ -80,7 +80,8 @@ describe("landing SEO discovery", () => {
     expect(markup).toContain("Browse 6 popular treatments");
     expect(markup).toContain("Browse treatment guides available by city");
     expect(markup).not.toContain("currently available by city");
-    expect(markup).not.toContain("/directory?");
+    expect(markup).toContain("/directory?q=DEXA+scan");
+    expect(markup).not.toContain("/treatments/dexa-scan\"");
     expect(markup).not.toContain("eyebrow");
   });
 

@@ -33,7 +33,9 @@ type ExternalReviewGroup = {
 type OfferingRef = {
   raw_name?: string | null;
   price_amount?: number | null;
+  price_max_amount?: number | null;
   price_currency?: string | null;
+  price_context?: string | null;
   treatment?: string | null;
   domain?: string | null;
 };
@@ -78,9 +80,11 @@ export type LocationDetailRecord = {
   phone?: string | null;
   email?: string | null;
   website?: string | null;
+  external_website_href?: string | null;
   rating?: number | null;
   review_count?: number | null;
   offerings?: OfferingRef[];
+  offerings_note?: string | null;
   images?: ImageRef[];
   reviews?: ReviewRef[];
   external_reviews?: ExternalReviewGroup[];
@@ -102,8 +106,8 @@ export type PractitionerDetailRecord = {
 };
 
 type DetailProps =
-  | { kind: "locations"; data: LocationDetailRecord; relatedSearches?: RelatedTreatmentSearches | null; showBackLink?: boolean }
-  | { kind: "practitioners"; data: PractitionerDetailRecord; relatedSearches?: RelatedTreatmentSearches | null; showBackLink?: boolean };
+  | { kind: "locations"; data: LocationDetailRecord; relatedSearches?: RelatedTreatmentSearches | null; showBackLink?: boolean; backHref?: string }
+  | { kind: "practitioners"; data: PractitionerDetailRecord; relatedSearches?: RelatedTreatmentSearches | null; showBackLink?: boolean; backHref?: string };
 
 export function DirectoryDetailPage(props: DetailProps) {
   const title =
@@ -140,7 +144,7 @@ export function DirectoryDetailPage(props: DetailProps) {
         <div className="listing-detail-hero-grid">
           <div className="listing-hero-copy">
             {props.showBackLink ? (
-              <BackPillLink href={`/directory?kind=${props.kind}`} tone="dark">
+              <BackPillLink href={props.backHref || `/directory?kind=${props.kind}`} tone="dark">
                 Back to results
               </BackPillLink>
             ) : null}
@@ -241,7 +245,7 @@ function ImageGallery({ images, title, kind }: { images: ImageRef[]; title: stri
 function LocationMain({ data }: { data: LocationDetailRecord }) {
   return (
     <>
-      <Offerings offerings={data.offerings || []} />
+      <Offerings offerings={data.offerings || []} note={data.offerings_note} />
       <ChainLocations title={data.org_name || data.name || "This clinic"} locations={data.other_locations || []} />
       <ReviewList reviews={data.reviews || []} />
       <ExternalReviewList groups={data.external_reviews || []} />
@@ -326,7 +330,11 @@ function LocationContact({ data }: { data: LocationDetailRecord }) {
           ) : null}
         </div>
       ) : null}
-      {website ? (
+      {data.external_website_href ? (
+        <a className="listing-primary-action" href={data.external_website_href} target="_blank" rel="noreferrer">
+          Visit website <ExternalLink size={15} aria-hidden="true" />
+        </a>
+      ) : website ? (
         <OutboundClinicLink className="listing-primary-action" href={website} locationId={data.id} locationSlug={data.slug}>
           Book online <ExternalLink size={15} aria-hidden="true" />
         </OutboundClinicLink>
@@ -399,7 +407,7 @@ function relatedTreatmentHref(searches: RelatedTreatmentSearches, treatment: { i
   return `/directory?${params.toString()}`;
 }
 
-function Offerings({ offerings }: { offerings: OfferingRef[] }) {
+function Offerings({ offerings, note }: { offerings: OfferingRef[]; note?: string | null }) {
   if (!offerings.length) {
     return null;
   }
@@ -408,6 +416,7 @@ function Offerings({ offerings }: { offerings: OfferingRef[] }) {
       <h2>
         Offerings <small>{offerings.length}</small>
       </h2>
+      {note ? <p>{note}</p> : null}
       <div className="offer-list listing-offer-list">
         {offerings.map((offering, index) => {
           const { primary } = getOfferingLabels(offering);
@@ -416,7 +425,7 @@ function Offerings({ offerings }: { offerings: OfferingRef[] }) {
               <div className="offer-copy">
                 <span className="offer-name">{primary}</span>
               </div>
-              {offering.price_amount != null ? <b>{formatPrice(offering.price_amount, offering.price_currency)}</b> : null}
+              {offering.price_amount != null ? <b>{formatOfferingPrice(offering)}</b> : null}
             </div>
           );
         })}
@@ -646,6 +655,13 @@ function formatPrice(amount?: number | null, currency?: string | null) {
     return `${trimmedCurrency}${formatted}`;
   }
   return `${formatted} ${trimmedCurrency}`;
+}
+
+function formatOfferingPrice(offering: OfferingRef) {
+  const low = formatPrice(offering.price_amount, offering.price_currency);
+  if (!low || offering.price_max_amount == null || offering.price_max_amount === offering.price_amount) return low || "";
+  const high = formatPrice(offering.price_max_amount, offering.price_currency);
+  return high ? `${low}–${high}` : low;
 }
 
 function reviewField(value: string | number | null | undefined, key: string): string | null {

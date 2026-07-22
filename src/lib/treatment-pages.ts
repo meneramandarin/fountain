@@ -27,6 +27,11 @@ export function treatmentSlug(name: string) {
 }
 
 export function treatmentHref(treatment: Pick<TreatmentCatalogItem, "name">) {
+  const params = new URLSearchParams({ q: treatment.name });
+  return `/directory?${params.toString()}`;
+}
+
+export function treatmentRouteHref(treatment: Pick<TreatmentCatalogItem, "name">) {
   return `/treatments/${treatmentSlug(treatment.name)}`;
 }
 
@@ -41,7 +46,7 @@ export function treatmentCityHref(
   treatment: Pick<TreatmentCatalogItem, "name">,
   city: Pick<TreatmentCityCount, "city" | "region" | "countryCode">,
 ) {
-  return `${treatmentHref(treatment)}/${treatmentCitySlug(city)}`;
+  return `${treatmentRouteHref(treatment)}/${treatmentCitySlug(city)}`;
 }
 
 export function isTreatmentPageIndexable(cityCount: number) {

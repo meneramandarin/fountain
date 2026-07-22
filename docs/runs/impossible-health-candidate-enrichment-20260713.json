@@ -1,0 +1,1358 @@
+{
+  "generated_at": "2026-07-14T03:32:49.932Z",
+  "started_at": "2026-07-14T03:32:47.163Z",
+  "run": {
+    "id": "159",
+    "command": "impossible_health_candidate_enrichment",
+    "dry_run": false
+  },
+  "source": {
+    "prospecting_file": "impossible-health-prospecting-20260713.json",
+    "source_site": "https://impossible.health/"
+  },
+  "summary": {
+    "candidates": 26,
+    "address_present": 26,
+    "phone_present": 26,
+    "website_present": 26,
+    "public_email_found": 17,
+    "offerings_extracted": 53,
+    "candidates_with_priced_offerings": 26
+  },
+  "records": [
+    {
+      "source_url": "https://impossible.health/austin/castlehill-fitness",
+      "city_slug": "austin",
+      "provider_slug": "castlehill-fitness",
+      "name": "Castle Hill Fitness - DEXA",
+      "contact": {
+        "address": "1112 N Lamar Blvd, Austin, TX 78703",
+        "phone": "(512) 478-4567",
+        "email": "hello@castlehillfitness.com",
+        "website": "https://castlehillfitness.com",
+        "email_status": "public_email_found",
+        "contact_pages_checked": [
+          {
+            "url": "https://castlehillfitness.com",
+            "outcome": "ok"
+          },
+          {
+            "url": "https://castlehillfitness.com",
+            "outcome": "ok"
+          },
+          {
+            "url": "https://castlehillfitness.com",
+            "outcome": "ok"
+          }
+        ]
+      },
+      "offerings": [
+        {
+          "raw_name": "DEXA Scan",
+          "description": "Precise body composition & bone density analysis $100-250",
+          "duration": "15-30 min",
+          "price_amount": 100,
+          "price_max_amount": 250,
+          "price_currency": "USD",
+          "price_context": "$100–$250",
+          "source_url": "https://impossible.health/austin/castlehill-fitness"
+        },
+        {
+          "raw_name": "InBody Scan",
+          "description": "Quick body composition analysis $25-75",
+          "duration": "5-10 min",
+          "price_amount": 25,
+          "price_max_amount": 75,
+          "price_currency": "USD",
+          "price_context": "$25–$75",
+          "source_url": "https://impossible.health/austin/castlehill-fitness"
+        }
+      ],
+      "offering_price_source": "Impossible Health listing service cards; prices are directory-listed ranges and not represented as official-provider verified prices.",
+      "notes": {
+        "source_description": "Castle Hill Fitness - DEXA offers DEXA Scan, InBody Scan in Downtown, Austin TX. 4.6 stars (156 reviews). Pricing: $$. Upscale fitness club offering DEXA and InBody scans as part of their comprehensive fitness assessmen..."
+      }
+    },
+    {
+      "source_url": "https://impossible.health/austin/generator-athlete-lab",
+      "city_slug": "austin",
+      "provider_slug": "generator-athlete-lab",
+      "name": "Generator Athlete Lab",
+      "contact": {
+        "address": "800 W Cesar Chavez St, Suite PP120, Austin, TX 78701",
+        "phone": "(512) 614-2200",
+        "email": "drjess@generatorathletelab.com",
+        "website": "https://www.generatorathletelab.com",
+        "email_status": "public_email_found",
+        "contact_pages_checked": [
+          {
+            "url": "https://www.generatorathletelab.com",
+            "outcome": "ok"
+          },
+          {
+            "url": "https://www.generatorathletelab.com",
+            "outcome": "ok"
+          },
+          {
+            "url": "https://www.generatorathletelab.com",
+            "outcome": "ok"
+          }
+        ]
+      },
+      "offerings": [
+        {
+          "raw_name": "Sauna",
+          "description": "Heat therapy & detoxification",
+          "duration": "20-45 min",
+          "price_amount": null,
+          "price_max_amount": null,
+          "price_currency": null,
+          "price_context": null,
+          "source_url": "https://impossible.health/austin/generator-athlete-lab"
+        },
+        {
+          "raw_name": "Cold Plunge",
+          "description": "Cold water immersion therapy",
+          "duration": "3-15 min",
+          "price_amount": null,
+          "price_max_amount": null,
+          "price_currency": null,
+          "price_context": null,
+          "source_url": "https://impossible.health/austin/generator-athlete-lab"
+        },
+        {
+          "raw_name": "Compression Therapy",
+          "description": "NormaTec compression boots",
+          "duration": "20-30 min",
+          "price_amount": null,
+          "price_max_amount": null,
+          "price_currency": null,
+          "price_context": null,
+          "source_url": "https://impossible.health/austin/generator-athlete-lab"
+        },
+        {
+          "raw_name": "Red Light Therapy",
+          "description": "Photobiomodulation for cellular health",
+          "duration": "10-20 min",
+          "price_amount": null,
+          "price_max_amount": null,
+          "price_currency": null,
+          "price_context": null,
+          "source_url": "https://impossible.health/austin/generator-athlete-lab"
+        },
+        {
+          "raw_name": "Day Pass",
+          "description": null,
+          "duration": null,
+          "price_amount": 75,
+          "price_max_amount": 75,
+          "price_currency": "USD",
+          "price_context": "$75",
+          "source_url": "https://impossible.health/austin/generator-athlete-lab"
+        }
+      ],
+      "offering_price_source": "Impossible Health listing service cards; prices are directory-listed ranges and not represented as official-provider verified prices.",
+      "notes": {
+        "source_description": "Generator Athlete Lab offers Sauna, Cold Plunge, Compression Therapy, Red Light Therapy in Downtown, Austin TX. 4.9 stars (287 reviews). Pricing: $$. Science-backed recovery protocol: 30min infrared sauna, contrast hot/cold tubs, Normatec compression..."
+      }
+    },
+    {
+      "source_url": "https://impossible.health/austin/kuya",
+      "city_slug": "austin",
+      "provider_slug": "kuya",
+      "name": "Kuya Wellness",
+      "contact": {
+        "address": "4401 Friedrich Lane, Unit 300, Austin, TX 78744",
+        "phone": "(512) 535-6594",
+        "email": "hello@kuyawellness.com",
+        "website": "https://kuyawellness.com",
+        "email_status": "public_email_found",
+        "contact_pages_checked": [
+          {
+            "url": "https://kuyawellness.com",
+            "outcome": "ok"
+          },
+          {
+            "url": "https://kuyawellness.com",
+            "outcome": "ok"
+          }
+        ]
+      },
+      "offerings": [
+        {
+          "raw_name": "Cold Plunge",
+          "description": "Cold water immersion therapy $15-50",
+          "duration": "3-15 min",
+          "price_amount": 15,
+          "price_max_amount": 50,
+          "price_currency": "USD",
+          "price_context": "$15–$50",
+          "source_url": "https://impossible.health/austin/kuya"
+        },
+        {
+          "raw_name": "Sauna",
+          "description": "Heat therapy & detoxification $20-60",
+          "duration": "20-45 min",
+          "price_amount": 20,
+          "price_max_amount": 60,
+          "price_currency": "USD",
+          "price_context": "$20–$60",
+          "source_url": "https://impossible.health/austin/kuya"
+        },
+        {
+          "raw_name": "IV Therapy",
+          "description": "Vitamin & nutrient infusions $100-350",
+          "duration": "30-60 min",
+          "price_amount": 100,
+          "price_max_amount": 350,
+          "price_currency": "USD",
+          "price_context": "$100–$350",
+          "source_url": "https://impossible.health/austin/kuya"
+        },
+        {
+          "raw_name": "Float Tank",
+          "description": "Sensory deprivation therapy $60-100",
+          "duration": "60-90 min",
+          "price_amount": 60,
+          "price_max_amount": 100,
+          "price_currency": "USD",
+          "price_context": "$60–$100",
+          "source_url": "https://impossible.health/austin/kuya"
+        }
+      ],
+      "offering_price_source": "Impossible Health listing service cards; prices are directory-listed ranges and not represented as official-provider verified prices.",
+      "notes": {
+        "source_description": "Kuya Wellness offers Cold Plunge, Sauna, IV Therapy, Float Tank in South Austin, Austin TX. 4.8 stars (189 reviews). Pricing: $$. Holistic wellness sanctuary offering functional health, IV infusions, sauna & cold plunge, float tan..."
+      }
+    },
+    {
+      "source_url": "https://impossible.health/austin/sauna-house-north-loop",
+      "city_slug": "austin",
+      "provider_slug": "sauna-house-north-loop",
+      "name": "Sauna House North Loop",
+      "contact": {
+        "address": "1507 W North Loop Blvd, Austin, TX 78756",
+        "phone": "(512) 766-7893",
+        "email": "austinnorthloop@saunahouse.com",
+        "website": "https://www.saunahouse.com/pages/austin-north-loop",
+        "email_status": "public_email_found",
+        "contact_pages_checked": [
+          {
+            "url": "https://www.saunahouse.com/pages/austin-north-loop",
+            "outcome": "ok"
+          },
+          {
+            "url": "https://www.saunahouse.com/pages/austin-north-loop",
+            "outcome": "ok"
+          },
+          {
+            "url": "https://www.saunahouse.com/pages/austin-north-loop",
+            "outcome": "ok"
+          }
+        ]
+      },
+      "offerings": [
+        {
+          "raw_name": "Sauna",
+          "description": "Heat therapy & detoxification $20-60",
+          "duration": "20-45 min",
+          "price_amount": 20,
+          "price_max_amount": 60,
+          "price_currency": "USD",
+          "price_context": "$20–$60",
+          "source_url": "https://impossible.health/austin/sauna-house-north-loop"
+        },
+        {
+          "raw_name": "Cold Plunge",
+          "description": "Cold water immersion therapy $15-50",
+          "duration": "3-15 min",
+          "price_amount": 15,
+          "price_max_amount": 50,
+          "price_currency": "USD",
+          "price_context": "$15–$50",
+          "source_url": "https://impossible.health/austin/sauna-house-north-loop"
+        }
+      ],
+      "offering_price_source": "Impossible Health listing service cards; prices are directory-listed ranges and not represented as official-provider verified prices.",
+      "notes": {
+        "source_description": "Sauna House North Loop offers Sauna, Cold Plunge in North Loop, Austin TX. 4.9 stars (456 reviews). Pricing: $$. Tech-free bathhouse with 2 saunas (185-190°F), 3 cold plunges (45-55°F), and lounge areas. Drop-in $..."
+      }
+    },
+    {
+      "source_url": "https://impossible.health/austin/true-rest",
+      "city_slug": "austin",
+      "provider_slug": "true-rest",
+      "name": "True REST Float Spa",
+      "contact": {
+        "address": "10721 Research Blvd, Suite B-170, Austin, TX 78759",
+        "phone": "(512) 432-5189",
+        "email": null,
+        "website": "https://truerest.com/locations/north-austin",
+        "email_status": "no_public_email_found",
+        "contact_pages_checked": [
+          {
+            "url": "https://truerest.com/locations/north-austin",
+            "outcome": "ok"
+          },
+          {
+            "url": "https://truerest.com/locations/north-austin",
+            "outcome": "ok"
+          }
+        ]
+      },
+      "offerings": [
+        {
+          "raw_name": "Float Tank",
+          "description": "Sensory deprivation therapy $60-100",
+          "duration": "60-90 min",
+          "price_amount": 60,
+          "price_max_amount": 100,
+          "price_currency": "USD",
+          "price_context": "$60–$100",
+          "source_url": "https://impossible.health/austin/true-rest"
+        }
+      ],
+      "offering_price_source": "Impossible Health listing service cards; prices are directory-listed ranges and not represented as official-provider verified prices.",
+      "notes": {
+        "source_description": "True REST Float Spa offers Float Tank in North Austin, Austin TX. 4.8 stars (245 reviews). Pricing: $$. Float spa franchise with modern float pods for sensory deprivation therapy. Clean, professional envi..."
+      }
+    },
+    {
+      "source_url": "https://impossible.health/chicago/live-lean-rx-chicago",
+      "city_slug": "chicago",
+      "provider_slug": "live-lean-rx-chicago",
+      "name": "Live Lean Rx - Warrenville",
+      "contact": {
+        "address": "4300 Weaver Parkway, Suite 100, Warrenville, IL 60555",
+        "phone": "(331) 218-2959",
+        "email": "info@liveleanrx.com",
+        "website": "https://liveleanrx.com/locations/warrenville-illinois",
+        "email_status": "public_email_found",
+        "contact_pages_checked": [
+          {
+            "url": "https://liveleanrx.com/locations/warrenville-illinois",
+            "outcome": "ok"
+          },
+          {
+            "url": "https://liveleanrx.com/locations/warrenville-illinois",
+            "outcome": "ok"
+          },
+          {
+            "url": "https://liveleanrx.com/locations/warrenville-illinois",
+            "outcome": "ok"
+          }
+        ]
+      },
+      "offerings": [
+        {
+          "raw_name": "DEXA Scan",
+          "description": "Precise body composition & bone density analysis $100-250",
+          "duration": "15-30 min",
+          "price_amount": 100,
+          "price_max_amount": 250,
+          "price_currency": "USD",
+          "price_context": "$100–$250",
+          "source_url": "https://impossible.health/chicago/live-lean-rx-chicago"
+        },
+        {
+          "raw_name": "VO2 Max Test",
+          "description": "Cardio fitness & training zones $150-300",
+          "duration": "30-45 min",
+          "price_amount": 150,
+          "price_max_amount": 300,
+          "price_currency": "USD",
+          "price_context": "$150–$300",
+          "source_url": "https://impossible.health/chicago/live-lean-rx-chicago"
+        }
+      ],
+      "offering_price_source": "Impossible Health listing service cards; prices are directory-listed ranges and not represented as official-provider verified prices.",
+      "notes": {
+        "source_description": "DEXA, VO2 Max, and RMR testing. Package pricing: 4-pack $325, 6-pack $420, 12-pack $700. Mix and match tests. Fitness optimization focus. Services: DEXA Scan, VO2 Max Test. Located in Warrenville, Chicago."
+      }
+    },
+    {
+      "source_url": "https://impossible.health/chicago/uchicago-cardiac-ct",
+      "city_slug": "chicago",
+      "provider_slug": "uchicago-cardiac-ct",
+      "name": "UChicago Medicine Cardiac CT",
+      "contact": {
+        "address": "5841 S Maryland Ave, Chicago, IL 60637",
+        "phone": "(773) 702-1000",
+        "email": "abc@xyz.com",
+        "website": "https://www.uchicagomedicine.org/conditions-services/heart-vascular/cardiovascular-imaging/cardiac-ct-angiography",
+        "email_status": "public_email_found",
+        "contact_pages_checked": [
+          {
+            "url": "https://www.uchicagomedicine.org/conditions-services/heart-vascular/cardiovascular-imaging/cardiac-ct-angiography",
+            "outcome": "ok"
+          },
+          {
+            "url": "https://www.uchicagomedicine.org/conditions-services/heart-vascular/cardiovascular-imaging/cardiac-ct-angiography",
+            "outcome": "ok"
+          },
+          {
+            "url": "https://www.uchicagomedicine.org/conditions-services/heart-vascular/cardiovascular-imaging/cardiac-ct-angiography",
+            "outcome": "ok"
+          }
+        ]
+      },
+      "offerings": [
+        {
+          "raw_name": "Calcium Score CT",
+          "description": "Heart disease risk assessment $75-200",
+          "duration": "10-15 min",
+          "price_amount": 75,
+          "price_max_amount": 200,
+          "price_currency": "USD",
+          "price_context": "$75–$200",
+          "source_url": "https://impossible.health/chicago/uchicago-cardiac-ct"
+        },
+        {
+          "raw_name": "Full Body MRI",
+          "description": "Whole-body preventive screening $1,500-2,500",
+          "duration": "60 min",
+          "price_amount": 1500,
+          "price_max_amount": 2500,
+          "price_currency": "USD",
+          "price_context": "$1,500–$2,500",
+          "source_url": "https://impossible.health/chicago/uchicago-cardiac-ct"
+        }
+      ],
+      "offering_price_source": "Impossible Health listing service cards; prices are directory-listed ranges and not represented as official-provider verified prices.",
+      "notes": {
+        "source_description": "Academic hospital cardiac imaging. Calcium score CT and coronary CT angiography. World-class cardiologists with research-backed protocols. Insurance accepted. Services: Calcium Score CT, Full Body MRI. Located in Hyde Park, Chicago."
+      }
+    },
+    {
+      "source_url": "https://impossible.health/la/float-lab-venice",
+      "city_slug": "la",
+      "provider_slug": "float-lab-venice",
+      "name": "Float Lab - Venice Beach",
+      "contact": {
+        "address": "801 Ocean Front Walk, Venice, CA 90291",
+        "phone": "(310) 396-3336",
+        "email": "john@johnclilly.com",
+        "website": "https://floatlab.com",
+        "email_status": "public_email_found",
+        "contact_pages_checked": [
+          {
+            "url": "https://floatlab.com",
+            "outcome": "ok"
+          },
+          {
+            "url": "https://floatlab.com",
+            "outcome": "ok"
+          }
+        ]
+      },
+      "offerings": [
+        {
+          "raw_name": "Float Tank",
+          "description": "Sensory deprivation therapy $60-100",
+          "duration": "60-90 min",
+          "price_amount": 60,
+          "price_max_amount": 100,
+          "price_currency": "USD",
+          "price_context": "$60–$100",
+          "source_url": "https://impossible.health/la/float-lab-venice"
+        }
+      ],
+      "offering_price_source": "Impossible Health listing service cards; prices are directory-listed ranges and not represented as official-provider verified prices.",
+      "notes": {
+        "source_description": "Venice Beach float center. 2-hour floats for $55. 2 chambers. Private rooms with showers. Towels and toiletries provided. Beachside recovery. Services: Float Tank. Located in Venice Beach, Los Angeles."
+      }
+    },
+    {
+      "source_url": "https://impossible.health/la/float-lab-westwood",
+      "city_slug": "la",
+      "provider_slug": "float-lab-westwood",
+      "name": "Float Lab Westwood",
+      "contact": {
+        "address": "1025 Westwood Blvd, Suite B, Los Angeles, CA 90024",
+        "phone": "(310) 208-7878",
+        "email": "john@johnclilly.com",
+        "website": "https://www.floatlab.com",
+        "email_status": "public_email_found",
+        "contact_pages_checked": [
+          {
+            "url": "https://www.floatlab.com",
+            "outcome": "ok"
+          },
+          {
+            "url": "https://www.floatlab.com",
+            "outcome": "ok"
+          }
+        ]
+      },
+      "offerings": [
+        {
+          "raw_name": "Float Tank",
+          "description": "Sensory deprivation therapy $60-100",
+          "duration": "60-90 min",
+          "price_amount": 60,
+          "price_max_amount": 100,
+          "price_currency": "USD",
+          "price_context": "$60–$100",
+          "source_url": "https://impossible.health/la/float-lab-westwood"
+        }
+      ],
+      "offering_price_source": "Impossible Health listing service cards; prices are directory-listed ranges and not represented as official-provider verified prices.",
+      "notes": {
+        "source_description": "Pioneer in sensory deprivation since 1999. 7 private float tanks with NSF 50 & UL 1795 certified chambers. $40 for 2-hour floats. State-of-the-art sanitation. Services: Float Tank. Located in Westwood, Los Angeles."
+      }
+    },
+    {
+      "source_url": "https://impossible.health/la/intomesea",
+      "city_slug": "la",
+      "provider_slug": "intomesea",
+      "name": "IntoMeSea",
+      "contact": {
+        "address": "1812 Lincoln Blvd, Santa Monica, CA 90404",
+        "phone": "(310) 310-8711",
+        "email": null,
+        "website": "https://www.intomesea.com",
+        "email_status": "http_error",
+        "contact_pages_checked": [
+          {
+            "url": "https://www.intomesea.com",
+            "outcome": "http_error"
+          }
+        ]
+      },
+      "offerings": [
+        {
+          "raw_name": "Float Tank",
+          "description": "Sensory deprivation therapy $60-100",
+          "duration": "60-90 min",
+          "price_amount": 60,
+          "price_max_amount": 100,
+          "price_currency": "USD",
+          "price_context": "$60–$100",
+          "source_url": "https://impossible.health/la/intomesea"
+        },
+        {
+          "raw_name": "Sauna",
+          "description": "Heat therapy & detoxification $20-60",
+          "duration": "20-45 min",
+          "price_amount": 20,
+          "price_max_amount": 60,
+          "price_currency": "USD",
+          "price_context": "$20–$60",
+          "source_url": "https://impossible.health/la/intomesea"
+        }
+      ],
+      "offering_price_source": "Impossible Health listing service cards; prices are directory-listed ranges and not represented as official-provider verified prices.",
+      "notes": {
+        "source_description": "Spacious 88-inch step-in float rooms with optional starry ceilings. Private steam/sauna amenities, Epsom salt flotation at 94-95°F. Ocean-adjacent location. Services: Float Tank, Sauna. Located in Santa Monica, Los Angeles."
+      }
+    },
+    {
+      "source_url": "https://impossible.health/la/shape-house-la",
+      "city_slug": "la",
+      "provider_slug": "shape-house-la",
+      "name": "Shape House - Larchmont",
+      "contact": {
+        "address": "131 N Larchmont Blvd, Los Angeles, CA 90004",
+        "phone": "(323) 661-2070",
+        "email": "gilbert@theshapehouse.com",
+        "website": "https://www.theshapehouse.com",
+        "email_status": "public_email_found",
+        "contact_pages_checked": [
+          {
+            "url": "https://www.theshapehouse.com",
+            "outcome": "ok"
+          },
+          {
+            "url": "https://www.theshapehouse.com",
+            "outcome": "ok"
+          },
+          {
+            "url": "https://www.theshapehouse.com",
+            "outcome": "ok"
+          }
+        ]
+      },
+      "offerings": [
+        {
+          "raw_name": "Sauna",
+          "description": "Heat therapy & detoxification $20-60",
+          "duration": "20-45 min",
+          "price_amount": 20,
+          "price_max_amount": 60,
+          "price_currency": "USD",
+          "price_context": "$20–$60",
+          "source_url": "https://impossible.health/la/shape-house-la"
+        }
+      ],
+      "offering_price_source": "Impossible Health listing service cards; prices are directory-listed ranges and not represented as official-provider verified prices.",
+      "notes": {
+        "source_description": "Urban sweat lodge featuring infrared sauna bed sessions. 55-minute sessions in a cozy, relaxing environment. Known for detox and relaxation. Services: Sauna. Located in Larchmont, Los Angeles."
+      }
+    },
+    {
+      "source_url": "https://impossible.health/la/spa-palace-la",
+      "city_slug": "la",
+      "provider_slug": "spa-palace-la",
+      "name": "Spa Palace",
+      "contact": {
+        "address": "620 S Union Ave, Los Angeles, CA 90017",
+        "phone": "(213) 637-0000",
+        "email": "info@spapalacela.com",
+        "website": "https://spapalacela.com",
+        "email_status": "public_email_found",
+        "contact_pages_checked": [
+          {
+            "url": "https://spapalacela.com",
+            "outcome": "ok"
+          },
+          {
+            "url": "https://spapalacela.com",
+            "outcome": "ok"
+          },
+          {
+            "url": "https://spapalacela.com",
+            "outcome": "ok"
+          }
+        ]
+      },
+      "offerings": [
+        {
+          "raw_name": "Sauna",
+          "description": "Heat therapy & detoxification $20-60",
+          "duration": "20-45 min",
+          "price_amount": 20,
+          "price_max_amount": 60,
+          "price_currency": "USD",
+          "price_context": "$20–$60",
+          "source_url": "https://impossible.health/la/spa-palace-la"
+        },
+        {
+          "raw_name": "Cold Plunge",
+          "description": "Cold water immersion therapy $15-50",
+          "duration": "3-15 min",
+          "price_amount": 15,
+          "price_max_amount": 50,
+          "price_currency": "USD",
+          "price_context": "$15–$50",
+          "source_url": "https://impossible.health/la/spa-palace-la"
+        }
+      ],
+      "offering_price_source": "Impossible Health listing service cards; prices are directory-listed ranges and not represented as official-provider verified prices.",
+      "notes": {
+        "source_description": "Traditional Korean jimjilbang (bathhouse) open 24/7. Multiple saunas, hot and cold pools, massages, body treatments. Authentic Korean spa experience. Services: Sauna, Cold Plunge. Located in Koreatown, Los Angeles."
+      }
+    },
+    {
+      "source_url": "https://impossible.health/la/wi-spa",
+      "city_slug": "la",
+      "provider_slug": "wi-spa",
+      "name": "Wi Spa",
+      "contact": {
+        "address": "2700 Wilshire Boulevard, Los Angeles, CA 90057",
+        "phone": "(213) 487-2700",
+        "email": "info@wispausa.com",
+        "website": "https://wispausa.com",
+        "email_status": "public_email_found",
+        "contact_pages_checked": [
+          {
+            "url": "https://wispausa.com",
+            "outcome": "ok"
+          },
+          {
+            "url": "https://wispausa.com",
+            "outcome": "ok"
+          },
+          {
+            "url": "https://wispausa.com",
+            "outcome": "ok"
+          }
+        ]
+      },
+      "offerings": [
+        {
+          "raw_name": "Sauna",
+          "description": "Heat therapy & detoxification $20-60",
+          "duration": "20-45 min",
+          "price_amount": 20,
+          "price_max_amount": 60,
+          "price_currency": "USD",
+          "price_context": "$20–$60",
+          "source_url": "https://impossible.health/la/wi-spa"
+        },
+        {
+          "raw_name": "Cold Plunge",
+          "description": "Cold water immersion therapy $15-50",
+          "duration": "3-15 min",
+          "price_amount": 15,
+          "price_max_amount": 50,
+          "price_currency": "USD",
+          "price_context": "$15–$50",
+          "source_url": "https://impossible.health/la/wi-spa"
+        }
+      ],
+      "offering_price_source": "Impossible Health listing service cards; prices are directory-listed ranges and not represented as official-provider verified prices.",
+      "notes": {
+        "source_description": "Iconic 4-story Korean spa open 24 hours. Bulgama steam room, salt room, clay room, jade room, hot/cold plunge pools. Body scrubs, massages, full restaurant. Entry $30. Services: Sauna, Cold Plunge. Located in Koreatown, Los Angeles."
+      }
+    },
+    {
+      "source_url": "https://impossible.health/miami/baptist-health-cardiac",
+      "city_slug": "miami",
+      "provider_slug": "baptist-health-cardiac",
+      "name": "Miami Cardiac & Vascular Institute",
+      "contact": {
+        "address": "8900 N Kendall Dr, Miami, FL 33176",
+        "phone": "(786) 596-2700",
+        "email": null,
+        "website": "https://baptisthealth.net/en/specialties/heart-care",
+        "email_status": "http_error",
+        "contact_pages_checked": [
+          {
+            "url": "https://baptisthealth.net/en/specialties/heart-care",
+            "outcome": "http_error"
+          }
+        ]
+      },
+      "offerings": [
+        {
+          "raw_name": "Calcium Score CT",
+          "description": "Heart disease risk assessment $75-200",
+          "duration": "10-15 min",
+          "price_amount": 75,
+          "price_max_amount": 200,
+          "price_currency": "USD",
+          "price_context": "$75–$200",
+          "source_url": "https://impossible.health/miami/baptist-health-cardiac"
+        }
+      ],
+      "offering_price_source": "Impossible Health listing service cards; prices are directory-listed ranges and not represented as official-provider verified prices.",
+      "notes": {
+        "source_description": "Part of Baptist Health system. Comprehensive cardiac imaging including calcium scoring. Leading heart specialists in South Florida. Insurance accepted. Services: Calcium Score CT. Located in Kendall, Miami."
+      }
+    },
+    {
+      "source_url": "https://impossible.health/nyc/chill-space-nyc",
+      "city_slug": "nyc",
+      "provider_slug": "chill-space-nyc",
+      "name": "Chill Space NYC",
+      "contact": {
+        "address": "124 East 40th Street, Suite 603, New York, NY 10016",
+        "phone": "(212) 661-3400",
+        "email": null,
+        "website": "https://www.chillspacenyc.com",
+        "email_status": "http_error",
+        "contact_pages_checked": [
+          {
+            "url": "https://www.chillspacenyc.com",
+            "outcome": "http_error"
+          }
+        ]
+      },
+      "offerings": [
+        {
+          "raw_name": "Float Tank",
+          "description": "Sensory deprivation therapy $60-100",
+          "duration": "60-90 min",
+          "price_amount": 60,
+          "price_max_amount": 100,
+          "price_currency": "USD",
+          "price_context": "$60–$100",
+          "source_url": "https://impossible.health/nyc/chill-space-nyc"
+        }
+      ],
+      "offering_price_source": "Impossible Health listing service cards; prices are directory-listed ranges and not represented as official-provider verified prices.",
+      "notes": {
+        "source_description": "Private sensory deprivation float tanks in soundproof rooms. 6x8 ft tanks with 1,250 lbs of Epsom salt, maintained at 96°F. Private showers and changing rooms. Services: Float Tank. Located in Midtown East, NYC."
+      }
+    },
+    {
+      "source_url": "https://impossible.health/nyc/flolo-holistic",
+      "city_slug": "nyc",
+      "provider_slug": "flolo-holistic",
+      "name": "FloLo Holistic",
+      "contact": {
+        "address": "39 W 56th St, 5th Floor, New York, NY 10019",
+        "phone": "(212) 600-0220",
+        "email": null,
+        "website": "https://floloholistic.com",
+        "email_status": "no_public_email_found",
+        "contact_pages_checked": [
+          {
+            "url": "https://floloholistic.com",
+            "outcome": "ok"
+          }
+        ]
+      },
+      "offerings": [
+        {
+          "raw_name": "Float Tank",
+          "description": "Sensory deprivation therapy $60-100",
+          "duration": "60-90 min",
+          "price_amount": 60,
+          "price_max_amount": 100,
+          "price_currency": "USD",
+          "price_context": "$60–$100",
+          "source_url": "https://impossible.health/nyc/flolo-holistic"
+        },
+        {
+          "raw_name": "Sauna",
+          "description": "Heat therapy & detoxification $20-60",
+          "duration": "20-45 min",
+          "price_amount": 20,
+          "price_max_amount": 60,
+          "price_currency": "USD",
+          "price_context": "$20–$60",
+          "source_url": "https://impossible.health/nyc/flolo-holistic"
+        },
+        {
+          "raw_name": "Cold Plunge",
+          "description": "Cold water immersion therapy $15-50",
+          "duration": "3-15 min",
+          "price_amount": 15,
+          "price_max_amount": 50,
+          "price_currency": "USD",
+          "price_context": "$15–$50",
+          "source_url": "https://impossible.health/nyc/flolo-holistic"
+        }
+      ],
+      "offering_price_source": "Impossible Health listing service cards; prices are directory-listed ranges and not represented as official-provider verified prices.",
+      "notes": {
+        "source_description": "Sensory deprivation float tanks, infrared sauna, and cold plunge. 60 or 90-minute sessions in warm salt baths. Private showers, 24/7 sterilizing system. Services: Float Tank, Sauna, Cold Plunge. Located in Midtown, NYC."
+      }
+    },
+    {
+      "source_url": "https://impossible.health/nyc/hms-manhattan",
+      "city_slug": "nyc",
+      "provider_slug": "hms-manhattan",
+      "name": "HMS - Hyperbaric Medical Solutions",
+      "contact": {
+        "address": "160 East 32nd Street, New York, NY 10016",
+        "phone": "(646) 742-8888",
+        "email": "info@hyperbaricmedicalsolutions.com",
+        "website": "https://www.hyperbaricmedicalsolutions.com",
+        "email_status": "public_email_found",
+        "contact_pages_checked": [
+          {
+            "url": "https://www.hyperbaricmedicalsolutions.com",
+            "outcome": "ok"
+          },
+          {
+            "url": "https://www.hyperbaricmedicalsolutions.com",
+            "outcome": "ok"
+          },
+          {
+            "url": "https://www.hyperbaricmedicalsolutions.com",
+            "outcome": "ok"
+          }
+        ]
+      },
+      "offerings": [
+        {
+          "raw_name": "Hyperbaric Oxygen",
+          "description": "Pressurized oxygen therapy $150-400",
+          "duration": "60-90 min",
+          "price_amount": 150,
+          "price_max_amount": 400,
+          "price_currency": "USD",
+          "price_context": "$150–$400",
+          "source_url": "https://impossible.health/nyc/hms-manhattan"
+        },
+        {
+          "raw_name": "IV Therapy",
+          "description": "Vitamin & nutrient infusions $100-350",
+          "duration": "30-60 min",
+          "price_amount": 100,
+          "price_max_amount": 350,
+          "price_currency": "USD",
+          "price_context": "$100–$350",
+          "source_url": "https://impossible.health/nyc/hms-manhattan"
+        }
+      ],
+      "offering_price_source": "Impossible Health listing service cards; prices are directory-listed ranges and not represented as official-provider verified prices.",
+      "notes": {
+        "source_description": "HBOT, IV therapy, and PRP therapy. Accepts most insurance including Medicare, Aetna, Blue Cross, Cigna, UnitedHealthcare. Comprehensive hyperbaric treatment protocols. Services: Hyperbaric Oxygen, IV Therapy. Located in Murray Hill, NYC."
+      }
+    },
+    {
+      "source_url": "https://impossible.health/nyc/lenox-hill-radiology",
+      "city_slug": "nyc",
+      "provider_slug": "lenox-hill-radiology",
+      "name": "Lenox Hill Radiology",
+      "contact": {
+        "address": "61 E 77th St, New York, NY 10075",
+        "phone": "(212) 772-3111",
+        "email": "lhr-info@radnet.com",
+        "website": "https://www.radnet.com/lenox-hill-radiology",
+        "email_status": "public_email_found",
+        "contact_pages_checked": [
+          {
+            "url": "https://www.radnet.com/lenox-hill-radiology",
+            "outcome": "ok"
+          },
+          {
+            "url": "https://www.radnet.com/lenox-hill-radiology",
+            "outcome": "ok"
+          },
+          {
+            "url": "https://www.radnet.com/lenox-hill-radiology",
+            "outcome": "ok"
+          }
+        ]
+      },
+      "offerings": [
+        {
+          "raw_name": "Calcium Score CT",
+          "description": "Heart disease risk assessment $75-200",
+          "duration": "10-15 min",
+          "price_amount": 75,
+          "price_max_amount": 200,
+          "price_currency": "USD",
+          "price_context": "$75–$200",
+          "source_url": "https://impossible.health/nyc/lenox-hill-radiology"
+        },
+        {
+          "raw_name": "DEXA Scan",
+          "description": "Precise body composition & bone density analysis $100-250",
+          "duration": "15-30 min",
+          "price_amount": 100,
+          "price_max_amount": 250,
+          "price_currency": "USD",
+          "price_context": "$100–$250",
+          "source_url": "https://impossible.health/nyc/lenox-hill-radiology"
+        },
+        {
+          "raw_name": "Full Body MRI",
+          "description": "Whole-body preventive screening $1,500-2,500",
+          "duration": "60 min",
+          "price_amount": 1500,
+          "price_max_amount": 2500,
+          "price_currency": "USD",
+          "price_context": "$1,500–$2,500",
+          "source_url": "https://impossible.health/nyc/lenox-hill-radiology"
+        }
+      ],
+      "offering_price_source": "Impossible Health listing service cards; prices are directory-listed ranges and not represented as official-provider verified prices.",
+      "notes": {
+        "source_description": "Multi-location radiology network offering cardiac calcium scoring CT. Self-pay $125-135. Multiple NYC metro locations for convenience. Services: Calcium Score CT, DEXA Scan, Full Body MRI. Located in Upper East Side, NYC."
+      }
+    },
+    {
+      "source_url": "https://impossible.health/orange-county/oc-float-center",
+      "city_slug": "orange-county",
+      "provider_slug": "oc-float-center",
+      "name": "Orange County Float Center",
+      "contact": {
+        "address": "18025 Sky Park Circle, Suite G, Irvine, CA 92614",
+        "phone": "(949) 464-8565",
+        "email": null,
+        "website": "https://floatationlocations.com/united-states/california/orange-county-float-center",
+        "email_status": "network_error",
+        "contact_pages_checked": [
+          {
+            "url": "https://floatationlocations.com/united-states/california/orange-county-float-center",
+            "outcome": "network_error"
+          }
+        ]
+      },
+      "offerings": [
+        {
+          "raw_name": "Float Tank",
+          "description": "Sensory deprivation therapy $60-100",
+          "duration": "60-90 min",
+          "price_amount": 60,
+          "price_max_amount": 100,
+          "price_currency": "USD",
+          "price_context": "$60–$100",
+          "source_url": "https://impossible.health/orange-county/oc-float-center"
+        }
+      ],
+      "offering_price_source": "Impossible Health listing service cards; prices are directory-listed ranges and not represented as official-provider verified prices.",
+      "notes": {
+        "source_description": "Quality float tanks in comfortable atmosphere. Sensory deprivation for stress reduction, pain relief, improved sleep, enhanced creativity. Services: Float Tank. Located in Irvine, Orange County."
+      }
+    },
+    {
+      "source_url": "https://impossible.health/orange-county/pause-studio-newport",
+      "city_slug": "orange-county",
+      "provider_slug": "pause-studio-newport",
+      "name": "Pause Studio - Newport Beach",
+      "contact": {
+        "address": "2135 Westcliff Dr, Suite 100, Newport Beach, CA 92660",
+        "phone": "(949) 509-5005",
+        "email": "newportbeach@pausestudio.com",
+        "website": "https://pausestudio.com/newportbeach",
+        "email_status": "public_email_found",
+        "contact_pages_checked": [
+          {
+            "url": "https://pausestudio.com/newportbeach",
+            "outcome": "ok"
+          },
+          {
+            "url": "https://pausestudio.com/newportbeach",
+            "outcome": "ok"
+          },
+          {
+            "url": "https://pausestudio.com/newportbeach",
+            "outcome": "ok"
+          }
+        ]
+      },
+      "offerings": [
+        {
+          "raw_name": "Cryotherapy",
+          "description": "Whole-body cold chamber $40-85",
+          "duration": "2-3 min",
+          "price_amount": 40,
+          "price_max_amount": 85,
+          "price_currency": "USD",
+          "price_context": "$40–$85",
+          "source_url": "https://impossible.health/orange-county/pause-studio-newport"
+        },
+        {
+          "raw_name": "Sauna",
+          "description": "Heat therapy & detoxification $20-60",
+          "duration": "20-45 min",
+          "price_amount": 20,
+          "price_max_amount": 60,
+          "price_currency": "USD",
+          "price_context": "$20–$60",
+          "source_url": "https://impossible.health/orange-county/pause-studio-newport"
+        },
+        {
+          "raw_name": "Float Tank",
+          "description": "Sensory deprivation therapy $60-100",
+          "duration": "60-90 min",
+          "price_amount": 60,
+          "price_max_amount": 100,
+          "price_currency": "USD",
+          "price_context": "$60–$100",
+          "source_url": "https://impossible.health/orange-county/pause-studio-newport"
+        },
+        {
+          "raw_name": "Red Light Therapy",
+          "description": "Photobiomodulation for cellular health $25-75",
+          "duration": "10-20 min",
+          "price_amount": 25,
+          "price_max_amount": 75,
+          "price_currency": "USD",
+          "price_context": "$25–$75",
+          "source_url": "https://impossible.health/orange-county/pause-studio-newport"
+        },
+        {
+          "raw_name": "IV Therapy",
+          "description": "Vitamin & nutrient infusions $100-350",
+          "duration": "30-60 min",
+          "price_amount": 100,
+          "price_max_amount": 350,
+          "price_currency": "USD",
+          "price_context": "$100–$350",
+          "source_url": "https://impossible.health/orange-county/pause-studio-newport"
+        },
+        {
+          "raw_name": "Compression Therapy",
+          "description": "NormaTec compression boots $25-50",
+          "duration": "20-30 min",
+          "price_amount": 25,
+          "price_max_amount": 50,
+          "price_currency": "USD",
+          "price_context": "$25–$50",
+          "source_url": "https://impossible.health/orange-county/pause-studio-newport"
+        }
+      ],
+      "offering_price_source": "Impossible Health listing service cards; prices are directory-listed ranges and not represented as official-provider verified prices.",
+      "notes": {
+        "source_description": "Comprehensive recovery near Balboa Island. Cryotherapy, contrast therapy, infrared sauna, float therapy, LED light, IV drips & vitamin shots, compression, massage. Services: Cryotherapy, Sauna, Float Tank, Red Light Therapy, IV Therapy, Compression Therapy. Located in Newport Beach, Orange County."
+      }
+    },
+    {
+      "source_url": "https://impossible.health/san-diego/float-north-county",
+      "city_slug": "san-diego",
+      "provider_slug": "float-north-county",
+      "name": "Float North County",
+      "contact": {
+        "address": "991 Lomas Santa Fe Dr, Suite D, Solana Beach, CA 92075",
+        "phone": "(858) 925-6069",
+        "email": "info@floatnorthcounty.com",
+        "website": "https://floatnorthcounty.com",
+        "email_status": "public_email_found",
+        "contact_pages_checked": [
+          {
+            "url": "https://floatnorthcounty.com",
+            "outcome": "ok"
+          },
+          {
+            "url": "https://floatnorthcounty.com",
+            "outcome": "ok"
+          },
+          {
+            "url": "https://floatnorthcounty.com",
+            "outcome": "ok"
+          }
+        ]
+      },
+      "offerings": [
+        {
+          "raw_name": "Float Tank",
+          "description": "Sensory deprivation therapy $60-100",
+          "duration": "60-90 min",
+          "price_amount": 60,
+          "price_max_amount": 100,
+          "price_currency": "USD",
+          "price_context": "$60–$100",
+          "source_url": "https://impossible.health/san-diego/float-north-county"
+        },
+        {
+          "raw_name": "Sauna",
+          "description": "Heat therapy & detoxification $20-60",
+          "duration": "20-45 min",
+          "price_amount": 20,
+          "price_max_amount": 60,
+          "price_currency": "USD",
+          "price_context": "$20–$60",
+          "source_url": "https://impossible.health/san-diego/float-north-county"
+        }
+      ],
+      "offering_price_source": "Impossible Health listing service cards; prices are directory-listed ranges and not represented as official-provider verified prices.",
+      "notes": {
+        "source_description": "10+ years of float therapy experience. 4 float tanks with dense epsom salt solutions, 2 infrared saunas. Sensory deprivation for deep relaxation and recovery. Services: Float Tank, Sauna. Located in Solana Beach, San Diego."
+      }
+    },
+    {
+      "source_url": "https://impossible.health/san-diego/san-diego-cardiac-center",
+      "city_slug": "san-diego",
+      "provider_slug": "san-diego-cardiac-center",
+      "name": "San Diego Cardiac Center",
+      "contact": {
+        "address": "3131 Berger Ave, Suite 250, San Diego, CA 92123",
+        "phone": "(858) 244-6800",
+        "email": null,
+        "website": "https://www.sdcardiac.com/diagnostic/coronary-artery-calcium-score/",
+        "email_status": "no_public_email_found",
+        "contact_pages_checked": [
+          {
+            "url": "https://www.sdcardiac.com/diagnostic/coronary-artery-calcium-score/",
+            "outcome": "ok"
+          },
+          {
+            "url": "https://www.sdcardiac.com/diagnostic/coronary-artery-calcium-score/",
+            "outcome": "ok"
+          },
+          {
+            "url": "https://www.sdcardiac.com/diagnostic/coronary-artery-calcium-score/",
+            "outcome": "ok"
+          }
+        ]
+      },
+      "offerings": [
+        {
+          "raw_name": "Calcium Score CT",
+          "description": "Heart disease risk assessment $75-200",
+          "duration": "10-15 min",
+          "price_amount": 75,
+          "price_max_amount": 200,
+          "price_currency": "USD",
+          "price_context": "$75–$200",
+          "source_url": "https://impossible.health/san-diego/san-diego-cardiac-center"
+        }
+      ],
+      "offering_price_source": "Impossible Health listing service cards; prices are directory-listed ranges and not represented as official-provider verified prices.",
+      "notes": {
+        "source_description": "Board-certified cardiologists providing coronary artery calcium scoring. Quick 5-10 minute scan with personalized risk assessment. No referral needed. Services: Calcium Score CT. Located in Kearny Mesa, San Diego."
+      }
+    },
+    {
+      "source_url": "https://impossible.health/san-francisco/archimedes-banya",
+      "city_slug": "san-francisco",
+      "provider_slug": "archimedes-banya",
+      "name": "Archimedes Banya",
+      "contact": {
+        "address": "748 Innes Ave, San Francisco, CA 94124",
+        "phone": "(415) 206-9000",
+        "email": "info@banyasf.com",
+        "website": "https://banyasf.com",
+        "email_status": "public_email_found",
+        "contact_pages_checked": [
+          {
+            "url": "https://banyasf.com",
+            "outcome": "ok"
+          },
+          {
+            "url": "https://banyasf.com",
+            "outcome": "ok"
+          },
+          {
+            "url": "https://banyasf.com",
+            "outcome": "ok"
+          }
+        ]
+      },
+      "offerings": [
+        {
+          "raw_name": "Sauna",
+          "description": "Heat therapy & detoxification $20-60",
+          "duration": "20-45 min",
+          "price_amount": 20,
+          "price_max_amount": 60,
+          "price_currency": "USD",
+          "price_context": "$20–$60",
+          "source_url": "https://impossible.health/san-francisco/archimedes-banya"
+        },
+        {
+          "raw_name": "Cold Plunge",
+          "description": "Cold water immersion therapy $15-50",
+          "duration": "3-15 min",
+          "price_amount": 15,
+          "price_max_amount": 50,
+          "price_currency": "USD",
+          "price_context": "$15–$50",
+          "source_url": "https://impossible.health/san-francisco/archimedes-banya"
+        }
+      ],
+      "offering_price_source": "Impossible Health listing service cards; prices are directory-listed ranges and not represented as official-provider verified prices.",
+      "notes": {
+        "source_description": "Russian-style bathhouse. Multiple saunas (170-210°F), Turkish steam room, hot tubs, cold plunge. Day pass $67/3hrs. Social atmosphere, chess nights, rooftop yoga. Services: Sauna, Cold Plunge. Located in Bayview, San Francisco Bay Area."
+      }
+    },
+    {
+      "source_url": "https://impossible.health/san-francisco/kabuki-springs",
+      "city_slug": "san-francisco",
+      "provider_slug": "kabuki-springs",
+      "name": "Kabuki Springs & Spa",
+      "contact": {
+        "address": "1750 Geary Blvd, San Francisco, CA 94115",
+        "phone": "(415) 922-6000",
+        "email": null,
+        "website": "https://kabukisprings.com",
+        "email_status": "no_public_email_found",
+        "contact_pages_checked": [
+          {
+            "url": "https://kabukisprings.com",
+            "outcome": "ok"
+          },
+          {
+            "url": "https://kabukisprings.com",
+            "outcome": "ok"
+          },
+          {
+            "url": "https://kabukisprings.com",
+            "outcome": "ok"
+          }
+        ]
+      },
+      "offerings": [
+        {
+          "raw_name": "Sauna",
+          "description": "Heat therapy & detoxification $20-60",
+          "duration": "20-45 min",
+          "price_amount": 20,
+          "price_max_amount": 60,
+          "price_currency": "USD",
+          "price_context": "$20–$60",
+          "source_url": "https://impossible.health/san-francisco/kabuki-springs"
+        },
+        {
+          "raw_name": "Cold Plunge",
+          "description": "Cold water immersion therapy $15-50",
+          "duration": "3-15 min",
+          "price_amount": 15,
+          "price_max_amount": 50,
+          "price_currency": "USD",
+          "price_context": "$15–$50",
+          "source_url": "https://impossible.health/san-francisco/kabuki-springs"
+        }
+      ],
+      "offering_price_source": "Impossible Health listing service cards; prices are directory-listed ranges and not represented as official-provider verified prices.",
+      "notes": {
+        "source_description": "Iconic Japantown bathhouse since 1968. Hot and cold pools, dry sauna, steam room. Day pass $49. Gender-specific and all-gender sessions. Meditative atmosphere. Services: Sauna, Cold Plunge. Located in Japantown, San Francisco Bay Area."
+      }
+    },
+    {
+      "source_url": "https://impossible.health/san-francisco/oakland-floats",
+      "city_slug": "san-francisco",
+      "provider_slug": "oakland-floats",
+      "name": "Oakland Floats",
+      "contact": {
+        "address": "344 40th Street, Oakland, CA 94609",
+        "phone": "(510) 423-8772",
+        "email": null,
+        "website": "https://oaklandfloats.com",
+        "email_status": "no_public_email_found",
+        "contact_pages_checked": [
+          {
+            "url": "https://oaklandfloats.com",
+            "outcome": "ok"
+          }
+        ]
+      },
+      "offerings": [
+        {
+          "raw_name": "Float Tank",
+          "description": "Sensory deprivation therapy $60-100",
+          "duration": "60-90 min",
+          "price_amount": 60,
+          "price_max_amount": 100,
+          "price_currency": "USD",
+          "price_context": "$60–$100",
+          "source_url": "https://impossible.health/san-francisco/oakland-floats"
+        }
+      ],
+      "offering_price_source": "Impossible Health listing service cards; prices are directory-listed ranges and not represented as official-provider verified prices.",
+      "notes": {
+        "source_description": "East Bay's premier float center. 4 Samadhi tanks and custom chambers. Awarded \"Best Sensory Deprivers\" by East Bay Express. Deep relaxation and meditation. Services: Float Tank. Located in Temescal, San Francisco Bay Area."
+      }
+    },
+    {
+      "source_url": "https://impossible.health/toronto/othership-yorkville",
+      "city_slug": "toronto",
+      "provider_slug": "othership-yorkville",
+      "name": "Othership Yorkville",
+      "contact": {
+        "address": "110 Bloor St W, Toronto, ON M5S 2W7",
+        "phone": "(416) 922-2547",
+        "email": "info@othership.com",
+        "website": "https://www.othership.us/yorkville",
+        "email_status": "public_email_found",
+        "contact_pages_checked": [
+          {
+            "url": "https://www.othership.us/yorkville",
+            "outcome": "ok"
+          },
+          {
+            "url": "https://www.othership.us/yorkville",
+            "outcome": "ok"
+          },
+          {
+            "url": "https://www.othership.us/yorkville",
+            "outcome": "ok"
+          }
+        ]
+      },
+      "offerings": [
+        {
+          "raw_name": "Cold Plunge",
+          "description": "Cold water immersion therapy $15-50",
+          "duration": "3-15 min",
+          "price_amount": 15,
+          "price_max_amount": 50,
+          "price_currency": "USD",
+          "price_context": "$15–$50",
+          "source_url": "https://impossible.health/toronto/othership-yorkville"
+        },
+        {
+          "raw_name": "Sauna",
+          "description": "Heat therapy & detoxification $20-60",
+          "duration": "20-45 min",
+          "price_amount": 20,
+          "price_max_amount": 60,
+          "price_currency": "USD",
+          "price_context": "$20–$60",
+          "source_url": "https://impossible.health/toronto/othership-yorkville"
+        }
+      ],
+      "offering_price_source": "Impossible Health listing service cards; prices are directory-listed ranges and not represented as official-provider verified prices.",
+      "notes": {
+        "source_description": "Premium sauna and ice bath studio in upscale Yorkville. Performance saunas, cold plunges, guided breathwork, and community experiences. Services: Cold Plunge, Sauna. Located in Yorkville, Toronto."
+      }
+    }
+  ]
+}

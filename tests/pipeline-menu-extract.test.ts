@@ -164,6 +164,32 @@ describe("menu extraction task", () => {
     }));
   });
 
+  test("uses the full bounded output budget for long official menus", async () => {
+    const complete = vi.fn(async () => ({
+      content: JSON.stringify({ offerings: [], notes: "" }),
+    }));
+
+    await extractOfferingsWithLlm({
+      location: eligibleLocation(),
+      pages: [{
+        ok: true,
+        requested_url: "https://clinic.example/pricing",
+        final_url: "https://clinic.example/pricing",
+        title: "Pricing",
+        content: "Service name and price. ".repeat(400),
+      }],
+      runId: "17",
+      attempts: 1,
+      llmClient: { complete },
+    });
+
+    expect(complete).toHaveBeenCalledWith(expect.objectContaining({
+      tier: "default",
+      model: "openai/gpt-5.5",
+      maxTokens: MENU_EXTRACT_MAX_TOKENS_CAP,
+    }));
+  });
+
   test.each([
     [1, 2_400],
     [2, 4_800],

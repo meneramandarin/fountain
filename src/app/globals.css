@@ -30,12 +30,6 @@
   border-bottom: 1px solid var(--landing-line);
 }
 
-.directory-topbar.treatment-location-topbar {
-  max-width: 1240px;
-  margin: 0 auto;
-  padding-inline: 0;
-}
-
 .treatment-location-hero-inner,
 .treatment-location-results,
 .treatment-location-guide,
@@ -45,24 +39,7 @@
 }
 
 .treatment-location-hero-inner {
-  padding-top: clamp(42px, 8vw, 96px);
-}
-
-.treatment-location-breadcrumbs {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 8px;
-  margin-bottom: 30px;
-  color: rgba(30, 26, 15, 0.58);
-  font-family: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
-  font-size: 12px;
-}
-
-.treatment-location-breadcrumbs a:hover {
-  color: var(--landing-fg);
-  text-decoration: underline;
-  text-underline-offset: 3px;
+  padding-top: clamp(112px, 10vw, 132px);
 }
 
 .treatment-location-eyebrow,
@@ -245,6 +222,10 @@
 @media (max-width: 640px) {
   .treatment-location-hero {
     padding-inline: 16px;
+  }
+
+  .treatment-location-hero-inner {
+    padding-top: 142px;
   }
 
   .treatment-location-hero h1 {

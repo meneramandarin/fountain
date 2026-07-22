@@ -26,7 +26,7 @@ describe("treatment location pages", () => {
     })).toBe("san-diego-ca-mx");
   });
 
-  test("routes one-to-two location cities to structured directory searches", () => {
+  test("routes treatment cities to structured directory searches", () => {
     const [hub] = buildTreatmentHubs([treatment], [cityRecord(2)]);
     expect(hub.cities[0].indexable).toBe(false);
     expect(hub.cities[0].href).toContain("/directory?");
@@ -34,17 +34,15 @@ describe("treatment location pages", () => {
     expect(hub.cities[0].href).not.toContain("q=");
   });
 
-  test("a city crossing from two to three locations becomes clean and enters the sitemap", () => {
+  test("a city crossing the discovery threshold still routes to the directory and stays out of the sitemap", () => {
     const [before] = buildTreatmentHubs([treatment], [cityRecord(2)]);
     const [after] = buildTreatmentHubs([treatment], [cityRecord(3)]);
-    const beforeUrls = new Set(buildSitemap([before]).map((entry) => new URL(entry.url).pathname));
-    const afterUrls = new Set(buildSitemap([after]).map((entry) => new URL(entry.url).pathname));
+    const sitemapUrls = new Set(buildSitemap().map((entry) => new URL(entry.url).pathname));
 
     expect(before.cities[0].indexable).toBe(false);
-    expect(beforeUrls).not.toContain("/treatments/dexa-scan/austin-tx");
     expect(after.cities[0].indexable).toBe(true);
-    expect(after.cities[0].href).toBe("/treatments/dexa-scan/austin-tx");
-    expect(afterUrls).toContain("/treatments/dexa-scan/austin-tx");
+    expect(after.cities[0].href).toContain("/directory?");
+    expect(sitemapUrls).not.toContain("/treatments/dexa-scan/austin-tx");
   });
 });
 
