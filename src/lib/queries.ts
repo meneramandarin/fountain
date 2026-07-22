@@ -1,5 +1,9 @@
 import { hasTable, isPostgres, row, rows } from "@/lib/db";
-import type { TreatmentCatalogItem } from "@/lib/treatment-pages";
+import {
+  minimumTreatmentCityLocations,
+  type TreatmentCatalogItem,
+  type TreatmentCityCount,
+} from "@/lib/treatment-pages";
 
 export const PAGE_SIZE = 18;
 
@@ -485,6 +489,53 @@ export async function getTreatmentCatalog(minimumLocations = 1): Promise<Treatme
     name: treatment.name,
     category: treatment.category?.trim() || "Other treatments",
     locationCount: Number(treatment.location_count),
+  }));
+}
+
+export async function getEligibleTreatmentCities(
+  minimumLocations = minimumTreatmentCityLocations,
+): Promise<TreatmentCityCount[]> {
+  const cities = await rows<{
+    treatment_id: number;
+    city: string;
+    region: string | null;
+    country_code: string;
+    country_name: string | null;
+    location_count: number;
+  }>(
+    `
+    SELECT
+      o.treatment_id,
+      ci.city,
+      ci.region,
+      ci.country_code,
+      ci.country_name,
+      COUNT(DISTINCT l.id) AS location_count
+    FROM offerings o
+    JOIN locations l ON l.id = o.location_id AND ${activeEntityCondition("l")}
+    JOIN city_index ci
+      ON ${trimLower("ci.city")} = ${trimLower("l.locality")}
+      AND ci.country_code = l.country_code
+      AND (
+        (NULLIF(TRIM(ci.region), '') IS NULL AND NULLIF(TRIM(l.region), '') IS NULL)
+        OR ${trimLower("ci.region")} = ${trimLower("l.region")}
+      )
+    WHERE ${activeOfferingCondition("o")}
+      AND COALESCE(l.is_virtual, false) = false
+    GROUP BY o.treatment_id, ci.city, ci.region, ci.country_code, ci.country_name
+    HAVING COUNT(DISTINCT l.id) >= ?
+    ORDER BY location_count DESC, ${orderNoCase("ci.city")}
+  `,
+    [minimumLocations],
+  );
+
+  return cities.map((city) => ({
+    treatmentId: Number(city.treatment_id),
+    city: city.city,
+    region: city.region,
+    countryCode: city.country_code,
+    countryName: city.country_name,
+    locationCount: Number(city.location_count),
   }));
 }
 
