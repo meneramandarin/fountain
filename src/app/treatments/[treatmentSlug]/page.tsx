@@ -8,7 +8,12 @@ import { siteUrl } from "@/lib/site";
 import { isTreatmentPageIndexable } from "@/lib/treatment-pages";
 import styles from "../treatments.module.css";
 
-export const revalidate = 3600;
+export const revalidate = 86_400;
+export const dynamicParams = true;
+
+export function generateStaticParams() {
+  return [];
+}
 
 type TreatmentPageProps = {
   params: Promise<{ treatmentSlug: string }>;
@@ -55,6 +60,7 @@ export default async function TreatmentPage({ params }: TreatmentPageProps) {
         <SplitDirectorySearch
           className={styles.hubSearch}
           initialWhat={hub.treatment.name}
+          initialTreatmentId={String(hub.treatment.id)}
           initialWhere=""
           kind="locations"
         />
@@ -63,8 +69,9 @@ export default async function TreatmentPage({ params }: TreatmentPageProps) {
           {hub.cities.map((city) => (
             <li key={city.href}>
               <Link href={city.href}>
-                <span>{cityLabel(city)}</span>
-                <small>{city.locationCount.toLocaleString()} locations</small>
+                <span>
+                  {cityLabel(city)} · {city.locationCount.toLocaleString()} locations
+                </span>
               </Link>
             </li>
           ))}

@@ -3,10 +3,6 @@ import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, test } from "vitest";
 import { LandingSeoDiscovery } from "../src/components/landing-seo-discovery";
 import {
-  pilotTreatmentLocationHref,
-  pilotTreatmentLocationPages,
-} from "../src/lib/treatment-location-pages";
-import {
   treatmentHref,
   type TreatmentCatalogItem,
 } from "../src/lib/treatment-pages";
@@ -57,11 +53,11 @@ const treatments: TreatmentCatalogItem[] = [
 ];
 
 describe("landing SEO discovery", () => {
-  test("links every pilot page once through the city-first section", () => {
+  test("links every live indexable city page once through the city-first section", () => {
     const markup = renderDiscovery();
 
-    for (const page of pilotTreatmentLocationPages) {
-      const href = `href="${pilotTreatmentLocationHref(page)}"`;
+    for (const page of locationPages) {
+      const href = `href="${page.href}"`;
       expect(markup.split(href)).toHaveLength(2);
     }
   });
@@ -81,7 +77,7 @@ describe("landing SEO discovery", () => {
 
     expect(markup).toContain("Explore by location");
     expect(markup).toContain("Explore treatments");
-    expect(markup).toContain("directory featuring dozens of treatments");
+    expect(markup).toContain("Browse 6 popular treatments");
     expect(markup).toContain("Browse treatment guides available by city");
     expect(markup).not.toContain("currently available by city");
     expect(markup).not.toContain("/directory?");
@@ -91,7 +87,7 @@ describe("landing SEO discovery", () => {
   test("uses flat text columns without reusing editorial imagery", () => {
     const markup = renderDiscovery();
 
-    expect(markup.match(/class="location-search-column"/g)).toHaveLength(11);
+    expect(markup.match(/class="location-search-column"/g)).toHaveLength(5);
     expect(markup).not.toContain("<img");
     expect(markup).not.toContain("/domains/");
     expect(markup).not.toContain("cityShortcuts");
@@ -100,6 +96,23 @@ describe("landing SEO discovery", () => {
 
 function renderDiscovery() {
   return renderToStaticMarkup(
-    createElement(LandingSeoDiscovery, { treatments }),
+    createElement(LandingSeoDiscovery, { treatments, locationPages }),
   );
 }
+
+const locationPages = [
+  {
+    href: "/treatments/dexa-scan/austin-tx",
+    treatmentLabel: "DEXA scan",
+    cityLabel: "Austin, TX",
+    city: "Austin",
+    locationCount: 7,
+  },
+  {
+    href: "/treatments/nad-iv-therapy/miami-fl",
+    treatmentLabel: "NAD+ IV therapy",
+    cityLabel: "Miami, FL",
+    city: "Miami",
+    locationCount: 5,
+  },
+];

@@ -1,14 +1,14 @@
 import type { Metadata } from "next";
 import { DirectoryShell, type DirectoryState, type SearchPayload } from "@/components/directory-shell";
 import { directoryParamsFromState, directoryStateFromSearchParams } from "@/lib/directory-search-state";
-import { searchLocations } from "@/lib/queries";
+import { getTreatmentNameById, searchLocations } from "@/lib/queries";
 import { ogImage, siteDescription } from "@/lib/site";
 import { redirect } from "next/navigation";
 
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
 
-export const metadata: Metadata = {
+const baseMetadata: Metadata = {
   title: "Longevity Directory",
   description: siteDescription,
   alternates: {
@@ -32,6 +32,16 @@ type DirectoryPageProps = {
   searchParams: Promise<Record<string, string | string[] | undefined>>;
 };
 
+export async function generateMetadata({ searchParams }: DirectoryPageProps): Promise<Metadata> {
+  const params = await searchParams;
+  const hasSearchParams = Object.values(params).some((raw) =>
+    (Array.isArray(raw) ? raw : [raw]).some((item) => Boolean(item)),
+  );
+  return hasSearchParams
+    ? { ...baseMetadata, robots: { index: false, follow: true } }
+    : { ...baseMetadata, robots: { index: true, follow: true } };
+}
+
 export default async function DirectoryPage({ searchParams }: DirectoryPageProps) {
   const params = await searchParams;
   if (value(params, "kind") === "practitioners") {
@@ -39,12 +49,19 @@ export default async function DirectoryPage({ searchParams }: DirectoryPageProps
   }
   const initialState = directoryStateFromSearchParams(params);
   const initialParams = directoryParamsFromState(initialState);
-  const initialPayload = await searchLocations(initialParams, initialState.page);
+  const treatmentId = initialState.treatment_ids.length === 1
+    ? Number.parseInt(initialState.treatment_ids[0], 10)
+    : NaN;
+  const [initialPayload, initialTreatmentLabel] = await Promise.all([
+    searchLocations(initialParams, initialState.page),
+    Number.isFinite(treatmentId) ? getTreatmentNameById(treatmentId) : null,
+  ]);
   return (
     <DirectoryShell
       key={stateKey(initialState)}
       initialPayload={initialPayload as SearchPayload}
       initialState={initialState}
+      initialTreatmentLabel={initialTreatmentLabel || undefined}
     />
   );
 }

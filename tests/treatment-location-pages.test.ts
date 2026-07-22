@@ -1,55 +1,62 @@
 import { describe, expect, test } from "vitest";
 import { buildSitemap } from "../src/app/sitemap";
-import {
-  findPilotTreatmentLocationHref,
-  findPilotTreatmentLocationPage,
-  pilotTreatmentHref,
-  pilotTreatmentLocationHref,
-  pilotTreatmentLocationPages,
-} from "../src/lib/treatment-location-pages";
+import { buildTreatmentHubs } from "../src/lib/treatment-hubs";
+import { treatmentCityHref, treatmentCitySlug, type TreatmentCatalogItem } from "../src/lib/treatment-pages";
 
-describe("treatment location SEO pilot", () => {
-  test("contains exactly 20 unique canonical pages", () => {
-    const paths = pilotTreatmentLocationPages.map(pilotTreatmentLocationHref);
+const treatment: TreatmentCatalogItem = {
+  id: 3,
+  name: "DEXA scan",
+  category: "Diagnostics",
+  locationCount: 5,
+};
 
-    expect(paths).toHaveLength(20);
-    expect(new Set(paths).size).toBe(20);
+describe("treatment location pages", () => {
+  test("builds stable clean city URLs from live treatment and city records", () => {
+    const city = cityRecord(3);
+    expect(treatmentCitySlug(city)).toBe("austin-tx");
+    expect(treatmentCityHref(treatment, city)).toBe("/treatments/dexa-scan/austin-tx");
   });
 
-  test("includes the agreed high-intent examples", () => {
-    expect(findPilotTreatmentLocationPage("dexa-scan", "miami-fl")).toBeTruthy();
-    expect(findPilotTreatmentLocationPage("dexa-scan", "austin-tx")).toBeTruthy();
-    expect(findPilotTreatmentLocationPage("iv-drip", "san-francisco-ca")).toBeTruthy();
+  test("keeps non-US city slugs distinct from matching US city slugs", () => {
+    expect(treatmentCitySlug({
+      ...cityRecord(3),
+      city: "San Diego",
+      region: "CA",
+      countryCode: "MX",
+    })).toBe("san-diego-ca-mx");
   });
 
-  test("maps matching city links to canonical pilot routes", () => {
-    expect(findPilotTreatmentLocationHref({
-      treatmentId: 3,
-      locality: "Austin",
-      region: "TX",
-      countryCode: "US",
-    })).toBe("/treatments/dexa-scan/austin-tx");
-
-    expect(findPilotTreatmentLocationHref({
-      treatmentId: 21,
-      locality: "San Francisco",
-      region: null,
-      countryCode: "US",
-    })).toBe("/treatments/iv-drip/san-francisco-ca");
+  test("routes one-to-two location cities to structured directory searches", () => {
+    const [hub] = buildTreatmentHubs([treatment], [cityRecord(2)]);
+    expect(hub.cities[0].indexable).toBe(false);
+    expect(hub.cities[0].href).toContain("/directory?");
+    expect(hub.cities[0].href).toContain("treatment_id=3");
+    expect(hub.cities[0].href).not.toContain("q=");
   });
 
-  test("maps pilot pages back to their parent treatment page", () => {
-    const page = findPilotTreatmentLocationPage("dexa-scan", "miami-fl");
-    const ivPage = findPilotTreatmentLocationPage("iv-drip", "miami-fl");
+  test("a city crossing from two to three locations becomes clean and enters the sitemap", () => {
+    const [before] = buildTreatmentHubs([treatment], [cityRecord(2)]);
+    const [after] = buildTreatmentHubs([treatment], [cityRecord(3)]);
+    const beforeUrls = new Set(buildSitemap([before]).map((entry) => new URL(entry.url).pathname));
+    const afterUrls = new Set(buildSitemap([after]).map((entry) => new URL(entry.url).pathname));
 
-    expect(page && pilotTreatmentHref(page)).toBe("/treatments/dexa-scan");
-    expect(ivPage && pilotTreatmentHref(ivPage)).toBe("/treatments/iv-nutrient-therapy");
-  });
-
-  test("adds all 20 pilot routes to the sitemap", () => {
-    const sitemapUrls = new Set(buildSitemap().map((entry) => new URL(entry.url).pathname));
-    for (const page of pilotTreatmentLocationPages) {
-      expect(sitemapUrls.has(pilotTreatmentLocationHref(page))).toBe(true);
-    }
+    expect(before.cities[0].indexable).toBe(false);
+    expect(beforeUrls).not.toContain("/treatments/dexa-scan/austin-tx");
+    expect(after.cities[0].indexable).toBe(true);
+    expect(after.cities[0].href).toBe("/treatments/dexa-scan/austin-tx");
+    expect(afterUrls).toContain("/treatments/dexa-scan/austin-tx");
   });
 });
+
+function cityRecord(locationCount: number) {
+  return {
+    treatmentId: 3,
+    city: "Austin",
+    region: "TX",
+    countryCode: "US",
+    countryName: "United States",
+    latitude: 30.2672,
+    longitude: -97.7431,
+    locationCount,
+  };
+}

@@ -1,33 +1,27 @@
 import Link from "next/link";
 import {
-  pilotTreatmentLocationHref,
-  pilotTreatmentLocationPages,
-  type PilotTreatmentLocationPage,
-} from "@/lib/treatment-location-pages";
-import {
   treatmentHref,
   type TreatmentCatalogItem,
 } from "@/lib/treatment-pages";
 import styles from "./landing-seo-discovery.module.css";
 
-const cityOrder = [
-  "new-york-ny",
-  "miami-fl",
-  "austin-tx",
-  "san-francisco-ca",
-  "los-angeles-ca",
-  "san-diego-ca",
-  "denver-co",
-  "seattle-wa",
-];
 const homepageTreatmentsPerCategory = 4;
+
+export type TreatmentLocationDiscoveryLink = {
+  href: string;
+  treatmentLabel: string;
+  cityLabel: string;
+  city: string;
+  locationCount: number;
+};
 
 type LandingSeoDiscoveryProps = {
   treatments: TreatmentCatalogItem[];
+  locationPages: TreatmentLocationDiscoveryLink[];
 };
 
-export function LandingSeoDiscovery({ treatments }: LandingSeoDiscoveryProps) {
-  const cityGroups = groupByCity();
+export function LandingSeoDiscovery({ treatments, locationPages }: LandingSeoDiscoveryProps) {
+  const cityGroups = groupByCity(locationPages);
   const treatmentGroups = groupTopTreatments(treatments);
   const displayedTreatmentCount = treatmentGroups.reduce(
     (total, group) => total + group.treatments.length,
@@ -88,10 +82,10 @@ export function LandingSeoDiscovery({ treatments }: LandingSeoDiscoveryProps) {
                 <div className="location-search-links">
                   {group.pages.map((page) => (
                     <Link
-                      href={pilotTreatmentLocationHref(page)}
-                      key={pilotTreatmentLocationHref(page)}
+                      href={page.href}
+                      key={page.href}
                     >
-                      {page.treatment.searchLabel} in {page.place.locality}
+                      {page.treatmentLabel} in {page.city}
                     </Link>
                   ))}
                 </div>
@@ -107,19 +101,23 @@ export function LandingSeoDiscovery({ treatments }: LandingSeoDiscoveryProps) {
 type CityGroup = {
   slug: string;
   label: string;
-  pages: PilotTreatmentLocationPage[];
+  pages: TreatmentLocationDiscoveryLink[];
 };
 
-function groupByCity(): CityGroup[] {
-  return cityOrder.flatMap((slug) => {
-    const pages = pilotTreatmentLocationPages.filter(
-      (page) => page.place.slug === slug,
-    );
-    const place = pages[0]?.place;
-    return place
-      ? [{ slug, label: `${place.locality}, ${place.region}`, pages }]
-      : [];
-  });
+function groupByCity(pages: TreatmentLocationDiscoveryLink[]): CityGroup[] {
+  const groups = new Map<string, CityGroup>();
+  for (const page of pages) {
+    const group = groups.get(page.cityLabel) || { slug: page.cityLabel, label: page.cityLabel, pages: [] };
+    group.pages.push(page);
+    groups.set(page.cityLabel, group);
+  }
+  return Array.from(groups.values())
+    .sort((a, b) => {
+      const aCount = a.pages.reduce((sum, page) => sum + page.locationCount, 0);
+      const bCount = b.pages.reduce((sum, page) => sum + page.locationCount, 0);
+      return bCount - aCount || a.label.localeCompare(b.label);
+    })
+    .slice(0, 8);
 }
 
 function groupTopTreatments(treatments: TreatmentCatalogItem[]) {

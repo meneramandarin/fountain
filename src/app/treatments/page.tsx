@@ -4,7 +4,7 @@ import { cache } from "react";
 import { getTreatmentHubs } from "@/lib/treatment-hubs";
 import styles from "./treatments.module.css";
 
-export const revalidate = 3600;
+export const revalidate = 86_400;
 
 export const metadata: Metadata = {
   title: "Treatments",

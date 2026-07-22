@@ -91,12 +91,15 @@ const visitorLocationCacheKey = "fountain.visitorLocation.v1";
 export function DirectoryShell({
   initialPayload,
   initialState: seededState,
+  initialTreatmentLabel,
   searchHeading,
 }: {
   initialPayload: SearchPayload;
   initialState: DirectoryState;
+  initialTreatmentLabel?: string;
   searchHeading?: {
     treatmentLabel: string;
+    treatmentHref: string;
     cityLabel: string;
   };
 }) {
@@ -237,12 +240,12 @@ export function DirectoryShell({
     updateState({ page });
   }, [updateState]);
 
-  const submitSearch = useCallback((payload: { what: string; city_label: string; city_country: string; place_type?: string; city_lat?: number; city_lng?: number }) => {
+  const submitSearch = useCallback((payload: { what: string; treatment_id?: string; city_label: string; city_country: string; place_type?: string; city_lat?: number; city_lng?: number }) => {
     const isCountry = payload.place_type === "country" && payload.city_country;
     const nextState = {
       ...emptyState(),
       kind: state.kind,
-      q: payload.what,
+      q: payload.treatment_id ? "" : payload.what,
       country: isCountry ? payload.city_country : "",
       locality: "",
       city_label: payload.city_label,
@@ -250,10 +253,13 @@ export function DirectoryShell({
       place_type: isCountry ? "country" : "",
       city_lat: isCountry ? undefined : payload.city_lat,
       city_lng: isCountry ? undefined : payload.city_lng,
+      treatment_ids: payload.treatment_id ? [payload.treatment_id] : [],
     };
     const params = new URLSearchParams();
     params.set("kind", nextState.kind);
-    if (nextState.q) {
+    if (nextState.treatment_ids.length) {
+      params.set("treatment_id", nextState.treatment_ids.join(","));
+    } else if (nextState.q) {
       params.set("q", nextState.q);
     }
     if (isCountry) {
@@ -278,7 +284,8 @@ export function DirectoryShell({
     <main className="directory-shell">
       <LandingScrollHeader
         alwaysVisible
-        initialWhat={state.q}
+        initialWhat={initialTreatmentLabel || state.q}
+        initialTreatmentId={state.treatment_ids.length === 1 ? state.treatment_ids[0] : undefined}
         initialWhere={state.city_label || state.locality}
         initialCityCountry={state.city_country}
         initialPlaceType={state.place_type}
@@ -290,6 +297,15 @@ export function DirectoryShell({
 
       <div className="directory-layout">
         <section ref={resultsRef} className="directory-results" aria-live="polite">
+          {searchHeading ? (
+            <nav className="directory-breadcrumbs" aria-label="Breadcrumb">
+              <Link href="/treatments">All treatments</Link>
+              <span aria-hidden="true">→</span>
+              <Link href={searchHeading.treatmentHref}>{searchHeading.treatmentLabel}</Link>
+              <span aria-hidden="true">→</span>
+              <span aria-current="page">{searchHeading.cityLabel}</span>
+            </nav>
+          ) : null}
           <DirectorySearchBanner payload={payload} />
 
           <div className="resultbar">

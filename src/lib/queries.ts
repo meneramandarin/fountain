@@ -1,6 +1,5 @@
 import { hasTable, isPostgres, row, rows } from "@/lib/db";
 import {
-  minimumTreatmentCityLocations,
   type TreatmentCatalogItem,
   type TreatmentCityCount,
 } from "@/lib/treatment-pages";
@@ -73,15 +72,6 @@ export type DirectoryParams = {
   entity_type?: string;
   care_model?: string;
   visitor?: VisitorLocationParams;
-};
-
-export type CityIndexPlace = {
-  city: string;
-  region: string | null;
-  countryCode: string;
-  countryName: string | null;
-  latitude: number;
-  longitude: number;
 };
 
 export type VisitorLocationParams = {
@@ -483,8 +473,8 @@ export async function getTreatmentCatalog(minimumLocations = 1): Promise<Treatme
       t.category,
       COUNT(DISTINCT l.id) AS location_count
     FROM treatments t
-    JOIN offerings o ON o.treatment_id = t.id AND ${activeOfferingCondition("o")}
-    JOIN locations l ON l.id = o.location_id AND ${activeEntityCondition("l")}
+    LEFT JOIN offerings o ON o.treatment_id = t.id AND ${activeOfferingCondition("o")}
+    LEFT JOIN locations l ON l.id = o.location_id AND ${activeEntityCondition("l")}
     WHERE COALESCE(l.is_virtual, false) = false
     GROUP BY t.id, t.canonical_name, t.category
     HAVING COUNT(DISTINCT l.id) >= ?
@@ -502,7 +492,7 @@ export async function getTreatmentCatalog(minimumLocations = 1): Promise<Treatme
 }
 
 export async function getEligibleTreatmentCities(
-  minimumLocations = minimumTreatmentCityLocations,
+  minimumLocations = 1,
 ): Promise<TreatmentCityCount[]> {
   const cities = await rows<{
     treatment_id: number;
@@ -510,6 +500,8 @@ export async function getEligibleTreatmentCities(
     region: string | null;
     country_code: string;
     country_name: string | null;
+    latitude: number;
+    longitude: number;
     location_count: number;
   }>(
     `
@@ -519,19 +511,17 @@ export async function getEligibleTreatmentCities(
       ci.region,
       ci.country_code,
       ci.country_name,
+      ci.latitude,
+      ci.longitude,
       COUNT(DISTINCT l.id) AS location_count
     FROM offerings o
     JOIN locations l ON l.id = o.location_id AND ${activeEntityCondition("l")}
     JOIN city_index ci
       ON ${trimLower("ci.city")} = ${trimLower("l.locality")}
       AND ci.country_code = l.country_code
-      AND (
-        (NULLIF(TRIM(ci.region), '') IS NULL AND NULLIF(TRIM(l.region), '') IS NULL)
-        OR ${trimLower("ci.region")} = ${trimLower("l.region")}
-      )
     WHERE ${activeOfferingCondition("o")}
       AND COALESCE(l.is_virtual, false) = false
-    GROUP BY o.treatment_id, ci.city, ci.region, ci.country_code, ci.country_name
+    GROUP BY o.treatment_id, ci.city, ci.region, ci.country_code, ci.country_name, ci.latitude, ci.longitude
     HAVING COUNT(DISTINCT l.id) >= ?
     ORDER BY location_count DESC, ${orderNoCase("ci.city")}
   `,
@@ -544,43 +534,18 @@ export async function getEligibleTreatmentCities(
     region: city.region,
     countryCode: city.country_code,
     countryName: city.country_name,
+    latitude: Number(city.latitude),
+    longitude: Number(city.longitude),
     locationCount: Number(city.location_count),
   }));
 }
 
-export async function getCityIndexPlace(input: {
-  city: string;
-  region?: string | null;
-  countryCode: string;
-}): Promise<CityIndexPlace | null> {
-  const city = await row<{
-    city: string;
-    region: string | null;
-    country_code: string;
-    country_name: string | null;
-    latitude: number;
-    longitude: number;
-  }>(
-    `
-    SELECT city, region, country_code, country_name, latitude, longitude
-    FROM city_index
-    WHERE ${equalsNoCase("TRIM(city)")}
-      AND country_code = ?
-      AND (CAST(? AS text) IS NULL OR upper(COALESCE(region, '')) = upper(?))
-    ORDER BY listing_count DESC, image_coverage DESC
-    LIMIT 1
-  `,
-    [input.city, input.countryCode, input.region || null, input.region || null],
+export async function getTreatmentNameById(id: number) {
+  const treatment = await row<{ name: string }>(
+    "SELECT canonical_name AS name FROM treatments WHERE id = ?",
+    [id],
   );
-
-  return city ? {
-    city: city.city,
-    region: city.region,
-    countryCode: city.country_code,
-    countryName: city.country_name,
-    latitude: Number(city.latitude),
-    longitude: Number(city.longitude),
-  } : null;
+  return treatment?.name || null;
 }
 
 export async function getTreatmentLandingData(treatment: Pick<TreatmentCatalogItem, "id" | "name">): Promise<TreatmentLandingData> {
@@ -1678,7 +1643,9 @@ export async function searchLocations(params: DirectoryParams, page = 0) {
   const defaultOrder = defaultOrdering
     ? locationAwareDefaultOrder(params.visitor, visitorCountryListingCount)
     : null;
-  const orderBy = defaultOrder?.sql || (match
+  const orderBy = defaultOrder?.sql || ((params.treatment_ids || []).length
+    ? `${treatmentRatingOrder()}, ${orderNoCase("l.name")}`
+    : match
     ? `${locationDirectoryCompletenessRank()} ASC, search_match.fts_rank ASC, (google_reviews.rating IS NULL), google_reviews.rating DESC, (google_reviews.review_count IS NULL), google_reviews.review_count DESC, ${orderNoCase("l.name")}`
     : `${locationDirectoryCompletenessRank()} ASC, (google_reviews.review_count IS NULL), google_reviews.review_count DESC, ${orderNoCase("l.name")}`);
   const total =
@@ -1777,6 +1744,7 @@ async function searchLocationsByMapBounds(
     where,
     values: queryValues,
     page,
+    preferTreatmentRating: Boolean(params.treatment_ids?.length),
   });
   await hydrateLocationRows(payload.results);
   return { ...payload, mode: "map_bounds" as const, effective_radius: null };
@@ -1821,11 +1789,7 @@ async function searchLocationsByCountry(params: DirectoryParams, countryCode: st
     ${matchJoin}
     ${clause}
     ORDER BY
-      ${locationDirectoryCompletenessRank()} ASC,
-      (google_reviews.rating IS NULL),
-      google_reviews.rating DESC,
-      (google_reviews.review_count IS NULL),
-      google_reviews.review_count DESC,
+      ${(params.treatment_ids || []).length ? treatmentRatingOrder() : `${locationDirectoryCompletenessRank()} ASC, (google_reviews.rating IS NULL), google_reviews.rating DESC, (google_reviews.review_count IS NULL), google_reviews.review_count DESC`},
       ${orderNoCase("l.name")}
     LIMIT ? OFFSET ?
   `,
@@ -1940,6 +1904,7 @@ async function searchLocationsByCityRadius(params: DirectoryParams, latitude: nu
       const payload = await fallbackLocationPayload(latitude, longitude, page, {
         mode: "country_fallback",
         countryCode,
+        preferTreatmentRating: Boolean(params.treatment_ids?.length),
       });
       await hydrateLocationRows(payload.results);
       return {
@@ -1955,6 +1920,7 @@ async function searchLocationsByCityRadius(params: DirectoryParams, latitude: nu
       const payload = await fallbackLocationPayload(latitude, longitude, page, {
         mode: "cross_border",
         radius: 500,
+        preferTreatmentRating: Boolean(params.treatment_ids?.length),
       });
       await hydrateLocationRows(payload.results);
       return {
@@ -2023,6 +1989,7 @@ async function radiusLocationPayload(
     where,
     values: queryValues,
     page,
+    preferTreatmentRating: Boolean(params.treatment_ids?.length),
   });
 }
 
@@ -2030,7 +1997,7 @@ async function fallbackLocationPayload(
   latitude: number,
   longitude: number,
   page: number,
-  options: { mode: Exclude<RadiusSearchMode, "exact_radius" | "expanded_radius" | "empty">; countryCode?: string; radius?: number },
+  options: { mode: Exclude<RadiusSearchMode, "exact_radius" | "expanded_radius" | "empty">; countryCode?: string; radius?: number; preferTreatmentRating?: boolean },
 ) {
   const where = [
     activeEntityCondition("l"),
@@ -2058,6 +2025,7 @@ async function fallbackLocationPayload(
     where,
     values,
     page,
+    preferTreatmentRating: options.preferTreatmentRating,
   });
 }
 
@@ -2068,6 +2036,7 @@ async function locationPayloadFromWhere({
   where,
   values,
   page,
+  preferTreatmentRating = false,
 }: {
   latitude: number;
   longitude: number;
@@ -2075,6 +2044,7 @@ async function locationPayloadFromWhere({
   where: string[];
   values: unknown[];
   page: number;
+  preferTreatmentRating?: boolean;
 }) {
   const clause = where.length ? `WHERE ${where.join(" AND ")}` : "";
   const total = (await row<{ count: number }>(
@@ -2105,18 +2075,17 @@ async function locationPayloadFromWhere({
     ${locationDirectoryRankingJoins()}
     ${matchJoin}
     ${clause}
-    ORDER BY ${locationDirectoryCompletenessRank()} ASC,
-      distance_miles ASC,
-      (google_reviews.rating IS NULL),
-      google_reviews.rating DESC,
-      (google_reviews.review_count IS NULL),
-      google_reviews.review_count DESC,
+    ORDER BY ${preferTreatmentRating ? treatmentRatingOrder() : `${locationDirectoryCompletenessRank()} ASC, distance_miles ASC, (google_reviews.rating IS NULL), google_reviews.rating DESC, (google_reviews.review_count IS NULL), google_reviews.review_count DESC`},
       ${orderNoCase("l.name")}
     LIMIT ? OFFSET ?
   `,
     [latitude, latitude, longitude, ...values, PAGE_SIZE, page * PAGE_SIZE],
   );
   return { results, total, page, page_size: PAGE_SIZE };
+}
+
+function treatmentRatingOrder() {
+  return `(google_reviews.rating IS NULL), google_reviews.rating DESC, (google_reviews.review_count IS NULL), google_reviews.review_count DESC, ${locationDirectoryCompletenessRank()} ASC`;
 }
 
 function emptyLocationPayload(page: number, searchedCity: string | null, searchedCountry: string | null) {
