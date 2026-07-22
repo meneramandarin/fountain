@@ -79,7 +79,8 @@ describe("landing SEO discovery", () => {
 
     expect(markup).toContain("Explore by location");
     expect(markup).toContain("Explore treatments");
-    expect(markup).toContain("Browse 6 popular treatments");
+    expect(markup).toContain("Browse popular treatments");
+    expect(markup).not.toContain("Browse 6 popular treatments");
     expect(markup).toContain("Browse treatment guides available by city");
     expect(markup).not.toContain("currently available by city");
     expect(markup).not.toContain("/directory?");

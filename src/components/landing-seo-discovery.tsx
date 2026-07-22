@@ -22,10 +22,6 @@ type LandingSeoDiscoveryProps = {
 export function LandingSeoDiscovery({ treatments, locationPages }: LandingSeoDiscoveryProps) {
   const cityGroups = groupByCity(locationPages);
   const treatmentGroups = groupTopTreatments(treatments);
-  const displayedTreatmentCount = treatmentGroups.reduce(
-    (total, group) => total + group.treatments.length,
-    0,
-  );
 
   return (
     <>
@@ -36,7 +32,7 @@ export function LandingSeoDiscovery({ treatments, locationPages }: LandingSeoDis
         <div className="discover-card">
           <h2 id="explore-treatments-title">Explore treatments</h2>
           <p>
-            Browse {displayedTreatmentCount.toLocaleString()} popular treatments or{" "}
+            Browse popular treatments or{" "}
             <Link className={styles.directoryLink} href="/treatments">
               view all treatments here.
             </Link>
