@@ -297,15 +297,6 @@ export function DirectoryShell({
 
       <div className="directory-layout">
         <section ref={resultsRef} className="directory-results" aria-live="polite">
-          {searchHeading ? (
-            <nav className="directory-breadcrumbs" aria-label="Breadcrumb">
-              <Link href="/treatments">All treatments</Link>
-              <span aria-hidden="true">→</span>
-              <Link href={searchHeading.treatmentHref}>{searchHeading.treatmentLabel}</Link>
-              <span aria-hidden="true">→</span>
-              <span aria-current="page">{searchHeading.cityLabel}</span>
-            </nav>
-          ) : null}
           <DirectorySearchBanner payload={payload} />
 
           <div className="resultbar">

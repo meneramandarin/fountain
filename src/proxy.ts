@@ -1,5 +1,6 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { isDisallowedCrawlerUserAgent } from "@/lib/crawler-policy";
+import { findFixedTreatmentLocationPage } from "@/lib/fixed-treatment-location-pages";
 
 type RouteKind = "page" | "docs" | "api";
 
@@ -9,6 +10,14 @@ export function proxy(request: NextRequest) {
 
   if (isDisallowedCrawlerUserAgent(request.headers.get("user-agent"))) {
     return blockedResponse(request, 403, "Request blocked");
+  }
+
+  const treatmentLocation = treatmentLocationPath(pathname);
+  if (
+    treatmentLocation
+    && !findFixedTreatmentLocationPage(treatmentLocation.treatmentSlug, treatmentLocation.placeSlug)
+  ) {
+    return resolveTreatmentLocationRedirect(request, treatmentLocation);
   }
 
   if (routeKind.startsWith("api") && !isLikelySameOriginApiRequest(request)) {
@@ -28,6 +37,39 @@ export function proxy(request: NextRequest) {
   }
 
   return response;
+}
+
+async function resolveTreatmentLocationRedirect(
+  request: NextRequest,
+  treatmentLocation: { treatmentSlug: string; placeSlug: string },
+) {
+  const { getTreatmentCityPage } = await import("@/lib/treatment-hubs");
+  const resolved = await getTreatmentCityPage(
+    treatmentLocation.treatmentSlug,
+    treatmentLocation.placeSlug,
+  );
+  if (resolved && !resolved.city.indexable) {
+    return NextResponse.redirect(new URL(resolved.city.href, request.url), {
+      status: 301,
+      headers: {
+        "Cache-Control": "public, max-age=86400",
+        "X-Robots-Tag": "noindex, follow",
+      },
+    });
+  }
+
+  const response = NextResponse.next();
+  response.headers.set("X-Content-Type-Options", "nosniff");
+  response.headers.set("Referrer-Policy", "strict-origin-when-cross-origin");
+  return response;
+}
+
+function treatmentLocationPath(pathname: string) {
+  const match = pathname.match(/^\/treatments\/([^/]+)\/([^/]+)\/?$/);
+  if (!match) {
+    return null;
+  }
+  return { treatmentSlug: match[1], placeSlug: match[2] };
 }
 
 function getRouteKind(pathname: string): RouteKind {

@@ -7,7 +7,7 @@ import { LandingSeoDiscovery } from "@/components/landing-seo-discovery";
 import { LandingScrollHeader } from "@/components/landing-scroll-header";
 import { LandingTopbar } from "@/components/landing-topbar";
 import { SplitDirectorySearch } from "@/components/split-directory-search";
-import { cityLabel, getTreatmentHubs } from "@/lib/treatment-hubs";
+import { fixedTreatmentLocationPages } from "@/lib/fixed-treatment-location-pages";
 import {
   getLandingTreatmentDirectoryCards,
   getTreatmentCatalog,
@@ -46,7 +46,7 @@ const fallbackNearMeLocalities = ["New York", "Brooklyn", "Long Island City", "J
 
 export default async function HomePage() {
   const visitorLocation = landingVisitorLocation(await headers());
-  const [dexaCards, ivCards, mriCards, treatments, treatmentHubs] = await Promise.all([
+  const [dexaCards, ivCards, mriCards, treatments] = await Promise.all([
     safeLandingSection("DEXA scan cards", () =>
       getLandingTreatmentDirectoryCards("DEXA scan", 10, {
         countryCode: "US",
@@ -56,7 +56,7 @@ export default async function HomePage() {
       }),
     ),
     safeLandingSection("IV drip cards", () =>
-      getLandingTreatmentDirectoryCards("IV nutrient therapy", 10, {
+      getLandingTreatmentDirectoryCards(74, 10, {
         countryCode: "US",
         localities: fallbackNearMeLocalities,
         requireImage: false,
@@ -72,7 +72,6 @@ export default async function HomePage() {
       }),
     ),
     safeLandingSection("treatment catalog", () => getTreatmentCatalog()),
-    safeLandingSection("treatment location pages", () => getTreatmentHubs()),
   ]);
 
   return (
@@ -113,15 +112,12 @@ export default async function HomePage() {
 
       <LandingSeoDiscovery
         treatments={treatments}
-        locationPages={treatmentHubs.flatMap((hub) =>
-          hub.cities.filter((city) => city.indexable).map((city) => ({
-            href: city.href,
-            treatmentLabel: hub.treatment.name,
-            cityLabel: cityLabel(city),
-            city: city.city,
-            locationCount: city.locationCount,
-          })),
-        )}
+        locationPages={fixedTreatmentLocationPages.map((page) => ({
+          href: page.href,
+          treatmentLabel: page.treatment.name,
+          cityLabel: `${page.city.city}, ${page.city.region}`,
+          city: page.city.city,
+        }))}
       />
 
       <LandingFooter />

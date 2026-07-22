@@ -1,6 +1,7 @@
-import { getEligibleTreatmentCities, getTreatmentCatalog } from "@/lib/queries";
+import { isFixedTreatmentLocationPage } from "@/lib/fixed-treatment-location-pages";
+import { getCityIndexPlaces, getEligibleTreatmentCities, getTreatmentCatalog } from "@/lib/queries";
 import {
-  minimumTreatmentCityLocations,
+  treatmentCityHref,
   treatmentCitySlug,
   treatmentHref,
   treatmentSlug,
@@ -34,12 +35,36 @@ export async function getTreatmentHub(slug: string) {
 }
 
 export async function getTreatmentCityPage(treatmentSlugValue: string, citySlugValue: string) {
-  const hub = await getTreatmentHub(treatmentSlugValue);
+  const [hub, places] = await Promise.all([
+    getTreatmentHub(treatmentSlugValue),
+    getCityIndexPlaces(),
+  ]);
   if (!hub) {
     return null;
   }
-  const city = hub.cities.find((candidate) => treatmentCitySlug(candidate) === citySlugValue);
-  return city ? { hub, city } : null;
+  const countedCity = hub.cities.find((candidate) => treatmentCitySlug(candidate) === citySlugValue);
+  if (countedCity) {
+    return { hub, city: countedCity };
+  }
+
+  const place = places.find((candidate) =>
+    isUsableCityName(candidate.city) && treatmentCitySlug(candidate) === citySlugValue,
+  );
+  if (!place) {
+    return null;
+  }
+
+  const indexable = isFixedTreatmentLocationPage(hub.treatment.id, citySlugValue);
+  const city: TreatmentHubCity = {
+    ...place,
+    treatmentId: hub.treatment.id,
+    locationCount: 0,
+    indexable,
+    href: indexable
+      ? treatmentCityHref(hub.treatment, place)
+      : directoryTreatmentCityHref(hub.treatment, place),
+  };
+  return { hub, city };
 }
 
 export function buildTreatmentHubs(
@@ -56,8 +81,10 @@ export function buildTreatmentHubs(
     if (!treatment) {
       continue;
     }
-    const indexable = city.locationCount >= minimumTreatmentCityLocations;
-    const href = directoryTreatmentCityHref(treatment, city);
+    const indexable = isFixedTreatmentLocationPage(treatment.id, treatmentCitySlug(city));
+    const href = indexable
+      ? treatmentCityHref(treatment, city)
+      : directoryTreatmentCityHref(treatment, city);
     const treatmentCities = citiesByTreatment.get(city.treatmentId) || [];
     treatmentCities.push({ ...city, href, indexable });
     citiesByTreatment.set(city.treatmentId, treatmentCities);
