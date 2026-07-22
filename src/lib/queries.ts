@@ -75,6 +75,15 @@ export type DirectoryParams = {
   visitor?: VisitorLocationParams;
 };
 
+export type CityIndexPlace = {
+  city: string;
+  region: string | null;
+  countryCode: string;
+  countryName: string | null;
+  latitude: number;
+  longitude: number;
+};
+
 export type VisitorLocationParams = {
   country?: string;
   region?: string;
@@ -537,6 +546,41 @@ export async function getEligibleTreatmentCities(
     countryName: city.country_name,
     locationCount: Number(city.location_count),
   }));
+}
+
+export async function getCityIndexPlace(input: {
+  city: string;
+  region?: string | null;
+  countryCode: string;
+}): Promise<CityIndexPlace | null> {
+  const city = await row<{
+    city: string;
+    region: string | null;
+    country_code: string;
+    country_name: string | null;
+    latitude: number;
+    longitude: number;
+  }>(
+    `
+    SELECT city, region, country_code, country_name, latitude, longitude
+    FROM city_index
+    WHERE ${equalsNoCase("TRIM(city)")}
+      AND country_code = ?
+      AND (CAST(? AS text) IS NULL OR upper(COALESCE(region, '')) = upper(?))
+    ORDER BY listing_count DESC, image_coverage DESC
+    LIMIT 1
+  `,
+    [input.city, input.countryCode, input.region || null, input.region || null],
+  );
+
+  return city ? {
+    city: city.city,
+    region: city.region,
+    countryCode: city.country_code,
+    countryName: city.country_name,
+    latitude: Number(city.latitude),
+    longitude: Number(city.longitude),
+  } : null;
 }
 
 export async function getTreatmentLandingData(treatment: Pick<TreatmentCatalogItem, "id" | "name">): Promise<TreatmentLandingData> {

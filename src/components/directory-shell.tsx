@@ -91,9 +91,15 @@ const visitorLocationCacheKey = "fountain.visitorLocation.v1";
 export function DirectoryShell({
   initialPayload,
   initialState: seededState,
+  searchHeading,
 }: {
   initialPayload: SearchPayload;
   initialState: DirectoryState;
+  searchHeading?: {
+    treatmentLabel: string;
+    treatmentHref: string;
+    cityLabel: string;
+  };
 }) {
   const router = useRouter();
   const [state, setState] = useState<DirectoryState>(seededState);
@@ -285,12 +291,27 @@ export function DirectoryShell({
 
       <div className="directory-layout">
         <section ref={resultsRef} className="directory-results" aria-live="polite">
+          {searchHeading ? (
+            <nav className="directory-breadcrumbs" aria-label="Breadcrumb">
+              <Link href="/treatments">All treatments</Link>
+              <span aria-hidden="true">→</span>
+              <Link href={searchHeading.treatmentHref}>{searchHeading.treatmentLabel}</Link>
+              <span aria-hidden="true">→</span>
+              <span aria-current="page">{searchHeading.cityLabel}</span>
+            </nav>
+          ) : null}
           <DirectorySearchBanner payload={payload} />
 
           <div className="resultbar">
-            <span>
-              {loading ? "Searching..." : `${payload.total.toLocaleString()} Result${payload.total === 1 ? "" : "s"}`}
-            </span>
+            {searchHeading ? (
+              <h1>
+                {searchHeading.treatmentLabel} in {searchHeading.cityLabel} · {payload.total.toLocaleString()} results
+              </h1>
+            ) : (
+              <span>
+                {loading ? "Searching..." : `${payload.total.toLocaleString()} Result${payload.total === 1 ? "" : "s"}`}
+              </span>
+            )}
             {loading ? <Loader2 className="spin" size={18} aria-hidden="true" /> : null}
           </div>
 
