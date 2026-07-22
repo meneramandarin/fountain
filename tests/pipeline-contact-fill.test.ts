@@ -464,6 +464,29 @@ describe("contact extraction and guarded persistence", () => {
     });
   });
 
+  test("stops US address extraction at the postal code instead of swallowing page copy", () => {
+    expect(extractContactFields([{
+      ok: true,
+      title: "Location",
+      description: "",
+      text_excerpt: "Visit 4100 Salzedo St., Coral Gables, FL 33146 The calcium score test is offered elsewhere. Book now.",
+    }], { countryCode: "US" }).address).toBe("4100 Salzedo St., Coral Gables, FL 33146");
+
+    expect(extractContactFields([{
+      ok: true,
+      title: "Location",
+      description: "",
+      text_excerpt: "$65 Assessment Generator Athlete Lab 800 West Cesar Chavez Street, Austin, TX 78701",
+    }], { countryCode: "US" }).address).toBe("800 West Cesar Chavez Street, Austin, TX 78701");
+
+    expect(extractContactFields([{
+      ok: true,
+      title: "Locations",
+      description: "",
+      text_excerpt: "Corporate office 23 W 20th St, New York NY 10011. Visit 110 Bloor St W, Toronto, ON M5S 2W7.",
+    }], { countryCode: "CA" }).address).toBe("110 Bloor St W, Toronto, ON M5S 2W7");
+  });
+
   test("crawls homepage then same-origin contact/about/impressum links through the cached interface", async () => {
     const fetched: string[] = [];
     const webClient = {

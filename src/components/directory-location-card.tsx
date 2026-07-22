@@ -61,10 +61,12 @@ function formatPrice(amount?: number | null, currency?: string | null) {
 export function DirectoryLocationCard({
   result,
   from = "search",
+  href,
   onActiveChange,
 }: {
   result: DirectoryLocationCardData;
   from?: string;
+  href?: string;
   onActiveChange?: (id: number | null) => void;
 }) {
   const [imageFailed, setImageFailed] = useState(false);
@@ -81,7 +83,7 @@ export function DirectoryLocationCard({
   return (
     <Link
       className="result-card"
-      href={from ? `${locationHref(result)}?from=${encodeURIComponent(from)}` : locationHref(result)}
+      href={href || (from ? `${locationHref(result)}?from=${encodeURIComponent(from)}` : locationHref(result))}
       onMouseEnter={() => onActiveChange?.(result.id)}
       onMouseLeave={() => onActiveChange?.(null)}
       onFocus={() => onActiveChange?.(result.id)}

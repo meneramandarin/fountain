@@ -3,8 +3,8 @@ import { buildSitemap } from "../src/app/sitemap";
 import { buildTreatmentHubs } from "../src/lib/treatment-hubs";
 import {
   isTreatmentPageIndexable,
-  minimumTreatmentCityLocations,
   treatmentHref,
+  treatmentRouteHref,
   treatmentSlug,
   type TreatmentCatalogItem,
 } from "../src/lib/treatment-pages";
@@ -16,8 +16,9 @@ describe("treatment pages", () => {
     expect(treatmentSlug("Emtone®")).toBe("emtone");
   });
 
-  test("builds treatment-only links rather than treatment-location links", () => {
-    expect(treatmentHref({ name: "NAD+ IV therapy" })).toBe("/treatments/nad-iv-therapy");
+  test("builds direct treatment directory links", () => {
+    expect(treatmentHref({ name: "NAD+ IV therapy" })).toBe("/directory?q=NAD%2B+IV+therapy");
+    expect(treatmentRouteHref({ name: "NAD+ IV therapy" })).toBe("/treatments/nad-iv-therapy");
   });
 
   test("keeps treatment pages out of the index when no city passes the threshold", () => {
@@ -25,19 +26,11 @@ describe("treatment pages", () => {
     expect(isTreatmentPageIndexable(1)).toBe(true);
   });
 
-  test("adds eligible treatment pages and the index to the sitemap", () => {
-    const treatment: TreatmentCatalogItem = {
-      id: 20,
-      name: "Peptide therapy",
-      category: "Regenerative medicine",
-      locationCount: minimumTreatmentCityLocations,
-    };
-    const [hub] = buildTreatmentHubs([treatment], []);
-    hub.totalCities = 1;
-    const urls = new Set(buildSitemap([hub]).map((entry) => new URL(entry.url).pathname));
+  test("keeps retired treatment pages out of the sitemap", () => {
+    const urls = new Set(buildSitemap().map((entry) => new URL(entry.url).pathname));
 
     expect(urls).toContain("/treatments");
-    expect(urls).toContain("/treatments/peptide-therapy");
+    expect(urls).not.toContain("/treatments/peptide-therapy");
   });
 
   test("builds hubs only from linkable city-index rows and sorts by location count", () => {
@@ -81,7 +74,7 @@ describe("treatment pages", () => {
     ]);
 
     expect(hub.cities.map((city) => city.city)).toEqual(["Austin", "Denver"]);
-    expect(hub.href).toBe("/treatments/dexa-scan");
+    expect(hub.href).toBe("/directory?q=DEXA+scan");
     expect(hub.totalLocations).toBe(16);
     expect(hub.totalCities).toBe(2);
   });
