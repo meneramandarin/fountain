@@ -26,6 +26,7 @@ type SuggestedCity = {
 
 type SplitSearchSubmit = {
   what: string;
+  treatment_id?: string;
   where: string;
   country: string;
   city_label: string;
@@ -38,6 +39,7 @@ type SplitSearchSubmit = {
 type SplitDirectorySearchProps = {
   className?: string;
   initialWhat?: string;
+  initialTreatmentId?: string;
   initialWhere?: string;
   initialCityCountry?: string;
   initialPlaceType?: string;
@@ -53,6 +55,7 @@ const treatmentSuggestions = ["HBOT", "DEXA", "VO2Max", "IV Therapy", "Full-body
 export function SplitDirectorySearch({
   className = "",
   initialWhat = "",
+  initialTreatmentId,
   initialWhere = "",
   initialCityCountry = "",
   initialPlaceType = "",
@@ -63,6 +66,7 @@ export function SplitDirectorySearch({
   onSubmit,
 }: SplitDirectorySearchProps) {
   const [what, setWhat] = useState(initialWhat);
+  const [selectedTreatmentId, setSelectedTreatmentId] = useState(initialTreatmentId || "");
   const [where, setWhere] = useState(initialWhere);
   const [activeField, setActiveField] = useState<"what" | "where" | null>(null);
   const [citySuggestions, setCitySuggestions] = useState<SuggestedCity[]>([]);
@@ -147,7 +151,7 @@ export function SplitDirectorySearch({
       setIsResolvingPlace(false);
       return;
     }
-    const payload = payloadFromDrafts(what, where, city);
+    const payload = payloadFromDrafts(what, selectedTreatmentId, where, city);
     setActiveField(null);
     setCitySessionToken(null);
     setIsResolvingPlace(false);
@@ -162,7 +166,9 @@ export function SplitDirectorySearch({
     if (kind) {
       params.set("kind", kind);
     }
-    if (payload.what) {
+    if (payload.treatment_id) {
+      params.set("treatment_id", payload.treatment_id);
+    } else if (payload.what) {
       params.set("q", payload.what);
     }
     if (payload.place_type === "country" && payload.city_country) {
@@ -188,6 +194,7 @@ export function SplitDirectorySearch({
 
   function selectTreatment(treatment: string) {
     setWhat(treatment);
+    setSelectedTreatmentId("");
   }
 
   function selectCity(city: SuggestedCity) {
@@ -229,7 +236,10 @@ export function SplitDirectorySearch({
           <span>What</span>
           <input
             value={what}
-            onChange={(event) => setWhat(event.target.value)}
+            onChange={(event) => {
+              setWhat(event.target.value);
+              setSelectedTreatmentId("");
+            }}
             onFocus={() => setActiveField("what")}
             type="search"
             aria-label="Search treatments"
@@ -239,7 +249,15 @@ export function SplitDirectorySearch({
             spellCheck={false}
           />
           {what ? (
-            <button className="split-search-clear" type="button" aria-label="Clear treatment" onClick={() => setWhat("")}>
+            <button
+              className="split-search-clear"
+              type="button"
+              aria-label="Clear treatment"
+              onClick={() => {
+                setWhat("");
+                setSelectedTreatmentId("");
+              }}
+            >
               <X size={14} aria-hidden="true" />
             </button>
           ) : null}
@@ -406,12 +424,18 @@ async function resolvedSelectedCity(city: SuggestedCity | null, sessionToken: st
   }
 }
 
-function payloadFromDrafts(whatDraft: string, whereDraft: string, city: SuggestedCity | null): SplitSearchSubmit {
+function payloadFromDrafts(
+  whatDraft: string,
+  treatmentId: string,
+  whereDraft: string,
+  city: SuggestedCity | null,
+): SplitSearchSubmit {
   const what = whatDraft.trim();
   const where = whereDraft.trim();
 
   return {
     what,
+    treatment_id: treatmentId || undefined,
     where,
     country: city?.country_code || "",
     city_label: city?.label || where,

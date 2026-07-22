@@ -32,7 +32,9 @@ describe("treatment pages", () => {
       category: "Regenerative medicine",
       locationCount: minimumTreatmentCityLocations,
     };
-    const urls = new Set(buildSitemap([treatment]).map((entry) => new URL(entry.url).pathname));
+    const [hub] = buildTreatmentHubs([treatment], []);
+    hub.totalCities = 1;
+    const urls = new Set(buildSitemap([hub]).map((entry) => new URL(entry.url).pathname));
 
     expect(urls).toContain("/treatments");
     expect(urls).toContain("/treatments/peptide-therapy");
@@ -52,6 +54,8 @@ describe("treatment pages", () => {
         region: "CO",
         countryCode: "US",
         countryName: "United States",
+        latitude: 39.7392,
+        longitude: -104.9903,
         locationCount: 5,
       },
       {
@@ -60,6 +64,8 @@ describe("treatment pages", () => {
         region: "TX",
         countryCode: "US",
         countryName: "United States",
+        latitude: 30.2672,
+        longitude: -97.7431,
         locationCount: 11,
       },
       {
@@ -68,6 +74,8 @@ describe("treatment pages", () => {
         region: null,
         countryCode: "CH",
         countryName: "Switzerland",
+        latitude: 47.3769,
+        longitude: 8.5417,
         locationCount: 99,
       },
     ]);

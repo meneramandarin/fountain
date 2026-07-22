@@ -7,6 +7,7 @@ import { LandingSeoDiscovery } from "@/components/landing-seo-discovery";
 import { LandingScrollHeader } from "@/components/landing-scroll-header";
 import { LandingTopbar } from "@/components/landing-topbar";
 import { SplitDirectorySearch } from "@/components/split-directory-search";
+import { cityLabel, getTreatmentHubs } from "@/lib/treatment-hubs";
 import {
   getLandingTreatmentDirectoryCards,
   getTreatmentCatalog,
@@ -45,7 +46,7 @@ const fallbackNearMeLocalities = ["New York", "Brooklyn", "Long Island City", "J
 
 export default async function HomePage() {
   const visitorLocation = landingVisitorLocation(await headers());
-  const [dexaCards, ivCards, mriCards, treatments] = await Promise.all([
+  const [dexaCards, ivCards, mriCards, treatments, treatmentHubs] = await Promise.all([
     safeLandingSection("DEXA scan cards", () =>
       getLandingTreatmentDirectoryCards("DEXA scan", 10, {
         countryCode: "US",
@@ -71,6 +72,7 @@ export default async function HomePage() {
       }),
     ),
     safeLandingSection("treatment catalog", () => getTreatmentCatalog()),
+    safeLandingSection("treatment location pages", () => getTreatmentHubs()),
   ]);
 
   return (
@@ -109,7 +111,18 @@ export default async function HomePage() {
 
       <LandingExploreCarousel items={exploreItems} />
 
-      <LandingSeoDiscovery treatments={treatments} />
+      <LandingSeoDiscovery
+        treatments={treatments}
+        locationPages={treatmentHubs.flatMap((hub) =>
+          hub.cities.filter((city) => city.indexable).map((city) => ({
+            href: city.href,
+            treatmentLabel: hub.treatment.name,
+            cityLabel: cityLabel(city),
+            city: city.city,
+            locationCount: city.locationCount,
+          })),
+        )}
+      />
 
       <LandingFooter />
     </main>

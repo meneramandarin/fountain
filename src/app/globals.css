@@ -2766,6 +2766,23 @@ input[type="search"]::-webkit-search-cancel-button:hover {
   line-height: 1.1;
 }
 
+.directory-breadcrumbs {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 7px;
+  margin: 0 0 12px;
+  color: rgba(30, 26, 15, 0.62);
+  font-family: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  font-size: 12px;
+}
+
+.directory-breadcrumbs a:hover {
+  color: var(--landing-fg);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
 .directory-search-banner {
   margin-bottom: 12px;
   padding: 12px 14px;

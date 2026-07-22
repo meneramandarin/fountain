@@ -13,6 +13,8 @@ export type TreatmentCityCount = {
   region: string | null;
   countryCode: string;
   countryName: string | null;
+  latitude: number;
+  longitude: number;
   locationCount: number;
 };
 
@@ -26,6 +28,20 @@ export function treatmentSlug(name: string) {
 
 export function treatmentHref(treatment: Pick<TreatmentCatalogItem, "name">) {
   return `/treatments/${treatmentSlug(treatment.name)}`;
+}
+
+export function treatmentCitySlug(city: Pick<TreatmentCityCount, "city" | "region" | "countryCode">) {
+  const place = city.countryCode === "US" && city.region
+    ? `${city.city}-${city.region}`
+    : `${city.city}-${city.region ? `${city.region}-` : ""}${city.countryCode}`;
+  return treatmentSlug(place);
+}
+
+export function treatmentCityHref(
+  treatment: Pick<TreatmentCatalogItem, "name">,
+  city: Pick<TreatmentCityCount, "city" | "region" | "countryCode">,
+) {
+  return `${treatmentHref(treatment)}/${treatmentCitySlug(city)}`;
 }
 
 export function isTreatmentPageIndexable(cityCount: number) {

@@ -7,6 +7,7 @@ import { SplitDirectorySearch } from "@/components/split-directory-search";
 type LandingScrollHeaderProps = {
   alwaysVisible?: boolean;
   initialWhat?: string;
+  initialTreatmentId?: string;
   initialWhere?: string;
   initialCityCountry?: string;
   initialPlaceType?: string;
@@ -15,6 +16,7 @@ type LandingScrollHeaderProps = {
   kind?: "locations" | "practitioners";
   onSubmit?: (payload: {
     what: string;
+    treatment_id?: string;
     city_label: string;
     city_country: string;
     place_type?: string;
@@ -26,6 +28,7 @@ type LandingScrollHeaderProps = {
 export function LandingScrollHeader({
   alwaysVisible = false,
   initialWhat,
+  initialTreatmentId,
   initialWhere,
   initialCityCountry,
   initialPlaceType,
@@ -77,6 +80,7 @@ export function LandingScrollHeader({
       <SplitDirectorySearch
         className="landing-scroll-search"
         initialWhat={initialWhat}
+        initialTreatmentId={initialTreatmentId}
         initialWhere={initialWhere}
         initialCityCountry={initialCityCountry}
         initialPlaceType={initialPlaceType}

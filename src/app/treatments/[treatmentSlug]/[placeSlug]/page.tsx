@@ -3,86 +3,61 @@ import { notFound } from "next/navigation";
 import { cache } from "react";
 import { DirectoryShell, type DirectoryState, type SearchPayload } from "@/components/directory-shell";
 import { directoryParamsFromState } from "@/lib/directory-search-state";
-import { getCityIndexPlace, searchLocations } from "@/lib/queries";
-import { ogImage, siteName } from "@/lib/site";
-import {
-  findPilotTreatmentLocationPage,
-  pilotPlaceLabel,
-  pilotTreatmentLocationHref,
-  pilotTreatmentLocationPages,
-} from "@/lib/treatment-location-pages";
+import { cityLabel, getTreatmentCityPage } from "@/lib/treatment-hubs";
+import { searchLocations } from "@/lib/queries";
+import { ogImage, siteName, siteUrl } from "@/lib/site";
 
-export const revalidate = 3600;
-export const dynamicParams = false;
+export const revalidate = 86_400;
+export const dynamicParams = true;
 
-const minimumEligibleLocations = 2;
+export function generateStaticParams() {
+  return [];
+}
 
 type TreatmentLocationRouteProps = {
   params: Promise<{ treatmentSlug: string; placeSlug: string }>;
 };
 
 const loadSearchPage = cache(async (treatmentSlug: string, placeSlug: string) => {
-  const definition = findPilotTreatmentLocationPage(treatmentSlug, placeSlug);
-  if (!definition) {
+  const resolved = await getTreatmentCityPage(treatmentSlug, placeSlug);
+  if (!resolved || !resolved.city.indexable) {
     return null;
   }
 
-  const city = await getCityIndexPlace({
-    city: definition.place.locality,
-    region: definition.place.region,
-    countryCode: definition.place.countryCode,
-  });
-  if (!city) {
-    return null;
-  }
-
-  const cityLabel = pilotPlaceLabel({
-    ...definition.place,
-    locality: city.city,
-    region: city.region || definition.place.region,
-  });
+  const label = cityLabel(resolved.city);
   const state: DirectoryState = {
     kind: "locations",
-    q: definition.treatment.name,
+    q: "",
     country: "",
     locality: "",
-    city_label: cityLabel,
-    city_country: city.countryCode,
+    city_label: label,
+    city_country: resolved.city.countryCode,
     place_type: "",
-    city_lat: city.latitude,
-    city_lng: city.longitude,
-    treatment_ids: [],
+    city_lat: resolved.city.latitude,
+    city_lng: resolved.city.longitude,
+    treatment_ids: [String(resolved.hub.treatment.id)],
     entity_type: "",
     care_model: "",
     page: 0,
   };
-  const query = directoryParamsFromState(state);
-  const payload = await searchLocations(query, state.page);
-
-  return { definition, cityLabel, state, payload };
+  const payload = await searchLocations(directoryParamsFromState(state), state.page);
+  return { ...resolved, cityLabel: label, state, payload };
 });
-
-export function generateStaticParams() {
-  return pilotTreatmentLocationPages.map((page) => ({
-    treatmentSlug: page.treatment.slug,
-    placeSlug: page.place.slug,
-  }));
-}
 
 export async function generateMetadata({ params }: TreatmentLocationRouteProps): Promise<Metadata> {
   const { treatmentSlug, placeSlug } = await params;
   const page = await loadSearchPage(treatmentSlug, placeSlug);
-  if (!page || page.payload.total < minimumEligibleLocations) {
+  if (!page) {
     return { robots: { index: false, follow: false } };
   }
 
-  const treatment = page.definition.treatment.searchLabel;
+  const treatment = page.hub.treatment.name;
   const title = `${treatment} in ${page.cityLabel}`;
-  const description = pageDescription(treatment, page.cityLabel, page.payload.total);
-  const canonical = pilotTreatmentLocationHref(page.definition);
+  const description = `${page.payload.total.toLocaleString()} locations for ${treatment} are listed in ${page.cityLabel}.`;
+  const canonical = page.city.href;
 
   return {
-    title,
+    title: { absolute: `${title} | ${siteName}` },
     description,
     alternates: { canonical },
     robots: { index: true, follow: true },
@@ -105,24 +80,40 @@ export async function generateMetadata({ params }: TreatmentLocationRouteProps):
 export default async function TreatmentLocationPage({ params }: TreatmentLocationRouteProps) {
   const { treatmentSlug, placeSlug } = await params;
   const page = await loadSearchPage(treatmentSlug, placeSlug);
-  if (!page || page.payload.total < minimumEligibleLocations) {
+  if (!page) {
     notFound();
   }
 
-  const treatment = page.definition.treatment.searchLabel;
+  const treatment = page.hub.treatment.name;
   return (
-    <DirectoryShell
-      key={`${treatmentSlug}:${placeSlug}`}
-      initialPayload={page.payload as SearchPayload}
-      initialState={page.state}
-      searchHeading={{
-        treatmentLabel: treatment,
-        cityLabel: page.cityLabel,
-      }}
-    />
+    <>
+      <DirectoryShell
+        key={`${treatmentSlug}:${placeSlug}`}
+        initialPayload={page.payload as SearchPayload}
+        initialState={page.state}
+        initialTreatmentLabel={treatment}
+        searchHeading={{
+          treatmentLabel: treatment,
+          treatmentHref: page.hub.href,
+          cityLabel: page.cityLabel,
+        }}
+      />
+      <script
+        dangerouslySetInnerHTML={{ __html: breadcrumbStructuredData(page.hub.href, page.city.href, treatment, page.cityLabel) }}
+        type="application/ld+json"
+      />
+    </>
   );
 }
 
-function pageDescription(treatment: string, city: string, total: number) {
-  return `${total.toLocaleString()} locations for ${treatment} are listed in ${city}.`;
+function breadcrumbStructuredData(treatmentHref: string, cityHref: string, treatment: string, city: string) {
+  return JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "All treatments", item: new URL("/treatments", siteUrl) },
+      { "@type": "ListItem", position: 2, name: treatment, item: new URL(treatmentHref, siteUrl) },
+      { "@type": "ListItem", position: 3, name: city, item: new URL(cityHref, siteUrl) },
+    ],
+  }).replace(/</g, "\\u003c");
 }
