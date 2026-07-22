@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { cache } from "react";
+import { LandingFooter } from "@/components/landing-footer";
+import { LandingScrollHeader } from "@/components/landing-scroll-header";
 import { getTreatmentHubs } from "@/lib/treatment-hubs";
 import styles from "./treatments.module.css";
 
@@ -22,6 +24,7 @@ export default async function TreatmentsPage() {
 
   return (
     <main className={styles.page}>
+      <LandingScrollHeader alwaysVisible />
       <div className={styles.index}>
         <h1>Treatments</h1>
         <ul className={styles.treatmentList}>
@@ -37,6 +40,7 @@ export default async function TreatmentsPage() {
           ))}
         </ul>
       </div>
+      <LandingFooter />
     </main>
   );
 }
