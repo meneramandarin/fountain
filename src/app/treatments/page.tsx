@@ -85,12 +85,12 @@ export default async function TreatmentsPage() {
           unoptimized
           sizes="100vw"
         />
-        <div className={styles.visuallyHidden}>
-          <p className={styles.kicker}>A catalogue of the longevity arts</p>
-          <h1>The Fountain Index</h1>
+        <h1 className={styles.visuallyHidden}>The Fountain Index</h1>
+        <div className={styles.heroCopy}>
+          <p className={styles.heroKicker}>A Catalogue of the Longevity Arts</p>
           <p className={styles.mastheadDek}>
             Everything you can presently do for a longer life — {hubs.length.toLocaleString()} treatments across{" "}
-            {clinicCount.toLocaleString()} clinics in {cityCount.toLocaleString()} cities. Continuously compiled.
+            {clinicCount.toLocaleString()} clinics in {cityCount.toLocaleString()} cities.
           </p>
         </div>
       </header>
