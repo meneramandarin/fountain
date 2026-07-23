@@ -160,22 +160,22 @@
 
 @media (max-width: 680px) {
   .masthead {
-    height: max(500px, 118vw);
+    height: clamp(420px, 100vw, 560px);
   }
 
   .heroImage {
-    padding: 126px 18px 166px;
+    padding: 112px 16px 88px;
   }
 
   .heroCopy {
     right: 18px;
-    bottom: 30px;
+    bottom: 18px;
     left: 18px;
   }
 
   .index {
     padding-inline: 18px;
-    padding-top: 72px;
+    padding-top: 32px;
   }
 
   .masthead h1 {
@@ -188,7 +188,7 @@
   }
 
   .categoryList {
-    margin-top: 56px;
+    margin-top: 0;
   }
 
   .category + .category {
