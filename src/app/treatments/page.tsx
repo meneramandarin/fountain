@@ -9,14 +9,37 @@ import styles from "./treatments.module.css";
 
 export const revalidate = 86_400;
 
-export const metadata: Metadata = {
-  title: "Treatments",
-  description: "Treatments with clinic locations listed by city.",
-  alternates: { canonical: "/treatments" },
-  robots: { index: true, follow: true },
-};
-
 const loadTreatmentHubs = cache(getTreatmentHubs);
+
+export async function generateMetadata(): Promise<Metadata> {
+  const hubs = (await loadTreatmentHubs()).filter((hub) => hub.totalCities > 0);
+  const clinicCount = hubs.reduce((total, hub) => total + hub.totalLocations, 0);
+  const cityCount = new Set(
+    hubs.flatMap((hub) =>
+      hub.cities.map((city) => [city.city, city.region, city.countryCode].join("|")),
+    ),
+  ).size;
+  const title = "The Fountain Index — Longevity Treatments | Fountain";
+  const description =
+    `A catalogue of the longevity arts: ${hubs.length.toLocaleString()} treatments ` +
+    `across ${clinicCount.toLocaleString()} clinics in ${cityCount.toLocaleString()} cities. ` +
+    "Compare locations and prices for DEXA scans, HBOT, peptides, and more.";
+
+  return {
+    title: { absolute: title },
+    description,
+    alternates: { canonical: "/treatments" },
+    robots: { index: true, follow: true },
+    openGraph: {
+      title,
+      description,
+    },
+    twitter: {
+      title,
+      description,
+    },
+  };
+}
 
 const chapters = [
   {
