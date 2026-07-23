@@ -42,46 +42,11 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 const chapters = [
-  {
-    category: "Measure",
-    roman: "I",
-    headline: "First, Know Thyself",
-    dek: "Every practice in this catalogue begins with an honest accounting. The scans, panels, and clocks — instruments for establishing where the body stands before anything is asked of it.",
-    icon: IconMeasure,
-    caption: "Calipers, for the taking of measure.",
-  },
-  {
-    category: "Optimize",
-    roman: "II",
-    headline: "The Daily Alchemy",
-    dek: "The slow work of adjustment: hormones balanced, nutrition tuned, deficiencies corrected. Not transformation but calibration, repeated until it holds.",
-    icon: IconOptimize,
-    caption: "Vessel and retort, the instruments of daily calibration.",
-  },
-  {
-    category: "Recover",
-    roman: "III",
-    headline: "Taking the Waters",
-    dek: "The oldest chapter in the book. Heat, cold, pressure, touch, and rest — rituals of repair practiced for millennia, now with better instrumentation.",
-    icon: IconRecover,
-    caption: "A basin for the oldest cures: heat, water, rest.",
-  },
-  {
-    category: "Regenerate",
-    roman: "IV",
-    headline: "The Frontier",
-    dek: "The shortest chapter, for now. Cellular and biologic therapies that aim not to maintain the body but to rebuild it — the newest and least settled science in the index.",
-    icon: IconRegenerate,
-    caption: "New growth, uncoiling — emblem of the frontier chapter.",
-  },
-  {
-    category: "Rejuvenate",
-    roman: "V",
-    headline: "The Face of It",
-    dek: "Longevity, made visible. The needles, lasers, and light of wearing the years well.",
-    icon: IconRejuvenate,
-    caption: "The hand mirror, longevity's oldest instrument of judgment.",
-  },
+  { category: "Measure", tagline: "First, know thyself", icon: IconMeasure },
+  { category: "Optimize", tagline: "The daily alchemy", icon: IconOptimize },
+  { category: "Recover", tagline: "Taking the waters", icon: IconRecover },
+  { category: "Regenerate", tagline: "The frontier", icon: IconRegenerate },
+  { category: "Rejuvenate", tagline: "The face of it", icon: IconRejuvenate },
 ] as const;
 
 export default async function TreatmentsPage() {
@@ -110,7 +75,6 @@ export default async function TreatmentsPage() {
         />
         <h1 className={styles.visuallyHidden}>The Fountain Index</h1>
         <div className={styles.heroCopy}>
-          <p className={styles.heroKicker}>A Catalogue of the Longevity Arts</p>
           <p className={styles.mastheadDek}>
             Everything you can presently do for a longer life — {hubs.length.toLocaleString()} treatments across{" "}
             {clinicCount.toLocaleString()} clinics in {cityCount.toLocaleString()} cities.
@@ -120,7 +84,7 @@ export default async function TreatmentsPage() {
 
       <div className={styles.index}>
         <div className={styles.categoryList}>
-          {chapters.map((chapter, chapterIndex) => {
+          {chapters.map((chapter) => {
             const categoryHubs = hubs.filter((hub) => hub.treatment.category === chapter.category);
 
             if (categoryHubs.length === 0) {
@@ -130,27 +94,13 @@ export default async function TreatmentsPage() {
             const ChapterIcon = chapter.icon;
 
             return (
-              <section
-                className={`${styles.category} ${chapterIndex % 2 === 1 ? styles.categoryReverse : ""}`}
-                key={chapter.category}
-              >
-                <div className={styles.chapterOpening}>
-                  <div className={styles.chapterCopy}>
-                    <p className={styles.chapterKicker}>
-                      Chapter {chapter.roman} · {chapter.category}
-                    </p>
-                    <h2>{chapter.headline}</h2>
-                    <p className={styles.chapterDek}>{chapter.dek}</p>
+              <section className={styles.category} key={chapter.category}>
+                <div className={styles.categoryHeader}>
+                  <ChapterIcon />
+                  <div>
+                    <h2>{chapter.category}</h2>
+                    <p className={styles.categoryTagline}>{chapter.tagline}</p>
                   </div>
-
-                  <figure className={styles.iconPlate}>
-                    <div className={styles.iconPlateFrame}>
-                      <ChapterIcon />
-                    </div>
-                    <figcaption>
-                      Plate {chapter.roman} — {chapter.caption}
-                    </figcaption>
-                  </figure>
                 </div>
 
                 <ul className={styles.treatmentList}>
@@ -181,8 +131,8 @@ function ChapterIcon({ src }: { src: string }) {
       className={styles.chapterIcon}
       src={src}
       alt=""
-      width={320}
-      height={320}
+      width={96}
+      height={96}
       unoptimized
       aria-hidden="true"
     />
