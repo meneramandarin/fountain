@@ -21,7 +21,7 @@
 }
 
 .heroImage {
-  padding: clamp(104px, 8vw, 132px) clamp(24px, 5vw, 72px) clamp(24px, 4vw, 52px);
+  padding: clamp(110px, 8vw, 136px) clamp(40px, 6vw, 88px) clamp(148px, 13vw, 176px);
   object-fit: contain;
   object-position: center;
 }
@@ -38,7 +38,25 @@
   border: 0;
 }
 
-.kicker,
+.heroCopy {
+  position: absolute;
+  right: clamp(22px, 5vw, 72px);
+  bottom: clamp(28px, 3vw, 42px);
+  left: clamp(22px, 5vw, 72px);
+  z-index: 1;
+  display: grid;
+  justify-items: center;
+  text-align: center;
+}
+
+.heroKicker {
+  margin: 0;
+  font-family: var(--font-dm-serif-display), Georgia, serif;
+  font-size: clamp(20px, 2.1vw, 28px);
+  font-weight: 400;
+  line-height: 1.2;
+}
+
 .chapterKicker {
   margin: 0;
   font-family: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
@@ -60,12 +78,12 @@
 }
 
 .mastheadDek {
-  max-width: 720px;
-  margin: clamp(26px, 3.4vw, 38px) 0 0;
+  max-width: 920px;
+  margin: 10px 0 0;
   color: rgba(30, 26, 15, 0.68);
   font-family: var(--font-dm-serif-text), Georgia, serif;
-  font-size: clamp(17px, 1.6vw, 20px);
-  line-height: 1.55;
+  font-size: clamp(15px, 1.45vw, 19px);
+  line-height: 1.45;
 }
 
 .categoryList {
@@ -219,11 +237,21 @@
 
 @media (max-width: 680px) {
   .masthead {
-    height: max(380px, 82vw);
+    height: max(500px, 118vw);
   }
 
   .heroImage {
-    padding: 126px 12px 24px;
+    padding: 126px 18px 166px;
+  }
+
+  .heroCopy {
+    right: 18px;
+    bottom: 30px;
+    left: 18px;
+  }
+
+  .heroKicker {
+    font-size: 20px;
   }
 
   .index {
@@ -237,7 +265,7 @@
 
   .mastheadDek {
     max-width: 38ch;
-    font-size: 17px;
+    font-size: 15px;
   }
 
   .categoryList {
