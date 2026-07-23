@@ -878,22 +878,29 @@ input[type="search"]::-webkit-search-cancel-button:hover {
   object-fit: contain;
 }
 
-.split-search-treatment-suggestions {
+.split-search-treatment-suggestions,
+.split-search-place-suggestions {
   gap: 4px;
 }
 
-.split-search-treatment-suggestions button {
+.split-search-treatment-suggestions button,
+.split-search-place-suggestions button {
   grid-template-columns: 48px minmax(0, 1fr);
   gap: 14px;
   min-height: 64px;
   padding: 8px 10px;
 }
 
-.split-search-treatment-icon {
+.split-search-treatment-icon,
+.split-search-place-icon {
   width: 48px;
   height: 48px;
   border-radius: 13px;
   background: #f5f0e5;
+}
+
+.split-search-place-icon {
+  color: rgba(30, 26, 15, 0.62);
 }
 
 .split-search-treatment-icon img {
@@ -1013,14 +1020,16 @@ input[type="search"]::-webkit-search-cancel-button:hover {
   width: 50%;
 }
 
-.split-search-compact .split-search-treatment-suggestions button {
+.split-search-compact .split-search-treatment-suggestions button,
+.split-search-compact .split-search-place-suggestions button {
   grid-template-columns: 48px minmax(0, 1fr);
   gap: 12px;
   min-height: 64px;
   padding: 8px;
 }
 
-.split-search-compact .split-search-treatment-icon {
+.split-search-compact .split-search-treatment-icon,
+.split-search-compact .split-search-place-icon {
   width: 48px;
   height: 48px;
   border-radius: 13px;

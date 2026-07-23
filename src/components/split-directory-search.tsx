@@ -392,7 +392,11 @@ export function SplitDirectorySearch({
       {whereIsActive ? (
         <div className="split-search-menu split-search-menu-where">
           <p>{cityError || (isResolvingPlace ? "Finding that place…" : "Suggested Places")}</p>
-          <div className="split-search-suggestions" role="listbox" aria-label="Suggested places">
+          <div
+            className="split-search-suggestions split-search-place-suggestions"
+            role="listbox"
+            aria-label="Suggested places"
+          >
             {citySuggestions.map((city) => (
               <button
                 type="button"
@@ -402,8 +406,8 @@ export function SplitDirectorySearch({
                 onMouseDown={(event) => event.preventDefault()}
                 onClick={() => selectCity(city)}
               >
-                <span className="split-search-suggestion-icon">
-                  <MapPin size={compact ? 15 : 17} aria-hidden="true" />
+                <span className="split-search-suggestion-icon split-search-place-icon">
+                  <MapPin size={27} aria-hidden="true" />
                 </span>
                 <span>{highlightPrefix(city.label, where)}</span>
               </button>
