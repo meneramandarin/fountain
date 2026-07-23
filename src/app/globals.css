@@ -1299,7 +1299,7 @@ input[type="search"]::-webkit-search-cancel-button:hover {
 
 .landing-explore {
   overflow: hidden;
-  padding: clamp(46px, 6vw, 76px) 0 clamp(48px, 6vw, 70px);
+  padding: clamp(46px, 6vw, 76px) 0 clamp(24px, 3vw, 38px);
   background: var(--landing-bg);
 }
 
