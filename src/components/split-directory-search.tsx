@@ -1,6 +1,7 @@
 "use client";
 
-import { MapPin, Search, Sparkles, X } from "lucide-react";
+import Image from "next/image";
+import { MapPin, Search, X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 
 declare global {
@@ -50,7 +51,21 @@ type SplitDirectorySearchProps = {
   onSubmit?: (payload: SplitSearchSubmit) => void;
 };
 
-const treatmentSuggestions = ["HBOT", "DEXA", "VO2Max", "IV Therapy", "Full-body MRI"];
+type TreatmentCategory = "Measure" | "Optimize" | "Recover" | "Regenerate" | "Rejuvenate";
+type TreatmentSuggestion = {
+  id: number;
+  label: string;
+  category: TreatmentCategory;
+  locationCount: number;
+};
+
+const categoryIconPaths: Record<TreatmentCategory, string> = {
+  Measure: "/category%20icons/Measure.png",
+  Optimize: "/category%20icons/Optimize.png",
+  Recover: "/category%20icons/Recover.png",
+  Regenerate: "/category%20icons/Regenerate.png",
+  Rejuvenate: "/category%20icons/Rejuvenate.png?v=rotated-90",
+};
 
 export function SplitDirectorySearch({
   className = "",
@@ -67,6 +82,7 @@ export function SplitDirectorySearch({
 }: SplitDirectorySearchProps) {
   const [what, setWhat] = useState(initialWhat);
   const [selectedTreatmentId, setSelectedTreatmentId] = useState(initialTreatmentId || "");
+  const [treatmentSuggestions, setTreatmentSuggestions] = useState<TreatmentSuggestion[]>([]);
   const [where, setWhere] = useState(initialWhere);
   const [activeField, setActiveField] = useState<"what" | "where" | null>(null);
   const [citySuggestions, setCitySuggestions] = useState<SuggestedCity[]>([]);
@@ -102,6 +118,33 @@ export function SplitDirectorySearch({
     window.addEventListener("scroll", collapseOnScroll, { passive: true });
     return () => window.removeEventListener("scroll", collapseOnScroll);
   }, [activeField]);
+
+  useEffect(() => {
+    if (activeField !== "what") {
+      return;
+    }
+
+    const controller = new AbortController();
+    const timeout = window.setTimeout(() => {
+      const params = new URLSearchParams({ q: what.trim() });
+      fetch(`/api/treatments/suggest?${params.toString()}`, { signal: controller.signal })
+        .then((response) => response.ok ? response.json() : { suggestions: [] })
+        .then((data: { suggestions?: unknown[] }) => {
+          const suggestions = (data.suggestions || []).filter(isTreatmentSuggestion);
+          setTreatmentSuggestions(suggestions);
+        })
+        .catch((error) => {
+          if (error.name !== "AbortError") {
+            setTreatmentSuggestions([]);
+          }
+        });
+    }, 150);
+
+    return () => {
+      window.clearTimeout(timeout);
+      controller.abort();
+    };
+  }, [activeField, what]);
 
   useEffect(() => {
     if (activeField !== "where") {
@@ -192,9 +235,10 @@ export function SplitDirectorySearch({
     }
   }
 
-  function selectTreatment(treatment: string) {
-    setWhat(treatment);
-    setSelectedTreatmentId("");
+  function selectTreatment(treatment: TreatmentSuggestion) {
+    setWhat(treatment.label);
+    setSelectedTreatmentId(String(treatment.id));
+    setActiveField(null);
   }
 
   function selectCity(city: SuggestedCity) {
@@ -309,20 +353,36 @@ export function SplitDirectorySearch({
       {whatIsActive ? (
         <div className="split-search-menu split-search-menu-what">
           <p>Suggested treatments</p>
-          <div className="split-search-suggestions" role="listbox" aria-label="Suggested treatments">
+          <div
+            className="split-search-suggestions split-search-treatment-suggestions"
+            role="listbox"
+            aria-label="Suggested treatments"
+          >
             {treatmentSuggestions.map((treatment) => (
               <button
                 type="button"
                 role="option"
-                aria-selected={what.toLowerCase() === treatment.toLowerCase()}
-                key={treatment}
+                aria-selected={what.toLowerCase() === treatment.label.toLowerCase()}
+                key={treatment.label}
                 onMouseDown={(event) => event.preventDefault()}
                 onClick={() => selectTreatment(treatment)}
               >
-                <span className="split-search-suggestion-icon">
-                  <Sparkles size={compact ? 15 : 17} aria-hidden="true" />
+                <span className="split-search-suggestion-icon split-search-treatment-icon">
+                  <Image
+                    src={categoryIconPaths[treatment.category]}
+                    alt=""
+                    width={27}
+                    height={27}
+                    unoptimized
+                    aria-hidden="true"
+                  />
                 </span>
-                <span>{treatment}</span>
+                <span className="split-search-treatment-text">
+                  <strong>{treatment.label}</strong>
+                  <small>
+                    {treatment.locationCount.toLocaleString()} {treatment.locationCount === 1 ? "location" : "locations"}
+                  </small>
+                </span>
               </button>
             ))}
           </div>
@@ -402,6 +462,28 @@ function isUsableCity(city: SuggestedCity | null) {
 
 function normalizePlace(value: string) {
   return value.trim().toLocaleLowerCase().replace(/\s+/g, " ");
+}
+
+function isTreatmentSuggestion(value: unknown): value is TreatmentSuggestion {
+  if (!value || typeof value !== "object") {
+    return false;
+  }
+  const suggestion = value as Partial<TreatmentSuggestion>;
+  return typeof suggestion.label === "string"
+    && typeof suggestion.id === "number"
+    && Number.isInteger(suggestion.id)
+    && typeof suggestion.locationCount === "number"
+    && Number.isInteger(suggestion.locationCount)
+    && suggestion.locationCount >= 0
+    && isTreatmentCategory(suggestion.category);
+}
+
+function isTreatmentCategory(value: unknown): value is TreatmentCategory {
+  return value === "Measure"
+    || value === "Optimize"
+    || value === "Recover"
+    || value === "Regenerate"
+    || value === "Rejuvenate";
 }
 
 async function resolvedSelectedCity(city: SuggestedCity | null, sessionToken: string | null) {
