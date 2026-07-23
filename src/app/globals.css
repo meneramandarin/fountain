@@ -816,6 +816,7 @@ input[type="search"]::-webkit-search-cancel-button:hover {
 
 .split-search-menu-what {
   left: 0;
+  width: 50%;
 }
 
 .split-search-menu-where {
@@ -868,6 +869,62 @@ input[type="search"]::-webkit-search-cancel-button:hover {
   border-radius: 10px;
   background: rgba(30, 26, 15, 0.055);
   color: rgba(30, 26, 15, 0.78);
+}
+
+.split-search-suggestion-icon img {
+  display: block;
+  max-width: 22px;
+  max-height: 22px;
+  object-fit: contain;
+}
+
+.split-search-treatment-suggestions {
+  gap: 4px;
+}
+
+.split-search-treatment-suggestions button {
+  grid-template-columns: 48px minmax(0, 1fr);
+  gap: 14px;
+  min-height: 64px;
+  padding: 8px 10px;
+}
+
+.split-search-treatment-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 13px;
+  background: #f5f0e5;
+}
+
+.split-search-treatment-icon img {
+  width: 27px;
+  height: 27px;
+  max-width: 27px;
+  max-height: 27px;
+  opacity: 0.62;
+}
+
+.split-search-treatment-text {
+  display: grid;
+  gap: 3px;
+  min-width: 0;
+}
+
+.split-search-treatment-text strong {
+  overflow: hidden;
+  color: var(--landing-fg);
+  font-size: 15px;
+  font-weight: 650;
+  line-height: 1.2;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.split-search-treatment-text small {
+  color: rgba(30, 26, 15, 0.5);
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.2;
 }
 
 .split-search-compact {
@@ -945,6 +1002,39 @@ input[type="search"]::-webkit-search-cancel-button:hover {
   width: 32px;
   height: 32px;
   border-radius: 8px;
+}
+
+.split-search-compact .split-search-suggestion-icon img {
+  max-width: 18px;
+  max-height: 18px;
+}
+
+.split-search-compact .split-search-menu-what {
+  width: 50%;
+}
+
+.split-search-compact .split-search-treatment-suggestions button {
+  grid-template-columns: 48px minmax(0, 1fr);
+  gap: 12px;
+  min-height: 64px;
+  padding: 8px;
+}
+
+.split-search-compact .split-search-treatment-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 13px;
+}
+
+.split-search-compact .split-search-treatment-icon img {
+  width: 27px;
+  height: 27px;
+  max-width: 27px;
+  max-height: 27px;
+}
+
+.split-search-compact .split-search-treatment-text strong {
+  font-size: 13px;
 }
 
 .landing-featured {
