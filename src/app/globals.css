@@ -2418,9 +2418,20 @@ input[type="search"]::-webkit-search-cancel-button:hover {
 }
 
 .footer-newsletter {
+  display: grid;
+  grid-template-rows: repeat(2, minmax(0, 1fr));
+  gap: 0;
+}
+
+.footer-newsletter-section {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  justify-content: space-between;
+  gap: 0;
+}
+
+.footer-newsletter-section h4 {
+  margin-bottom: 0;
 }
 
 .footer-newsletter-eyebrow {
@@ -2437,6 +2448,10 @@ input[type="search"]::-webkit-search-cancel-button:hover {
   gap: 10px;
 }
 
+.footer-newsletter-section:first-child .footer-social {
+  margin-block: auto;
+}
+
 .footer-social-link {
   display: inline-flex;
   align-items: center;
@@ -2446,13 +2461,22 @@ input[type="search"]::-webkit-search-cancel-button:hover {
   border: 1px solid rgba(255, 255, 255, 0.22);
   border-radius: 999px;
   color: rgba(255, 255, 255, 0.75);
-  transition: color 150ms ease, border-color 150ms ease, background 150ms ease;
+  transition: color 150ms ease, border-color 150ms ease, background 150ms ease, box-shadow 150ms ease;
 }
 
 .footer-social-link:hover {
   color: white;
   border-color: rgba(255, 255, 255, 0.5);
   background: rgba(255, 255, 255, 0.08);
+}
+
+.footer-social-link:active,
+.footer-social-link:focus-visible {
+  color: var(--landing-footer-bg);
+  border-color: var(--landing-footer-bg);
+  background: rgba(195, 157, 96, 0.14);
+  box-shadow: 0 0 0 3px rgba(195, 157, 96, 0.12);
+  outline: none;
 }
 
 .footer-social-link svg {
@@ -2465,7 +2489,7 @@ input[type="search"]::-webkit-search-cancel-button:hover {
   align-items: center;
   gap: 4px;
   width: 100%;
-  padding: 5px 5px 5px 18px;
+  padding: 2px 4px 2px 14px;
   border: 1px solid rgba(255, 255, 255, 0.22);
   border-radius: 999px;
   background: rgba(255, 255, 255, 0.06);
@@ -4769,6 +4793,7 @@ blockquote p {
 
   .footer-columns {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-auto-rows: 1fr;
     gap: 18px 22px;
     padding-bottom: 22px;
   }
@@ -4785,6 +4810,24 @@ blockquote p {
   .footer-columns a {
     font-size: 12px;
     line-height: 1.25;
+  }
+
+  .footer-newsletter-eyebrow {
+    font-size: 10px;
+  }
+
+  .footer-social-link {
+    width: 28px;
+    height: 28px;
+  }
+
+  .footer-newsletter-form {
+    padding: 1px 3px 1px 12px;
+  }
+
+  .footer-newsletter-submit {
+    width: 32px;
+    height: 32px;
   }
 
   .footer-bottom {
