@@ -35,7 +35,7 @@ export async function generateMetadata({ params }: ArticleRouteProps): Promise<M
       siteName,
       title: article.title,
       description: article.description,
-      publishedTime: article.updated,
+      publishedTime: article.published ?? article.updated,
       modifiedTime: article.updated,
       url: `/${article.slug}`,
     },

@@ -27,6 +27,8 @@ export type EditorialArticle = {
   standfirst: string;
   description: string;
   byline: string;
+  published?: string;
+  publishedLabel?: string;
   updated: string;
   updatedLabel: string;
   providerRails?: Record<string, EditorialProviderRail>;
@@ -39,12 +41,14 @@ export const editorialArticles: EditorialArticle[] = [
     title: "The Grey Market Comes In From the Cold",
     heroImage: "/domains/peptides.webp",
     standfirst:
-      "For three years, the peptides half of the longevity world swears by were exiled to a regulatory no-man's-land. This month, a federal advisory panel decides whether to let them back. Here is what actually changes, and what doesn't.",
+      "For three years, the peptides half of the longevity world swears by were exiled to a regulatory no-man's-land. This week, a federal advisory panel voted to let most of them back. Here is what actually changes, and what doesn't.",
     description:
-      "For three years, the peptides half of the longevity world swears by were exiled to a regulatory no-man's-land. This month, a federal advisory panel decides whether to let them back.",
+      "For three years, the peptides half of the longevity world swears by were exiled to a regulatory no-man's-land. This week, a federal advisory panel voted to let most of them back. Here is what actually changes, and what doesn't.",
     byline: "The Fountain Editors",
-    updated: "2026-07-01",
-    updatedLabel: "1 July 2026",
+    published: "2026-07-01",
+    publishedLabel: "1 July 2026",
+    updated: "2026-07-24",
+    updatedLabel: "24 July 2026",
     providerRails: {
       "peptide-providers": {
         title: "Peptide therapy under medical supervision",

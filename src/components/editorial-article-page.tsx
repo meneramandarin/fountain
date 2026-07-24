@@ -190,7 +190,13 @@ export async function EditorialArticlePage({ article }: { article: EditorialArti
             By <b>{article.byline}</b>
           </span>
           <span>
-            <b>{article.updatedLabel}</b>
+            {article.publishedLabel ? (
+              <>
+                Published <b>{article.publishedLabel}</b> · Updated <b>{article.updatedLabel}</b>
+              </>
+            ) : (
+              <b>{article.updatedLabel}</b>
+            )}
           </span>
           <EditorialShareButton title={article.title} url={articleUrl} />
         </div>
