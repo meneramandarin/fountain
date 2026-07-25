@@ -1,9 +1,57 @@
 "use client";
 
+import { useState, type FormEvent } from "react";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 
+type NewsletterFormState = "idle" | "submitting" | "success" | "error";
+
 export function LandingFooter() {
+  const [newsletterState, setNewsletterState] =
+    useState<NewsletterFormState>("idle");
+  const [newsletterMessage, setNewsletterMessage] = useState("");
+
+  async function handleNewsletterSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+
+    if (newsletterState === "submitting" || newsletterState === "success") {
+      return;
+    }
+
+    const form = event.currentTarget;
+    const formData = new FormData(form);
+    setNewsletterState("submitting");
+    setNewsletterMessage("");
+
+    try {
+      const response = await fetch("/api/newsletter/subscribe", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email: formData.get("email"),
+          website: formData.get("website"),
+        }),
+      });
+      const result = (await response.json()) as {
+        error?: string;
+        message?: string;
+      };
+
+      if (!response.ok) {
+        throw new Error(result.error || "Please try again.");
+      }
+
+      form.reset();
+      setNewsletterState("success");
+      setNewsletterMessage(result.message || "You’re on the list—thank you!");
+    } catch (error) {
+      setNewsletterState("error");
+      setNewsletterMessage(
+        error instanceof Error ? error.message : "Please try again.",
+      );
+    }
+  }
+
   return (
     <footer className="landing-footer">
       <div className="footer-wordmark">fountain</div>
@@ -63,20 +111,61 @@ export function LandingFooter() {
           <div className="footer-newsletter-section">
             <h4>Subscribe to newsletter</h4>
             <form
-              className="footer-newsletter-form"
-              onSubmit={(event) => event.preventDefault()}
+              className={`footer-newsletter-form is-${newsletterState}`}
+              onSubmit={handleNewsletterSubmit}
+              aria-busy={newsletterState === "submitting"}
+              aria-describedby="footer-newsletter-status"
             >
+              <div className="footer-newsletter-honeypot" aria-hidden="true">
+                <label htmlFor="footer-newsletter-website">Website</label>
+                <input
+                  id="footer-newsletter-website"
+                  type="text"
+                  name="website"
+                  tabIndex={-1}
+                  autoComplete="off"
+                />
+              </div>
               <input
                 type="email"
                 name="email"
                 placeholder="Enter your email"
                 aria-label="Email address"
+                aria-invalid={newsletterState === "error"}
+                onChange={() => {
+                  if (newsletterState === "error") {
+                    setNewsletterState("idle");
+                    setNewsletterMessage("");
+                  }
+                }}
+                disabled={
+                  newsletterState === "submitting" ||
+                  newsletterState === "success"
+                }
                 required
               />
-              <button type="submit" className="footer-newsletter-submit" aria-label="Subscribe">
+              <button
+                type="submit"
+                className="footer-newsletter-submit"
+                aria-label={
+                  newsletterState === "submitting" ? "Subscribing" : "Subscribe"
+                }
+                disabled={
+                  newsletterState === "submitting" ||
+                  newsletterState === "success"
+                }
+              >
                 <ArrowRight size={15} aria-hidden="true" />
               </button>
             </form>
+            <p
+              id="footer-newsletter-status"
+              className={`footer-newsletter-status is-${newsletterState}`}
+              role={newsletterState === "error" ? "alert" : "status"}
+              aria-live="polite"
+            >
+              {newsletterMessage}
+            </p>
           </div>
         </div>
       </div>
