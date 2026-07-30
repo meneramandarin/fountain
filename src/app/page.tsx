@@ -3,6 +3,7 @@ import { headers } from "next/headers";
 import { LandingExploreCarousel, type LandingExploreItem } from "@/components/landing-explore-carousel";
 import { LandingFeaturedDirectoryCarousel } from "@/components/landing-featured-directory-carousel";
 import { LandingFooter } from "@/components/landing-footer";
+import { LandingGeoHeading } from "@/components/landing-geo-heading";
 import { LandingSeoDiscovery } from "@/components/landing-seo-discovery";
 import { LandingScrollHeader } from "@/components/landing-scroll-header";
 import { LandingTopbar } from "@/components/landing-topbar";
@@ -83,7 +84,7 @@ export default async function HomePage() {
 
         <div className="landing-hero-copy">
           <h1 id="landing-hero-title">The pursuit of a longer life starts here.</h1>
-          <p>Thousands of treatments. Hundreds of cities. One place.</p>
+          <LandingGeoHeading initialCity={visitorLocation?.city} />
         </div>
 
         <div className="landing-hero-search">
