@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { MapPin, Search, X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 
 declare global {
   interface Window {
@@ -48,6 +49,8 @@ type SplitDirectorySearchProps = {
   initialCityLng?: number;
   kind?: "locations" | "practitioners";
   compact?: boolean;
+  expandOnFocus?: boolean;
+  onExpandedChange?: (isExpanded: boolean) => void;
   onSubmit?: (payload: SplitSearchSubmit) => void;
 };
 
@@ -78,6 +81,8 @@ export function SplitDirectorySearch({
   initialCityLng,
   kind,
   compact = false,
+  expandOnFocus = compact,
+  onExpandedChange,
   onSubmit,
 }: SplitDirectorySearchProps) {
   const [what, setWhat] = useState(initialWhat);
@@ -105,6 +110,10 @@ export function SplitDirectorySearch({
   );
   const [citySessionToken, setCitySessionToken] = useState<string | null>(null);
   const shellRef = useRef<HTMLFormElement>(null);
+
+  useEffect(() => {
+    onExpandedChange?.(expandOnFocus && activeField !== null);
+  }, [activeField, expandOnFocus, onExpandedChange]);
 
   useEffect(() => {
     if (!activeField) {
@@ -235,6 +244,11 @@ export function SplitDirectorySearch({
     }
   }
 
+  function collapseExpandedSearch() {
+    shellRef.current?.querySelector<HTMLElement>("input:focus")?.blur();
+    setActiveField(null);
+  }
+
   function selectTreatment(treatment: TreatmentSuggestion) {
     setWhat(treatment.label);
     setSelectedTreatmentId(String(treatment.id));
@@ -258,23 +272,47 @@ export function SplitDirectorySearch({
 
   const whatIsActive = activeField === "what";
   const whereIsActive = activeField === "where";
+  const isExpanded = compact && expandOnFocus && activeField !== null;
+  const isCompact = compact && !isExpanded;
   const hasServedQuery = Boolean(initialWhat.trim() || initialWhere.trim());
 
   return (
-    <form
-      ref={shellRef}
-      className={[
-        "split-search",
-        compact ? "split-search-compact" : "",
-        hasServedQuery ? "has-served-query" : "",
-        whatIsActive ? "is-what-active" : "",
-        whereIsActive ? "is-where-active" : "",
-        className,
-      ].filter(Boolean).join(" ")}
-      role="search"
-      onSubmit={submit}
-      onBlur={handleBlur}
-    >
+    <>
+      {isExpanded ? createPortal(
+        <button
+          className="split-search-scrim"
+          type="button"
+          tabIndex={-1}
+          aria-label="Close expanded search"
+          onPointerDown={(event) => {
+            event.preventDefault();
+            collapseExpandedSearch();
+          }}
+        />,
+        document.body,
+      ) : null}
+      <form
+        ref={shellRef}
+        className={[
+          "split-search",
+          isCompact ? "split-search-compact" : "",
+          compact && expandOnFocus ? "split-search-expandable" : "",
+          isExpanded ? "is-expanded" : "",
+          hasServedQuery ? "has-served-query" : "",
+          whatIsActive ? "is-what-active" : "",
+          whereIsActive ? "is-where-active" : "",
+          className,
+        ].filter(Boolean).join(" ")}
+        role="search"
+        onSubmit={submit}
+        onBlur={handleBlur}
+        onKeyDown={(event) => {
+          if (event.key === "Escape" && activeField) {
+            setActiveField(null);
+            shellRef.current?.querySelector<HTMLElement>("input:focus")?.blur();
+          }
+        }}
+      >
       <div className="split-search-fields">
         <label className="split-search-segment split-search-what">
           <span>What</span>
@@ -344,7 +382,7 @@ export function SplitDirectorySearch({
           </label>
 
           <button className="split-search-submit" type="submit" aria-label="Search" disabled={isResolvingPlace}>
-            <Search size={compact ? 16 : 18} aria-hidden="true" />
+            <Search size={isCompact ? 16 : 18} aria-hidden="true" />
             <span>Search</span>
           </button>
         </div>
@@ -415,7 +453,8 @@ export function SplitDirectorySearch({
           </div>
         </div>
       ) : null}
-    </form>
+      </form>
+    </>
   );
 }
 

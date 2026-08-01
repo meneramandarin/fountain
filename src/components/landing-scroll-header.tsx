@@ -38,6 +38,7 @@ export function LandingScrollHeader({
   onSubmit,
 }: LandingScrollHeaderProps) {
   const [isVisible, setIsVisible] = useState(false);
+  const [searchIsExpanded, setSearchIsExpanded] = useState(false);
   const headerIsVisible = alwaysVisible || isVisible;
 
   useEffect(() => {
@@ -73,7 +74,14 @@ export function LandingScrollHeader({
   }, [alwaysVisible]);
 
   return (
-    <header className={`landing-scroll-header${headerIsVisible ? " is-visible" : ""}`} aria-label="Site header">
+    <header
+      className={[
+        "landing-scroll-header",
+        headerIsVisible ? "is-visible" : "",
+        searchIsExpanded ? "is-search-expanded" : "",
+      ].filter(Boolean).join(" ")}
+      aria-label="Site header"
+    >
       <Link className="landing-brand landing-scroll-brand" href="/">
         fountain
       </Link>
@@ -88,6 +96,7 @@ export function LandingScrollHeader({
         initialCityLng={initialCityLng}
         kind={kind}
         compact
+        onExpandedChange={setSearchIsExpanded}
         onSubmit={onSubmit}
       />
       <button className="coming-soon-pill landing-scroll-join" type="button">

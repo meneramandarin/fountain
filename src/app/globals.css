@@ -405,13 +405,46 @@ input[type="search"]::-webkit-search-cancel-button:hover {
   opacity: 0;
   pointer-events: none;
   transform: translateY(-16px) scale(0.985);
-  transition: opacity 220ms ease, transform 220ms ease, box-shadow 220ms ease;
+  transition:
+    opacity 220ms ease,
+    transform 220ms ease,
+    box-shadow 220ms ease,
+    min-height 220ms ease,
+    padding 220ms ease,
+    grid-template-columns 220ms ease;
 }
 
 .landing-scroll-header.is-visible {
   opacity: 1;
   pointer-events: auto;
   transform: translateY(0) scale(1);
+}
+
+.landing-scroll-header.is-search-expanded {
+  z-index: 51;
+  grid-template-columns: minmax(100px, 1fr) minmax(0, 760px) minmax(100px, 1fr);
+  min-height: 102px;
+  padding-block: 18px;
+  background: rgba(195, 157, 96, 0.98);
+  box-shadow: 0 20px 58px rgba(30, 26, 15, 0.28);
+}
+
+.split-search-scrim {
+  position: fixed;
+  inset: 0;
+  z-index: 49;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  border: 0;
+  background: rgba(30, 26, 15, 0.36);
+  cursor: default;
+  animation: split-search-scrim-in 180ms ease both;
+}
+
+@keyframes split-search-scrim-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
 .landing-scroll-brand {
@@ -530,6 +563,21 @@ input[type="search"]::-webkit-search-cancel-button:hover {
   box-shadow: 0 16px 44px rgba(8, 26, 18, 0.18);
   color: white;
   backdrop-filter: blur(18px) saturate(120%);
+  transition:
+    min-height 220ms ease,
+    padding 220ms ease,
+    grid-template-columns 220ms ease,
+    background 220ms ease,
+    box-shadow 220ms ease;
+}
+
+.not-found-header:has(.split-search-expandable.is-expanded) {
+  z-index: 51;
+  grid-template-columns: minmax(100px, 1fr) minmax(0, 760px) minmax(100px, 1fr);
+  min-height: 102px;
+  padding-block: 18px;
+  background: rgba(34, 54, 46, 0.82);
+  box-shadow: 0 20px 58px rgba(8, 26, 18, 0.34);
 }
 
 .not-found-brand {
@@ -632,7 +680,16 @@ input[type="search"]::-webkit-search-cancel-button:hover {
   box-shadow: 0 8px 22px rgba(30, 26, 15, 0.14), inset 0 0 0 1px rgba(30, 26, 15, 0.08);
   color: var(--landing-fg);
   font-family: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
-  transition: box-shadow 160ms ease, background 160ms ease;
+  transition:
+    width 220ms ease,
+    min-height 220ms ease,
+    padding 220ms ease,
+    box-shadow 160ms ease,
+    background 160ms ease;
+}
+
+.split-search-expandable {
+  transform-origin: top center;
 }
 
 .split-search:hover,
@@ -3792,6 +3849,18 @@ input[type="search"]::-webkit-search-cancel-button:hover {
   align-items: center;
   gap: 18px;
   margin-bottom: clamp(28px, 4vw, 42px);
+  transition:
+    min-height 220ms ease,
+    padding 220ms ease,
+    grid-template-columns 220ms ease;
+}
+
+.listing-detail-topbar:has(.split-search-expandable.is-expanded) {
+  position: relative;
+  z-index: 51;
+  grid-template-columns: minmax(100px, 1fr) minmax(0, 760px) minmax(100px, 1fr);
+  min-height: 102px;
+  padding-block: 18px;
 }
 
 .listing-detail-topbar .directory-brand {
@@ -5623,6 +5692,20 @@ input[type="search"]::-webkit-search-cancel-button:hover {
     pointer-events: none;
   }
 
+  .split-search-expandable.is-expanded.has-served-query .split-search-tail {
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+
+  .split-search-expandable.is-expanded.has-served-query .split-search-submit {
+    width: 112px;
+    min-width: 112px;
+    height: 48px;
+    margin-right: 3px;
+    overflow: visible;
+    opacity: 1;
+    pointer-events: auto;
+  }
+
   .split-search-menu,
   .split-search-menu-what,
   .split-search-menu-where {
@@ -5661,6 +5744,12 @@ input[type="search"]::-webkit-search-cancel-button:hover {
     padding-block: 12px;
   }
 
+  .landing-scroll-header.is-search-expanded {
+    grid-template-columns: 1fr auto;
+    min-height: 218px;
+    padding-block: 12px;
+  }
+
   .landing-scroll-brand {
     grid-column: 1;
     grid-row: 1;
@@ -5683,6 +5772,12 @@ input[type="search"]::-webkit-search-cancel-button:hover {
     grid-template-columns: 1fr auto;
     gap: 8px;
     min-height: 104px;
+    padding-block: 12px;
+  }
+
+  .not-found-header:has(.split-search-expandable.is-expanded) {
+    grid-template-columns: 1fr auto;
+    min-height: 218px;
     padding-block: 12px;
   }
 
@@ -5739,6 +5834,12 @@ input[type="search"]::-webkit-search-cancel-button:hover {
     grid-template-columns: 1fr auto;
     gap: 8px;
     margin-bottom: 28px;
+  }
+
+  .listing-detail-topbar:has(.split-search-expandable.is-expanded) {
+    grid-template-columns: 1fr auto;
+    min-height: 218px;
+    padding-block: 12px;
   }
 
   .listing-detail-topbar .directory-brand {
