@@ -16,6 +16,7 @@ type MapLocation = {
   rating?: number | null;
   review_count?: number | null;
   treatments?: { name: string; domain: string }[];
+  tags?: { facet: string; value: string }[];
   latitude?: number | null;
   longitude?: number | null;
 };
@@ -261,6 +262,9 @@ function createPopupContent(location: MapLocation) {
   }
 
   const details = [
+    location.tags?.some(
+      (tag) => tag.facet === "care_model" && tag.value.toLowerCase() === "mobile service",
+    ) ? "Mobile service" : "",
     location.rating ? `★ ${Number(location.rating).toFixed(1)}${location.review_count ? ` (${Number(location.review_count).toLocaleString()})` : ""}` : "",
     ...(location.treatments || []).slice(0, 2).map((treatment) => treatment.name),
   ].filter(Boolean);
