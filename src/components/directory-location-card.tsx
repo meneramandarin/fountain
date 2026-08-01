@@ -78,6 +78,9 @@ export function DirectoryLocationCard({
     countryName: result.country_name,
   });
   const type = result.tags?.find((tag) => tag.facet === "entity_type");
+  const mobileService = result.tags?.find(
+    (tag) => tag.facet === "care_model" && tag.value.toLowerCase() === "mobile service",
+  );
   const price = formatPrice(result.min_price_amount, result.min_price_currency);
 
   return (
@@ -131,7 +134,7 @@ export function DirectoryLocationCard({
           </small>
         </span>
         <span className="result-side">
-          {type ? <em>{type.value}</em> : null}
+          {mobileService ? <em>Mobile service</em> : type ? <em>{type.value}</em> : null}
           {price ? <small>From {price}</small> : null}
           {result.review_count ? <small>{Number(result.review_count).toLocaleString()} reviews</small> : null}
           {result.distance_miles != null ? <small>{formatDistance(result.distance_miles)} away</small> : null}

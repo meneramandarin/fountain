@@ -1,12 +1,11 @@
 import { LandingFooter } from "@/components/landing-footer";
+import { LandingScrollHeader } from "@/components/landing-scroll-header";
 import type { RelatedTreatmentSearches } from "@/lib/queries";
 import {
   Building2,
   ExternalLink,
   Globe,
-  Mail,
   MapPin,
-  Phone,
   Star,
   Stethoscope,
 } from "lucide-react";
@@ -15,9 +14,12 @@ import Link from "next/link";
 import { BackPillLink } from "@/components/back-pill-link";
 import { locationHref } from "@/lib/directory-urls";
 import { formatLocationPlace } from "@/lib/location-display";
-import { OutboundClinicLink } from "@/components/outbound-clinic-link";
 import { SplitDirectorySearch } from "@/components/split-directory-search";
 import { getOfferingLabels } from "@/lib/offering-labels";
+import { formatLocationAddress } from "@/lib/location-address";
+import { BookingRequestForm } from "@/components/booking-request-form";
+import { ListingShareButton } from "@/components/listing-share-button";
+import { ListingLocationMap } from "@/components/listing-location-map";
 
 type Tag = { facet: string; value: string };
 type ImageRef = { blob_url?: string | null; alt?: string | null; image_kind?: string | null };
@@ -77,6 +79,10 @@ export type LocationDetailRecord = {
   country_code?: string | null;
   country_name?: string | null;
   address?: string | null;
+  postal_code?: string | null;
+  latitude?: number | null;
+  longitude?: number | null;
+  timezone?: string | null;
   phone?: string | null;
   email?: string | null;
   website?: string | null;
@@ -129,53 +135,272 @@ export function DirectoryDetailPage(props: DetailProps) {
   const tags = props.data.tags || [];
 
   return (
-    <main className="listing-detail-shell">
-      <section className="listing-detail-hero">
-        <header className="directory-topbar listing-detail-topbar">
-          <Link className="landing-brand directory-brand" href="/">
-            fountain
-          </Link>
-          <SplitDirectorySearch className="listing-detail-search" compact />
-          <button className="coming-soon-pill" type="button">
-            Coming Soon <span aria-hidden="true">|</span> Log in
-          </button>
-        </header>
+    <main className={`listing-detail-shell${props.kind === "locations" ? " listing-detail-shell-location" : ""}`}>
+      {props.kind === "locations" ? <LandingScrollHeader alwaysVisible kind="locations" /> : null}
 
-        <div className="listing-detail-hero-grid">
-          <div className="listing-hero-copy">
-            {props.showBackLink ? (
-              <BackPillLink href={props.backHref || `/directory?kind=${props.kind}`} tone="dark">
-                Back to results
-              </BackPillLink>
-            ) : null}
-            {props.kind === "practitioners" ? <span className="listing-eyebrow">Doctor & practitioner</span> : null}
-            <h1>{title}</h1>
-            <p>
-              {props.kind === "locations" ? <MapPin size={17} aria-hidden="true" /> : <Stethoscope size={17} aria-hidden="true" />}
-              {subtitle || "Details unavailable"}
-            </p>
-            <ListingStats kind={props.kind} data={props.data} />
-            <TagPills tags={tags} />
+      <section className={`listing-detail-hero${props.kind === "locations" ? " listing-detail-location-hero" : ""}`}>
+        {props.kind === "practitioners" ? (
+          <header className="directory-topbar listing-detail-topbar">
+            <Link className="landing-brand directory-brand" href="/">
+              fountain
+            </Link>
+            <SplitDirectorySearch className="listing-detail-search" compact />
+            <button className="coming-soon-pill" type="button">
+              Coming Soon <span aria-hidden="true">|</span> Log in
+            </button>
+          </header>
+        ) : null}
+
+        {props.kind === "locations" ? (
+          <LocationHero
+            data={props.data}
+            title={title}
+            subtitle={subtitle}
+            showBackLink={props.showBackLink}
+            backHref={props.backHref}
+          />
+        ) : (
+          <div className="listing-detail-hero-grid">
+            <div className="listing-hero-copy">
+              {props.showBackLink ? (
+                <BackPillLink href={props.backHref || `/directory?kind=${props.kind}`} tone="dark">
+                  Back to results
+                </BackPillLink>
+              ) : null}
+              <span className="listing-eyebrow">Doctor & practitioner</span>
+              <h1>{title}</h1>
+              <p>
+                <Stethoscope size={17} aria-hidden="true" />
+                {subtitle || "Details unavailable"}
+              </p>
+              <ListingStats kind={props.kind} data={props.data} />
+              <TagPills tags={tags} />
+            </div>
+
+            <ImageGallery images={images} title={title} kind={props.kind} />
           </div>
-
-          <ImageGallery images={images} title={title} kind={props.kind} />
-        </div>
+        )}
       </section>
 
-      <div className="listing-detail-layout">
+      {props.kind === "locations" ? (
+        <BookingRequestForm
+          locationId={props.data.id}
+          locationSlug={props.data.slug}
+          locationName={props.data.name || props.data.org_name || "this clinic"}
+          locationAddress={locationDisplayAddress(props.data)}
+          clinicTimezone={props.data.timezone}
+          services={(props.data.offerings || []).map((offering, index) => ({
+            serviceId: `${props.data.id}-treatment-${index}`,
+            name: getOfferingLabels(offering).primary,
+            category: offering.domain || null,
+            priceAmount: offering.price_amount ?? null,
+            priceMaxAmount: offering.price_max_amount ?? null,
+            priceCurrency: offering.price_currency || null,
+            priceContext: offering.price_context || null,
+          }))}
+        />
+      ) : null}
+
+      <div className={`listing-detail-layout${props.kind === "locations" ? " listing-detail-layout-location" : ""}`} id="listing-details">
         <article className="listing-detail-main">
           {props.kind === "locations" ? <LocationMain data={props.data} /> : <PractitionerMain data={props.data} />}
         </article>
-        <aside className="listing-detail-sidebar">
-          {props.kind === "locations" ? <LocationContact data={props.data} /> : <PractitionerContact data={props.data} />}
-        </aside>
+        {props.kind === "practitioners" ? (
+          <aside className="listing-detail-sidebar">
+            <PractitionerContact data={props.data} />
+          </aside>
+        ) : null}
       </div>
+
+      {props.kind === "locations" ? (
+        <LocationMapSection data={props.data} title={title} subtitle={subtitle} />
+      ) : null}
 
       <RelatedOptions searches={props.relatedSearches || null} />
 
       <LandingFooter />
     </main>
   );
+}
+
+function LocationHero({
+  data,
+  title,
+  subtitle,
+  showBackLink,
+  backHref,
+}: {
+  data: LocationDetailRecord;
+  title: string;
+  subtitle: string;
+  showBackLink?: boolean;
+  backHref?: string;
+}) {
+  const rating = data.rating ? Number(data.rating) : null;
+  const reviewCount = Number(data.review_count || 0);
+  const directionsHref = locationDirectionsHref(data, title, subtitle);
+  const images = getImageSources(data.images || []);
+
+  return (
+    <div className="listing-location-heading">
+      <div className="listing-location-heading-copy">
+        {showBackLink ? (
+          <BackPillLink href={backHref || "/directory?kind=locations"} tone="light">
+            Back to results
+          </BackPillLink>
+        ) : null}
+        <div className="listing-location-title-row">
+          <h1>{title}</h1>
+        </div>
+        <div className="listing-location-meta">
+          {rating ? (
+            <span className="listing-location-rating">
+              <b>{rating.toFixed(1)}</b>
+              <span className="listing-location-stars" aria-label={`${rating.toFixed(1)} out of 5 stars`}>
+                {Array.from({ length: 5 }, (_, index) => (
+                  <Star
+                    className={index < Math.round(rating) ? "is-filled" : ""}
+                    size={15}
+                    key={index}
+                    aria-hidden="true"
+                  />
+                ))}
+              </span>
+            </span>
+          ) : null}
+          {reviewCount ? (
+            <a className="listing-location-reviews" href="#listing-reviews">
+              ({reviewCount.toLocaleString()})
+            </a>
+          ) : null}
+          {(rating || reviewCount) && subtitle ? <i aria-hidden="true">·</i> : null}
+          {subtitle ? <span className="listing-location-place">{subtitle}</span> : null}
+          {directionsHref ? (
+            <a className="listing-location-directions" href={directionsHref} target="_blank" rel="noreferrer">
+              Get directions
+            </a>
+          ) : null}
+        </div>
+      </div>
+      <ListingShareButton title={title} />
+      <LocationGallery images={images} title={title} />
+    </div>
+  );
+}
+
+function LocationGallery({ images, title }: { images: ImageRef[]; title: string }) {
+  if (!images.length) {
+    return null;
+  }
+  const [primary, ...rest] = images;
+  const secondaries = rest.slice(0, 4);
+  return (
+    <div className={`listing-location-gallery${secondaries.length ? "" : " is-single"}`}>
+      <GalleryTile className="listing-location-gallery-primary" image={primary} alt={title} sizes="(max-width: 900px) 100vw, 62vw" />
+      {secondaries.length ? (
+        <div className="listing-location-gallery-secondary-grid" data-count={secondaries.length}>
+          {secondaries.map((image, index) => (
+            <GalleryTile
+              key={`${image.blob_url}-${index}`}
+              className="listing-location-gallery-secondary"
+              image={image}
+              alt=""
+              sizes="(max-width: 900px) 30vw, 220px"
+            />
+          ))}
+        </div>
+      ) : null}
+    </div>
+  );
+}
+
+function GalleryTile({
+  className,
+  image,
+  alt,
+  sizes,
+}: {
+  className: string;
+  image: ImageRef;
+  alt: string;
+  sizes: string;
+}) {
+  const src = imageSource(image.blob_url || "");
+  const isContainedGraphic = image.image_kind === "text_graphic" || image.image_kind === "logo";
+  return (
+    <div className={`${className}${isContainedGraphic ? " image-frame-text-graphic" : ""}`}>
+      {isContainedGraphic ? (
+        <Image className="image-frame-backdrop" src={src} alt="" fill unoptimized aria-hidden="true" sizes="100vw" />
+      ) : null}
+      <Image
+        className={isContainedGraphic ? "image-frame-content" : undefined}
+        src={src}
+        alt={alt}
+        fill
+        unoptimized
+        sizes={sizes}
+      />
+    </div>
+  );
+}
+
+function LocationMapSection({
+  data,
+  title,
+  subtitle,
+}: {
+  data: LocationDetailRecord;
+  title: string;
+  subtitle: string;
+}) {
+  const latitude = Number(data.latitude);
+  const longitude = Number(data.longitude);
+  if (!Number.isFinite(latitude) || !Number.isFinite(longitude)) {
+    return null;
+  }
+
+  const address = locationDisplayAddress(data) || subtitle || title;
+  const directionsHref = locationDirectionsHref(data, title, subtitle);
+
+  return (
+    <section className="listing-location-map-section" aria-labelledby="listing-location-map-title">
+      <div className="listing-location-map-header">
+        <div>
+          <h2 id="listing-location-map-title">Location</h2>
+          <div className="listing-location-map-address-row">
+            <p>
+              <MapPin size={17} aria-hidden="true" />
+              {address}
+            </p>
+            {directionsHref ? (
+              <a href={directionsHref} target="_blank" rel="noreferrer">
+                Get directions
+              </a>
+            ) : null}
+          </div>
+        </div>
+      </div>
+      <div className="listing-location-map-frame">
+        <ListingLocationMap
+          latitude={latitude}
+          longitude={longitude}
+          title={title}
+          address={address}
+        />
+      </div>
+    </section>
+  );
+}
+
+function locationDirectionsHref(
+  data: LocationDetailRecord,
+  title: string,
+  subtitle: string,
+) {
+  const query = locationDisplayAddress(data) || [title, subtitle].filter(Boolean).join(", ");
+  return query
+    ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query)}`
+    : null;
 }
 
 function ListingStats({ kind, data }: DetailProps) {
@@ -245,10 +470,9 @@ function ImageGallery({ images, title, kind }: { images: ImageRef[]; title: stri
 function LocationMain({ data }: { data: LocationDetailRecord }) {
   return (
     <>
-      <Offerings offerings={data.offerings || []} note={data.offerings_note} />
       <ChainLocations title={data.org_name || data.name || "This clinic"} locations={data.other_locations || []} />
       <ReviewList reviews={data.reviews || []} />
-      <ExternalReviewList groups={data.external_reviews || []} />
+      <ExternalReviewList groups={data.external_reviews || []} anchorId={!data.reviews?.length} />
     </>
   );
 }
@@ -294,53 +518,26 @@ function PractitionerMain({ data }: { data: PractitionerDetailRecord }) {
   );
 }
 
-function LocationContact({ data }: { data: LocationDetailRecord }) {
-  const website = data.website ? `/go/${data.slug || data.id}` : null;
-  const address =
-    data.address ||
-    formatLocationPlace({
-      locality: data.locality,
-      region: data.region,
-      countryCode: data.country_code,
-      countryName: data.country_name,
-    });
-  const hasFacts = Boolean(address || data.phone || data.email);
-  return (
-    <div className="listing-side-panel">
-      <h2>At a glance</h2>
-      {hasFacts ? (
-        <div className="listing-side-facts">
-          {address ? (
-            <span>
-              <MapPin size={14} aria-hidden="true" />
-              {address}
-            </span>
-          ) : null}
-          {data.phone ? (
-            <span>
-              <Phone size={14} aria-hidden="true" />
-              <a href={`tel:${data.phone}`}>{data.phone}</a>
-            </span>
-          ) : null}
-          {data.email ? (
-            <span>
-              <Mail size={14} aria-hidden="true" />
-              <a href={`mailto:${data.email}`}>{data.email}</a>
-            </span>
-          ) : null}
-        </div>
-      ) : null}
-      {data.external_website_href ? (
-        <a className="listing-primary-action" href={data.external_website_href} target="_blank" rel="noreferrer">
-          Visit website <ExternalLink size={15} aria-hidden="true" />
-        </a>
-      ) : website ? (
-        <OutboundClinicLink className="listing-primary-action" href={website} locationId={data.id} locationSlug={data.slug}>
-          Book online <ExternalLink size={15} aria-hidden="true" />
-        </OutboundClinicLink>
-      ) : null}
-    </div>
+function locationDisplayAddress(data: LocationDetailRecord) {
+  const place = formatLocationPlace({
+    locality: data.locality,
+    region: data.region,
+    countryCode: data.country_code,
+    countryName: data.country_name,
+  });
+  const isMobileService = data.tags?.some(
+    (tag) => tag.facet === "care_model" && tag.value.toLowerCase() === "mobile service",
   );
+  return isMobileService
+    ? `Mobile service in ${place || "this area"}`
+    : formatLocationAddress({
+        address: data.address,
+        locality: data.locality,
+        region: data.region,
+        postalCode: data.postal_code,
+        countryCode: data.country_code,
+        countryName: data.country_name,
+      }) || place;
 }
 
 function PractitionerContact({ data }: { data: PractitionerDetailRecord }) {
@@ -405,33 +602,6 @@ function relatedTreatmentHref(searches: RelatedTreatmentSearches, treatment: { i
   params.set("treatment_id", String(treatment.id));
 
   return `/directory?${params.toString()}`;
-}
-
-function Offerings({ offerings, note }: { offerings: OfferingRef[]; note?: string | null }) {
-  if (!offerings.length) {
-    return null;
-  }
-  return (
-    <section className="listing-section">
-      <h2>
-        Offerings <small>{offerings.length}</small>
-      </h2>
-      {note ? <p>{note}</p> : null}
-      <div className="offer-list listing-offer-list">
-        {offerings.map((offering, index) => {
-          const { primary } = getOfferingLabels(offering);
-          return (
-            <div className="offer-item" key={`${offering.raw_name || offering.treatment}-${index}`}>
-              <div className="offer-copy">
-                <span className="offer-name">{primary}</span>
-              </div>
-              {offering.price_amount != null ? <b>{formatOfferingPrice(offering)}</b> : null}
-            </div>
-          );
-        })}
-      </div>
-    </section>
-  );
 }
 
 function ChainLocations({ title, locations }: { title: string; locations: ChainLocationRef[] }) {
@@ -527,83 +697,112 @@ function ReviewList({ reviews }: { reviews: ReviewRef[] }) {
     return null;
   }
   return (
-    <section className="listing-section">
+    <section className="listing-section" id="listing-reviews">
       <h2>
         Reviews <small>{reviews.length}</small>
       </h2>
-      {reviews.slice(0, 6).map((review, index) => {
-        const author = reviewField(review.author, "name") || "Anonymous";
-        const rating = reviewField(review.rating, "ratingValue");
-        return (
-          <blockquote key={`${review.review_date}-${index}`}>
-            <div className="review-meta">
-              <b>{author}</b>
-              {rating ? (
-                <span>
-                  <Star size={11} aria-hidden="true" />
-                  {rating}
-                </span>
-              ) : null}
-            </div>
-            <p>{review.text || "No review body provided."}</p>
-          </blockquote>
-        );
-      })}
+      <div className="review-grid">
+        {reviews.slice(0, 6).map((review, index) => (
+          <ReviewCard key={`${review.review_date}-${index}`} review={review} />
+        ))}
+      </div>
     </section>
   );
 }
 
-function ExternalReviewList({ groups }: { groups: ExternalReviewGroup[] }) {
+function ExternalReviewList({ groups, anchorId }: { groups: ExternalReviewGroup[]; anchorId?: boolean }) {
   const visible = groups.filter((group) => group.rating || group.review_count || group.reviews?.length);
   if (!visible.length) {
     return null;
   }
   return (
-    <section className="listing-section">
-      <h2>External reviews</h2>
+    <section className="listing-section" id={anchorId ? "listing-reviews" : undefined}>
+      {anchorId ? <h2>Reviews</h2> : null}
       <div className="external-review-groups">
         {visible.map((group) => (
           <div className="external-review-group" key={group.provider}>
             <div className="external-review-source">
-              <b>{group.provider_name}</b>
-              <span>
-                {group.rating ? (
-                  <>
-                    <Star size={12} aria-hidden="true" />
-                    {Number(group.rating).toFixed(1)}
-                  </>
-                ) : null}
-                {group.review_count ? `${group.rating ? " · " : ""}${Number(group.review_count).toLocaleString()} reviews` : null}
-              </span>
+              {group.provider.toLowerCase() !== "google" ? (
+                <span className="external-review-source-name">{group.provider_name}</span>
+              ) : null}
+              {group.rating ? (
+                <span className="external-review-source-rating">
+                  <b>{Number(group.rating).toFixed(1)}</b>
+                  <StarRow value={Number(group.rating)} size={13} />
+                </span>
+              ) : null}
+              {group.review_count ? (
+                <span className="external-review-source-count">
+                  {Number(group.review_count).toLocaleString()} reviews
+                </span>
+              ) : null}
               {group.provider_url ? (
-                <a href={externalHref(group.provider_url)} target="_blank" rel="noreferrer">
+                <a
+                  className="external-review-source-link"
+                  href={externalHref(group.provider_url)}
+                  target="_blank"
+                  rel="noreferrer"
+                >
                   View source <ExternalLink size={12} aria-hidden="true" />
                 </a>
               ) : null}
             </div>
-            {(group.reviews || []).slice(0, 5).map((review, index) => {
-              const author = reviewField(review.author, "name") || "Anonymous";
-              const rating = reviewField(review.rating, "ratingValue");
-              return (
-                <blockquote key={`${group.provider}-${review.review_date || ""}-${index}`}>
-                  <div className="review-meta">
-                    <b>{author}</b>
-                    {rating ? (
-                      <span>
-                        <Star size={11} aria-hidden="true" />
-                        {rating}
-                      </span>
-                    ) : null}
-                  </div>
-                  <p>{review.text || "No review body provided."}</p>
-                </blockquote>
-              );
-            })}
+            <div className="review-grid">
+              {(group.reviews || []).slice(0, 5).map((review, index) => (
+                <ReviewCard key={`${group.provider}-${review.review_date || ""}-${index}`} review={review} />
+              ))}
+            </div>
           </div>
         ))}
       </div>
     </section>
   );
+}
+
+function ReviewCard({ review }: { review: ReviewRef }) {
+  const author = reviewField(review.author, "name") || "Anonymous";
+  const rating = reviewField(review.rating, "ratingValue");
+  const ratingValue = rating ? Number(rating) : null;
+  const date = formatReviewDate(review.review_date);
+  return (
+    <article className="review-card">
+      <div className="review-card-head">
+        <span className="review-card-avatar" aria-hidden="true">
+          {author.charAt(0).toUpperCase()}
+        </span>
+        <div className="review-card-identity">
+          <b>{author}</b>
+          <div className="review-card-meta">
+            {ratingValue ? <StarRow value={ratingValue} size={12} /> : null}
+            {date ? <time>{date}</time> : null}
+          </div>
+        </div>
+      </div>
+      <p>{review.text || "No review body provided."}</p>
+    </article>
+  );
+}
+
+function StarRow({ value, size = 13 }: { value: number; size?: number }) {
+  const rounded = Math.round(value);
+  return (
+    <span className="review-star-row" aria-label={`${value.toFixed(1)} out of 5 stars`}>
+      {Array.from({ length: 5 }, (_, index) => (
+        <Star key={index} className={index < rounded ? "is-filled" : ""} size={size} aria-hidden="true" />
+      ))}
+    </span>
+  );
+}
+
+function formatReviewDate(value?: string | null) {
+  if (!value) {
+    return null;
+  }
+  const parsed = new Date(value);
+  if (Number.isNaN(parsed.getTime())) {
+    return null;
+  }
+  return parsed.toLocaleDateString("en-US", { month: "short", year: "numeric" });
 }
 
 function TagPills({ tags }: { tags: Tag[] }) {
@@ -655,13 +854,6 @@ function formatPrice(amount?: number | null, currency?: string | null) {
     return `${trimmedCurrency}${formatted}`;
   }
   return `${formatted} ${trimmedCurrency}`;
-}
-
-function formatOfferingPrice(offering: OfferingRef) {
-  const low = formatPrice(offering.price_amount, offering.price_currency);
-  if (!low || offering.price_max_amount == null || offering.price_max_amount === offering.price_amount) return low || "";
-  const high = formatPrice(offering.price_max_amount, offering.price_currency);
-  return high ? `${low}–${high}` : low;
 }
 
 function reviewField(value: string | number | null | undefined, key: string): string | null {
