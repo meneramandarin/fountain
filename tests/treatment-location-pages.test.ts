@@ -16,23 +16,23 @@ const treatment: TreatmentCatalogItem = {
 };
 
 describe("treatment location pages", () => {
-  test("routes DEXA scan to its measured-demand launch cities and other fixed treatments to the shared default set", () => {
-    expect(fixedTreatmentLocationPages).toHaveLength(30);
-    expect(new Set(fixedTreatmentLocationPages.map((page) => page.href)).size).toBe(30);
+  test("routes DEXA scan to the shared default cities plus its extra measured-demand cities", () => {
+    expect(fixedTreatmentLocationPages).toHaveLength(34);
+    expect(new Set(fixedTreatmentLocationPages.map((page) => page.href)).size).toBe(34);
+
+    const defaultCitySlugs = fixedTreatmentLocationCities.map((city) => city.slug);
 
     const dexaCitySlugs = fixedTreatmentLocationPages
       .filter((page) => page.treatment.slug === "dexa-scan")
       .map((page) => page.city.slug);
     expect(dexaCitySlugs).toEqual([
-      "new-york-ny",
-      "austin-tx",
+      ...defaultCitySlugs,
       "houston-tx",
       "san-diego-ca",
       "chicago-il",
       "las-vegas-nv",
     ]);
 
-    const defaultCitySlugs = fixedTreatmentLocationCities.map((city) => city.slug);
     for (const treatment of fixedTreatmentLocationTreatments) {
       if (treatment.slug === "dexa-scan") continue;
       const citySlugs = fixedTreatmentLocationPages
@@ -76,7 +76,7 @@ describe("treatment location pages", () => {
     expect(hub.cities[0].href).not.toContain("q=");
   });
 
-  test("adds only the fixed 30 city pages to the sitemap", () => {
+  test("adds only the fixed city pages to the sitemap", () => {
     const urls = buildSitemap().map((entry) => new URL(entry.url).pathname);
     const cityUrls = urls.filter((url) => url.split("/").filter(Boolean).length === 3);
     expect(cityUrls).toEqual(fixedTreatmentLocationPages.map((page) => page.href));
