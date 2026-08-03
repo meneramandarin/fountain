@@ -42,7 +42,7 @@ export function ClinicianLicenseVerification({
       aria-label={`${accessibleLabel}. View the official license record.`}
     >
       <BadgeCheck size={18} aria-hidden="true" />
-      <span>Clinician license verified · {verification.jurisdiction_code} source</span>
+      <span>Verified Clinician · {verification.jurisdiction_code} source</span>
       <ExternalLink className="clinician-license-external-icon" size={13} aria-hidden="true" />
     </a>
   );

@@ -256,9 +256,9 @@ function LocationHero({
         ) : null}
         <div className="listing-location-title-row">
           <h1>{title}</h1>
-          <ClinicianLicenseVerification verification={data.clinician_license_verification} />
         </div>
         <div className="listing-location-meta">
+          <ClinicianLicenseVerification verification={data.clinician_license_verification} />
           {rating ? (
             <span className="listing-location-rating">
               <b>{rating.toFixed(1)}</b>
