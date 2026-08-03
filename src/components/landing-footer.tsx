@@ -80,9 +80,6 @@ export function LandingFooter() {
               <Link href="/terms-of-service">Terms of Service</Link>
             </li>
             <li>
-              <a href="mailto:hello@fountain.clinic">Contact</a>
-            </li>
-            <li>
               <a href="/fountain-wordmark.png" target="_blank" rel="noreferrer">Wordmark</a>
             </li>
           </ul>
