@@ -7,6 +7,7 @@ import { useId, useRef } from "react";
 import { locationHref } from "@/lib/directory-urls";
 import { formatLocationPlace } from "@/lib/location-display";
 import type { LandingFeaturedDirectoryCard } from "@/lib/queries";
+import { ClinicianLicenseVerification } from "@/components/clinician-license-verification";
 
 type LandingFeaturedDirectoryCarouselProps = {
   cards: LandingFeaturedDirectoryCard[];
@@ -100,7 +101,10 @@ export function LandingFeaturedDirectoryCarousel({ cards, title }: LandingFeatur
               </span>
               <span className="landing-featured-body">
                 <span className="landing-featured-main">
-                  <b>{card.name || card.org_name}</b>
+                  <span className="landing-featured-title-row">
+                    <b>{card.name || card.org_name}</b>
+                    <ClinicianLicenseVerification verification={card.clinician_license_verification} compact />
+                  </span>
                   <small>
                     <MapPin size={14} aria-hidden="true" />
                     {place || "Location unavailable"}

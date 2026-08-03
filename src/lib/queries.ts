@@ -4,6 +4,7 @@ import {
   type TreatmentCatalogItem,
   type TreatmentCityCount,
 } from "@/lib/treatment-pages";
+import type { ClinicianLicenseVerificationData } from "@/components/clinician-license-verification";
 
 export const PAGE_SIZE = 18;
 
@@ -125,6 +126,7 @@ export type LandingFeaturedDirectoryCard = {
   image_kind?: string | null;
   tags: { facet: string; value: string }[];
   treatments: { name: string; domain: string }[];
+  clinician_license_verification: ClinicianLicenseVerificationData | null;
 };
 
 export type TreatmentLocationLandingResult = {
@@ -1146,6 +1148,8 @@ async function hydrateLandingDirectoryCards(
     tagMap.set(tag.lid, list);
   }
 
+  const verificationMap = await locationClinicianLicenseVerificationMap(featuredIds);
+
   return featured.map((card) => {
     const id = card.id as number;
     return {
@@ -1163,6 +1167,7 @@ async function hydrateLandingDirectoryCards(
       image_kind: imageMap.get(id)?.image_kind || null,
       tags: tagMap.get(id) || [],
       treatments: (treatmentMap.get(id) || []).slice(0, 3),
+      clinician_license_verification: verificationMap.get(id) || null,
     };
   });
 }
@@ -1892,14 +1897,66 @@ async function hydrateLocationRows(results: AnyRow[]) {
         imageMap.set(image.lid, image);
       }
     }
+    const verificationMap = await locationClinicianLicenseVerificationMap(ids);
     for (const result of results) {
       const id = result.id as number;
       result.treatments = (treatmentMap.get(id) || []).slice(0, 6);
       result.tags = tagMap.get(id) || [];
       result.image = imageMap.get(id)?.blob_url || null;
       result.image_kind = imageMap.get(id)?.image_kind || null;
+      result.clinician_license_verification = verificationMap.get(id) || null;
     }
   }
+}
+
+async function locationClinicianLicenseVerificationMap(ids: number[]) {
+  const verificationMap = new Map<number, ClinicianLicenseVerificationData>();
+  if (!ids.length) {
+    return verificationMap;
+  }
+
+  const verificationRows = await rows<{ lid: number } & ClinicianLicenseVerificationData>(
+    `
+    SELECT DISTINCT ON (verification.location_id)
+           verification.location_id AS lid,
+           practitioner.full_name AS practitioner_name,
+           verification.jurisdiction_code,
+           verification.license_number,
+           verification.license_type,
+           verification.licensing_authority,
+           verification.license_status,
+           verification.license_expires_at::text,
+           verification.board_source_url,
+           verification.verified_at::text
+    FROM location_clinician_license_verifications verification
+    JOIN locations location ON location.id = verification.location_id
+    JOIN practitioners practitioner ON practitioner.id = verification.practitioner_id
+    WHERE verification.location_id IN (${placeholders(ids.length)})
+      AND verification.verification_status = 'verified'
+      AND verification.next_review_at > CURRENT_TIMESTAMP
+      AND (verification.license_expires_at IS NULL OR verification.license_expires_at >= CURRENT_DATE)
+      AND EXISTS (
+        SELECT 1
+        FROM affiliations affiliation
+        WHERE affiliation.location_id = verification.location_id
+          AND affiliation.practitioner_id = verification.practitioner_id
+          AND affiliation.status = 'active'
+          AND affiliation.verification_status = 'verified'
+          AND affiliation.deleted_at IS NULL
+      )
+      AND location.country_code = 'US'
+      AND upper(trim(location.region)) = verification.jurisdiction_code
+      AND ${activeEntityCondition("location")}
+      AND ${activeEntityCondition("practitioner")}
+    ORDER BY verification.location_id, verification.verified_at DESC
+  `,
+    ids,
+  );
+
+  for (const verification of verificationRows) {
+    verificationMap.set(verification.lid, verification);
+  }
+  return verificationMap;
 }
 
 type RadiusSearchMode = "exact_radius" | "expanded_radius" | "country_fallback" | "country_search" | "cross_border" | "empty";
@@ -2377,6 +2434,7 @@ export async function getLocationDetail(ref: number | string) {
   );
   location.external_reviews = await getExternalReviewGroups(id);
   location.other_locations = await getOtherOrganizationLocations(location);
+  location.clinician_license_verification = (await locationClinicianLicenseVerificationMap([id])).get(id) || null;
   const locationImages = await rows<{
     blob_url: string | null;
     alt: string | null;
