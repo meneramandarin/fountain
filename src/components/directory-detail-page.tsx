@@ -20,6 +20,10 @@ import { formatLocationAddress } from "@/lib/location-address";
 import { BookingRequestForm } from "@/components/booking-request-form";
 import { ListingShareButton } from "@/components/listing-share-button";
 import { ListingLocationMap } from "@/components/listing-location-map";
+import {
+  ClinicianLicenseVerification,
+  type ClinicianLicenseVerificationData,
+} from "@/components/clinician-license-verification";
 
 type Tag = { facet: string; value: string };
 type ImageRef = { blob_url?: string | null; alt?: string | null; image_kind?: string | null };
@@ -96,6 +100,7 @@ export type LocationDetailRecord = {
   external_reviews?: ExternalReviewGroup[];
   other_locations?: ChainLocationRef[];
   tags?: Tag[];
+  clinician_license_verification?: ClinicianLicenseVerificationData | null;
 };
 
 export type PractitionerDetailRecord = {
@@ -251,6 +256,7 @@ function LocationHero({
         ) : null}
         <div className="listing-location-title-row">
           <h1>{title}</h1>
+          <ClinicianLicenseVerification verification={data.clinician_license_verification} />
         </div>
         <div className="listing-location-meta">
           {rating ? (

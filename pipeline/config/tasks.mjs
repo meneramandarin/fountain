@@ -11,6 +11,7 @@ import {
 import { handleNoop } from "../tasks/noop.mjs";
 import { handleMenuExtract } from "../tasks/menu_extract.mjs";
 import { createReviewsFetchHandler } from "../tasks/reviews_fetch.mjs";
+import { handleClinicianLicenseVerify } from "../tasks/clinician_license_verify.mjs";
 import { createOpenRouterAgentWebSearch } from "../lib/openrouter-web-search.mjs";
 
 const contactFillHandler = createContactFillHandler({
@@ -28,6 +29,7 @@ export const TASK_TYPES = [
   "image_classify",
   "menu_extract",
   "reviews_fetch",
+  "clinician_license_verify",
   "dedup_scan",
   "freshness_check",
   "noop",
@@ -51,6 +53,7 @@ export const TASKS = Object.freeze({
   image_classify: implementedTask(handleImageClassify),
   menu_extract: implementedTask(handleMenuExtract),
   reviews_fetch: implementedTask(reviewsFetchHandler),
+  clinician_license_verify: implementedTask(handleClinicianLicenseVerify),
   dedup_scan: pendingTask(),
   freshness_check: pendingTask(),
   noop: { handler: handleNoop, maxAttempts: 3, production: false },

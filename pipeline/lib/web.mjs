@@ -317,6 +317,53 @@ export function normalizeWebUrl(input) {
   return url.href;
 }
 
+/**
+ * Read a successful raw page response from the shared web cache without
+ * issuing a network request. This is intentionally independent of cache TTL:
+ * callers use it as provenance-bearing evidence from a completed crawl.
+ */
+export async function readCachedWebPage(input, {
+  cacheDir = DEFAULT_WEB_CACHE_DIR,
+} = {}) {
+  let requestedUrl;
+  try {
+    requestedUrl = normalizeWebUrl(input);
+    assertStaticallySafeUrl(requestedUrl);
+  } catch {
+    return null;
+  }
+  const cachePath = webCachePathFor(requestedUrl, { cacheDir });
+  let parsed;
+  try {
+    parsed = JSON.parse(await readFile(cachePath, "utf8"));
+  } catch {
+    return null;
+  }
+  if (
+    parsed?.version !== 1
+    || parsed?.requestedUrl !== requestedUrl
+    || parsed?.ok !== true
+    || typeof parsed?.body !== "string"
+  ) {
+    return null;
+  }
+  return {
+    url: parsed.finalUrl || parsed.requestedUrl,
+    html: parsed.body,
+    requestedUrl: parsed.requestedUrl,
+    fetchedAt: parsed.fetchedAt || null,
+    cachePath,
+  };
+}
+
+export function webCachePathFor(input, {
+  cacheDir = DEFAULT_WEB_CACHE_DIR,
+} = {}) {
+  const requestedUrl = normalizeWebUrl(input);
+  const key = createHash("sha256").update(requestedUrl).digest("hex");
+  return path.join(path.resolve(cacheDir), `${key}.json`);
+}
+
 export function isRobotsPathAllowed(text, urlInput, userAgent = "FountainPipeline") {
   const url = urlInput instanceof URL ? urlInput : new URL(urlInput);
   const groups = parseRobotsGroups(text);

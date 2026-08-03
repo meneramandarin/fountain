@@ -4,6 +4,10 @@ import { Building2, MapPin, Star } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
+import {
+  ClinicianLicenseVerification,
+  type ClinicianLicenseVerificationData,
+} from "@/components/clinician-license-verification";
 import { locationHref } from "@/lib/directory-urls";
 import { formatLocationPlace } from "@/lib/location-display";
 
@@ -25,6 +29,7 @@ export type DirectoryLocationCardData = {
   image?: string | null;
   image_kind?: string | null;
   distance_miles?: number | null;
+  clinician_license_verification?: ClinicianLicenseVerificationData | null;
 };
 
 function imageSource(src: string) {
@@ -127,7 +132,10 @@ export function DirectoryLocationCard({
       </span>
       <span className="result-body">
         <span className="result-main">
-          <b>{result.name || result.org_name || "Unnamed location"}</b>
+          <span className="result-title-row">
+            <b>{result.name || result.org_name || "Unnamed location"}</b>
+            <ClinicianLicenseVerification verification={result.clinician_license_verification} compact />
+          </span>
           <small>
             <MapPin size={14} aria-hidden="true" />
             {place || "Location unavailable"}
