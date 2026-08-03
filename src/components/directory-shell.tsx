@@ -468,9 +468,7 @@ function DirectorySearchBanner({ payload }: { payload: SearchPayload }) {
   let message = "";
   if (mode === "expanded_radius") {
     const city = payload.searched_city || "that city";
-    message = payload.city_total
-      ? `Showing ${payload.city_total} ${payload.city_total === 1 ? "clinic" : "clinics"} in ${city}, plus nearby options.`
-      : `No clinics in ${city} yet. Showing options nearby.`;
+    message = payload.city_total ? "" : `No clinics in ${city} yet. Showing options nearby.`;
   } else if (mode === "cross_border") {
     message = `No clinics in ${payload.searched_country || "that country"} yet. Showing options nearby.`;
   } else if (mode === "empty") {
