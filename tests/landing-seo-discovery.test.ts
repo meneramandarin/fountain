@@ -91,7 +91,7 @@ describe("landing SEO discovery", () => {
   test("uses flat text columns without reusing editorial imagery", () => {
     const markup = renderDiscovery();
 
-    expect(markup.match(/class="location-search-column"/g)).toHaveLength(9);
+    expect(markup.match(/class="location-search-column"/g)).toHaveLength(13);
     expect(markup).not.toContain("<img");
     expect(markup).not.toContain("/domains/");
     expect(markup).not.toContain("cityShortcuts");

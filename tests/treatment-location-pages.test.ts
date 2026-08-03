@@ -16,15 +16,30 @@ const treatment: TreatmentCatalogItem = {
 };
 
 describe("treatment location pages", () => {
-  test("contains exactly the specified five-by-six page set in footer order", () => {
+  test("routes DEXA scan to its measured-demand launch cities and other fixed treatments to the shared default set", () => {
     expect(fixedTreatmentLocationPages).toHaveLength(30);
     expect(new Set(fixedTreatmentLocationPages.map((page) => page.href)).size).toBe(30);
-    expect(fixedTreatmentLocationPages.map((page) => page.city.city)).toEqual(
-      fixedTreatmentLocationCities.flatMap((city) => Array(5).fill(city.city)),
-    );
-    expect(fixedTreatmentLocationPages.slice(0, 5).map((page) => page.treatment.id)).toEqual(
-      fixedTreatmentLocationTreatments.map((item) => item.id),
-    );
+
+    const dexaCitySlugs = fixedTreatmentLocationPages
+      .filter((page) => page.treatment.slug === "dexa-scan")
+      .map((page) => page.city.slug);
+    expect(dexaCitySlugs).toEqual([
+      "new-york-ny",
+      "austin-tx",
+      "houston-tx",
+      "san-diego-ca",
+      "chicago-il",
+      "las-vegas-nv",
+    ]);
+
+    const defaultCitySlugs = fixedTreatmentLocationCities.map((city) => city.slug);
+    for (const treatment of fixedTreatmentLocationTreatments) {
+      if (treatment.slug === "dexa-scan") continue;
+      const citySlugs = fixedTreatmentLocationPages
+        .filter((page) => page.treatment.slug === treatment.slug)
+        .map((page) => page.city.slug);
+      expect(citySlugs).toEqual(defaultCitySlugs);
+    }
   });
 
   test("builds stable clean city URLs from live treatment and city records", () => {
