@@ -1,9 +1,15 @@
 import Link from "next/link";
+import { dexaScanExtraCities } from "@/lib/fixed-treatment-location-pages";
 import {
   treatmentHref,
   type TreatmentCatalogItem,
 } from "@/lib/treatment-pages";
 import styles from "./landing-seo-discovery.module.css";
+
+const moreCitiesGroupLabel = "More US cities";
+const moreCitiesLabels = new Set(
+  dexaScanExtraCities.map((city) => `${city.city}, ${city.region}`),
+);
 
 const homepageTreatmentsPerCategory = 4;
 
@@ -100,12 +106,23 @@ type CityGroup = {
 
 function groupByCity(pages: TreatmentLocationDiscoveryLink[]): CityGroup[] {
   const groups = new Map<string, CityGroup>();
+  const moreCities: TreatmentLocationDiscoveryLink[] = [];
+
   for (const page of pages) {
+    if (moreCitiesLabels.has(page.cityLabel)) {
+      moreCities.push(page);
+      continue;
+    }
     const group = groups.get(page.cityLabel) || { slug: page.cityLabel, label: page.cityLabel, pages: [] };
     group.pages.push(page);
     groups.set(page.cityLabel, group);
   }
-  return Array.from(groups.values());
+
+  const result = Array.from(groups.values());
+  if (moreCities.length) {
+    result.push({ slug: moreCitiesGroupLabel, label: moreCitiesGroupLabel, pages: moreCities });
+  }
+  return result;
 }
 
 function groupTopTreatments(treatments: TreatmentCatalogItem[]) {

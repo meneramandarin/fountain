@@ -39,16 +39,13 @@ const sanDiego = { city: "San Diego", region: "CA", countryCode: "US", slug: "sa
 const chicago = { city: "Chicago", region: "IL", countryCode: "US", slug: "chicago-il" } as const;
 const lasVegas = { city: "Las Vegas", region: "NV", countryCode: "US", slug: "las-vegas-nv" } as const;
 
-const newYork = fixedTreatmentLocationCities[0];
-const austin = fixedTreatmentLocationCities[5];
-
-// Launch order from the Aug 2026 market-opportunity study's measured DEXA demand
-// ranking (NYC, Austin, Houston, San Diego, Chicago, Las Vegas) rather than the
-// shared default city set used by the other fixed treatments.
-const dexaScanLaunchCities = [newYork, austin, houston, sanDiego, chicago, lasVegas] as const;
+// DEXA scan additionally covers the extra measured-demand cities from the Aug
+// 2026 market-opportunity study (Houston, San Diego, Chicago, Las Vegas), on
+// top of the shared default six every fixed treatment gets.
+export const dexaScanExtraCities = [houston, sanDiego, chicago, lasVegas] as const;
 
 const citiesByTreatmentSlug: Record<string, readonly FixedTreatmentLocationCity[]> = {
-  "dexa-scan": dexaScanLaunchCities,
+  "dexa-scan": [...fixedTreatmentLocationCities, ...dexaScanExtraCities],
 };
 
 export const fixedTreatmentLocationPages: readonly FixedTreatmentLocationPage[] =

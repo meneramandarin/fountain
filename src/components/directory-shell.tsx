@@ -39,6 +39,7 @@ export type SearchPayload = {
   effective_radius?: number | null;
   searched_city?: string | null;
   searched_country?: string | null;
+  city_total?: number | null;
 };
 
 type SearchMode = "exact_radius" | "expanded_radius" | "country_fallback" | "country_search" | "cross_border" | "empty" | "map_bounds";
@@ -466,7 +467,10 @@ function DirectorySearchBanner({ payload }: { payload: SearchPayload }) {
 
   let message = "";
   if (mode === "expanded_radius") {
-    message = `No clinics in ${payload.searched_city || "that city"} yet. Showing options nearby.`;
+    const city = payload.searched_city || "that city";
+    message = payload.city_total
+      ? `Showing ${payload.city_total} ${payload.city_total === 1 ? "clinic" : "clinics"} in ${city}, plus nearby options.`
+      : `No clinics in ${city} yet. Showing options nearby.`;
   } else if (mode === "cross_border") {
     message = `No clinics in ${payload.searched_country || "that country"} yet. Showing options nearby.`;
   } else if (mode === "empty") {

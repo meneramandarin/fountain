@@ -54,14 +54,14 @@ const treatments: TreatmentCatalogItem[] = [
 ];
 
 describe("landing SEO discovery", () => {
-  test("links exactly the fixed 30 location pages once", () => {
+  test("links exactly the fixed location pages once", () => {
     const markup = renderDiscovery();
 
     for (const page of locationPages) {
       const href = `href="${page.href}"`;
       expect(markup.split(href)).toHaveLength(2);
     }
-    expect(markup.match(/href="\/treatments\/[^\"]+\/[^\"]+"/g)).toHaveLength(30);
+    expect(markup.match(/href="\/treatments\/[^\"]+\/[^\"]+"/g)).toHaveLength(34);
   });
 
   test("links every displayed treatment to its clean hub", () => {
@@ -91,10 +91,25 @@ describe("landing SEO discovery", () => {
   test("uses flat text columns without reusing editorial imagery", () => {
     const markup = renderDiscovery();
 
-    expect(markup.match(/class="location-search-column"/g)).toHaveLength(13);
+    expect(markup.match(/class="location-search-column"/g)).toHaveLength(10);
     expect(markup).not.toContain("<img");
     expect(markup).not.toContain("/domains/");
     expect(markup).not.toContain("cityShortcuts");
+  });
+
+  test("keeps the shared default cities intact and groups the extra DEXA cities under More US cities", () => {
+    const markup = renderDiscovery();
+
+    for (const city of ["New York, NY", "Los Angeles, CA", "San Francisco, CA", "Miami, FL", "Denver, CO", "Austin, TX"]) {
+      expect(markup).toContain(`>${city}<`);
+    }
+    expect(markup).toContain(">More US cities<");
+
+    const moreCitiesSection = markup.split(">More US cities<")[1];
+    for (const city of ["Houston", "San Diego", "Chicago", "Las Vegas"]) {
+      expect(moreCitiesSection).toContain(`DEXA scan in ${city}`);
+    }
+    expect(markup.indexOf(">Miami, FL<")).toBeLessThan(markup.indexOf(">More US cities<"));
   });
 });
 

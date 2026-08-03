@@ -1909,10 +1909,18 @@ async function searchLocationsByCityRadius(params: DirectoryParams, latitude: nu
   const countryCode = normalizedCountryCode(params.city_country || params.country);
   const radii = [25, 50, 100];
   let lastRadiusPayload: Awaited<ReturnType<typeof radiusLocationPayload>> | null = null;
+  // The exact-radius (25mi) count, kept separately from whichever wider radius
+  // ends up supplying the padded result set, so the "no clinics" banner can
+  // tell "genuinely zero in this city" apart from "a few in this city, padded
+  // with nearby listings to reach a fuller page."
+  let cityTotal: number | null = null;
 
   for (const radius of radii) {
     const payload = await radiusLocationPayload(params, latitude, longitude, radius, countryCode, page);
     lastRadiusPayload = payload;
+    if (radius === 25) {
+      cityTotal = payload.total;
+    }
     if (payload.total >= 5) {
       await hydrateLocationRows(payload.results);
       return {
@@ -1921,6 +1929,7 @@ async function searchLocationsByCityRadius(params: DirectoryParams, latitude: nu
         effective_radius: radius,
         searched_city: params.city_label || null,
         searched_country: countryCode || null,
+        city_total: cityTotal,
       };
     }
   }
@@ -1940,6 +1949,7 @@ async function searchLocationsByCityRadius(params: DirectoryParams, latitude: nu
         effective_radius: null,
         searched_city: params.city_label || null,
         searched_country: countryCode,
+        city_total: cityTotal,
       };
     }
 
@@ -1956,6 +1966,7 @@ async function searchLocationsByCityRadius(params: DirectoryParams, latitude: nu
         effective_radius: payload.total ? 500 : null,
         searched_city: params.city_label || null,
         searched_country: countryCode,
+        city_total: cityTotal,
       };
     }
   }
@@ -1968,6 +1979,7 @@ async function searchLocationsByCityRadius(params: DirectoryParams, latitude: nu
       effective_radius: lastRadiusPayload.total ? 100 : null,
       searched_city: params.city_label || null,
       searched_country: countryCode || null,
+      city_total: cityTotal,
     };
   }
 
