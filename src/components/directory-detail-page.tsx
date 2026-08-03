@@ -259,6 +259,7 @@ function LocationHero({
         </div>
         <div className="listing-location-meta">
           <ClinicianLicenseVerification verification={data.clinician_license_verification} />
+          {data.clinician_license_verification && rating ? <i aria-hidden="true">·</i> : null}
           {rating ? (
             <span className="listing-location-rating">
               <b>{rating.toFixed(1)}</b>
@@ -275,12 +276,13 @@ function LocationHero({
             </span>
           ) : null}
           {reviewCount ? (
-            <a className="listing-location-reviews" href="#listing-reviews">
+            <span className="listing-location-reviews">
               ({reviewCount.toLocaleString()})
-            </a>
+            </span>
           ) : null}
           {(rating || reviewCount) && subtitle ? <i aria-hidden="true">·</i> : null}
           {subtitle ? <span className="listing-location-place">{subtitle}</span> : null}
+          {subtitle && directionsHref ? <i aria-hidden="true">·</i> : null}
           {directionsHref ? (
             <a className="listing-location-directions" href={directionsHref} target="_blank" rel="noreferrer">
               Get directions
