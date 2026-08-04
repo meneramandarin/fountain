@@ -8,6 +8,7 @@ import {
   ClinicianLicenseVerification,
   type ClinicianLicenseVerificationData,
 } from "@/components/clinician-license-verification";
+import { trackClinicClick } from "@/lib/clinic-click-analytics";
 import { locationHref } from "@/lib/directory-urls";
 import { formatLocationPlace } from "@/lib/location-display";
 
@@ -67,11 +68,17 @@ export function DirectoryLocationCard({
   result,
   from = "search",
   href,
+  clinicCategory,
+  treatmentName,
+  resultPosition,
   onActiveChange,
 }: {
   result: DirectoryLocationCardData;
   from?: string;
   href?: string;
+  clinicCategory?: string | null;
+  treatmentName?: string | null;
+  resultPosition?: number | null;
   onActiveChange?: (id: number | null) => void;
 }) {
   const [imageFailed, setImageFailed] = useState(false);
@@ -92,6 +99,17 @@ export function DirectoryLocationCard({
     <Link
       className="result-card"
       href={href || (from ? `${locationHref(result)}?from=${encodeURIComponent(from)}` : locationHref(result))}
+      onClick={() => {
+        trackClinicClick({
+          locationId: result.id,
+          locationSlug: result.slug,
+          treatments: result.treatments,
+          clinicCategory,
+          treatmentName,
+          clickSurface: from || "clinic_card",
+          resultPosition,
+        });
+      }}
       onMouseEnter={() => onActiveChange?.(result.id)}
       onMouseLeave={() => onActiveChange?.(null)}
       onFocus={() => onActiveChange?.(result.id)}

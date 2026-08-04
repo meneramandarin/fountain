@@ -92,11 +92,26 @@ export default async function HomePage() {
         </div>
       </section>
 
-      <LandingFeaturedDirectoryCarousel cards={dexaCards} title="Book a DEXA Scan Today" />
+      <LandingFeaturedDirectoryCarousel
+        cards={dexaCards}
+        title="Book a DEXA Scan Today"
+        treatmentName="DEXA scan"
+        clinicCategory="Measure"
+      />
 
-      <LandingFeaturedDirectoryCarousel cards={ivCards} title="IV Drip Clinics Near Me" />
+      <LandingFeaturedDirectoryCarousel
+        cards={ivCards}
+        title="IV Drip Clinics Near Me"
+        treatmentName="IV Infusions"
+        clinicCategory="Optimize"
+      />
 
-      <LandingFeaturedDirectoryCarousel cards={mriCards} title="Get an MRI Scan in Your Area" />
+      <LandingFeaturedDirectoryCarousel
+        cards={mriCards}
+        title="Get an MRI Scan in Your Area"
+        treatmentName="Full-body MRI"
+        clinicCategory="Measure"
+      />
 
       <section className="landing-banner" aria-hidden="true">
         <Image src="/fountainofyouth.jpg" alt="" fill sizes="100vw" />

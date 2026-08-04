@@ -4,6 +4,7 @@ import { ArrowLeft, ArrowRight, MapPin, Star } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useId, useRef } from "react";
+import { trackClinicClick } from "@/lib/clinic-click-analytics";
 import { locationHref } from "@/lib/directory-urls";
 import { formatLocationPlace } from "@/lib/location-display";
 import type { LandingFeaturedDirectoryCard } from "@/lib/queries";
@@ -12,6 +13,8 @@ import { ClinicianLicenseVerification } from "@/components/clinician-license-ver
 type LandingFeaturedDirectoryCarouselProps = {
   cards: LandingFeaturedDirectoryCard[];
   title: string;
+  treatmentName: string;
+  clinicCategory: string;
 };
 
 function imageSource(src: string) {
@@ -39,7 +42,12 @@ function formatPrice(amount: number | null, currency: string | null) {
   return `${formatted} ${code}`;
 }
 
-export function LandingFeaturedDirectoryCarousel({ cards, title }: LandingFeaturedDirectoryCarouselProps) {
+export function LandingFeaturedDirectoryCarousel({
+  cards,
+  title,
+  treatmentName,
+  clinicCategory,
+}: LandingFeaturedDirectoryCarouselProps) {
   const titleId = useId();
   const railRef = useRef<HTMLDivElement>(null);
 
@@ -75,7 +83,7 @@ export function LandingFeaturedDirectoryCarousel({ cards, title }: LandingFeatur
       </div>
 
       <div className="landing-featured-rail" ref={railRef}>
-        {cards.map((card) => {
+        {cards.map((card, index) => {
           const place = formatLocationPlace({
             locality: card.locality,
             region: card.region,
@@ -87,7 +95,22 @@ export function LandingFeaturedDirectoryCarousel({ cards, title }: LandingFeatur
           const price = formatPrice(card.min_price_amount, card.min_price_currency);
 
           return (
-            <Link className="landing-featured-card" href={locationHref(card)} key={card.id}>
+            <Link
+              className="landing-featured-card"
+              href={locationHref(card)}
+              key={card.id}
+              onClick={() => {
+                trackClinicClick({
+                  locationId: card.id,
+                  locationSlug: card.slug,
+                  treatments: card.treatments,
+                  treatmentName,
+                  clinicCategory,
+                  clickSurface: "homepage_carousel",
+                  resultPosition: index + 1,
+                });
+              }}
+            >
               <span className={`landing-featured-photo${isContainedGraphic ? " image-frame-text-graphic" : ""}`}>
                 {card.image ? (
                   <>

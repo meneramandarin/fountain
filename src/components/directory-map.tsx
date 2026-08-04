@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useRef } from "react";
+import { trackClinicClick } from "@/lib/clinic-click-analytics";
 import { locationHref } from "@/lib/directory-urls";
 
 type MapLocation = {
@@ -30,11 +31,15 @@ export function DirectoryMap({
   locations,
   activeLocationId,
   focusLocation,
+  clinicCategory,
+  treatmentName,
   onBoundsChange,
 }: {
   locations: MapLocation[];
   activeLocationId: number | null;
   focusLocation?: MapFocusLocation;
+  clinicCategory?: string;
+  treatmentName?: string;
   onBoundsChange: (bounds: MapBounds) => void;
 }) {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -135,7 +140,7 @@ export function DirectoryMap({
   useEffect(() => {
     syncMarkers();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [mappedLocations]);
+  }, [mappedLocations, clinicCategory, treatmentName]);
 
   function syncMarkers() {
     const map = mapRef.current;
@@ -147,7 +152,7 @@ export function DirectoryMap({
     mapMarkers.current.clear();
     markerElements.current.clear();
     const bounds = new maplibregl.LngLatBounds();
-    for (const location of mappedLocations) {
+    for (const [index, location] of mappedLocations.entries()) {
       bounds.extend([location.longitude, location.latitude]);
       const element = document.createElement("button");
       element.type = "button";
@@ -160,7 +165,11 @@ export function DirectoryMap({
         element.classList.add("is-active");
         const popup = new maplibregl.Popup({ closeButton: true, closeOnClick: false, className: "directory-map-popup", offset: 18 })
           .setLngLat([location.longitude, location.latitude])
-          .setDOMContent(createPopupContent(location))
+          .setDOMContent(createPopupContent(location, {
+            clinicCategory,
+            treatmentName,
+            resultPosition: index + 1,
+          }))
           .addTo(map);
         openPopupRef.current = popup;
         popup.on("close", () => element.classList.remove("is-active"));
@@ -212,10 +221,28 @@ function mapBoundsValue(bounds: import("maplibre-gl").LngLatBounds) {
   };
 }
 
-function createPopupContent(location: MapLocation) {
+function createPopupContent(
+  location: MapLocation,
+  context: {
+    clinicCategory?: string;
+    treatmentName?: string;
+    resultPosition: number;
+  },
+) {
   const card = document.createElement("a");
   card.className = "directory-map-popup-card";
   card.href = locationHref(location);
+  card.addEventListener("click", () => {
+    trackClinicClick({
+      locationId: location.id,
+      locationSlug: location.slug,
+      treatments: location.treatments,
+      clinicCategory: context.clinicCategory,
+      treatmentName: context.treatmentName,
+      clickSurface: "map",
+      resultPosition: context.resultPosition,
+    });
+  });
 
   if (location.image) {
     const isContainedGraphic = location.image_kind === "text_graphic" || location.image_kind === "logo";
