@@ -1,0 +1,180 @@
+{
+  "phaseDate": "20260708",
+  "tier": 3,
+  "inputPath": "swarm-browser-output/swarm-images-menus-tier3-US-batch3-run1-20260709.resume-input.json",
+  "inputDir": null,
+  "inputResults": 29,
+  "imageLogTable": "fountain_raw.browser_swarm_image_ingest_20260708",
+  "menuLogTable": "fountain_raw.browser_swarm_menu_ingest_20260708",
+  "dryRun": false,
+  "startedAt": "2026-07-10T02:57:39.595Z",
+  "completedAt": "2026-07-10T02:59:09.574Z",
+  "images": {
+    "proposed": 0,
+    "ingested": 0,
+    "heldForReview": 0,
+    "skipped": 0,
+    "validationFailures": 0
+  },
+  "menus": {
+    "extracted": 256,
+    "pricesBackfilled": 0,
+    "newOfferingsInserted": 213,
+    "conflicts": 0,
+    "sanityFlags": 0,
+    "skipped": 43
+  },
+  "coverageBefore": {
+    "zero_image_locations": 2658,
+    "locations_with_priced_offering": 1910,
+    "active_images": 30794,
+    "active_offerings": 97742
+  },
+  "coverageAfter": {
+    "zero_image_locations": 2658,
+    "locations_with_priced_offering": 1917,
+    "active_images": 30794,
+    "active_offerings": 97955
+  },
+  "finalInvariants": null,
+  "spotChecks": {
+    "images": [],
+    "menus": [
+      {
+        "location_id": 9551,
+        "raw_name": "Navigator Service",
+        "price_amount": null,
+        "price_currency": null,
+        "outcome": "new_offering_inserted",
+        "offering_id": 85641,
+        "matched_offering_id": null
+      },
+      {
+        "location_id": 9551,
+        "raw_name": "Physical Therapy & Wellness Center",
+        "price_amount": null,
+        "price_currency": null,
+        "outcome": "new_offering_inserted",
+        "offering_id": 85642,
+        "matched_offering_id": null
+      },
+      {
+        "location_id": 9551,
+        "raw_name": "Senior Living Consulting",
+        "price_amount": null,
+        "price_currency": null,
+        "outcome": "new_offering_inserted",
+        "offering_id": 85643,
+        "matched_offering_id": null
+      },
+      {
+        "location_id": 9663,
+        "raw_name": "David Spine Concept",
+        "price_amount": null,
+        "price_currency": null,
+        "outcome": "new_offering_inserted",
+        "offering_id": 85644,
+        "matched_offering_id": null
+      },
+      {
+        "location_id": 9946,
+        "raw_name": "Headache Treatment",
+        "price_amount": null,
+        "price_currency": null,
+        "outcome": "new_offering_inserted",
+        "offering_id": 85645,
+        "matched_offering_id": null
+      },
+      {
+        "location_id": 9946,
+        "raw_name": "Neck Pain Treatment",
+        "price_amount": null,
+        "price_currency": null,
+        "outcome": "new_offering_inserted",
+        "offering_id": 85646,
+        "matched_offering_id": null
+      },
+      {
+        "location_id": 9946,
+        "raw_name": "Back Pain Treatment",
+        "price_amount": null,
+        "price_currency": null,
+        "outcome": "new_offering_inserted",
+        "offering_id": 85647,
+        "matched_offering_id": null
+      },
+      {
+        "location_id": 9949,
+        "raw_name": "Primary Care",
+        "price_amount": null,
+        "price_currency": null,
+        "outcome": "new_offering_inserted",
+        "offering_id": 85648,
+        "matched_offering_id": null
+      },
+      {
+        "location_id": 9949,
+        "raw_name": "Urgent Care",
+        "price_amount": null,
+        "price_currency": null,
+        "outcome": "new_offering_inserted",
+        "offering_id": 85649,
+        "matched_offering_id": null
+      },
+      {
+        "location_id": 9949,
+        "raw_name": "Pediatrics",
+        "price_amount": null,
+        "price_currency": null,
+        "outcome": "new_offering_inserted",
+        "offering_id": 85650,
+        "matched_offering_id": null
+      },
+      {
+        "location_id": 9949,
+        "raw_name": "Women’s Health",
+        "price_amount": null,
+        "price_currency": null,
+        "outcome": "new_offering_inserted",
+        "offering_id": 85651,
+        "matched_offering_id": null
+      },
+      {
+        "location_id": 9949,
+        "raw_name": "Sports Medicine & Rehabilitation",
+        "price_amount": null,
+        "price_currency": null,
+        "outcome": "new_offering_inserted",
+        "offering_id": 85652,
+        "matched_offering_id": null
+      },
+      {
+        "location_id": 9949,
+        "raw_name": "Family Dental",
+        "price_amount": null,
+        "price_currency": null,
+        "outcome": "new_offering_inserted",
+        "offering_id": 85653,
+        "matched_offering_id": null
+      },
+      {
+        "location_id": 9949,
+        "raw_name": "Behavioral Health",
+        "price_amount": null,
+        "price_currency": null,
+        "outcome": "new_offering_inserted",
+        "offering_id": 85654,
+        "matched_offering_id": null
+      },
+      {
+        "location_id": 9949,
+        "raw_name": "Infectious Disease",
+        "price_amount": null,
+        "price_currency": null,
+        "outcome": "new_offering_inserted",
+        "offering_id": 85655,
+        "matched_offering_id": null
+      }
+    ]
+  }
+}

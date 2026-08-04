@@ -1,6 +1,6 @@
 .page {
   min-height: 100vh;
-  background: #fff;
+  background: var(--canvas);
   color: var(--landing-fg);
 }
 
@@ -17,7 +17,7 @@
   height: max(420px, min(100svh, 65vw));
   min-height: 0;
   overflow: hidden;
-  background: #fff;
+  background: var(--canvas);
 }
 
 .heroImage {
@@ -91,7 +91,7 @@
 .categoryHeader h2 {
   margin: 0;
   font-family: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
-  font-size: 19px;
+  font-size: var(--type-reading);
   font-weight: 700;
   line-height: 1.2;
 }
@@ -100,7 +100,7 @@
   margin: 2px 0 0;
   color: rgba(30, 26, 15, 0.58);
   font-family: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
-  font-size: 13px;
+  font-size: var(--type-label);
   line-height: 1.3;
 }
 
@@ -140,7 +140,7 @@
 .treatmentList a > span {
   min-width: 0;
   font-family: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
-  font-size: 14px;
+  font-size: var(--type-body);
   line-height: 1.3;
 }
 
@@ -148,7 +148,7 @@
   flex: none;
   color: rgba(30, 26, 15, 0.5);
   font-family: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
-  font-size: 12px;
+  font-size: var(--type-caption);
   line-height: 1.3;
 }
 
@@ -184,7 +184,7 @@
 
   .mastheadDek {
     max-width: 38ch;
-    font-size: 15px;
+    font-size: var(--type-body);
   }
 
   .categoryList {

@@ -1,0 +1,171 @@
+{
+  "lowConfidenceImages": [],
+  "validationFailures": [],
+  "priceSanityFlags": [],
+  "locationOfferingCapFlags": [],
+  "priceConflicts": [],
+  "zeroPriceSkipped": [
+    {
+      "location_id": 11711,
+      "raw_name": "Student",
+      "price_amount": null,
+      "price_currency": null,
+      "price_context": "free membership for students",
+      "source_page_url": "https://www.raom.org/memberships",
+      "site_origin": "http://raom.org",
+      "reason": "zero_price_free_consultation_or_cta"
+    },
+    {
+      "location_id": 10971,
+      "raw_name": "Meet & Greet 15 Min with Provider",
+      "price_amount": null,
+      "price_currency": null,
+      "price_context": "Free",
+      "source_page_url": "https://www.onenaturalhealth.com/treatment-services-prices-one-natural-health-eboo-energy-functional-ozone-uvbi-pain-health-performance",
+      "site_origin": "http://www.onenaturalhealth.com",
+      "reason": "zero_price_free_consultation_or_cta"
+    },
+    {
+      "location_id": 11694,
+      "raw_name": "FREE 15-minute virtual consultation",
+      "price_amount": null,
+      "price_currency": null,
+      "price_context": "Free",
+      "source_page_url": "https://riversidewellnessworks.com/our-services",
+      "site_origin": "http://riversidewellnessworks.com",
+      "reason": "zero_price_free_consultation_or_cta"
+    },
+    {
+      "location_id": 13078,
+      "raw_name": "Free Consultation and X-Ray",
+      "price_amount": null,
+      "price_currency": null,
+      "price_context": "Free",
+      "source_page_url": "https://vitalityhealingkc.com/",
+      "site_origin": "http://www.vitalityhealingkc.com",
+      "reason": "zero_price_free_consultation_or_cta"
+    },
+    {
+      "location_id": 944,
+      "raw_name": "Follow up appointment",
+      "price_amount": null,
+      "price_currency": null,
+      "price_context": null,
+      "source_page_url": "https://empressaestheticsny.com/services",
+      "site_origin": "https://empressaestheticsny.com",
+      "reason": "zero_price_ambiguous"
+    },
+    {
+      "location_id": 10413,
+      "raw_name": "Consultation",
+      "price_amount": null,
+      "price_currency": null,
+      "price_context": "FREE",
+      "source_page_url": "https://illuminateivtherapy.com/pricing/",
+      "site_origin": "https://illuminateivtherapy.com",
+      "reason": "zero_price_free_consultation_or_cta"
+    },
+    {
+      "location_id": 11412,
+      "raw_name": "hCG Diet Consultation",
+      "price_amount": null,
+      "price_currency": null,
+      "price_context": "Free",
+      "source_page_url": "http://www.regenerativemedicineaustin.com/",
+      "site_origin": "http://regenerativemedicineaustin.com",
+      "reason": "zero_price_free_consultation_or_cta"
+    },
+    {
+      "location_id": 11611,
+      "raw_name": "Free 15 Minute Consultation",
+      "price_amount": null,
+      "price_currency": null,
+      "price_context": "Free",
+      "source_page_url": "http://restoretherapyal.com/",
+      "site_origin": "http://restoretherapyal.com",
+      "reason": "zero_price_free_consultation_or_cta"
+    },
+    {
+      "location_id": 412,
+      "raw_name": "Weight Loss Program Free Consultation",
+      "price_amount": null,
+      "price_currency": null,
+      "price_context": "Free",
+      "source_page_url": "https://atlanthealthnyc.com/prices/",
+      "site_origin": "https://atlanthealthnyc.com",
+      "reason": "zero_price_free_consultation_or_cta"
+    },
+    {
+      "location_id": 10464,
+      "raw_name": "residents and fellows-in-training",
+      "price_amount": null,
+      "price_currency": null,
+      "price_context": "for residents and fellows-in-training",
+      "source_page_url": "https://www.itscc.org/physicians/membership-information",
+      "site_origin": "http://itscc.org",
+      "reason": "zero_price_free_consultation_or_cta"
+    },
+    {
+      "location_id": 9666,
+      "raw_name": "Monthly Members Only Cick here for Scheduling",
+      "price_amount": null,
+      "price_currency": null,
+      "price_context": "60min",
+      "source_page_url": "https://www.massagebook.com/bakersfield~Massage~ortizwellness?src=external",
+      "site_origin": "http://ortizwellness.com",
+      "reason": "zero_price_ambiguous"
+    },
+    {
+      "location_id": 9666,
+      "raw_name": "Friends and Family O wellness Massage - With CODE please book here",
+      "price_amount": null,
+      "price_currency": null,
+      "price_context": "60min",
+      "source_page_url": "https://www.massagebook.com/business/8319718/select-product/services?src=external",
+      "site_origin": "http://ortizwellness.com",
+      "reason": "zero_price_free_consultation_or_cta"
+    },
+    {
+      "location_id": 10949,
+      "raw_name": "FREE prescription Delivery",
+      "price_amount": null,
+      "price_currency": null,
+      "price_context": "FREE",
+      "source_page_url": "https://www.hrchc.org/",
+      "site_origin": "http://www.hrchc.org",
+      "reason": "zero_price_free_consultation_or_cta"
+    },
+    {
+      "location_id": 7823,
+      "raw_name": "FREE 30 Min Consultation",
+      "price_amount": null,
+      "price_currency": null,
+      "price_context": "Free",
+      "source_page_url": "https://holisticspecialists.com/",
+      "site_origin": "https://holisticspecialists.com",
+      "reason": "zero_price_free_consultation_or_cta"
+    }
+  ],
+  "zeroPriceFreeServices": [
+    {
+      "location_id": 9747,
+      "raw_name": "Case Management",
+      "price_amount": null,
+      "price_currency": null,
+      "price_context": "no cost to the individual; free",
+      "source_page_url": "https://bicsv.org/services-application/",
+      "site_origin": "http://www.bicsv.org",
+      "reason": "zero_price_free_service_null_price"
+    },
+    {
+      "location_id": 12711,
+      "raw_name": "Chronic Care Management",
+      "price_amount": null,
+      "price_currency": null,
+      "price_context": "free service provided to our Medicare patients",
+      "source_page_url": "https://www.txphysicians.com/",
+      "site_origin": "http://www.txphysicians.com",
+      "reason": "zero_price_free_service_null_price"
+    }
+  ]
+}

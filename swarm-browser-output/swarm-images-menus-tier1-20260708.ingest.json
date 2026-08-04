@@ -1,0 +1,278 @@
+{
+  "phaseDate": "20260708",
+  "tier": 1,
+  "inputPath": "swarm-browser-output/swarm-images-menus-tier1-20260708.json",
+  "inputDir": "swarm-browser-output/results/tier1-20260708",
+  "inputResults": 1374,
+  "imageLogTable": "fountain_raw.browser_swarm_image_ingest_20260708",
+  "menuLogTable": "fountain_raw.browser_swarm_menu_ingest_20260708",
+  "dryRun": false,
+  "startedAt": "2026-07-09T01:05:05.589Z",
+  "completedAt": "2026-07-09T01:50:44.336Z",
+  "images": {
+    "proposed": 1456,
+    "ingested": 831,
+    "heldForReview": 154,
+    "skipped": 274,
+    "validationFailures": 197
+  },
+  "menus": {
+    "extracted": 4666,
+    "pricesBackfilled": 3,
+    "newOfferingsInserted": 3851,
+    "conflicts": 119,
+    "sanityFlags": 19,
+    "skipped": 674
+  },
+  "coverageBefore": {
+    "zero_image_locations": 3212,
+    "locations_with_priced_offering": 1486,
+    "active_images": 29854,
+    "active_offerings": 79566
+  },
+  "coverageAfter": {
+    "zero_image_locations": 2719,
+    "locations_with_priced_offering": 1550,
+    "active_images": 30685,
+    "active_offerings": 83417
+  },
+  "finalInvariants": {
+    "blobStoreCount": 19435,
+    "referencedBlobUrls": 19435,
+    "everyImageRowHasLiveBlob": true,
+    "everyBlobHasImageRow": true,
+    "orphanBlobCount": 0,
+    "imageRowsPointingAtMissingBlobCount": 0
+  },
+  "spotChecks": {
+    "images": [
+      {
+        "location_id": 131,
+        "image_url": "https://static.wixstatic.com/media/32d557_f2f9e8d89bf8434ba59901ada4265a47~mv2.jpg/v1/fill/w_431,h_995,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/32d557_f2f9e8d89bf8434ba59901ada4265a47~mv2.jpg",
+        "blob_url": "https://4tz9nkaz3fd0fh3k.public.blob.vercel-storage.com/listing-images/browser-swarm/location/131/97bf91e16937fa41a009.jpg",
+        "outcome": "ingested"
+      },
+      {
+        "location_id": 737,
+        "image_url": "https://acuphysio.com/wp-content/uploads/2011/11/2011-04-22_16-29-10_8771.jpg",
+        "blob_url": "https://4tz9nkaz3fd0fh3k.public.blob.vercel-storage.com/listing-images/browser-swarm/location/737/b9a595aea403f869df9e.jpg",
+        "outcome": "ingested"
+      },
+      {
+        "location_id": 192,
+        "image_url": "https://images.squarespace-cdn.com/content/v1/5e1354e8bc9faa70b1f4d922/1578525830427-JNZ6OSG39W6FP347B3RA/ExtendedWhiteNovo.jpg?format=750w",
+        "blob_url": "https://4tz9nkaz3fd0fh3k.public.blob.vercel-storage.com/listing-images/browser-swarm/location/192/3337ce2bc90a03373edd.jpg",
+        "outcome": "ingested"
+      },
+      {
+        "location_id": 379,
+        "image_url": "https://static.wixstatic.com/media/344d6868b318463fa4ada4204f8f5148.jpg/v1/fill/w_1440,h_752,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/344d6868b318463fa4ada4204f8f5148.jpg",
+        "blob_url": "https://4tz9nkaz3fd0fh3k.public.blob.vercel-storage.com/listing-images/browser-swarm/location/379/a37604b6d69d087f7b01.jpg",
+        "outcome": "ingested"
+      },
+      {
+        "location_id": 379,
+        "image_url": "https://static.wixstatic.com/media/5683bb_5c8c445a22fe452e9103f096f28855ff~mv2.jpg/v1/fill/w_1440,h_578,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/5683bb_5c8c445a22fe452e9103f096f28855ff~mv2.jpg",
+        "blob_url": "https://4tz9nkaz3fd0fh3k.public.blob.vercel-storage.com/listing-images/browser-swarm/location/379/8c2aba9a56415ffb1105.jpg",
+        "outcome": "ingested"
+      },
+      {
+        "location_id": 967,
+        "image_url": "https://img1.wsimg.com/isteam/ip/d833d068-26cb-4f2d-a4b6-8177c18ca00b/72E9D7BC-4C1D-446D-9A7D-9CC783375A1A.PNG/:/rs=w:984,h:984",
+        "blob_url": "https://4tz9nkaz3fd0fh3k.public.blob.vercel-storage.com/listing-images/browser-swarm/location/967/cc7bd9f85b831ac5a783.jpg",
+        "outcome": "ingested"
+      },
+      {
+        "location_id": 967,
+        "image_url": "https://img1.wsimg.com/isteam/ip/d833d068-26cb-4f2d-a4b6-8177c18ca00b/BB65E6E4-380D-458C-A8A2-2711EAE7A9CC.PNG/:/rs=w:984,h:984",
+        "blob_url": "https://4tz9nkaz3fd0fh3k.public.blob.vercel-storage.com/listing-images/browser-swarm/location/967/f3642a4639a3a9d58305.jpg",
+        "outcome": "ingested"
+      },
+      {
+        "location_id": 912,
+        "image_url": "https://i.vimeocdn.com/video/2029534656-59cdd71321906f7c9092a64fab8fd7f75c9da0c2840622ea39d6f9d7249eb097-d",
+        "blob_url": "https://4tz9nkaz3fd0fh3k.public.blob.vercel-storage.com/listing-images/browser-swarm/location/912/995794b6d1d231472985.jpg",
+        "outcome": "ingested"
+      },
+      {
+        "location_id": 1467,
+        "image_url": "https://images.squarespace-cdn.com/content/v1/6977d8226b906b7b9c6e442c/88e683e0-f335-4347-97f1-b8e616bfed11/Yoga3.jpg?format=1500w",
+        "blob_url": "https://4tz9nkaz3fd0fh3k.public.blob.vercel-storage.com/listing-images/browser-swarm/location/1467/a8aab94ff8fc6f519d81.jpg",
+        "outcome": "ingested"
+      },
+      {
+        "location_id": 1467,
+        "image_url": "https://images.squarespace-cdn.com/content/v1/6977d8226b906b7b9c6e442c/689591f7-8c7d-440e-a904-fa7cee3222d3/gym_closeup7.jpg?format=750w",
+        "blob_url": "https://4tz9nkaz3fd0fh3k.public.blob.vercel-storage.com/listing-images/browser-swarm/location/1467/17d46baaa99129fbd7e0.jpg",
+        "outcome": "ingested"
+      },
+      {
+        "location_id": 581,
+        "image_url": "https://beachbum.com/wp-content/uploads/sb-instagram-feed-images/731093870_18590319733040357_836426847713039607_nlow.webp",
+        "blob_url": "https://4tz9nkaz3fd0fh3k.public.blob.vercel-storage.com/listing-images/browser-swarm/location/581/d1414ebf059e1b55ef8d.webp",
+        "outcome": "ingested"
+      },
+      {
+        "location_id": 1110,
+        "image_url": "https://images.leadconnectorhq.com/image/f_webp/q_80/r_1200/u_https://assets.cdn.filesafe.space/epUte3l7sCT6pdZre4UE/media/694c58575572cf2422a3b00b.jpg",
+        "blob_url": "https://4tz9nkaz3fd0fh3k.public.blob.vercel-storage.com/listing-images/browser-swarm/location/1110/60ba9ec10132737ae4f8.jpg",
+        "outcome": "ingested"
+      },
+      {
+        "location_id": 1110,
+        "image_url": "https://images.leadconnectorhq.com/image/f_webp/q_80/r_1200/u_https://assets.cdn.filesafe.space/epUte3l7sCT6pdZre4UE/media/694c5878b716f50339349e8d.png",
+        "blob_url": "https://4tz9nkaz3fd0fh3k.public.blob.vercel-storage.com/listing-images/browser-swarm/location/1110/631ca80ef3e50c0b0535.webp",
+        "outcome": "ingested"
+      },
+      {
+        "location_id": 5697,
+        "image_url": "https://charlestonwoundcare.com/wp-content/uploads/2025/04/CharlestonWoundCareJune-534-768x512.jpg",
+        "blob_url": "https://4tz9nkaz3fd0fh3k.public.blob.vercel-storage.com/listing-images/browser-swarm/location/5697/04096cbcb8f4edaed295.jpg",
+        "outcome": "ingested"
+      },
+      {
+        "location_id": 5697,
+        "image_url": "https://charlestonwoundcare.com/wp-content/uploads/2025/03/Screenshot-2025-03-23-215908-768x655.png",
+        "blob_url": "https://4tz9nkaz3fd0fh3k.public.blob.vercel-storage.com/listing-images/browser-swarm/location/5697/9a936412cc70fbc2db11.png",
+        "outcome": "ingested"
+      }
+    ],
+    "menus": [
+      {
+        "location_id": 131,
+        "raw_name": "Virtual Sessions",
+        "price_amount": null,
+        "price_currency": null,
+        "outcome": "new_offering_inserted",
+        "offering_id": 81594,
+        "matched_offering_id": null
+      },
+      {
+        "location_id": 192,
+        "raw_name": "NovoTHOR® Red Light Therapy",
+        "price_amount": null,
+        "price_currency": null,
+        "outcome": "new_offering_inserted",
+        "offering_id": 81595,
+        "matched_offering_id": null
+      },
+      {
+        "location_id": 192,
+        "raw_name": "Red Light Therapy / Long Covid",
+        "price_amount": null,
+        "price_currency": null,
+        "outcome": "new_offering_inserted",
+        "offering_id": 81596,
+        "matched_offering_id": null
+      },
+      {
+        "location_id": 192,
+        "raw_name": "NanoVi™",
+        "price_amount": null,
+        "price_currency": null,
+        "outcome": "new_offering_inserted",
+        "offering_id": 81597,
+        "matched_offering_id": null
+      },
+      {
+        "location_id": 379,
+        "raw_name": "MENOPAUSE",
+        "price_amount": null,
+        "price_currency": null,
+        "outcome": "new_offering_inserted",
+        "offering_id": 81598,
+        "matched_offering_id": null
+      },
+      {
+        "location_id": 379,
+        "raw_name": "ACUPUNCTURE",
+        "price_amount": null,
+        "price_currency": null,
+        "outcome": "new_offering_inserted",
+        "offering_id": 81599,
+        "matched_offering_id": null
+      },
+      {
+        "location_id": 379,
+        "raw_name": "PHYSICAL THERAPY",
+        "price_amount": null,
+        "price_currency": null,
+        "outcome": "new_offering_inserted",
+        "offering_id": 81600,
+        "matched_offering_id": null
+      },
+      {
+        "location_id": 379,
+        "raw_name": "CUPPING",
+        "price_amount": null,
+        "price_currency": null,
+        "outcome": "new_offering_inserted",
+        "offering_id": 81601,
+        "matched_offering_id": null
+      },
+      {
+        "location_id": 967,
+        "raw_name": "IV DRIPS",
+        "price_amount": null,
+        "price_currency": null,
+        "outcome": "new_offering_inserted",
+        "offering_id": 81602,
+        "matched_offering_id": null
+      },
+      {
+        "location_id": 967,
+        "raw_name": "IV NAD+",
+        "price_amount": null,
+        "price_currency": null,
+        "outcome": "new_offering_inserted",
+        "offering_id": 81603,
+        "matched_offering_id": null
+      },
+      {
+        "location_id": 967,
+        "raw_name": "PEPTIDES",
+        "price_amount": null,
+        "price_currency": null,
+        "outcome": "new_offering_inserted",
+        "offering_id": 81604,
+        "matched_offering_id": null
+      },
+      {
+        "location_id": 967,
+        "raw_name": "MEMBERSHIPS",
+        "price_amount": null,
+        "price_currency": null,
+        "outcome": "new_offering_inserted",
+        "offering_id": 81605,
+        "matched_offering_id": null
+      },
+      {
+        "location_id": 967,
+        "raw_name": "TESTING",
+        "price_amount": null,
+        "price_currency": null,
+        "outcome": "new_offering_inserted",
+        "offering_id": 81606,
+        "matched_offering_id": null
+      },
+      {
+        "location_id": 1375,
+        "raw_name": "HORMONE REPLACEMENT FOR MEN & WOMEN",
+        "price_amount": null,
+        "price_currency": null,
+        "outcome": "new_offering_inserted",
+        "offering_id": 81607,
+        "matched_offering_id": null
+      },
+      {
+        "location_id": 1375,
+        "raw_name": "INJECTIONS",
+        "price_amount": null,
+        "price_currency": null,
+        "outcome": "new_offering_inserted",
+        "offering_id": 81608,
+        "matched_offering_id": null
+      }
+    ]
+  }
+}

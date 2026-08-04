@@ -7,9 +7,9 @@
   margin-bottom: 22px;
   padding: 8px 13px;
   border: 1px solid;
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
   font-family: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
-  font-size: 13px;
+  font-size: var(--type-label);
   font-weight: 600;
   line-height: 1;
   transition:

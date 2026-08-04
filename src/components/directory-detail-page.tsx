@@ -659,9 +659,7 @@ function ChainLocationCard({ location }: { location: ChainLocationRef }) {
             />
           </>
         ) : (
-          <span className="listing-chain-photo-fallback" aria-hidden="true">
-            <Building2 size={22} aria-hidden="true" />
-          </span>
+          <span className="listing-chain-photo-fallback listing-image-fallback" aria-hidden="true" />
         )}
         {location.rating ? (
           <span className="listing-chain-rating">
@@ -677,8 +675,13 @@ function ChainLocationCard({ location }: { location: ChainLocationRef }) {
           {place || "Location unavailable"}
         </small>
         <span className="listing-chain-meta">
-          {price ? <small>From {price}</small> : null}
-          {location.review_count ? <small>{Number(location.review_count).toLocaleString()} reviews</small> : null}
+          {price || location.review_count ? (
+            <span className="listing-price-reviews">
+              {price ? <small>From {price}</small> : null}
+              {price && location.review_count ? <i aria-hidden="true">·</i> : null}
+              {location.review_count ? <small>{Number(location.review_count).toLocaleString()} reviews</small> : null}
+            </span>
+          ) : null}
         </span>
         {treatments.length ? (
           <span className="listing-chain-treatments">

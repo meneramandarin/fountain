@@ -122,6 +122,8 @@ export type LandingFeaturedDirectoryCard = {
   country_name: string | null;
   rating: number | null;
   review_count: number | null;
+  min_price_amount: number | null;
+  min_price_currency: string | null;
   image: string | null;
   image_kind?: string | null;
   tags: { facet: string; value: string }[];
@@ -1133,6 +1135,20 @@ async function hydrateLandingDirectoryCards(
   `,
     featuredIds,
   );
+  const prices = await rows<{ lid: number; amount: number; currency: string | null }>(
+    `
+    SELECT DISTINCT ON (o.location_id)
+      o.location_id AS lid,
+      o.price_amount AS amount,
+      o.price_currency AS currency
+    FROM offerings o
+    WHERE o.location_id IN (${featuredMarks})
+      AND o.price_amount > 0
+      AND ${activeOfferingCondition("o")}
+    ORDER BY o.location_id, o.price_amount ASC
+  `,
+    featuredIds,
+  );
 
   const treatmentMap = new Map<number, { name: string; domain: string }[]>();
   for (const treatment of treatments) {
@@ -1147,6 +1163,8 @@ async function hydrateLandingDirectoryCards(
     list.push({ facet: tag.facet, value: tag.value });
     tagMap.set(tag.lid, list);
   }
+
+  const priceMap = new Map(prices.map((price) => [price.lid, price]));
 
   const verificationMap = await locationClinicianLicenseVerificationMap(featuredIds);
 
@@ -1163,6 +1181,8 @@ async function hydrateLandingDirectoryCards(
       country_name: (card.country_name as string | null) || null,
       rating: (card.rating as number | null) || null,
       review_count: (card.review_count as number | null) || null,
+      min_price_amount: priceMap.get(id)?.amount ?? null,
+      min_price_currency: priceMap.get(id)?.currency || null,
       image: imageMap.get(id)?.blob_url || null,
       image_kind: imageMap.get(id)?.image_kind || null,
       tags: tagMap.get(id) || [],
@@ -2447,6 +2467,7 @@ export async function getLocationDetail(ref: number | string) {
       AND ${activeImageCondition("images")}
       AND blob_url IS NOT NULL
       AND blob_url != ''
+    ORDER BY updated_at DESC NULLS LAST, id DESC
     LIMIT 8
   `,
     [id],

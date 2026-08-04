@@ -1,0 +1,278 @@
+{
+  "phaseDate": "20260708",
+  "tier": 2,
+  "inputPath": null,
+  "inputDir": "swarm-browser-output/results/tier2-20260708",
+  "inputResults": 99,
+  "imageLogTable": "fountain_raw.browser_swarm_image_ingest_20260708",
+  "menuLogTable": "fountain_raw.browser_swarm_menu_ingest_20260708",
+  "dryRun": false,
+  "startedAt": "2026-07-09T03:41:05.136Z",
+  "completedAt": "2026-07-09T03:43:47.395Z",
+  "images": {
+    "proposed": 63,
+    "ingested": 35,
+    "heldForReview": 14,
+    "skipped": 10,
+    "validationFailures": 4
+  },
+  "menus": {
+    "extracted": 241,
+    "pricesBackfilled": 0,
+    "newOfferingsInserted": 197,
+    "conflicts": 2,
+    "sanityFlags": 3,
+    "skipped": 39
+  },
+  "coverageBefore": {
+    "zero_image_locations": 2719,
+    "locations_with_priced_offering": 1550,
+    "active_images": 30685,
+    "active_offerings": 83352
+  },
+  "coverageAfter": {
+    "zero_image_locations": 2695,
+    "locations_with_priced_offering": 1558,
+    "active_images": 30720,
+    "active_offerings": 83549
+  },
+  "finalInvariants": {
+    "blobStoreCount": 19470,
+    "referencedBlobUrls": 19470,
+    "everyImageRowHasLiveBlob": true,
+    "everyBlobHasImageRow": true,
+    "orphanBlobCount": 0,
+    "imageRowsPointingAtMissingBlobCount": 0
+  },
+  "spotChecks": {
+    "images": [
+      {
+        "location_id": 1244,
+        "image_url": "https://nlighteninfraredsauna.com/wp-content/uploads/2020/01/4-sauna-red-2000.jpg",
+        "blob_url": "https://4tz9nkaz3fd0fh3k.public.blob.vercel-storage.com/listing-images/browser-swarm/location/1244/9bbeced656b22454425f.jpg",
+        "outcome": "ingested"
+      },
+      {
+        "location_id": 1244,
+        "image_url": "https://nlighteninfraredsauna.com/wp-content/uploads/2020/01/1-sauna-2000.jpg",
+        "blob_url": "https://4tz9nkaz3fd0fh3k.public.blob.vercel-storage.com/listing-images/browser-swarm/location/1244/b6f0e902883bae3dd250.jpg",
+        "outcome": "ingested"
+      },
+      {
+        "location_id": 1704,
+        "image_url": "https://la-clinique-naturelle.ch/wp-content/uploads/2024/08/La-Clinique-Naturelle-hero.webp",
+        "blob_url": "https://4tz9nkaz3fd0fh3k.public.blob.vercel-storage.com/listing-images/browser-swarm/location/1704/e3349bf6466dc608af62.webp",
+        "outcome": "ingested"
+      },
+      {
+        "location_id": 1242,
+        "image_url": "https://skinandbodymedspa.com/wp-content/uploads/2024/04/Skin-and-Body-Med-Spa_JUVEDERM%C2%AE-in-Queens-NY-1536x1024.webp",
+        "blob_url": "https://4tz9nkaz3fd0fh3k.public.blob.vercel-storage.com/listing-images/browser-swarm/location/1242/524c1c4b2a26f6ac4df6.webp",
+        "outcome": "ingested"
+      },
+      {
+        "location_id": 1242,
+        "image_url": "https://skinandbodymedspa.com/wp-content/uploads/2024/04/Skin-and-Body-Med-Spa-Wrinkle-Relaxers-in-Queens-NY.webp",
+        "blob_url": "https://4tz9nkaz3fd0fh3k.public.blob.vercel-storage.com/listing-images/browser-swarm/location/1242/de29aa5275a05f5d7511.webp",
+        "outcome": "ingested"
+      },
+      {
+        "location_id": 256,
+        "image_url": "https://www.areasauna.com/hero/IMG_7270.jpg",
+        "blob_url": "https://4tz9nkaz3fd0fh3k.public.blob.vercel-storage.com/listing-images/browser-swarm/location/256/a00e4f991773e318685c.jpg",
+        "outcome": "ingested"
+      },
+      {
+        "location_id": 256,
+        "image_url": "https://www.areasauna.com/hero/IMG_7282.jpg",
+        "blob_url": "https://4tz9nkaz3fd0fh3k.public.blob.vercel-storage.com/listing-images/browser-swarm/location/256/96a91dab7d292982cdc7.jpg",
+        "outcome": "ingested"
+      },
+      {
+        "location_id": 4728,
+        "image_url": "https://sp-ao.shortpixel.ai/client/to_webp,q_glossy,ret_img,w_1350/https://metroinfusioncenter.com/wp-content/uploads/2018/10/iv-therapy.jpg",
+        "blob_url": "https://4tz9nkaz3fd0fh3k.public.blob.vercel-storage.com/listing-images/browser-swarm/location/4728/fd58712c9a546662b6ba.jpg",
+        "outcome": "ingested"
+      },
+      {
+        "location_id": 6873,
+        "image_url": "https://sp-ao.shortpixel.ai/client/to_webp,q_glossy,ret_img,w_1350/https://metroinfusioncenter.com/wp-content/uploads/2018/10/iv-therapy.jpg",
+        "blob_url": "https://4tz9nkaz3fd0fh3k.public.blob.vercel-storage.com/listing-images/browser-swarm/location/6873/fd58712c9a546662b6ba.jpg",
+        "outcome": "ingested"
+      },
+      {
+        "location_id": 9298,
+        "image_url": "https://therecoverycosd.com/wp-content/uploads/2024/02/about-2-800x1067.jpg",
+        "blob_url": "https://4tz9nkaz3fd0fh3k.public.blob.vercel-storage.com/listing-images/browser-swarm/location/9298/e94ba616f339a9a3c906.jpg",
+        "outcome": "ingested"
+      },
+      {
+        "location_id": 6371,
+        "image_url": "https://physiofit.urpt.com/wp-content/uploads/sites/37/2022/11/BMPT_0446edit3.jpg",
+        "blob_url": "https://4tz9nkaz3fd0fh3k.public.blob.vercel-storage.com/listing-images/browser-swarm/location/6371/ae53ff69339996ff8d13.jpg",
+        "outcome": "ingested"
+      },
+      {
+        "location_id": 6371,
+        "image_url": "https://physiofit.urpt.com/wp-content/uploads/sites/37/2024/04/pediatric-physical-therapy.jpg",
+        "blob_url": "https://4tz9nkaz3fd0fh3k.public.blob.vercel-storage.com/listing-images/browser-swarm/location/6371/f4420f7bbf3ff61c133a.jpg",
+        "outcome": "ingested"
+      },
+      {
+        "location_id": 8782,
+        "image_url": "https://www.dntmedia.cloud/osteostrong/posters/poster_header.jpg",
+        "blob_url": "https://4tz9nkaz3fd0fh3k.public.blob.vercel-storage.com/listing-images/browser-swarm/location/8782/303465c9bbbbea455779.jpg",
+        "outcome": "ingested"
+      },
+      {
+        "location_id": 8782,
+        "image_url": "https://www.osteostrongbirmingham.com/assets/img/banner_experience.jpg",
+        "blob_url": "https://4tz9nkaz3fd0fh3k.public.blob.vercel-storage.com/listing-images/browser-swarm/location/8782/b60fc88a7819c7bf2d5d.jpg",
+        "outcome": "ingested"
+      },
+      {
+        "location_id": 1644,
+        "image_url": "https://vidasolhealth.com/lovable-uploads/9821d748-1fa5-4d14-abfa-d53719dbf48a.png",
+        "blob_url": "https://4tz9nkaz3fd0fh3k.public.blob.vercel-storage.com/listing-images/browser-swarm/location/1644/4fd157edd9a1511afad3.png",
+        "outcome": "ingested"
+      }
+    ],
+    "menus": [
+      {
+        "location_id": 360,
+        "raw_name": "Prescription Weight Loss Medications",
+        "price_amount": null,
+        "price_currency": null,
+        "outcome": "new_offering_inserted",
+        "offering_id": 85444,
+        "matched_offering_id": null
+      },
+      {
+        "location_id": 569,
+        "raw_name": "Custom IV Drip Therapy",
+        "price_amount": null,
+        "price_currency": null,
+        "outcome": "new_offering_inserted",
+        "offering_id": 85445,
+        "matched_offering_id": null
+      },
+      {
+        "location_id": 569,
+        "raw_name": "B12 shots",
+        "price_amount": null,
+        "price_currency": null,
+        "outcome": "new_offering_inserted",
+        "offering_id": 85446,
+        "matched_offering_id": null
+      },
+      {
+        "location_id": 569,
+        "raw_name": "glutathione",
+        "price_amount": null,
+        "price_currency": null,
+        "outcome": "new_offering_inserted",
+        "offering_id": 85447,
+        "matched_offering_id": null
+      },
+      {
+        "location_id": 569,
+        "raw_name": "immune boosters",
+        "price_amount": null,
+        "price_currency": null,
+        "outcome": "new_offering_inserted",
+        "offering_id": 85448,
+        "matched_offering_id": null
+      },
+      {
+        "location_id": 1704,
+        "raw_name": "Naturopathie",
+        "price_amount": null,
+        "price_currency": null,
+        "outcome": "new_offering_inserted",
+        "offering_id": 85449,
+        "matched_offering_id": null
+      },
+      {
+        "location_id": 1704,
+        "raw_name": "Médecine Traditionnelle Chinoise",
+        "price_amount": null,
+        "price_currency": null,
+        "outcome": "new_offering_inserted",
+        "offering_id": 85450,
+        "matched_offering_id": null
+      },
+      {
+        "location_id": 1704,
+        "raw_name": "Massages",
+        "price_amount": null,
+        "price_currency": null,
+        "outcome": "new_offering_inserted",
+        "offering_id": 85451,
+        "matched_offering_id": null
+      },
+      {
+        "location_id": 1704,
+        "raw_name": "Psycho-solutions",
+        "price_amount": null,
+        "price_currency": null,
+        "outcome": "new_offering_inserted",
+        "offering_id": 85452,
+        "matched_offering_id": null
+      },
+      {
+        "location_id": 74,
+        "raw_name": "Fast Track Recovery",
+        "price_amount": null,
+        "price_currency": null,
+        "outcome": "new_offering_inserted",
+        "offering_id": 85453,
+        "matched_offering_id": null
+      },
+      {
+        "location_id": 74,
+        "raw_name": "Acupuncture",
+        "price_amount": null,
+        "price_currency": null,
+        "outcome": "new_offering_inserted",
+        "offering_id": 85454,
+        "matched_offering_id": null
+      },
+      {
+        "location_id": 74,
+        "raw_name": "AlterG Anti-Gravity Treadmill",
+        "price_amount": null,
+        "price_currency": null,
+        "outcome": "new_offering_inserted",
+        "offering_id": 85455,
+        "matched_offering_id": null
+      },
+      {
+        "location_id": 74,
+        "raw_name": "Electrical Stimulation",
+        "price_amount": null,
+        "price_currency": null,
+        "outcome": "new_offering_inserted",
+        "offering_id": 85456,
+        "matched_offering_id": null
+      },
+      {
+        "location_id": 74,
+        "raw_name": "IASTM",
+        "price_amount": null,
+        "price_currency": null,
+        "outcome": "new_offering_inserted",
+        "offering_id": 85457,
+        "matched_offering_id": null
+      },
+      {
+        "location_id": 74,
+        "raw_name": "LightForce Laser Therapy",
+        "price_amount": null,
+        "price_currency": null,
+        "outcome": "new_offering_inserted",
+        "offering_id": 85458,
+        "matched_offering_id": null
+      }
+    ]
+  }
+}

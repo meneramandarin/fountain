@@ -1,0 +1,118 @@
+{
+  "lowConfidenceImages": [],
+  "validationFailures": [],
+  "priceSanityFlags": [
+    {
+      "location_id": 2233,
+      "raw_name": "출생증명서 (재발급)",
+      "price_amount": 800,
+      "price_currency": "KRW",
+      "price_context": "800/건",
+      "source_page_url": "https://www.samsunghospital.com/home/healthChart/issueService/InfoIssueCertiList.do",
+      "site_origin": "https://www.samsunghospital.com",
+      "reason": "price_outside_sanity_bounds"
+    },
+    {
+      "location_id": 2234,
+      "raw_name": "쌍꺼풀",
+      "price_amount": 80,
+      "price_currency": "KRW",
+      "price_context": "from 80 to 500만원",
+      "source_page_url": "https://knsy.co.kr/ko/pricing",
+      "site_origin": "https://knsy.co.kr",
+      "reason": "price_outside_sanity_bounds"
+    },
+    {
+      "location_id": 2234,
+      "raw_name": "남자무쌍눈매교정",
+      "price_amount": 100,
+      "price_currency": "KRW",
+      "price_context": "from 100 to 300만원",
+      "source_page_url": "https://knsy.co.kr/ko/pricing",
+      "site_origin": "https://knsy.co.kr",
+      "reason": "price_outside_sanity_bounds"
+    },
+    {
+      "location_id": 2234,
+      "raw_name": "트임성형",
+      "price_amount": 50,
+      "price_currency": "KRW",
+      "price_context": "from 50 to 300만원",
+      "source_page_url": "https://knsy.co.kr/ko/pricing",
+      "site_origin": "https://knsy.co.kr",
+      "reason": "price_outside_sanity_bounds"
+    },
+    {
+      "location_id": 2234,
+      "raw_name": "앞트임 복원",
+      "price_amount": 100,
+      "price_currency": "KRW",
+      "price_context": "from 100 to 300만원",
+      "source_page_url": "https://knsy.co.kr/ko/pricing",
+      "site_origin": "https://knsy.co.kr",
+      "reason": "price_outside_sanity_bounds"
+    },
+    {
+      "location_id": 2234,
+      "raw_name": "뒤트임 복원",
+      "price_amount": 100,
+      "price_currency": "KRW",
+      "price_context": "from 100 to 300만원",
+      "source_page_url": "https://knsy.co.kr/ko/pricing",
+      "site_origin": "https://knsy.co.kr",
+      "reason": "price_outside_sanity_bounds"
+    },
+    {
+      "location_id": 2234,
+      "raw_name": "재수술",
+      "price_amount": 150,
+      "price_currency": "KRW",
+      "price_context": "from 150 to 500만원",
+      "source_page_url": "https://knsy.co.kr/ko/pricing",
+      "site_origin": "https://knsy.co.kr",
+      "reason": "price_outside_sanity_bounds"
+    },
+    {
+      "location_id": 2234,
+      "raw_name": "지방이식",
+      "price_amount": 80,
+      "price_currency": "KRW",
+      "price_context": "from 80 to 300만원",
+      "source_page_url": "https://knsy.co.kr/ko/pricing",
+      "site_origin": "https://knsy.co.kr",
+      "reason": "price_outside_sanity_bounds"
+    },
+    {
+      "location_id": 2234,
+      "raw_name": "보톡스",
+      "price_amount": 4,
+      "price_currency": "KRW",
+      "price_context": "from 4 to 20만원",
+      "source_page_url": "https://knsy.co.kr/ko/pricing",
+      "site_origin": "https://knsy.co.kr",
+      "reason": "price_outside_sanity_bounds"
+    },
+    {
+      "location_id": 2234,
+      "raw_name": "필러",
+      "price_amount": 15,
+      "price_currency": "KRW",
+      "price_context": "from 15 to 20만원",
+      "source_page_url": "https://knsy.co.kr/ko/pricing",
+      "site_origin": "https://knsy.co.kr",
+      "reason": "price_outside_sanity_bounds"
+    },
+    {
+      "location_id": 2238,
+      "raw_name": "첫코수술",
+      "price_amount": 195000000,
+      "price_currency": "KRW",
+      "price_context": "195만",
+      "source_page_url": "https://glovips.com/",
+      "site_origin": "https://glovips.com",
+      "reason": "price_outside_sanity_bounds"
+    }
+  ],
+  "locationOfferingCapFlags": [],
+  "priceConflicts": []
+}

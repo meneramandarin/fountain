@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowLeft, ArrowRight, Building2, MapPin, Star } from "lucide-react";
+import { ArrowLeft, ArrowRight, MapPin, Star } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useId, useRef } from "react";
@@ -16,6 +16,27 @@ type LandingFeaturedDirectoryCarouselProps = {
 
 function imageSource(src: string) {
   return src;
+}
+
+function formatPrice(amount: number | null, currency: string | null) {
+  if (amount == null || !Number.isFinite(Number(amount))) return null;
+
+  const value = Number(amount);
+  const code = currency?.trim();
+  const maximumFractionDigits = Number.isInteger(value) ? 0 : 2;
+
+  if (code && /^[A-Z]{3}$/.test(code)) {
+    return new Intl.NumberFormat("en", {
+      style: "currency",
+      currency: code,
+      maximumFractionDigits,
+    }).format(value);
+  }
+
+  const formatted = value.toLocaleString("en", { maximumFractionDigits });
+  if (!code) return formatted;
+  if (/^[^\dA-Za-z\s]+$/.test(code)) return `${code}${formatted}`;
+  return `${formatted} ${code}`;
 }
 
 export function LandingFeaturedDirectoryCarousel({ cards, title }: LandingFeaturedDirectoryCarouselProps) {
@@ -61,9 +82,9 @@ export function LandingFeaturedDirectoryCarousel({ cards, title }: LandingFeatur
             countryCode: card.country_code,
             countryName: card.country_name,
           });
-          const type = card.tags.find((tag) => tag.facet === "entity_type");
           const previewTreatments = card.treatments.slice(0, 3);
           const isContainedGraphic = card.image_kind === "text_graphic" || card.image_kind === "logo";
+          const price = formatPrice(card.min_price_amount, card.min_price_currency);
 
           return (
             <Link className="landing-featured-card" href={locationHref(card)} key={card.id}>
@@ -81,9 +102,7 @@ export function LandingFeaturedDirectoryCarousel({ cards, title }: LandingFeatur
                     />
                   </>
                 ) : (
-                  <span className="landing-featured-photo-fallback" aria-hidden="true">
-                    <Building2 size={28} />
-                  </span>
+                  <span className="landing-featured-photo-fallback listing-image-fallback" aria-hidden="true" />
                 )}
                 {card.rating ? (
                   <span className="landing-featured-rating">
@@ -110,9 +129,13 @@ export function LandingFeaturedDirectoryCarousel({ cards, title }: LandingFeatur
                     {place || "Location unavailable"}
                   </small>
                 </span>
-                <span className="landing-featured-meta">
-                  {type ? <em>{type.value}</em> : null}
-                  {card.review_count ? <small>{Number(card.review_count).toLocaleString()} reviews</small> : null}
+                <span className="landing-featured-footer">
+                  <span className="landing-featured-meta">
+                    {price ? <small>From {price}</small> : null}
+                    {price && card.review_count ? <i aria-hidden="true">·</i> : null}
+                    {card.review_count ? <small>{Number(card.review_count).toLocaleString()} reviews</small> : null}
+                  </span>
+                  <span className="landing-featured-card-arrow" aria-hidden="true"><ArrowRight size={15} /></span>
                 </span>
                 <span className="landing-featured-treatments">
                   {card.treatments.map((treatment) => (

@@ -1,0 +1,4791 @@
+{
+  "lowConfidenceImages": [
+    {
+      "location_id": 1375,
+      "image_url": "https://www.advancedantiaging.com/wp-content/uploads/2021/04/Untitled-1-1.jpg",
+      "source_page_url": "https://www.advancedantiaging.com/",
+      "llm_confidence": 0.7,
+      "rejection_notes": null,
+      "site_origin": "http://advancedantiaging.com",
+      "reason": "below_confidence_threshold"
+    },
+    {
+      "location_id": 1375,
+      "image_url": "https://www.advancedantiaging.com/wp-content/uploads/2018/11/11.jpg",
+      "source_page_url": "https://www.advancedantiaging.com/",
+      "llm_confidence": 0.7,
+      "rejection_notes": null,
+      "site_origin": "http://advancedantiaging.com",
+      "reason": "below_confidence_threshold"
+    },
+    {
+      "location_id": 581,
+      "image_url": "https://beachbum.com/wp-content/uploads/sb-instagram-feed-images/731384999_18589896112040357_2376437126359993004_nlow.webp",
+      "source_page_url": "https://beachbum.com/",
+      "llm_confidence": 0.7,
+      "rejection_notes": null,
+      "site_origin": "http://beachbum.com",
+      "reason": "below_confidence_threshold"
+    },
+    {
+      "location_id": 132,
+      "image_url": "https://images.squarespace-cdn.com/content/v1/56d0aab31bbee040b2cd2b6c/0b36b412-8d7d-471d-91fa-befccc8c83b6/WHAT+IS+CELLULAR+THERAPY.png?format=1500w",
+      "source_page_url": "http://www.emellemd.com/",
+      "llm_confidence": 0.6,
+      "rejection_notes": null,
+      "site_origin": "http://emellemd.com",
+      "reason": "below_confidence_threshold"
+    },
+    {
+      "location_id": 132,
+      "image_url": "https://images.squarespace-cdn.com/content/v1/56d0aab31bbee040b2cd2b6c/1497212533877-3I7RTHURT9NX954COZCG/greengrass.jpg?format=1500w",
+      "source_page_url": "http://www.emellemd.com/",
+      "llm_confidence": 0.7,
+      "rejection_notes": null,
+      "site_origin": "http://emellemd.com",
+      "reason": "below_confidence_threshold"
+    },
+    {
+      "location_id": 864,
+      "image_url": "https://healthnwellnessrx.com/wp-content/uploads/2022/11/Elevate1.png",
+      "source_page_url": "https://healthnwellnessrx.com/",
+      "llm_confidence": 0.7,
+      "rejection_notes": null,
+      "site_origin": "http://healthnwellnessrx.com",
+      "reason": "below_confidence_threshold"
+    },
+    {
+      "location_id": 167,
+      "image_url": "https://custom-images.strikinglycdn.com/res/hrscywv4p/image/upload/c_limit,fl_lossy,h_9000,w_1200,f_auto,q_1/1698793/659763_814796.jpg",
+      "source_page_url": "https://www.healingonhudsonllc.com/",
+      "llm_confidence": 0.7,
+      "rejection_notes": null,
+      "site_origin": "http://healingonhudsonllc.com",
+      "reason": "below_confidence_threshold"
+    },
+    {
+      "location_id": 167,
+      "image_url": "https://custom-images.strikinglycdn.com/res/hrscywv4p/image/upload/c_limit,fl_lossy,h_9000,w_1200,f_auto,q_1/1698793/999908_413822.jpg",
+      "source_page_url": "https://www.healingonhudsonllc.com/",
+      "llm_confidence": 0.7,
+      "rejection_notes": null,
+      "site_origin": "http://healingonhudsonllc.com",
+      "reason": "below_confidence_threshold"
+    },
+    {
+      "location_id": 167,
+      "image_url": "https://custom-images.strikinglycdn.com/res/hrscywv4p/image/upload/c_limit,fl_lossy,h_9000,w_1200,f_auto,q_1/1698793/742824_657727.jpg",
+      "source_page_url": "https://www.healingonhudsonllc.com/",
+      "llm_confidence": 0.7,
+      "rejection_notes": null,
+      "site_origin": "http://healingonhudsonllc.com",
+      "reason": "below_confidence_threshold"
+    },
+    {
+      "location_id": 1014,
+      "image_url": "https://images.squarespace-cdn.com/content/v1/5c87c036ab1a624059ba9fbe/effb1759-9b37-435a-9dd7-0ef769ff3cea/kahnhealth_banner_v2.png?format=1500w",
+      "source_page_url": "https://www.kahnhealth.com/",
+      "llm_confidence": 0.5,
+      "rejection_notes": "staff headshot (no other valid facility/exterior/interior/treatment-room/equipment photos available)",
+      "site_origin": "http://kahnhealth.com",
+      "reason": "below_confidence_threshold"
+    },
+    {
+      "location_id": 1637,
+      "image_url": "https://images.squarespace-cdn.com/content/v1/6227bf3f0b45753465a454e8/1649104176709-HXBE5S76Z0KPUNEMHZX2/IV-one+copy.png?format=1000w",
+      "source_page_url": "https://mainlinewellness.ca/",
+      "llm_confidence": 0.7,
+      "rejection_notes": null,
+      "site_origin": "http://mainlinewellness.ca",
+      "reason": "below_confidence_threshold"
+    },
+    {
+      "location_id": 1637,
+      "image_url": "https://images.squarespace-cdn.com/content/v1/6227bf3f0b45753465a454e8/1649104656580-N4AZRO0XI4HVKNQ1HJ9G/iv-three.png?format=1000w",
+      "source_page_url": "https://mainlinewellness.ca/",
+      "llm_confidence": 0.7,
+      "rejection_notes": null,
+      "site_origin": "http://mainlinewellness.ca",
+      "reason": "below_confidence_threshold"
+    },
+    {
+      "location_id": 319,
+      "image_url": "https://marceljacobspt.com/wp-content/uploads/2025/07/marcel-123-1-300x200.jpg",
+      "source_page_url": "https://marceljacobspt.com/",
+      "llm_confidence": 0.7,
+      "rejection_notes": null,
+      "site_origin": "http://marceljacobspt.com",
+      "reason": "below_confidence_threshold"
+    },
+    {
+      "location_id": 319,
+      "image_url": "https://marceljacobspt.com/wp-content/uploads/2025/07/423sda-300x200.jpg",
+      "source_page_url": "https://marceljacobspt.com/",
+      "llm_confidence": 0.7,
+      "rejection_notes": null,
+      "site_origin": "http://marceljacobspt.com",
+      "reason": "below_confidence_threshold"
+    },
+    {
+      "location_id": 319,
+      "image_url": "https://marceljacobspt.com/wp-content/uploads/2025/07/pain-relief-and-physical-therapy-300x200.jpg",
+      "source_page_url": "https://marceljacobspt.com/",
+      "llm_confidence": 0.7,
+      "rejection_notes": null,
+      "site_origin": "http://marceljacobspt.com",
+      "reason": "below_confidence_threshold"
+    },
+    {
+      "location_id": 757,
+      "image_url": "https://meraclinicny.com/lovable-uploads/patient%20trust%20image.jpeg",
+      "source_page_url": "https://meraclinicny.com/",
+      "llm_confidence": 0.7,
+      "rejection_notes": "Possible stock photo, but clinic-uploaded",
+      "site_origin": "http://meraclinicny.com",
+      "reason": "below_confidence_threshold"
+    },
+    {
+      "location_id": 146,
+      "image_url": "https://mindfulpower.net/wp-content/uploads/Cognitive-Behavioral-Therapy.jpg",
+      "source_page_url": "https://mindfulpower.net/",
+      "llm_confidence": 0.3,
+      "rejection_notes": "stock photo",
+      "site_origin": "http://mindfulpower.net",
+      "reason": "below_confidence_threshold"
+    },
+    {
+      "location_id": 146,
+      "image_url": "https://mindfulpower.net/wp-content/uploads/baby2.jpg",
+      "source_page_url": "https://mindfulpower.net/",
+      "llm_confidence": 0.3,
+      "rejection_notes": "stock photo",
+      "site_origin": "http://mindfulpower.net",
+      "reason": "below_confidence_threshold"
+    },
+    {
+      "location_id": 146,
+      "image_url": "https://mindfulpower.net/wp-content/uploads/mindfulness-1.jpg",
+      "source_page_url": "https://mindfulpower.net/",
+      "llm_confidence": 0.3,
+      "rejection_notes": "stock photo",
+      "site_origin": "http://mindfulpower.net",
+      "reason": "below_confidence_threshold"
+    },
+    {
+      "location_id": 209,
+      "image_url": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDg3IiBoZWlnaHQ9IjcyNSIgdmlld0JveD0iMCAwIDEwODcgNzI1Ij48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBzdHlsZT0iZmlsbDojY2ZkNGRiO2ZpbGwtb3BhY2l0eTogMC4xOyIvPjwvc3ZnPg==",
+      "source_page_url": "https://olympuscenter.com/",
+      "llm_confidence": 0.7,
+      "rejection_notes": null,
+      "site_origin": "http://olympuscenter.com",
+      "reason": "below_confidence_threshold"
+    },
+    {
+      "location_id": 209,
+      "image_url": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI3NTAiIGhlaWdodD0iNTAwIiB2aWV3Qm94PSIwIDAgNzUwIDUwMCI+PHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgc3R5bGU9ImZpbGw6I2NmZDRkYjtmaWxsLW9wYWNpdHk6IDAuMTsiLz48L3N2Zz4=",
+      "source_page_url": "https://olympuscenter.com/",
+      "llm_confidence": 0.7,
+      "rejection_notes": null,
+      "site_origin": "http://olympuscenter.com",
+      "reason": "below_confidence_threshold"
+    },
+    {
+      "location_id": 444,
+      "image_url": "https://privatemedical.org/wp-content/uploads/2024/06/What-Is-Precision-Medicine.jpg.webp",
+      "source_page_url": "https://privatemedical.org/",
+      "llm_confidence": 0.6,
+      "rejection_notes": "possible stock photo",
+      "site_origin": "http://privatemedical.org",
+      "reason": "below_confidence_threshold"
+    },
+    {
+      "location_id": 203,
+      "image_url": "https://raphamedicalhoboken.com/hs-fs/hubfs/IMG_9118.jpeg?width=1512&height=2016&name=IMG_9118.jpeg",
+      "source_page_url": "https://raphamedicalhoboken.com/",
+      "llm_confidence": 0.7,
+      "rejection_notes": null,
+      "site_origin": "http://raphamedicalhoboken.com",
+      "reason": "below_confidence_threshold"
+    },
+    {
+      "location_id": 203,
+      "image_url": "https://raphamedicalhoboken.com/hs-fs/hubfs/IMG_0152.jpeg?width=2000&height=1500&name=IMG_0152.jpeg",
+      "source_page_url": "https://raphamedicalhoboken.com/",
+      "llm_confidence": 0.6,
+      "rejection_notes": null,
+      "site_origin": "http://raphamedicalhoboken.com",
+      "reason": "below_confidence_threshold"
+    },
+    {
+      "location_id": 1646,
+      "image_url": "https://images.squarespace-cdn.com/content/v1/5f503c87ab2d532ca5561910/1604609513189-CZVYC731LV03JALGW6AY/IMG_0883.jpeg?format=1500w",
+      "source_page_url": "https://www.reboracells.com/",
+      "llm_confidence": 0.7,
+      "rejection_notes": null,
+      "site_origin": "http://reboracells.com",
+      "reason": "below_confidence_threshold"
+    },
+    {
+      "location_id": 1090,
+      "image_url": "https://images.leadconnectorhq.com/image/f_webp/q_80/r_1200/u_https://assets.cdn.filesafe.space/rNDRriAhYpO2ilXCCu9T/media/63c8702e70248df359a58b83.jpeg",
+      "source_page_url": "https://rltny.com/",
+      "llm_confidence": 0.7,
+      "rejection_notes": null,
+      "site_origin": "http://rltny.com",
+      "reason": "below_confidence_threshold"
+    },
+    {
+      "location_id": 1090,
+      "image_url": "https://images.leadconnectorhq.com/image/f_webp/q_80/r_1200/u_https://assets.cdn.filesafe.space/rNDRriAhYpO2ilXCCu9T/media/61ce3bdd54e8035aa0646ca0.png",
+      "source_page_url": "https://rltny.com/",
+      "llm_confidence": 0.7,
+      "rejection_notes": null,
+      "site_origin": "http://rltny.com",
+      "reason": "below_confidence_threshold"
+    },
+    {
+      "location_id": 2283,
+      "image_url": "https://www.terapia.ca/s/img/emotionheader.png?1637263688.920px.420px",
+      "source_page_url": "https://www.terapia.ca/",
+      "llm_confidence": 0.7,
+      "rejection_notes": null,
+      "site_origin": "http://terapia.ca",
+      "reason": "below_confidence_threshold"
+    },
+    {
+      "location_id": 9204,
+      "image_url": "http://thermaeretreat.com/wp-content/uploads/2024/09/banner_image-1076.jpg",
+      "source_page_url": "http://thermaeretreat.com/",
+      "llm_confidence": 0.5,
+      "rejection_notes": "text-heavy banner",
+      "site_origin": "http://thermaeretreat.com",
+      "reason": "below_confidence_threshold"
+    },
+    {
+      "location_id": 9204,
+      "image_url": "http://thermaeretreat.com/wp-content/uploads/2024/09/image_bkg-559-scaled.jpg",
+      "source_page_url": "http://thermaeretreat.com/",
+      "llm_confidence": 0.7,
+      "rejection_notes": null,
+      "site_origin": "http://thermaeretreat.com",
+      "reason": "below_confidence_threshold"
+    },
+    {
+      "location_id": 1595,
+      "image_url": "https://recoverylabstore.com/wp-content/uploads/2022/09/thumbnail_Recovery20Corto20Blanco.png",
+      "source_page_url": "https://recoverylabstore.com/",
+      "llm_confidence": 0.7,
+      "rejection_notes": "Potential logo or thumbnail, not a full facility/exterior/interior/treatment-room/equipment photo",
+      "site_origin": "http://therecoverylabandcryo.com",
+      "reason": "below_confidence_threshold"
+    },
+    {
+      "location_id": 1303,
+      "image_url": "https://images.squarespace-cdn.com/content/v1/5c64acda11f784670c81a943/1550233375860-FGP3INXL4155O6M08O9I/image-asset.jpeg?format=1500w",
+      "source_page_url": "https://www.wellnessstudiowestchester.com/",
+      "llm_confidence": 0.7,
+      "rejection_notes": null,
+      "site_origin": "http://wellnessstudiowestchester.com",
+      "reason": "below_confidence_threshold"
+    },
+    {
+      "location_id": 8372,
+      "image_url": "https://www.assurewellnessgroup.com/img/zeusdemox20000.webp?view=4930",
+      "source_page_url": "https://www.assurewellnessgroup.com/",
+      "llm_confidence": 0,
+      "rejection_notes": "Not a clinic facility/interior/treatment room/equipment photo; related to gambling/slot games",
+      "site_origin": "http://www.assurewellnessgroup.com",
+      "reason": "below_confidence_threshold"
+    },
+    {
+      "location_id": 8372,
+      "image_url": "https://dsuown9evwz4y.cloudfront.net/Images/_normad-alpha/menu/desktop/home/animations/game-code-7e252.png?v=jj2ww53",
+      "source_page_url": "https://www.assurewellnessgroup.com/",
+      "llm_confidence": 0,
+      "rejection_notes": "Not a clinic facility/interior/treatment room/equipment photo; related to gambling/slot games",
+      "site_origin": "http://www.assurewellnessgroup.com",
+      "reason": "below_confidence_threshold"
+    },
+    {
+      "location_id": 8372,
+      "image_url": "https://dsuown9evwz4y.cloudfront.net/Images/_normad-alpha/menu/desktop/home/animations/game-code-70e252.png?v=jj2ww53",
+      "source_page_url": "https://www.assurewellnessgroup.com/",
+      "llm_confidence": 0,
+      "rejection_notes": "Not a clinic facility/interior/treatment room/equipment photo; related to gambling/slot games",
+      "site_origin": "http://www.assurewellnessgroup.com",
+      "reason": "below_confidence_threshold"
+    },
+    {
+      "location_id": 1165,
+      "image_url": "https://drlans.org/wp-content/uploads/sites/29/Bioidentical-Hormone-Therapy-Treatment-200x300.webp",
+      "source_page_url": "https://drlans.org/",
+      "llm_confidence": 0.7,
+      "rejection_notes": null,
+      "site_origin": "http://www.drlans.org",
+      "reason": "below_confidence_threshold"
+    },
+    {
+      "location_id": 494,
+      "image_url": "https://sa1s3optim.patientpop.com/assets/docs/296828.png",
+      "source_page_url": "https://www.drzilberstein.com/",
+      "llm_confidence": 0.7,
+      "rejection_notes": null,
+      "site_origin": "http://www.drzilberstein.com",
+      "reason": "below_confidence_threshold"
+    },
+    {
+      "location_id": 795,
+      "image_url": "https://dynamicrehab-pt.com/wp-content/uploads/2018/09/cupping-354x353.jpeg",
+      "source_page_url": "https://dynamicrehab-pt.com/",
+      "llm_confidence": 0.7,
+      "rejection_notes": null,
+      "site_origin": "http://www.dynamicrehab-pt.com",
+      "reason": "below_confidence_threshold"
+    },
+    {
+      "location_id": 795,
+      "image_url": "https://dynamicrehab-pt.com/wp-content/uploads/2018/09/shockwave-354x353.jpeg",
+      "source_page_url": "https://dynamicrehab-pt.com/",
+      "llm_confidence": 0.7,
+      "rejection_notes": null,
+      "site_origin": "http://www.dynamicrehab-pt.com",
+      "reason": "below_confidence_threshold"
+    },
+    {
+      "location_id": 795,
+      "image_url": "https://dynamicrehab-pt.com/wp-content/uploads/2018/10/biomagnetism.jpg",
+      "source_page_url": "https://dynamicrehab-pt.com/",
+      "llm_confidence": 0.7,
+      "rejection_notes": null,
+      "site_origin": "http://www.dynamicrehab-pt.com",
+      "reason": "below_confidence_threshold"
+    },
+    {
+      "location_id": 1078,
+      "image_url": "https://dynamicrehab-pt.com/wp-content/uploads/2018/09/diatheramy-354x353.jpeg",
+      "source_page_url": "https://dynamicrehab-pt.com/",
+      "llm_confidence": 0.7,
+      "rejection_notes": null,
+      "site_origin": "http://www.dynamicrehab-pt.com",
+      "reason": "below_confidence_threshold"
+    },
+    {
+      "location_id": 1078,
+      "image_url": "https://dynamicrehab-pt.com/wp-content/uploads/2018/09/mysofocial-354x353.jpeg",
+      "source_page_url": "https://dynamicrehab-pt.com/",
+      "llm_confidence": 0.7,
+      "rejection_notes": null,
+      "site_origin": "http://www.dynamicrehab-pt.com",
+      "reason": "below_confidence_threshold"
+    },
+    {
+      "location_id": 1078,
+      "image_url": "https://dynamicrehab-pt.com/wp-content/uploads/2019/03/pre-surgical-rehab-2may-1280x500-1024x400-1-354x353.jpg",
+      "source_page_url": "https://dynamicrehab-pt.com/",
+      "llm_confidence": 0.7,
+      "rejection_notes": null,
+      "site_origin": "http://www.dynamicrehab-pt.com",
+      "reason": "below_confidence_threshold"
+    },
+    {
+      "location_id": 426,
+      "image_url": "https://images.squarespace-cdn.com/content/v1/5757943907eaa03affd47d2d/1605811355894-SGJIW7KSWJM4R69LWIZY/fresh-med-contact-us.jpg?format=1500w",
+      "source_page_url": "https://www.freshmednyc.com/",
+      "llm_confidence": 0.7,
+      "rejection_notes": null,
+      "site_origin": "http://www.freshmednyc.com",
+      "reason": "below_confidence_threshold"
+    },
+    {
+      "location_id": 1259,
+      "image_url": "https://images.squarespace-cdn.com/content/v1/5d01db7ca839d700019bb151/1560714685082-HZZW40L4LBZEK0M0559S/image-asset.jpeg?format=750w",
+      "source_page_url": "https://www.healingskinfromwithin.com/",
+      "llm_confidence": 0.7,
+      "rejection_notes": "Potential stock photo, but no clear rejection criteria met (not logo, icon, text-heavy banner, or staff headshot)",
+      "site_origin": "http://www.healingskinfromwithin.com",
+      "reason": "below_confidence_threshold"
+    },
+    {
+      "location_id": 1006,
+      "image_url": "https://images.squarespace-cdn.com/content/v1/5d23bf07a8f3420001d2bc4a/1577750477994-S71XKP3SR185S4WP9H3M/image-asset.png?format=500w",
+      "source_page_url": "https://integrativetherapynj.com/",
+      "llm_confidence": 0.5,
+      "rejection_notes": "No alt text, uncertain if facility photo",
+      "site_origin": "http://www.integrativetherapynj.com",
+      "reason": "below_confidence_threshold"
+    },
+    {
+      "location_id": 715,
+      "image_url": "https://images.squarespace-cdn.com/content/v1/60ee358f49d10c2a0defd0eb/57635067-56eb-404e-96f4-2bc2c2cc6ccd/IA3.png?format=1500w",
+      "source_page_url": "https://www.ironboundacu.com/",
+      "llm_confidence": 0.3,
+      "rejection_notes": "Likely logo (alt text matches clinic name)",
+      "site_origin": "http://www.ironboundacu.com",
+      "reason": "below_confidence_threshold"
+    },
+    {
+      "location_id": 715,
+      "image_url": "https://images.squarespace-cdn.com/content/v1/60ee358f49d10c2a0defd0eb/4275b104-0cbd-4594-b37c-b1992f1edeb5/Cover.jpg?format=1500w",
+      "source_page_url": "https://www.ironboundacu.com/",
+      "llm_confidence": 0.2,
+      "rejection_notes": "Text-heavy banner (contains 'Ironbound Acupuncture & Wellness' text overlay)",
+      "site_origin": "http://www.ironboundacu.com",
+      "reason": "below_confidence_threshold"
+    },
+    {
+      "location_id": 715,
+      "image_url": "https://www.ironboundacu.com/universal/svg/social-accounts.svg",
+      "source_page_url": "https://www.ironboundacu.com/",
+      "llm_confidence": 0.1,
+      "rejection_notes": "Icon (social accounts SVG)",
+      "site_origin": "http://www.ironboundacu.com",
+      "reason": "below_confidence_threshold"
+    },
+    {
+      "location_id": 870,
+      "image_url": "https://kellygorsky.com/wp-content/uploads/2024/04/IMG_20231001_143708-770x1024.jpg",
+      "source_page_url": "https://kellygorsky.com/",
+      "llm_confidence": 0.5,
+      "rejection_notes": "Staff headshot; no other real facility/exterior/interior/treatment-room/equipment photos available on the page.",
+      "site_origin": "http://www.kellygorsky.com",
+      "reason": "below_confidence_threshold"
+    },
+    {
+      "location_id": 807,
+      "image_url": "https://www.mhhc.org/images/cta/Our-Services.jpg",
+      "source_page_url": "https://www.mhhc.org/",
+      "llm_confidence": 0.7,
+      "rejection_notes": null,
+      "site_origin": "http://www.mhhc.org",
+      "reason": "below_confidence_threshold"
+    },
+    {
+      "location_id": 807,
+      "image_url": "https://www.mhhc.org/images/panel/service-content.jpg",
+      "source_page_url": "https://www.mhhc.org/",
+      "llm_confidence": 0.6,
+      "rejection_notes": null,
+      "site_origin": "http://www.mhhc.org",
+      "reason": "below_confidence_threshold"
+    },
+    {
+      "location_id": 13004,
+      "image_url": "https://static.wixstatic.com/media/cc619c_d4e6dd5ad90e4ce8b53cefed6d76643a.jpg/v1/fill/w_365,h_180,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/cc619c_d4e6dd5ad90e4ce8b53cefed6d76643a.jpg",
+      "source_page_url": "https://www.memphismovementdisorders.com/",
+      "llm_confidence": 0.7,
+      "rejection_notes": null,
+      "site_origin": "http://www.memphismovementdisorders.com",
+      "reason": "below_confidence_threshold"
+    },
+    {
+      "location_id": 13004,
+      "image_url": "https://static.wixstatic.com/media/cc8a3c00c0a0a280e2837b6b85471789.jpg/v1/fill/w_335,h_191,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/cc8a3c00c0a0a280e2837b6b85471789.jpg",
+      "source_page_url": "https://www.memphismovementdisorders.com/",
+      "llm_confidence": 0.7,
+      "rejection_notes": null,
+      "site_origin": "http://www.memphismovementdisorders.com",
+      "reason": "below_confidence_threshold"
+    },
+    {
+      "location_id": 1568,
+      "image_url": "https://images.squarespace-cdn.com/content/v1/68bae06365e901527cbffc03/7e29494f-1704-4f5a-b10d-091b4b4de2fa/DYLAN+AND+ARTURO.jpg?format=750w",
+      "source_page_url": "https://www.neuroreset.miami/",
+      "llm_confidence": 0.7,
+      "rejection_notes": null,
+      "site_origin": "http://www.neuroreset.miami",
+      "reason": "below_confidence_threshold"
+    },
+    {
+      "location_id": 238,
+      "image_url": "https://static.wixstatic.com/media/bc3ec7bc825c4e6ca746c659189cea83.jpg/v1/fill/w_658,h_1080,al_c,q_85,enc_avif,quality_auto/bc3ec7bc825c4e6ca746c659189cea83.jpg",
+      "source_page_url": "https://www.nyctherapygroup.com/",
+      "llm_confidence": 0.6,
+      "rejection_notes": "Potential staff headshot, but may depict a treatment room setting",
+      "site_origin": "http://www.nyctherapygroup.com",
+      "reason": "below_confidence_threshold"
+    },
+    {
+      "location_id": 515,
+      "image_url": "https://sa1s3optim.patientpop.com/assets/docs/270088.jpg",
+      "source_page_url": "https://www.oshermd.com/",
+      "llm_confidence": 0.7,
+      "rejection_notes": null,
+      "site_origin": "http://www.oshermd.com",
+      "reason": "below_confidence_threshold"
+    },
+    {
+      "location_id": 515,
+      "image_url": "https://sa1s3optim.patientpop.com/assets/docs/174346.jpg",
+      "source_page_url": "https://www.oshermd.com/",
+      "llm_confidence": 0.7,
+      "rejection_notes": null,
+      "site_origin": "http://www.oshermd.com",
+      "reason": "below_confidence_threshold"
+    },
+    {
+      "location_id": 87,
+      "image_url": "https://images.squarespace-cdn.com/content/v1/5eb93dc09ff474701d841ed2/09f5fe0a-1d02-4c6e-ba0a-52d225ede9ee/PagingDrN-241.jpg?format=750w",
+      "source_page_url": "https://www.pagingdrneil.com/",
+      "llm_confidence": 0.7,
+      "rejection_notes": null,
+      "site_origin": "http://www.pagingdrneil.com",
+      "reason": "below_confidence_threshold"
+    },
+    {
+      "location_id": 1172,
+      "image_url": "https://images.squarespace-cdn.com/content/v1/5eb93dc09ff474701d841ed2/09f5fe0a-1d02-4c6e-ba0a-52d225ede9ee/PagingDrN-241.jpg?format=750w",
+      "source_page_url": "https://www.pagingdrneil.com/",
+      "llm_confidence": 0.7,
+      "rejection_notes": null,
+      "site_origin": "http://www.pagingdrneil.com",
+      "reason": "below_confidence_threshold"
+    },
+    {
+      "location_id": 894,
+      "image_url": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8Xw8AAoMBgDTD2qgAAAAASUVORK5CYII=",
+      "source_page_url": "https://precisionrehabny.com/",
+      "llm_confidence": 0.1,
+      "rejection_notes": "Base64-encoded image, likely an icon or text-heavy element, not a real facility/exterior/interior/treatment-room/equipment photo",
+      "site_origin": "http://www.precisionrehabny.com",
+      "reason": "below_confidence_threshold"
+    },
+    {
+      "location_id": 1326,
+      "image_url": "https://images.squarespace-cdn.com/content/v1/6151272c37c778546c9ce5ef/68ba73e3-4896-4cda-a2b1-188bd7273908/computer+POM.jpg?format=500w",
+      "source_page_url": "https://www.pomnj.com/",
+      "llm_confidence": 0.7,
+      "rejection_notes": null,
+      "site_origin": "http://www.pomnj.com",
+      "reason": "below_confidence_threshold"
+    },
+    {
+      "location_id": 144,
+      "image_url": "https://images.squarespace-cdn.com/content/v1/5760a28c01dbae1973613a45/1562722940446-UVE93ML83TFS0SWP0ZX7/IMG_6693.JPG?format=750w",
+      "source_page_url": "http://www.reikitraveler.com/services",
+      "llm_confidence": 0.7,
+      "rejection_notes": null,
+      "site_origin": "http://www.reikitraveler.com",
+      "reason": "below_confidence_threshold"
+    },
+    {
+      "location_id": 1531,
+      "image_url": "https://salud.co/wp-content/uploads/%C2%BFEl-estres-esta-inflamando-tu-cuerpo.jpg",
+      "source_page_url": "https://salud.co/",
+      "llm_confidence": 0.3,
+      "rejection_notes": null,
+      "site_origin": "http://www.salud.co",
+      "reason": "below_confidence_threshold"
+    },
+    {
+      "location_id": 1062,
+      "image_url": "https://static.wixstatic.com/media/0e373e_c0160007222b4d4d917741660e72ad79~mv2.jpg/v1/fill/w_408,h_306,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/40436287_241006549949850_447800287641678.jpg",
+      "source_page_url": "https://www.steps2successot.com/",
+      "llm_confidence": 0.7,
+      "rejection_notes": null,
+      "site_origin": "http://www.steps2successot.com",
+      "reason": "below_confidence_threshold"
+    },
+    {
+      "location_id": 1667,
+      "image_url": "http://stemology.co.uk/wp-content/uploads/2015/03/Front-Page-image-Small.jpg",
+      "source_page_url": "http://stemology.co.uk/",
+      "llm_confidence": 0.6,
+      "rejection_notes": null,
+      "site_origin": "http://www.stemology.co.uk",
+      "reason": "below_confidence_threshold"
+    },
+    {
+      "location_id": 976,
+      "image_url": "https://lirp.cdn-website.com/c2eb28c1/dms3rep/multi/opt/The+MJ+Treatment+-+29643_20231109-017-1920w.jpg",
+      "source_page_url": "https://www.themjtreatment.com/",
+      "llm_confidence": 0.7,
+      "rejection_notes": null,
+      "site_origin": "http://www.themjtreatment.com",
+      "reason": "below_confidence_threshold"
+    },
+    {
+      "location_id": 12749,
+      "image_url": "https://trtmd.com/wp-content/uploads/2025/10/WhatsApp-Image-2023-03-07-at-16.44.38.jpg",
+      "source_page_url": "https://trtmd.com/",
+      "llm_confidence": 0.7,
+      "rejection_notes": null,
+      "site_origin": "http://www.trtmd.com",
+      "reason": "below_confidence_threshold"
+    },
+    {
+      "location_id": 12749,
+      "image_url": "https://trtmd.com/wp-content/uploads/2025/11/087A8257.jpg",
+      "source_page_url": "https://trtmd.com/",
+      "llm_confidence": 0.5,
+      "rejection_notes": "Alt text empty, uncertain if real interior photo",
+      "site_origin": "http://www.trtmd.com",
+      "reason": "below_confidence_threshold"
+    },
+    {
+      "location_id": 1428,
+      "image_url": "https://vitalityintegrative.com/wp-content/uploads/2019/01/Chelation-Therapy.jpg",
+      "source_page_url": "https://vitalityintegrative.com/",
+      "llm_confidence": 0.6,
+      "rejection_notes": "Potential stock photo, but may represent a treatment offered by the clinic",
+      "site_origin": "http://www.vitalityintegrative.com",
+      "reason": "below_confidence_threshold"
+    },
+    {
+      "location_id": 1428,
+      "image_url": "https://vitalityintegrative.com/wp-content/uploads/2019/01/Ozone-Therapy-600x406.jpg",
+      "source_page_url": "https://vitalityintegrative.com/",
+      "llm_confidence": 0.5,
+      "rejection_notes": "Potential stock photo of ozone therapy treatment",
+      "site_origin": "http://www.vitalityintegrative.com",
+      "reason": "below_confidence_threshold"
+    },
+    {
+      "location_id": 400,
+      "image_url": "https://weisswellnessnyc.com/wp-content/uploads/2025/03/Dr.-Weiss-Office-58_bw-scaled-e1709757607767.jpg-200x200.webp",
+      "source_page_url": "https://weisswellnessnyc.com/",
+      "llm_confidence": 0.7,
+      "rejection_notes": "Alt text mentions staff name, but image appears to be facility interior",
+      "site_origin": "http://www.weisswellnessnyc.com",
+      "reason": "below_confidence_threshold"
+    },
+    {
+      "location_id": 739,
+      "image_url": "https://images.squarespace-cdn.com/content/v1/65ff0a99052d392229e750ae/9571a6a8-3067-4194-be6f-b096a154b836/IMG_7604.jpg",
+      "source_page_url": "https://www.zentuary.co/",
+      "llm_confidence": 0.7,
+      "rejection_notes": null,
+      "site_origin": "http://www.zentuary.co",
+      "reason": "below_confidence_threshold"
+    },
+    {
+      "location_id": 739,
+      "image_url": "https://images.squarespace-cdn.com/content/v1/65ff0a99052d392229e750ae/f9c48d3d-c112-453c-bb30-89ebe85a930f/IMG_1934.jpg",
+      "source_page_url": "https://www.zentuary.co/",
+      "llm_confidence": 0.7,
+      "rejection_notes": null,
+      "site_origin": "http://www.zentuary.co",
+      "reason": "below_confidence_threshold"
+    },
+    {
+      "location_id": 1460,
+      "image_url": "https://advancedfunctionalmedicineaustin.com/wp-content/uploads/2025/01/functional-medicine-doctor-giving-personal-health-2024-10-19-22-02-06-utc-scaled.jpg",
+      "source_page_url": "https://advancedfunctionalmedicineaustin.com/",
+      "llm_confidence": 0.6,
+      "rejection_notes": null,
+      "site_origin": "https://advancedfunctionalmedicineaustin.com",
+      "reason": "below_confidence_threshold"
+    },
+    {
+      "location_id": 1460,
+      "image_url": "https://advancedfunctionalmedicineaustin.com/wp-content/uploads/2025/01/Starwood-6-e1738792249372.png",
+      "source_page_url": "https://advancedfunctionalmedicineaustin.com/",
+      "llm_confidence": 0.5,
+      "rejection_notes": null,
+      "site_origin": "https://advancedfunctionalmedicineaustin.com",
+      "reason": "below_confidence_threshold"
+    },
+    {
+      "location_id": 639,
+      "image_url": "data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2082%2085'%3E%3C/svg%3E",
+      "source_page_url": "https://allhealthdtc.com/services/",
+      "llm_confidence": 0.7,
+      "rejection_notes": null,
+      "site_origin": "https://allhealthdtc.com",
+      "reason": "below_confidence_threshold"
+    },
+    {
+      "location_id": 639,
+      "image_url": "data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20369%20180'%3E%3C/svg%3E",
+      "source_page_url": "https://allhealthdtc.com/",
+      "llm_confidence": 0.6,
+      "rejection_notes": null,
+      "site_origin": "https://allhealthdtc.com",
+      "reason": "below_confidence_threshold"
+    },
+    {
+      "location_id": 7876,
+      "image_url": "https://custom-images.strikinglycdn.com/res/hrscywv4p/image/upload/c_limit,fl_lossy,h_1440,w_720,f_auto,q_auto/1270913/599492_988552.png",
+      "source_page_url": "https://www.antiagingmiami.com/",
+      "llm_confidence": 0.7,
+      "rejection_notes": null,
+      "site_origin": "https://antiagingmiami.com",
+      "reason": "below_confidence_threshold"
+    },
+    {
+      "location_id": 7876,
+      "image_url": "https://custom-images.strikinglycdn.com/res/hrscywv4p/image/upload/c_limit,fl_lossy,h_1440,w_720,f_auto,q_auto/1270913/239142_534173.jpeg",
+      "source_page_url": "https://www.antiagingmiami.com/",
+      "llm_confidence": 0.7,
+      "rejection_notes": null,
+      "site_origin": "https://antiagingmiami.com",
+      "reason": "below_confidence_threshold"
+    },
+    {
+      "location_id": 7876,
+      "image_url": "https://custom-images.strikinglycdn.com/res/hrscywv4p/image/upload/c_limit,fl_lossy,h_1440,w_720,f_auto,q_auto/1270913/669424_471642.jpeg",
+      "source_page_url": "https://www.antiagingmiami.com/",
+      "llm_confidence": 0.7,
+      "rejection_notes": null,
+      "site_origin": "https://antiagingmiami.com",
+      "reason": "below_confidence_threshold"
+    },
+    {
+      "location_id": 349,
+      "image_url": "https://static.wixstatic.com/media/01687d_5036fa7abed94da2853a6d3a6f04f388~mv2.png/v1/fill/w_270,h_270,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/01687d_5036fa7abed94da2853a6d3a6f04f388~mv2.png",
+      "source_page_url": "https://www.balancebklyn.com/",
+      "llm_confidence": 0.7,
+      "rejection_notes": null,
+      "site_origin": "https://balancebklyn.com",
+      "reason": "below_confidence_threshold"
+    },
+    {
+      "location_id": 5068,
+      "image_url": "https://bajacelltherapy.com/wp-content/uploads/2024/09/power-stem-cell-therapy-tijuana.jpg",
+      "source_page_url": "https://bajacelltherapy.com/",
+      "llm_confidence": 0.7,
+      "rejection_notes": null,
+      "site_origin": "https://bajacelltherapy.com",
+      "reason": "below_confidence_threshold"
+    },
+    {
+      "location_id": 480,
+      "image_url": "https://www.bestivdrips.com/wp-content/uploads/2026/05/Banner-3-1.webp",
+      "source_page_url": "https://www.bestivdrips.com/",
+      "llm_confidence": 0.5,
+      "rejection_notes": "Possible stock photo, but no other valid facility images available",
+      "site_origin": "https://bestivdrips.com",
+      "reason": "below_confidence_threshold"
+    },
+    {
+      "location_id": 480,
+      "image_url": "https://www.bestivdrips.com/wp-content/uploads/2026/05/Banner-1-1.webp",
+      "source_page_url": "https://www.bestivdrips.com/",
+      "llm_confidence": 0.5,
+      "rejection_notes": "Possible stock photo, but no other valid facility images available",
+      "site_origin": "https://bestivdrips.com",
+      "reason": "below_confidence_threshold"
+    },
+    {
+      "location_id": 480,
+      "image_url": "https://www.bestivdrips.com/wp-content/uploads/2026/05/Banner-2-1.webp",
+      "source_page_url": "https://www.bestivdrips.com/",
+      "llm_confidence": 0.5,
+      "rejection_notes": "Possible stock photo, but no other valid facility images available",
+      "site_origin": "https://bestivdrips.com",
+      "reason": "below_confidence_threshold"
+    },
+    {
+      "location_id": 5666,
+      "image_url": "https://bespokestemcell.com/wp-content/uploads/2025/10/A7300074-1024x683.jpg",
+      "source_page_url": "https://bespokestemcell.com/",
+      "llm_confidence": 0.7,
+      "rejection_notes": null,
+      "site_origin": "https://bespokestemcell.com",
+      "reason": "below_confidence_threshold"
+    },
+    {
+      "location_id": 5666,
+      "image_url": "https://bespokestemcell.com/wp-content/uploads/2024/06/Bespoke-Images-768x770.png",
+      "source_page_url": "https://bespokestemcell.com/",
+      "llm_confidence": 0.6,
+      "rejection_notes": null,
+      "site_origin": "https://bespokestemcell.com",
+      "reason": "below_confidence_threshold"
+    },
+    {
+      "location_id": 5667,
+      "image_url": "https://bespokestemcell.com/wp-content/uploads/2025/10/A7S03535-1-1024x819.jpg",
+      "source_page_url": "https://bespokestemcell.com/",
+      "llm_confidence": 0.7,
+      "rejection_notes": null,
+      "site_origin": "https://bespokestemcell.com",
+      "reason": "below_confidence_threshold"
+    },
+    {
+      "location_id": 5667,
+      "image_url": "https://bespokestemcell.com/wp-content/uploads/2025/10/A7300074-1024x683.jpg",
+      "source_page_url": "https://bespokestemcell.com/",
+      "llm_confidence": 0.6,
+      "rejection_notes": null,
+      "site_origin": "https://bespokestemcell.com",
+      "reason": "below_confidence_threshold"
+    },
+    {
+      "location_id": 559,
+      "image_url": "https://www.bportho.com/wp-content/uploads/2023/09/header-pic-home-1024x388-1.jpg",
+      "source_page_url": "https://www.bportho.com/",
+      "llm_confidence": 0.3,
+      "rejection_notes": "potential stock photo (generic doctor with stethoscope, not confirmed as clinic-specific facility/interior)",
+      "site_origin": "https://bportho.com",
+      "reason": "below_confidence_threshold"
+    },
+    {
+      "location_id": 5345,
+      "image_url": "https://carememphis.com/wp-content/uploads/2024/01/DSC_1160.webp",
+      "source_page_url": "https://carememphis.com/",
+      "llm_confidence": 0.7,
+      "rejection_notes": null,
+      "site_origin": "https://carememphis.com",
+      "reason": "below_confidence_threshold"
+    },
+    {
+      "location_id": 2364,
+      "image_url": "https://darrellkilcupdc.com/wp-content/uploads/2021/09/chiro_c3.jpg",
+      "source_page_url": "https://darrellkilcupdc.com/chiropractic-care/",
+      "llm_confidence": 0.7,
+      "rejection_notes": null,
+      "site_origin": "https://darrellkilcupdc.com",
+      "reason": "below_confidence_threshold"
+    },
+    {
+      "location_id": 992,
+      "image_url": "https://drlisalewis.com/wp-content/uploads/2019/03/test.jpg",
+      "source_page_url": "https://drlisalewis.com/",
+      "llm_confidence": 0.7,
+      "rejection_notes": null,
+      "site_origin": "https://drlisalewis.com",
+      "reason": "below_confidence_threshold"
+    },
+    {
+      "location_id": 992,
+      "image_url": "https://drlisalewis.com/wp-content/uploads/2019/03/chronic-pain-functional-medicine-naturopath.jpg",
+      "source_page_url": "https://drlisalewis.com/",
+      "llm_confidence": 0.7,
+      "rejection_notes": null,
+      "site_origin": "https://drlisalewis.com",
+      "reason": "below_confidence_threshold"
+    },
+    {
+      "location_id": 1276,
+      "image_url": "https://static.wixstatic.com/media/d6c236_ae8036f76f574781ab82ccf1d1c80254~mv2.png/v1/crop/x_0,y_38,w_240,h_214/fill/w_288,h_300,al_c,lg_1,q_85,enc_avif,quality_auto/Noel%20profile%20pic%20AH%20bay_heic.png",
+      "source_page_url": "https://www.finallyfunctionalmedicine.com/",
+      "llm_confidence": 0.7,
+      "rejection_notes": "staff headshot (included because no other valid facility/exterior/interior/treatment-room/equipment photos exist)",
+      "site_origin": "https://finallyfunctionalmedicine.com",
+      "reason": "below_confidence_threshold"
+    },
+    {
+      "location_id": 8684,
+      "image_url": "https://fixmedicalgroup.com/sandiegoca/wp-content/uploads/sites/5/slider/cache/cee3bbac9bd9a7054fab1f2b84b611f6/PATRICK-48.webp",
+      "source_page_url": "https://fixmedicalgroup.com/sandiegoca/",
+      "llm_confidence": 0.7,
+      "rejection_notes": null,
+      "site_origin": "https://fixmedicalgroup.com",
+      "reason": "below_confidence_threshold"
+    },
+    {
+      "location_id": 52,
+      "image_url": "https://glowbar.com/cdn/shop/files/IMG_8073.jpg?v=1676336236&width=3840",
+      "source_page_url": "https://glowbar.com/",
+      "llm_confidence": 0.7,
+      "rejection_notes": null,
+      "site_origin": "https://glowbar.com",
+      "reason": "below_confidence_threshold"
+    },
+    {
+      "location_id": 113,
+      "image_url": "https://glowbar.com/cdn/shop/files/IMG_8073.jpg?v=1676336236&width=3840",
+      "source_page_url": "https://glowbar.com/",
+      "llm_confidence": 0.7,
+      "rejection_notes": null,
+      "site_origin": "https://glowbar.com",
+      "reason": "below_confidence_threshold"
+    },
+    {
+      "location_id": 5892,
+      "image_url": "https://glowbar.com/cdn/shop/files/IMG_8073.jpg?v=1676336236&width=3840",
+      "source_page_url": "https://glowbar.com/",
+      "llm_confidence": 0.7,
+      "rejection_notes": null,
+      "site_origin": "https://glowbar.com",
+      "reason": "below_confidence_threshold"
+    },
+    {
+      "location_id": 668,
+      "image_url": "https://goodcaremed.com/wp-content/uploads/2021/10/consultation.jpg",
+      "source_page_url": "https://goodcaremed.com/en/",
+      "llm_confidence": 0.7,
+      "rejection_notes": null,
+      "site_origin": "https://goodcaremed.com",
+      "reason": "below_confidence_threshold"
+    },
+    {
+      "location_id": 29,
+      "image_url": "https://holplus.co/wp-content/uploads/2024/12/397fdcdb5039347f54397d45cbc07bba.png?w=400&h=500&fit=crop",
+      "source_page_url": "https://holplus.co/",
+      "llm_confidence": 0.7,
+      "rejection_notes": null,
+      "site_origin": "https://holplus.co",
+      "reason": "below_confidence_threshold"
+    },
+    {
+      "location_id": 753,
+      "image_url": "https://kinesioworks.com/wp-content/uploads/2025/07/Artboard-%E2%80%93-25.jpg",
+      "source_page_url": "https://kinesioworks.com/physical-therapy-treatments/",
+      "llm_confidence": 0.7,
+      "rejection_notes": null,
+      "site_origin": "https://kinesioworks.com",
+      "reason": "below_confidence_threshold"
+    },
+    {
+      "location_id": 7105,
+      "image_url": "https://landerurology.com/wp-content/uploads/2023/01/Book-Appointment-Lander-Urology-Palm-Desert-California.jpg",
+      "source_page_url": "https://landerurology.com/about/",
+      "llm_confidence": 0.7,
+      "rejection_notes": null,
+      "site_origin": "https://landerurology.com",
+      "reason": "below_confidence_threshold"
+    },
+    {
+      "location_id": 7373,
+      "image_url": "https://medoncmassage.us/wp-content/uploads/2024/06/2774173.png",
+      "source_page_url": "https://medoncmassage.us/massage-services/",
+      "llm_confidence": 0.7,
+      "rejection_notes": null,
+      "site_origin": "https://medoncmassage.us",
+      "reason": "below_confidence_threshold"
+    },
+    {
+      "location_id": 2,
+      "image_url": "https://medical.hudson.health/wp-content/uploads/2022/12/dimly-lit-lounge-with-tufted-gray-chaise%20lounges-warm-candlelight.png",
+      "source_page_url": "https://medical.hudson.health/",
+      "llm_confidence": 0.7,
+      "rejection_notes": null,
+      "site_origin": "https://medical.hudson.health",
+      "reason": "below_confidence_threshold"
+    },
+    {
+      "location_id": 2,
+      "image_url": "https://medical.hudson.health/wp-content/uploads/2023/04/dim-lounge-green-velvet-chairs-gold-accents.png",
+      "source_page_url": "https://medical.hudson.health/team/",
+      "llm_confidence": 0.7,
+      "rejection_notes": null,
+      "site_origin": "https://medical.hudson.health",
+      "reason": "below_confidence_threshold"
+    },
+    {
+      "location_id": 8044,
+      "image_url": "https://metrocouncil.org/Files/Photos/Homepage-Transit.aspx",
+      "source_page_url": "https://metrocouncil.org/",
+      "llm_confidence": 0.7,
+      "rejection_notes": null,
+      "site_origin": "https://metrocouncil.org",
+      "reason": "below_confidence_threshold"
+    },
+    {
+      "location_id": 8493,
+      "image_url": "https://mindfulhealthsolutions.com/wp-content/uploads/2025/11/Telepsychiatry-block-1.png",
+      "source_page_url": "https://mindfulhealthsolutions.com/location-stockton/",
+      "llm_confidence": 0.7,
+      "rejection_notes": null,
+      "site_origin": "https://mindfulhealthsolutions.com",
+      "reason": "below_confidence_threshold"
+    },
+    {
+      "location_id": 1448,
+      "image_url": "https://images.leadconnectorhq.com/image/f_webp/q_80/r_1200/u_https://assets.cdn.filesafe.space/he2q55BDb8HEn8COu2Ga/media/6879af4c57dd60dc7c853f30.png",
+      "source_page_url": "https://neosfm.com/our-services",
+      "llm_confidence": 0.7,
+      "rejection_notes": null,
+      "site_origin": "https://neosfm.com",
+      "reason": "below_confidence_threshold"
+    },
+    {
+      "location_id": 1130,
+      "image_url": "https://lirp.cdn-website.com/d6853c68/dms3rep/multi/opt/Group+272-639w.png",
+      "source_page_url": "https://www.neurokin.com/",
+      "llm_confidence": 0.7,
+      "rejection_notes": null,
+      "site_origin": "https://neurokin.com",
+      "reason": "below_confidence_threshold"
+    },
+    {
+      "location_id": 1130,
+      "image_url": "https://lirp.cdn-website.com/d6853c68/dms3rep/multi/opt/Rectangle+31-673w.png",
+      "source_page_url": "https://www.neurokin.com/",
+      "llm_confidence": 0.5,
+      "rejection_notes": "Not a clear facility photo, but may be interior",
+      "site_origin": "https://neurokin.com",
+      "reason": "below_confidence_threshold"
+    },
+    {
+      "location_id": 488,
+      "image_url": "https://nutrihealthholistic.com/wp-content/uploads/2025/05/2-2.png",
+      "source_page_url": "https://nutrihealthholistic.com/",
+      "llm_confidence": 0.7,
+      "rejection_notes": null,
+      "site_origin": "https://nutrihealthholistic.com",
+      "reason": "below_confidence_threshold"
+    },
+    {
+      "location_id": 488,
+      "image_url": "https://nutrihealthholistic.com/wp-content/uploads/2025/05/4-1.png",
+      "source_page_url": "https://nutrihealthholistic.com/",
+      "llm_confidence": 0.7,
+      "rejection_notes": null,
+      "site_origin": "https://nutrihealthholistic.com",
+      "reason": "below_confidence_threshold"
+    },
+    {
+      "location_id": 173,
+      "image_url": "https://static.wixstatic.com/media/3fe26f_9d20dc6ece214916a2613ecc8d9abdf0~mv2.jpg/v1/fill/w_1440,h_741,al_br,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/3fe26f_9d20dc6ece214916a2613ecc8d9abdf0~mv2.jpg",
+      "source_page_url": "https://www.browntherapistmama.com/for-therapists",
+      "llm_confidence": 0.7,
+      "rejection_notes": null,
+      "site_origin": "https://www.browntherapistmama.com",
+      "reason": "below_confidence_threshold"
+    },
+    {
+      "location_id": 1027,
+      "image_url": "https://new-yorkf.peakvitalityhormones.com/wp-content/uploads/2024/03/65e6027ae088df35943d71a1_Vasectomy-Ireland-13-EditPrint-p-500-1.jpg",
+      "source_page_url": "https://new-yorkf.peakvitalityhormones.com/about-us/",
+      "llm_confidence": 0.7,
+      "rejection_notes": null,
+      "site_origin": "https://new-yorkf.peakvitalityhormones.com",
+      "reason": "below_confidence_threshold"
+    },
+    {
+      "location_id": 879,
+      "image_url": "https://nycdocs.com/assets/images/blog/20240113074216.jpg",
+      "source_page_url": "https://nycdocs.com/",
+      "llm_confidence": 0.7,
+      "rejection_notes": null,
+      "site_origin": "https://nycdocs.com",
+      "reason": "below_confidence_threshold"
+    },
+    {
+      "location_id": 12179,
+      "image_url": "https://images.squarespace-cdn.com/content/v1/683cba5405532038eadf06dc/a565aeb1-d79d-443d-be9e-62138b1efdbb/Stem+Cell+Knee+Inj+Pic.jpeg",
+      "source_page_url": "https://www.stemcellptspa.com/",
+      "llm_confidence": 0.7,
+      "rejection_notes": null,
+      "site_origin": "https://stemcellptspa.com",
+      "reason": "below_confidence_threshold"
+    },
+    {
+      "location_id": 12179,
+      "image_url": "https://images.squarespace-cdn.com/content/v1/683cba5405532038eadf06dc/7e8d5ad0-98e2-49af-9e1c-80212d31b8e8/Sexual+Wellness.jpeg",
+      "source_page_url": "https://www.stemcellptspa.com/",
+      "llm_confidence": 0.7,
+      "rejection_notes": null,
+      "site_origin": "https://stemcellptspa.com",
+      "reason": "below_confidence_threshold"
+    },
+    {
+      "location_id": 1685,
+      "image_url": "https://drliv.com/cdn/shop/files/Hands_liquid_petri_dish_Dr._Liv_Kraemer_Skincare_main_page.jpg?v=1761133313&width=1200",
+      "source_page_url": "https://drliv.com/",
+      "llm_confidence": 0.7,
+      "rejection_notes": null,
+      "site_origin": "https://www.drliv.com",
+      "reason": "below_confidence_threshold"
+    },
+    {
+      "location_id": 1685,
+      "image_url": "https://drliv.com/cdn/shop/files/Dr._Liv_Kraemer_Skincare_Hero_hands_far_angle.jpg?v=1761132786&width=1200",
+      "source_page_url": "https://drliv.com/",
+      "llm_confidence": 0.7,
+      "rejection_notes": null,
+      "site_origin": "https://www.drliv.com",
+      "reason": "below_confidence_threshold"
+    },
+    {
+      "location_id": 1685,
+      "image_url": "https://drliv.com/cdn/shop/files/Dr._Liv_Kraemer_Skincare_Hero_hands.jpg?v=1761131752&width=1200",
+      "source_page_url": "https://drliv.com/",
+      "llm_confidence": 0.7,
+      "rejection_notes": null,
+      "site_origin": "https://www.drliv.com",
+      "reason": "below_confidence_threshold"
+    },
+    {
+      "location_id": 2250,
+      "image_url": "https://www.hyperbaricoxygentherapysydney.com.au/wp-content/uploads/hyperbaric-oxygen-therapy-chamber.jpg",
+      "source_page_url": "https://www.hyperbaricoxygentherapysydney.com.au/",
+      "llm_confidence": 0.7,
+      "rejection_notes": null,
+      "site_origin": "https://www.hyperbaricoxygentherapysydney.com.au",
+      "reason": "below_confidence_threshold"
+    },
+    {
+      "location_id": 6046,
+      "image_url": "https://static.wixstatic.com/media/nsplsh_67616931594233556d4441~mv2_d_6000_4000_s_4_2.jpg/v1/fill/w_980,h_276,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/Image%20by%20Sean%20Sinclair.jpg",
+      "source_page_url": "https://www.inframedthermography.com/",
+      "llm_confidence": 0.7,
+      "rejection_notes": "stock photo",
+      "site_origin": "https://www.inframedthermography.com",
+      "reason": "below_confidence_threshold"
+    },
+    {
+      "location_id": 683,
+      "image_url": "https://lirp.cdn-website.com/6ae26162/dms3rep/multi/opt/chiro-1920w+1-1920w.png",
+      "source_page_url": "https://www.healthieruny.com/",
+      "llm_confidence": 0.7,
+      "rejection_notes": null,
+      "site_origin": "https://www.healthieruny.com",
+      "reason": "below_confidence_threshold"
+    },
+    {
+      "location_id": 7608,
+      "image_url": "https://www.asappaindocs.com/sites/default/files/new_images/location_photos/asap%20banner%20payosn%20locations%20page%20thumb.jpg",
+      "source_page_url": "https://www.asappaindocs.com/locations",
+      "llm_confidence": 0.7,
+      "rejection_notes": "Not Gilbert location (Payson)",
+      "site_origin": "https://www.asappaindocs.com",
+      "reason": "below_confidence_threshold"
+    },
+    {
+      "location_id": 1378,
+      "image_url": "https://www.entandallergy.com/assets/services/Services-home.jpg",
+      "source_page_url": "https://www.entandallergy.com/",
+      "llm_confidence": 0.3,
+      "rejection_notes": "Unclear if this is a real facility photo or stock image - appears to be a generic services banner",
+      "site_origin": "https://www.entandallergy.com",
+      "reason": "below_confidence_threshold"
+    },
+    {
+      "location_id": 1378,
+      "image_url": "https://www.entandallergy.com/assets/mainstage/mainstage-summer-26.png",
+      "source_page_url": "https://www.entandallergy.com/",
+      "llm_confidence": 0.1,
+      "rejection_notes": "Stock photo of people, not a facility or treatment room image",
+      "site_origin": "https://www.entandallergy.com",
+      "reason": "below_confidence_threshold"
+    },
+    {
+      "location_id": 8608,
+      "image_url": "https://cdn-ilccikh.nitrocdn.com/NUuqQDLvodGhVIDNXPOaOuqfaqPIEOqE/assets/images/optimized/rev-172db72/balancedmedicalsolutions.com/wp-content/uploads/2023/06/Balanced-Medical-Solutions.webp",
+      "source_page_url": "https://balancedmedicalsolutions.com/",
+      "llm_confidence": 0.7,
+      "rejection_notes": null,
+      "site_origin": "https://www.balancedmedicalsolutions.com",
+      "reason": "below_confidence_threshold"
+    },
+    {
+      "location_id": 12912,
+      "image_url": "https://www.urmc.rochester.edu/getmedia/6267e41b-10cc-455e-939b-d3599cb95277/banner-ortho.jpg",
+      "source_page_url": "https://www.urmc.rochester.edu/",
+      "llm_confidence": 0.6,
+      "rejection_notes": null,
+      "site_origin": "https://www.urmc.rochester.edu",
+      "reason": "below_confidence_threshold"
+    },
+    {
+      "location_id": 43,
+      "image_url": "https://www.qcny.com/wp-content/uploads/2025/03/NY_Massages-beauty-rituals_generic-card-carousel_430x720-1.jpg",
+      "source_page_url": "https://www.qcny.com/",
+      "llm_confidence": 0.7,
+      "rejection_notes": null,
+      "site_origin": "https://www.qcny.com",
+      "reason": "below_confidence_threshold"
+    },
+    {
+      "location_id": 1686,
+      "image_url": "https://static.wixstatic.com/media/nsplsh_7c497bc6367b4a63a2bbe36e2d74239d~mv2.jpg/v1/fit/w_960,h_1280,q_90,enc_avif,quality_auto/nsplsh_7c497bc6367b4a63a2bbe36e2d74239d~mv2.jpg",
+      "source_page_url": "https://www.zell-longevity.ch/",
+      "llm_confidence": 0.7,
+      "rejection_notes": null,
+      "site_origin": "https://www.zell-longevity.ch",
+      "reason": "below_confidence_threshold"
+    },
+    {
+      "location_id": 1108,
+      "image_url": "https://new-yorkr.peptideedge.com/wp-content/uploads/2022/04/nurse-in-white-robe.jpg",
+      "source_page_url": "https://new-yorkr.peptideedge.com/about-us/",
+      "llm_confidence": 0.5,
+      "rejection_notes": "Staff headshot, but no other real facility images available.",
+      "site_origin": "https://new-yorkr.peptideedge.com",
+      "reason": "below_confidence_threshold"
+    },
+    {
+      "location_id": 12181,
+      "image_url": "https://images.squarespace-cdn.com/content/v1/64ff9353e8c21e6c6c3809bb/1c9502a3-3c98-486e-9afa-066a8c912e4b/3772184.jpeg",
+      "source_page_url": "https://www.yourstemcellsforlife.com/",
+      "llm_confidence": 0.7,
+      "rejection_notes": null,
+      "site_origin": "https://www.yourstemcellsforlife.com",
+      "reason": "below_confidence_threshold"
+    },
+    {
+      "location_id": 5870,
+      "image_url": "https://prolotherapynashville.com/wp-content/uploads/2024/02/Prolotherapy-Couple-600x600.jpg",
+      "source_page_url": "https://prolotherapynashville.com/",
+      "llm_confidence": 0.7,
+      "rejection_notes": null,
+      "site_origin": "https://prolotherapynashville.com",
+      "reason": "below_confidence_threshold"
+    },
+    {
+      "location_id": 5870,
+      "image_url": "https://prolotherapynashville.com/wp-content/uploads/2024/01/Prolotherapy-Back-Pain-1-600x599.jpg",
+      "source_page_url": "https://prolotherapynashville.com/",
+      "llm_confidence": 0.7,
+      "rejection_notes": null,
+      "site_origin": "https://prolotherapynashville.com",
+      "reason": "below_confidence_threshold"
+    },
+    {
+      "location_id": 803,
+      "image_url": "https://staceychillemi.com/wp-content/uploads/2025/12/microphone-2.png",
+      "source_page_url": "https://staceychillemi.com/",
+      "llm_confidence": 0.7,
+      "rejection_notes": null,
+      "site_origin": "https://staceychillemi.com",
+      "reason": "below_confidence_threshold"
+    },
+    {
+      "location_id": 803,
+      "image_url": "https://staceychillemi.com/wp-content/uploads/2025/12/laptop-2.png",
+      "source_page_url": "https://staceychillemi.com/",
+      "llm_confidence": 0.7,
+      "rejection_notes": null,
+      "site_origin": "https://staceychillemi.com",
+      "reason": "below_confidence_threshold"
+    },
+    {
+      "location_id": 2154,
+      "image_url": "https://images.squarespace-cdn.com/content/v1/5ec321c2af33de48734cc929/1589847927443-UHYZ02NANANIITMIK1R6/20140301_Trade-151_0124-copy.jpg?format=1500w",
+      "source_page_url": "https://www.dexanear.me/vancouver",
+      "llm_confidence": 0.7,
+      "rejection_notes": null,
+      "site_origin": "https://www.dexanear.me",
+      "reason": "below_confidence_threshold"
+    },
+    {
+      "location_id": 7996,
+      "image_url": "https://www.infirmaryhealth.org/images/banners/about-us.jpg",
+      "source_page_url": "https://www.infirmaryhealth.org/about-us/",
+      "llm_confidence": 0.7,
+      "rejection_notes": null,
+      "site_origin": "https://www.infirmaryhealth.org",
+      "reason": "below_confidence_threshold"
+    },
+    {
+      "location_id": 656,
+      "image_url": "https://nyfamilydocs.com/wp-content/uploads/2021/04/img-televisit.jpg",
+      "source_page_url": "https://nyfamilydocs.com/",
+      "llm_confidence": 0.7,
+      "rejection_notes": null,
+      "site_origin": "https://www.nyfamilydocs.com",
+      "reason": "below_confidence_threshold"
+    },
+    {
+      "location_id": 6477,
+      "image_url": "https://www.regionalonehealth.org/wp-content/uploads/2025/02/DV5Cropped.png",
+      "source_page_url": "https://www.regionalonehealth.org/",
+      "llm_confidence": 0.7,
+      "rejection_notes": "Equipment (da Vinci 5) photo",
+      "site_origin": "https://www.regionalonehealth.org",
+      "reason": "below_confidence_threshold"
+    },
+    {
+      "location_id": 1352,
+      "image_url": "https://www.md2.com/sites/default/files/styles/location_listing_card_desktop/public/2025-10/50-50-1.webp?itok=IZN2tDEg",
+      "source_page_url": "https://www.md2.com/",
+      "llm_confidence": 0.7,
+      "rejection_notes": null,
+      "site_origin": "https://www.md2.com",
+      "reason": "below_confidence_threshold"
+    },
+    {
+      "location_id": 441,
+      "image_url": "https://rebalancenyc.com/wp-content/uploads/2025/11/sexual-wellness-ny.jpg",
+      "source_page_url": "https://rebalancenyc.com/",
+      "llm_confidence": 0.7,
+      "rejection_notes": null,
+      "site_origin": "https://rebalancenyc.com",
+      "reason": "below_confidence_threshold"
+    },
+    {
+      "location_id": 1183,
+      "image_url": "https://static.royacdn.com/Site-1d865fa0-bfb5-4600-b48c-a36074cb02d4/Services/injectibles.jpg",
+      "source_page_url": "https://www.aestheticsofwestchester.com/services.html",
+      "llm_confidence": 0.7,
+      "rejection_notes": null,
+      "site_origin": "https://www.aestheticsofwestchester.com",
+      "reason": "below_confidence_threshold"
+    },
+    {
+      "location_id": 1183,
+      "image_url": "https://static.royacdn.com/Site-1d865fa0-bfb5-4600-b48c-a36074cb02d4/Services/advanced_skincare_treatments.jpg",
+      "source_page_url": "https://www.aestheticsofwestchester.com/services.html",
+      "llm_confidence": 0.7,
+      "rejection_notes": null,
+      "site_origin": "https://www.aestheticsofwestchester.com",
+      "reason": "below_confidence_threshold"
+    },
+    {
+      "location_id": 1195,
+      "image_url": "https://www.intmedsolutions.com/wp-content/uploads/2021/07/holistic-health-1536x572.jpg",
+      "source_page_url": "https://www.intmedsolutions.com/",
+      "llm_confidence": 0.7,
+      "rejection_notes": null,
+      "site_origin": "https://www.intmedsolutions.com",
+      "reason": "below_confidence_threshold"
+    },
+    {
+      "location_id": 12217,
+      "image_url": "https://www.stemcellmexico.org/wp-content/uploads/2025/10/Clinical-Studies-Stem-Cell-Mexico-600x205.jpg",
+      "source_page_url": "https://www.stemcellmexico.org/",
+      "llm_confidence": 0.7,
+      "rejection_notes": null,
+      "site_origin": "https://www.stemcellmexico.org",
+      "reason": "below_confidence_threshold"
+    },
+    {
+      "location_id": 12640,
+      "image_url": "https://www.thinmdmedspa.com/wp-content/uploads/2025/05/Ellipse-8.png",
+      "source_page_url": "https://www.thinmdmedspa.com/",
+      "llm_confidence": 0.7,
+      "rejection_notes": null,
+      "site_origin": "https://www.thinmdmedspa.com",
+      "reason": "below_confidence_threshold"
+    },
+    {
+      "location_id": 607,
+      "image_url": "https://images.leadconnectorhq.com/image/f_webp/q_80/r_1200/u_https://assets.cdn.filesafe.space/WF9itBpoPovpqEwcM0CS/media/68e426f16a0a91e2189679af.webp",
+      "source_page_url": "https://proteaclinic.com/",
+      "llm_confidence": 0.5,
+      "rejection_notes": "Potential stock photo; not confirmed as facility/exterior/interior/treatment-room/equipment",
+      "site_origin": "https://proteaclinic.com",
+      "reason": "below_confidence_threshold"
+    },
+    {
+      "location_id": 1688,
+      "image_url": "https://www.holistiq.ch/wp-content/uploads/2026/03/Screenshot-2026-03-19-at-00.45.58-1.webp",
+      "source_page_url": "https://www.holistiq.ch/",
+      "llm_confidence": 0.5,
+      "rejection_notes": null,
+      "site_origin": "https://www.holistiq.ch",
+      "reason": "below_confidence_threshold"
+    },
+    {
+      "location_id": 8542,
+      "image_url": "https://www.citimedny.com/site/uploads/2018/09/about-banner.jpg",
+      "source_page_url": "https://www.citimedny.com/about-us/",
+      "llm_confidence": 0.7,
+      "rejection_notes": null,
+      "site_origin": "https://www.citimedny.com",
+      "reason": "below_confidence_threshold"
+    },
+    {
+      "location_id": 222,
+      "image_url": "https://drwilliamgael.com/wp-content/uploads/2022/01/brow-lift.jpg",
+      "source_page_url": "https://drwilliamgael.com/",
+      "llm_confidence": 0.7,
+      "rejection_notes": null,
+      "site_origin": "https://www.drwilliamgael.com",
+      "reason": "below_confidence_threshold"
+    },
+    {
+      "location_id": 222,
+      "image_url": "https://drwilliamgael.com/wp-content/uploads/2022/01/mens-health-12-1000.jpg",
+      "source_page_url": "https://drwilliamgael.com/",
+      "llm_confidence": 0.6,
+      "rejection_notes": null,
+      "site_origin": "https://www.drwilliamgael.com",
+      "reason": "below_confidence_threshold"
+    }
+  ],
+  "validationFailures": [
+    {
+      "location_id": 758,
+      "image_url": "https://advancedwellnessny.com/wp-content/uploads/2023/09/636052551711cd181d5a6976_cutera-trusculptid-768x116.webp",
+      "source_page_url": "https://advancedwellnessny.com/",
+      "llm_confidence": 0.9,
+      "rejection_notes": null,
+      "site_origin": "http://advancedwellnessny.com",
+      "reason": "logo_like_aspect_ratio"
+    },
+    {
+      "location_id": 581,
+      "image_url": "https://beachbum.com/wp-content/uploads/sb-instagram-feed-images/728543952_18588732517040357_5931435589615308885_nlow.webp",
+      "source_page_url": "https://beachbum.com/",
+      "llm_confidence": 0.9,
+      "rejection_notes": null,
+      "site_origin": "http://beachbum.com",
+      "reason": "too_small_dimensions"
+    },
+    {
+      "location_id": 246,
+      "image_url": "https://citywellbrooklyn.com/wp-content/uploads/2025/04/body-treatments-edited.jpeg",
+      "source_page_url": "https://citywellbrooklyn.com/",
+      "llm_confidence": 0.8,
+      "rejection_notes": null,
+      "site_origin": "http://citywellbrooklyn.com",
+      "reason": "too_small_dimensions"
+    },
+    {
+      "location_id": 246,
+      "image_url": "https://citywellbrooklyn.com/wp-content/uploads/2025/04/private-parties-edited.jpeg",
+      "source_page_url": "https://citywellbrooklyn.com/",
+      "llm_confidence": 0.9,
+      "rejection_notes": null,
+      "site_origin": "http://citywellbrooklyn.com",
+      "reason": "too_small_dimensions"
+    },
+    {
+      "location_id": 628,
+      "image_url": "data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%201000%20667'%3E%3C/svg%3E",
+      "source_page_url": "https://dolceaestheticsny.com/",
+      "llm_confidence": 0.9,
+      "rejection_notes": null,
+      "site_origin": "http://dolceaestheticsny.com",
+      "reason": "too_small_bytes"
+    },
+    {
+      "location_id": 628,
+      "image_url": "data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20787%20787'%3E%3C/svg%3E",
+      "source_page_url": "https://dolceaestheticsny.com/",
+      "llm_confidence": 0.9,
+      "rejection_notes": null,
+      "site_origin": "http://dolceaestheticsny.com",
+      "reason": "too_small_bytes"
+    },
+    {
+      "location_id": 628,
+      "image_url": "https://dolceaestheticsny.com/wp-content/uploads/2025/03/Spa-Facial-Treatment-Session-Kings-County-New-York.webp",
+      "source_page_url": "https://dolceaestheticsny.com/",
+      "llm_confidence": 0.8,
+      "rejection_notes": null,
+      "site_origin": "http://dolceaestheticsny.com",
+      "reason": "too_small_bytes"
+    },
+    {
+      "location_id": 949,
+      "image_url": "https://static.wixstatic.com/media/a214b4_f891818c6f1e491f8a450834097dbd94~mv2.jpg/v1/fit/w_360,h_284,q_90,enc_avif,quality_auto/a214b4_f891818c6f1e491f8a450834097dbd94~mv2.jpg",
+      "source_page_url": "https://www.finerbeautyspa.com/",
+      "llm_confidence": 0.8,
+      "rejection_notes": null,
+      "site_origin": "http://finerbeautyspa.com",
+      "reason": "too_small_dimensions"
+    },
+    {
+      "location_id": 949,
+      "image_url": "https://static.wixstatic.com/media/a214b4_c2300cdebe12410fb5ce62b90a863f2a~mv2.png/v1/fit/w_328,h_284,q_90,enc_avif,quality_auto/a214b4_c2300cdebe12410fb5ce62b90a863f2a~mv2.png",
+      "source_page_url": "https://www.finerbeautyspa.com/",
+      "llm_confidence": 0.8,
+      "rejection_notes": null,
+      "site_origin": "http://finerbeautyspa.com",
+      "reason": "too_small_dimensions"
+    },
+    {
+      "location_id": 949,
+      "image_url": "https://static.wixstatic.com/media/3785b9_b6d2e70cf6504398882d94a4e0948553~mv2.webp/v1/fit/w_284,h_284,q_90,enc_avif,quality_auto/3785b9_b6d2e70cf6504398882d94a4e0948553~mv2.webp",
+      "source_page_url": "https://www.finerbeautyspa.com/",
+      "llm_confidence": 0.8,
+      "rejection_notes": null,
+      "site_origin": "http://finerbeautyspa.com",
+      "reason": "too_small_bytes"
+    },
+    {
+      "location_id": 966,
+      "image_url": "https://static.wixstatic.com/media/344d6868b318463fa4ada4204f8f5148.jpg/v1/fill/w_61,h_42,al_c,q_80,usm_0.66_1.00_0.01,blur_2,enc_avif,quality_auto/344d6868b318463fa4ada4204f8f5148.jpg",
+      "source_page_url": "https://www.3ehac.com/",
+      "llm_confidence": 0.9,
+      "rejection_notes": null,
+      "site_origin": "http://www.3ehac.com",
+      "reason": "too_small_bytes"
+    },
+    {
+      "location_id": 966,
+      "image_url": "https://static.wixstatic.com/media/c7a3a8_92facaca1ab34fcb92917be18caf9754~mv2_d_4093_2729_s_4_2.jpg/v1/fill/w_61,h_41,al_c,q_80,usm_0.66_1.00_0.01,blur_2,enc_avif,quality_auto/c7a3a8_92facaca1ab34fcb92917be18caf9754~mv2_d_4093_2729_s_4_2.jpg",
+      "source_page_url": "https://www.3ehac.com/",
+      "llm_confidence": 0.9,
+      "rejection_notes": null,
+      "site_origin": "http://www.3ehac.com",
+      "reason": "too_small_bytes"
+    },
+    {
+      "location_id": 654,
+      "image_url": "https://almagia.com/wp-content/uploads/2025/06/1.jpg",
+      "source_page_url": "https://almagia.com/",
+      "llm_confidence": 0.8,
+      "rejection_notes": null,
+      "site_origin": "http://www.almagia.com",
+      "reason": "too_small_bytes"
+    },
+    {
+      "location_id": 654,
+      "image_url": "https://almagia.com/wp-content/uploads/2025/05/4-1.jpg",
+      "source_page_url": "https://almagia.com/",
+      "llm_confidence": 0.8,
+      "rejection_notes": null,
+      "site_origin": "http://www.almagia.com",
+      "reason": "too_small_bytes"
+    },
+    {
+      "location_id": 9664,
+      "image_url": "https://static.wixstatic.com/media/988dc2_d4de2a702dcd4b89bff655c73c0b3ef9~mv2.jpg/v1/fill/w_99,h_110,al_c,q_80,usm_0.66_1.00_0.01,blur_2,enc_avif,quality_auto/988dc2_d4de2a702dcd4b89bff655c73c0b3ef9~mv2.jpg",
+      "source_page_url": "https://www.backspecialists605.com/",
+      "llm_confidence": 0.9,
+      "rejection_notes": null,
+      "site_origin": "http://www.backspecialists605.com",
+      "reason": "too_small_bytes"
+    },
+    {
+      "location_id": 9664,
+      "image_url": "https://static.wixstatic.com/media/988dc2_667ee4602b80418b8bb86b0f584d2c20~mv2.jpg/v1/fill/w_99,h_76,al_c,q_80,usm_0.66_1.00_0.01,blur_2,enc_avif,quality_auto/988dc2_667ee4602b80418b8bb86b0f584d2c20~mv2.jpg",
+      "source_page_url": "https://www.backspecialists605.com/",
+      "llm_confidence": 0.9,
+      "rejection_notes": null,
+      "site_origin": "http://www.backspecialists605.com",
+      "reason": "too_small_bytes"
+    },
+    {
+      "location_id": 946,
+      "image_url": "https://www.bronxyogalab.com/uploads/1/4/1/4/141462988/published/screenshot-2024-07-14-at-10-35-37-pm.png?1721011030",
+      "source_page_url": "https://www.bronxyogalab.com/",
+      "llm_confidence": 0.9,
+      "rejection_notes": null,
+      "site_origin": "http://www.bronxyogalab.com",
+      "reason": "too_small_bytes"
+    },
+    {
+      "location_id": 385,
+      "image_url": "https://static.wixstatic.com/media/a4992f_8a996ca80b24450aabce26ff9749198d~mv2.jpg/v1/crop/x_0,y_644,w_4640,h_3823/fill/w_432,h_356,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/Cleanse-Facial.jpg",
+      "source_page_url": "https://www.chateauglowskin.com/",
+      "llm_confidence": 0.9,
+      "rejection_notes": null,
+      "site_origin": "http://www.chateauglowskin.com",
+      "reason": "too_small_dimensions"
+    },
+    {
+      "location_id": 385,
+      "image_url": "https://static.wixstatic.com/media/a4992f_e840866e9ecd443fa5bea527b9dbc27e~mv2.jpg/v1/crop/x_158,y_0,w_5003,h_4640/fill/w_383,h_356,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/Celluma-LED-Facial.jpg",
+      "source_page_url": "https://www.chateauglowskin.com/",
+      "llm_confidence": 0.9,
+      "rejection_notes": null,
+      "site_origin": "http://www.chateauglowskin.com",
+      "reason": "too_small_dimensions"
+    },
+    {
+      "location_id": 1619,
+      "image_url": "https://divineelements.ca/wp-content/uploads/2018/06/new21.jpg",
+      "source_page_url": "https://divineelements.ca/",
+      "llm_confidence": 0.8,
+      "rejection_notes": null,
+      "site_origin": "http://www.divineelements.ca",
+      "reason": "too_small_dimensions"
+    },
+    {
+      "location_id": 1619,
+      "image_url": "https://divineelements.ca/wp-content/uploads/2018/06/new61.jpg",
+      "source_page_url": "https://divineelements.ca/",
+      "llm_confidence": 0.8,
+      "rejection_notes": null,
+      "site_origin": "http://www.divineelements.ca",
+      "reason": "too_small_dimensions"
+    },
+    {
+      "location_id": 1165,
+      "image_url": "https://drlans.org/wp-content/uploads/sites/29/PRP-Platelet-Rich-Plasma-Treatment-200x300.webp",
+      "source_page_url": "https://drlans.org/",
+      "llm_confidence": 0.9,
+      "rejection_notes": null,
+      "site_origin": "http://www.drlans.org",
+      "reason": "too_small_bytes"
+    },
+    {
+      "location_id": 1165,
+      "image_url": "https://drlans.org/wp-content/uploads/sites/29/Rheumatology-Treatment-200x300.webp",
+      "source_page_url": "https://drlans.org/",
+      "llm_confidence": 0.8,
+      "rejection_notes": null,
+      "site_origin": "http://www.drlans.org",
+      "reason": "too_small_bytes"
+    },
+    {
+      "location_id": 1367,
+      "image_url": "https://static.wixstatic.com/media/7e5bda_de9ac44fe8754336b433378262098072~mv2.png/v1/fill/w_130,h_130,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/Cupping_edited.png",
+      "source_page_url": "https://www.eastmedny.com/",
+      "llm_confidence": 0.9,
+      "rejection_notes": null,
+      "site_origin": "http://www.eastmedny.com",
+      "reason": "too_small_bytes"
+    },
+    {
+      "location_id": 1367,
+      "image_url": "https://static.wixstatic.com/media/7e5bda_335fba3f07c642b6ad7e8b102ed4f639~mv2.jpg/v1/crop/x_0,y_950,w_1095,h_1095/fill/w_93,h_93,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/Electro-acupuncture_edited.jpg",
+      "source_page_url": "https://www.eastmedny.com/",
+      "llm_confidence": 0.9,
+      "rejection_notes": null,
+      "site_origin": "http://www.eastmedny.com",
+      "reason": "too_small_bytes"
+    },
+    {
+      "location_id": 1623,
+      "image_url": "https://images.squarespace-cdn.com/content/v1/5e2957e11e118a3f8cb3178f/1728669998414-52N7R0SPJU3HI3N7ZVJT/massage?format=300w",
+      "source_page_url": "https://evokelife.co/",
+      "llm_confidence": 0.9,
+      "rejection_notes": null,
+      "site_origin": "http://www.evokelife.co",
+      "reason": "too_small_dimensions"
+    },
+    {
+      "location_id": 1623,
+      "image_url": "https://images.squarespace-cdn.com/content/v1/5e2957e11e118a3f8cb3178f/416f9811-4833-45c5-a4a2-c1d215c0bdac/pexels-arina-krasnikova-6663367%2525252B%25252525281%2525252529.jpg?format=300w",
+      "source_page_url": "https://evokelife.co/",
+      "llm_confidence": 0.9,
+      "rejection_notes": null,
+      "site_origin": "http://www.evokelife.co",
+      "reason": "too_small_bytes"
+    },
+    {
+      "location_id": 186,
+      "image_url": "http://www.healingmotionphysicaltherapy.com/uploads/6/0/7/1/60716699/editor/page3bottomtreatment.jpg?250",
+      "source_page_url": "http://www.healingmotionphysicaltherapy.com/services.html",
+      "llm_confidence": 0.9,
+      "rejection_notes": null,
+      "site_origin": "http://www.healingmotionphysicaltherapy.com",
+      "reason": "too_small_bytes"
+    },
+    {
+      "location_id": 186,
+      "image_url": "http://www.healingmotionphysicaltherapy.com/uploads/6/0/7/1/60716699/published/img-0074.jpeg?1763421912",
+      "source_page_url": "http://www.healingmotionphysicaltherapy.com/services.html",
+      "llm_confidence": 0.9,
+      "rejection_notes": null,
+      "site_origin": "http://www.healingmotionphysicaltherapy.com",
+      "reason": "too_small_dimensions"
+    },
+    {
+      "location_id": 1694,
+      "image_url": "https://static.wixstatic.com/media/406395_7666d402448b4e579f52d43fa0df95c5~mv2.jpg/v1/fill/w_411,h_472,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/DSCF1214_JPG.jpg",
+      "source_page_url": "https://www.holisticpractice.ch/",
+      "llm_confidence": 0.8,
+      "rejection_notes": null,
+      "site_origin": "http://www.holisticpractice.ch",
+      "reason": "too_small_dimensions"
+    },
+    {
+      "location_id": 355,
+      "image_url": "https://www.hormonereplacementdoctor.com/wp-content/uploads/mediaimagemain.png",
+      "source_page_url": "https://www.hormonereplacementdoctor.com/",
+      "llm_confidence": 0.8,
+      "rejection_notes": null,
+      "site_origin": "http://www.hormonereplacementdoctor.com",
+      "reason": "logo_like_aspect_ratio"
+    },
+    {
+      "location_id": 1477,
+      "image_url": "https://static.wixstatic.com/media/739e34_56e263fb7b5c4dff84e5858bfe14e784~mv2.jpg/v1/fill/w_200,h_198,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/IMG_0138_JPG.jpg",
+      "source_page_url": "https://www.hyperbaric.ca/",
+      "llm_confidence": 0.9,
+      "rejection_notes": null,
+      "site_origin": "http://www.hyperbaric.ca",
+      "reason": "too_small_bytes"
+    },
+    {
+      "location_id": 143,
+      "image_url": "https://www.hudsonsportandspine.com/wp-content/uploads/2023/07/bg-image-22-mobile.jpg",
+      "source_page_url": "https://www.hudsonsportandspine.com/",
+      "llm_confidence": 0.8,
+      "rejection_notes": null,
+      "site_origin": "http://www.hudsonsportandspine.com",
+      "reason": "too_small_bytes"
+    },
+    {
+      "location_id": 2261,
+      "image_url": "https://hyperbarico2health.com.au/wp-content/uploads/sb-instagram-feed-images/707668833_1559991626128445_5226004513111675998_nlow.jpg",
+      "source_page_url": "https://hyperbarico2health.com.au/",
+      "llm_confidence": 0.9,
+      "rejection_notes": null,
+      "site_origin": "http://www.hyperbarico2health.com.au",
+      "reason": "too_small_dimensions"
+    },
+    {
+      "location_id": 2261,
+      "image_url": "https://hyperbarico2health.com.au/wp-content/uploads/sb-instagram-feed-images/708694977_1559985072795767_1065460865571342126_nlow.jpg",
+      "source_page_url": "https://hyperbarico2health.com.au/",
+      "llm_confidence": 0.9,
+      "rejection_notes": null,
+      "site_origin": "http://www.hyperbarico2health.com.au",
+      "reason": "too_small_dimensions"
+    },
+    {
+      "location_id": 525,
+      "image_url": "https://sa1s3optim.patientpop.com/assets/docs/120169.png",
+      "source_page_url": "https://www.jeffreygrafmd.com/",
+      "llm_confidence": 0.8,
+      "rejection_notes": null,
+      "site_origin": "http://www.jeffreygrafmd.com",
+      "reason": "too_small_dimensions"
+    },
+    {
+      "location_id": 807,
+      "image_url": "https://www.mhhc.org/images/cta/View-Locations.jpg",
+      "source_page_url": "https://www.mhhc.org/",
+      "llm_confidence": 0.8,
+      "rejection_notes": null,
+      "site_origin": "http://www.mhhc.org",
+      "reason": "too_small_bytes"
+    },
+    {
+      "location_id": 916,
+      "image_url": "https://static.wixstatic.com/media/f508d4_96461f161dd14c13b167c55f7d13de86~mv2.jpg/v1/crop/x_0,y_263,w_3580,h_1594/fill/w_366,h_163,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/Broadway%20Building%20Medalliance%202021.jpg",
+      "source_page_url": "https://www.medalliancenyc.com/",
+      "llm_confidence": 0.93,
+      "rejection_notes": null,
+      "site_origin": "http://www.medalliancenyc.com",
+      "reason": "too_small_dimensions"
+    },
+    {
+      "location_id": 916,
+      "image_url": "https://static.wixstatic.com/media/46dd91_8cc6ab3e2d744ef9a1c8c6e45be9aba8~mv2.jpg/v1/crop/x_534,y_0,w_3059,h_3200/fill/w_432,h_451,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/doctor-talking-with-patients.jpg",
+      "source_page_url": "https://www.medalliancenyc.com/",
+      "llm_confidence": 0.9,
+      "rejection_notes": null,
+      "site_origin": "http://www.medalliancenyc.com",
+      "reason": "too_small_dimensions"
+    },
+    {
+      "location_id": 1068,
+      "image_url": "http://www.movetogrowkids.com/uploads/1/0/9/3/109368557/editor/img-7579.jpeg?1687385662",
+      "source_page_url": "http://www.movetogrowkids.com/",
+      "llm_confidence": 0.9,
+      "rejection_notes": null,
+      "site_origin": "http://www.movetogrowkids.com",
+      "reason": "too_small_dimensions"
+    },
+    {
+      "location_id": 10824,
+      "image_url": "https://www.nih.gov/sites/default/files/styles/max_650x650/public/2024-12/virtual-tour-screenshot-20x8.jpg?itok=e3ZO0v96",
+      "source_page_url": "https://www.nih.gov/",
+      "llm_confidence": 0.8,
+      "rejection_notes": null,
+      "site_origin": "http://www.nih.gov",
+      "reason": "http_403"
+    },
+    {
+      "location_id": 606,
+      "image_url": "https://www.opulenceglamour.com/wp-content/uploads/2019/11/2-2-300x300.png",
+      "source_page_url": "https://www.opulenceglamour.com/",
+      "llm_confidence": 0.9,
+      "rejection_notes": null,
+      "site_origin": "http://www.opulenceglamour.com",
+      "reason": "too_small_dimensions"
+    },
+    {
+      "location_id": 606,
+      "image_url": "https://www.opulenceglamour.com/wp-content/uploads/2019/11/3-2-300x300.png",
+      "source_page_url": "https://www.opulenceglamour.com/",
+      "llm_confidence": 0.9,
+      "rejection_notes": null,
+      "site_origin": "http://www.opulenceglamour.com",
+      "reason": "too_small_dimensions"
+    },
+    {
+      "location_id": 606,
+      "image_url": "https://www.opulenceglamour.com/wp-content/uploads/2023/03/Morpheus-8-Handpiece-269x300.jpg",
+      "source_page_url": "https://www.opulenceglamour.com/",
+      "llm_confidence": 0.95,
+      "rejection_notes": null,
+      "site_origin": "http://www.opulenceglamour.com",
+      "reason": "too_small_bytes"
+    },
+    {
+      "location_id": 1350,
+      "image_url": "https://d3ciwvs59ifrt8.cloudfront.net/014cf302-bcd5-408b-812d-a1d019de896f/33cdbd92-dac4-4a24-ae4b-e9058de567c6.jpg",
+      "source_page_url": "https://www.pediatricneurologycare.com/",
+      "llm_confidence": 0.9,
+      "rejection_notes": null,
+      "site_origin": "http://www.pediatricneurologycare.com",
+      "reason": "too_small_dimensions"
+    },
+    {
+      "location_id": 58,
+      "image_url": "https://static.wixstatic.com/media/8c8383_9abf5d6b7369a6337665443d806a892b.jpg/v1/fill/w_305,h_305,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/8c8383_9abf5d6b7369a6337665443d806a892b.jpg",
+      "source_page_url": "https://www.russianturkishbaths.com/",
+      "llm_confidence": 0.9,
+      "rejection_notes": null,
+      "site_origin": "http://www.russianturkishbaths.com",
+      "reason": "too_small_dimensions"
+    },
+    {
+      "location_id": 58,
+      "image_url": "https://static.wixstatic.com/media/8c8383_d1c9fe2b46c2e3ab82084968a669bc15.jpg/v1/fill/w_305,h_305,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/8c8383_d1c9fe2b46c2e3ab82084968a669bc15.jpg",
+      "source_page_url": "https://www.russianturkishbaths.com/",
+      "llm_confidence": 0.9,
+      "rejection_notes": null,
+      "site_origin": "http://www.russianturkishbaths.com",
+      "reason": "too_small_dimensions"
+    },
+    {
+      "location_id": 58,
+      "image_url": "https://static.wixstatic.com/media/8c8383_30f7e8510fa840c297b7ce19dab16668~mv2.jpg/v1/fill/w_305,h_305,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/8c8383_30f7e8510fa840c297b7ce19dab16668~mv2.jpg",
+      "source_page_url": "https://www.russianturkishbaths.com/",
+      "llm_confidence": 0.9,
+      "rejection_notes": null,
+      "site_origin": "http://www.russianturkishbaths.com",
+      "reason": "too_small_dimensions"
+    },
+    {
+      "location_id": 506,
+      "image_url": "https://cdn.prod.website-files.com/61a7ab7e83ae57fd6f080eff/67213ddd5a652cec9b5c6a52_669194ac8f5647ada7ad9958_Jan%2520Marini%2520Glycolic%2520Resurfacing%2520Peel.jpeg",
+      "source_page_url": "https://www.restore.com/",
+      "llm_confidence": 0.9,
+      "rejection_notes": null,
+      "site_origin": "http://www.restore.com",
+      "reason": "too_small_dimensions"
+    },
+    {
+      "location_id": 506,
+      "image_url": "https://cdn.prod.website-files.com/61a7ab7e83ae57fd6f080eff/67213ddd6ad14b6427912128_66918812d656a8e6083d14ff_Hydrafacial%2520Keravive%2520Full%2520Scalp%2520with%2520spray.jpeg",
+      "source_page_url": "https://www.restore.com/",
+      "llm_confidence": 0.9,
+      "rejection_notes": null,
+      "site_origin": "http://www.restore.com",
+      "reason": "too_small_dimensions"
+    },
+    {
+      "location_id": 506,
+      "image_url": "https://cdn.prod.website-files.com/61a7ab7e83ae57fd6f080eff/67213ddd29c9e26f45834fd2_66918ada35694305233004fe_HydroPeptide%2520_%2520Custom%2520Facial%2520%2520%252B%2520Sonic%2520Dermaplaning%2520%252B%2520Extract%2520and%2520Fuse.jpeg",
+      "source_page_url": "https://www.restore.com/",
+      "llm_confidence": 0.9,
+      "rejection_notes": null,
+      "site_origin": "http://www.restore.com",
+      "reason": "too_small_dimensions"
+    },
+    {
+      "location_id": 580,
+      "image_url": "https://www.socialworkcounselingservices.com/wp-content/uploads/2025/10/office-pic-01-300x225.jpg",
+      "source_page_url": "https://www.socialworkcounselingservices.com/",
+      "llm_confidence": 0.9,
+      "rejection_notes": null,
+      "site_origin": "http://www.socialworkcounselingservices.com",
+      "reason": "too_small_dimensions"
+    },
+    {
+      "location_id": 580,
+      "image_url": "https://www.socialworkcounselingservices.com/wp-content/uploads/2025/10/office-pic-02-300x225.jpg",
+      "source_page_url": "https://www.socialworkcounselingservices.com/",
+      "llm_confidence": 0.9,
+      "rejection_notes": null,
+      "site_origin": "http://www.socialworkcounselingservices.com",
+      "reason": "too_small_dimensions"
+    },
+    {
+      "location_id": 580,
+      "image_url": "https://www.socialworkcounselingservices.com/wp-content/uploads/2025/10/office-pic-03-300x225.jpg",
+      "source_page_url": "https://www.socialworkcounselingservices.com/",
+      "llm_confidence": 0.9,
+      "rejection_notes": null,
+      "site_origin": "http://www.socialworkcounselingservices.com",
+      "reason": "too_small_dimensions"
+    },
+    {
+      "location_id": 634,
+      "image_url": "data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgMjU2MCAxNzA2IiB3aWR0aD0iMjU2MCIgaGVpZ2h0PSIxNzA2IiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjwvc3ZnPg==",
+      "source_page_url": "https://sojospaclub.com/",
+      "llm_confidence": 0.9,
+      "rejection_notes": null,
+      "site_origin": "http://www.sojospaclub.com",
+      "reason": "too_small_bytes"
+    },
+    {
+      "location_id": 634,
+      "image_url": "data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgMjQwMCAxNjAxIiB3aWR0aD0iMjQwMCIgaGVpZ2h0PSIxNjAxIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjwvc3ZnPg==",
+      "source_page_url": "https://sojospaclub.com/",
+      "llm_confidence": 0.9,
+      "rejection_notes": null,
+      "site_origin": "http://www.sojospaclub.com",
+      "reason": "too_small_bytes"
+    },
+    {
+      "location_id": 634,
+      "image_url": "data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgODAwIDYwMCIgd2lkdGg9IjgwMCIgaGVpZ2h0PSI2MDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PC9zdmc+",
+      "source_page_url": "https://sojospaclub.com/",
+      "llm_confidence": 0.9,
+      "rejection_notes": null,
+      "site_origin": "http://www.sojospaclub.com",
+      "reason": "too_small_bytes"
+    },
+    {
+      "location_id": 657,
+      "image_url": "https://thecenterformedicalhealing.com/wp-content/uploads/2019/09/Center-for-Medical-Healing-New-1-300x178.jpg",
+      "source_page_url": "https://thecenterformedicalhealing.com/",
+      "llm_confidence": 0.8,
+      "rejection_notes": null,
+      "site_origin": "http://www.thecenterformedicalhealing.com",
+      "reason": "too_small_dimensions"
+    },
+    {
+      "location_id": 12486,
+      "image_url": "https://theguyerinstitute.com/wp-content/uploads/2020/10/Kelly-Shockwave-2-340x230.jpg",
+      "source_page_url": "https://theguyerinstitute.com/",
+      "llm_confidence": 0.8,
+      "rejection_notes": null,
+      "site_origin": "http://www.theguyerinstitute.com",
+      "reason": "too_small_dimensions"
+    },
+    {
+      "location_id": 12486,
+      "image_url": "https://theguyerinstitute.com/wp-content/uploads/2020/10/PRP-Blog-340x230.jpg",
+      "source_page_url": "https://theguyerinstitute.com/",
+      "llm_confidence": 0.8,
+      "rejection_notes": null,
+      "site_origin": "http://www.theguyerinstitute.com",
+      "reason": "too_small_dimensions"
+    },
+    {
+      "location_id": 1366,
+      "image_url": "https://static.wixstatic.com/media/009794_6bdd3fb8743c4d8ebc1632c054234ff5~mv2.jpg/v1/fill/w_498,h_176,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/280-Dobbs-Ferry-Rd-White-Plains-NY-Building-Photo-1-Large.jpg",
+      "source_page_url": "https://www.zhangclinic.net/",
+      "llm_confidence": 0.9,
+      "rejection_notes": null,
+      "site_origin": "http://www.zhangclinic.net",
+      "reason": "too_small_bytes"
+    },
+    {
+      "location_id": 1366,
+      "image_url": "https://static.wixstatic.com/media/009794_9c4557fa557146c1ae6a5d090e0542e7~mv2.jpg/v1/fill/w_223,h_122,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/IMG_9189.jpg",
+      "source_page_url": "https://www.zhangclinic.net/",
+      "llm_confidence": 0.8,
+      "rejection_notes": null,
+      "site_origin": "http://www.zhangclinic.net",
+      "reason": "too_small_bytes"
+    },
+    {
+      "location_id": 1366,
+      "image_url": "https://static.wixstatic.com/media/009794_f4d740893cfe4a809d0d8b94ae034530~mv2.jpg/v1/fill/w_203,h_122,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/IMG_9187%20(1).jpg",
+      "source_page_url": "https://www.zhangclinic.net/",
+      "llm_confidence": 0.8,
+      "rejection_notes": null,
+      "site_origin": "http://www.zhangclinic.net",
+      "reason": "too_small_bytes"
+    },
+    {
+      "location_id": 1440,
+      "image_url": "https://ailongevityclinic.com/wp-content/uploads/2025/11/1951-NW-17-Ave-Miami-FL-33125-Allapattah-Center-300x200.png",
+      "source_page_url": "https://ailongevityclinic.com/",
+      "llm_confidence": 0.9,
+      "rejection_notes": null,
+      "site_origin": "https://ailongevityclinic.com",
+      "reason": "too_small_dimensions"
+    },
+    {
+      "location_id": 1440,
+      "image_url": "https://ailongevityclinic.com/wp-content/uploads/2025/06/AiLc-Humanoid-Care-Navigator.png",
+      "source_page_url": "https://ailongevityclinic.com/ai-longevity/",
+      "llm_confidence": 0.9,
+      "rejection_notes": null,
+      "site_origin": "https://ailongevityclinic.com",
+      "reason": "too_small_dimensions"
+    },
+    {
+      "location_id": 349,
+      "image_url": "https://static.wixstatic.com/media/9fa686_f21129aa924643488e7e18939d5d0f21~mv2.webp/v1/fill/w_1440,h_734,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/9fa686_f21129aa924643488e7e18939d5d0f21~mv2.webp",
+      "source_page_url": "https://www.balancebklyn.com/",
+      "llm_confidence": 0.8,
+      "rejection_notes": null,
+      "site_origin": "https://balancebklyn.com",
+      "reason": "too_small_bytes"
+    },
+    {
+      "location_id": 10310,
+      "image_url": "https://www.beautyandgrace.net/media/0c84cf16dd20467f850a25fc6f2465eb_jpg/v1/fill/w_489-h_326-al_c-q_80-usm_0.66_1.00_0.01/0c84cf16dd20467f850a25fc6f2465eb.jpg",
+      "source_page_url": "https://www.beautyandgrace.net/",
+      "llm_confidence": 0.8,
+      "rejection_notes": null,
+      "site_origin": "https://beautyandgrace.net",
+      "reason": "too_small_dimensions"
+    },
+    {
+      "location_id": 10310,
+      "image_url": "https://www.beautyandgrace.net/media/fcb1209b19c34a08b3fecce3a0445b2a_jpg/v1/fill/w_488-h_230-al_c-q_80-usm_0.66_1.00_0.01/fcb1209b19c34a08b3fecce3a0445b2a.jpg",
+      "source_page_url": "https://www.beautyandgrace.net/",
+      "llm_confidence": 0.8,
+      "rejection_notes": null,
+      "site_origin": "https://beautyandgrace.net",
+      "reason": "too_small_dimensions"
+    },
+    {
+      "location_id": 1557,
+      "image_url": "https://img1.wsimg.com/isteam/ip/18bc4ab6-a656-44d6-8535-1177f76420a8/BL9I2202%20copy-1f9cb2d.jpg/:/cr=t:0%25,l:0%25,w:100%25,h:100%25/rs=w:400,cg:true",
+      "source_page_url": "https://bioharmonyusa.com/our-services",
+      "llm_confidence": 0.9,
+      "rejection_notes": null,
+      "site_origin": "https://bioharmonyusa.com",
+      "reason": "too_small_dimensions"
+    },
+    {
+      "location_id": 1500,
+      "image_url": "https://casahiperbarica.com.br/wp-content/uploads/2023/11/quem-somos.jpg",
+      "source_page_url": "https://casahiperbarica.com.br/quem-somos/",
+      "llm_confidence": 0.8,
+      "rejection_notes": null,
+      "site_origin": "https://casahiperbarica.com.br",
+      "reason": "too_small_dimensions"
+    },
+    {
+      "location_id": 7079,
+      "image_url": "https://cdn.prod.website-files.com/685e665811b6f074ba982c22/68d1a360a28852f3a8586d5b_functional-Clinic-5C.avif",
+      "source_page_url": "https://5c.co/",
+      "llm_confidence": 0.8,
+      "rejection_notes": null,
+      "site_origin": "https://clinic5c.com",
+      "reason": "too_small_bytes"
+    },
+    {
+      "location_id": 7079,
+      "image_url": "https://cdn.prod.website-files.com/685e665811b6f074ba982c22/68d1a3613dc072943bac2a31_regen2-Clinic-5C.avif",
+      "source_page_url": "https://5c.co/",
+      "llm_confidence": 0.8,
+      "rejection_notes": null,
+      "site_origin": "https://clinic5c.com",
+      "reason": "too_small_bytes"
+    },
+    {
+      "location_id": 7079,
+      "image_url": "https://cdn.prod.website-files.com/685e665811b6f074ba982c22/69bc2508ac3de97f224868ba_Surgical-Cosmetics-Service-Bar-Clinic-5C-p-1600.webp",
+      "source_page_url": "https://5c.co/",
+      "llm_confidence": 0.8,
+      "rejection_notes": null,
+      "site_origin": "https://clinic5c.com",
+      "reason": "too_small_bytes"
+    },
+    {
+      "location_id": 219,
+      "image_url": "https://deeplyvitalmedical.com/storage/elementor/thumbs/Medical-Grade-Led-Lights-Service-qm43xmtlrradtq6sirz6aapsfn09y8xedfuw5vacoc.webp",
+      "source_page_url": "https://deeplyvitalmedical.com/",
+      "llm_confidence": 0.9,
+      "rejection_notes": null,
+      "site_origin": "https://deeplyvitalmedical.com",
+      "reason": "too_small_bytes"
+    },
+    {
+      "location_id": 219,
+      "image_url": "https://deeplyvitalmedical.com/storage/elementor/thumbs/Red-Legs-Deeply-Vital-qji7v8bs5v93d6o1ae0bzxev4u2y99829groxkzyjw.webp",
+      "source_page_url": "https://deeplyvitalmedical.com/",
+      "llm_confidence": 0.9,
+      "rejection_notes": null,
+      "site_origin": "https://deeplyvitalmedical.com",
+      "reason": "too_small_bytes"
+    },
+    {
+      "location_id": 219,
+      "image_url": "https://deeplyvitalmedical.com/storage/elementor/thumbs/Medical-Grade-LEDs-b-qji6x8hwzkprgw1psp02ti8pp5n1vc9jl7di3bejl8.webp",
+      "source_page_url": "https://deeplyvitalmedical.com/",
+      "llm_confidence": 0.9,
+      "rejection_notes": null,
+      "site_origin": "https://deeplyvitalmedical.com",
+      "reason": "too_small_bytes"
+    },
+    {
+      "location_id": 2364,
+      "image_url": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI3MDkiIGhlaWdodD0iMTE1MiIgdmlld0JveD0iMCAwIDcwOSAxMTUyIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBzdHlsZT0iZmlsbDojY2ZkNGRiO2ZpbGwtb3BhY2l0eTogMC4xOyIvPjwvc3ZnPg==",
+      "source_page_url": "https://darrellkilcupdc.com/",
+      "llm_confidence": 0.8,
+      "rejection_notes": null,
+      "site_origin": "https://darrellkilcupdc.com",
+      "reason": "too_small_bytes"
+    },
+    {
+      "location_id": 7947,
+      "image_url": "https://dorignacs.com/wp-content/uploads/2022/08/Meat-photo.jpg",
+      "source_page_url": "https://dorignacs.com/",
+      "llm_confidence": 0.9,
+      "rejection_notes": null,
+      "site_origin": "https://dorignacs.com",
+      "reason": "too_small_bytes"
+    },
+    {
+      "location_id": 7947,
+      "image_url": "https://dorignacs.com/wp-content/uploads/2022/08/Bakery-photo.jpg",
+      "source_page_url": "https://dorignacs.com/",
+      "llm_confidence": 0.9,
+      "rejection_notes": null,
+      "site_origin": "https://dorignacs.com",
+      "reason": "too_small_dimensions"
+    },
+    {
+      "location_id": 5172,
+      "image_url": "https://esquiresportsmedicine.com/wp-content/uploads/2021/04/car-accident-doctor.jpg",
+      "source_page_url": "https://esquiresportsmedicine.com/",
+      "llm_confidence": 0.8,
+      "rejection_notes": null,
+      "site_origin": "https://esquiresportsmedicine.com",
+      "reason": "too_small_dimensions"
+    },
+    {
+      "location_id": 2163,
+      "image_url": "https://cdn.prod.website-files.com/68f137dac9caf258fe9bd87e/697bb17522d61a292fea7710_Shockwave%20for%20ED.png",
+      "source_page_url": "https://gamedaymenshealth.ca/",
+      "llm_confidence": 0.9,
+      "rejection_notes": null,
+      "site_origin": "https://gamedaymenshealth.ca",
+      "reason": "too_small_dimensions"
+    },
+    {
+      "location_id": 8465,
+      "image_url": "https://harborlandinghealthcenter.org/wp-content/uploads/2022/03/bldg.jpg",
+      "source_page_url": "https://harborlandinghealthcenter.org/",
+      "llm_confidence": 0.9,
+      "rejection_notes": null,
+      "site_origin": "https://harborlandinghealthcenter.org",
+      "reason": "too_small_dimensions"
+    },
+    {
+      "location_id": 284,
+      "image_url": "https://healthyline.com/cdn/shop/files/Jet_Mat_7224_3_bf4b3c5d-9292-49ed-b20d-31310f2d698c_medium.jpg?v=1748362084",
+      "source_page_url": "https://www.google.com/",
+      "llm_confidence": 0.9,
+      "rejection_notes": null,
+      "site_origin": "https://healthyline.com",
+      "reason": "too_small_bytes"
+    },
+    {
+      "location_id": 284,
+      "image_url": "https://healthyline.com/cdn/shop/files/Rainbow_Chakra_Mat_7428_-_3rd_Edition_medium.jpg?v=1736634223",
+      "source_page_url": "https://www.google.com/",
+      "llm_confidence": 0.9,
+      "rejection_notes": null,
+      "site_origin": "https://healthyline.com",
+      "reason": "too_small_bytes"
+    },
+    {
+      "location_id": 8487,
+      "image_url": "https://dam.upmc.com/-/media/cancercenter/locations/hillman.jpg?rev=cc64ae953e2f4e9a91018acae9dfe94b&la=en&h=163&w=290&hash=FE8B7A64DE81EB2B6D4E40DE1B50C593",
+      "source_page_url": "https://hillman.upmc.com/",
+      "llm_confidence": 0.8,
+      "rejection_notes": null,
+      "site_origin": "https://hillman.upmc.com",
+      "reason": "too_small_dimensions"
+    },
+    {
+      "location_id": 8487,
+      "image_url": "https://dam.upmc.com/-/media/cancercenter/cancercenter-difference/images/callouts/62_specialty_care_callout.png?rev=3044badb65f44c4696620fe0605e7c34&la=en&h=215&w=384&hash=373BA90D60614E87FAD40F7CE15D13C6",
+      "source_page_url": "https://hillman.upmc.com/difference",
+      "llm_confidence": 0.8,
+      "rejection_notes": null,
+      "site_origin": "https://hillman.upmc.com",
+      "reason": "too_small_dimensions"
+    },
+    {
+      "location_id": 617,
+      "image_url": "https://integratedinternalmed.com/wp-content/uploads/2022/03/integrated-internal-medicine-building-queens-ny-400x284.jpg",
+      "source_page_url": "https://integratedinternalmed.com/about/",
+      "llm_confidence": 0.9,
+      "rejection_notes": null,
+      "site_origin": "https://integratedinternalmed.com",
+      "reason": "too_small_dimensions"
+    },
+    {
+      "location_id": 753,
+      "image_url": "https://kinesioworks.com/wp-content/uploads/2025/07/Artboard-%E2%80%93-32.jpg",
+      "source_page_url": "https://kinesioworks.com/physical-therapy-treatments/",
+      "llm_confidence": 0.8,
+      "rejection_notes": null,
+      "site_origin": "https://kinesioworks.com",
+      "reason": "logo_like_aspect_ratio"
+    },
+    {
+      "location_id": 63,
+      "image_url": "https://manhattanivtherapy.com/wp-content/uploads/2023/10/about-commitment.webp",
+      "source_page_url": "https://manhattanivtherapy.com/about",
+      "llm_confidence": 0.9,
+      "rejection_notes": null,
+      "site_origin": "https://manhattanivtherapy.com",
+      "reason": "too_small_bytes"
+    },
+    {
+      "location_id": 8493,
+      "image_url": "https://mindfulhealthsolutions.com/wp-content/uploads/2026/01/All-TMS-Block.webp",
+      "source_page_url": "https://mindfulhealthsolutions.com/location-stockton/",
+      "llm_confidence": 0.8,
+      "rejection_notes": null,
+      "site_origin": "https://mindfulhealthsolutions.com",
+      "reason": "too_small_dimensions"
+    },
+    {
+      "location_id": 8493,
+      "image_url": "https://mindfulhealthsolutions.com/wp-content/uploads/2026/01/All-ESK-Block.webp",
+      "source_page_url": "https://mindfulhealthsolutions.com/location-stockton/",
+      "llm_confidence": 0.8,
+      "rejection_notes": null,
+      "site_origin": "https://mindfulhealthsolutions.com",
+      "reason": "too_small_dimensions"
+    },
+    {
+      "location_id": 7636,
+      "image_url": "https://midwestsuboxonedoctors.com/wp-content/uploads/2019/12/about_left.jpg.webp",
+      "source_page_url": "https://midwestsuboxonedoctors.com/why-us/",
+      "llm_confidence": 0.8,
+      "rejection_notes": null,
+      "site_origin": "https://midwestsuboxonedoctors.com",
+      "reason": "too_small_bytes"
+    },
+    {
+      "location_id": 7637,
+      "image_url": "https://midwestsuboxonedoctors.com/wp-content/uploads/2019/12/about_left.jpg.webp",
+      "source_page_url": "https://midwestsuboxonedoctors.com/why-us/",
+      "llm_confidence": 0.8,
+      "rejection_notes": null,
+      "site_origin": "https://midwestsuboxonedoctors.com",
+      "reason": "too_small_bytes"
+    },
+    {
+      "location_id": 14,
+      "image_url": "https://msmwellness.com/wp-content/uploads/2022/12/Service-images-300-%C3%97-300-px-5.jpg.webp",
+      "source_page_url": "https://msmwellness.com/",
+      "llm_confidence": 0.9,
+      "rejection_notes": null,
+      "site_origin": "https://msmwellness.com",
+      "reason": "too_small_bytes"
+    },
+    {
+      "location_id": 747,
+      "image_url": "https://lh3.googleusercontent.com/places/ANXAkqEVqkinMoGpwChky_tuBMUBgfmjb0dBOED4_0b-6LmZV_E0cjgHuz1ys9oQwUPkxNBNBHjhTbYbuK7GAweQDUEP_7tt7BScDA=s4800-w300-h300",
+      "source_page_url": "https://myskinsommelier.com/",
+      "llm_confidence": 0.9,
+      "rejection_notes": null,
+      "site_origin": "https://myskinsommelier.com",
+      "reason": "too_small_dimensions"
+    },
+    {
+      "location_id": 747,
+      "image_url": "https://myskinsommelier.com/wp-content/uploads/2024/03/Myskinsommelier_chemical-peel-Home_in_Forest_Hills_NY.gif",
+      "source_page_url": "https://myskinsommelier.com/",
+      "llm_confidence": 0.8,
+      "rejection_notes": null,
+      "site_origin": "https://myskinsommelier.com",
+      "reason": "unsupported_content_type"
+    },
+    {
+      "location_id": 747,
+      "image_url": "https://myskinsommelier.com/wp-content/uploads/2024/03/Myskinsommelier_facial_Home_in_Forest_Hills_NY.gif",
+      "source_page_url": "https://myskinsommelier.com/",
+      "llm_confidence": 0.8,
+      "rejection_notes": null,
+      "site_origin": "https://myskinsommelier.com",
+      "reason": "unsupported_content_type"
+    },
+    {
+      "location_id": 1225,
+      "image_url": "https://images.leadconnectorhq.com/image/f_webp/q_80/r_1200/u_https://assets.cdn.filesafe.space/7NSZuyaXAHjLU2SNGAmc/media/699278ce6bac2438beaec30b.png",
+      "source_page_url": "https://osteostrongroslyn.com/",
+      "llm_confidence": 0.9,
+      "rejection_notes": null,
+      "site_origin": "https://osteostrongroslyn.com",
+      "reason": "logo_like_aspect_ratio"
+    },
+    {
+      "location_id": 8323,
+      "image_url": "https://www.rescoreclinic.com/_next/image?url=https%3A%2F%2Frescoreclinic.com%2Fwp-content%2Fuploads%2F2024%2F08%2Fsteve-poole-treatment-pic.jpg&w=3840&q=75",
+      "source_page_url": "https://www.rescoreclinic.com/",
+      "llm_confidence": 0.8,
+      "rejection_notes": null,
+      "site_origin": "https://rescoreclinic.com",
+      "reason": "http_502"
+    },
+    {
+      "location_id": 684,
+      "image_url": "https://uicmedcentre.com/wp-content/uploads/2024/10/UIC_Medical_Centre_4.webp",
+      "source_page_url": "https://uicmedcentre.com/",
+      "llm_confidence": 0.9,
+      "rejection_notes": null,
+      "site_origin": "https://uicmedcentre.com",
+      "reason": "too_small_bytes"
+    },
+    {
+      "location_id": 684,
+      "image_url": "https://uicmedcentre.com/wp-content/uploads/2024/10/uicmedcenter_4.webp",
+      "source_page_url": "https://uicmedcentre.com/",
+      "llm_confidence": 0.9,
+      "rejection_notes": null,
+      "site_origin": "https://uicmedcentre.com",
+      "reason": "too_small_bytes"
+    },
+    {
+      "location_id": 5338,
+      "image_url": "https://static.wixstatic.com/media/e042e1_b3a00f0e08f44484995a9504113554d4~mv2.jpg/v1/crop/x_0,y_5,w_960,h_951/fill/w_212,h_210,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/IMG_4943_JPG.jpg",
+      "source_page_url": "https://www.bristoloandp.com/",
+      "llm_confidence": 0.8,
+      "rejection_notes": null,
+      "site_origin": "https://www.bristoloandp.com",
+      "reason": "too_small_bytes"
+    },
+    {
+      "location_id": 173,
+      "image_url": "https://static.wixstatic.com/media/3fe26f_f4779d7e86d645d7abeefa67e42715c0~mv2.jpg/v1/fill/w_70,h_53,al_c,q_80,usm_0.66_1.00_0.01,blur_2,enc_avif,quality_auto/3fe26f_f4779d7e86d645d7abeefa67e42715c0~mv2.jpg",
+      "source_page_url": "https://www.browntherapistmama.com/for-therapists",
+      "llm_confidence": 0.8,
+      "rejection_notes": null,
+      "site_origin": "https://www.browntherapistmama.com",
+      "reason": "too_small_bytes"
+    },
+    {
+      "location_id": 5750,
+      "image_url": "https://www.feistweiller.org/wp-content/uploads/2024/08/building-15.jpg",
+      "source_page_url": "https://www.feistweiller.org/index.php?submenu=About_Us&src=gendocs&ref=About-Us&category=Main",
+      "llm_confidence": 0.9,
+      "rejection_notes": null,
+      "site_origin": "https://www.feistweiller.org",
+      "reason": "too_small_dimensions"
+    },
+    {
+      "location_id": 824,
+      "image_url": "https://vacuactivus.com/wp-content/uploads/2025/12/1-pht_optimized-150x150-q82-gd-png.webp",
+      "source_page_url": "https://vacuactivus.com/",
+      "llm_confidence": 1,
+      "rejection_notes": null,
+      "site_origin": "https://www.vacuactivus.com",
+      "reason": "too_small_bytes"
+    },
+    {
+      "location_id": 824,
+      "image_url": "https://vacuactivus.com/wp-content/uploads/2025/11/cryotherapy-machine.png",
+      "source_page_url": "https://vacuactivus.com/",
+      "llm_confidence": 1,
+      "rejection_notes": null,
+      "site_origin": "https://www.vacuactivus.com",
+      "reason": "too_small_bytes"
+    },
+    {
+      "location_id": 824,
+      "image_url": "https://vacuactivus.com/wp-content/uploads/2025/11/red-light-therapy-bed.png",
+      "source_page_url": "https://vacuactivus.com/",
+      "llm_confidence": 1,
+      "rejection_notes": null,
+      "site_origin": "https://www.vacuactivus.com",
+      "reason": "too_small_bytes"
+    },
+    {
+      "location_id": 5796,
+      "image_url": "https://cdn-tp3.mozu.com/24645-m1/cms/files/06841f2d-f604-4981-a9a8-84892b0b31c8",
+      "source_page_url": "https://www.acehardware.com/about-us",
+      "llm_confidence": 0.9,
+      "rejection_notes": null,
+      "site_origin": "https://www.acehardware.com",
+      "reason": "unsupported_content_type"
+    },
+    {
+      "location_id": 5441,
+      "image_url": "https://doc.vortala.com/childsites/uploads/4776/files/office-outside.jpg",
+      "source_page_url": "https://www.elitepainrelief.com/about-us/",
+      "llm_confidence": 0.9,
+      "rejection_notes": null,
+      "site_origin": "https://www.elitepainrelief.com",
+      "reason": "too_small_dimensions"
+    },
+    {
+      "location_id": 4359,
+      "image_url": "https://cdcssl.ibsrv.net/ibimg/smb/425x282_80/webmgr/0m/8/i/sports-injury-1.jpg.webp?c6237ebcb31a497d34bcfa060a5b7677",
+      "source_page_url": "https://www.habbenchiropractic.com/",
+      "llm_confidence": 0.9,
+      "rejection_notes": null,
+      "site_origin": "https://www.habbenchiropractic.com",
+      "reason": "too_small_bytes"
+    },
+    {
+      "location_id": 4359,
+      "image_url": "https://cdcssl.ibsrv.net/ibimg/smb/426x282_80/webmgr/0m/8/i/electronic-muscle-stimulation.jpg.webp?2560a410201b056bd52b688f4aa9c4ae",
+      "source_page_url": "https://www.habbenchiropractic.com/",
+      "llm_confidence": 0.9,
+      "rejection_notes": null,
+      "site_origin": "https://www.habbenchiropractic.com",
+      "reason": "too_small_dimensions"
+    },
+    {
+      "location_id": 142,
+      "image_url": "https://sa1s3optim.patientpop.com/231x200/assets/production/practices/a95af95e5e9069773d3af6ef1c57b346ea34e246/images/2707382.jpg",
+      "source_page_url": "https://www.healthwisewomen.net/services",
+      "llm_confidence": 0.8,
+      "rejection_notes": null,
+      "site_origin": "https://www.healthwisewomen.net",
+      "reason": "too_small_bytes"
+    },
+    {
+      "location_id": 142,
+      "image_url": "https://sa1s3optim.patientpop.com/231x200/assets/production/practices/a95af95e5e9069773d3af6ef1c57b346ea34e246/images/2707385.jpg",
+      "source_page_url": "https://www.healthwisewomen.net/services",
+      "llm_confidence": 0.8,
+      "rejection_notes": null,
+      "site_origin": "https://www.healthwisewomen.net",
+      "reason": "too_small_bytes"
+    },
+    {
+      "location_id": 142,
+      "image_url": "https://sa1s3optim.patientpop.com/231x200/assets/images/provider/photos/1764958.jpg",
+      "source_page_url": "https://www.healthwisewomen.net/services",
+      "llm_confidence": 0.8,
+      "rejection_notes": null,
+      "site_origin": "https://www.healthwisewomen.net",
+      "reason": "too_small_bytes"
+    },
+    {
+      "location_id": 6046,
+      "image_url": "https://static.wixstatic.com/media/b12c5a_e7a89f1231854686946385a17e9aea78~mv2.jpg/v1/fill/w_295,h_393,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/IMG_9686_Original.jpg",
+      "source_page_url": "https://www.inframedthermography.com/",
+      "llm_confidence": 0.9,
+      "rejection_notes": null,
+      "site_origin": "https://www.inframedthermography.com",
+      "reason": "too_small_dimensions"
+    },
+    {
+      "location_id": 148,
+      "image_url": "https://www.hudsonfamilyrehab.com/wp-content/uploads/2026/03/Hudson-Family-Chiropractic-Reception.png",
+      "source_page_url": "https://www.hudsonfamilyrehab.com/about/",
+      "llm_confidence": 0.9,
+      "rejection_notes": null,
+      "site_origin": "https://www.hudsonfamilyrehab.com",
+      "reason": "too_small_dimensions"
+    },
+    {
+      "location_id": 148,
+      "image_url": "https://www.hudsonfamilyrehab.com/wp-content/uploads/2013/05/Reformer-Pilates-Rehabilitation-in-Hoboken-NJ-350x350.jpg",
+      "source_page_url": "https://www.hudsonfamilyrehab.com/about/",
+      "llm_confidence": 0.9,
+      "rejection_notes": null,
+      "site_origin": "https://www.hudsonfamilyrehab.com",
+      "reason": "too_small_dimensions"
+    },
+    {
+      "location_id": 5891,
+      "image_url": "https://regenerativehealthsolutions.com/wp-content/uploads/2018/05/treatments-neuromodulators.jpg",
+      "source_page_url": "https://www.regenerativehealthsolutions.com/aesthetic-medicine/",
+      "llm_confidence": 0.9,
+      "rejection_notes": null,
+      "site_origin": "https://www.regenerativehealthsolutions.com",
+      "reason": "too_small_bytes"
+    },
+    {
+      "location_id": 5891,
+      "image_url": "https://regenerativehealthsolutions.com/wp-content/uploads/2018/05/treatments-dermal-fillers.jpg",
+      "source_page_url": "https://www.regenerativehealthsolutions.com/aesthetic-medicine/",
+      "llm_confidence": 0.9,
+      "rejection_notes": null,
+      "site_origin": "https://www.regenerativehealthsolutions.com",
+      "reason": "too_small_bytes"
+    },
+    {
+      "location_id": 5891,
+      "image_url": "https://regenerativehealthsolutions.com/wp-content/uploads/2018/05/treatments-platelet-rich-plasma.jpg",
+      "source_page_url": "https://www.regenerativehealthsolutions.com/aesthetic-medicine/",
+      "llm_confidence": 0.9,
+      "rejection_notes": null,
+      "site_origin": "https://www.regenerativehealthsolutions.com",
+      "reason": "too_small_bytes"
+    },
+    {
+      "location_id": 6956,
+      "image_url": "https://sa1s3optim.patientpop.com/assets/images/provider/photos/2412127.jpeg",
+      "source_page_url": "https://www.starkeymedical.com/contents/gallery",
+      "llm_confidence": 0.8,
+      "rejection_notes": null,
+      "site_origin": "https://www.starkeymedical.com",
+      "reason": "too_small_dimensions"
+    },
+    {
+      "location_id": 6956,
+      "image_url": "https://sa1s3optim.patientpop.com/assets/images/provider/photos/1929693.jpeg",
+      "source_page_url": "https://www.starkeymedical.com/contents/gallery",
+      "llm_confidence": 0.8,
+      "rejection_notes": null,
+      "site_origin": "https://www.starkeymedical.com",
+      "reason": "too_small_dimensions"
+    },
+    {
+      "location_id": 6956,
+      "image_url": "https://sa1s3optim.patientpop.com/assets/images/provider/photos/1929692.jpeg",
+      "source_page_url": "https://www.starkeymedical.com/contents/gallery",
+      "llm_confidence": 0.8,
+      "rejection_notes": null,
+      "site_origin": "https://www.starkeymedical.com",
+      "reason": "too_small_dimensions"
+    },
+    {
+      "location_id": 969,
+      "image_url": "https://www.theramotion.com/wp-content/uploads/2018/08/shutterstock_728177143-360x240.jpg",
+      "source_page_url": "https://www.theramotion.com/services/",
+      "llm_confidence": 0.9,
+      "rejection_notes": null,
+      "site_origin": "https://www.theramotion.com",
+      "reason": "too_small_bytes"
+    },
+    {
+      "location_id": 591,
+      "image_url": "https://static.wixstatic.com/media/d3480d_d3ab7f5653114655bb5df68fbc4301c3~mv2.jpeg/v1/crop/x_103,y_216,w_896,h_864/fill/w_342,h_264,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/d3480d_d3ab7f5653114655bb5df68fbc4301c3~mv2.jpeg",
+      "source_page_url": "https://www.neurologypartnersnj.com/",
+      "llm_confidence": 0.8,
+      "rejection_notes": null,
+      "site_origin": "https://www.neurologypartnersnj.com",
+      "reason": "too_small_dimensions"
+    },
+    {
+      "location_id": 591,
+      "image_url": "https://static.wixstatic.com/media/d3480d_adf787363a17480980e0e29ef80e67d8~mv2.jpg/v1/crop/x_0,y_0,w_316,h_244/fill/w_342,h_264,al_c,lg_1,q_80,enc_avif,quality_auto/d3480d_adf787363a17480980e0e29ef80e67d8~mv2.jpg",
+      "source_page_url": "https://www.neurologypartnersnj.com/",
+      "llm_confidence": 0.8,
+      "rejection_notes": null,
+      "site_origin": "https://www.neurologypartnersnj.com",
+      "reason": "too_small_dimensions"
+    },
+    {
+      "location_id": 8381,
+      "image_url": "https://www.scvchiro.com/wp-content/uploads/2023/12/Chiropractic-Santa-Clarita-CA-Office-Building-Exterior-HP-V2.webp",
+      "source_page_url": "https://www.scvchiro.com/",
+      "llm_confidence": 0.9,
+      "rejection_notes": null,
+      "site_origin": "https://www.scvchiro.com",
+      "reason": "too_small_dimensions"
+    },
+    {
+      "location_id": 8381,
+      "image_url": "https://www.scvchiro.com/wp-content/uploads/2023/12/Chiropractic-Santa-Clarita-CA-XRay-Area.webp",
+      "source_page_url": "https://www.scvchiro.com/office-tour/",
+      "llm_confidence": 0.9,
+      "rejection_notes": null,
+      "site_origin": "https://www.scvchiro.com",
+      "reason": "too_small_dimensions"
+    },
+    {
+      "location_id": 7608,
+      "image_url": "https://www.asappaindocs.com/sites/default/files/styles/small/public/locations/GILBERT%20LOCATION%20PAGE%20PHOTO.jpg?itok=4atAcEmE",
+      "source_page_url": "https://www.asappaindocs.com/locations",
+      "llm_confidence": 0.9,
+      "rejection_notes": null,
+      "site_origin": "https://www.asappaindocs.com",
+      "reason": "too_small_dimensions"
+    },
+    {
+      "location_id": 7980,
+      "image_url": "https://www.gloandglam.com/images/Facials.2403080657550.jpg",
+      "source_page_url": "https://www.gloandglam.com/medspa-services/",
+      "llm_confidence": 0.9,
+      "rejection_notes": null,
+      "site_origin": "https://www.gloandglam.com",
+      "reason": "too_small_bytes"
+    },
+    {
+      "location_id": 7980,
+      "image_url": "https://www.gloandglam.com/images/PRP.2403080657550.jpg",
+      "source_page_url": "https://www.gloandglam.com/medspa-services/",
+      "llm_confidence": 0.9,
+      "rejection_notes": null,
+      "site_origin": "https://www.gloandglam.com",
+      "reason": "too_small_bytes"
+    },
+    {
+      "location_id": 7980,
+      "image_url": "https://www.gloandglam.com/images/Hydrafacial.2403080657550.jpg",
+      "source_page_url": "https://www.gloandglam.com/medspa-services/",
+      "llm_confidence": 0.9,
+      "rejection_notes": null,
+      "site_origin": "https://www.gloandglam.com",
+      "reason": "too_small_dimensions"
+    },
+    {
+      "location_id": 478,
+      "image_url": "https://www.nyp.org/sites/default/files/acquiadam/2020-09/IMG-Weill-Cornell-Front-Entrance-2.jpg",
+      "source_page_url": "https://www.nyp.org/about",
+      "llm_confidence": 0.9,
+      "rejection_notes": null,
+      "site_origin": "https://www.nyp.org",
+      "reason": "too_small_dimensions"
+    },
+    {
+      "location_id": 819,
+      "image_url": "https://www.nyp.org/sites/default/files/acquiadam/2020-08/IMG-Brooklyn-Exterior.jpg",
+      "source_page_url": "https://www.nyp.org/about",
+      "llm_confidence": 0.9,
+      "rejection_notes": null,
+      "site_origin": "https://www.nyp.org",
+      "reason": "too_small_dimensions"
+    },
+    {
+      "location_id": 1181,
+      "image_url": "https://nyp.widen.net/content/raxa61sqws/jpeg/Locations-thumbnail-westchester.jpeg",
+      "source_page_url": "https://www.nyp.org/about",
+      "llm_confidence": 0.8,
+      "rejection_notes": null,
+      "site_origin": "https://www.nyp.org",
+      "reason": "too_small_dimensions"
+    },
+    {
+      "location_id": 512,
+      "image_url": "https://nyp.widen.net/content/22yuyj4dzf/jpeg/Locations-thumbnail-quees.jpeg",
+      "source_page_url": "https://www.nyp.org/about",
+      "llm_confidence": 0.8,
+      "rejection_notes": null,
+      "site_origin": "https://www.nyp.org",
+      "reason": "too_small_dimensions"
+    },
+    {
+      "location_id": 1626,
+      "image_url": "https://www.yaletownintegrative.com/uploads/1/3/2/5/132551784/editor/mg-2212.jpg?1654717847",
+      "source_page_url": "https://www.yaletownintegrative.com/",
+      "llm_confidence": 0.8,
+      "rejection_notes": null,
+      "site_origin": "https://www.yaletownintegrative.com",
+      "reason": "too_small_dimensions"
+    },
+    {
+      "location_id": 7627,
+      "image_url": "https://www.elitepainmanagement.com/wp-content/uploads/2019/07/doctor-x-rays.jpg",
+      "source_page_url": "https://www.elitepainmanagement.com/",
+      "llm_confidence": 0.8,
+      "rejection_notes": null,
+      "site_origin": "https://www.elitepainmanagement.com",
+      "reason": "too_small_dimensions"
+    },
+    {
+      "location_id": 7627,
+      "image_url": "https://www.elitepainmanagement.com/wp-content/uploads/2019/07/arm-injuries.jpg",
+      "source_page_url": "https://www.elitepainmanagement.com/treatments/",
+      "llm_confidence": 0.8,
+      "rejection_notes": null,
+      "site_origin": "https://www.elitepainmanagement.com",
+      "reason": "too_small_dimensions"
+    },
+    {
+      "location_id": 5178,
+      "image_url": "https://images.squarespace-cdn.com/content/v1/5c7df239755be263187d9768/1551835650347-VUHNS6MDACDN6SIV7GRT/mobile-scope.png?format=1500w",
+      "source_page_url": "https://www.gatewaydd.com/slps",
+      "llm_confidence": 0.8,
+      "rejection_notes": null,
+      "site_origin": "https://www.gatewaydd.com",
+      "reason": "too_small_dimensions"
+    },
+    {
+      "location_id": 592,
+      "image_url": "https://images.leadconnectorhq.com/image/f_webp/q_80/r_1200/u_https://assets.cdn.filesafe.space/R3Id4KZHQFL0Z3Rkx4QG/media/69b321d6e8487c611b4ea932.jpg",
+      "source_page_url": "https://transformationaltones.com/",
+      "llm_confidence": 0.9,
+      "rejection_notes": null,
+      "site_origin": "https://www.transformationaltones.com",
+      "reason": "too_large_bytes"
+    },
+    {
+      "location_id": 275,
+      "image_url": "https://e77dyhx5hyk.exactdn.com/wp-content/uploads/2020/10/treatment.jpg?strip=all",
+      "source_page_url": "https://www.drsusaneisen.com/treatment/",
+      "llm_confidence": 0.9,
+      "rejection_notes": null,
+      "site_origin": "https://www.drsusaneisen.com",
+      "reason": "too_small_bytes"
+    },
+    {
+      "location_id": 5762,
+      "image_url": "https://static.wixstatic.com/media/b4446d_f777f9a696b24fca9dda81e29e5fe1de~mv2.jpg/v1/crop/x_861,y_933,w_1687,h_1400/fill/w_470,h_390,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/Modern-rehabilitation-physiotherapy_New_Orleans_1293680350.jpg",
+      "source_page_url": "https://www.handsonhealthnola.com/",
+      "llm_confidence": 0.9,
+      "rejection_notes": null,
+      "site_origin": "https://www.handsonhealthnola.com",
+      "reason": "too_small_dimensions"
+    },
+    {
+      "location_id": 5762,
+      "image_url": "https://static.wixstatic.com/media/b4446d_c575c8e966184ca8b1cf305ba63077ad~mv2.jpg/v1/crop/x_0,y_174,w_1156,h_1135/fill/w_392,h_385,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/Practicing_yoga_meditation_PT_New_Orleans_Stocksy_3680238.jpg",
+      "source_page_url": "https://www.handsonhealthnola.com/",
+      "llm_confidence": 0.9,
+      "rejection_notes": null,
+      "site_origin": "https://www.handsonhealthnola.com",
+      "reason": "too_small_dimensions"
+    },
+    {
+      "location_id": 8872,
+      "image_url": "https://www.panhandlecancercare.com/resourcefiles/other/4d900.jpg",
+      "source_page_url": "https://www.panhandlecancercare.com/",
+      "llm_confidence": 0.9,
+      "rejection_notes": null,
+      "site_origin": "https://www.panhandlecancercare.com",
+      "reason": "http_403"
+    },
+    {
+      "location_id": 8872,
+      "image_url": "https://www.panhandlecancercare.com/resourcefiles/other/78045.jpg",
+      "source_page_url": "https://www.panhandlecancercare.com/",
+      "llm_confidence": 0.9,
+      "rejection_notes": null,
+      "site_origin": "https://www.panhandlecancercare.com",
+      "reason": "http_403"
+    },
+    {
+      "location_id": 8872,
+      "image_url": "https://www.panhandlecancercare.com/resourcefiles/other/106356.jpg",
+      "source_page_url": "https://www.panhandlecancercare.com/",
+      "llm_confidence": 0.9,
+      "rejection_notes": null,
+      "site_origin": "https://www.panhandlecancercare.com",
+      "reason": "http_403"
+    },
+    {
+      "location_id": 8286,
+      "image_url": "https://phoenixphysicaltherapy.com/wp-content/uploads/2020/06/01.jpg",
+      "source_page_url": "https://phoenixphysicaltherapy.com/",
+      "llm_confidence": 0.9,
+      "rejection_notes": null,
+      "site_origin": "https://phoenixphysicaltherapy.com",
+      "reason": "too_small_bytes"
+    },
+    {
+      "location_id": 8286,
+      "image_url": "https://phoenixphysicaltherapy.com/wp-content/uploads/2020/06/02.jpg",
+      "source_page_url": "https://phoenixphysicaltherapy.com/",
+      "llm_confidence": 0.9,
+      "rejection_notes": null,
+      "site_origin": "https://phoenixphysicaltherapy.com",
+      "reason": "too_small_bytes"
+    },
+    {
+      "location_id": 8286,
+      "image_url": "https://phoenixphysicaltherapy.com/wp-content/uploads/2020/06/03.jpg",
+      "source_page_url": "https://phoenixphysicaltherapy.com/",
+      "llm_confidence": 0.9,
+      "rejection_notes": null,
+      "site_origin": "https://phoenixphysicaltherapy.com",
+      "reason": "too_small_bytes"
+    },
+    {
+      "location_id": 619,
+      "image_url": "https://getsouldetox.com/wp-content/uploads/2024/10/med-spa-brooklyn-ny-toxin-pulling-wet-cupping-hijama.webp",
+      "source_page_url": "https://getsouldetox.com/",
+      "llm_confidence": 0.9,
+      "rejection_notes": null,
+      "site_origin": "https://www.getsouldetox.com",
+      "reason": "too_small_bytes"
+    },
+    {
+      "location_id": 5741,
+      "image_url": "https://www.odu.edu/sites/default/files/styles/image_text_block/public/images/EVMS_Student_with_Patient-369x251.jpg?h=7ad2cd35",
+      "source_page_url": "https://www.odu.edu/eastern-virginia-medical-school",
+      "llm_confidence": 0.9,
+      "rejection_notes": null,
+      "site_origin": "https://www.odu.edu",
+      "reason": "too_small_dimensions"
+    },
+    {
+      "location_id": 5741,
+      "image_url": "https://www.odu.edu/sites/default/files/styles/image_text_block/public/images/EVMS6685_1.png?h=dda42017",
+      "source_page_url": "https://www.odu.edu/eastern-virginia-medical-school",
+      "llm_confidence": 0.9,
+      "rejection_notes": null,
+      "site_origin": "https://www.odu.edu",
+      "reason": "too_small_dimensions"
+    },
+    {
+      "location_id": 5741,
+      "image_url": "https://www.odu.edu/sites/default/files/styles/image_text_block/public/images/071625%20Elizabeth%20Carr%20first%20IVF%20US%20baby%20visits%20with%20RCS%20students%20EVMS2867.jpg?h=3a40593f",
+      "source_page_url": "https://www.odu.edu/eastern-virginia-medical-school",
+      "llm_confidence": 0.9,
+      "rejection_notes": null,
+      "site_origin": "https://www.odu.edu",
+      "reason": "too_small_dimensions"
+    },
+    {
+      "location_id": 2319,
+      "image_url": "https://www.cryotherapycentre.co.uk/wp-content/uploads/2024/12/Cryotherapy.jpg.webp",
+      "source_page_url": "https://www.cryotherapycentre.co.uk/wellbeing-treatments-birmingham/",
+      "llm_confidence": 0.9,
+      "rejection_notes": null,
+      "site_origin": "https://www.cryotherapycentre.co.uk",
+      "reason": "too_small_bytes"
+    },
+    {
+      "location_id": 7577,
+      "image_url": "https://www.gotchacovered.com/assets/sub-banner/commercial.2501161327081.jpg",
+      "source_page_url": "https://www.gotchacovered.com/commercial-window-treatments/",
+      "llm_confidence": 0.9,
+      "rejection_notes": null,
+      "site_origin": "https://www.gotchacovered.com",
+      "reason": "logo_like_aspect_ratio"
+    },
+    {
+      "location_id": 1622,
+      "image_url": "https://www.stemcell.com/media/images/homepage/gmp-t-cell-expansion-course-services-training.jpg?width=410&height=217&fit=crop",
+      "source_page_url": "https://www.stemcell.com/",
+      "llm_confidence": 0.9,
+      "rejection_notes": null,
+      "site_origin": "https://www.stemcell.com",
+      "reason": "too_small_bytes"
+    },
+    {
+      "location_id": 1622,
+      "image_url": "https://www.stemcell.com/media/images/homepage/lab-training-courses-programs.jpg?width=410&height=217&fit=crop",
+      "source_page_url": "https://www.stemcell.com/",
+      "llm_confidence": 0.9,
+      "rejection_notes": null,
+      "site_origin": "https://www.stemcell.com",
+      "reason": "too_small_bytes"
+    },
+    {
+      "location_id": 1622,
+      "image_url": "https://www.stemcell.com/media/images/homepage/diagnostics-oem.jpg?width=410&height=217&fit=crop",
+      "source_page_url": "https://www.stemcell.com/",
+      "llm_confidence": 0.9,
+      "rejection_notes": null,
+      "site_origin": "https://www.stemcell.com",
+      "reason": "too_small_bytes"
+    },
+    {
+      "location_id": 7996,
+      "image_url": "https://www.infirmaryhealth.org/images/panel/MAINSTAGE.png",
+      "source_page_url": "https://www.infirmaryhealth.org/",
+      "llm_confidence": 0.9,
+      "rejection_notes": null,
+      "site_origin": "https://www.infirmaryhealth.org",
+      "reason": "logo_like_aspect_ratio"
+    },
+    {
+      "location_id": 7996,
+      "image_url": "https://www.infirmaryhealth.org/images/banners/systems/filter-header-bg.jpg",
+      "source_page_url": "https://www.infirmaryhealth.org/services/",
+      "llm_confidence": 0.8,
+      "rejection_notes": null,
+      "site_origin": "https://www.infirmaryhealth.org",
+      "reason": "logo_like_aspect_ratio"
+    },
+    {
+      "location_id": 6615,
+      "image_url": "https://www.mckeevervetderm.com/uploads/1/3/1/0/131020546/published/laser-surgery.jpg?1591738362",
+      "source_page_url": "https://www.mckeevervetderm.com/services.html",
+      "llm_confidence": 0.9,
+      "rejection_notes": null,
+      "site_origin": "https://www.mckeevervetderm.com",
+      "reason": "too_small_dimensions"
+    },
+    {
+      "location_id": 6615,
+      "image_url": "https://www.mckeevervetderm.com/uploads/1/3/1/0/131020546/published/ear-infection.jpg?1591738396",
+      "source_page_url": "https://www.mckeevervetderm.com/services.html",
+      "llm_confidence": 0.9,
+      "rejection_notes": null,
+      "site_origin": "https://www.mckeevervetderm.com",
+      "reason": "too_small_dimensions"
+    },
+    {
+      "location_id": 6615,
+      "image_url": "https://www.mckeevervetderm.com/uploads/1/3/1/0/131020546/published/ep-sign.jpg?1584050753",
+      "source_page_url": "https://www.mckeevervetderm.com/locations.html",
+      "llm_confidence": 0.9,
+      "rejection_notes": null,
+      "site_origin": "https://www.mckeevervetderm.com",
+      "reason": "too_small_bytes"
+    },
+    {
+      "location_id": 904,
+      "image_url": "https://sa1s3optim.patientpop.com/assets/production/practices/c18340d1a604c158d04d45191f667afd0634a34b/images/2208313.png",
+      "source_page_url": "https://www.mmcny.com/",
+      "llm_confidence": 0.8,
+      "rejection_notes": null,
+      "site_origin": "https://www.mmcny.com",
+      "reason": "too_small_dimensions"
+    },
+    {
+      "location_id": 12781,
+      "image_url": "https://turtlehealingbandclinic.com/wp-content/uploads/2026/06/DR-DAN-and-DR-ROB-at-THBC-DOOR11-05-203.jpg",
+      "source_page_url": "https://turtlehealingbandclinic.com/",
+      "llm_confidence": 0.9,
+      "rejection_notes": null,
+      "site_origin": "https://www.turtlehealingbandclinic.com",
+      "reason": "too_small_dimensions"
+    },
+    {
+      "location_id": 1615,
+      "image_url": "https://normobaricwellnesscentre.com/wp-content/uploads/2025/12/20250927_232103-300x225.jpg",
+      "source_page_url": "https://normobaricwellnesscentre.com/services/",
+      "llm_confidence": 0.9,
+      "rejection_notes": null,
+      "site_origin": "https://normobaricwellnesscentre.com",
+      "reason": "too_small_dimensions"
+    },
+    {
+      "location_id": 1615,
+      "image_url": "https://normobaricwellnesscentre.com/wp-content/uploads/2025/12/IMG-20250927-WA0000-169x300.jpeg",
+      "source_page_url": "https://normobaricwellnesscentre.com/services/",
+      "llm_confidence": 0.9,
+      "rejection_notes": null,
+      "site_origin": "https://normobaricwellnesscentre.com",
+      "reason": "too_small_bytes"
+    },
+    {
+      "location_id": 959,
+      "image_url": "https://static.wixstatic.com/media/11062b_150e7bc0d85e4f3abcef91e314ce9bab~mv2.jpg/v1/fill/w_147,h_98,al_c,q_80,usm_0.66_1.00_0.01,blur_2,enc_avif,quality_auto/11062b_150e7bc0d85e4f3abcef91e314ce9bab~mv2.jpg",
+      "source_page_url": "https://www.whyteroseheal.com/",
+      "llm_confidence": 0.9,
+      "rejection_notes": null,
+      "site_origin": "https://whyteroseheal.com",
+      "reason": "too_small_bytes"
+    },
+    {
+      "location_id": 294,
+      "image_url": "https://cdn.prod.website-files.com/68e0a45e9a233b0e4a40c8ad/690da76b3b9bef431e3ba36d_about_img.png",
+      "source_page_url": "https://www.alynemd.com/about",
+      "llm_confidence": 0.8,
+      "rejection_notes": null,
+      "site_origin": "https://www.alynemd.com",
+      "reason": "too_small_dimensions"
+    },
+    {
+      "location_id": 7169,
+      "image_url": "https://www.chsica.org/wp-content/uploads/2026/04/DSC07207-HDR-2-391x260.jpg",
+      "source_page_url": "https://www.chsica.org/",
+      "llm_confidence": 0.9,
+      "rejection_notes": null,
+      "site_origin": "https://www.chsica.org",
+      "reason": "too_small_dimensions"
+    },
+    {
+      "location_id": 1195,
+      "image_url": "https://www.intmedsolutions.com/wp-content/uploads/2011/01/ZenStones319643-300x200.jpg",
+      "source_page_url": "https://www.intmedsolutions.com/about/",
+      "llm_confidence": 0.8,
+      "rejection_notes": null,
+      "site_origin": "https://www.intmedsolutions.com",
+      "reason": "too_small_bytes"
+    },
+    {
+      "location_id": 5631,
+      "image_url": "https://www.mysynergynj.com/wp-content/uploads/synergy-lifestlye-fitness-program-wayne-nj-fi.jpg",
+      "source_page_url": "https://www.mysynergynj.com/programs/",
+      "llm_confidence": 0.85,
+      "rejection_notes": null,
+      "site_origin": "https://www.mysynergynj.com",
+      "reason": "too_small_dimensions"
+    },
+    {
+      "location_id": 5631,
+      "image_url": "https://www.mysynergynj.com/wp-content/uploads/weightloss-fi.jpg",
+      "source_page_url": "https://www.mysynergynj.com/programs/",
+      "llm_confidence": 0.85,
+      "rejection_notes": null,
+      "site_origin": "https://www.mysynergynj.com",
+      "reason": "too_small_dimensions"
+    },
+    {
+      "location_id": 1028,
+      "image_url": "https://static.wixstatic.com/media/3ca05d_b39555395b5d434b8e1189ee271554ab~mv2.jpg/v1/crop/x_0,y_12,w_388,h_379/fill/w_220,h_215,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/chemical%20peel.jpg",
+      "source_page_url": "https://www.onyxaasm.com/services",
+      "llm_confidence": 0.9,
+      "rejection_notes": null,
+      "site_origin": "https://www.onyxaasm.com",
+      "reason": "too_small_bytes"
+    },
+    {
+      "location_id": 1028,
+      "image_url": "https://static.wixstatic.com/media/76cbd2_d64850d4328e41edb9aaba6cacadc5b2~mv2.jpg/v1/crop/x_0,y_7,w_602,h_588/fill/w_220,h_215,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/Hyfrecator%20Treatment%20Onyx%20Direct%20Care.jpg",
+      "source_page_url": "https://www.onyxaasm.com/services",
+      "llm_confidence": 0.9,
+      "rejection_notes": null,
+      "site_origin": "https://www.onyxaasm.com",
+      "reason": "too_small_bytes"
+    },
+    {
+      "location_id": 1028,
+      "image_url": "https://static.wixstatic.com/media/3ca05d_adf572f32a0443e2a46c5a1ea30da8be~mv2.png/v1/fill/w_337,h_253,al_c,q_80,usm_0.66_1.00_0.01/3ca05d_adf572f32a0443e2a46c5a1ea30da8be~mv2.png",
+      "source_page_url": "https://www.onyxaasm.com/",
+      "llm_confidence": 0.8,
+      "rejection_notes": null,
+      "site_origin": "https://www.onyxaasm.com",
+      "reason": "too_small_dimensions"
+    },
+    {
+      "location_id": 1237,
+      "image_url": "https://static.wixstatic.com/media/a90d29_a776cb51b1754e8189cd05288512e61a~mv2.jpeg/v1/crop/x_39,y_0,w_1153,h_852/fill/w_325,h_237,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/Laser-hair-removal-for-men-and-woman_-Wa.jpeg",
+      "source_page_url": "https://www.podspas.com/",
+      "llm_confidence": 0.9,
+      "rejection_notes": null,
+      "site_origin": "https://www.podspas.com",
+      "reason": "too_small_dimensions"
+    },
+    {
+      "location_id": 1237,
+      "image_url": "https://static.wixstatic.com/media/a90d29_722fff7762644e3eada698192038bc91~mv2.jpeg/v1/fill/w_325,h_237,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/Beautiful-woman-getting-skincare-treatme.jpeg",
+      "source_page_url": "https://www.podspas.com/",
+      "llm_confidence": 0.9,
+      "rejection_notes": null,
+      "site_origin": "https://www.podspas.com",
+      "reason": "too_small_bytes"
+    },
+    {
+      "location_id": 1237,
+      "image_url": "https://static.wixstatic.com/media/a90d29_91ff76330f504a268b297f0e293ca1ce~mv2.jpeg/v1/fill/w_325,h_237,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/Carbon-face-peeling-procedure-in-a-beaut.jpeg",
+      "source_page_url": "https://www.podspas.com/",
+      "llm_confidence": 0.9,
+      "rejection_notes": null,
+      "site_origin": "https://www.podspas.com",
+      "reason": "too_small_bytes"
+    },
+    {
+      "location_id": 12640,
+      "image_url": "https://www.thinmdmedspa.com/wp-content/uploads/2025/06/IV-Bag-and-Therapy.png",
+      "source_page_url": "https://www.thinmdmedspa.com/",
+      "llm_confidence": 0.85,
+      "rejection_notes": null,
+      "site_origin": "https://www.thinmdmedspa.com",
+      "reason": "too_small_dimensions"
+    },
+    {
+      "location_id": 7632,
+      "image_url": "https://www.medassociatesofri.com/images/content-pages/bristol-med-services.jpg",
+      "source_page_url": "https://www.medassociatesofri.com/bristol-services",
+      "llm_confidence": 0.9,
+      "rejection_notes": null,
+      "site_origin": "https://www.medassociatesofri.com",
+      "reason": "too_small_dimensions"
+    },
+    {
+      "location_id": 7632,
+      "image_url": "https://www.medassociatesofri.com/images/sections/interior-bristol-medical-scrubs-2.jpg",
+      "source_page_url": "https://www.medassociatesofri.com/east-providence-services",
+      "llm_confidence": 0.9,
+      "rejection_notes": null,
+      "site_origin": "https://www.medassociatesofri.com",
+      "reason": "logo_like_aspect_ratio"
+    },
+    {
+      "location_id": 7632,
+      "image_url": "https://www.medassociatesofri.com/images/sections/interior-bristol-medical-patients-2.jpg",
+      "source_page_url": "https://www.medassociatesofri.com/patients",
+      "llm_confidence": 0.9,
+      "rejection_notes": null,
+      "site_origin": "https://www.medassociatesofri.com",
+      "reason": "logo_like_aspect_ratio"
+    },
+    {
+      "location_id": 5675,
+      "image_url": "https://sa1s3optim.patientpop.com/assets/docs/47374.png",
+      "source_page_url": "https://www.bluetailmedicalgroup.com/",
+      "llm_confidence": 0.9,
+      "rejection_notes": null,
+      "site_origin": "https://www.bluetailmedicalgroup.com",
+      "reason": "logo_like_aspect_ratio"
+    },
+    {
+      "location_id": 1344,
+      "image_url": "https://newjerseyantiaging.com/wp-content/uploads/Healthy-Aging-sinage-400x400.jpg",
+      "source_page_url": "https://newjerseyantiaging.com/",
+      "llm_confidence": 0.9,
+      "rejection_notes": null,
+      "site_origin": "https://www.newjerseyantiaging.com",
+      "reason": "too_small_dimensions"
+    },
+    {
+      "location_id": 1344,
+      "image_url": "https://static.matterport.com/showcase/26.7.1_webgl-945-g209097e2a8/images/atlas.png",
+      "source_page_url": "https://newjerseyantiaging.com/",
+      "llm_confidence": 0.8,
+      "rejection_notes": null,
+      "site_origin": "https://www.newjerseyantiaging.com",
+      "reason": "too_small_bytes"
+    },
+    {
+      "location_id": 8867,
+      "image_url": "https://blogsdir.imgix.net/703/files/photos/Photography-5.jpg?w=369&h=246&fit=crop&auto=enhance",
+      "source_page_url": "https://www.optinstitute.com/services/",
+      "llm_confidence": 0.9,
+      "rejection_notes": null,
+      "site_origin": "https://www.optinstitute.com",
+      "reason": "too_small_dimensions"
+    },
+    {
+      "location_id": 8867,
+      "image_url": "https://blogsdir.imgix.net/703/files/photos/Photography-16.jpg?w=369&h=246&fit=crop&auto=enhance",
+      "source_page_url": "https://www.optinstitute.com/services/",
+      "llm_confidence": 0.9,
+      "rejection_notes": null,
+      "site_origin": "https://www.optinstitute.com",
+      "reason": "too_small_dimensions"
+    },
+    {
+      "location_id": 8867,
+      "image_url": "https://blogsdir.imgix.net/703/files/photos/Photography-28.jpg?w=369&h=246&fit=crop&auto=enhance&crop=focalpoint&fp-y=0.75",
+      "source_page_url": "https://www.optinstitute.com/services/",
+      "llm_confidence": 0.9,
+      "rejection_notes": null,
+      "site_origin": "https://www.optinstitute.com",
+      "reason": "too_small_dimensions"
+    },
+    {
+      "location_id": 1220,
+      "image_url": "https://signaturemd.com/wp-content/uploads/2020/04/smd-64671-hero_for-patients_member-benefits-1-3000x650.jpg",
+      "source_page_url": "https://signaturemd.com/for-patients/concierge-medicine-member-benefits/",
+      "llm_confidence": 0.9,
+      "rejection_notes": null,
+      "site_origin": "https://signaturemd.com",
+      "reason": "logo_like_aspect_ratio"
+    },
+    {
+      "location_id": 116,
+      "image_url": "https://static.wixstatic.com/media/f55ca8_b414717441314fe28f15d9be23a68c07~mv2.jpg/v1/fill/w_317,h_202,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/f55ca8_b414717441314fe28f15d9be23a68c07~mv2.jpg",
+      "source_page_url": "https://www.om.life/",
+      "llm_confidence": 0.9,
+      "rejection_notes": null,
+      "site_origin": "https://www.om.life",
+      "reason": "too_small_bytes"
+    },
+    {
+      "location_id": 116,
+      "image_url": "https://static.wixstatic.com/media/284da5_063e673ae1b7455a821eae1163c7a501~mv2_d_6000_4000_s_4_2.jpg/v1/fill/w_317,h_202,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/284da5_063e673ae1b7455a821eae1163c7a501~mv2_d_6000_4000_s_4_2.jpg",
+      "source_page_url": "https://www.om.life/",
+      "llm_confidence": 0.8,
+      "rejection_notes": null,
+      "site_origin": "https://www.om.life",
+      "reason": "too_small_bytes"
+    },
+    {
+      "location_id": 116,
+      "image_url": "https://static.wixstatic.com/media/f55ca8_b35c58a5899f4334bc726f06e1c8e7ed~mv2.jpg/v1/fill/w_317,h_202,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/f55ca8_b35c58a5899f4334bc726f06e1c8e7ed~mv2.jpg",
+      "source_page_url": "https://www.om.life/",
+      "llm_confidence": 0.8,
+      "rejection_notes": null,
+      "site_origin": "https://www.om.life",
+      "reason": "too_small_bytes"
+    },
+    {
+      "location_id": 3017,
+      "image_url": "https://www.stmclinics.com/wp-content/uploads/2022/12/STM-PhysicalTherapy-360x240.jpg",
+      "source_page_url": "https://www.stmclinics.com/dubai/",
+      "llm_confidence": 0.9,
+      "rejection_notes": null,
+      "site_origin": "https://www.stmclinics.com",
+      "reason": "too_small_dimensions"
+    },
+    {
+      "location_id": 3017,
+      "image_url": "https://www.stmclinics.com/wp-content/uploads/2022/12/STM-VisitingNurse-360x240.jpg",
+      "source_page_url": "https://www.stmclinics.com/dubai/",
+      "llm_confidence": 0.9,
+      "rejection_notes": null,
+      "site_origin": "https://www.stmclinics.com",
+      "reason": "too_small_dimensions"
+    },
+    {
+      "location_id": 3017,
+      "image_url": "https://www.stmclinics.com/wp-content/uploads/2022/12/STM-Home-Health-Aide-360x240.jpg",
+      "source_page_url": "https://www.stmclinics.com/dubai/",
+      "llm_confidence": 0.9,
+      "rejection_notes": null,
+      "site_origin": "https://www.stmclinics.com",
+      "reason": "too_small_dimensions"
+    }
+  ],
+  "priceSanityFlags": [
+    {
+      "location_id": 255,
+      "raw_name": "Complimentary Consultation",
+      "price_amount": 0,
+      "price_currency": "USD",
+      "price_context": "complimentary",
+      "source_page_url": "https://bkpsych.com/",
+      "site_origin": "http://www.bkpsych.com",
+      "reason": "price_outside_sanity_bounds"
+    },
+    {
+      "location_id": 1323,
+      "raw_name": "Free Heart Check Session",
+      "price_amount": 0,
+      "price_currency": "USD",
+      "price_context": "Free",
+      "source_page_url": "https://functionalcommunity.com/",
+      "site_origin": "http://www.functionalcommunity.com",
+      "reason": "price_outside_sanity_bounds"
+    },
+    {
+      "location_id": 605,
+      "raw_name": "FREE VIRTUAL VFiT SESSION",
+      "price_amount": 0,
+      "price_currency": "USD",
+      "price_context": "FREE",
+      "source_page_url": "https://versafittraining.com/",
+      "site_origin": "http://www.versafittraining.com",
+      "reason": "price_outside_sanity_bounds"
+    },
+    {
+      "location_id": 193,
+      "raw_name": "Tests",
+      "price_amount": 0,
+      "price_currency": "USD",
+      "price_context": "from $0–$1000 (approximate)",
+      "source_page_url": "https://floranaturopathics.com/pricing-policies/",
+      "site_origin": "https://floranaturopathics.com",
+      "reason": "price_outside_sanity_bounds"
+    },
+    {
+      "location_id": 6307,
+      "raw_name": "Spiritual Care",
+      "price_amount": 0,
+      "price_currency": "USD",
+      "price_context": "free-of-charge",
+      "source_page_url": "https://hopeclinic-garland.org/services/",
+      "site_origin": "https://hopeclinic-garland.org",
+      "reason": "price_outside_sanity_bounds"
+    },
+    {
+      "location_id": 6307,
+      "raw_name": "Primary Care",
+      "price_amount": 0,
+      "price_currency": "USD",
+      "price_context": "free-of-charge",
+      "source_page_url": "https://hopeclinic-garland.org/services/",
+      "site_origin": "https://hopeclinic-garland.org",
+      "reason": "price_outside_sanity_bounds"
+    },
+    {
+      "location_id": 6307,
+      "raw_name": "Diabetes Education",
+      "price_amount": 0,
+      "price_currency": "USD",
+      "price_context": "free-of-charge",
+      "source_page_url": "https://hopeclinic-garland.org/services/",
+      "site_origin": "https://hopeclinic-garland.org",
+      "reason": "price_outside_sanity_bounds"
+    },
+    {
+      "location_id": 6307,
+      "raw_name": "Nutrition Education",
+      "price_amount": 0,
+      "price_currency": "USD",
+      "price_context": "free-of-charge",
+      "source_page_url": "https://hopeclinic-garland.org/services/",
+      "site_origin": "https://hopeclinic-garland.org",
+      "reason": "price_outside_sanity_bounds"
+    },
+    {
+      "location_id": 6307,
+      "raw_name": "Community Resources",
+      "price_amount": 0,
+      "price_currency": "USD",
+      "price_context": "free-of-charge",
+      "source_page_url": "https://hopeclinic-garland.org/services/",
+      "site_origin": "https://hopeclinic-garland.org",
+      "reason": "price_outside_sanity_bounds"
+    },
+    {
+      "location_id": 6307,
+      "raw_name": "Prescription Assistance (Patients Only)",
+      "price_amount": 0,
+      "price_currency": "USD",
+      "price_context": "free-of-charge",
+      "source_page_url": "https://hopeclinic-garland.org/services/",
+      "site_origin": "https://hopeclinic-garland.org",
+      "reason": "price_outside_sanity_bounds"
+    },
+    {
+      "location_id": 6307,
+      "raw_name": "Specialist Referrals",
+      "price_amount": 0,
+      "price_currency": "USD",
+      "price_context": "free-of-charge",
+      "source_page_url": "https://hopeclinic-garland.org/services/",
+      "site_origin": "https://hopeclinic-garland.org",
+      "reason": "price_outside_sanity_bounds"
+    },
+    {
+      "location_id": 6307,
+      "raw_name": "Urgent Care",
+      "price_amount": 0,
+      "price_currency": "USD",
+      "price_context": "free-of-charge",
+      "source_page_url": "https://hopeclinic-garland.org/services/",
+      "site_origin": "https://hopeclinic-garland.org",
+      "reason": "price_outside_sanity_bounds"
+    },
+    {
+      "location_id": 6307,
+      "raw_name": "Hypertension",
+      "price_amount": 0,
+      "price_currency": "USD",
+      "price_context": "free-of-charge",
+      "source_page_url": "https://hopeclinic-garland.org/services/",
+      "site_origin": "https://hopeclinic-garland.org",
+      "reason": "price_outside_sanity_bounds"
+    },
+    {
+      "location_id": 5491,
+      "raw_name": "Consultation",
+      "price_amount": 0,
+      "price_currency": "USD",
+      "price_context": "FREE",
+      "source_page_url": "https://illuminateivtherapy.com/pricing/",
+      "site_origin": "https://illuminateivtherapy.com",
+      "reason": "price_outside_sanity_bounds"
+    },
+    {
+      "location_id": 1082,
+      "raw_name": "FREE 15 Minute Weight Loss Strategy Session",
+      "price_amount": 0,
+      "price_currency": "USD",
+      "price_context": "free",
+      "source_page_url": "https://thintechweightloss.com/thinklessprogram/",
+      "site_origin": "https://thintechweightloss.com",
+      "reason": "price_outside_sanity_bounds"
+    },
+    {
+      "location_id": 8608,
+      "raw_name": "GLP-1 Weight Loss Program",
+      "price_amount": 3,
+      "price_currency": "USD",
+      "price_context": "from $3 a day",
+      "source_page_url": "https://balancedmedicalsolutions.com/",
+      "site_origin": "https://www.balancedmedicalsolutions.com",
+      "reason": "price_outside_sanity_bounds"
+    },
+    {
+      "location_id": 7196,
+      "raw_name": "Post-op Patient, Follow Up",
+      "price_amount": 0,
+      "price_currency": "USD",
+      "price_context": null,
+      "source_page_url": "https://www.movementorthopaedic.com/about/surgery-pricing/",
+      "site_origin": "https://www.movementorthopaedic.com",
+      "reason": "price_outside_sanity_bounds"
+    },
+    {
+      "location_id": 803,
+      "raw_name": "Book a Free Strategy Call",
+      "price_amount": 0,
+      "price_currency": "USD",
+      "price_context": "Free",
+      "source_page_url": "https://staceychillemi.com/",
+      "site_origin": "https://staceychillemi.com",
+      "reason": "price_outside_sanity_bounds"
+    }
+  ],
+  "locationOfferingCapFlags": [],
+  "priceConflicts": [
+    {
+      "location_id": 1055,
+      "raw_name": "DEXA Body Scan",
+      "price_amount": 125,
+      "price_currency": "USD",
+      "price_context": null,
+      "source_page_url": "https://dexafitnj.com/",
+      "site_origin": "http://dexafitnj.com",
+      "existing_offering_id": 14106,
+      "existing_price_amount": 125,
+      "existing_price_currency": "USD"
+    },
+    {
+      "location_id": 1055,
+      "raw_name": "RMR/VO2",
+      "price_amount": 150,
+      "price_currency": "USD",
+      "price_context": "ea",
+      "source_page_url": "https://dexafitnj.com/",
+      "site_origin": "http://dexafitnj.com",
+      "existing_offering_id": 14107,
+      "existing_price_amount": 150,
+      "existing_price_currency": "USD"
+    },
+    {
+      "location_id": 1055,
+      "raw_name": "3D Body Scan",
+      "price_amount": 50,
+      "price_currency": "USD",
+      "price_context": null,
+      "source_page_url": "https://dexafitnj.com/",
+      "site_origin": "http://dexafitnj.com",
+      "existing_offering_id": 14108,
+      "existing_price_amount": 50,
+      "existing_price_currency": "USD"
+    },
+    {
+      "location_id": 1055,
+      "raw_name": "Red Light Therapy",
+      "price_amount": 20,
+      "price_currency": "USD",
+      "price_context": null,
+      "source_page_url": "https://dexafitnj.com/",
+      "site_origin": "http://dexafitnj.com",
+      "existing_offering_id": 14109,
+      "existing_price_amount": 20,
+      "existing_price_currency": "USD"
+    },
+    {
+      "location_id": 1135,
+      "raw_name": "Inner Voice with Vitals",
+      "price_amount": 60,
+      "price_currency": "USD",
+      "price_context": "Inner Voice Scan Packages",
+      "source_page_url": "https://fullspectrumnj.com/",
+      "site_origin": "http://fullspectrumnj.com",
+      "existing_offering_id": 14247,
+      "existing_price_amount": 60,
+      "existing_price_currency": "USD"
+    },
+    {
+      "location_id": 1135,
+      "raw_name": "EZ Scan",
+      "price_amount": 85,
+      "price_currency": "USD",
+      "price_context": "Inner Voice Scan Packages",
+      "source_page_url": "https://fullspectrumnj.com/",
+      "site_origin": "http://fullspectrumnj.com",
+      "existing_offering_id": 14248,
+      "existing_price_amount": 85,
+      "existing_price_currency": "USD"
+    },
+    {
+      "location_id": 1135,
+      "raw_name": "MindSinc",
+      "price_amount": 55,
+      "price_currency": "USD",
+      "price_context": "Inner Voice Scan Packages",
+      "source_page_url": "https://fullspectrumnj.com/",
+      "site_origin": "http://fullspectrumnj.com",
+      "existing_offering_id": 14249,
+      "existing_price_amount": 55,
+      "existing_price_currency": "USD"
+    },
+    {
+      "location_id": 85,
+      "raw_name": "Metabolic Transformation Program",
+      "price_amount": 649,
+      "price_currency": "USD",
+      "price_context": "per month for 12 months",
+      "source_page_url": "https://www.anisemedical.com/",
+      "site_origin": "http://www.anisemedical.com",
+      "existing_offering_id": 7721,
+      "existing_price_amount": 7500,
+      "existing_price_currency": "USD"
+    },
+    {
+      "location_id": 811,
+      "raw_name": "Acupuncture",
+      "price_amount": 130,
+      "price_currency": "USD",
+      "price_context": "per visit",
+      "source_page_url": "https://www.legendrehab.com/",
+      "site_origin": "http://www.legendrehab.com",
+      "existing_offering_id": 9582,
+      "existing_price_amount": 130,
+      "existing_price_currency": "USD"
+    },
+    {
+      "location_id": 811,
+      "raw_name": "Physical Therapy",
+      "price_amount": 130,
+      "price_currency": "USD",
+      "price_context": "per visit",
+      "source_page_url": "https://www.legendrehab.com/",
+      "site_origin": "http://www.legendrehab.com",
+      "existing_offering_id": 9583,
+      "existing_price_amount": 130,
+      "existing_price_currency": "USD"
+    },
+    {
+      "location_id": 811,
+      "raw_name": "Herbal Medicine",
+      "price_amount": 130,
+      "price_currency": "USD",
+      "price_context": "per visit",
+      "source_page_url": "https://www.legendrehab.com/",
+      "site_origin": "http://www.legendrehab.com",
+      "existing_offering_id": 9584,
+      "existing_price_amount": 130,
+      "existing_price_currency": "USD"
+    },
+    {
+      "location_id": 710,
+      "raw_name": "FACIAL",
+      "price_amount": null,
+      "price_currency": null,
+      "price_context": null,
+      "source_page_url": "https://www.relaxoncloud9.com/",
+      "site_origin": "http://www.relaxoncloud9.com",
+      "existing_offering_id": 13395,
+      "existing_price_amount": 129,
+      "existing_price_currency": "USD"
+    },
+    {
+      "location_id": 963,
+      "raw_name": "Dermaplaning",
+      "price_amount": null,
+      "price_currency": null,
+      "price_context": null,
+      "source_page_url": "https://thehudsonmedspa.com/",
+      "site_origin": "http://www.thehudsonmedspa.com",
+      "existing_offering_id": 13880,
+      "existing_price_amount": 165,
+      "existing_price_currency": "USD"
+    },
+    {
+      "location_id": 639,
+      "raw_name": "Home Care Coordinator Program",
+      "price_amount": null,
+      "price_currency": null,
+      "price_context": null,
+      "source_page_url": "https://allhealthdtc.com/services/",
+      "site_origin": "https://allhealthdtc.com",
+      "existing_offering_id": 9113,
+      "existing_price_amount": 0,
+      "existing_price_currency": "USD"
+    },
+    {
+      "location_id": 1276,
+      "raw_name": "First Follow Up Visit",
+      "price_amount": 399,
+      "price_currency": "US DOLLARS",
+      "price_context": null,
+      "source_page_url": "https://www.finallyfunctionalmedicine.com/",
+      "site_origin": "https://finallyfunctionalmedicine.com",
+      "existing_offering_id": 14642,
+      "existing_price_amount": 399,
+      "existing_price_currency": "USD"
+    },
+    {
+      "location_id": 1276,
+      "raw_name": "Routine Follow Up Visit",
+      "price_amount": 299,
+      "price_currency": "US DOLLARS",
+      "price_context": null,
+      "source_page_url": "https://www.finallyfunctionalmedicine.com/",
+      "site_origin": "https://finallyfunctionalmedicine.com",
+      "existing_offering_id": 14643,
+      "existing_price_amount": 299,
+      "existing_price_currency": "USD"
+    },
+    {
+      "location_id": 1276,
+      "raw_name": "Hormone Balancing",
+      "price_amount": 250,
+      "price_currency": "US DOLLARS",
+      "price_context": null,
+      "source_page_url": "https://www.finallyfunctionalmedicine.com/",
+      "site_origin": "https://finallyfunctionalmedicine.com",
+      "existing_offering_id": 14644,
+      "existing_price_amount": 250,
+      "existing_price_currency": "USD"
+    },
+    {
+      "location_id": 5491,
+      "raw_name": "Ketamine infusion",
+      "price_amount": 500,
+      "price_currency": "USD",
+      "price_context": null,
+      "source_page_url": "https://illuminateivtherapy.com/pricing/",
+      "site_origin": "https://illuminateivtherapy.com",
+      "existing_offering_id": 80477,
+      "existing_price_amount": 500,
+      "existing_price_currency": "USD"
+    },
+    {
+      "location_id": 617,
+      "raw_name": "Intra Muscular Shots",
+      "price_amount": 35,
+      "price_currency": "USD",
+      "price_context": null,
+      "source_page_url": "https://integratedinternalmed.com/infusion-services/",
+      "site_origin": "https://integratedinternalmed.com",
+      "existing_offering_id": 13103,
+      "existing_price_amount": 35,
+      "existing_price_currency": "USD"
+    },
+    {
+      "location_id": 337,
+      "raw_name": "HEADMASTER ESTHETICIAN TREATMENT",
+      "price_amount": 400,
+      "price_currency": "USD",
+      "price_context": null,
+      "source_page_url": "https://joannavargas.com/collections/new-york-spa",
+      "site_origin": "https://joannavargas.com",
+      "existing_offering_id": 12215,
+      "existing_price_amount": 400,
+      "existing_price_currency": "USD"
+    },
+    {
+      "location_id": 337,
+      "raw_name": "The Exosome Facial Facelift",
+      "price_amount": 800,
+      "price_currency": "USD",
+      "price_context": null,
+      "source_page_url": "https://joannavargas.com/collections/new-york-spa",
+      "site_origin": "https://joannavargas.com",
+      "existing_offering_id": 12216,
+      "existing_price_amount": 800,
+      "existing_price_currency": "USD"
+    },
+    {
+      "location_id": 337,
+      "raw_name": "GLASS SKIN DERMAFACIAL",
+      "price_amount": 600,
+      "price_currency": "USD",
+      "price_context": null,
+      "source_page_url": "https://joannavargas.com/collections/new-york-spa",
+      "site_origin": "https://joannavargas.com",
+      "existing_offering_id": 12217,
+      "existing_price_amount": 600,
+      "existing_price_currency": "USD"
+    },
+    {
+      "location_id": 337,
+      "raw_name": "CELLSTORY FACIAL",
+      "price_amount": 400,
+      "price_currency": "USD",
+      "price_context": null,
+      "source_page_url": "https://joannavargas.com/collections/new-york-spa",
+      "site_origin": "https://joannavargas.com",
+      "existing_offering_id": 12218,
+      "existing_price_amount": 400,
+      "existing_price_currency": "USD"
+    },
+    {
+      "location_id": 337,
+      "raw_name": "TRIPLE CROWN CLASSIC",
+      "price_amount": 275,
+      "price_currency": "USD",
+      "price_context": null,
+      "source_page_url": "https://joannavargas.com/collections/new-york-spa",
+      "site_origin": "https://joannavargas.com",
+      "existing_offering_id": 12219,
+      "existing_price_amount": 275,
+      "existing_price_currency": "USD"
+    },
+    {
+      "location_id": 337,
+      "raw_name": "XERF FACIAL",
+      "price_amount": 1350,
+      "price_currency": "USD",
+      "price_context": "from $1,350",
+      "source_page_url": "https://joannavargas.com/collections/new-york-spa",
+      "site_origin": "https://joannavargas.com",
+      "existing_offering_id": 12220,
+      "existing_price_amount": 1350,
+      "existing_price_currency": "USD"
+    },
+    {
+      "location_id": 337,
+      "raw_name": "TRIPLE CROWN ROYALE",
+      "price_amount": 375,
+      "price_currency": "USD",
+      "price_context": null,
+      "source_page_url": "https://joannavargas.com/collections/new-york-spa",
+      "site_origin": "https://joannavargas.com",
+      "existing_offering_id": 12221,
+      "existing_price_amount": 375,
+      "existing_price_currency": "USD"
+    },
+    {
+      "location_id": 337,
+      "raw_name": "FIRE AND ICE FACIAL",
+      "price_amount": 250,
+      "price_currency": "USD",
+      "price_context": null,
+      "source_page_url": "https://joannavargas.com/collections/new-york-spa",
+      "site_origin": "https://joannavargas.com",
+      "existing_offering_id": 12222,
+      "existing_price_amount": 250,
+      "existing_price_currency": "USD"
+    },
+    {
+      "location_id": 337,
+      "raw_name": "TWILIGHT FACIAL",
+      "price_amount": 1200,
+      "price_currency": "USD",
+      "price_context": null,
+      "source_page_url": "https://joannavargas.com/collections/new-york-spa",
+      "site_origin": "https://joannavargas.com",
+      "existing_offering_id": 12223,
+      "existing_price_amount": 1200,
+      "existing_price_currency": "USD"
+    },
+    {
+      "location_id": 337,
+      "raw_name": "CLEAR + BRILLIANT SKIN REJUVENATION",
+      "price_amount": 750,
+      "price_currency": "USD",
+      "price_context": null,
+      "source_page_url": "https://joannavargas.com/collections/new-york-spa",
+      "site_origin": "https://joannavargas.com",
+      "existing_offering_id": 12224,
+      "existing_price_amount": 750,
+      "existing_price_currency": "USD"
+    },
+    {
+      "location_id": 337,
+      "raw_name": "FOREVER FACIAL",
+      "price_amount": 400,
+      "price_currency": "USD",
+      "price_context": "from $400",
+      "source_page_url": "https://joannavargas.com/collections/new-york-spa",
+      "site_origin": "https://joannavargas.com",
+      "existing_offering_id": 12225,
+      "existing_price_amount": 400,
+      "existing_price_currency": "USD"
+    },
+    {
+      "location_id": 337,
+      "raw_name": "OXYGEN PURIFYING FACIAL",
+      "price_amount": 250,
+      "price_currency": "USD",
+      "price_context": null,
+      "source_page_url": "https://joannavargas.com/collections/new-york-spa",
+      "site_origin": "https://joannavargas.com",
+      "existing_offering_id": 12226,
+      "existing_price_amount": 250,
+      "existing_price_currency": "USD"
+    },
+    {
+      "location_id": 337,
+      "raw_name": "SUPERNOVA FACIAL",
+      "price_amount": 325,
+      "price_currency": "USD",
+      "price_context": null,
+      "source_page_url": "https://joannavargas.com/collections/new-york-spa",
+      "site_origin": "https://joannavargas.com",
+      "existing_offering_id": 12227,
+      "existing_price_amount": 325,
+      "existing_price_currency": "USD"
+    },
+    {
+      "location_id": 337,
+      "raw_name": "PURIFYING FACIAL",
+      "price_amount": 175,
+      "price_currency": "USD",
+      "price_context": null,
+      "source_page_url": "https://joannavargas.com/collections/new-york-spa",
+      "site_origin": "https://joannavargas.com",
+      "existing_offering_id": 12228,
+      "existing_price_amount": 175,
+      "existing_price_currency": "USD"
+    },
+    {
+      "location_id": 63,
+      "raw_name": "IV Hydration Therapy",
+      "price_amount": 150,
+      "price_currency": "USD",
+      "price_context": null,
+      "source_page_url": "https://manhattanivtherapy.com/treatments",
+      "site_origin": "https://manhattanivtherapy.com",
+      "existing_offering_id": 7892,
+      "existing_price_amount": 150,
+      "existing_price_currency": "USD"
+    },
+    {
+      "location_id": 63,
+      "raw_name": "Immunity IV Drip",
+      "price_amount": 280,
+      "price_currency": "USD",
+      "price_context": null,
+      "source_page_url": "https://manhattanivtherapy.com/treatments",
+      "site_origin": "https://manhattanivtherapy.com",
+      "existing_offering_id": 7890,
+      "existing_price_amount": 280,
+      "existing_price_currency": "USD"
+    },
+    {
+      "location_id": 63,
+      "raw_name": "Migraine and Headache IV Package",
+      "price_amount": 280,
+      "price_currency": "USD",
+      "price_context": null,
+      "source_page_url": "https://manhattanivtherapy.com/treatments",
+      "site_origin": "https://manhattanivtherapy.com",
+      "existing_offering_id": 7893,
+      "existing_price_amount": 280,
+      "existing_price_currency": "USD"
+    },
+    {
+      "location_id": 63,
+      "raw_name": "NAD+ IV Therapy",
+      "price_amount": 600,
+      "price_currency": "USD",
+      "price_context": null,
+      "source_page_url": "https://manhattanivtherapy.com/treatments",
+      "site_origin": "https://manhattanivtherapy.com",
+      "existing_offering_id": 7895,
+      "existing_price_amount": 600,
+      "existing_price_currency": "USD"
+    },
+    {
+      "location_id": 63,
+      "raw_name": "Quench IV Therapy",
+      "price_amount": 300,
+      "price_currency": "USD",
+      "price_context": null,
+      "source_page_url": "https://manhattanivtherapy.com/treatments",
+      "site_origin": "https://manhattanivtherapy.com",
+      "existing_offering_id": 7896,
+      "existing_price_amount": 300,
+      "existing_price_currency": "USD"
+    },
+    {
+      "location_id": 63,
+      "raw_name": "Vitamin C IV Therapy",
+      "price_amount": 250,
+      "price_currency": "USD",
+      "price_context": null,
+      "source_page_url": "https://manhattanivtherapy.com/treatments",
+      "site_origin": "https://manhattanivtherapy.com",
+      "existing_offering_id": 7899,
+      "existing_price_amount": 250,
+      "existing_price_currency": "USD"
+    },
+    {
+      "location_id": 63,
+      "raw_name": "Vitamin B Complex IV Therapy",
+      "price_amount": 250,
+      "price_currency": "USD",
+      "price_context": null,
+      "source_page_url": "https://manhattanivtherapy.com/treatments",
+      "site_origin": "https://manhattanivtherapy.com",
+      "existing_offering_id": 7898,
+      "existing_price_amount": 250,
+      "existing_price_currency": "USD"
+    },
+    {
+      "location_id": 63,
+      "raw_name": "Glutathione Injection",
+      "price_amount": 150,
+      "price_currency": "USD",
+      "price_context": null,
+      "source_page_url": "https://manhattanivtherapy.com/treatments",
+      "site_origin": "https://manhattanivtherapy.com",
+      "existing_offering_id": 7900,
+      "existing_price_amount": 150,
+      "existing_price_currency": "USD"
+    },
+    {
+      "location_id": 63,
+      "raw_name": "Vitamin B12 Shot",
+      "price_amount": 120,
+      "price_currency": "USD",
+      "price_context": null,
+      "source_page_url": "https://manhattanivtherapy.com/treatments",
+      "site_origin": "https://manhattanivtherapy.com",
+      "existing_offering_id": 7903,
+      "existing_price_amount": 120,
+      "existing_price_currency": "USD"
+    },
+    {
+      "location_id": 63,
+      "raw_name": "Tri-Immune Boost",
+      "price_amount": 200,
+      "price_currency": "USD",
+      "price_context": null,
+      "source_page_url": "https://manhattanivtherapy.com/treatments",
+      "site_origin": "https://manhattanivtherapy.com",
+      "existing_offering_id": 7902,
+      "existing_price_amount": 200,
+      "existing_price_currency": "USD"
+    },
+    {
+      "location_id": 63,
+      "raw_name": "NAD+ Injection",
+      "price_amount": 300,
+      "price_currency": "USD",
+      "price_context": null,
+      "source_page_url": "https://manhattanivtherapy.com/treatments",
+      "site_origin": "https://manhattanivtherapy.com",
+      "existing_offering_id": 7901,
+      "existing_price_amount": 300,
+      "existing_price_currency": "USD"
+    },
+    {
+      "location_id": 7373,
+      "raw_name": "ONCOLOGY MASSAGE",
+      "price_amount": null,
+      "price_currency": null,
+      "price_context": null,
+      "source_page_url": "https://medoncmassage.us/",
+      "site_origin": "https://medoncmassage.us",
+      "existing_offering_id": 56736,
+      "existing_price_amount": 100,
+      "existing_price_currency": "USD"
+    },
+    {
+      "location_id": 684,
+      "raw_name": "DOT PHYSICAL EXAM",
+      "price_amount": 75,
+      "price_currency": "USD",
+      "price_context": null,
+      "source_page_url": "https://uicmedcentre.com/",
+      "site_origin": "https://uicmedcentre.com",
+      "existing_offering_id": 9196,
+      "existing_price_amount": 75,
+      "existing_price_currency": "USD"
+    },
+    {
+      "location_id": 540,
+      "raw_name": "Butt Cupping",
+      "price_amount": 90,
+      "price_currency": "USD",
+      "price_context": "from",
+      "source_page_url": "https://www.sarasculptingstudio.com/",
+      "site_origin": "https://www.sarasculptingstudio.com",
+      "existing_offering_id": 8747,
+      "existing_price_amount": 90,
+      "existing_price_currency": "USD"
+    },
+    {
+      "location_id": 540,
+      "raw_name": "Wood Therapy",
+      "price_amount": 120,
+      "price_currency": "USD",
+      "price_context": "from",
+      "source_page_url": "https://www.sarasculptingstudio.com/",
+      "site_origin": "https://www.sarasculptingstudio.com",
+      "existing_offering_id": 8748,
+      "existing_price_amount": 120,
+      "existing_price_currency": "USD"
+    },
+    {
+      "location_id": 540,
+      "raw_name": "Infrared Sauna",
+      "price_amount": 55,
+      "price_currency": "USD",
+      "price_context": "from",
+      "source_page_url": "https://www.sarasculptingstudio.com/",
+      "site_origin": "https://www.sarasculptingstudio.com",
+      "existing_offering_id": 8750,
+      "existing_price_amount": 55,
+      "existing_price_currency": "USD"
+    },
+    {
+      "location_id": 540,
+      "raw_name": "Body Buffing",
+      "price_amount": 85,
+      "price_currency": "USD",
+      "price_context": "from",
+      "source_page_url": "https://www.sarasculptingstudio.com/",
+      "site_origin": "https://www.sarasculptingstudio.com",
+      "existing_offering_id": 8751,
+      "existing_price_amount": 85,
+      "existing_price_currency": "USD"
+    },
+    {
+      "location_id": 540,
+      "raw_name": "Vacuum Therapy",
+      "price_amount": 65,
+      "price_currency": "USD",
+      "price_context": "from",
+      "source_page_url": "https://www.sarasculptingstudio.com/",
+      "site_origin": "https://www.sarasculptingstudio.com",
+      "existing_offering_id": 8752,
+      "existing_price_amount": 65,
+      "existing_price_currency": "USD"
+    },
+    {
+      "location_id": 540,
+      "raw_name": "Lymphatic Drainage Massage",
+      "price_amount": 65,
+      "price_currency": "USD",
+      "price_context": "from",
+      "source_page_url": "https://www.sarasculptingstudio.com/",
+      "site_origin": "https://www.sarasculptingstudio.com",
+      "existing_offering_id": 8753,
+      "existing_price_amount": 65,
+      "existing_price_currency": "USD"
+    },
+    {
+      "location_id": 632,
+      "raw_name": "Performance Lifestyle Coaching",
+      "price_amount": null,
+      "price_currency": null,
+      "price_context": "No price listed on page",
+      "source_page_url": "https://regenuscenter.com/",
+      "site_origin": "https://regenuscenter.com",
+      "existing_offering_id": 80998,
+      "existing_price_amount": 2900,
+      "existing_price_currency": "USD"
+    },
+    {
+      "location_id": 8704,
+      "raw_name": "FREE PERSONAL ACNE ASSESSMENT",
+      "price_amount": null,
+      "price_currency": null,
+      "price_context": null,
+      "source_page_url": "https://www.gravitasmedspa.com/",
+      "site_origin": "https://www.gravitasmedspa.com",
+      "existing_offering_id": 73124,
+      "existing_price_amount": 0,
+      "existing_price_currency": "USD"
+    },
+    {
+      "location_id": 112,
+      "raw_name": "LYMPHATIC DRAINAGE MASSAGE",
+      "price_amount": 250,
+      "price_currency": "USD",
+      "price_context": "Starting at",
+      "source_page_url": "https://cleanmarket.com/",
+      "site_origin": "https://www.cleanmarket.com",
+      "existing_offering_id": 8027,
+      "existing_price_amount": 250,
+      "existing_price_currency": "USD"
+    },
+    {
+      "location_id": 112,
+      "raw_name": "INFRARED SAUNAS",
+      "price_amount": 45,
+      "price_currency": "USD",
+      "price_context": "Starting at",
+      "source_page_url": "https://cleanmarket.com/",
+      "site_origin": "https://www.cleanmarket.com",
+      "existing_offering_id": 8028,
+      "existing_price_amount": 45,
+      "existing_price_currency": "USD"
+    },
+    {
+      "location_id": 112,
+      "raw_name": "CELL ENERGY IMMUNITY",
+      "price_amount": 295,
+      "price_currency": "USD",
+      "price_context": null,
+      "source_page_url": "https://cleanmarket.com/",
+      "site_origin": "https://www.cleanmarket.com",
+      "existing_offering_id": 8032,
+      "existing_price_amount": 295,
+      "existing_price_currency": "USD"
+    },
+    {
+      "location_id": 112,
+      "raw_name": "PRE-TRAVEL RECOVERY",
+      "price_amount": 250,
+      "price_currency": "USD",
+      "price_context": null,
+      "source_page_url": "https://cleanmarket.com/",
+      "site_origin": "https://www.cleanmarket.com",
+      "existing_offering_id": 8033,
+      "existing_price_amount": 250,
+      "existing_price_currency": "USD"
+    },
+    {
+      "location_id": 8810,
+      "raw_name": "Initial Visit",
+      "price_amount": 80,
+      "price_currency": "USD",
+      "price_context": null,
+      "source_page_url": "https://www.integratedchirosd.com/",
+      "site_origin": "https://www.integratedchirosd.com",
+      "existing_offering_id": 74290,
+      "existing_price_amount": 80,
+      "existing_price_currency": "USD"
+    },
+    {
+      "location_id": 358,
+      "raw_name": "Couples Therapy",
+      "price_amount": null,
+      "price_currency": null,
+      "price_context": null,
+      "source_page_url": "https://www.resolutioncc.com/",
+      "site_origin": "https://www.resolutioncc.com",
+      "existing_offering_id": 12294,
+      "existing_price_amount": 25,
+      "existing_price_currency": "USD"
+    },
+    {
+      "location_id": 917,
+      "raw_name": "Foot Reflexology",
+      "price_amount": 30,
+      "price_currency": "US DOLLARS",
+      "price_context": "from",
+      "source_page_url": "https://www.spamellow.com/book",
+      "site_origin": "https://www.spamellow.com",
+      "existing_offering_id": 13768,
+      "existing_price_amount": 30,
+      "existing_price_currency": "USD"
+    },
+    {
+      "location_id": 322,
+      "raw_name": "VIP Day Pass",
+      "price_amount": 19.99,
+      "price_currency": "USD",
+      "price_context": "only",
+      "source_page_url": "https://www.suntancity.com/",
+      "site_origin": "https://www.suntancity.com",
+      "existing_offering_id": 12164,
+      "existing_price_amount": 19.99,
+      "existing_price_currency": "USD"
+    },
+    {
+      "location_id": 322,
+      "raw_name": "5 Visits",
+      "price_amount": 29.99,
+      "price_currency": "USD",
+      "price_context": "only",
+      "source_page_url": "https://www.suntancity.com/",
+      "site_origin": "https://www.suntancity.com",
+      "existing_offering_id": 12165,
+      "existing_price_amount": 29.99,
+      "existing_price_currency": "USD"
+    },
+    {
+      "location_id": 1049,
+      "raw_name": "Ear Candling",
+      "price_amount": null,
+      "price_currency": null,
+      "price_context": null,
+      "source_page_url": "https://alistwellnesscenter.com/",
+      "site_origin": "https://www.alistwellnesscenter.com",
+      "existing_offering_id": 9832,
+      "existing_price_amount": 65,
+      "existing_price_currency": "USD"
+    },
+    {
+      "location_id": 5625,
+      "raw_name": "Cold Plunge Intro Special",
+      "price_amount": 27,
+      "price_currency": "USD",
+      "price_context": "from",
+      "source_page_url": "https://www.bodymindsalt.com/",
+      "site_origin": "https://www.bodymindsalt.com",
+      "existing_offering_id": 39378,
+      "existing_price_amount": 27,
+      "existing_price_currency": "USD"
+    },
+    {
+      "location_id": 343,
+      "raw_name": "Individual Therapy (Adults)",
+      "price_amount": 200,
+      "price_currency": "USD",
+      "price_context": "50-minutes per session",
+      "source_page_url": "https://www.heightspsychotherapy.com/rates",
+      "site_origin": "https://www.heightspsychotherapy.com",
+      "existing_offering_id": 8334,
+      "existing_price_amount": 200,
+      "existing_price_currency": "USD"
+    },
+    {
+      "location_id": 343,
+      "raw_name": "Individual Therapy (Child/Teen)",
+      "price_amount": 200,
+      "price_currency": "USD",
+      "price_context": "45-minutes per session",
+      "source_page_url": "https://www.heightspsychotherapy.com/rates",
+      "site_origin": "https://www.heightspsychotherapy.com",
+      "existing_offering_id": 8335,
+      "existing_price_amount": 200,
+      "existing_price_currency": "USD"
+    },
+    {
+      "location_id": 343,
+      "raw_name": "Supportive Parenting for Anxious Childhood Emotions (SPACE) or Parenting Coaching",
+      "price_amount": 220,
+      "price_currency": "USD",
+      "price_context": "60-minutes per session",
+      "source_page_url": "https://www.heightspsychotherapy.com/rates",
+      "site_origin": "https://www.heightspsychotherapy.com",
+      "existing_offering_id": 8336,
+      "existing_price_amount": 220,
+      "existing_price_currency": "USD"
+    },
+    {
+      "location_id": 1024,
+      "raw_name": "INTRODUCTORY CRYO FACIAL",
+      "price_amount": 49,
+      "price_currency": "US DOLLARS",
+      "price_context": "introductory",
+      "source_page_url": "https://www.legacycryoskin.com/book-onilne",
+      "site_origin": "https://www.legacycryoskin.com",
+      "existing_offering_id": 14043,
+      "existing_price_amount": 49,
+      "existing_price_currency": "USD"
+    },
+    {
+      "location_id": 1024,
+      "raw_name": "INTRODUCTORY CRYO SLIMMING",
+      "price_amount": 49,
+      "price_currency": "US DOLLARS",
+      "price_context": "introductory",
+      "source_page_url": "https://www.legacycryoskin.com/book-onilne",
+      "site_origin": "https://www.legacycryoskin.com",
+      "existing_offering_id": 14044,
+      "existing_price_amount": 49,
+      "existing_price_currency": "USD"
+    },
+    {
+      "location_id": 756,
+      "raw_name": "BOTOX",
+      "price_amount": null,
+      "price_currency": null,
+      "price_context": null,
+      "source_page_url": "https://www.skinby-e.com/all-treatments-1",
+      "site_origin": "https://www.skinby-e.com",
+      "existing_offering_id": 13409,
+      "existing_price_amount": 200,
+      "existing_price_currency": "USD"
+    },
+    {
+      "location_id": 756,
+      "raw_name": "LIP FILLER",
+      "price_amount": null,
+      "price_currency": null,
+      "price_context": null,
+      "source_page_url": "https://www.skinby-e.com/all-treatments-1",
+      "site_origin": "https://www.skinby-e.com",
+      "existing_offering_id": 13410,
+      "existing_price_amount": 600,
+      "existing_price_currency": "USD"
+    },
+    {
+      "location_id": 756,
+      "raw_name": "DERMAL FILLER",
+      "price_amount": null,
+      "price_currency": null,
+      "price_context": null,
+      "source_page_url": "https://www.skinby-e.com/all-treatments-1",
+      "site_origin": "https://www.skinby-e.com",
+      "existing_offering_id": 13411,
+      "existing_price_amount": 600,
+      "existing_price_currency": "USD"
+    },
+    {
+      "location_id": 756,
+      "raw_name": "HAIR REMOVAL",
+      "price_amount": null,
+      "price_currency": null,
+      "price_context": null,
+      "source_page_url": "https://www.skinby-e.com/all-treatments-1",
+      "site_origin": "https://www.skinby-e.com",
+      "existing_offering_id": 13416,
+      "existing_price_amount": 150,
+      "existing_price_currency": "USD"
+    },
+    {
+      "location_id": 756,
+      "raw_name": "KYBELLA",
+      "price_amount": null,
+      "price_currency": null,
+      "price_context": null,
+      "source_page_url": "https://www.skinby-e.com/all-treatments-1",
+      "site_origin": "https://www.skinby-e.com",
+      "existing_offering_id": 13417,
+      "existing_price_amount": 1000,
+      "existing_price_currency": "USD"
+    },
+    {
+      "location_id": 756,
+      "raw_name": "CHEMICAL PEEL",
+      "price_amount": null,
+      "price_currency": null,
+      "price_context": null,
+      "source_page_url": "https://www.skinby-e.com/all-treatments-1",
+      "site_origin": "https://www.skinby-e.com",
+      "existing_offering_id": 13412,
+      "existing_price_amount": 400,
+      "existing_price_currency": "USD"
+    },
+    {
+      "location_id": 756,
+      "raw_name": "MICRONEEDLING",
+      "price_amount": null,
+      "price_currency": null,
+      "price_context": null,
+      "source_page_url": "https://www.skinby-e.com/all-treatments-1",
+      "site_origin": "https://www.skinby-e.com",
+      "existing_offering_id": 13414,
+      "existing_price_amount": 400,
+      "existing_price_currency": "USD"
+    },
+    {
+      "location_id": 756,
+      "raw_name": "PRP",
+      "price_amount": null,
+      "price_currency": null,
+      "price_context": null,
+      "source_page_url": "https://www.skinby-e.com/all-treatments-1",
+      "site_origin": "https://www.skinby-e.com",
+      "existing_offering_id": 13415,
+      "existing_price_amount": 750,
+      "existing_price_currency": "USD"
+    },
+    {
+      "location_id": 4906,
+      "raw_name": "HydraBoost 500",
+      "price_amount": 329,
+      "price_currency": "USD",
+      "price_context": null,
+      "source_page_url": "https://www.ivtherapy2go.com/",
+      "site_origin": "https://www.ivtherapy2go.com",
+      "existing_offering_id": 32809,
+      "existing_price_amount": 329,
+      "existing_price_currency": "USD"
+    },
+    {
+      "location_id": 4906,
+      "raw_name": "HydraBoost 1000",
+      "price_amount": 349,
+      "price_currency": "USD",
+      "price_context": null,
+      "source_page_url": "https://www.ivtherapy2go.com/",
+      "site_origin": "https://www.ivtherapy2go.com",
+      "existing_offering_id": 32810,
+      "existing_price_amount": 349,
+      "existing_price_currency": "USD"
+    },
+    {
+      "location_id": 4906,
+      "raw_name": "Hangover Haven",
+      "price_amount": 349,
+      "price_currency": "USD",
+      "price_context": null,
+      "source_page_url": "https://www.ivtherapy2go.com/",
+      "site_origin": "https://www.ivtherapy2go.com",
+      "existing_offering_id": 32811,
+      "existing_price_amount": 349,
+      "existing_price_currency": "USD"
+    },
+    {
+      "location_id": 4906,
+      "raw_name": "MyerElixir",
+      "price_amount": 349,
+      "price_currency": "USD",
+      "price_context": null,
+      "source_page_url": "https://www.ivtherapy2go.com/",
+      "site_origin": "https://www.ivtherapy2go.com",
+      "existing_offering_id": 32812,
+      "existing_price_amount": 349,
+      "existing_price_currency": "USD"
+    },
+    {
+      "location_id": 4906,
+      "raw_name": "MigraineMelt",
+      "price_amount": 349,
+      "price_currency": "USD",
+      "price_context": null,
+      "source_page_url": "https://www.ivtherapy2go.com/",
+      "site_origin": "https://www.ivtherapy2go.com",
+      "existing_offering_id": 32813,
+      "existing_price_amount": 349,
+      "existing_price_currency": "USD"
+    },
+    {
+      "location_id": 4906,
+      "raw_name": "Nausea Nix",
+      "price_amount": 349,
+      "price_currency": "USD",
+      "price_context": null,
+      "source_page_url": "https://www.ivtherapy2go.com/",
+      "site_origin": "https://www.ivtherapy2go.com",
+      "existing_offering_id": 32814,
+      "existing_price_amount": 349,
+      "existing_price_currency": "USD"
+    },
+    {
+      "location_id": 4906,
+      "raw_name": "Tummy Tonic",
+      "price_amount": 349,
+      "price_currency": "USD",
+      "price_context": null,
+      "source_page_url": "https://www.ivtherapy2go.com/",
+      "site_origin": "https://www.ivtherapy2go.com",
+      "existing_offering_id": 32815,
+      "existing_price_amount": 349,
+      "existing_price_currency": "USD"
+    },
+    {
+      "location_id": 4906,
+      "raw_name": "Wellness Wave",
+      "price_amount": 349,
+      "price_currency": "USD",
+      "price_context": null,
+      "source_page_url": "https://www.ivtherapy2go.com/",
+      "site_origin": "https://www.ivtherapy2go.com",
+      "existing_offering_id": 32816,
+      "existing_price_amount": 349,
+      "existing_price_currency": "USD"
+    },
+    {
+      "location_id": 458,
+      "raw_name": "Lymphatic Facial",
+      "price_amount": 119,
+      "price_currency": "USD",
+      "price_context": null,
+      "source_page_url": "https://silvermirror.com/services/",
+      "site_origin": "https://silvermirror.com",
+      "existing_offering_id": 12665,
+      "existing_price_amount": 119,
+      "existing_price_currency": "USD"
+    },
+    {
+      "location_id": 458,
+      "raw_name": "Party-Prep Facial",
+      "price_amount": 119,
+      "price_currency": "USD",
+      "price_context": null,
+      "source_page_url": "https://silvermirror.com/services/",
+      "site_origin": "https://silvermirror.com",
+      "existing_offering_id": 12666,
+      "existing_price_amount": 119,
+      "existing_price_currency": "USD"
+    },
+    {
+      "location_id": 458,
+      "raw_name": "Just for Men Facial",
+      "price_amount": 119,
+      "price_currency": "USD",
+      "price_context": null,
+      "source_page_url": "https://silvermirror.com/services/",
+      "site_origin": "https://silvermirror.com",
+      "existing_offering_id": 12667,
+      "existing_price_amount": 119,
+      "existing_price_currency": "USD"
+    },
+    {
+      "location_id": 458,
+      "raw_name": "Esthetician's Choice",
+      "price_amount": 169,
+      "price_currency": "USD",
+      "price_context": null,
+      "source_page_url": "https://silvermirror.com/services/",
+      "site_origin": "https://silvermirror.com",
+      "existing_offering_id": 12668,
+      "existing_price_amount": 169,
+      "existing_price_currency": "USD"
+    },
+    {
+      "location_id": 458,
+      "raw_name": "Anti-Aging Facial",
+      "price_amount": 169,
+      "price_currency": "USD",
+      "price_context": null,
+      "source_page_url": "https://silvermirror.com/services/",
+      "site_origin": "https://silvermirror.com",
+      "existing_offering_id": 12669,
+      "existing_price_amount": 169,
+      "existing_price_currency": "USD"
+    },
+    {
+      "location_id": 458,
+      "raw_name": "Acne-Fighting Facial",
+      "price_amount": 169,
+      "price_currency": "USD",
+      "price_context": null,
+      "source_page_url": "https://silvermirror.com/services/",
+      "site_origin": "https://silvermirror.com",
+      "existing_offering_id": 12670,
+      "existing_price_amount": 169,
+      "existing_price_currency": "USD"
+    },
+    {
+      "location_id": 458,
+      "raw_name": "Seasonal Hydrating Facial",
+      "price_amount": 169,
+      "price_currency": "USD",
+      "price_context": null,
+      "source_page_url": "https://silvermirror.com/services/",
+      "site_origin": "https://silvermirror.com",
+      "existing_offering_id": 12671,
+      "existing_price_amount": 169,
+      "existing_price_currency": "USD"
+    },
+    {
+      "location_id": 458,
+      "raw_name": "Hyperpigmentation Facial",
+      "price_amount": 169,
+      "price_currency": "USD",
+      "price_context": null,
+      "source_page_url": "https://silvermirror.com/services/",
+      "site_origin": "https://silvermirror.com",
+      "existing_offering_id": 12672,
+      "existing_price_amount": 169,
+      "existing_price_currency": "USD"
+    },
+    {
+      "location_id": 458,
+      "raw_name": "Sensitive Skin Facial",
+      "price_amount": 169,
+      "price_currency": "USD",
+      "price_context": null,
+      "source_page_url": "https://silvermirror.com/services/",
+      "site_origin": "https://silvermirror.com",
+      "existing_offering_id": 12673,
+      "existing_price_amount": 169,
+      "existing_price_currency": "USD"
+    },
+    {
+      "location_id": 8771,
+      "raw_name": "Vitamin (IV) Therapy",
+      "price_amount": null,
+      "price_currency": null,
+      "price_context": null,
+      "source_page_url": "https://www.medmatmedical.com/",
+      "site_origin": "https://www.medmatmedical.com",
+      "existing_offering_id": 73803,
+      "existing_price_amount": 150,
+      "existing_price_currency": "USD"
+    },
+    {
+      "location_id": 5870,
+      "raw_name": "Initial Consultation",
+      "price_amount": 160,
+      "price_currency": "$",
+      "price_context": "from $160 - $250",
+      "source_page_url": "https://prolotherapynashville.com/pricing-options/",
+      "site_origin": "https://prolotherapynashville.com",
+      "existing_offering_id": 41698,
+      "existing_price_amount": 160,
+      "existing_price_currency": "USD"
+    },
+    {
+      "location_id": 5870,
+      "raw_name": "Platelet Rich Plasma (PRP)",
+      "price_amount": 500,
+      "price_currency": "$",
+      "price_context": "Add To Cost Of Overall Treatment",
+      "source_page_url": "https://prolotherapynashville.com/pricing-options/",
+      "site_origin": "https://prolotherapynashville.com",
+      "existing_offering_id": 41702,
+      "existing_price_amount": 500,
+      "existing_price_currency": "USD"
+    },
+    {
+      "location_id": 959,
+      "raw_name": "Reiki",
+      "price_amount": null,
+      "price_currency": null,
+      "price_context": null,
+      "source_page_url": "https://www.whyteroseheal.com/",
+      "site_origin": "https://whyteroseheal.com",
+      "existing_offering_id": 9720,
+      "existing_price_amount": 90,
+      "existing_price_currency": "USD"
+    },
+    {
+      "location_id": 1000,
+      "raw_name": "Birthday Sound Bath",
+      "price_amount": 500,
+      "price_currency": "USD",
+      "price_context": "from 2-20 participants",
+      "source_page_url": "https://www.privatesoundbathnyc.com/birthday-sound-bath",
+      "site_origin": "https://www.privatesoundbathnyc.com",
+      "existing_offering_id": 9789,
+      "existing_price_amount": 500,
+      "existing_price_currency": "USD"
+    },
+    {
+      "location_id": 1000,
+      "raw_name": "Sound Bath For Couples",
+      "price_amount": 450,
+      "price_currency": "USD",
+      "price_context": null,
+      "source_page_url": "https://www.privatesoundbathnyc.com/sound-bath-for-couples",
+      "site_origin": "https://www.privatesoundbathnyc.com",
+      "existing_offering_id": 9790,
+      "existing_price_amount": 450,
+      "existing_price_currency": "USD"
+    },
+    {
+      "location_id": 1000,
+      "raw_name": "Cacao Ceremony Sound Bath",
+      "price_amount": null,
+      "price_currency": null,
+      "price_context": null,
+      "source_page_url": "https://www.privatesoundbathnyc.com/",
+      "site_origin": "https://www.privatesoundbathnyc.com",
+      "existing_offering_id": 9792,
+      "existing_price_amount": 600,
+      "existing_price_currency": "USD"
+    },
+    {
+      "location_id": 1345,
+      "raw_name": "Ginger Scalp Treatment (Couple)",
+      "price_amount": 110,
+      "price_currency": "USD",
+      "price_context": null,
+      "source_page_url": "https://www.wlwellnessheadspa.com/services",
+      "site_origin": "https://www.wlwellnessheadspa.com",
+      "existing_offering_id": 14846,
+      "existing_price_amount": 110,
+      "existing_price_currency": "USD"
+    },
+    {
+      "location_id": 1345,
+      "raw_name": "Herbal Scalp Treatment (Couple)",
+      "price_amount": 110,
+      "price_currency": "USD",
+      "price_context": null,
+      "source_page_url": "https://www.wlwellnessheadspa.com/services",
+      "site_origin": "https://www.wlwellnessheadspa.com",
+      "existing_offering_id": 14848,
+      "existing_price_amount": 110,
+      "existing_price_currency": "USD"
+    },
+    {
+      "location_id": 1345,
+      "raw_name": "Thai Style Scalp Treatment (Couple)",
+      "price_amount": 110,
+      "price_currency": "USD",
+      "price_context": null,
+      "source_page_url": "https://www.wlwellnessheadspa.com/services",
+      "site_origin": "https://www.wlwellnessheadspa.com",
+      "existing_offering_id": 14850,
+      "existing_price_amount": 110,
+      "existing_price_currency": "USD"
+    },
+    {
+      "location_id": 1345,
+      "raw_name": "Acupuncture",
+      "price_amount": 100,
+      "price_currency": "USD",
+      "price_context": "Single Session (Max 45 Minutes)",
+      "source_page_url": "https://www.wlwellnessheadspa.com/services",
+      "site_origin": "https://www.wlwellnessheadspa.com",
+      "existing_offering_id": 14855,
+      "existing_price_amount": 100,
+      "existing_price_currency": "USD"
+    },
+    {
+      "location_id": 4765,
+      "raw_name": "Brysk Recovery Protocol",
+      "price_amount": 135,
+      "price_currency": "GBP",
+      "price_context": "80 mins",
+      "source_page_url": "https://wearebrysk.co.uk/pricing/",
+      "site_origin": "https://wearebrysk.co.uk",
+      "existing_offering_id": 31280,
+      "existing_price_amount": 135,
+      "existing_price_currency": "GBP"
+    },
+    {
+      "location_id": 4765,
+      "raw_name": "Brysk Performance Protocol",
+      "price_amount": 145,
+      "price_currency": "GBP",
+      "price_context": "120 mins",
+      "source_page_url": "https://wearebrysk.co.uk/pricing/",
+      "site_origin": "https://wearebrysk.co.uk",
+      "existing_offering_id": 31281,
+      "existing_price_amount": 145,
+      "existing_price_currency": "GBP"
+    },
+    {
+      "location_id": 4765,
+      "raw_name": "Brysk Longevity Protocol",
+      "price_amount": 199,
+      "price_currency": "GBP",
+      "price_context": "155 mins",
+      "source_page_url": "https://wearebrysk.co.uk/pricing/",
+      "site_origin": "https://wearebrysk.co.uk",
+      "existing_offering_id": 31282,
+      "existing_price_amount": 199,
+      "existing_price_currency": "GBP"
+    },
+    {
+      "location_id": 4765,
+      "raw_name": "Whole Body Cryo (1 Person)",
+      "price_amount": 65,
+      "price_currency": "GBP",
+      "price_context": "15 mins",
+      "source_page_url": "https://wearebrysk.co.uk/pricing/",
+      "site_origin": "https://wearebrysk.co.uk",
+      "existing_offering_id": 31283,
+      "existing_price_amount": 65,
+      "existing_price_currency": "GBP"
+    },
+    {
+      "location_id": 4765,
+      "raw_name": "Whole Body Cryo (2 Persons)",
+      "price_amount": 90,
+      "price_currency": "GBP",
+      "price_context": "15 mins",
+      "source_page_url": "https://wearebrysk.co.uk/pricing/",
+      "site_origin": "https://wearebrysk.co.uk",
+      "existing_offering_id": 31284,
+      "existing_price_amount": 90,
+      "existing_price_currency": "GBP"
+    },
+    {
+      "location_id": 4765,
+      "raw_name": "Whole Body Red Light",
+      "price_amount": 40,
+      "price_currency": "GBP",
+      "price_context": "15 mins",
+      "source_page_url": "https://wearebrysk.co.uk/pricing/",
+      "site_origin": "https://wearebrysk.co.uk",
+      "existing_offering_id": 31299,
+      "existing_price_amount": 40,
+      "existing_price_currency": "GBP"
+    },
+    {
+      "location_id": 4765,
+      "raw_name": "Red Light Mask",
+      "price_amount": 30,
+      "price_currency": "GBP",
+      "price_context": "20 mins",
+      "source_page_url": "https://wearebrysk.co.uk/pricing/",
+      "site_origin": "https://wearebrysk.co.uk",
+      "existing_offering_id": 31300,
+      "existing_price_amount": 30,
+      "existing_price_currency": "GBP"
+    },
+    {
+      "location_id": 4765,
+      "raw_name": "Full Body Lymphatic Drainage",
+      "price_amount": 50,
+      "price_currency": "GBP",
+      "price_context": "50 mins",
+      "source_page_url": "https://wearebrysk.co.uk/pricing/",
+      "site_origin": "https://wearebrysk.co.uk",
+      "existing_offering_id": 31307,
+      "existing_price_amount": 50,
+      "existing_price_currency": "GBP"
+    },
+    {
+      "location_id": 4765,
+      "raw_name": "Compression Boots (1 Person)",
+      "price_amount": 30,
+      "price_currency": "GBP",
+      "price_context": "30 mins",
+      "source_page_url": "https://wearebrysk.co.uk/pricing/",
+      "site_origin": "https://wearebrysk.co.uk",
+      "existing_offering_id": 31312,
+      "existing_price_amount": 30,
+      "existing_price_currency": "GBP"
+    },
+    {
+      "location_id": 4765,
+      "raw_name": "Compression Boots (2 Persons)",
+      "price_amount": 55,
+      "price_currency": "GBP",
+      "price_context": "30 mins",
+      "source_page_url": "https://wearebrysk.co.uk/pricing/",
+      "site_origin": "https://wearebrysk.co.uk",
+      "existing_offering_id": 31313,
+      "existing_price_amount": 55,
+      "existing_price_currency": "GBP"
+    },
+    {
+      "location_id": 1145,
+      "raw_name": "Deep Cleansing & Detox Scalp Treatment",
+      "price_amount": 88,
+      "price_currency": "USD",
+      "price_context": "60 minutes",
+      "source_page_url": "https://www.riviereespa.com/our-instructors",
+      "site_origin": "https://www.riviereespa.com",
+      "existing_offering_id": 14265,
+      "existing_price_amount": 88,
+      "existing_price_currency": "USD"
+    },
+    {
+      "location_id": 1145,
+      "raw_name": "Flower Bath Soothing & Calming Scalp Care",
+      "price_amount": 158,
+      "price_currency": "USD",
+      "price_context": "70 minutes",
+      "source_page_url": "https://www.riviereespa.com/our-instructors",
+      "site_origin": "https://www.riviereespa.com",
+      "existing_offering_id": 14266,
+      "existing_price_amount": 158,
+      "existing_price_currency": "USD"
+    },
+    {
+      "location_id": 1145,
+      "raw_name": "Essential Oil & Aromatherapy Scalp Care",
+      "price_amount": 178,
+      "price_currency": "USD",
+      "price_context": "90 minutes",
+      "source_page_url": "https://www.riviereespa.com/our-instructors",
+      "site_origin": "https://www.riviereespa.com",
+      "existing_offering_id": 14267,
+      "existing_price_amount": 178,
+      "existing_price_currency": "USD"
+    }
+  ],
+  "verifiedLowUnitPrices": [
+    {
+      "location_id": 10598,
+      "raw_name": "Dysport",
+      "price_amount": 3,
+      "price_currency": "USD",
+      "price_context": "per unit",
+      "source_page_url": "https://laserwellnessmedspa.com/january-specials/",
+      "site_origin": "https://laserwellnessmedspa.com",
+      "reason": "per_unit_price_verified",
+      "offering_id": 92108
+    }
+  ]
+}

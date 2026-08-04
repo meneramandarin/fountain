@@ -1,0 +1,190 @@
+{
+  "phaseDate": "20260708",
+  "tier": 3,
+  "inputPath": null,
+  "inputDir": "swarm-browser-output/results/tier3-batch4-nonus-run1-20260709",
+  "inputResults": 405,
+  "imageLogTable": "fountain_raw.browser_swarm_image_ingest_20260708",
+  "menuLogTable": "fountain_raw.browser_swarm_menu_ingest_20260708",
+  "dryRun": false,
+  "startedAt": "2026-07-10T04:02:45.637Z",
+  "completedAt": "2026-07-10T04:09:38.819Z",
+  "images": {
+    "proposed": 0,
+    "ingested": 0,
+    "heldForReview": 0,
+    "skipped": 0,
+    "validationFailures": 0
+  },
+  "menus": {
+    "extracted": 1165,
+    "pricesBackfilled": 3,
+    "newOfferingsInserted": 976,
+    "conflicts": 0,
+    "sanityFlags": 11,
+    "skipped": 175
+  },
+  "coverageBefore": {
+    "zero_image_locations": 2658,
+    "locations_with_priced_offering": 1917,
+    "active_images": 30794,
+    "active_offerings": 97955
+  },
+  "coverageAfter": {
+    "zero_image_locations": 2658,
+    "locations_with_priced_offering": 1966,
+    "active_images": 30794,
+    "active_offerings": 98931
+  },
+  "finalInvariants": {
+    "blobStoreCount": 19544,
+    "referencedBlobUrls": 19544,
+    "everyImageRowHasLiveBlob": true,
+    "everyBlobHasImageRow": true,
+    "orphanBlobCount": 0,
+    "imageRowsPointingAtMissingBlobCount": 0
+  },
+  "spotChecks": {
+    "images": [],
+    "menus": [
+      {
+        "location_id": 9551,
+        "raw_name": "Navigator Service",
+        "price_amount": null,
+        "price_currency": null,
+        "outcome": "new_offering_inserted",
+        "offering_id": 85641,
+        "matched_offering_id": null
+      },
+      {
+        "location_id": 9551,
+        "raw_name": "Physical Therapy & Wellness Center",
+        "price_amount": null,
+        "price_currency": null,
+        "outcome": "new_offering_inserted",
+        "offering_id": 85642,
+        "matched_offering_id": null
+      },
+      {
+        "location_id": 9551,
+        "raw_name": "Senior Living Consulting",
+        "price_amount": null,
+        "price_currency": null,
+        "outcome": "new_offering_inserted",
+        "offering_id": 85643,
+        "matched_offering_id": null
+      },
+      {
+        "location_id": 9663,
+        "raw_name": "David Spine Concept",
+        "price_amount": null,
+        "price_currency": null,
+        "outcome": "new_offering_inserted",
+        "offering_id": 85644,
+        "matched_offering_id": null
+      },
+      {
+        "location_id": 9946,
+        "raw_name": "Headache Treatment",
+        "price_amount": null,
+        "price_currency": null,
+        "outcome": "new_offering_inserted",
+        "offering_id": 85645,
+        "matched_offering_id": null
+      },
+      {
+        "location_id": 9946,
+        "raw_name": "Neck Pain Treatment",
+        "price_amount": null,
+        "price_currency": null,
+        "outcome": "new_offering_inserted",
+        "offering_id": 85646,
+        "matched_offering_id": null
+      },
+      {
+        "location_id": 9946,
+        "raw_name": "Back Pain Treatment",
+        "price_amount": null,
+        "price_currency": null,
+        "outcome": "new_offering_inserted",
+        "offering_id": 85647,
+        "matched_offering_id": null
+      },
+      {
+        "location_id": 9949,
+        "raw_name": "Primary Care",
+        "price_amount": null,
+        "price_currency": null,
+        "outcome": "new_offering_inserted",
+        "offering_id": 85648,
+        "matched_offering_id": null
+      },
+      {
+        "location_id": 9949,
+        "raw_name": "Urgent Care",
+        "price_amount": null,
+        "price_currency": null,
+        "outcome": "new_offering_inserted",
+        "offering_id": 85649,
+        "matched_offering_id": null
+      },
+      {
+        "location_id": 9949,
+        "raw_name": "Pediatrics",
+        "price_amount": null,
+        "price_currency": null,
+        "outcome": "new_offering_inserted",
+        "offering_id": 85650,
+        "matched_offering_id": null
+      },
+      {
+        "location_id": 9949,
+        "raw_name": "Women’s Health",
+        "price_amount": null,
+        "price_currency": null,
+        "outcome": "new_offering_inserted",
+        "offering_id": 85651,
+        "matched_offering_id": null
+      },
+      {
+        "location_id": 9949,
+        "raw_name": "Sports Medicine & Rehabilitation",
+        "price_amount": null,
+        "price_currency": null,
+        "outcome": "new_offering_inserted",
+        "offering_id": 85652,
+        "matched_offering_id": null
+      },
+      {
+        "location_id": 9949,
+        "raw_name": "Family Dental",
+        "price_amount": null,
+        "price_currency": null,
+        "outcome": "new_offering_inserted",
+        "offering_id": 85653,
+        "matched_offering_id": null
+      },
+      {
+        "location_id": 9949,
+        "raw_name": "Behavioral Health",
+        "price_amount": null,
+        "price_currency": null,
+        "outcome": "new_offering_inserted",
+        "offering_id": 85654,
+        "matched_offering_id": null
+      },
+      {
+        "location_id": 9949,
+        "raw_name": "Infectious Disease",
+        "price_amount": null,
+        "price_currency": null,
+        "outcome": "new_offering_inserted",
+        "offering_id": 85655,
+        "matched_offering_id": null
+      }
+    ]
+  },
+  "notes": [
+    "finalInvariants inherited from Batch 3 because Batch 4 proposed and ingested zero images; canonical image/blob set was unchanged."
+  ]
+}

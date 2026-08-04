@@ -1,0 +1,78 @@
+{
+  "phaseDate": "20260708",
+  "tier": 1,
+  "model": "z-ai/glm-4.5v",
+  "outputPath": "swarm-browser-output/swarm-images-menus-tier1-smoke-20260708.json",
+  "startedAt": "2026-07-08T21:11:36.133Z",
+  "completedAt": "2026-07-08T21:12:34.897Z",
+  "cost": {
+    "inputCostPerMillion": 0.6,
+    "outputCostPerMillion": 1.8,
+    "estimatedInputTokensPerSite": 32000,
+    "estimatedOutputTokensPerSite": 2000,
+    "estimatedUsd": 39.159,
+    "actualUsd": 0.0086532,
+    "promptTokens": 7105,
+    "completionTokens": 2439,
+    "totalTokens": 9544
+  },
+  "candidates": {
+    "siteOrigins": 1374,
+    "locations": 2503
+  },
+  "results": [
+    {
+      "tier": 1,
+      "site_origin": "http://aculaser.org",
+      "homepage_url": "http://aculaser.org/",
+      "locations": [
+        {
+          "name": "Next Level Therapeutics / Red Light Therapy / AcuLaser.Org",
+          "slug": "next-level-therapeutics-red-light-therapy-aculaser-org-new-york",
+          "region": "NY",
+          "locality": "New York",
+          "location_id": 192,
+          "country_code": "US"
+        }
+      ],
+      "outcome": "visited",
+      "reason": null,
+      "started_at": "2026-07-08T21:11:37.396Z",
+      "processed_at": "2026-07-08T21:12:34.870Z",
+      "visited_pages": [
+        {
+          "url": "https://aculaser.org/",
+          "status": 200,
+          "title": "Next Level Therapeutics",
+          "blocked": false,
+          "image_count": 6
+        }
+      ],
+      "images": [
+        {
+          "location_id": 192,
+          "image_url": "https://images.squarespace-cdn.com/content/v1/5e1354e8bc9faa70b1f4d922/1578525830427-JNZ6OSG39W6FP347B3RA/ExtendedWhiteNovo.jpg?format=750w",
+          "source_page_url": "https://aculaser.org/",
+          "llm_confidence": null,
+          "rejection_notes": null
+        }
+      ],
+      "menu_items": [],
+      "model_notes": "Only one valid image (NovoTHOR equipment) identified; other images rejected as stock photos or logo. No menu items with prices found on the page.",
+      "usage": {
+        "promptTokens": 7105,
+        "completionTokens": 2439,
+        "totalTokens": 9544,
+        "usd": 0.0086532
+      },
+      "loaded_image_urls": [
+        "https://images.squarespace-cdn.com/content/v1/5e1354e8bc9faa70b1f4d922/1578682788354-807E77YIKDJ20V8YKLT0/grayscale-photo-of-woman-holding-lips-1257359.jpg?format=1500w",
+        "https://images.squarespace-cdn.com/content/v1/5e1354e8bc9faa70b1f4d922/1578682720354-A1N6JYKQRFZM5M7N2KP5/person-swimming-on-body-of-water-863988.jpg?format=1500w",
+        "https://images.squarespace-cdn.com/content/v1/5e1354e8bc9faa70b1f4d922/1578348777476-5I07O6Q3ZV7Q82MWXLCG/malte-michels-s4wGZw3UuLk-unsplash.jpg?format=1500w",
+        "https://images.squarespace-cdn.com/content/v1/5e1354e8bc9faa70b1f4d922/1578603246987-IZ51RVA1G7TMDFCP7NV2/chris-barbalis-IdGjFFoNWaI-unsplash.jpg?format=1500w",
+        "https://images.squarespace-cdn.com/content/v1/5e1354e8bc9faa70b1f4d922/1578525830427-JNZ6OSG39W6FP347B3RA/ExtendedWhiteNovo.jpg?format=750w",
+        "https://images.squarespace-cdn.com/content/v1/5e1354e8bc9faa70b1f4d922/1578325953701-NJUYUCRTBRKKRSWH11LL/NLT-with-transparency-WHITE.png?format=1500w"
+      ]
+    }
+  ]
+}

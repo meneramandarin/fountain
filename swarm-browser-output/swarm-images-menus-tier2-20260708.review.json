@@ -1,0 +1,227 @@
+{
+  "lowConfidenceImages": [
+    {
+      "location_id": 569,
+      "image_url": "https://wellnesstherapyiv.com/home/_assets/media/ff8b6b9d82cf7bbc1302a2bc7f07452c.png",
+      "source_page_url": "https://wellnesstherapyiv.com/home",
+      "llm_confidence": 0.7,
+      "rejection_notes": null,
+      "site_origin": "https://wellnesstherapyiv.com",
+      "reason": "below_confidence_threshold"
+    },
+    {
+      "location_id": 569,
+      "image_url": "https://wellnesstherapyiv.com/home/_assets/media/e65dac8838f0d651ad847042a85f12b3.jpg",
+      "source_page_url": "https://wellnesstherapyiv.com/home",
+      "llm_confidence": 0.7,
+      "rejection_notes": null,
+      "site_origin": "https://wellnesstherapyiv.com",
+      "reason": "below_confidence_threshold"
+    },
+    {
+      "location_id": 569,
+      "image_url": "https://wellnesstherapyiv.com/home/_assets/media/4893b94ad8c1d8b83306d6d49bad1eec.png",
+      "source_page_url": "https://wellnesstherapyiv.com/home",
+      "llm_confidence": 0.6,
+      "rejection_notes": null,
+      "site_origin": "https://wellnesstherapyiv.com",
+      "reason": "below_confidence_threshold"
+    },
+    {
+      "location_id": 1242,
+      "image_url": "https://skinandbodymedspa.com/wp-content/uploads/2024/06/Skin-and-Body-Med-Spa_Form-Laser-Hair-Removal-in-Queens-NY.webp",
+      "source_page_url": "https://skinandbodymedspa.com/",
+      "llm_confidence": 0.7,
+      "rejection_notes": null,
+      "site_origin": "https://skinandbodymedspa.com",
+      "reason": "below_confidence_threshold"
+    },
+    {
+      "location_id": 2277,
+      "image_url": "https://maps.googleapis.com/maps/api/js/StaticMapService.GetMapImage?1m2&1i4673376&2i6073279&2e1&3u16&4m2&1u793&2u445&5m6&1e0&5sen-US&6sus&10b1&12b1&14i47083502&8e1&key=AIzaSyCmL18misQw9KdwqGaw3zHkitj8vG6QF2Y&token=29793",
+      "source_page_url": "https://www.simcoehbot.ca/",
+      "llm_confidence": 0.3,
+      "rejection_notes": "Map image, not a real facility photo",
+      "site_origin": "https://www.simcoehbot.ca",
+      "reason": "below_confidence_threshold"
+    },
+    {
+      "location_id": 2277,
+      "image_url": "https://picsum.photos/seed/clinic-interior/1200/800",
+      "source_page_url": "https://www.simcoehbot.ca/about",
+      "llm_confidence": 0.5,
+      "rejection_notes": "Stock photo placeholder, not confirmed real facility image",
+      "site_origin": "https://www.simcoehbot.ca",
+      "reason": "below_confidence_threshold"
+    },
+    {
+      "location_id": 2277,
+      "image_url": "https://fastly.picsum.photos/id/121/1200/800.jpg?hmac=XNyG847q3ixK-lyKFsR44hlKBNaz5a7wQhFf5UqcTQY",
+      "source_page_url": "https://www.simcoehbot.ca/about",
+      "llm_confidence": 0.5,
+      "rejection_notes": "Stock photo placeholder, not confirmed real facility image",
+      "site_origin": "https://www.simcoehbot.ca",
+      "reason": "below_confidence_threshold"
+    },
+    {
+      "location_id": 9298,
+      "image_url": "https://therecoverycosd.com/wp-content/uploads/2024/02/about-group-400x651.jpg",
+      "source_page_url": "https://therecoverycosd.com/about-us/",
+      "llm_confidence": 0.7,
+      "rejection_notes": null,
+      "site_origin": "https://therecoverycosd.com",
+      "reason": "below_confidence_threshold"
+    },
+    {
+      "location_id": 3950,
+      "image_url": "https://paydaymoneycenters.com/wp-content/uploads/2017/06/Pay-Day-Centers-Signature-Loans.jpg",
+      "source_page_url": "https://paydaymoneycenters.com/money-services/",
+      "llm_confidence": 0.7,
+      "rejection_notes": null,
+      "site_origin": "https://paydaymoneycenters.com",
+      "reason": "below_confidence_threshold"
+    },
+    {
+      "location_id": 3950,
+      "image_url": "https://paydaymoneycenters.com/wp-content/uploads/2017/06/Payday-Money-Centers-Loans.jpg",
+      "source_page_url": "https://paydaymoneycenters.com/",
+      "llm_confidence": 0.7,
+      "rejection_notes": null,
+      "site_origin": "https://paydaymoneycenters.com",
+      "reason": "below_confidence_threshold"
+    },
+    {
+      "location_id": 1279,
+      "image_url": "http://innerlightsaunas.com/images/wellness-hero.jpg",
+      "source_page_url": "http://infraredlightstudio.com/",
+      "llm_confidence": 0.4,
+      "rejection_notes": "Potential stock photo, not a clear facility/exterior/interior image",
+      "site_origin": "http://infraredlightstudio.com",
+      "reason": "below_confidence_threshold"
+    },
+    {
+      "location_id": 1247,
+      "image_url": "https://i.vimeocdn.com/video/769793547-3ef585a6afa6daf38dd4de6bab164dfe0c772f585f433aea02525cccc3446072-d?mw=80&q=85",
+      "source_page_url": "https://centers.osteostrong.me/",
+      "llm_confidence": 0.7,
+      "rejection_notes": null,
+      "site_origin": "https://centers.osteostrong.me",
+      "reason": "below_confidence_threshold"
+    },
+    {
+      "location_id": 1247,
+      "image_url": "https://i.vimeocdn.com/video/769793547-3ef585a6afa6daf38dd4de6bab164dfe0c772f585f433aea02525cccc3446072-d?mw=1500&mh=844",
+      "source_page_url": "https://centers.osteostrong.me/",
+      "llm_confidence": 0.7,
+      "rejection_notes": null,
+      "site_origin": "https://centers.osteostrong.me",
+      "reason": "below_confidence_threshold"
+    },
+    {
+      "location_id": 729,
+      "image_url": "https://www.careacu.com/background.jpg",
+      "source_page_url": "https://www.careacu.com/",
+      "llm_confidence": 0.2,
+      "rejection_notes": "Generic background image, not a real clinic facility/interior/treatment room/equipment photo",
+      "site_origin": "https://www.careacu.com",
+      "reason": "below_confidence_threshold"
+    }
+  ],
+  "validationFailures": [
+    {
+      "location_id": 1042,
+      "image_url": "https://ivvitamininfusion.com/wp-content/uploads/2023/07/Vitamin-Drip-Bag.png",
+      "source_page_url": "https://ivvitamininfusion.com/",
+      "llm_confidence": 0.9,
+      "rejection_notes": null,
+      "site_origin": "https://ivvitamininfusion.com",
+      "reason": "too_small_dimensions"
+    },
+    {
+      "location_id": 1156,
+      "image_url": "https://plus-gallery.s3.amazonaws.com/66596952dc80d_followus-img2.jpg",
+      "source_page_url": "https://remedispa.com/",
+      "llm_confidence": 0.9,
+      "rejection_notes": null,
+      "site_origin": "https://remedispa.com",
+      "reason": "too_small_bytes"
+    },
+    {
+      "location_id": 1247,
+      "image_url": "https://centers.osteostrong.me/wp-content/uploads/2018/12/back_sessions-1.jpg",
+      "source_page_url": "https://centers.osteostrong.me/",
+      "llm_confidence": 0.8,
+      "rejection_notes": null,
+      "site_origin": "https://centers.osteostrong.me",
+      "reason": "timeout"
+    },
+    {
+      "location_id": 9286,
+      "image_url": "https://i.vimeocdn.com/video/1907492901-92ae8e81985446973e11947e0ddd1ce49142c4cc7963c93c241a473d1f0c7195-d?mw=80&q=85",
+      "source_page_url": "https://downtowngilberthealthcare.com/",
+      "llm_confidence": 0.9,
+      "rejection_notes": null,
+      "site_origin": "https://downtowngilberthealthcare.com",
+      "reason": "too_small_bytes"
+    }
+  ],
+  "priceSanityFlags": [
+    {
+      "location_id": 8115,
+      "raw_name": "iPhone 17 Pro",
+      "price_amount": 0,
+      "price_currency": "USD",
+      "price_context": "with eligible trade-in",
+      "source_page_url": "https://www.att.com/",
+      "site_origin": "https://www.att.com",
+      "reason": "price_outside_sanity_bounds"
+    },
+    {
+      "location_id": 8116,
+      "raw_name": "iPhone 17 Pro",
+      "price_amount": 0,
+      "price_currency": "USD",
+      "price_context": "with eligible trade-in",
+      "source_page_url": "https://www.att.com/",
+      "site_origin": "https://www.att.com",
+      "reason": "price_outside_sanity_bounds"
+    },
+    {
+      "location_id": 8117,
+      "raw_name": "iPhone 17 Pro",
+      "price_amount": 0,
+      "price_currency": "USD",
+      "price_context": "with eligible trade-in",
+      "source_page_url": "https://www.att.com/",
+      "site_origin": "https://www.att.com",
+      "reason": "price_outside_sanity_bounds"
+    }
+  ],
+  "locationOfferingCapFlags": [],
+  "priceConflicts": [
+    {
+      "location_id": 681,
+      "raw_name": "Supplement consultation",
+      "price_amount": 100,
+      "price_currency": "USD",
+      "price_context": "$100",
+      "source_page_url": "https://fhacuwell.com/page/hair-loss-treatment-program/",
+      "site_origin": "https://fhacuwell.com",
+      "existing_offering_id": 13362,
+      "existing_price_amount": 100,
+      "existing_price_currency": "USD"
+    },
+    {
+      "location_id": 681,
+      "raw_name": "Herbal consultation",
+      "price_amount": 100,
+      "price_currency": "USD",
+      "price_context": "$100",
+      "source_page_url": "https://fhacuwell.com/page/hair-loss-treatment-program/",
+      "site_origin": "https://fhacuwell.com",
+      "existing_offering_id": 13363,
+      "existing_price_amount": 100,
+      "existing_price_currency": "USD"
+    }
+  ]
+}

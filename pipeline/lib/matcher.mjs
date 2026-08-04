@@ -577,6 +577,21 @@ function resolveLatLng(incoming, nearby, poolSize) {
       poolSize,
     });
   }
+  if (
+    incoming.matchableDomain
+    && candidate.matchableDomain
+    && !candidate.domainMatch
+    && !candidate.exactName
+  ) {
+    return reviewResult({
+      candidate,
+      method: "lat_lng_100m",
+      confidence: 0.6,
+      guardrail: "different_domain_geo_collision",
+      incoming,
+      poolSize,
+    });
+  }
   if (candidate.domainMatch && hasBranchPathConflict(incoming, candidate)) {
     return reviewResult({
       candidate,

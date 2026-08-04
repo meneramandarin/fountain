@@ -1195,6 +1195,36 @@ describe("review-only and negative guardrails", () => {
     });
   });
 
+  test("does not merge nearby businesses with different official domains", () => {
+    const result = scoreLocationCandidates(
+      {
+        name: "Restore Cryotherapy - West Village",
+        website: "https://restore.com/locations/dallas-west-village",
+        lat: 32.806,
+        lng: -96.8,
+        locality: "Dallas",
+        country_code: "US",
+      },
+      [candidate({
+        id: 15824,
+        name: "SWTHZ West Village",
+        website: "https://sweathouz.com/westvillage-book-now/",
+        lat: 32.8064,
+        lng: -96.8004,
+        locality: "Dallas",
+        country_code: "US",
+        slug: "swthz-west-village",
+      })],
+    );
+
+    expect(result).toMatchObject({
+      status: "review",
+      candidate_location_id: 15824,
+      method: "lat_lng_100m",
+      guardrail: "different_domain_geo_collision",
+    });
+  });
+
   test("keeps the 100m auto and 150m review boundaries inclusive", () => {
     const incoming: LocationInput = {
       name: "Boundary Identity",

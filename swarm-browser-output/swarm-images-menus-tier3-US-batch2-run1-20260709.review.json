@@ -1,0 +1,78 @@
+{
+  "lowConfidenceImages": [],
+  "validationFailures": [],
+  "priceSanityFlags": [
+    {
+      "location_id": 7617,
+      "raw_name": "Museums For All admission",
+      "price_amount": 3,
+      "price_currency": "USD",
+      "price_context": null,
+      "source_page_url": "https://lexingtonchildrensmuseum.org/plan-your-visit/",
+      "site_origin": "https://lexingtonchildrensmuseum.org",
+      "reason": "price_outside_sanity_bounds"
+    },
+    {
+      "location_id": 4717,
+      "raw_name": "Members Only Thrive | Office Visit",
+      "price_amount": 0.01,
+      "price_currency": "$",
+      "price_context": "Thrive members only",
+      "source_page_url": "https://livewellfunctionalmedicine.com/",
+      "site_origin": "https://livewellfunctionalmedicine.com",
+      "reason": "price_outside_sanity_bounds"
+    },
+    {
+      "location_id": 4717,
+      "raw_name": "Thrive |Phone Visit",
+      "price_amount": 0.01,
+      "price_currency": "$",
+      "price_context": "Thrive members only",
+      "source_page_url": "https://livewellfunctionalmedicine.com/",
+      "site_origin": "https://livewellfunctionalmedicine.com",
+      "reason": "price_outside_sanity_bounds"
+    },
+    {
+      "location_id": 10636,
+      "raw_name": "Members Only Thrive | Office Visit",
+      "price_amount": 0.01,
+      "price_currency": "$",
+      "price_context": "Thrive members only",
+      "source_page_url": "https://livewellfunctionalmedicine.com/",
+      "site_origin": "https://livewellfunctionalmedicine.com",
+      "reason": "price_outside_sanity_bounds"
+    },
+    {
+      "location_id": 10636,
+      "raw_name": "Thrive |Phone Visit",
+      "price_amount": 0.01,
+      "price_currency": "$",
+      "price_context": "Thrive members only",
+      "source_page_url": "https://livewellfunctionalmedicine.com/",
+      "site_origin": "https://livewellfunctionalmedicine.com",
+      "reason": "price_outside_sanity_bounds"
+    },
+    {
+      "location_id": 8822,
+      "raw_name": "Annual Blood Work Membership",
+      "price_amount": 1,
+      "price_currency": "USD",
+      "price_context": null,
+      "source_page_url": "https://newerawellnesscenter.com/Shop",
+      "site_origin": "https://newerawellnesscenter.com",
+      "reason": "price_outside_sanity_bounds"
+    },
+    {
+      "location_id": 9919,
+      "raw_name": "OxyPrime 6",
+      "price_amount": 129000,
+      "price_currency": "USD",
+      "price_context": null,
+      "source_page_url": "https://www.hbotforsale.com/hyperbaric-chamber-pricing",
+      "site_origin": "https://www.desmoineshyperbarics.com",
+      "reason": "price_outside_sanity_bounds"
+    }
+  ],
+  "locationOfferingCapFlags": [],
+  "priceConflicts": []
+}

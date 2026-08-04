@@ -1,0 +1,129 @@
+{
+  "generated_at": "2026-07-24T00:29:53.664Z",
+  "model": "z-ai/glm-4.7-flash",
+  "results": [
+    {
+      "location": {
+        "id": 2072,
+        "slug": "next-health-north-vancouver",
+        "name": "Next Health",
+        "address": null,
+        "locality": "North Vancouver",
+        "region": "BC",
+        "postal_code": null,
+        "country_code": "CA",
+        "country_name": "Canada",
+        "website": "https://www.next-health.com/",
+        "latitude": 49.3197896,
+        "longitude": -123.071265,
+        "status": "active",
+        "is_virtual": false
+      },
+      "research": {
+        "model": "z-ai/glm-4.7-flash",
+        "output": {
+          "status": "found",
+          "address": "123 & 125 East 13th Street",
+          "locality": "North Vancouver",
+          "region": "BC",
+          "postal_code": null,
+          "country_code": "CA",
+          "official_website": "https://www.next-health.com/",
+          "source_url": "https://www.next-health.com/location/vancouver",
+          "evidence": "The official Next Health website lists the Vancouver, BC location at '123 & 125 East 13th Street, North Vancouver, BC'. The 'All Next Health Locations' page also confirms this address for the Vancouver, CAN branch.",
+          "confidence": "high"
+        },
+        "citations": [
+          {
+            "url": "https://www.next-health.com/location/vancouver",
+            "title": "Vancouver, CAN",
+            "content": "Wellness & Longevity Center in Vancouver (Coming Soon) ... Visit us in # Vancouver, CAN COMING SOON 123 & 125 East 13th Street, North Vancouver, BC ... ## Vancouver, CAN ... ## Vancouver, CAN ... ##### Hours of Operation: Coming Soon ##### Location: 123 & 125 East 13th StreetNorth Vancouver, BC ##### Parking Instructions: Coming Soon"
+          },
+          {
+            "url": "https://www.next-health.com/inside/locations",
+            "title": "All Next Health Locations",
+            "content": "# All Next Health Locations ... Visit us today (310) ... 295-2075 ... HOURS OF OPERATION: ... HOURS OF OPERATION: ... HOURS OF OPERATION: ... HOURS OF OPERATION: ... URS OF OPERATION: ... HOURS OF OPERATION: ... URS OF OPERATION: ... HOURS OF OPERATION: ... HOURS OF OPERATION: ... URS OF OPERATION: ... URS OF OPERATION: ... HOURS OF OPERATION: ... OF OPERATION: ... HOURS OF OPERATION: ... Vancouver, CAN ‍ 123 & 125 East 13th StreetNorth Vancouver, BC HOURS OF OPERATION: Coming Soon View More ... HOURS OF OPERATION: ... HOURS OF OPERATION: ... Coming Soon View More ... HOURS OF OPERATION: ... HOURS OF OPERATION: ... HOURS OF OPERATION: ... Coming Soon View More ... HOURS OF OPERATION: ... HOURS OF OPERATION: ... Coming Soon. ... HOURS OF OPERATION: ... Coming Soon."
+          },
+          {
+            "url": "https://www.next-health.com/",
+            "title": "Next Health | Longevity, Health Optimization & Wellness Center",
+            "content": "30- ... -2053 ... COMING SOON1301 W 22nd Street, Oak Brook, IL 60523View Location ... #### Vancouver, CAN ##### 604-998-4011 COMING SOON123 & 125 East 13th Street, North Vancouver, BCView Location #### Irvine, CA ... COMING SOON8 ... Irvine Center Drive, Irvine, CA 92618View Location ... COMING SOON ... COMING SOONView Location"
+          },
+          {
+            "url": "https://north-vancouver.infoisinfo-ca.com/card/next-health/1638063",
+            "title": "Next | Health - North Vancouver",
+            "content": "Health - North Vancouver ... # Next | Health Wellness Center in North Vancouver ... Remember you found this company at Infoisinfo +1 31 ... -295-207? ... ## Address 123 13th Street East, British Columbia. North Vancouver. British Columbia. V7M 2H8"
+          }
+        ],
+        "usage": {
+          "prompt_tokens": 65697,
+          "completion_tokens": 827,
+          "total_tokens": 66524,
+          "cost": 0.006299820000000001,
+          "prompt_tokens_details": {
+            "cached_tokens": 59456,
+            "cache_write_tokens": 0,
+            "audio_tokens": 0,
+            "video_tokens": 0
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 0,
+            "image_tokens": 0,
+            "audio_tokens": 0
+          },
+          "cost_details": {
+            "upstream_inference_cost": 0.0012998200000000001,
+            "upstream_inference_prompt_cost": 0.0009690200000000001,
+            "upstream_inference_completions_cost": 0.0003307999999999999
+          },
+          "server_tool_use_details": {
+            "web_search_requests": 31,
+            "tool_calls_requested": 31,
+            "tool_calls_executed": 31
+          }
+        },
+        "error": null
+      },
+      "evidence_validation": {
+        "valid": true,
+        "reason": "citation_supported",
+        "source_url": "https://www.next-health.com/location/vancouver"
+      },
+      "geocode": {
+        "provider": "arcgis_world_geocoder",
+        "query": "123 & 125 East 13th Street, North Vancouver, BC, Canada",
+        "latitude": 49.319693995323,
+        "longitude": -123.071181989774,
+        "score": 99.29,
+        "matched_address": "125 E 13th St, North Vancouver, British Columbia, V7L 0J9",
+        "address_type": "PointAddress",
+        "city": "North Vancouver",
+        "region": "British Columbia",
+        "postal_code": "V7L",
+        "country": "CAN",
+        "country_code": null,
+        "old_coordinate_distance_km": 0.012215284856421088
+      },
+      "geocode_validation": {
+        "valid": true,
+        "reason": "geocode_match",
+        "score": 99.29,
+        "address_type": "PointAddress",
+        "distance_km": 0.012215284856421088
+      },
+      "decision": "ready",
+      "reason": "official_web_evidence_and_geocode_match",
+      "proposed": {
+        "address": "123 & 125 East 13th Street",
+        "locality": "North Vancouver",
+        "region": "BC",
+        "postal_code": null,
+        "country_code": "CA",
+        "country_name": "Canada",
+        "website": "https://www.next-health.com/",
+        "latitude": 49.319693995323,
+        "longitude": -123.071181989774
+      }
+    }
+  ]
+}

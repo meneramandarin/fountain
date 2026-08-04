@@ -1,0 +1,191 @@
+{
+  "phaseDate": "20260708",
+  "tier": 3,
+  "inputPath": null,
+  "inputDir": "swarm-browser-output/results/tier3-US-batch3-run1-20260709",
+  "inputResults": 1355,
+  "imageLogTable": "fountain_raw.browser_swarm_image_ingest_20260708",
+  "menuLogTable": "fountain_raw.browser_swarm_menu_ingest_20260708",
+  "dryRun": false,
+  "startedAt": "2026-07-10T02:29:55.053Z",
+  "completedAt": "2026-07-10T02:59:39.332Z",
+  "images": {
+    "proposed": 0,
+    "ingested": 0,
+    "heldForReview": 0,
+    "skipped": 0,
+    "validationFailures": 0
+  },
+  "menus": {
+    "extracted": 4880,
+    "pricesBackfilled": 2,
+    "newOfferingsInserted": 3524,
+    "conflicts": 0,
+    "sanityFlags": 1,
+    "skipped": 1353
+  },
+  "coverageBefore": {
+    "zero_image_locations": 2663,
+    "locations_with_priced_offering": 1813,
+    "active_images": 30794,
+    "active_offerings": 94444
+  },
+  "coverageAfter": {
+    "zero_image_locations": 2658,
+    "locations_with_priced_offering": 1917,
+    "active_images": 30794,
+    "active_offerings": 97955
+  },
+  "finalInvariants": {
+    "blobStoreCount": 19544,
+    "referencedBlobUrls": 19544,
+    "everyImageRowHasLiveBlob": true,
+    "everyBlobHasImageRow": true,
+    "orphanBlobCount": 0,
+    "imageRowsPointingAtMissingBlobCount": 0
+  },
+  "spotChecks": {
+    "images": [],
+    "menus": [
+      {
+        "location_id": 4882,
+        "raw_name": "EPIDURAL STEROID INJECTION",
+        "price_amount": null,
+        "price_currency": null,
+        "outcome": "new_offering_inserted",
+        "offering_id": 96553,
+        "matched_offering_id": null
+      },
+      {
+        "location_id": 10316,
+        "raw_name": "Skin Vitalizing Experience",
+        "price_amount": null,
+        "price_currency": null,
+        "outcome": "new_offering_inserted",
+        "offering_id": 96554,
+        "matched_offering_id": null
+      },
+      {
+        "location_id": 10316,
+        "raw_name": "Ultimate Oxylux Experience",
+        "price_amount": null,
+        "price_currency": null,
+        "outcome": "new_offering_inserted",
+        "offering_id": 96555,
+        "matched_offering_id": null
+      },
+      {
+        "location_id": 10316,
+        "raw_name": "Glow 'N Go",
+        "price_amount": null,
+        "price_currency": null,
+        "outcome": "new_offering_inserted",
+        "offering_id": 96556,
+        "matched_offering_id": null
+      },
+      {
+        "location_id": 10316,
+        "raw_name": "Acne Treatment with Blue Light Therapy",
+        "price_amount": null,
+        "price_currency": null,
+        "outcome": "new_offering_inserted",
+        "offering_id": 96557,
+        "matched_offering_id": null
+      },
+      {
+        "location_id": 10316,
+        "raw_name": "Ultimate Skin Veneer Experience",
+        "price_amount": null,
+        "price_currency": null,
+        "outcome": "new_offering_inserted",
+        "offering_id": 96558,
+        "matched_offering_id": null
+      },
+      {
+        "location_id": 10316,
+        "raw_name": "Rejuvenating Pumpkin Spice Experience with Head Massage",
+        "price_amount": null,
+        "price_currency": null,
+        "outcome": "new_offering_inserted",
+        "offering_id": 96559,
+        "matched_offering_id": null
+      },
+      {
+        "location_id": 10316,
+        "raw_name": "Express Oxygeneo",
+        "price_amount": null,
+        "price_currency": null,
+        "outcome": "new_offering_inserted",
+        "offering_id": 96560,
+        "matched_offering_id": null
+      },
+      {
+        "location_id": 10316,
+        "raw_name": "Neck Oxygeneo",
+        "price_amount": null,
+        "price_currency": null,
+        "outcome": "new_offering_inserted",
+        "offering_id": 96561,
+        "matched_offering_id": null
+      },
+      {
+        "location_id": 10316,
+        "raw_name": "Underarm Oxygeneo",
+        "price_amount": null,
+        "price_currency": null,
+        "outcome": "new_offering_inserted",
+        "offering_id": 96562,
+        "matched_offering_id": null
+      },
+      {
+        "location_id": 10316,
+        "raw_name": "Eyebrows Grooming",
+        "price_amount": null,
+        "price_currency": null,
+        "outcome": "new_offering_inserted",
+        "offering_id": 96563,
+        "matched_offering_id": null
+      },
+      {
+        "location_id": 10316,
+        "raw_name": "Epidermal Sweep",
+        "price_amount": null,
+        "price_currency": null,
+        "outcome": "new_offering_inserted",
+        "offering_id": 96564,
+        "matched_offering_id": null
+      },
+      {
+        "location_id": 10316,
+        "raw_name": "Extractions",
+        "price_amount": null,
+        "price_currency": null,
+        "outcome": "new_offering_inserted",
+        "offering_id": 96565,
+        "matched_offering_id": null
+      },
+      {
+        "location_id": 10316,
+        "raw_name": "LED (Light Emitting Diode) Therapy",
+        "price_amount": null,
+        "price_currency": null,
+        "outcome": "new_offering_inserted",
+        "offering_id": 96566,
+        "matched_offering_id": null
+      },
+      {
+        "location_id": 10316,
+        "raw_name": "Hand and Feet Paraffin",
+        "price_amount": null,
+        "price_currency": null,
+        "outcome": "new_offering_inserted",
+        "offering_id": 96567,
+        "matched_offering_id": null
+      }
+    ]
+  },
+  "notes": [
+    "Reconstructed after initial ingest completed canonical writes but wedged before writing JSON; resume input processed the 256 unlogged candidates only.",
+    "finalInvariants carried from Batch 2 because Batch 3 proposed and ingested zero images; canonical image/blob set was unchanged."
+  ]
+}

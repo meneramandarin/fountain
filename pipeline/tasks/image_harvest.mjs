@@ -32,11 +32,17 @@ export const DEFAULT_IMAGE_MAX_BYTES = 15 * 1024 * 1024;
 
 const MIN_IMAGE_BYTES = 15 * 1024;
 const MIN_LONGEST_EDGE = 500;
+const MIN_LOGO_BYTES = 512;
+const MIN_LOGO_LONGEST_EDGE = 128;
+const MIN_LOGO_SHORTEST_EDGE = 32;
 const MAX_PROCESSED_EDGE = 1_600;
 const MAX_HORIZONTAL_RATIO = 4;
 const MAX_VERTICAL_RATIO = 2.5;
-const JUNK_URL_PATTERN = /(?:^data:|\.(?:svg|ico|gif)(?:$|[?#])|favicon|sprite|tracking|pixel|placeholder|blank|transparent|loader|spinner|logo|icon|badge|googleadservices|doubleclick|pagead|analytics|\/maps\/|maps\.gstatic|maps\.google|googleapis\.com\/maps|khms|\/vt\/lyrs=)/iu;
-const JUNK_ALT_PATTERN = /\b(?:logo|icon|favicon|placeholder|sprite|tracking pixel)\b/iu;
+const MAX_LOGO_HORIZONTAL_RATIO = 16;
+const MAX_LOGO_VERTICAL_RATIO = 6;
+const JUNK_URL_PATTERN = /(?:^data:|\.(?:ico|gif)(?:$|[?#])|favicon|sprite|tracking|pixel|placeholder|blank|transparent|loader|spinner|icon|badge|googleadservices|doubleclick|pagead|analytics|\/maps\/|maps\.gstatic|maps\.google|googleapis\.com\/maps|khms|\/vt\/lyrs=)/iu;
+const JUNK_ALT_PATTERN = /\b(?:icon|favicon|placeholder|sprite|tracking pixel)\b/iu;
+const LOGO_SIGNAL_PATTERN = /\b(?:logo|brandmark|wordmark)\b/iu;
 
 export const IMAGE_HARVEST_LOAD_SQL = `
   SELECT
@@ -123,7 +129,10 @@ export async function handleImageHarvest(
   { task, run },
   {
     query = defaultQuery,
-    webClient = createWebClient(),
+    webClient = createWebClient({
+      cacheDir: path.join(REPO_ROOT, ".cache", "pipeline", "web-image-harvest-v2"),
+      maxBytes: 2_000_000,
+    }),
     imageClient = createCachedImageClient(),
     blobClient = createBlobClient(),
     recordWrite = defaultRecordWrite,
@@ -187,7 +196,9 @@ export async function handleImageHarvest(
       attempted.push(candidateAttempt(candidate, downloaded.outcome || downloaded.reason || "download_failed"));
       continue;
     }
-    const validation = await processImage(downloaded.buffer, downloaded.contentType);
+    const validation = await processImage(downloaded.buffer, downloaded.contentType, {
+      allowLogo: candidate.image_kind === "logo",
+    });
     if (!validation?.ok) {
       attempted.push(candidateAttempt(candidate, validation?.reason || "failed_validation"));
       continue;
@@ -230,6 +241,7 @@ export async function handleImageHarvest(
       contentSha256,
       alt: selected.candidate.alt || initial.name,
       source: selected.candidate.source,
+      imageKind: selected.candidate.image_kind,
     }, { recordWrite, setActor });
 
     if (!write.written) {
@@ -289,31 +301,56 @@ export function extractImageCandidates(html, baseUrl, {
   ].entries()) {
     const rawUrl = meta.get(key);
     if (rawUrl) {
+      const alt = meta.get("og:image:alt") || meta.get("twitter:image:alt") || title;
+      const imageKind = isLogoImageCandidate(rawUrl, alt) ? "logo" : null;
       proposed.push({
         rawUrl,
         source: key.startsWith("og:") ? "og_image" : "twitter_image",
-        alt: meta.get("og:image:alt") || meta.get("twitter:image:alt") || title,
-        score: 1_000 - index,
+        alt,
+        imageKind,
+        score: imageKind === "logo" ? 400 - index : 1_000 - index,
       });
     }
   }
 
   for (const value of extractJsonLdImages(input)) {
-    proposed.push({ rawUrl: value.url, source: "jsonld_image", alt: value.alt || title, score: 900 });
+    const alt = value.alt || title;
+    const imageKind = value.imageKind || (isLogoImageCandidate(value.url, alt) ? "logo" : null);
+    proposed.push({
+      rawUrl: value.url,
+      source: value.source || "jsonld_image",
+      alt,
+      imageKind,
+      score: imageKind === "logo" ? 390 : 900,
+    });
   }
 
   for (const tag of input.match(/<img\b[^>]*>/giu) || []) {
     const attrs = parseTagAttributes(tag);
     const rawUrl = bestImageSource(attrs);
     if (!rawUrl) continue;
-    const declaredWidth = integerDimension(attrs.width) || largestSrcsetWidth(attrs.srcset);
-    if (declaredWidth > 0 && declaredWidth < 300) continue;
+    const alt = attrs.alt || title;
+    const imageKind = isLogoImageCandidate(
+      rawUrl,
+      alt,
+      attrs.class,
+      attrs.id,
+      attrs["data-ux"],
+      attrs["data-aid"],
+      attrs["data-testid"],
+      attrs["aria-label"],
+    ) ? "logo" : null;
+    const declaredWidth = integerDimension(attrs.width) || largestSrcsetWidth(bestImageSrcset(attrs));
+    if (declaredWidth > 0 && declaredWidth < 300 && imageKind !== "logo") continue;
     const hero = /\b(?:hero|masthead|banner|cover)\b/iu.test(`${attrs.class || ""} ${attrs.id || ""}`);
     proposed.push({
       rawUrl,
       source: hero ? "hero_img" : "img",
-      alt: attrs.alt || title,
-      score: (hero ? 800 : 500) + Math.min(declaredWidth, 2_000) / 10,
+      alt,
+      imageKind,
+      score: imageKind === "logo"
+        ? 350 + Math.min(declaredWidth, 2_000) / 20
+        : (hero ? 800 : 500) + Math.min(declaredWidth, 2_000) / 10,
     });
   }
 
@@ -328,17 +365,41 @@ export function extractImageCandidates(html, baseUrl, {
     const url = resolveCandidateUrl(candidate.rawUrl, baseUrl);
     const alt = cleanText(candidate.alt, 300);
     if (!url || isJunkImageCandidate(url, alt)) continue;
-    const normalized = { url, source: candidate.source, alt: alt || null, score: candidate.score };
+    const imageKind = candidate.imageKind || (isLogoImageCandidate(url, alt) ? "logo" : null);
+    if (/\.svg(?:$|[?#])/iu.test(url) && imageKind !== "logo") continue;
+    const normalized = {
+      url,
+      source: candidate.source,
+      alt: alt || null,
+      score: candidate.score,
+      imageKind,
+    };
     const current = byUrl.get(url);
-    if (!current || current.score < normalized.score) byUrl.set(url, normalized);
+    if (!current) {
+      byUrl.set(url, normalized);
+      continue;
+    }
+    const preserveLogo = current.imageKind === "logo" || normalized.imageKind === "logo";
+    const preferred = current.score >= normalized.score ? current : normalized;
+    byUrl.set(url, {
+      ...preferred,
+      imageKind: preserveLogo ? "logo" : preferred.imageKind,
+      score: preserveLogo ? Math.min(preferred.score, 400) : preferred.score,
+    });
   }
-  return [...byUrl.values()]
-    .sort((left, right) => right.score - left.score || left.url.localeCompare(right.url))
-    .slice(0, normalizedLimit)
+  const sorted = [...byUrl.values()]
+    .sort((left, right) => right.score - left.score || left.url.localeCompare(right.url));
+  const ordinary = sorted.filter((candidate) => candidate.imageKind !== "logo");
+  const logos = sorted.filter((candidate) => candidate.imageKind === "logo");
+  const selected = logos.length && normalizedLimit > 1
+    ? [...ordinary.slice(0, normalizedLimit - 1), logos[0]]
+    : (ordinary.length ? ordinary : logos).slice(0, normalizedLimit);
+  return selected
     .map((candidate) => ({
       url: candidate.url,
       source: candidate.source,
       alt: candidate.alt,
+      ...(candidate.imageKind ? { image_kind: candidate.imageKind } : {}),
     }));
 }
 
@@ -346,21 +407,34 @@ export function isJunkImageCandidate(url, alt = "") {
   return JUNK_URL_PATTERN.test(String(url || "")) || JUNK_ALT_PATTERN.test(String(alt || ""));
 }
 
+export function isLogoImageCandidate(...values) {
+  return LOGO_SIGNAL_PATTERN.test(values.filter(Boolean).join(" "));
+}
+
 export async function validateAndProcessImage(buffer, contentType = "", {
   minBytes = MIN_IMAGE_BYTES,
   maxBytes = DEFAULT_IMAGE_MAX_BYTES,
   minLongestEdge = MIN_LONGEST_EDGE,
   maxProcessedEdge = MAX_PROCESSED_EDGE,
+  allowLogo = false,
 } = {}) {
   if (!Buffer.isBuffer(buffer)) throw new TypeError("Image body must be a Buffer.");
-  if (buffer.length < minBytes) return { ok: false, reason: "too_small_bytes" };
+  const effectiveMinBytes = allowLogo ? Math.min(minBytes, MIN_LOGO_BYTES) : minBytes;
+  const effectiveMinLongestEdge = allowLogo
+    ? Math.min(minLongestEdge, MIN_LOGO_LONGEST_EDGE)
+    : minLongestEdge;
+  if (buffer.length < effectiveMinBytes) return { ok: false, reason: "too_small_bytes" };
   if (buffer.length > maxBytes) return { ok: false, reason: "too_large_bytes" };
   const detected = detectImageType(buffer, contentType);
-  if (!detected || ["svg", "ico", "gif"].includes(detected.extension)) {
+  if (!detected || ["ico", "gif"].includes(detected.extension) || (detected.extension === "svg" && !allowLogo)) {
     return { ok: false, reason: "unsupported_content_type" };
   }
 
-  let image = sharp(buffer, { failOn: "none", animated: false });
+  let image = sharp(buffer, {
+    failOn: "none",
+    animated: false,
+    density: detected.extension === "svg" ? 144 : undefined,
+  });
   let metadata;
   try {
     metadata = await image.metadata();
@@ -370,10 +444,15 @@ export async function validateAndProcessImage(buffer, contentType = "", {
   const width = Number(metadata.width || 0);
   const height = Number(metadata.height || 0);
   if (!width || !height) return { ok: false, reason: "invalid_dimensions" };
-  if (Math.max(width, height) < minLongestEdge) {
+  if (Math.max(width, height) < effectiveMinLongestEdge) {
     return { ok: false, reason: "too_small_dimensions" };
   }
-  if (width / height > MAX_HORIZONTAL_RATIO || height / width > MAX_VERTICAL_RATIO) {
+  if (allowLogo && Math.min(width, height) < MIN_LOGO_SHORTEST_EDGE) {
+    return { ok: false, reason: "too_small_dimensions" };
+  }
+  const maxHorizontalRatio = allowLogo ? MAX_LOGO_HORIZONTAL_RATIO : MAX_HORIZONTAL_RATIO;
+  const maxVerticalRatio = allowLogo ? MAX_LOGO_VERTICAL_RATIO : MAX_VERTICAL_RATIO;
+  if (width / height > maxHorizontalRatio || height / width > maxVerticalRatio) {
     return { ok: false, reason: "logo_like_aspect_ratio" };
   }
 
@@ -386,7 +465,13 @@ export async function validateAndProcessImage(buffer, contentType = "", {
       withoutEnlargement: true,
     });
   }
-  if (detected.extension === "jpg") image = image.jpeg({ quality: 84, mozjpeg: true });
+  let outputExtension = detected.extension;
+  let outputContentType = detected.contentType;
+  if (detected.extension === "svg") {
+    image = image.webp({ quality: 90 });
+    outputExtension = "webp";
+    outputContentType = "image/webp";
+  } else if (detected.extension === "jpg") image = image.jpeg({ quality: 84, mozjpeg: true });
   else if (detected.extension === "png") image = image.png({ compressionLevel: 9 });
   else if (detected.extension === "webp") image = image.webp({ quality: 84 });
   else if (detected.extension === "avif") image = image.avif({ quality: 60 });
@@ -398,8 +483,8 @@ export async function validateAndProcessImage(buffer, contentType = "", {
     buffer: processed,
     width: Number(processedMetadata.width || width),
     height: Number(processedMetadata.height || height),
-    extension: detected.extension,
-    contentType: detected.contentType,
+    extension: outputExtension,
+    contentType: outputContentType,
     bytes: processed.length,
   };
 }
@@ -495,6 +580,7 @@ export async function guardedAttachLocationImage(
     contentSha256,
     alt,
     source,
+    imageKind,
   },
   {
     recordWrite = defaultRecordWrite,
@@ -509,6 +595,7 @@ export async function guardedAttachLocationImage(
   const normalizedSha = sha256Text(contentSha256);
   const normalizedSource = nonemptyText(source, "source");
   const normalizedAlt = cleanText(alt, 300) || null;
+  const normalizedImageKind = imageKind === "logo" ? "logo" : null;
   const actorLabel = `image_harvest_run_${normalizedRunId}`;
 
   try {
@@ -539,11 +626,12 @@ export async function guardedAttachLocationImage(
             source_id,
             status,
             data_origin,
-            verification_status
+            verification_status,
+            image_kind
           )
           VALUES (
             nextval(pg_get_serial_sequence('fountain.images', 'id'))::integer,
-            'location', $1, $2, $3, $4, $5, NULL, 'active', 'scraped', 'unverified'
+            'location', $1, $2, $3, $4, $5, NULL, 'active', 'scraped', 'unverified', $6
           )
           RETURNING id
         `, [
@@ -552,6 +640,7 @@ export async function guardedAttachLocationImage(
           normalizedBlobUrl,
           normalizedSha,
           normalizedAlt,
+          normalizedImageKind,
         ]);
         assertCount("image insert", inserted, 1);
         const imageId = positiveInteger(rowsFrom(inserted)[0]?.id, "inserted image id");
@@ -565,13 +654,14 @@ export async function guardedAttachLocationImage(
                 'source', $3::text,
                 'source_image_url', $4::text,
                 'content_sha256', $5::text,
+                'image_kind', $6::text,
                 'verification', 'agent_verified'
               )
           WHERE event.entity_type = 'images'
-            AND event.entity_id = $6::integer
+            AND event.entity_id = $7::integer
             AND event.action = 'insert'
-            AND event.actor_id = $7::uuid
-            AND event.created_at >= $8::timestamptz
+            AND event.actor_id = $8::uuid
+            AND event.created_at >= $9::timestamptz
             AND NOT (COALESCE(event.metadata, '{}'::jsonb) ? 'run_id')
         `, [
           normalizedRunId,
@@ -579,6 +669,7 @@ export async function guardedAttachLocationImage(
           normalizedSource,
           normalizedImageUrl,
           normalizedSha,
+          normalizedImageKind,
           imageId,
           IMAGE_HARVEST_ACTOR_ID,
           writeStartedAt,
@@ -741,6 +832,7 @@ function candidateAttempt(candidate, outcome, validation = {}) {
     url: candidate.url,
     source: candidate.source,
     outcome,
+    image_kind: candidate.image_kind || null,
     width: validation.width || null,
     height: validation.height || null,
     bytes: validation.bytes || null,
@@ -752,6 +844,7 @@ function selectedEvidence(selected, contentSha256, blobUrl) {
     url: selected.candidate.url,
     source: selected.candidate.source,
     alt: selected.candidate.alt,
+    image_kind: selected.candidate.image_kind || null,
     content_sha256: contentSha256,
     blob_url: blobUrl,
     width: selected.validation.width,
@@ -790,8 +883,13 @@ function extractJsonLdImages(html) {
       for (const node of flattenJsonLd(JSON.parse(decodeHtml(match[1]).trim()))) {
         const type = Array.isArray(node?.["@type"]) ? node["@type"].join(" ") : String(node?.["@type"] || "");
         if (!/(?:organization|localbusiness|medicalclinic|medicalbusiness|healthandbeautybusiness)/iu.test(type)) continue;
-        const url = firstImageValue(node.image || node.logo);
-        if (url) images.push({ url, alt: cleanText(node.name, 300) });
+        const alt = cleanText(node.name, 300);
+        const imageUrl = firstImageValue(node.image);
+        const logoUrl = firstImageValue(node.logo);
+        if (imageUrl) images.push({ url: imageUrl, alt, source: "jsonld_image", imageKind: null });
+        if (logoUrl && logoUrl !== imageUrl) {
+          images.push({ url: logoUrl, alt, source: "jsonld_logo", imageKind: "logo" });
+        }
       }
     } catch {
       // Invalid embedded JSON-LD is common and is not a task failure.
@@ -823,12 +921,21 @@ function parseTagAttributes(tag) {
 }
 
 function bestImageSource(attrs) {
-  const srcset = parseSrcset(attrs.srcset || attrs["data-srcset"]);
+  const srcset = parseSrcset(bestImageSrcset(attrs));
   return srcset.sort((left, right) => right.width - left.width)[0]?.url
-    || attrs.src
-    || attrs["data-src"]
     || attrs["data-lazy-src"]
+    || attrs["bv-data-src"]
+    || attrs["data-src"]
+    || attrs.src
     || null;
+}
+
+function bestImageSrcset(attrs) {
+  return attrs["data-lazy-srcset"]
+    || attrs["bv-data-srcset"]
+    || attrs["data-srcset"]
+    || attrs.srcset
+    || "";
 }
 
 function parseSrcset(value) {
@@ -836,7 +943,7 @@ function parseSrcset(value) {
     const [url, descriptor = ""] = part.trim().split(/\s+/u);
     const width = descriptor.endsWith("w") ? Number.parseInt(descriptor, 10) : 0;
     return { url, width: Number.isInteger(width) ? width : 0 };
-  }).filter((entry) => entry.url);
+  }).filter((entry) => entry.url && !/^data:/iu.test(entry.url));
 }
 
 function largestSrcsetWidth(value) {
@@ -894,7 +1001,10 @@ function detectImageType(buffer, contentType) {
   if (buffer.subarray(0, 4).equals(Buffer.from([0x00, 0x00, 0x01, 0x00]))) {
     return { extension: "ico", contentType: "image/x-icon" };
   }
-  if (declared === "image/svg+xml") return { extension: "svg", contentType: declared };
+  const prefix = buffer.subarray(0, Math.min(buffer.length, 512)).toString("utf8").trimStart();
+  if (declared === "image/svg+xml" || /^<svg\b/iu.test(prefix) || /^<\?xml[\s\S]*?<svg\b/iu.test(prefix)) {
+    return { extension: "svg", contentType: "image/svg+xml" };
+  }
   return null;
 }
 

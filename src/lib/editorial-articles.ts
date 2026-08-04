@@ -55,7 +55,7 @@ export const editorialArticles: EditorialArticle[] = [
         dynamicTreatmentId: 20,
         dynamicTreatmentNames: ["Peptide therapy"],
         cta: {
-          label: "Browse all peptide providers on Fountain →",
+          label: "Browse all peptide providers on Fountain",
           href: "/directory?kind=locations&treatment_id=20",
         },
       },
@@ -79,7 +79,7 @@ export const editorialArticles: EditorialArticle[] = [
         dynamicTreatmentId: 25,
         dynamicTreatmentNames: ["GLP-1 weight management"],
         cta: {
-          label: "Browse GLP-1 weight management providers on Fountain →",
+          label: "Browse GLP-1 weight management providers on Fountain",
           href: "/directory?kind=locations&treatment_id=25",
         },
       },
@@ -109,7 +109,7 @@ export const editorialArticles: EditorialArticle[] = [
         ],
         dynamicTreatmentNames: ["Epigenetic age clock"],
         cta: {
-          label: "Compare biological age providers on Fountain →",
+          label: "Compare biological age providers on Fountain",
           href: "/directory?kind=locations&treatment_id=5",
         },
       },
@@ -140,7 +140,7 @@ export const editorialArticles: EditorialArticle[] = [
           "sunfert-international-fertility-centre-selangor",
         ],
         cta: {
-          label: "Browse fertility preservation providers on Fountain →",
+          label: "Browse fertility preservation providers on Fountain",
           href: "/directory?kind=locations&q=Fertility&treatment_id=9",
         },
       },

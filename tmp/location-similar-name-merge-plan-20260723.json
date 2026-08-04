@@ -1,0 +1,105 @@
+{
+  "generated_at": "2026-07-24T01:38:55.353Z",
+  "source_report": "/Users/marleneronstedt/dev/fountain/tmp/location-dedupe-reassessment-20260723.json",
+  "criteria": {
+    "tiers": [
+      "critical",
+      "high"
+    ],
+    "maximum_distance_meters": 100,
+    "minimum_raw_name_similarity": 0.6,
+    "identity_requirement": "exact/strong address similarity or shared external place ID"
+  },
+  "counts": {
+    "eligible_pairs": 4,
+    "groups": 1,
+    "affected_locations": 2,
+    "merges": 1,
+    "excluded_distinct_groups": 3
+  },
+  "excluded_distinct_groups": [
+    {
+      "location_ids": [
+        1635,
+        1636
+      ],
+      "reason": "Distinct sister clinics for men's versus women's health at a shared address"
+    },
+    {
+      "location_ids": [
+        1808,
+        1975
+      ],
+      "reason": "Distinct GIOSTAR Playa del Carmen versus Los Algodones branches; source data copied the Playa address"
+    },
+    {
+      "location_ids": [
+        2539,
+        2553
+      ],
+      "reason": "Distinct Healthy Longevity Clinic Boca Raton versus Prague protected source listings"
+    }
+  ],
+  "preflight": {
+    "protected_source_conflicts": [],
+    "slug_alias_conflicts": []
+  },
+  "groups": [
+    {
+      "survivor_id": 8800,
+      "loser_ids": [
+        2240
+      ],
+      "canonical": {
+        "name": "Cheongdam Cell Clinic",
+        "address": "15th Fl., 318, Dosan-daero, Gangnam-gu, Seoul, Republic of Korea",
+        "locality": "Dosan-daero",
+        "region": "Gangnam-gu",
+        "postal_code": null,
+        "country_code": "KR",
+        "country_name": "South Korea",
+        "latitude": 37.5220158,
+        "longitude": 127.0363493,
+        "phone": "+82 2 514 2225",
+        "email": "cheongdamcell@gmail.com",
+        "website": "http://cheongdamcell.com/en/",
+        "org_id": 1563
+      },
+      "survivor_score": 82,
+      "candidates": [
+        {
+          "id": 8800,
+          "score": 82,
+          "slug": "cheongdam-cell-clinic-dosan-daero-318-2",
+          "name": "Cheongdam Cell Clinic",
+          "address": "15th Fl., 318, Dosan-daero, Gangnam-gu, Seoul, Republic of Korea",
+          "locality": "Dosan-daero",
+          "website": "http://cheongdamcell.com/en/",
+          "org_id": 1563,
+          "organization_name": "Cheongdam Cell Clinic",
+          "offering_count": 5,
+          "review_count": 5,
+          "image_count": 1,
+          "source_count": 2,
+          "affiliation_count": 0
+        },
+        {
+          "id": 2240,
+          "score": 43,
+          "slug": "cheongdam-cell-clinic-dosan-daero-318",
+          "name": "Cheongdam Cell Clinic",
+          "address": "15F, Dosan-daero 318, Gangnam-gu, Republic of Korea MAP",
+          "locality": "Seoul",
+          "website": "http://cheongdamcell.com/en",
+          "org_id": 1563,
+          "organization_name": "Cheongdam Cell Clinic",
+          "offering_count": 5,
+          "review_count": 5,
+          "image_count": 20,
+          "source_count": 2,
+          "affiliation_count": 0
+        }
+      ]
+    }
+  ]
+}

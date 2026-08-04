@@ -13,7 +13,7 @@ const {
 } = imageHarvestModule;
 
 describe("image harvest task", () => {
-  test("extracts cached OG/JSON-LD/hero candidates in precedence order and applies legacy junk filters", () => {
+  test("extracts photos first, reserves an official logo fallback, and keeps hard junk filtered", () => {
     const html = `
       <html>
         <head>
@@ -47,9 +47,16 @@ describe("image harvest task", () => {
         source: "img",
         alt: "Treatment room",
       },
+      {
+        url: "https://clinic.example/assets/company-logo.svg",
+        source: "og_image",
+        alt: "Example Longevity",
+        image_kind: "logo",
+      },
     ]);
     expect(isJunkImageCandidate("https://clinic.example/pixel.gif", "")).toBe(true);
-    expect(isJunkImageCandidate("https://clinic.example/photo.jpg", "Company logo")).toBe(true);
+    expect(isJunkImageCandidate("https://clinic.example/favicon.ico", "")).toBe(true);
+    expect(isJunkImageCandidate("https://clinic.example/photo.jpg", "Company logo")).toBe(false);
   });
 
   test("uses the established byte, type, dimension, aspect-ratio, and processing contract", async () => {
@@ -70,8 +77,58 @@ describe("image harvest task", () => {
     }).png().toBuffer();
     await expect(validateAndProcessImage(logoShape, "image/png", { minBytes: 1 }))
       .resolves.toMatchObject({ ok: false, reason: "logo_like_aspect_ratio" });
+    await expect(validateAndProcessImage(logoShape, "image/png", { minBytes: 1, allowLogo: true }))
+      .resolves.toMatchObject({ ok: true, extension: "png", contentType: "image/png" });
     await expect(validateAndProcessImage(Buffer.from("<svg/>"), "image/svg+xml", { minBytes: 1 }))
       .resolves.toMatchObject({ ok: false, reason: "unsupported_content_type" });
+
+    const svgLogo = Buffer.from(`
+      <svg xmlns="http://www.w3.org/2000/svg" width="600" height="200">
+        <rect width="600" height="200" fill="#07542c"/>
+      </svg>
+    `);
+    await expect(validateAndProcessImage(svgLogo, "image/svg+xml", { minBytes: 1, allowLogo: true }))
+      .resolves.toMatchObject({ ok: true, extension: "webp", contentType: "image/webp" });
+
+    const extremeLogo = await sharp({
+      create: { width: 1_000, height: 10, channels: 3, background: "#ffffff" },
+    }).png().toBuffer();
+    await expect(validateAndProcessImage(extremeLogo, "image/png", { minBytes: 1, allowLogo: true }))
+      .resolves.toMatchObject({ ok: false, reason: "too_small_dimensions" });
+  });
+
+  test("reserves the final candidate slot for a logo fallback", () => {
+    const photos = Array.from({ length: 9 }, (_, index) =>
+      `<img src="/photos/room-${index}.jpg" width="900" alt="Treatment room ${index}">`).join("");
+    const html = `${photos}<img src="/assets/clinic-logo.svg" width="180" alt="Clinic logo">`;
+    const candidates = extractImageCandidates(html, "https://clinic.example/", { limit: 8 });
+
+    expect(candidates).toHaveLength(8);
+    expect(candidates.filter((candidate: { image_kind?: string }) => candidate.image_kind === "logo"))
+      .toHaveLength(1);
+    expect(candidates.at(-1)).toMatchObject({
+      url: "https://clinic.example/assets/clinic-logo.svg",
+      image_kind: "logo",
+    });
+  });
+
+  test("prefers lazy-loaded real assets and preserves a positive logo signal across duplicates", () => {
+    const html = `
+      <img src="data:image/svg+xml,%3Csvg/%3E"
+           bv-data-src="/assets/clinic-wordmark.webp"
+           class="clinic-logo"
+           alt="Clinic">
+      <img src="/assets/clinic-wordmark.webp" class="header-image" alt="Clinic">
+    `;
+
+    expect(extractImageCandidates(html, "https://clinic.example/", { limit: 8 })).toEqual([
+      {
+        url: "https://clinic.example/assets/clinic-wordmark.webp",
+        source: "img",
+        alt: "Clinic",
+        image_kind: "logo",
+      },
+    ]);
   });
 
   test("rejects a private-address binary candidate before any fetch", async () => {
@@ -169,6 +226,11 @@ describe("image harvest task", () => {
       { contentType: "image/jpeg" },
     );
     expect(blobClient.remove).not.toHaveBeenCalled();
+    expect(processImage).toHaveBeenCalledWith(
+      Buffer.from("source-image"),
+      "image/jpeg",
+      { allowLogo: false },
+    );
     expect(setActor).toHaveBeenCalledOnce();
     expect(tx.query.mock.calls.some(([sql]) => String(sql).includes("INSERT INTO fountain.images"))).toBe(true);
     expect(tx.query.mock.calls.some(([sql]) => String(sql).includes("image_harvest"))).toBe(true);

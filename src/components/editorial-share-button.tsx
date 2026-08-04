@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { Share2 } from "lucide-react";
 
 type EditorialShareButtonProps = {
   title: string;
@@ -27,9 +26,14 @@ export function EditorialShareButton({ title, url }: EditorialShareButtonProps) 
   }
 
   return (
-    <button className="dateline-share" onClick={shareArticle} type="button">
-      <span>{copied ? "Copied" : "Share"}</span>
-      <Share2 aria-hidden="true" size={14} strokeWidth={1.8} />
+    <button
+      className="editorial-share"
+      onClick={shareArticle}
+      type="button"
+      aria-label={copied ? "Link copied" : `Share ${title}`}
+      title={copied ? "Link copied" : "Share"}
+    >
+      SHARE
     </button>
   );
 }
