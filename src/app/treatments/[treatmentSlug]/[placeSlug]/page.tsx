@@ -95,6 +95,7 @@ export default async function TreatmentLocationPage({ params }: TreatmentLocatio
         initialPayload={page.payload as SearchPayload}
         initialState={page.state}
         initialTreatmentLabel={treatment}
+        initialTreatmentCategory={page.hub.treatment.category}
         searchHeading={{
           treatmentLabel: treatment,
           treatmentHref: page.hub.href,

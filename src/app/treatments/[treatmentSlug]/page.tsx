@@ -75,6 +75,7 @@ export default async function TreatmentPage({ params }: TreatmentPageProps) {
         initialPayload={page.payload as SearchPayload}
         initialState={page.state}
         initialTreatmentLabel={page.treatment.name}
+        initialTreatmentCategory={page.treatment.category}
         searchHeading={{ treatmentLabel: page.treatment.name }}
       />
       <script

@@ -93,11 +93,13 @@ export function DirectoryShell({
   initialPayload,
   initialState: seededState,
   initialTreatmentLabel,
+  initialTreatmentCategory,
   searchHeading,
 }: {
   initialPayload: SearchPayload;
   initialState: DirectoryState;
   initialTreatmentLabel?: string;
+  initialTreatmentCategory?: string;
   searchHeading?: {
     treatmentLabel: string;
     treatmentHref?: string;
@@ -319,11 +321,14 @@ export function DirectoryShell({
               <div className="empty-state">No matches. Clear a filter or broaden the search.</div>
             ) : null}
             {state.kind === "locations"
-              ? payload.results.map((result) => (
+              ? payload.results.map((result, index) => (
                   <LocationResult
                     key={result.id}
                     result={result as LocationResultRow}
                     showDistance={shouldShowDistance(payload)}
+                    clinicCategory={initialTreatmentCategory}
+                    treatmentName={initialTreatmentLabel}
+                    resultPosition={(payload.page || 0) * payload.page_size + index + 1}
                     onActiveChange={setActiveLocationId}
                   />
                 ))
@@ -348,6 +353,8 @@ export function DirectoryShell({
               locations={payload.results as LocationResultRow[]}
               activeLocationId={activeLocationId}
               focusLocation={mapFocusLocation}
+              clinicCategory={initialTreatmentCategory}
+              treatmentName={initialTreatmentLabel}
               onBoundsChange={searchMapBounds}
             />
           </aside>
@@ -444,13 +451,27 @@ function shouldShowDistance(payload: SearchPayload) {
 function LocationResult({
   result,
   showDistance,
+  clinicCategory,
+  treatmentName,
+  resultPosition,
   onActiveChange,
 }: {
   result: LocationResultRow;
   showDistance: boolean;
+  clinicCategory?: string;
+  treatmentName?: string;
+  resultPosition: number;
   onActiveChange: (id: number | null) => void;
 }) {
-  return <DirectoryLocationCard result={showDistance ? result : { ...result, distance_miles: null }} onActiveChange={onActiveChange} />;
+  return (
+    <DirectoryLocationCard
+      result={showDistance ? result : { ...result, distance_miles: null }}
+      clinicCategory={clinicCategory}
+      treatmentName={treatmentName}
+      resultPosition={resultPosition}
+      onActiveChange={onActiveChange}
+    />
+  );
 }
 
 function DirectorySearchBanner({ payload }: { payload: SearchPayload }) {

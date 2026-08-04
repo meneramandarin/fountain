@@ -577,6 +577,20 @@ export async function getTreatmentNameById(id: number) {
   return treatment?.name || null;
 }
 
+export async function getTreatmentTrackingContextById(id: number) {
+  const treatment = await row<{ name: string; category: string | null }>(
+    "SELECT canonical_name AS name, category FROM treatments WHERE id = ?",
+    [id],
+  );
+  if (!treatment) {
+    return null;
+  }
+  return {
+    name: treatment.name,
+    category: treatment.category?.trim() || "Uncategorized",
+  };
+}
+
 export async function getTreatmentLandingData(treatment: Pick<TreatmentCatalogItem, "id" | "name">): Promise<TreatmentLandingData> {
   const [summary, topCities, priceRows, providers] = await Promise.all([
     row<{ total_locations: number; total_cities: number; total_countries: number }>(
