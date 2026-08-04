@@ -39,6 +39,13 @@ blob-cleanup-report*.json
 !docs/runs/menu-price-completion.md
 !docs/runs/reviews-fetch-completion.md
 !docs/runs/run-21.md
+!analysis/search-demand/README.md
+
+# Search-demand research: keep the reproducible workflow, not private exports.
+analysis/search-demand/raw/**
+analysis/search-demand/output/**
+!analysis/search-demand/raw/.gitkeep
+!analysis/search-demand/output/.gitkeep
 
 # SQLite runtime sidecars
 *.sqlite-wal

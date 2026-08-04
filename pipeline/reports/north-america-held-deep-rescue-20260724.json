@@ -1,0 +1,790 @@
+{
+  "manifest_version": 1,
+  "campaign": "north_america_metro_coverage_20260724",
+  "generated_at": "2026-07-24",
+  "scope": {
+    "selection": "status=needs_review AND promoted_location_id IS NULL AND address_verified=false",
+    "database_access": "read_only",
+    "google_api_used": false,
+    "coordinate_policy": "Coordinates are included only when published by a first-party source. No address geocoding was performed.",
+    "promotion_performed": false
+  },
+  "counts": {
+    "selected": 29,
+    "confirm": 16,
+    "correct": 7,
+    "hold": 6
+  },
+  "rows": [
+    {
+      "candidate_id": 3003,
+      "name": "Men’s Vitality Clinic",
+      "action": "correct",
+      "confidence": 0.99,
+      "staged_address": {
+        "address": "5678 Cambie St",
+        "locality": "Vancouver",
+        "region": "BC",
+        "postal_code": "V5Z 3A4",
+        "country_code": "CA"
+      },
+      "proposed_address": {
+        "address": "1433 Cedar Cottage Mews",
+        "locality": "Vancouver",
+        "region": "BC",
+        "postal_code": "V5N 2R5",
+        "country_code": "CA",
+        "latitude": null,
+        "longitude": null
+      },
+      "evidence": {
+        "url": "https://mensvitality.clinic/contact/",
+        "type": "official_site",
+        "first_party": true
+      },
+      "reason": "The clinic’s official contact page publishes the Cedar Cottage Mews address; the staged Cambie Street address is not current."
+    },
+    {
+      "candidate_id": 3332,
+      "name": "Perspire Sauna Studio - Buckhead",
+      "action": "confirm",
+      "confidence": 0.99,
+      "staged_address": {
+        "address": "322 Pharr Road Northeast",
+        "locality": "Atlanta",
+        "region": "GA",
+        "postal_code": "30305",
+        "country_code": "US"
+      },
+      "proposed_address": {
+        "address": "322 Pharr Road Northeast",
+        "locality": "Atlanta",
+        "region": "GA",
+        "postal_code": "30305",
+        "country_code": "US",
+        "latitude": null,
+        "longitude": null
+      },
+      "evidence": {
+        "url": "https://www.perspiresaunastudio.com/locations/buckhead-online-store",
+        "type": "official_site",
+        "first_party": true
+      },
+      "reason": "Perspire’s official Buckhead page confirms the branch name, street, postal code, and current phone."
+    },
+    {
+      "candidate_id": 3393,
+      "name": "VitaFusion Doctors",
+      "action": "correct",
+      "confidence": 0.99,
+      "staged_address": {
+        "address": "600 Pennsylvania Ave SE Suite 490",
+        "locality": "Washington",
+        "region": "DC",
+        "postal_code": "20003",
+        "country_code": "US"
+      },
+      "proposed_address": {
+        "address": "8130 Boone Boulevard, Suite 340",
+        "locality": "Vienna",
+        "region": "VA",
+        "postal_code": "22182",
+        "country_code": "US",
+        "latitude": null,
+        "longitude": null
+      },
+      "evidence": {
+        "url": "https://www.vitafusiondoctors.com/location/washington-dc/",
+        "type": "official_site",
+        "first_party": true
+      },
+      "reason": "The official Washington service-area page identifies the physical clinic in Vienna, Virginia; the staged DC address is not the clinic."
+    },
+    {
+      "candidate_id": 3477,
+      "name": "Philly IV Lounge",
+      "action": "correct",
+      "confidence": 0.99,
+      "staged_address": {
+        "address": "1912 W Girard Ave",
+        "locality": "Philadelphia",
+        "region": "PA",
+        "postal_code": "19121",
+        "country_code": "US"
+      },
+      "proposed_address": {
+        "address": "209 West Girard Avenue",
+        "locality": "Philadelphia",
+        "region": "PA",
+        "postal_code": "19123",
+        "country_code": "US",
+        "latitude": null,
+        "longitude": null
+      },
+      "evidence": {
+        "url": "https://phillyiv.com/contact/",
+        "type": "official_site",
+        "first_party": true
+      },
+      "reason": "The current official contact page publishes 209 West Girard Avenue."
+    },
+    {
+      "candidate_id": 3524,
+      "name": "COPE Psychiatry (Media/Philadelphia)",
+      "action": "confirm",
+      "confidence": 0.94,
+      "staged_address": {
+        "address": "1088 W. Baltimore Pike, Suite 2403",
+        "locality": "Media",
+        "region": "PA",
+        "postal_code": "19063",
+        "country_code": "US"
+      },
+      "proposed_address": {
+        "address": "1088 West Baltimore Pike, Suite 2403",
+        "locality": "Media",
+        "region": "PA",
+        "postal_code": "19063",
+        "country_code": "US",
+        "latitude": null,
+        "longitude": null
+      },
+      "evidence": {
+        "url": "https://healingmaps.com/listing/cope-psychiatry-philadelphia-pennsylvania/",
+        "type": "verified_specialist_directory",
+        "first_party": false
+      },
+      "reason": "A recently verified specialist profile matches the business name, website, phone, and complete staged address; the official site was not technically retrievable."
+    },
+    {
+      "candidate_id": 3548,
+      "name": "C.R.Y.O. Philadelphia",
+      "action": "confirm",
+      "confidence": 0.99,
+      "staged_address": {
+        "address": "8011 Germantown Ave",
+        "locality": "Philadelphia",
+        "region": "PA",
+        "postal_code": "19118",
+        "country_code": "US"
+      },
+      "proposed_address": {
+        "address": "8011 Germantown Avenue",
+        "locality": "Philadelphia",
+        "region": "PA",
+        "postal_code": "19118",
+        "country_code": "US",
+        "latitude": null,
+        "longitude": null
+      },
+      "evidence": {
+        "url": "https://cryophiladelphia.com/contact/",
+        "type": "official_site",
+        "first_party": true
+      },
+      "reason": "The official contact page confirms the complete staged address."
+    },
+    {
+      "candidate_id": 3584,
+      "name": "Kalypso Wellness",
+      "action": "hold",
+      "confidence": 0.98,
+      "staged_address": {
+        "address": "12345 Westheimer Rd Suite 100",
+        "locality": "Houston",
+        "region": "TX",
+        "postal_code": "77077",
+        "country_code": "US"
+      },
+      "proposed_address": null,
+      "evidence": {
+        "url": "https://www.kalypsowellness.com/peptide-therapy-in-houston-tx/",
+        "type": "official_site_unavailable",
+        "first_party": true
+      },
+      "reason": "The official page is unavailable and no authoritative source corroborates the staged address, which has a placeholder-like street number. Do not promote without a current physical-address source."
+    },
+    {
+      "candidate_id": 3643,
+      "name": "Baltimore Ketamine Groups",
+      "action": "correct",
+      "confidence": 0.95,
+      "staged_address": {
+        "address": "7890 Harford Rd",
+        "locality": "Baltimore",
+        "region": "MD",
+        "postal_code": "21234",
+        "country_code": "US"
+      },
+      "proposed_address": {
+        "address": "1501 Sulgrave Avenue",
+        "locality": "Baltimore",
+        "region": "MD",
+        "postal_code": "21209",
+        "country_code": "US",
+        "latitude": null,
+        "longitude": null
+      },
+      "evidence": {
+        "url": "https://www.psychologytoday.com/us/psychiatrists/dinah-miller-m-d-baltimore-md/1217126",
+        "type": "verified_provider_directory",
+        "first_party": false,
+        "additional_urls": [
+          "https://www.baltimoreketaminegroups.com/"
+        ]
+      },
+      "reason": "The official site identifies the clinician, specialty, Mt. Washington Village locality, and current phone; the verified clinician profile supplies the exact matching office address. The staged address and 555 phone are invalid."
+    },
+    {
+      "candidate_id": 3655,
+      "name": "Gameday Men’s Health",
+      "action": "hold",
+      "confidence": 0.99,
+      "staged_address": {
+        "address": "4567 Rue de la Performance",
+        "locality": "Montréal",
+        "region": "QC",
+        "postal_code": "H3X 1A1",
+        "country_code": "CA"
+      },
+      "proposed_address": null,
+      "evidence": {
+        "url": "https://gamedaymenshealth.ca/location-directory",
+        "type": "official_location_directory",
+        "first_party": true
+      },
+      "reason": "The official Canadian location directory does not list a Montréal clinic, and the staged street and phone are uncorroborated and placeholder-like."
+    },
+    {
+      "candidate_id": 3817,
+      "name": "NUMA Health Clinic",
+      "action": "hold",
+      "confidence": 0.99,
+      "staged_address": {
+        "address": "9101 Maple St",
+        "locality": "Vancouver",
+        "region": "BC",
+        "postal_code": "V5T 1A1",
+        "country_code": "CA"
+      },
+      "proposed_address": null,
+      "evidence": {
+        "url": "https://numahealthclinic.ca/",
+        "type": "official_site",
+        "first_party": true
+      },
+      "reason": "The official site publishes Vancouver, BC and a phone number but no street address. The staged address and contact details are not corroborated and appear synthetic."
+    },
+    {
+      "candidate_id": 5192,
+      "name": "Wellspring MD",
+      "action": "correct",
+      "confidence": 0.99,
+      "staged_address": {
+        "address": "4300 Paces Ferry Rd SE Ste 500",
+        "locality": "Atlanta",
+        "region": "GA",
+        "postal_code": "30339",
+        "country_code": "US"
+      },
+      "proposed_address": {
+        "address": "4405 Northside Parkway Northwest, Suite 2103",
+        "locality": "Atlanta",
+        "region": "GA",
+        "postal_code": "30327",
+        "country_code": "US",
+        "latitude": null,
+        "longitude": null
+      },
+      "evidence": {
+        "url": "https://wellspringmd.org/",
+        "type": "official_site",
+        "first_party": true
+      },
+      "reason": "The current official site lists Atlanta and Alpharetta offices; this candidate’s Atlanta address is the Northside Parkway office."
+    },
+    {
+      "candidate_id": 5370,
+      "name": "Perspire Sauna Studio - Midtown",
+      "action": "confirm",
+      "confidence": 0.92,
+      "staged_address": {
+        "address": "915 W. Peachtree St.",
+        "locality": "Atlanta",
+        "region": "GA",
+        "postal_code": null,
+        "country_code": "US"
+      },
+      "proposed_address": {
+        "address": "915 West Peachtree Street Northwest, Suite 2",
+        "locality": "Atlanta",
+        "region": "GA",
+        "postal_code": "30309",
+        "country_code": "US",
+        "latitude": null,
+        "longitude": null
+      },
+      "evidence": {
+        "url": "https://classpass.fr/studios/perspire-sauna-studio-midtown-atlanta",
+        "type": "current_booking_directory",
+        "first_party": false,
+        "additional_urls": [
+          "https://maps.apple.com/place?place-id=I11935505722CE792"
+        ]
+      },
+      "reason": "A current booking listing and Apple Maps corroborate the active Midtown branch, staged street, suite, postal code, and brand identity; the old official branch URL now redirects."
+    },
+    {
+      "candidate_id": 5384,
+      "name": "Bmore Hydrated",
+      "action": "hold",
+      "confidence": 0.99,
+      "staged_address": {
+        "address": "1016 S Robinson St",
+        "locality": "Baltimore",
+        "region": "MD",
+        "postal_code": "21224",
+        "country_code": "US"
+      },
+      "proposed_address": null,
+      "evidence": {
+        "url": "https://bmorehydrated.com/",
+        "type": "official_site",
+        "first_party": true
+      },
+      "reason": "The current official site gives no fixed location and states IV hydration is not currently offered. Historical sources conflict among South Robinson, Point Street, and Thames Street addresses."
+    },
+    {
+      "candidate_id": 5400,
+      "name": "Orijin Restore",
+      "action": "confirm",
+      "confidence": 0.98,
+      "staged_address": {
+        "address": "3665 Kingsway",
+        "locality": "Vancouver",
+        "region": "BC",
+        "postal_code": "V5R 5W2",
+        "country_code": "CA"
+      },
+      "proposed_address": {
+        "address": "3665 Kingsway, Unit 150",
+        "locality": "Vancouver",
+        "region": "BC",
+        "postal_code": "V5R 5W2",
+        "country_code": "CA",
+        "latitude": null,
+        "longitude": null
+      },
+      "evidence": {
+        "url": "https://orijinyoga.com/parking/",
+        "type": "official_affiliate_site",
+        "first_party": true
+      },
+      "reason": "Orijin Restore’s official site links to the affiliated Orijin Yoga visit page, which publishes the shared Kingsway address and unit."
+    },
+    {
+      "candidate_id": 5407,
+      "name": "COPE Psychiatry - Charlotte",
+      "action": "confirm",
+      "confidence": 0.94,
+      "staged_address": {
+        "address": "3101 Latrobe Drive",
+        "locality": "Charlotte",
+        "region": "NC",
+        "postal_code": "28211",
+        "country_code": "US"
+      },
+      "proposed_address": {
+        "address": "3101 Latrobe Drive",
+        "locality": "Charlotte",
+        "region": "NC",
+        "postal_code": "28211",
+        "country_code": "US",
+        "latitude": null,
+        "longitude": null
+      },
+      "evidence": {
+        "url": "https://healingmaps.com/listing/cope-psychiatry-charlotte-north-carolina/",
+        "type": "verified_specialist_directory",
+        "first_party": false
+      },
+      "reason": "A recently verified specialist profile matches the business name, website, phone, and complete staged address; the official site was not technically retrievable."
+    },
+    {
+      "candidate_id": 5411,
+      "name": "Ketamine Intervention Program at UBC Hospital",
+      "action": "confirm",
+      "confidence": 1,
+      "staged_address": {
+        "address": "2255 Wesbrook Mall",
+        "locality": "Vancouver",
+        "region": "BC",
+        "postal_code": null,
+        "country_code": "CA"
+      },
+      "proposed_address": {
+        "address": "Detwiller Pavilion, UBC Hospital, 2255 Wesbrook Mall",
+        "locality": "Vancouver",
+        "region": "BC",
+        "postal_code": "V6T 2A1",
+        "country_code": "CA",
+        "latitude": null,
+        "longitude": null
+      },
+      "evidence": {
+        "url": "https://www.vch.ca/en/location-service/ketamine-intervention-program-ubc-hospital",
+        "type": "official_health_authority_site",
+        "first_party": true
+      },
+      "reason": "Vancouver Coastal Health’s official program page confirms the hospital, pavilion, street, and postal code."
+    },
+    {
+      "candidate_id": 5436,
+      "name": "AIMS Institute",
+      "action": "correct",
+      "confidence": 0.99,
+      "staged_address": {
+        "address": "2825 Eastlake Ave E Suite 115",
+        "locality": "Seattle",
+        "region": "WA",
+        "postal_code": "98102",
+        "country_code": "US"
+      },
+      "proposed_address": {
+        "address": "1136 Poplar Place South",
+        "locality": "Seattle",
+        "region": "WA",
+        "postal_code": "98144",
+        "country_code": "US",
+        "latitude": null,
+        "longitude": null
+      },
+      "evidence": {
+        "url": "https://www.aimsinstitute.net/",
+        "type": "official_site",
+        "first_party": true
+      },
+      "reason": "The current official homepage and footer publish the Poplar Place office; the staged Eastlake address is historical."
+    },
+    {
+      "candidate_id": 5493,
+      "name": "Toronto Functional Medicine Centre",
+      "action": "confirm",
+      "confidence": 0.99,
+      "staged_address": {
+        "address": "55 Avenue Road Suite 204",
+        "locality": "Toronto",
+        "region": "ON",
+        "postal_code": null,
+        "country_code": "CA"
+      },
+      "proposed_address": {
+        "address": "55 Avenue Road, Suite 204",
+        "locality": "Toronto",
+        "region": "ON",
+        "postal_code": "M5R 3L2",
+        "country_code": "CA",
+        "latitude": null,
+        "longitude": null
+      },
+      "evidence": {
+        "url": "https://torontofunctionalmedicine.com/contact-us/",
+        "type": "official_site",
+        "first_party": true
+      },
+      "reason": "The current official contact and directions content repeatedly identify 55 Avenue Road, Suite 204, and supply the missing postal code."
+    },
+    {
+      "candidate_id": 5637,
+      "name": "Drip Hydration - Mobile IV Therapy - Atlanta",
+      "action": "hold",
+      "confidence": 0.99,
+      "staged_address": {
+        "address": "691 John Wesley Dobbs Ave NE #c",
+        "locality": "Atlanta",
+        "region": "GA",
+        "postal_code": "30312",
+        "country_code": "US"
+      },
+      "proposed_address": null,
+      "evidence": {
+        "url": "https://driphydration.com/",
+        "type": "official_site",
+        "first_party": true
+      },
+      "reason": "The official site describes an on-demand mobile service delivered to homes, offices, and hotels and does not publish an Atlanta storefront. The staged street should not be mapped as a clinic."
+    },
+    {
+      "candidate_id": 5667,
+      "name": "Perspire Sauna Studio (Paradise Valley)",
+      "action": "confirm",
+      "confidence": 0.96,
+      "staged_address": {
+        "address": "7001 N Scottsdale Rd #C-140",
+        "locality": "Scottsdale",
+        "region": "AZ",
+        "postal_code": "85253",
+        "country_code": "US"
+      },
+      "proposed_address": {
+        "address": "7001 North Scottsdale Road, Suite C-140",
+        "locality": "Scottsdale",
+        "region": "AZ",
+        "postal_code": "85253",
+        "country_code": "US",
+        "latitude": null,
+        "longitude": null
+      },
+      "evidence": {
+        "url": "https://www.prweb.com/releases/Perspire_Sauna_Studio_Coming_Soon_to_Paradise_Valley_Scottsdale/prweb18598728.htm",
+        "type": "branded_press_release",
+        "first_party": false
+      },
+      "reason": "The brand’s opening announcement confirms the Paradise Valley/Scottsdale branch and street; current business-directory records corroborate the suite, postal code, and phone."
+    },
+    {
+      "candidate_id": 5689,
+      "name": "Fishtown Medicine",
+      "action": "confirm",
+      "confidence": 0.99,
+      "staged_address": {
+        "address": "2418 E York St",
+        "locality": "Philadelphia",
+        "region": "PA",
+        "postal_code": "19125",
+        "country_code": "US"
+      },
+      "proposed_address": {
+        "address": "2418 East York Street",
+        "locality": "Philadelphia",
+        "region": "PA",
+        "postal_code": "19125",
+        "country_code": "US",
+        "latitude": null,
+        "longitude": null
+      },
+      "evidence": {
+        "url": "https://www.fishtownmedicine.com/about/terms-of-service",
+        "type": "official_site",
+        "first_party": true
+      },
+      "reason": "The current official site and terms page confirm the complete staged address."
+    },
+    {
+      "candidate_id": 5698,
+      "name": "Kore MD Health and Wellness",
+      "action": "confirm",
+      "confidence": 0.99,
+      "staged_address": {
+        "address": "801 Moreland Ave SE",
+        "locality": "Atlanta",
+        "region": "GA",
+        "postal_code": "30316",
+        "country_code": "US"
+      },
+      "proposed_address": {
+        "address": "801 Moreland Avenue Southeast",
+        "locality": "Atlanta",
+        "region": "GA",
+        "postal_code": "30316",
+        "country_code": "US",
+        "latitude": null,
+        "longitude": null
+      },
+      "evidence": {
+        "url": "https://www.koremdhealthandwellness.com/contact-us/",
+        "type": "official_site",
+        "first_party": true
+      },
+      "reason": "The official contact page confirms the complete staged address."
+    },
+    {
+      "candidate_id": 5738,
+      "name": "SALT Hydration & Wellness",
+      "action": "hold",
+      "confidence": 0.99,
+      "staged_address": {
+        "address": "4567 12th Ave NE",
+        "locality": "Seattle",
+        "region": "WA",
+        "postal_code": "98105",
+        "country_code": "US"
+      },
+      "proposed_address": null,
+      "evidence": {
+        "url": "https://www.salthydrationandwellness.com/coverage-areas/seattle",
+        "type": "official_site",
+        "first_party": true
+      },
+      "reason": "The official Seattle page describes a mobile service delivered to homes, hotels, and offices and publishes no clinic address. The staged address is uncorroborated and placeholder-like."
+    },
+    {
+      "candidate_id": 5739,
+      "name": "Southwest Mind & Body Care",
+      "action": "confirm",
+      "confidence": 0.99,
+      "staged_address": {
+        "address": "8989 Harry Hines Blvd Ste 200",
+        "locality": "Dallas",
+        "region": "TX",
+        "postal_code": "75247",
+        "country_code": "US"
+      },
+      "proposed_address": {
+        "address": "8989 Harry Hines Boulevard, Suite 200",
+        "locality": "Dallas",
+        "region": "TX",
+        "postal_code": "75247",
+        "country_code": "US",
+        "latitude": null,
+        "longitude": null
+      },
+      "evidence": {
+        "url": "https://southwestmindandbody.com/contact-us",
+        "type": "official_site",
+        "first_party": true
+      },
+      "reason": "The official contact page confirms the exact staged address, including the 75247 postal code."
+    },
+    {
+      "candidate_id": 5757,
+      "name": "Boulder Longevity Institute",
+      "action": "correct",
+      "confidence": 0.95,
+      "staged_address": {
+        "address": "4567 N Broadway",
+        "locality": "Boulder",
+        "region": "CO",
+        "postal_code": "80304",
+        "country_code": "US"
+      },
+      "proposed_address": {
+        "address": "3223 Arapahoe Avenue, Suite 300",
+        "locality": "Boulder",
+        "region": "CO",
+        "postal_code": "80303",
+        "country_code": "US",
+        "latitude": null,
+        "longitude": null
+      },
+      "evidence": {
+        "url": "https://boulderlongevity.com/",
+        "type": "official_site",
+        "first_party": true
+      },
+      "reason": "The current official homepage publishes 3223 Arapahoe Avenue, superseding historical Arapahoe locations. The staged Broadway address is uncorroborated and placeholder-like."
+    },
+    {
+      "candidate_id": 5759,
+      "name": "PORTAL° Thermaculture Boulder",
+      "action": "confirm",
+      "confidence": 0.99,
+      "staged_address": {
+        "address": "4949 Broadway #113",
+        "locality": "Boulder",
+        "region": "CO",
+        "postal_code": "80304",
+        "country_code": "US"
+      },
+      "proposed_address": {
+        "address": "4949 Broadway, Suite 113",
+        "locality": "Boulder",
+        "region": "CO",
+        "postal_code": "80304",
+        "country_code": "US",
+        "latitude": null,
+        "longitude": null
+      },
+      "evidence": {
+        "url": "https://www.portalthermaculture.com/world",
+        "type": "official_site",
+        "first_party": true
+      },
+      "reason": "The official locations page confirms the complete staged address."
+    },
+    {
+      "candidate_id": 5805,
+      "name": "Veritas MindHealth",
+      "action": "confirm",
+      "confidence": 0.99,
+      "staged_address": {
+        "address": "100 Galen Street Suite 302",
+        "locality": "Watertown",
+        "region": "MA",
+        "postal_code": "02472",
+        "country_code": "US"
+      },
+      "proposed_address": {
+        "address": "100 Galen Street, Suite 302",
+        "locality": "Watertown",
+        "region": "MA",
+        "postal_code": "02472",
+        "country_code": "US",
+        "latitude": null,
+        "longitude": null
+      },
+      "evidence": {
+        "url": "https://www.veritasmindhealth.com/contact",
+        "type": "official_site",
+        "first_party": true
+      },
+      "reason": "The official contact page confirms the complete staged address."
+    },
+    {
+      "candidate_id": 5808,
+      "name": "QC Medispa",
+      "action": "confirm",
+      "confidence": 0.99,
+      "staged_address": {
+        "address": "2711 Randolph Road Ste 207",
+        "locality": "Charlotte",
+        "region": "NC",
+        "postal_code": "28207",
+        "country_code": "US"
+      },
+      "proposed_address": {
+        "address": "2711 Randolph Road, Suite 207",
+        "locality": "Charlotte",
+        "region": "NC",
+        "postal_code": "28207",
+        "country_code": "US",
+        "latitude": null,
+        "longitude": null
+      },
+      "evidence": {
+        "url": "https://www.qcmedispa.com/about/",
+        "type": "official_site",
+        "first_party": true
+      },
+      "reason": "The official site confirms the complete staged address."
+    },
+    {
+      "candidate_id": 5861,
+      "name": "Perspire Sauna Studio - West Des Moines",
+      "action": "confirm",
+      "confidence": 0.95,
+      "staged_address": {
+        "address": "140 Jordan Creek Pkwy Ste 155",
+        "locality": "West Des Moines",
+        "region": "IA",
+        "postal_code": "50266",
+        "country_code": "US"
+      },
+      "proposed_address": {
+        "address": "140 Jordan Creek Parkway, Suite 155",
+        "locality": "West Des Moines",
+        "region": "IA",
+        "postal_code": "50266",
+        "country_code": "US",
+        "latitude": null,
+        "longitude": null
+      },
+      "evidence": {
+        "url": "https://www.bbb.org/us/ia/west-des-moines/profile/health-and-wellness/perspire-sauna-studio-0664-32153331",
+        "type": "business_registry",
+        "first_party": false
+      },
+      "reason": "The BBB business profile and the branch’s official social listing corroborate the exact address and current contact details."
+    }
+  ]
+}

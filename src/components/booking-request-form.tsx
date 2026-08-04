@@ -269,7 +269,7 @@ export function BookingRequestForm({
     >
       <div className="booking-modal">
         <form ref={formRef} onSubmit={submit}>
-              <div className={`booking-workspace${step === "success" ? " is-success" : ""}`}>
+              <div className={`booking-workspace booking-step-${step}${step === "success" ? " is-success" : ""}`}>
                 <main className="booking-step-content">
                   {step !== "success" ? <BookingStepIndicator step={step} /> : null}
                   {step === "services" ? (

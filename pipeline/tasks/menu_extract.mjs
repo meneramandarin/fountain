@@ -257,6 +257,7 @@ export async function handleMenuExtract(
     runId,
     attempts: task?.attempts,
     llmClient,
+    model: task?.payload?.model,
   });
   const mappingResult = await executeQuery(query, MENU_TREATMENT_MAP_SQL, []);
   const treatmentMap = buildTreatmentMap(rowsFrom(mappingResult));
@@ -408,12 +409,14 @@ export async function extractOfferingsWithLlm({
   runId,
   attempts = 1,
   llmClient,
+  model: requestedModel,
 }) {
   if (!llmClient || typeof llmClient.complete !== "function") {
     throw new TypeError("llmClient must expose complete().");
   }
   const evidenceChars = pages.reduce((total, page) => total + String(page?.content || "").length, 0);
-  const model = evidenceChars > 6_000 ? "openai/gpt-5.5" : undefined;
+  const model = cleanText(requestedModel, 200)
+    || (evidenceChars > 6_000 ? "openai/gpt-5.5" : undefined);
   const maxTokens = evidenceChars > 6_000
     ? MENU_EXTRACT_MAX_TOKENS_CAP
     : menuExtractMaxTokens(attempts);

@@ -49,6 +49,12 @@ export function createOpenRouterAgentWebSearch({
   webSearchRequestUsd = OPENROUTER_WEB_SEARCH_REQUEST_USD,
   httpReferer = "https://fountain.clinic",
   title = "Fountain website discovery",
+  systemPrompt = [
+    "Find the official website for the supplied business identity.",
+    "Use the web-search tool for the supplied query, do not invent URLs,",
+    "and briefly identify the best official-site candidate from the cited results.",
+  ].join(" "),
+  callType = "website_discovery_web_search",
 } = {}) {
   if (typeof fetchImpl !== "function") {
     throw new TypeError("Web-search fetch implementation must be a function.");
@@ -56,6 +62,8 @@ export function createOpenRouterAgentWebSearch({
   if (typeof sleep !== "function") {
     throw new TypeError("Web-search sleep implementation must be a function.");
   }
+  assertNonEmptyString(systemPrompt, "systemPrompt");
+  assertNonEmptyString(callType, "callType");
   const selectedModel = resolveModel(model || tier, tiers);
   getModelPrice(selectedModel, prices);
   const normalizedMaxResults = boundedInteger(maxResults, 1, 25, "maxResults");
@@ -91,11 +99,7 @@ export function createOpenRouterAgentWebSearch({
       messages: [
         {
           role: "system",
-          content: [
-            "Find the official website for the supplied business identity.",
-            "Use the web-search tool for the supplied query, do not invent URLs,",
-            "and briefly identify the best official-site candidate from the cited results.",
-          ].join(" "),
+          content: systemPrompt.trim(),
         },
         {
           role: "user",
@@ -119,7 +123,6 @@ export function createOpenRouterAgentWebSearch({
       max_tokens: normalizedMaxTokens,
       usage: { include: true },
     };
-    const callType = "website_discovery_web_search";
     const requestFingerprint = fingerprint({ endpoint, callType, requestBody });
     let finalError = null;
     let finalStatus = null;
@@ -174,6 +177,7 @@ export function createOpenRouterAgentWebSearch({
           web_search_requests: webSearchRequests,
           web_search_results: results.length,
         };
+        const content = optionalString(body?.choices?.[0]?.message?.content) || "";
         const externalCallId = await insertExternalCall(database.query, {
           runId: normalizedRunId,
           callType,
@@ -186,6 +190,7 @@ export function createOpenRouterAgentWebSearch({
           costEstimateUsd,
         });
         return {
+          content,
           results,
           model: body?.model || selectedModel,
           usage: meteredUsage,

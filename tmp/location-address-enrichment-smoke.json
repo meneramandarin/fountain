@@ -1,0 +1,81 @@
+{
+  "generated_at": "2026-07-24T00:29:18.496Z",
+  "model": "z-ai/glm-4.7-flash",
+  "results": [
+    {
+      "location": {
+        "id": 2170,
+        "slug": "vo2-max-scan-ireland-formerly-bodyscan",
+        "name": "VO2 Max Scan Ireland (formerly Bodyscan)",
+        "address": "Limerick, Ireland",
+        "locality": "Limerick",
+        "region": null,
+        "postal_code": "V94 F6WN",
+        "country_code": "IE",
+        "country_name": "Ireland",
+        "website": "https://bodyscanireland.setmore.com/",
+        "latitude": null,
+        "longitude": null,
+        "status": "active",
+        "is_virtual": false
+      },
+      "research": {
+        "model": null,
+        "output": {
+          "status": "found",
+          "address": "Limerick, Ireland",
+          "locality": "Limerick",
+          "region": null,
+          "postal_code": "V94 F6WN",
+          "country_code": "IE",
+          "official_website": "https://bodyscanireland.setmore.com/",
+          "source_url": "https://bodyscanireland.setmore.com/",
+          "evidence": "Existing database address; geocoding repair only.",
+          "confidence": "high"
+        },
+        "citations": [],
+        "usage": null,
+        "error": null
+      },
+      "evidence_validation": {
+        "valid": true,
+        "reason": "existing_address"
+      },
+      "geocode": {
+        "provider": "arcgis_world_geocoder",
+        "query": "Limerick, Ireland, Limerick, V94 F6WN, Ireland",
+        "latitude": 52.652350684,
+        "longitude": -8.592062466122,
+        "score": 92.43,
+        "matched_address": "V94 F6WN, Limerick",
+        "address_type": "PostalExt",
+        "city": "Limerick",
+        "region": "Limerick",
+        "postal_code": "V94 F6WN",
+        "country": "IRL",
+        "country_code": null,
+        "old_coordinate_distance_km": null
+      },
+      "geocode_validation": {
+        "valid": true,
+        "reason": "geocode_match",
+        "score": 92.43,
+        "address_type": "PostalExt",
+        "distance_km": null
+      },
+      "decision": "ready",
+      "reason": "official_web_evidence_and_geocode_match",
+      "proposed": {
+        "address": "Limerick, Ireland",
+        "locality": "Limerick",
+        "region": null,
+        "postal_code": "V94 F6WN",
+        "country_code": "IE",
+        "country_name": "Ireland",
+        "website": "https://bodyscanireland.setmore.com/",
+        "latitude": 52.652350684,
+        "longitude": -8.592062466122
+      }
+    }
+  ]
+}

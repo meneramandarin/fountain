@@ -145,6 +145,7 @@ export async function handleContactFill(
     return skippedResult({ taskId, runId, locationId, reason: "location_missing" });
   }
   const initial = normalizeLocation(initialRow);
+  const placesAllowed = task?.payload?.skip_google_places !== true;
   if (!isActiveAndUnsuppressed(initial)) {
     return skippedResult({
       taskId,
@@ -178,7 +179,7 @@ export async function handleContactFill(
 
   // A stored provider ID is the one exception to agent-first discovery: it is
   // stronger identity evidence, so contact details are fetched directly.
-  if (!workingWebsite && storedPlaceMatch && await budget.allowDetails()) {
+  if (placesAllowed && !workingWebsite && storedPlaceMatch && await budget.allowDetails()) {
     storedDetailsAttempted = true;
     evidence.discovery_order.push("stored_provider_details");
     placesDetails = await safePlacesDetails({
@@ -205,7 +206,7 @@ export async function handleContactFill(
     if (agent.official_website) workingWebsite = agent.official_website;
   }
 
-  if (!workingWebsite && await budget.allowDetails()) {
+  if (placesAllowed && !workingWebsite && await budget.allowDetails()) {
     evidence.discovery_order.push("places_search_details_fallback");
     const searchedDetails = await searchPlacesDetails({
       placesClient,
@@ -261,7 +262,7 @@ export async function handleContactFill(
     && !writes[field].written
     && !writes[field].attempted
   );
-  if (["website", "phone", "address"].some(stillMissing)) {
+  if (placesAllowed && ["website", "phone", "address"].some(stillMissing)) {
     if (!placesDetails && await budget.allowDetails()) {
       evidence.discovery_order.push("final_places_contact_fill");
       if (storedPlaceMatch && !storedDetailsAttempted) {

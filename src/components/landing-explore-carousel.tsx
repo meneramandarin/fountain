@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { ArrowLeft, ArrowRight } from "lucide-react";
 import { useEffect, useRef } from "react";
 
 export type LandingExploreItem = {
@@ -115,12 +116,12 @@ export function LandingExploreCarousel({ items }: LandingExploreCarouselProps) {
     <section className="landing-explore" aria-labelledby="landing-explore-title">
       <div className="landing-explore-header">
         <h2 id="landing-explore-title">On the pursuit of a longer life</h2>
-        <div className="landing-explore-controls" role="group" aria-label="Carousel controls">
+        <div className="landing-featured-controls landing-explore-controls" role="group" aria-label="Carousel controls">
           <button type="button" onClick={() => scrollRail(-1)} aria-label="Scroll left">
-            <span className="landing-explore-arrow landing-explore-arrow-left" aria-hidden="true" />
+            <ArrowLeft size={18} aria-hidden="true" />
           </button>
           <button type="button" onClick={() => scrollRail(1)} aria-label="Scroll right">
-            <span className="landing-explore-arrow landing-explore-arrow-right" aria-hidden="true" />
+            <ArrowRight size={18} aria-hidden="true" />
           </button>
         </div>
       </div>

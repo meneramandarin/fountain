@@ -1,6 +1,6 @@
 "use client";
 
-import { Building2, MapPin, Star } from "lucide-react";
+import { ArrowRight, MapPin, Star } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
@@ -112,9 +112,7 @@ export function DirectoryLocationCard({
             />
           </>
         ) : (
-          <span className="result-photo-fallback" aria-hidden="true">
-            <Building2 size={26} aria-hidden="true" />
-          </span>
+          <span className="result-photo-fallback listing-image-fallback" aria-hidden="true" />
         )}
         {result.rating ? (
           <span className="result-rating-badge">
@@ -141,11 +139,19 @@ export function DirectoryLocationCard({
             {place || "Location unavailable"}
           </small>
         </span>
-        <span className="result-side">
-          {mobileService ? <em>Mobile service</em> : type ? <em>{type.value}</em> : null}
-          {price ? <small>From {price}</small> : null}
-          {result.review_count ? <small>{Number(result.review_count).toLocaleString()} reviews</small> : null}
-          {result.distance_miles != null ? <small>{formatDistance(result.distance_miles)} away</small> : null}
+        <span className="result-card-footer">
+          <span className="result-side">
+            {mobileService ? <em>Mobile service</em> : type ? <em>{type.value}</em> : null}
+            {price || result.review_count ? (
+              <span className="listing-price-reviews">
+                {price ? <small>From {price}</small> : null}
+                {price && result.review_count ? <i aria-hidden="true">·</i> : null}
+                {result.review_count ? <small>{Number(result.review_count).toLocaleString()} reviews</small> : null}
+              </span>
+            ) : null}
+            {result.distance_miles != null ? <small>{formatDistance(result.distance_miles)} away</small> : null}
+          </span>
+          <span className="result-card-arrow" aria-hidden="true"><ArrowRight size={16} /></span>
         </span>
         <span className="treatment-row">
           {(result.treatments || []).slice(0, 3).map((treatment) => (

@@ -1,0 +1,2922 @@
+{
+  "generated_at": "2026-07-24T01:36:56.406Z",
+  "source_report": "/Users/marleneronstedt/dev/fountain/tmp/location-dedupe-reassessment-20260723.json",
+  "criteria": {
+    "tiers": [
+      "critical",
+      "high"
+    ],
+    "maximum_distance_meters": 100,
+    "minimum_raw_name_similarity": 0.6,
+    "identity_requirement": "exact/strong address similarity or shared external place ID"
+  },
+  "counts": {
+    "eligible_pairs": 56,
+    "groups": 51,
+    "affected_locations": 103,
+    "merges": 52,
+    "excluded_distinct_groups": 3
+  },
+  "excluded_distinct_groups": [
+    {
+      "location_ids": [
+        1635,
+        1636
+      ],
+      "reason": "Distinct sister clinics for men's versus women's health at a shared address"
+    },
+    {
+      "location_ids": [
+        1808,
+        1975
+      ],
+      "reason": "Distinct GIOSTAR Playa del Carmen versus Los Algodones branches; source data copied the Playa address"
+    },
+    {
+      "location_ids": [
+        2539,
+        2553
+      ],
+      "reason": "Distinct Healthy Longevity Clinic Boca Raton versus Prague protected source listings"
+    }
+  ],
+  "preflight": {
+    "protected_source_conflicts": [],
+    "slug_alias_conflicts": []
+  },
+  "groups": [
+    {
+      "survivor_id": 10,
+      "loser_ids": [
+        2395
+      ],
+      "canonical": {
+        "name": "Princeton Longevity Center",
+        "address": "One World Trade Center, New York, NY, 10007",
+        "locality": "New York",
+        "region": "NY",
+        "postal_code": "10007",
+        "country_code": "US",
+        "country_name": "United States",
+        "latitude": 40.7130082,
+        "longitude": -74.0131689,
+        "phone": "(888) 800-0752",
+        "email": null,
+        "website": "http://www.princetonlongevitycenter.com/",
+        "org_id": 900
+      },
+      "survivor_score": 148,
+      "candidates": [
+        {
+          "id": 10,
+          "score": 148,
+          "slug": "princeton-longevity-center-new-york",
+          "name": "Princeton Longevity Center",
+          "address": "One World Trade Center, New York, NY, 10007",
+          "locality": "New York",
+          "website": "http://www.princetonlongevitycenter.com/",
+          "org_id": 900,
+          "organization_name": "Princeton Longevity Center",
+          "offering_count": 21,
+          "review_count": 5,
+          "image_count": 1,
+          "source_count": 3,
+          "affiliation_count": 0
+        },
+        {
+          "id": 2395,
+          "score": 82,
+          "slug": "princeton-longevity-center",
+          "name": "Princeton Longevity Center",
+          "address": "One World Trade Center, 71st Floor",
+          "locality": "New York",
+          "website": "http://www.princetonlongevitycenter.com/",
+          "org_id": 900,
+          "organization_name": "Princeton Longevity Center",
+          "offering_count": 0,
+          "review_count": 5,
+          "image_count": 0,
+          "source_count": 2,
+          "affiliation_count": 0
+        }
+      ]
+    },
+    {
+      "survivor_id": 12,
+      "loser_ids": [
+        2844
+      ],
+      "canonical": {
+        "name": "Trifecta Med Spa Downtown",
+        "address": "115 Broadway #1305, New York, NY 10006, USA, New York, NY, 10006",
+        "locality": "New York",
+        "region": "NY",
+        "postal_code": "10006",
+        "country_code": "US",
+        "country_name": "United States",
+        "latitude": 40.7088245,
+        "longitude": -74.0112487,
+        "phone": "+1 212-600-4112",
+        "email": null,
+        "website": "https://trifectamedspanyc.com/location/downtown/",
+        "org_id": 20
+      },
+      "survivor_score": 152,
+      "candidates": [
+        {
+          "id": 12,
+          "score": 152,
+          "slug": "trifecta-med-spa-downtown-new-york",
+          "name": "Trifecta Med Spa Downtown",
+          "address": "115 Broadway #1305, New York, NY 10006, USA, New York, NY, 10006",
+          "locality": "New York",
+          "website": "https://trifectamedspanyc.com/location/downtown/",
+          "org_id": 20,
+          "organization_name": "Trifecta Med Spa Downtown",
+          "offering_count": 31,
+          "review_count": 5,
+          "image_count": 1,
+          "source_count": 2,
+          "affiliation_count": 0
+        },
+        {
+          "id": 2844,
+          "score": 133,
+          "slug": "trifecta-med-spa-downtown-hewlett-2",
+          "name": "Trifecta Med Spa Downtown",
+          "address": "115 Broadway Suite 1305, New York, NY 10006",
+          "locality": "New York",
+          "website": "https://trifectamedspanyc.com/",
+          "org_id": 20,
+          "organization_name": "Trifecta Med Spa Downtown",
+          "offering_count": 1,
+          "review_count": 5,
+          "image_count": 1,
+          "source_count": 2,
+          "affiliation_count": 0
+        }
+      ]
+    },
+    {
+      "survivor_id": 51,
+      "loser_ids": [
+        7441
+      ],
+      "canonical": {
+        "name": "Radiant Beauty & Health Brooklyn",
+        "address": "26 Court St Suite 310 Floor 3, Brooklyn, NY 11242, USA, NY, 11242",
+        "locality": "Brooklyn",
+        "region": "NY",
+        "postal_code": "11242",
+        "country_code": "US",
+        "country_name": "United States",
+        "latitude": 40.6933254,
+        "longitude": -73.9909517,
+        "phone": "+1 914-559-7693",
+        "email": "info@radiantbeautyandhealth.com",
+        "website": "https://radiantbeautyandhealth.com/",
+        "org_id": 42
+      },
+      "survivor_score": 142,
+      "candidates": [
+        {
+          "id": 51,
+          "score": 142,
+          "slug": "radiant-beauty-health-brooklyn-usa",
+          "name": "Radiant Beauty & Health Brooklyn",
+          "address": "26 Court St Suite 310 Floor 3, Brooklyn, NY 11242, USA, NY, 11242",
+          "locality": "Brooklyn",
+          "website": "https://radiantbeautyandhealth.com/",
+          "org_id": 42,
+          "organization_name": "Radiant Beauty & Health Brooklyn",
+          "offering_count": 2,
+          "review_count": 5,
+          "image_count": 1,
+          "source_count": 1,
+          "affiliation_count": 0
+        },
+        {
+          "id": 7441,
+          "score": 102,
+          "slug": "radiant-beauty-health-manhattan-brooklyn",
+          "name": "Radiant Beauty & Health Manhattan",
+          "address": "26 Court Street, #310, Brooklyn, NY 11242",
+          "locality": "Brooklyn",
+          "website": "https://radiantbeautyandhealth.com/",
+          "org_id": 42,
+          "organization_name": "Radiant Beauty & Health Brooklyn",
+          "offering_count": 0,
+          "review_count": 5,
+          "image_count": 1,
+          "source_count": 2,
+          "affiliation_count": 0
+        }
+      ]
+    },
+    {
+      "survivor_id": 5175,
+      "loser_ids": [
+        76
+      ],
+      "canonical": {
+        "name": "Gameday Men’s Health Jersey City – TRT, Peptides & ED Clinic",
+        "address": "239 Washington St, Jersey City, NJ 07302",
+        "locality": "Jersey City",
+        "region": "NJ",
+        "postal_code": "07302",
+        "country_code": "US",
+        "country_name": "United States",
+        "latitude": 40.7157633,
+        "longitude": -74.0379761,
+        "phone": "+1 (201) 273-9694",
+        "email": null,
+        "website": "https://gamedaymenshealth.com/jersey-city/",
+        "org_id": 7743
+      },
+      "survivor_score": 157,
+      "candidates": [
+        {
+          "id": 5175,
+          "score": 157,
+          "slug": "gameday-men-s-health-jersey-city-trt-peptides-ed-clinic-2",
+          "name": "Gameday Men’s Health Jersey City – TRT, Peptides & ED Clinic",
+          "address": "239 Washington St, Jersey City, NJ 07302",
+          "locality": "Jersey City",
+          "website": "https://gamedaymenshealth.com/jersey-city/",
+          "org_id": 7743,
+          "organization_name": "Gameday Men's Health",
+          "offering_count": 26,
+          "review_count": 0,
+          "image_count": 1,
+          "source_count": 2,
+          "affiliation_count": 0
+        },
+        {
+          "id": 76,
+          "score": 134,
+          "slug": "gameday-men-s-health-jersey-city-trt-peptides-ed-clinic",
+          "name": "Gameday Men's Health Jersey City - TRT, Peptides & ED Clinic",
+          "address": "239 Washington St, Jersey City, NJ, 7302",
+          "locality": "Jersey City",
+          "website": "https://gamedaymenshealth.com/jersey-city",
+          "org_id": 7743,
+          "organization_name": "Gameday Men's Health",
+          "offering_count": 4,
+          "review_count": 5,
+          "image_count": 1,
+          "source_count": 1,
+          "affiliation_count": 0
+        }
+      ]
+    },
+    {
+      "survivor_id": 14589,
+      "loser_ids": [
+        112
+      ],
+      "canonical": {
+        "name": "Clean Market IV Drip Lounge at Equinox Domino",
+        "address": "24 River St, Brooklyn, NY 11249",
+        "locality": "Brooklyn",
+        "region": "NY",
+        "postal_code": "11249",
+        "country_code": "US",
+        "country_name": "United States",
+        "latitude": 40.714655504895,
+        "longitude": -73.967423883252,
+        "phone": "888-320-1699",
+        "email": "hello@cleanmarket.com",
+        "website": "https://cleanmarket.com/pages/clean-market-iv-drip-lounge-at-equinox-domino",
+        "org_id": 34
+      },
+      "survivor_score": 152,
+      "candidates": [
+        {
+          "id": 14589,
+          "score": 152,
+          "slug": "clean-market-equinox-domino-williamsburg-brooklyn",
+          "name": "Clean Market IV Drip Lounge at Equinox Domino",
+          "address": "24 River St, Brooklyn, NY 11249",
+          "locality": "Brooklyn",
+          "website": "https://cleanmarket.com/pages/clean-market-iv-drip-lounge-at-equinox-domino",
+          "org_id": 34,
+          "organization_name": "Clean Market",
+          "offering_count": 36,
+          "review_count": 0,
+          "image_count": 0,
+          "source_count": 7,
+          "affiliation_count": 0
+        },
+        {
+          "id": 112,
+          "score": 149,
+          "slug": "clean-market-iv-drip-lounge-at-equinox-domino-usa",
+          "name": "Clean Market IV Drip Lounge at Equinox Domino",
+          "address": "24 River St, Brooklyn, NY 11249, USA, NY, 11249",
+          "locality": "Brooklyn",
+          "website": "https://www.cleanmarket.com/",
+          "org_id": 34,
+          "organization_name": "Clean Market",
+          "offering_count": 21,
+          "review_count": 5,
+          "image_count": 2,
+          "source_count": 2,
+          "affiliation_count": 0
+        }
+      ]
+    },
+    {
+      "survivor_id": 2057,
+      "loser_ids": [
+        241
+      ],
+      "canonical": {
+        "name": "Next Health New York City",
+        "address": "The Parlor, 160 Madison Ave, Mezzanine Floor, New York, NY 10016",
+        "locality": "New York",
+        "region": "NY",
+        "postal_code": "10016",
+        "country_code": "US",
+        "country_name": "United States",
+        "latitude": 40.747032910933,
+        "longitude": -73.983698270276,
+        "phone": "(310) 620-8372",
+        "email": null,
+        "website": "https://www.next-health.com/inside/locations",
+        "org_id": 1
+      },
+      "survivor_score": 170,
+      "candidates": [
+        {
+          "id": 2057,
+          "score": 170,
+          "slug": "next-health-new-york-city",
+          "name": "Next Health New York City",
+          "address": "The Parlor, 160 Madison Ave, Mezzanine Floor, New York, NY 10016",
+          "locality": "New York",
+          "website": "https://www.next-health.com/inside/locations",
+          "org_id": 1,
+          "organization_name": "NEXT HEALTH",
+          "offering_count": 24,
+          "review_count": 5,
+          "image_count": 14,
+          "source_count": 3,
+          "affiliation_count": 0
+        },
+        {
+          "id": 241,
+          "score": 146,
+          "slug": "next-health-new-york",
+          "name": "Next Health",
+          "address": "160 Madison Ave Entrance: The Parlor on 33rd Street Mezzanine Floor, New York, NY, 10016",
+          "locality": "New York",
+          "website": "https://www.next-health.com/pages/locations-new-york-city",
+          "org_id": 1,
+          "organization_name": "NEXT HEALTH",
+          "offering_count": 15,
+          "review_count": 5,
+          "image_count": 2,
+          "source_count": 1,
+          "affiliation_count": 0
+        }
+      ]
+    },
+    {
+      "survivor_id": 342,
+      "loser_ids": [
+        2769
+      ],
+      "canonical": {
+        "name": "Acupuncture & Alternative Medicine of Brooklyn",
+        "address": "34 Plaza St E Suite 102, Brooklyn, NY, 11238",
+        "locality": "Brooklyn",
+        "region": "NY",
+        "postal_code": "11238",
+        "country_code": "US",
+        "country_name": "United States",
+        "latitude": 40.6753808,
+        "longitude": -73.9694365,
+        "phone": "(718) 689-3737",
+        "email": null,
+        "website": "https://www.acuherbnewyork.com/",
+        "org_id": 582
+      },
+      "survivor_score": 131,
+      "candidates": [
+        {
+          "id": 342,
+          "score": 131,
+          "slug": "acupuncture-alternative-medicine-of-brooklyn",
+          "name": "Acupuncture & Alternative Medicine of Brooklyn",
+          "address": "34 Plaza St E Suite 102, Brooklyn, NY, 11238",
+          "locality": "Brooklyn",
+          "website": "http://www.acuherbnewyork.com/",
+          "org_id": 582,
+          "organization_name": "Acupuncture & Alternative Medicine of Staten Island",
+          "offering_count": 2,
+          "review_count": 5,
+          "image_count": 0,
+          "source_count": 1,
+          "affiliation_count": 0
+        },
+        {
+          "id": 2769,
+          "score": 108,
+          "slug": "acupuncture-alternative-medicine-of-staten-island-brooklyn",
+          "name": "Acupuncture & Alternative Medicine of Staten Island",
+          "address": "34 Plaza Street East, Suite 102, Brooklyn, NY 11238",
+          "locality": "Brooklyn",
+          "website": "https://www.acuherbnewyork.com/",
+          "org_id": 582,
+          "organization_name": "Acupuncture & Alternative Medicine of Staten Island",
+          "offering_count": 8,
+          "review_count": 5,
+          "image_count": 1,
+          "source_count": 3,
+          "affiliation_count": 0
+        }
+      ]
+    },
+    {
+      "survivor_id": 352,
+      "loser_ids": [
+        5497,
+        4911
+      ],
+      "canonical": {
+        "name": "Jersey Integrative Health and Wellness",
+        "address": "35 Journal Square Plaza Unit 215, Jersey City, NJ, 7306",
+        "locality": "Jersey City",
+        "region": "NJ",
+        "postal_code": "07306",
+        "country_code": "US",
+        "country_name": "United States",
+        "latitude": 40.7307929,
+        "longitude": -74.0647354,
+        "phone": "(201) 942-4555",
+        "email": null,
+        "website": "https://www.jerseyintegrative.com/",
+        "org_id": 241
+      },
+      "survivor_score": 137,
+      "candidates": [
+        {
+          "id": 352,
+          "score": 137,
+          "slug": "jersey-integrative-health-and-wellness-jersey-city",
+          "name": "Jersey Integrative Health and Wellness",
+          "address": "35 Journal Square Plaza Unit 215, Jersey City, NJ, 7306",
+          "locality": "Jersey City",
+          "website": "https://www.jerseyintegrative.com/",
+          "org_id": 241,
+          "organization_name": "Manit Roy, DO",
+          "offering_count": 15,
+          "review_count": 5,
+          "image_count": 1,
+          "source_count": 4,
+          "affiliation_count": 0
+        },
+        {
+          "id": 5497,
+          "score": 114,
+          "slug": "jersey-integrative-health-wellness-jersey-city",
+          "name": "Jersey Integrative Health & Wellness",
+          "address": "35 Journal Square Plaza Unit 215",
+          "locality": "Jersey City",
+          "website": "https://jerseyintegrative.com/",
+          "org_id": 241,
+          "organization_name": "Manit Roy, DO",
+          "offering_count": 105,
+          "review_count": 5,
+          "image_count": 2,
+          "source_count": 6,
+          "affiliation_count": 0
+        },
+        {
+          "id": 4911,
+          "score": -30,
+          "slug": "jersey-integrative-health-and-wellness-newark",
+          "name": "Jersey Integrative Health and Wellness",
+          "address": null,
+          "locality": "Newark",
+          "website": "https://jerseyintegrative.com/",
+          "org_id": 241,
+          "organization_name": "Manit Roy, DO",
+          "offering_count": 36,
+          "review_count": 5,
+          "image_count": 1,
+          "source_count": 3,
+          "affiliation_count": 0
+        }
+      ]
+    },
+    {
+      "survivor_id": 12208,
+      "loser_ids": [
+        1017
+      ],
+      "canonical": {
+        "name": "Stem Cell Therapy of NJ",
+        "address": "444 Market St #5, Saddle Brook, NJ 07663, USA",
+        "locality": "Saddle Brook",
+        "region": "NJ",
+        "postal_code": "07663",
+        "country_code": "US",
+        "country_name": "United States",
+        "latitude": 40.8967311,
+        "longitude": -74.09872849999999,
+        "phone": "201 880-1400",
+        "email": "airportplazaspineandwellness@gmail.com",
+        "website": "https://stemcellofnj.com/",
+        "org_id": 5738
+      },
+      "survivor_score": 127,
+      "candidates": [
+        {
+          "id": 12208,
+          "score": 127,
+          "slug": "stem-cell-therapy-of-nj-new-york-city",
+          "name": "Stem Cell Therapy of NJ",
+          "address": "444 Market St #5, Saddle Brook, NJ 07663, USA",
+          "locality": "Saddle Brook",
+          "website": "https://stemcellofnj.com/",
+          "org_id": 5738,
+          "organization_name": "Stem Cell of NJ",
+          "offering_count": 2,
+          "review_count": 2,
+          "image_count": 1,
+          "source_count": 2,
+          "affiliation_count": 0
+        },
+        {
+          "id": 1017,
+          "score": 119,
+          "slug": "stem-cell-therapy-of-nj-saddle-brook",
+          "name": "Stem Cell Therapy of NJ",
+          "address": "444 Market St #5, Saddle Brook, NJ, 7663",
+          "locality": "Saddle Brook",
+          "website": "https://stemcellofnj.com/",
+          "org_id": 5738,
+          "organization_name": "Stem Cell of NJ",
+          "offering_count": 4,
+          "review_count": 2,
+          "image_count": 1,
+          "source_count": 2,
+          "affiliation_count": 0
+        }
+      ]
+    },
+    {
+      "survivor_id": 12229,
+      "loser_ids": [
+        1058
+      ],
+      "canonical": {
+        "name": "Stem Regen Medical",
+        "address": "66 NJ-17 Suite 150, Paramus, NJ 07652, USA",
+        "locality": "Paramus",
+        "region": "NJ",
+        "postal_code": "07652",
+        "country_code": "US",
+        "country_name": "United States",
+        "latitude": 40.9249709,
+        "longitude": -74.0704934,
+        "phone": "551 367-0271",
+        "email": "receptionist@stemregenmedical.com",
+        "website": "https://stemregenmedical.com/",
+        "org_id": 1031
+      },
+      "survivor_score": 133,
+      "candidates": [
+        {
+          "id": 12229,
+          "score": 133,
+          "slug": "stem-regen-medical-new-york-city",
+          "name": "Stem Regen Medical",
+          "address": "66 NJ-17 Suite 150, Paramus, NJ 07652, USA",
+          "locality": "Paramus",
+          "website": "https://stemregenmedical.com/",
+          "org_id": 1031,
+          "organization_name": "Stem Regen Medical",
+          "offering_count": 1,
+          "review_count": 5,
+          "image_count": 1,
+          "source_count": 2,
+          "affiliation_count": 0
+        },
+        {
+          "id": 1058,
+          "score": 126,
+          "slug": "stem-regen-medical-paramus",
+          "name": "Stem Regen Medical",
+          "address": "66 NJ-17 Suite 150, Paramus, NJ, 7652",
+          "locality": "Paramus",
+          "website": "https://stemregenmedical.com/",
+          "org_id": 1031,
+          "organization_name": "Stem Regen Medical",
+          "offering_count": 5,
+          "review_count": 5,
+          "image_count": 2,
+          "source_count": 1,
+          "affiliation_count": 0
+        }
+      ]
+    },
+    {
+      "survivor_id": 13207,
+      "loser_ids": [
+        1111
+      ],
+      "canonical": {
+        "name": "Warren J. Bleiweiss, MD",
+        "address": "29 Smull Ave, Caldwell, NJ 07006",
+        "locality": "Caldwell",
+        "region": "NJ",
+        "postal_code": "07006",
+        "country_code": "US",
+        "country_name": "United States",
+        "latitude": 40.8415585,
+        "longitude": -74.2747262,
+        "phone": "973 403-3334",
+        "email": null,
+        "website": "https://www.alternativedisctherapy.com/",
+        "org_id": 6324
+      },
+      "survivor_score": 136,
+      "candidates": [
+        {
+          "id": 13207,
+          "score": 136,
+          "slug": "warren-j-bleiweiss-md-newark",
+          "name": "Warren J. Bleiweiss, MD",
+          "address": "29 Smull Ave, Caldwell, NJ 07006",
+          "locality": "Caldwell",
+          "website": "https://www.alternativedisctherapy.com/",
+          "org_id": 6324,
+          "organization_name": "Warren J. Bleiweiss, MD",
+          "offering_count": 8,
+          "review_count": 5,
+          "image_count": 1,
+          "source_count": 2,
+          "affiliation_count": 0
+        },
+        {
+          "id": 1111,
+          "score": -142,
+          "slug": "warren-j-bleiweiss-md-caldwell",
+          "name": "Warren J. Bleiweiss, MD",
+          "address": "29 Smull Ave, Caldwell, NJ, 7006",
+          "locality": "Caldwell",
+          "website": null,
+          "org_id": null,
+          "organization_name": null,
+          "offering_count": 1,
+          "review_count": 5,
+          "image_count": 0,
+          "source_count": 1,
+          "affiliation_count": 0
+        }
+      ]
+    },
+    {
+      "survivor_id": 9210,
+      "loser_ids": [
+        1231
+      ],
+      "canonical": {
+        "name": "New York Cryogen",
+        "address": "228 E Jericho Turnpike, Mineola, NY 11501",
+        "locality": "Mineola",
+        "region": "NY",
+        "postal_code": "11501",
+        "country_code": "US",
+        "country_name": "United States",
+        "latitude": 40.7540834,
+        "longitude": -73.6270833,
+        "phone": "(516) 382-9111",
+        "email": null,
+        "website": "https://nycryogen.com/",
+        "org_id": 4164
+      },
+      "survivor_score": 130,
+      "candidates": [
+        {
+          "id": 9210,
+          "score": 130,
+          "slug": "new-york-cryogen-mineola",
+          "name": "New York Cryogen",
+          "address": "228 E Jericho Turnpike, Mineola, NY 11501",
+          "locality": "Mineola",
+          "website": "https://nycryogen.com/",
+          "org_id": 4164,
+          "organization_name": "New York Cryogen",
+          "offering_count": 2,
+          "review_count": 5,
+          "image_count": 1,
+          "source_count": 2,
+          "affiliation_count": 0
+        },
+        {
+          "id": 1231,
+          "score": 128,
+          "slug": "new-york-cryogen-inc-mineola",
+          "name": "New York Cryogen, Inc",
+          "address": "228 E Jericho Tpke, Mineola, NY, 11501",
+          "locality": "Mineola",
+          "website": "https://nycryogen.com/",
+          "org_id": 4164,
+          "organization_name": "New York Cryogen",
+          "offering_count": 2,
+          "review_count": 5,
+          "image_count": 1,
+          "source_count": 1,
+          "affiliation_count": 0
+        }
+      ]
+    },
+    {
+      "survivor_id": 12173,
+      "loser_ids": [
+        1295
+      ],
+      "canonical": {
+        "name": "Stem Cell of NJ",
+        "address": "1354 NJ-36, Hazlet, NJ 07730",
+        "locality": "Hazlet",
+        "region": "NJ",
+        "postal_code": "07730",
+        "country_code": "US",
+        "country_name": "United States",
+        "latitude": 40.4287354,
+        "longitude": -74.1870002,
+        "phone": "732 264-2233",
+        "email": "airportplazaspineandwellness@gmail.com",
+        "website": "https://stemcellofnj.com/",
+        "org_id": 5738
+      },
+      "survivor_score": 135,
+      "candidates": [
+        {
+          "id": 12173,
+          "score": 135,
+          "slug": "stem-cell-of-nj-newark",
+          "name": "Stem Cell of NJ",
+          "address": "1354 NJ-36, Hazlet, NJ 07730",
+          "locality": "Hazlet",
+          "website": "https://stemcellofnj.com/",
+          "org_id": 5738,
+          "organization_name": "Stem Cell of NJ",
+          "offering_count": 9,
+          "review_count": 3,
+          "image_count": 1,
+          "source_count": 2,
+          "affiliation_count": 0
+        },
+        {
+          "id": 1295,
+          "score": 118,
+          "slug": "stem-cell-of-nj-hazlet",
+          "name": "Stem Cell of NJ",
+          "address": "1354 NJ-36, Hazlet, NJ, 7730",
+          "locality": "Hazlet",
+          "website": "https://stemcellofnj.com/",
+          "org_id": 5738,
+          "organization_name": "Stem Cell of NJ",
+          "offering_count": 4,
+          "review_count": 3,
+          "image_count": 1,
+          "source_count": 1,
+          "affiliation_count": 0
+        }
+      ]
+    },
+    {
+      "survivor_id": 7646,
+      "loser_ids": [
+        1343
+      ],
+      "canonical": {
+        "name": "New York Stem Cell & PRP Therapy – Knee Pain – Elbow Pain",
+        "address": "61 Jericho Turnpike, Jericho, NY 11753, United States",
+        "locality": "Jericho",
+        "region": "NY",
+        "postal_code": "11753",
+        "country_code": "US",
+        "country_name": "United States",
+        "latitude": 40.7785143,
+        "longitude": -73.56240729999999,
+        "phone": "516-544-8877",
+        "email": null,
+        "website": "https://www.newyorkstemcell.com/",
+        "org_id": 3523
+      },
+      "survivor_score": 142,
+      "candidates": [
+        {
+          "id": 7646,
+          "score": 142,
+          "slug": "new-york-stem-cell-prp-therapy-knee-pain-elbow-pain-new-york-city",
+          "name": "New York Stem Cell & PRP Therapy – Knee Pain – Elbow Pain",
+          "address": "61 Jericho Turnpike, Jericho, NY 11753, United States",
+          "locality": "Jericho",
+          "website": "https://www.newyorkstemcell.com/",
+          "org_id": 3523,
+          "organization_name": "New York Stem Cell & PRP Therapy – Knee Pain – Elbow Pain",
+          "offering_count": 14,
+          "review_count": 5,
+          "image_count": 1,
+          "source_count": 2,
+          "affiliation_count": 0
+        },
+        {
+          "id": 1343,
+          "score": 138,
+          "slug": "new-york-stem-cell-prp-therapy-knee-pain-elbow-pain-jericho",
+          "name": "New York Stem Cell & PRP Therapy - Knee Pain - Elbow Pain",
+          "address": "61 Jericho Tpke, Jericho, NY, 11753",
+          "locality": "Jericho",
+          "website": "https://www.newyorkstemcell.com/",
+          "org_id": 3523,
+          "organization_name": "New York Stem Cell & PRP Therapy – Knee Pain – Elbow Pain",
+          "offering_count": 8,
+          "review_count": 5,
+          "image_count": 1,
+          "source_count": 3,
+          "affiliation_count": 0
+        }
+      ]
+    },
+    {
+      "survivor_id": 1408,
+      "loser_ids": [
+        9334
+      ],
+      "canonical": {
+        "name": "Restore Hyper Wellness",
+        "address": "7301 N FM 620 ste 160, Austin, TX 78730",
+        "locality": "Austin",
+        "region": "TX",
+        "postal_code": "78730",
+        "country_code": "US",
+        "country_name": "United States",
+        "latitude": 30.4047842,
+        "longitude": -97.8515549,
+        "phone": "+15123584020",
+        "email": "frontdesktx108@restore.com",
+        "website": "https://www.restore.com/locations/tx-austin-four-points-tx108",
+        "org_id": 61
+      },
+      "survivor_score": 129,
+      "candidates": [
+        {
+          "id": 1408,
+          "score": 129,
+          "slug": "restore-hyper-wellness-austin",
+          "name": "Restore Hyper Wellness",
+          "address": "7301 N FM 620 ste 160, Austin, TX 78730",
+          "locality": "Austin",
+          "website": "http://www.restore.com/locations/tx-austin-four-points-tx108?y_source=1_ODA0NzYzNzItNzE1LWxvY2F0aW9uLndlYnNpdGU%3D",
+          "org_id": 61,
+          "organization_name": "Restore Hyper Wellness",
+          "offering_count": 3,
+          "review_count": 5,
+          "image_count": 1,
+          "source_count": 2,
+          "affiliation_count": 0
+        },
+        {
+          "id": 9334,
+          "score": 109,
+          "slug": "restore-hyper-wellness-austin-tx-four-points",
+          "name": "Restore Hyper Wellness - Austin, TX - Four Points",
+          "address": "7301 N FM 620, Ste 160",
+          "locality": "Austin",
+          "website": "https://www.restore.com/locations/tx-austin-four-points-tx108",
+          "org_id": 61,
+          "organization_name": "Restore Hyper Wellness",
+          "offering_count": 12,
+          "review_count": 5,
+          "image_count": 1,
+          "source_count": 2,
+          "affiliation_count": 0
+        }
+      ]
+    },
+    {
+      "survivor_id": 10619,
+      "loser_ids": [
+        1492
+      ],
+      "canonical": {
+        "name": "Life Altering Stem Cell Therapy Institute",
+        "address": "Luis G. Urbina 4-oficina 303, Polanco, Polanco IV Secc, Miguel Hidalgo, 11550 Ciudad de México, CDMX, Mexico 11550",
+        "locality": "Ciudad de México",
+        "region": "CDMX",
+        "postal_code": "11550",
+        "country_code": "MX",
+        "country_name": "Mexico",
+        "latitude": 19.4286275,
+        "longitude": -99.1941982,
+        "phone": "+52 316 949 1738",
+        "email": null,
+        "website": "http://lifealteringstemcells.com/",
+        "org_id": 989
+      },
+      "survivor_score": 125,
+      "candidates": [
+        {
+          "id": 10619,
+          "score": 125,
+          "slug": "life-altering-stem-cell-therapy-institute-aurora",
+          "name": "Life Altering Stem Cell Therapy Institute",
+          "address": "Luis G. Urbina 4-oficina 303, Polanco, Polanco IV Secc, Miguel Hidalgo, 11550 Ciudad de México, CDMX, Mexico 11550",
+          "locality": "Ciudad de México",
+          "website": "http://lifealteringstemcells.com/",
+          "org_id": 989,
+          "organization_name": "Life Altering Stem Cell Therapy Institute",
+          "offering_count": 15,
+          "review_count": 0,
+          "image_count": 1,
+          "source_count": 1,
+          "affiliation_count": 0
+        },
+        {
+          "id": 1492,
+          "score": 48,
+          "slug": "life-altering-stem-cell-therapy-institute-miguel-hidalgo-mexico-city",
+          "name": "Life Altering Stem Cell Therapy Institute",
+          "address": "Luis G. Urbina 4-oficina 303, Polanco, Polanco IV Secc, Miguel Hidalgo, 11550 Ciudad de México, CDMX, Mexico",
+          "locality": "Miguel Hidalgo, Mexico City",
+          "website": "http://lifealteringstemcells.com/",
+          "org_id": 989,
+          "organization_name": "Life Altering Stem Cell Therapy Institute",
+          "offering_count": 24,
+          "review_count": 2,
+          "image_count": 0,
+          "source_count": 2,
+          "affiliation_count": 0
+        }
+      ]
+    },
+    {
+      "survivor_id": 1555,
+      "loser_ids": [
+        9442
+      ],
+      "canonical": {
+        "name": "Centner Wellness",
+        "address": "2333 Brickell Ave a1, Miami, FL 33129",
+        "locality": "Miami",
+        "region": "FL",
+        "postal_code": "33129",
+        "country_code": "US",
+        "country_name": "United States",
+        "latitude": 25.7506906,
+        "longitude": -80.1996674,
+        "phone": null,
+        "email": null,
+        "website": "https://brickell.centnerwellness.com/",
+        "org_id": 1046
+      },
+      "survivor_score": 141,
+      "candidates": [
+        {
+          "id": 1555,
+          "score": 141,
+          "slug": "centner-wellness-miami",
+          "name": "Centner Wellness",
+          "address": "2333 Brickell Ave a1, Miami, FL 33129",
+          "locality": "Miami",
+          "website": "https://brickell.centnerwellness.com/",
+          "org_id": 1046,
+          "organization_name": "Centner Wellness",
+          "offering_count": 9,
+          "review_count": 5,
+          "image_count": 1,
+          "source_count": 2,
+          "affiliation_count": 0
+        },
+        {
+          "id": 9442,
+          "score": 88,
+          "slug": "centner-wellness-spa-brickell-ave-miami",
+          "name": "Centner Wellness & Spa",
+          "address": "2333 Brickell Ave. Suite A1",
+          "locality": "Miami",
+          "website": "https://centnerwellness.com/",
+          "org_id": 1046,
+          "organization_name": "Centner Wellness",
+          "offering_count": 0,
+          "review_count": 5,
+          "image_count": 0,
+          "source_count": 2,
+          "affiliation_count": 0
+        }
+      ]
+    },
+    {
+      "survivor_id": 4878,
+      "loser_ids": [
+        1560
+      ],
+      "canonical": {
+        "name": "Florida Regen",
+        "address": "162 NE 25th St #103, Miami, Florida 33137",
+        "locality": "Miami",
+        "region": "FL",
+        "postal_code": "33137",
+        "country_code": "US",
+        "country_name": "United States",
+        "latitude": 25.8006645,
+        "longitude": -80.1911604,
+        "phone": "(305) 813-4188",
+        "email": "info@floridaregen.com",
+        "website": "https://floridaregen.com/",
+        "org_id": 1051
+      },
+      "survivor_score": 140,
+      "candidates": [
+        {
+          "id": 4878,
+          "score": 140,
+          "slug": "florida-regen-hialeah",
+          "name": "Florida Regen",
+          "address": "162 NE 25th St #103, Miami, Florida 33137",
+          "locality": "Miami",
+          "website": "https://floridaregen.com/",
+          "org_id": 1051,
+          "organization_name": "Florida Regen- Dr. Tad P. DeWald",
+          "offering_count": 10,
+          "review_count": 2,
+          "image_count": 2,
+          "source_count": 4,
+          "affiliation_count": 0
+        },
+        {
+          "id": 1560,
+          "score": 131,
+          "slug": "florida-regen-dr-tad-p-dewald-miami",
+          "name": "Florida Regen- Dr. Tad P. DeWald",
+          "address": "162 NE 25th St #103, Miami, FL 33137",
+          "locality": "Miami",
+          "website": "https://floridaregen.com/",
+          "org_id": 1051,
+          "organization_name": "Florida Regen- Dr. Tad P. DeWald",
+          "offering_count": 3,
+          "review_count": 5,
+          "image_count": 1,
+          "source_count": 2,
+          "affiliation_count": 0
+        }
+      ]
+    },
+    {
+      "survivor_id": 1570,
+      "loser_ids": [
+        9398
+      ],
+      "canonical": {
+        "name": "CASA PRIVÉE",
+        "address": "1395 Brickell Ave Suite 200, Miami, FL 33131",
+        "locality": "Miami",
+        "region": "FL",
+        "postal_code": "33131",
+        "country_code": "US",
+        "country_name": "United States",
+        "latitude": 25.7604836,
+        "longitude": -80.1909065,
+        "phone": "+13054342647",
+        "email": null,
+        "website": "https://www.casaprivee.com/",
+        "org_id": 1060
+      },
+      "survivor_score": 139,
+      "candidates": [
+        {
+          "id": 1570,
+          "score": 139,
+          "slug": "casa-priv-e-miami",
+          "name": "CASA PRIVÉE",
+          "address": "1395 Brickell Ave Suite 200, Miami, FL 33131",
+          "locality": "Miami",
+          "website": "https://www.casaprivee.com/",
+          "org_id": 1060,
+          "organization_name": "CASA PRIVÉE",
+          "offering_count": 11,
+          "review_count": 5,
+          "image_count": 1,
+          "source_count": 2,
+          "affiliation_count": 0
+        },
+        {
+          "id": 9398,
+          "score": 84,
+          "slug": "casa-privee-brickell-avenue-miami",
+          "name": "Casa Privee",
+          "address": "1395 Brickell Avenue, Suite 200",
+          "locality": "Miami",
+          "website": "https://www.casaprivee.com/",
+          "org_id": 4314,
+          "organization_name": "Casa Privee",
+          "offering_count": 0,
+          "review_count": 5,
+          "image_count": 0,
+          "source_count": 2,
+          "affiliation_count": 0
+        }
+      ]
+    },
+    {
+      "survivor_id": 2367,
+      "loser_ids": [
+        1586
+      ],
+      "canonical": {
+        "name": "Cryo Body Works Cryotherapy",
+        "address": "3501 Hyridge Drive, Austin, TX, 78759, US",
+        "locality": "Austin",
+        "region": "TX",
+        "postal_code": "78759",
+        "country_code": "US",
+        "country_name": "United States",
+        "latitude": 30.3739829,
+        "longitude": -97.7410337,
+        "phone": "+1-512-522-0221",
+        "email": null,
+        "website": "https://www.cryobodyworks.com/",
+        "org_id": 1076
+      },
+      "survivor_score": 156,
+      "candidates": [
+        {
+          "id": 2367,
+          "score": 156,
+          "slug": "cryo-body-works-cryotherapy-austin",
+          "name": "Cryo Body Works Cryotherapy",
+          "address": "3501 Hyridge Drive, Austin, TX, 78759, US",
+          "locality": "Austin",
+          "website": "https://www.cryobodyworks.com/",
+          "org_id": 1076,
+          "organization_name": "Cryo Body Works",
+          "offering_count": 34,
+          "review_count": 5,
+          "image_count": 1,
+          "source_count": 6,
+          "affiliation_count": 0
+        },
+        {
+          "id": 1586,
+          "score": 143,
+          "slug": "cryo-body-works-austin",
+          "name": "Cryo Body Works",
+          "address": "3501 Hyridge Dr, Austin, TX 78759",
+          "locality": "Austin",
+          "website": "http://www.cryobodyworks.com/",
+          "org_id": 1076,
+          "organization_name": "Cryo Body Works",
+          "offering_count": 19,
+          "review_count": 5,
+          "image_count": 1,
+          "source_count": 3,
+          "affiliation_count": 0
+        }
+      ]
+    },
+    {
+      "survivor_id": 1682,
+      "loser_ids": [
+        3245
+      ],
+      "canonical": {
+        "name": "LondonCryo Belgravia",
+        "address": "15c Eccleston Pl, London SW1W 9NF, United Kingdom",
+        "locality": "London",
+        "region": "Belgravia",
+        "postal_code": null,
+        "country_code": "GB",
+        "country_name": "United Kingdom",
+        "latitude": 51.49347230000001,
+        "longitude": -0.1481711,
+        "phone": "+442033718900",
+        "email": "belgravia@londoncryo.com",
+        "website": "https://www.londoncryo.com/",
+        "org_id": 1169
+      },
+      "survivor_score": 105,
+      "candidates": [
+        {
+          "id": 1682,
+          "score": 105,
+          "slug": "londoncryo-belgravia",
+          "name": "LondonCryo Belgravia",
+          "address": "15c Eccleston Pl, London SW1W 9NF, United Kingdom",
+          "locality": "London",
+          "website": "http://www.londoncryo.com/",
+          "org_id": 1169,
+          "organization_name": "LondonCryo Belgravia",
+          "offering_count": 17,
+          "review_count": 5,
+          "image_count": 2,
+          "source_count": 2,
+          "affiliation_count": 0
+        },
+        {
+          "id": 3245,
+          "score": 99,
+          "slug": "londoncryo-3",
+          "name": "LondonCryo",
+          "address": "15C Eccleston Place London, SW1W 9NF",
+          "locality": "London",
+          "website": "https://www.londoncryo.com/",
+          "org_id": 1169,
+          "organization_name": "LondonCryo Belgravia",
+          "offering_count": 6,
+          "review_count": 5,
+          "image_count": 1,
+          "source_count": 2,
+          "affiliation_count": 0
+        }
+      ]
+    },
+    {
+      "survivor_id": 12191,
+      "loser_ids": [
+        1775
+      ],
+      "canonical": {
+        "name": "Stem Cells Specialist NY",
+        "address": "20 E 46th St 9th floor, New York, NY 10017, USA",
+        "locality": "New York",
+        "region": "NY",
+        "postal_code": "10017",
+        "country_code": "US",
+        "country_name": "United States",
+        "latitude": 40.7553647,
+        "longitude": -73.9778808,
+        "phone": "646 494-1677",
+        "email": null,
+        "website": "https://stemcellsspecialistny.com/",
+        "org_id": 907
+      },
+      "survivor_score": 104,
+      "candidates": [
+        {
+          "id": 12191,
+          "score": 104,
+          "slug": "stem-cells-specialist-ny-new-york-city",
+          "name": "Stem Cells Specialist NY",
+          "address": "20 E 46th St 9th floor, New York, NY 10017, USA",
+          "locality": "New York City",
+          "website": "https://stemcellsspecialistny.com/",
+          "org_id": 907,
+          "organization_name": "Stem Cells Specialist NY",
+          "offering_count": 17,
+          "review_count": 5,
+          "image_count": 1,
+          "source_count": 4,
+          "affiliation_count": 0
+        },
+        {
+          "id": 1775,
+          "score": 92,
+          "slug": "stem-cell-specialist-ny-new-york",
+          "name": "Stem Cell Specialist NY",
+          "address": "20 E 46th St, New York, NY 10176, USA, New York, US",
+          "locality": "New York",
+          "website": "https://stemcellsspecialistny.com/",
+          "org_id": 907,
+          "organization_name": "Stem Cells Specialist NY",
+          "offering_count": 5,
+          "review_count": 5,
+          "image_count": 9,
+          "source_count": 1,
+          "affiliation_count": 1
+        }
+      ]
+    },
+    {
+      "survivor_id": 2606,
+      "loser_ids": [
+        2007
+      ],
+      "canonical": {
+        "name": "Clean Market IV Drip Lounge at Equinox Domino",
+        "address": "Williamsburg (Equinox Domino), Brooklyn",
+        "locality": "Brooklyn",
+        "region": "NY",
+        "postal_code": null,
+        "country_code": "US",
+        "country_name": "United States",
+        "latitude": 40.7148067,
+        "longitude": -73.9673981,
+        "phone": "888-320-1699",
+        "email": "hello@cleanmarket.com",
+        "website": "https://cleanmarket.com/",
+        "org_id": 34
+      },
+      "survivor_score": 95,
+      "candidates": [
+        {
+          "id": 2606,
+          "score": 95,
+          "slug": "clean-market-iv-drip-lounge-at-equinox-domino-brooklyn",
+          "name": "Clean Market IV Drip Lounge at Equinox Domino",
+          "address": "Williamsburg (Equinox Domino), Brooklyn",
+          "locality": "Brooklyn",
+          "website": "https://cleanmarket.com/",
+          "org_id": 34,
+          "organization_name": "Clean Market",
+          "offering_count": 13,
+          "review_count": 5,
+          "image_count": 1,
+          "source_count": 4,
+          "affiliation_count": 0
+        },
+        {
+          "id": 2007,
+          "score": -32,
+          "slug": "clean-market-williamsburg-equinox-domino-brooklyn",
+          "name": "Clean Market Williamsburg (Equinox Domino)",
+          "address": null,
+          "locality": "Brooklyn",
+          "website": "https://cleanmarket.com/",
+          "org_id": 34,
+          "organization_name": "Clean Market",
+          "offering_count": 21,
+          "review_count": 5,
+          "image_count": 1,
+          "source_count": 2,
+          "affiliation_count": 0
+        }
+      ]
+    },
+    {
+      "survivor_id": 2054,
+      "loser_ids": [
+        10890
+      ],
+      "canonical": {
+        "name": "Next Health West Hollywood",
+        "address": "The Sunset, 8570 Sunset Blvd, Suite 6.1A, West Hollywood, CA 90069",
+        "locality": "West Hollywood",
+        "region": "CA",
+        "postal_code": "90069",
+        "country_code": "US",
+        "country_name": "United States",
+        "latitude": 34.092432108751,
+        "longitude": -118.37848020642,
+        "phone": "(310) 295-2075",
+        "email": null,
+        "website": "https://www.next-health.com/inside/locations",
+        "org_id": 1
+      },
+      "survivor_score": 169,
+      "candidates": [
+        {
+          "id": 2054,
+          "score": 169,
+          "slug": "next-health-west-hollywood",
+          "name": "Next Health West Hollywood",
+          "address": "The Sunset, 8570 Sunset Blvd, Suite 6.1A, West Hollywood, CA 90069",
+          "locality": "West Hollywood",
+          "website": "https://www.next-health.com/inside/locations",
+          "org_id": 1,
+          "organization_name": "NEXT HEALTH",
+          "offering_count": 47,
+          "review_count": 5,
+          "image_count": 2,
+          "source_count": 4,
+          "affiliation_count": 0
+        },
+        {
+          "id": 10890,
+          "score": 140,
+          "slug": "next-health-west-hollywood-los-angeles",
+          "name": "Next Health West Hollywood",
+          "address": "8570 W Sunset Blvd SUITE 6.1A, West Hollywood, CA 90069, USA",
+          "locality": "West Hollywood",
+          "website": "https://www.next-health.com/pages/locations-west-hollywood",
+          "org_id": 1,
+          "organization_name": "NEXT HEALTH",
+          "offering_count": 5,
+          "review_count": 0,
+          "image_count": 1,
+          "source_count": 1,
+          "affiliation_count": 0
+        }
+      ]
+    },
+    {
+      "survivor_id": 9040,
+      "loser_ids": [
+        2119
+      ],
+      "canonical": {
+        "name": "Remedy Place",
+        "address": "8305 Sunset Boulevard, West Hollywood, CA 90069",
+        "locality": "West Hollywood",
+        "region": "CA",
+        "postal_code": "90069",
+        "country_code": "US",
+        "country_name": "United States",
+        "latitude": 34.0965337,
+        "longitude": -118.3709394,
+        "phone": "+1 323-645-7444",
+        "email": null,
+        "website": "https://www.remedyplace.com/clubs/weho",
+        "org_id": 24
+      },
+      "survivor_score": -53,
+      "candidates": [
+        {
+          "id": 9040,
+          "score": -53,
+          "slug": "remedy-place-west-hollywood",
+          "name": "Remedy Place",
+          "address": "2026 Remedy Place . All rights reserved.",
+          "locality": "West Hollywood",
+          "website": "https://www.remedyplace.com/",
+          "org_id": 24,
+          "organization_name": "Remedy Place",
+          "offering_count": 9,
+          "review_count": 5,
+          "image_count": 1,
+          "source_count": 2,
+          "affiliation_count": 0
+        },
+        {
+          "id": 2119,
+          "score": -74,
+          "slug": "remedy-place-west-hollywood-los-angeles",
+          "name": "Remedy Place - West Hollywood",
+          "address": "2026 Remedy Place . All rights reserved.",
+          "locality": "Los Angeles",
+          "website": "https://www.remedyplace.com/",
+          "org_id": 24,
+          "organization_name": "Remedy Place",
+          "offering_count": 18,
+          "review_count": 3,
+          "image_count": 3,
+          "source_count": 2,
+          "affiliation_count": 0
+        }
+      ]
+    },
+    {
+      "survivor_id": 2214,
+      "loser_ids": [
+        8966
+      ],
+      "canonical": {
+        "name": "ATOP PLASTIC SURGERY",
+        "address": "4F–5F, K Square Building, 10 Gangnam-daero 94-gil, Gangnam-gu, Seoul, South Korea",
+        "locality": "Gangnam-gu",
+        "region": "Seoul",
+        "postal_code": null,
+        "country_code": "KR",
+        "country_name": "South Korea",
+        "latitude": 37.4992054,
+        "longitude": 127.0281986,
+        "phone": "+82-110-4997-0801",
+        "email": "atopglobal0601@gmail.com",
+        "website": "https://en.atopps.com/",
+        "org_id": 1541
+      },
+      "survivor_score": 97,
+      "candidates": [
+        {
+          "id": 2214,
+          "score": 97,
+          "slug": "atop-plastic-surgery-gangnam-gu",
+          "name": "ATOP PLASTIC SURGERY",
+          "address": "4F, K Square, 10, Gangnam-daero 94-gil, Gangnam-gu, Seoul, Republic of Korea / 4F, A Tower,105, Teheran-ro, Gangnam-gu, Seoul, Republic of Korea MAP",
+          "locality": "Gangnam-Gu",
+          "website": "https://en.atopps.com/",
+          "org_id": 1541,
+          "organization_name": "ATOP PLASTIC SURGERY",
+          "offering_count": 12,
+          "review_count": 5,
+          "image_count": 8,
+          "source_count": 1,
+          "affiliation_count": 0
+        },
+        {
+          "id": 8966,
+          "score": -165,
+          "slug": "atop-plastic-surgery-gangnam",
+          "name": "ATOP Plastic Surgery",
+          "address": "4F, 5F, K square building, 10, Gangnam-daero 94 gil , Gangnam, KR",
+          "locality": "Gangnam-daero 94-gil",
+          "website": "https://www.gofundme.com/f/emergency-relief-for-venezuela-earthquake-victims",
+          "org_id": null,
+          "organization_name": null,
+          "offering_count": 8,
+          "review_count": 5,
+          "image_count": 14,
+          "source_count": 1,
+          "affiliation_count": 0
+        }
+      ]
+    },
+    {
+      "survivor_id": 2218,
+      "loser_ids": [
+        8968
+      ],
+      "canonical": {
+        "name": "Divine Plastic Surgery Clinic",
+        "address": "4th floor, Suil Building, Dosan-daero 114, Gangnam-gu, Seoul, Republic of Korea MAP",
+        "locality": "Gangnam-Gu",
+        "region": "Seoul",
+        "postal_code": null,
+        "country_code": "KR",
+        "country_name": "South Korea",
+        "latitude": 37.5163704,
+        "longitude": 127.02127,
+        "phone": "+82-2-545-5110",
+        "email": "divineps@naver.com",
+        "website": "http://usa.divineps.co.kr/",
+        "org_id": 1545
+      },
+      "survivor_score": 81,
+      "candidates": [
+        {
+          "id": 2218,
+          "score": 81,
+          "slug": "divine-plastic-surgery-clinic-gangnam-gu",
+          "name": "Divine Plastic Surgery Clinic",
+          "address": "4th floor, Suil Building, Dosan-daero 114, Gangnam-gu, Seoul, Republic of Korea MAP",
+          "locality": "Gangnam-Gu",
+          "website": "http://usa.divineps.co.kr/",
+          "org_id": 1545,
+          "organization_name": "Divine Plastic Surgery Clinic",
+          "offering_count": 2,
+          "review_count": 5,
+          "image_count": 10,
+          "source_count": 1,
+          "affiliation_count": 0
+        },
+        {
+          "id": 8968,
+          "score": -164,
+          "slug": "divine-plastic-surgery-clinic-seoul",
+          "name": "Divine Plastic Surgery Clinic",
+          "address": "4 Floor ,Suil Building, Dosan-daero 114 Gangnam -gu , Seoul, KR",
+          "locality": "Seoul",
+          "website": "https://www.gofundme.com/f/emergency-relief-for-venezuela-earthquake-victims",
+          "org_id": null,
+          "organization_name": null,
+          "offering_count": 9,
+          "review_count": 5,
+          "image_count": 13,
+          "source_count": 1,
+          "affiliation_count": 0
+        }
+      ]
+    },
+    {
+      "survivor_id": 2238,
+      "loser_ids": [
+        8958
+      ],
+      "canonical": {
+        "name": "Glovi Plastic Surgery",
+        "address": "Seoul, Gangnam-gu, Nonhyeon-ro 843, EGI Building 6th Floor MAP",
+        "locality": "Gangnam-Gu",
+        "region": "Nonhyeon-ro 843",
+        "postal_code": null,
+        "country_code": "KR",
+        "country_name": "South Korea",
+        "latitude": 37.5244195,
+        "longitude": 127.0279821,
+        "phone": "+82-2-515-3399",
+        "email": "glovikorea@naver.com",
+        "website": "https://glovips.com/en/",
+        "org_id": 1561
+      },
+      "survivor_score": 93,
+      "candidates": [
+        {
+          "id": 2238,
+          "score": 93,
+          "slug": "glovi-plastic-surgery-gangnam-gu",
+          "name": "Glovi Plastic Surgery",
+          "address": "Seoul, Gangnam-gu, Nonhyeon-ro 843, EGI Building 6th Floor MAP",
+          "locality": "Gangnam-Gu",
+          "website": "https://glovips.com/en/",
+          "org_id": 1561,
+          "organization_name": "Glovi Plastic Surgery",
+          "offering_count": 8,
+          "review_count": 5,
+          "image_count": 11,
+          "source_count": 1,
+          "affiliation_count": 0
+        },
+        {
+          "id": 8958,
+          "score": -161,
+          "slug": "glovi-plastic-surgery-korea-seoul-gangnam",
+          "name": "Glovi Plastic Surgery Korea",
+          "address": "843, Nonhyeon-ro, Gangnam-gu, Seoul, Republic of Korea 06031 , Seoul,Gangnam, KR",
+          "locality": "Seoul,Gangnam",
+          "website": "https://www.gofundme.com/f/emergency-relief-for-venezuela-earthquake-victims",
+          "org_id": null,
+          "organization_name": null,
+          "offering_count": 10,
+          "review_count": 5,
+          "image_count": 30,
+          "source_count": 2,
+          "affiliation_count": 0
+        }
+      ]
+    },
+    {
+      "survivor_id": 2240,
+      "loser_ids": [
+        2447
+      ],
+      "canonical": {
+        "name": "Cheongdam Cell Clinic",
+        "address": "15F, Dosan-daero 318, Gangnam-gu, Republic of Korea MAP",
+        "locality": "Seoul",
+        "region": "Gangnam-gu",
+        "postal_code": null,
+        "country_code": "KR",
+        "country_name": "South Korea",
+        "latitude": 37.5220158,
+        "longitude": 127.0363493,
+        "phone": "+82-2-514-2225",
+        "email": "cheongdamcell@gmail.com",
+        "website": "http://cheongdamcell.com/en",
+        "org_id": 1563
+      },
+      "survivor_score": 82,
+      "candidates": [
+        {
+          "id": 2240,
+          "score": 82,
+          "slug": "cheongdam-cell-clinic-dosan-daero-318",
+          "name": "Cheongdam Cell Clinic",
+          "address": "15F, Dosan-daero 318, Gangnam-gu, Republic of Korea MAP",
+          "locality": "Dosan-daero",
+          "website": "http://cheongdamcell.com/en",
+          "org_id": 1563,
+          "organization_name": "Cheongdam Cell Clinic",
+          "offering_count": 3,
+          "review_count": 5,
+          "image_count": 11,
+          "source_count": 1,
+          "affiliation_count": 0
+        },
+        {
+          "id": 2447,
+          "score": 81,
+          "slug": "cheongdam-cell-clinic-seoul",
+          "name": "Cheongdam Cell Clinic",
+          "address": "318, Dosan-daero, Gangnam-gu, Seoul, South Korea",
+          "locality": "Seoul",
+          "website": "http://cheongdamcell.com/en/main.html",
+          "org_id": 1563,
+          "organization_name": "Cheongdam Cell Clinic",
+          "offering_count": 2,
+          "review_count": 5,
+          "image_count": 9,
+          "source_count": 1,
+          "affiliation_count": 0
+        }
+      ]
+    },
+    {
+      "survivor_id": 2420,
+      "loser_ids": [
+        2440
+      ],
+      "canonical": {
+        "name": "One Cell Skin Clinic Gangnam Seoul | Premium Korean Aesthetic Treatments for International Patients",
+        "address": "B1F, 2F–9F, 646 Seolleung-ro, Gangnam-gu, Seoul, South Korea",
+        "locality": "Seoul",
+        "region": "Gangnam-gu",
+        "postal_code": null,
+        "country_code": "KR",
+        "country_name": "South Korea",
+        "latitude": 37.51419740000001,
+        "longitude": 127.0427295,
+        "phone": "+82 -10-5105-2415",
+        "email": null,
+        "website": "https://www.skinclinickorea.com/",
+        "org_id": 1666
+      },
+      "survivor_score": 120,
+      "candidates": [
+        {
+          "id": 2420,
+          "score": 120,
+          "slug": "one-cell-skin-clinic-gangnam-seoul-premium-korean-aesthetic-treatments-for-international-patients",
+          "name": "One Cell Skin Clinic Gangnam Seoul | Premium Korean Aesthetic Treatments for International Patients",
+          "address": "B1F, 2F–9F, 646 Seolleung-ro, Gangnam-gu, Seoul, South Korea",
+          "locality": "Seoul",
+          "website": "https://www.skinclinickorea.com/",
+          "org_id": 1666,
+          "organization_name": "One Cell Skin Clinic Gangnam Seoul | Premium Korean Aesthetic Treatments for International Patients",
+          "offering_count": 60,
+          "review_count": 0,
+          "image_count": 48,
+          "source_count": 4,
+          "affiliation_count": 0
+        },
+        {
+          "id": 2440,
+          "score": 94,
+          "slug": "one-cell-clinic-gangnam-seoul-stem-cell-therapy-regenerative-medicine-for-international-patients",
+          "name": "One Cell Clinic Gangnam Seoul | Stem Cell Therapy & Regenerative Medicine for International Patients",
+          "address": "B1F, 2F–9F, 646 Seolleung-ro, Gangnam-gu, Seoul, South Korea",
+          "locality": "Seoul",
+          "website": "https://www.gangnamstemcelltherapy.com/",
+          "org_id": 1686,
+          "organization_name": "One Cell Clinic Gangnam Seoul | Stem Cell Therapy & Regenerative Medicine for International Patients",
+          "offering_count": 4,
+          "review_count": 0,
+          "image_count": 11,
+          "source_count": 1,
+          "affiliation_count": 0
+        }
+      ]
+    },
+    {
+      "survivor_id": 2853,
+      "loser_ids": [
+        2608
+      ],
+      "canonical": {
+        "name": "Reiki Traveler NJ",
+        "address": "Clifton, NJ, USA",
+        "locality": "Clifton",
+        "region": "NJ",
+        "postal_code": null,
+        "country_code": "US",
+        "country_name": "United States",
+        "latitude": 40.8654493,
+        "longitude": -74.1610268,
+        "phone": null,
+        "email": "reikitraveler1@gmail.com",
+        "website": "http://www.reikitraveler.com/",
+        "org_id": 104
+      },
+      "survivor_score": 73,
+      "candidates": [
+        {
+          "id": 2853,
+          "score": 73,
+          "slug": "reiki-traveler-nj-princeton-2",
+          "name": "Reiki Traveler NJ",
+          "address": "Clifton, NJ, USA",
+          "locality": "Clifton",
+          "website": "http://www.reikitraveler.com/",
+          "org_id": 104,
+          "organization_name": "Reiki Traveler NJ",
+          "offering_count": 8,
+          "review_count": 0,
+          "image_count": 1,
+          "source_count": 1,
+          "affiliation_count": 0
+        },
+        {
+          "id": 2608,
+          "score": 72,
+          "slug": "reiki-traveler-nj-hoboken-2",
+          "name": "Reiki Traveler NJ",
+          "address": "Clifton, NJ, USA",
+          "locality": "Clifton",
+          "website": "http://www.reikitraveler.com/",
+          "org_id": 104,
+          "organization_name": "Reiki Traveler NJ",
+          "offering_count": 7,
+          "review_count": 0,
+          "image_count": 1,
+          "source_count": 1,
+          "affiliation_count": 0
+        }
+      ]
+    },
+    {
+      "survivor_id": 3442,
+      "loser_ids": [
+        3447
+      ],
+      "canonical": {
+        "name": "Advanced Regenerative Health",
+        "address": "Denver Tech Center",
+        "locality": "Denver Tech Center",
+        "region": "CO",
+        "postal_code": null,
+        "country_code": "US",
+        "country_name": "United States",
+        "latitude": 39.6209671,
+        "longitude": -104.8945569,
+        "phone": "(303) 741-0990",
+        "email": null,
+        "website": "https://advancedregenhealth.com/",
+        "org_id": 1855
+      },
+      "survivor_score": 75,
+      "candidates": [
+        {
+          "id": 3442,
+          "score": 75,
+          "slug": "advanced-regenerative-health-denver-tech-center",
+          "name": "Advanced Regenerative Health",
+          "address": "Denver Tech Center",
+          "locality": "Denver Tech Center",
+          "website": "https://advancedregenhealth.com/",
+          "org_id": 1855,
+          "organization_name": "Advanced Regenerative Health",
+          "offering_count": 0,
+          "review_count": 0,
+          "image_count": 1,
+          "source_count": 1,
+          "affiliation_count": 0
+        },
+        {
+          "id": 3447,
+          "score": 75,
+          "slug": "advanced-regenerative-health-denver",
+          "name": "Advanced Regenerative Health",
+          "address": "Denver Tech Center",
+          "locality": "Denver",
+          "website": "https://advancedregenhealth.com/",
+          "org_id": 1855,
+          "organization_name": "Advanced Regenerative Health",
+          "offering_count": 0,
+          "review_count": 0,
+          "image_count": 1,
+          "source_count": 1,
+          "affiliation_count": 0
+        }
+      ]
+    },
+    {
+      "survivor_id": 3603,
+      "loser_ids": [
+        9567
+      ],
+      "canonical": {
+        "name": "Alyeska Aesthetics",
+        "address": "12641 Old Glenn Hwy, Ste. 101, Eagle River, Alaska 99577",
+        "locality": "Eagle River",
+        "region": "AK",
+        "postal_code": "99577",
+        "country_code": "US",
+        "country_name": "United States",
+        "latitude": 61.33480280000001,
+        "longitude": -149.5623682,
+        "phone": "907-561-1436",
+        "email": null,
+        "website": "https://www.alyeskaaesthetics.com/",
+        "org_id": 1927
+      },
+      "survivor_score": 131,
+      "candidates": [
+        {
+          "id": 3603,
+          "score": 131,
+          "slug": "alyeska-aesthetics-eagle-river",
+          "name": "Alyeska Aesthetics",
+          "address": "12641 Old Glenn Hwy, Ste. 101, Eagle River, Alaska 99577",
+          "locality": "Eagle River",
+          "website": "https://www.alyeskaaesthetics.com/",
+          "org_id": 1927,
+          "organization_name": "Alyeska Aesthetics",
+          "offering_count": 1,
+          "review_count": 5,
+          "image_count": 1,
+          "source_count": 3,
+          "affiliation_count": 0
+        },
+        {
+          "id": 9567,
+          "score": 88,
+          "slug": "alyeska-aesthetics-eagle-river-anchorage-2",
+          "name": "Alyeska Aesthetics Eagle River",
+          "address": "12641 Old Glenn Hwy #101, Eagle River, AK 99577",
+          "locality": "Anchorage",
+          "website": "http://www.alyeskaaesthetics.com/",
+          "org_id": 1927,
+          "organization_name": "Alyeska Aesthetics",
+          "offering_count": 1,
+          "review_count": 5,
+          "image_count": 1,
+          "source_count": 2,
+          "affiliation_count": 0
+        }
+      ]
+    },
+    {
+      "survivor_id": 3605,
+      "loser_ids": [
+        9566
+      ],
+      "canonical": {
+        "name": "Alyeska Aesthetics Eagle River",
+        "address": "3831 Piper Street #S-410, Anchorage, Alaska 99508, USA",
+        "locality": "Anchorage",
+        "region": "AK",
+        "postal_code": "99508",
+        "country_code": "US",
+        "country_name": "United States",
+        "latitude": 61.18575139999999,
+        "longitude": -149.8218601,
+        "phone": "907-561-1436",
+        "email": null,
+        "website": "https://www.alyeskaaesthetics.com/",
+        "org_id": 1927
+      },
+      "survivor_score": 150,
+      "candidates": [
+        {
+          "id": 3605,
+          "score": 150,
+          "slug": "alyeska-aesthetics-eagle-river-anchorage",
+          "name": "Alyeska Aesthetics Eagle River",
+          "address": "3831 Piper Street #S-410, Anchorage, Alaska 99508, USA",
+          "locality": "Anchorage",
+          "website": "https://www.alyeskaaesthetics.com/",
+          "org_id": 1927,
+          "organization_name": "Alyeska Aesthetics",
+          "offering_count": 51,
+          "review_count": 5,
+          "image_count": 1,
+          "source_count": 3,
+          "affiliation_count": 0
+        },
+        {
+          "id": 9566,
+          "score": 129,
+          "slug": "alyeska-aesthetics-anchorage",
+          "name": "Alyeska Aesthetics",
+          "address": "3831 Piper St Suite, S-410, Anchorage, AK 99508",
+          "locality": "Anchorage",
+          "website": "https://www.alyeskaaesthetics.com/",
+          "org_id": 1927,
+          "organization_name": "Alyeska Aesthetics",
+          "offering_count": 1,
+          "review_count": 5,
+          "image_count": 1,
+          "source_count": 2,
+          "affiliation_count": 0
+        }
+      ]
+    },
+    {
+      "survivor_id": 5423,
+      "loser_ids": [
+        3607
+      ],
+      "canonical": {
+        "name": "Dr. Alice S Pien, MD – AMA Regenerative Medicine",
+        "address": "1570 Brookhollow Dr, Santa Ana, CA 92705",
+        "locality": "Santa Ana",
+        "region": "CA",
+        "postal_code": "92705",
+        "country_code": "US",
+        "country_name": "United States",
+        "latitude": 33.7126554,
+        "longitude": -117.8489091,
+        "phone": "949-428-4500",
+        "email": null,
+        "website": "https://amaskincare.com/",
+        "org_id": 2047
+      },
+      "survivor_score": 148,
+      "candidates": [
+        {
+          "id": 5423,
+          "score": 148,
+          "slug": "dr-alice-s-pien-md-ama-regenerative-medicine-santa-ana",
+          "name": "Dr. Alice S Pien, MD – AMA Regenerative Medicine",
+          "address": "1570 Brookhollow Dr, Santa Ana, CA 92705",
+          "locality": "Santa Ana",
+          "website": "https://amaskincare.com/",
+          "org_id": 2047,
+          "organization_name": "Dr. Anteneh Roba, MD",
+          "offering_count": 22,
+          "review_count": 3,
+          "image_count": 1,
+          "source_count": 3,
+          "affiliation_count": 0
+        },
+        {
+          "id": 3607,
+          "score": 148,
+          "slug": "ama-regenerative-medicine-irvine",
+          "name": "AMA Regenerative Medicine",
+          "address": "1570 Brookhollow Dr., Santa Ana, CA 92705",
+          "locality": "Santa Ana",
+          "website": "https://www.amaregenmed.com/",
+          "org_id": 1929,
+          "organization_name": "AMA Regenerative Medicine",
+          "offering_count": 18,
+          "review_count": 5,
+          "image_count": 1,
+          "source_count": 3,
+          "affiliation_count": 0
+        }
+      ]
+    },
+    {
+      "survivor_id": 3608,
+      "loser_ids": [
+        5424
+      ],
+      "canonical": {
+        "name": "AMA Regenerative Medicine & Skincare",
+        "address": "6310 San Vicente Blvd., STE 285, Los Angeles, CA 90048",
+        "locality": "Los Angeles",
+        "region": "CA",
+        "postal_code": "90048",
+        "country_code": "US",
+        "country_name": "United States",
+        "latitude": 34.060523,
+        "longitude": -118.367693,
+        "phone": "+1-310-460-2444",
+        "email": null,
+        "website": "https://www.amaregenmed.com/",
+        "org_id": 1929
+      },
+      "survivor_score": 148,
+      "candidates": [
+        {
+          "id": 3608,
+          "score": 148,
+          "slug": "ama-regenerative-medicine-skincare-los-angeles",
+          "name": "AMA Regenerative Medicine & Skincare",
+          "address": "6310 San Vicente Blvd., STE 285, Los Angeles, CA 90048",
+          "locality": "Los Angeles",
+          "website": "https://www.amaregenmed.com/",
+          "org_id": 1929,
+          "organization_name": "AMA Regenerative Medicine",
+          "offering_count": 18,
+          "review_count": 5,
+          "image_count": 1,
+          "source_count": 3,
+          "affiliation_count": 0
+        },
+        {
+          "id": 5424,
+          "score": 76,
+          "slug": "dr-alice-s-pien-md-ama-regenerative-medicine-los-angeles",
+          "name": "Dr. Alice S Pien, MD – AMA Regenerative Medicine",
+          "address": "6310 San Vicente Blvd STE 285, Los Angeles, CA, 90048",
+          "locality": "Los Angeles",
+          "website": "https://amaskincare.com/",
+          "org_id": 2047,
+          "organization_name": "Dr. Anteneh Roba, MD",
+          "offering_count": 0,
+          "review_count": 0,
+          "image_count": 1,
+          "source_count": 1,
+          "affiliation_count": 0
+        }
+      ]
+    },
+    {
+      "survivor_id": 3622,
+      "loser_ids": [
+        3620
+      ],
+      "canonical": {
+        "name": "American Medical Wellness",
+        "address": "241 N Buffalo Dr Ste 200B, Las Vegas, NV 89145",
+        "locality": "Las Vegas",
+        "region": "NV",
+        "postal_code": "89145",
+        "country_code": "US",
+        "country_name": "United States",
+        "latitude": 36.175625,
+        "longitude": -115.2602821,
+        "phone": "+1-702-347-7000",
+        "email": "Info@americanmedicalwellness.com",
+        "website": "https://www.americanmedicalwellness.com/",
+        "org_id": 1936
+      },
+      "survivor_score": 138,
+      "candidates": [
+        {
+          "id": 3622,
+          "score": 138,
+          "slug": "american-medical-wellness-las-vegas",
+          "name": "American Medical Wellness",
+          "address": "241 N Buffalo Dr Ste 200B, Las Vegas, NV 89145",
+          "locality": "Las Vegas",
+          "website": "https://www.americanmedicalwellness.com/",
+          "org_id": 1936,
+          "organization_name": "American Male Wellness",
+          "offering_count": 4,
+          "review_count": 5,
+          "image_count": 1,
+          "source_count": 3,
+          "affiliation_count": 0
+        },
+        {
+          "id": 3620,
+          "score": 93,
+          "slug": "american-male-wellness-north-las-vegas",
+          "name": "American Male Wellness",
+          "address": "241 N Buffalo Dr Ste 200B, Las Vegas, NV 89145",
+          "locality": "North Las Vegas",
+          "website": "https://www.americanmedicalwellness.com/",
+          "org_id": 1936,
+          "organization_name": "American Male Wellness",
+          "offering_count": 4,
+          "review_count": 5,
+          "image_count": 1,
+          "source_count": 3,
+          "affiliation_count": 0
+        }
+      ]
+    },
+    {
+      "survivor_id": 3962,
+      "loser_ids": [
+        11224
+      ],
+      "canonical": {
+        "name": "PSCHR Plastic Surgery Center of Hampton Roads",
+        "address": "895 City Center Blvd, Ste 300, Newport News, VA 23606",
+        "locality": "Newport News",
+        "region": "VA",
+        "postal_code": "23606",
+        "country_code": "US",
+        "country_name": "United States",
+        "latitude": 37.0955409,
+        "longitude": -76.4692061,
+        "phone": "757.873.3500",
+        "email": null,
+        "website": "https://pschr.com/medspa",
+        "org_id": 2122
+      },
+      "survivor_score": 152,
+      "candidates": [
+        {
+          "id": 3962,
+          "score": 152,
+          "slug": "pschr-plastic-surgery-center-of-hampton-roads-newport-news",
+          "name": "PSCHR Plastic Surgery Center of Hampton Roads",
+          "address": "895 City Center Blvd, Ste 300, Newport News, VA 23606",
+          "locality": "Newport News",
+          "website": "https://pschr.com/",
+          "org_id": 2122,
+          "organization_name": "PSCHR Plastic Surgery Center of Hampton Roads",
+          "offering_count": 61,
+          "review_count": 5,
+          "image_count": 1,
+          "source_count": 4,
+          "affiliation_count": 0
+        },
+        {
+          "id": 11224,
+          "score": 132,
+          "slug": "pschr-plastic-surgery-center-of-hampton-roads-medspa-newport-news",
+          "name": "PSCHR Plastic Surgery Center of Hampton Roads – MedSpa",
+          "address": "895 City Ctr Blvd Suite 201, Newport News, VA 23606",
+          "locality": "Newport News",
+          "website": "https://pschr.com/medspa",
+          "org_id": 2122,
+          "organization_name": "PSCHR Plastic Surgery Center of Hampton Roads",
+          "offering_count": 0,
+          "review_count": 5,
+          "image_count": 1,
+          "source_count": 2,
+          "affiliation_count": 0
+        }
+      ]
+    },
+    {
+      "survivor_id": 4184,
+      "loser_ids": [
+        4187
+      ],
+      "canonical": {
+        "name": "IronChiro",
+        "address": "2164 Hudson Avenue, Rochester NY, 14617",
+        "locality": "Rochester",
+        "region": "NY",
+        "postal_code": "14617",
+        "country_code": "US",
+        "country_name": "United States",
+        "latitude": 43.2076899,
+        "longitude": -77.6004012,
+        "phone": "707-57-CHIRO",
+        "email": "info@ironchiro.com",
+        "website": "https://www.ironchiro.com/",
+        "org_id": 2206
+      },
+      "survivor_score": 105,
+      "candidates": [
+        {
+          "id": 4184,
+          "score": 105,
+          "slug": "ironchiro-rochester",
+          "name": "IronChiro",
+          "address": "2164 Hudson Avenue, Rochester NY, 14617",
+          "locality": "Rochester",
+          "website": "https://www.ironchiro.com/",
+          "org_id": 2206,
+          "organization_name": "IronChiro",
+          "offering_count": 18,
+          "review_count": 5,
+          "image_count": 1,
+          "source_count": 4,
+          "affiliation_count": 0
+        },
+        {
+          "id": 4187,
+          "score": 83,
+          "slug": "ironchiro-greece",
+          "name": "IronChiro",
+          "address": "2164 Hudson Ave",
+          "locality": "Rochester",
+          "website": "https://www.ironchiro.com/",
+          "org_id": 2206,
+          "organization_name": "IronChiro",
+          "offering_count": 0,
+          "review_count": 5,
+          "image_count": 1,
+          "source_count": 2,
+          "affiliation_count": 0
+        }
+      ]
+    },
+    {
+      "survivor_id": 4522,
+      "loser_ids": [
+        4521
+      ],
+      "canonical": {
+        "name": "Cavendish Clinic",
+        "address": "65 Margaret Street, Fitzrovia, London",
+        "locality": "London",
+        "region": null,
+        "postal_code": null,
+        "country_code": "GB",
+        "country_name": "United Kingdom",
+        "latitude": 51.5214993,
+        "longitude": -0.1365872,
+        "phone": "0207 935 4410",
+        "email": "fitzrovia@cavendishclinic.co.uk",
+        "website": "https://cavendishclinic.co.uk/",
+        "org_id": 7791
+      },
+      "survivor_score": 102,
+      "candidates": [
+        {
+          "id": 4522,
+          "score": 102,
+          "slug": "cavendish-clinic-london",
+          "name": "Cavendish Clinic",
+          "address": "Fitzrovia, London",
+          "locality": "London",
+          "website": "https://cavendishclinic.co.uk/",
+          "org_id": 7791,
+          "organization_name": "Cavendish Clinic",
+          "offering_count": 26,
+          "review_count": 5,
+          "image_count": 1,
+          "source_count": 2,
+          "affiliation_count": 0
+        },
+        {
+          "id": 4521,
+          "score": 102,
+          "slug": "cavendish-clinic-edinburgh-2",
+          "name": "Cavendish Clinic",
+          "address": "Fitzrovia, London (John Lewis concessions ceased trading)",
+          "locality": "London",
+          "website": "https://cavendishclinic.co.uk/",
+          "org_id": 7791,
+          "organization_name": "Cavendish Clinic",
+          "offering_count": 25,
+          "review_count": 5,
+          "image_count": 1,
+          "source_count": 2,
+          "affiliation_count": 0
+        }
+      ]
+    },
+    {
+      "survivor_id": 9445,
+      "loser_ids": [
+        4533
+      ],
+      "canonical": {
+        "name": "Solea Brickell Spa",
+        "address": "701 S Miami Avenue, Suite 311A",
+        "locality": "Miami",
+        "region": "FL",
+        "postal_code": "33130",
+        "country_code": "US",
+        "country_name": "United States",
+        "latitude": 25.766980003457,
+        "longitude": -80.19293628642,
+        "phone": "(786) 400-2775",
+        "email": "info@soleabrickellspa.com",
+        "website": "https://soleabrickellspa.com/",
+        "org_id": 2351
+      },
+      "survivor_score": 133,
+      "candidates": [
+        {
+          "id": 9445,
+          "score": 133,
+          "slug": "solea-brickell-spa-south-miami-ave-miami-2",
+          "name": "Solea Brickell Spa",
+          "address": "701 S Miami Avenue, Suite 311A",
+          "locality": "Miami",
+          "website": "https://soleabrickellspa.com/",
+          "org_id": 2351,
+          "organization_name": "Solea Brickell Spa",
+          "offering_count": 0,
+          "review_count": 5,
+          "image_count": 0,
+          "source_count": 2,
+          "affiliation_count": 0
+        },
+        {
+          "id": 4533,
+          "score": 107,
+          "slug": "solea-brickell-spa-south-miami-ave-miami",
+          "name": "Solea Brickell Spa",
+          "address": "Brickell City Centre, 701 S Miami Avenue, Miami, FL 33130",
+          "locality": "South Miami Ave Miami",
+          "website": "https://soleabrickellspa.com/",
+          "org_id": 2351,
+          "organization_name": "Solea Brickell Spa",
+          "offering_count": 24,
+          "review_count": 5,
+          "image_count": 1,
+          "source_count": 2,
+          "affiliation_count": 0
+        }
+      ]
+    },
+    {
+      "survivor_id": 4583,
+      "loser_ids": [
+        8274
+      ],
+      "canonical": {
+        "name": "Chicago Stem Cell Therapy and Pain Management Institute",
+        "address": "10181 W Lincoln Hwy, Frankfort, IL 60423",
+        "locality": "Frankfort",
+        "region": "IL",
+        "postal_code": "60423",
+        "country_code": "US",
+        "country_name": "United States",
+        "latitude": 41.5053635,
+        "longitude": -87.86429869999999,
+        "phone": "815-412-6192",
+        "email": null,
+        "website": "https://www.chicagostemcelltherapy.com/",
+        "org_id": 919
+      },
+      "survivor_score": 150,
+      "candidates": [
+        {
+          "id": 4583,
+          "score": 150,
+          "slug": "chicago-stem-cell-therapy-and-pain-management-institute",
+          "name": "Chicago Stem Cell Therapy and Pain Management Institute",
+          "address": "10181 W Lincoln Hwy, Frankfort, IL 60423",
+          "locality": "Frankfort",
+          "website": "https://www.chicagostemcelltherapy.com/",
+          "org_id": 919,
+          "organization_name": "Stem Cell Institute",
+          "offering_count": 21,
+          "review_count": 5,
+          "image_count": 1,
+          "source_count": 3,
+          "affiliation_count": 0
+        },
+        {
+          "id": 8274,
+          "score": 142,
+          "slug": "pain-management-institute-aurora",
+          "name": "Pain Management Institute",
+          "address": "10181 W Lincoln Hwy, Frankfort, IL 60423",
+          "locality": "Frankfort",
+          "website": "https://www.chicagostemcelltherapy.com/",
+          "org_id": 919,
+          "organization_name": "Stem Cell Institute",
+          "offering_count": 12,
+          "review_count": 5,
+          "image_count": 1,
+          "source_count": 3,
+          "affiliation_count": 0
+        }
+      ]
+    },
+    {
+      "survivor_id": 5666,
+      "loser_ids": [
+        5667
+      ],
+      "canonical": {
+        "name": "Bespoke Biologix",
+        "address": "Calle Paseo de los Héroes 10999, 22010 Tijuana B.C.",
+        "locality": "Tijuana",
+        "region": "B.C.",
+        "postal_code": null,
+        "country_code": "MX",
+        "country_name": "Mexico",
+        "latitude": 32.51365210000001,
+        "longitude": -116.9877401,
+        "phone": "(888) 326-7836",
+        "email": "contact@bespokebiologix.com",
+        "website": "https://bespokestemcell.com/",
+        "org_id": 2796
+      },
+      "survivor_score": 104,
+      "candidates": [
+        {
+          "id": 5666,
+          "score": 104,
+          "slug": "bespoke-biologix-san-diego",
+          "name": "Bespoke Biologix",
+          "address": "Calle Paseo de los Héroes 10999, 22010 Tijuana B.C.",
+          "locality": "Tijuana",
+          "website": "https://bespokestemcell.com/",
+          "org_id": 2796,
+          "organization_name": "Bespoke Biologix",
+          "offering_count": 20,
+          "review_count": 5,
+          "image_count": 2,
+          "source_count": 2,
+          "affiliation_count": 0
+        },
+        {
+          "id": 5667,
+          "score": 89,
+          "slug": "bespoke-biologix-tijuana",
+          "name": "Bespoke Biologix",
+          "address": "Calle Paseo de los Héroes 10999, 22010 Tijuana B.C.",
+          "locality": "Tijuana",
+          "website": "https://bespokestemcell.com/",
+          "org_id": 2796,
+          "organization_name": "Bespoke Biologix",
+          "offering_count": 3,
+          "review_count": 5,
+          "image_count": 2,
+          "source_count": 3,
+          "affiliation_count": 0
+        }
+      ]
+    },
+    {
+      "survivor_id": 6193,
+      "loser_ids": [
+        6194
+      ],
+      "canonical": {
+        "name": "Hairport Clinic",
+        "address": "via Sardegna 38, 00187 Roma, Italia",
+        "locality": "Roma",
+        "region": "RM",
+        "postal_code": null,
+        "country_code": "IT",
+        "country_name": "Italy",
+        "latitude": 41.90955049999999,
+        "longitude": 12.4912441,
+        "phone": "+390640075127",
+        "email": "info@hairportclinic.com",
+        "website": "https://hairportclinic.it/",
+        "org_id": 7821
+      },
+      "survivor_score": 88,
+      "candidates": [
+        {
+          "id": 6193,
+          "score": 88,
+          "slug": "hairport-clinic-istanbul-2",
+          "name": "Hairport Clinic",
+          "address": "via Sardegna 38, 00187 Roma, Italia",
+          "locality": "Roma",
+          "website": "https://hairportclinic.it/",
+          "org_id": 7821,
+          "organization_name": "Hairport Clinic",
+          "offering_count": 8,
+          "review_count": 0,
+          "image_count": 1,
+          "source_count": 1,
+          "affiliation_count": 0
+        },
+        {
+          "id": 6194,
+          "score": 85,
+          "slug": "hairport-clinic-roma",
+          "name": "Hairport Clinic",
+          "address": "via Sardegna 38, 00187 Roma, Italia",
+          "locality": "Roma",
+          "website": "https://hairportclinic.it/",
+          "org_id": 7821,
+          "organization_name": "Hairport Clinic",
+          "offering_count": 5,
+          "review_count": 0,
+          "image_count": 1,
+          "source_count": 1,
+          "affiliation_count": 0
+        }
+      ]
+    },
+    {
+      "survivor_id": 6878,
+      "loser_ids": [
+        8258
+      ],
+      "canonical": {
+        "name": "New Jersey Regenerative Institute",
+        "address": "299 Cherry Hill Road, Suite 105, Parsippany, NJ 07054",
+        "locality": "Parsippany-Troy Hills",
+        "region": "NJ",
+        "postal_code": "07054",
+        "country_code": "US",
+        "country_name": "United States",
+        "latitude": 40.8693252,
+        "longitude": -74.43818929999999,
+        "phone": "(973)-998-8309",
+        "email": null,
+        "website": "https://www.njregenerativeinstitute.com/",
+        "org_id": 3231
+      },
+      "survivor_score": 104,
+      "candidates": [
+        {
+          "id": 6878,
+          "score": 104,
+          "slug": "new-jersey-regenerative-institute-newark",
+          "name": "New Jersey Regenerative Institute",
+          "address": "299 Cherry Hill Road, Suite 105, Parsippany, NJ 07054",
+          "locality": "Parsippany-Troy Hills",
+          "website": "https://www.njregenerativeinstitute.com/",
+          "org_id": 3231,
+          "organization_name": "New Jersey Regenerative Institute",
+          "offering_count": 13,
+          "review_count": 5,
+          "image_count": 3,
+          "source_count": 5,
+          "affiliation_count": 0
+        },
+        {
+          "id": 8258,
+          "score": 101,
+          "slug": "new-jersey-regenerative-institute-gerard-malanga-md-jersey-city",
+          "name": "New Jersey Regenerative Institute – Gerard Malanga, MD",
+          "address": "299 Cherry Hill Road, Suite 105, Parsippany, NJ 07054",
+          "locality": "Parsippany-Troy Hills",
+          "website": "https://www.njregenerativeinstitute.com/",
+          "org_id": 3231,
+          "organization_name": "New Jersey Regenerative Institute",
+          "offering_count": 16,
+          "review_count": 5,
+          "image_count": 1,
+          "source_count": 3,
+          "affiliation_count": 0
+        }
+      ]
+    },
+    {
+      "survivor_id": 7270,
+      "loser_ids": [
+        7268
+      ],
+      "canonical": {
+        "name": "BioXcellerator Clinic",
+        "address": "Torre Medica 2 Office 944 CRA. 25A #1A SUR -45, Medellín, Antioquia, Colombia, 050022",
+        "locality": "Medellín",
+        "region": "Antioquia",
+        "postal_code": null,
+        "country_code": "CO",
+        "country_name": "Colombia",
+        "latitude": 6.197101399999999,
+        "longitude": -75.56024649999999,
+        "phone": "1.888.567.2469",
+        "email": null,
+        "website": "https://www.bioxcellerator.com/",
+        "org_id": 3350
+      },
+      "survivor_score": 84,
+      "candidates": [
+        {
+          "id": 7270,
+          "score": 84,
+          "slug": "bioxcellerator-clinic-medell-n",
+          "name": "BioXcellerator Clinic",
+          "address": "Torre Medica 2 Office 944 CRA. 25A #1A SUR -45, Medellín, Antioquia, Colombia, 050022",
+          "locality": "Medellín",
+          "website": "https://www.bioxcellerator.com/",
+          "org_id": 3350,
+          "organization_name": "BioXcellerator Clinic",
+          "offering_count": 1,
+          "review_count": 5,
+          "image_count": 1,
+          "source_count": 2,
+          "affiliation_count": 0
+        },
+        {
+          "id": 7268,
+          "score": 60,
+          "slug": "bioxcellerator-clinic-hialeah",
+          "name": "BioXcellerator Clinic",
+          "address": "Torre Medica 2 Office 944 CRA. 25A #1A SUR -45, Medellín, Antioquia, Colombia, 050022",
+          "locality": "Hialeah",
+          "website": "https://www.bioxcellerator.com/",
+          "org_id": 3350,
+          "organization_name": "BioXcellerator Clinic",
+          "offering_count": 20,
+          "review_count": 5,
+          "image_count": 1,
+          "source_count": 3,
+          "affiliation_count": 0
+        }
+      ]
+    },
+    {
+      "survivor_id": 7920,
+      "loser_ids": [
+        7921
+      ],
+      "canonical": {
+        "name": "Caring Medical Florida, LLC",
+        "address": "9738 Commerce Center Ct, Fort Myers, FL 33908",
+        "locality": "Fort Myers",
+        "region": "FL",
+        "postal_code": "33908",
+        "country_code": "US",
+        "country_name": "United States",
+        "latitude": 26.4991773,
+        "longitude": -81.9131096,
+        "phone": "(239) 308-4701",
+        "email": null,
+        "website": "https://caringmedical.com/",
+        "org_id": 3622
+      },
+      "survivor_score": 154,
+      "candidates": [
+        {
+          "id": 7920,
+          "score": 154,
+          "slug": "caring-medical-florida-llc-cape-coral",
+          "name": "Caring Medical Florida, LLC",
+          "address": "9738 Commerce Center Ct, Fort Myers, FL 33908",
+          "locality": "Fort Myers",
+          "website": "https://caringmedical.com/",
+          "org_id": 3622,
+          "organization_name": "Caring Medical Florida, LLC",
+          "offering_count": 35,
+          "review_count": 5,
+          "image_count": 1,
+          "source_count": 3,
+          "affiliation_count": 0
+        },
+        {
+          "id": 7921,
+          "score": 133,
+          "slug": "caring-medical-florida-llc-fort-myers",
+          "name": "Caring Medical Florida, LLC",
+          "address": "9734 Commerce Center Ct, Fort Myers, FL 33908",
+          "locality": "Fort Myers",
+          "website": "https://caringmedical.com/",
+          "org_id": 3622,
+          "organization_name": "Caring Medical Florida, LLC",
+          "offering_count": 1,
+          "review_count": 5,
+          "image_count": 1,
+          "source_count": 2,
+          "affiliation_count": 0
+        }
+      ]
+    },
+    {
+      "survivor_id": 8323,
+      "loser_ids": [
+        8322
+      ],
+      "canonical": {
+        "name": "ResCore Clinic",
+        "address": "Paseo de los Héroes 10231-209, Zona Urbana Rio Tijuana, 22010 Tijuana, B.C., Mexico",
+        "locality": "Tijuana",
+        "region": "B.C.",
+        "postal_code": null,
+        "country_code": "MX",
+        "country_name": "Mexico",
+        "latitude": 32.5222357,
+        "longitude": -117.01394,
+        "phone": "+1 619-848-6254",
+        "email": null,
+        "website": "https://rescoreclinic.com/",
+        "org_id": 3786
+      },
+      "survivor_score": 99,
+      "candidates": [
+        {
+          "id": 8323,
+          "score": 99,
+          "slug": "rescore-clinic-tijuana",
+          "name": "ResCore Clinic",
+          "address": "Paseo de los Héroes 10231-209, Zona Urbana Rio Tijuana, 22010 Tijuana, B.C., Mexico",
+          "locality": "Tijuana",
+          "website": "https://rescoreclinic.com/",
+          "org_id": 3786,
+          "organization_name": "ResCore Clinic",
+          "offering_count": 12,
+          "review_count": 5,
+          "image_count": 1,
+          "source_count": 2,
+          "affiliation_count": 0
+        },
+        {
+          "id": 8322,
+          "score": 64,
+          "slug": "rescore-clinic-san-diego",
+          "name": "ResCore Clinic",
+          "address": "Paseo de los Héroes 10231-209, Zona Urbana Rio Tijuana, 22010 Tijuana, B.C., Mexico",
+          "locality": "San Diego",
+          "website": "https://rescoreclinic.com/",
+          "org_id": 3786,
+          "organization_name": "ResCore Clinic",
+          "offering_count": 24,
+          "review_count": 5,
+          "image_count": 1,
+          "source_count": 3,
+          "affiliation_count": 0
+        }
+      ]
+    },
+    {
+      "survivor_id": 8824,
+      "loser_ids": [
+        9423
+      ],
+      "canonical": {
+        "name": "Healthspan",
+        "address": "1441 Brickell Ave Suite 310 Miami, FL 33131",
+        "locality": "Miami",
+        "region": "FL",
+        "postal_code": "33131",
+        "country_code": "US",
+        "country_name": "United States",
+        "latitude": 25.7580604,
+        "longitude": -80.192543,
+        "phone": "(786) 713-1222",
+        "email": "Info@healthspanrecovery.com",
+        "website": "https://www.healthspanrecovery.com/services",
+        "org_id": 1049
+      },
+      "survivor_score": 158,
+      "candidates": [
+        {
+          "id": 8824,
+          "score": 158,
+          "slug": "healthspan-miami-3",
+          "name": "Healthspan",
+          "address": "1441 Brickell Ave Suite 310 Miami, FL 33131",
+          "locality": "Miami",
+          "website": "https://www.healthspanrecovery.com/services",
+          "org_id": 1049,
+          "organization_name": "Healthspan",
+          "offering_count": 60,
+          "review_count": 5,
+          "image_count": 1,
+          "source_count": 5,
+          "affiliation_count": 0
+        },
+        {
+          "id": 9423,
+          "score": -58,
+          "slug": "healthspan-recovery-brickell-avenue-miami",
+          "name": "Healthspan Recovery",
+          "address": "9 am - 5 pm 1441 Brickell Ave Suite 310, Miami, FL 33131 786-713-1222 Mon - THU: 8 am - 7 pm • FRI: 8 AM - 6 PM • Sat - SUN : 9 a",
+          "locality": "Brickell Avenue Miami",
+          "website": "https://www.healthspanrecovery.com/",
+          "org_id": 1049,
+          "organization_name": "Healthspan",
+          "offering_count": 0,
+          "review_count": 5,
+          "image_count": 1,
+          "source_count": 2,
+          "affiliation_count": 0
+        }
+      ]
+    },
+    {
+      "survivor_id": 8924,
+      "loser_ids": [
+        8974
+      ],
+      "canonical": {
+        "name": "Healthi-Life Longevity Center",
+        "address": "94 Ekkamai 10 Alley, Khlong Tan Nuea, Watthana, Bangkok 10110, Thailand",
+        "locality": "Watthana",
+        "region": "Bangkok",
+        "postal_code": "10110",
+        "country_code": "TH",
+        "country_name": "Thailand",
+        "latitude": 13.7286792,
+        "longitude": 100.589918,
+        "phone": "+66 91 999 1744",
+        "email": "info@placidway.com",
+        "website": "https://www.mymeditravel.com/medical-centers/thailand/bangkok/watthana/healthilife-longevity-center",
+        "org_id": null
+      },
+      "survivor_score": 125,
+      "candidates": [
+        {
+          "id": 8924,
+          "score": 125,
+          "slug": "healthi-life-longevity-center-watthana",
+          "name": "Healthi-Life Longevity Center",
+          "address": "94 Ekkamai 10 Alley, Khlong Tan Nuea, Watthana, Bangkok 10110, Thailand",
+          "locality": "Watthana",
+          "website": "https://www.mymeditravel.com/medical-centers/thailand/bangkok/watthana/healthilife-longevity-center",
+          "org_id": null,
+          "organization_name": null,
+          "offering_count": 8,
+          "review_count": 5,
+          "image_count": 26,
+          "source_count": 1,
+          "affiliation_count": 0
+        },
+        {
+          "id": 8974,
+          "score": -141,
+          "slug": "healthi-life-longevity-center-in-bangkok-thailand",
+          "name": "Healthi Life Longevity Center in Bangkok, Thailand",
+          "address": "94 Ekkamai 10 Alley, Khlong Tan Nuea, Watthana, Bangkok 10110 , Bangkok, TH",
+          "locality": "Bangkok",
+          "website": "https://www.gofundme.com/f/emergency-relief-for-venezuela-earthquake-victims",
+          "org_id": null,
+          "organization_name": null,
+          "offering_count": 34,
+          "review_count": 5,
+          "image_count": 18,
+          "source_count": 2,
+          "affiliation_count": 0
+        }
+      ]
+    },
+    {
+      "survivor_id": 9828,
+      "loser_ids": [
+        9829
+      ],
+      "canonical": {
+        "name": "Cell Bionics Institute",
+        "address": "502 W Broad St #5, Falls Church, VA 22046",
+        "locality": "Falls Church",
+        "region": "VA",
+        "postal_code": "22046",
+        "country_code": "US",
+        "country_name": "United States",
+        "latitude": 38.8873331,
+        "longitude": -77.1786771,
+        "phone": "703 894-2224",
+        "email": null,
+        "website": "https://cellbionics.com/contact/",
+        "org_id": 4513
+      },
+      "survivor_score": 128,
+      "candidates": [
+        {
+          "id": 9828,
+          "score": 128,
+          "slug": "cell-bionics-institute-alexandria",
+          "name": "Cell Bionics Institute",
+          "address": "502 W Broad St #5, Falls Church, VA 22046",
+          "locality": "Falls Church",
+          "website": "https://cellbionics.com/contact/",
+          "org_id": 4513,
+          "organization_name": "Cell Bionics Institute",
+          "offering_count": 0,
+          "review_count": 1,
+          "image_count": 1,
+          "source_count": 2,
+          "affiliation_count": 0
+        },
+        {
+          "id": 9829,
+          "score": 123,
+          "slug": "cell-bionics-institute-nameer-haider-md-alexandria",
+          "name": "Cell Bionics Institute: Nameer Haider MD",
+          "address": "502 W Broad St, Falls Church, VA 22046",
+          "locality": "Falls Church",
+          "website": "https://cellbionics.com/",
+          "org_id": 4513,
+          "organization_name": "Cell Bionics Institute",
+          "offering_count": 0,
+          "review_count": 0,
+          "image_count": 1,
+          "source_count": 2,
+          "affiliation_count": 0
+        }
+      ]
+    }
+  ]
+}

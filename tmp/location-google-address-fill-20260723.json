@@ -1,0 +1,983 @@
+{
+  "generated_at": "2026-07-24T01:59:42.897Z",
+  "run_id": "235",
+  "apply": false,
+  "resumed": true,
+  "counts": {
+    "input": 22,
+    "cached_google_addresses": 0,
+    "live_details_by_stored_place_id": 0,
+    "live_text_search_matches": 19,
+    "ready": 0,
+    "unresolved": 22,
+    "updated": 0,
+    "remaining_missing_addresses": 22,
+    "remaining_missing_coordinates": 0
+  },
+  "estimated_live_cost_usd": 0,
+  "results": [
+    {
+      "location": {
+        "id": 2078,
+        "slug": "next-health-san-diego",
+        "name": "Next Health",
+        "address": null,
+        "locality": "San Diego",
+        "region": "CA",
+        "country_code": "US",
+        "country_name": "United States",
+        "website": "https://www.next-health.com/",
+        "latitude": 32.715738,
+        "longitude": -117.1610838
+      },
+      "decision": "unresolved",
+      "reason": "google_identity_or_location_ambiguous",
+      "method": "text_search_details",
+      "provider_place_id": "ChIJ4yzoa-4B3IARkubQBbbaX6g",
+      "proposed_address": "701 B St #1255, San Diego, CA 92101",
+      "validation": {
+        "accepted": false,
+        "reason": "google_identity_or_location_ambiguous",
+        "display_name": "NextGen Leads",
+        "name_similarity": 0,
+        "locality_match": true,
+        "country_match": null,
+        "website_domain_match": false,
+        "distance_km": 0.345
+      },
+      "google_details": {
+        "id": "ChIJ4yzoa-4B3IARkubQBbbaX6g",
+        "display_name": "NextGen Leads",
+        "formatted_address": "701 B St #1255, San Diego, CA 92101",
+        "website": "http://nextgenleads.com/",
+        "latitude": 32.7172871,
+        "longitude": -117.15788440000001,
+        "raw": {
+          "id": "ChIJ4yzoa-4B3IARkubQBbbaX6g",
+          "display_name": "NextGen Leads",
+          "formatted_address": "701 B St #1255, San Diego, CA 92101",
+          "website": "http://nextgenleads.com/",
+          "latitude": 32.7172871,
+          "longitude": -117.15788440000001
+        }
+      },
+      "estimated_cost_usd": 0.02
+    },
+    {
+      "location": {
+        "id": 2110,
+        "slug": "prenuvo-clinic-charleston-sc",
+        "name": "Prenuvo Clinic - Charleston, SC",
+        "address": null,
+        "locality": "Charleston",
+        "region": "SC",
+        "country_code": "US",
+        "country_name": "United States",
+        "website": "https://www.prenuvo.com/",
+        "latitude": 32.7833163,
+        "longitude": -79.9319664
+      },
+      "decision": "unresolved",
+      "reason": "google_identity_or_location_ambiguous",
+      "method": "text_search_details",
+      "provider_place_id": "ChIJCTuyx7Fh_ogRkfdvQneKK58",
+      "proposed_address": "2683 Elms Plantation Blvd, North Charleston, SC 29406",
+      "validation": {
+        "accepted": false,
+        "reason": "google_identity_or_location_ambiguous",
+        "display_name": "MRI Wellness",
+        "name_similarity": 0,
+        "locality_match": true,
+        "country_match": null,
+        "website_domain_match": false,
+        "distance_km": 24.84
+      },
+      "google_details": {
+        "id": "ChIJCTuyx7Fh_ogRkfdvQneKK58",
+        "display_name": "MRI Wellness",
+        "formatted_address": "2683 Elms Plantation Blvd, North Charleston, SC 29406",
+        "website": "https://mri-wellness.com/?utm_source=google-business-profile&utm_medium=mgbp&utm_campaign=reveal&utm_id=core-connect",
+        "latitude": 32.9772744,
+        "longitude": -80.0639363,
+        "raw": {
+          "id": "ChIJCTuyx7Fh_ogRkfdvQneKK58",
+          "display_name": "MRI Wellness",
+          "formatted_address": "2683 Elms Plantation Blvd, North Charleston, SC 29406",
+          "website": "https://mri-wellness.com/?utm_source=google-business-profile&utm_medium=mgbp&utm_campaign=reveal&utm_id=core-connect",
+          "latitude": 32.9772744,
+          "longitude": -80.0639363
+        }
+      },
+      "estimated_cost_usd": 0.02
+    },
+    {
+      "location": {
+        "id": 2407,
+        "slug": "viavi",
+        "name": "Viavi",
+        "address": null,
+        "locality": null,
+        "region": null,
+        "country_code": "GB",
+        "country_name": "United Kingdom",
+        "website": null,
+        "latitude": 55.378051,
+        "longitude": -3.435973
+      },
+      "decision": "unresolved",
+      "reason": "google_identity_or_location_ambiguous",
+      "method": "text_search_details",
+      "provider_place_id": "ChIJm4_wj8rFh0gRAETIEtrjnHU",
+      "proposed_address": "2 Lochside View, Edinburgh EH12 9DH",
+      "validation": {
+        "accepted": false,
+        "reason": "google_identity_or_location_ambiguous",
+        "display_name": "Viavi Solutions",
+        "name_similarity": 0.667,
+        "locality_match": false,
+        "country_match": null,
+        "website_domain_match": false,
+        "distance_km": 62.573
+      },
+      "google_details": {
+        "id": "ChIJm4_wj8rFh0gRAETIEtrjnHU",
+        "display_name": "Viavi Solutions",
+        "formatted_address": "2 Lochside View, Edinburgh EH12 9DH",
+        "website": "http://viavisolutions.co.uk/",
+        "latitude": 55.9370026,
+        "longitude": -3.3205196,
+        "raw": {
+          "id": "ChIJm4_wj8rFh0gRAETIEtrjnHU",
+          "display_name": "Viavi Solutions",
+          "formatted_address": "2 Lochside View, Edinburgh EH12 9DH",
+          "website": "http://viavisolutions.co.uk/",
+          "latitude": 55.9370026,
+          "longitude": -3.3205196
+        }
+      },
+      "estimated_cost_usd": 0.02
+    },
+    {
+      "location": {
+        "id": 2409,
+        "slug": "next-health",
+        "name": "NEXT Health",
+        "address": null,
+        "locality": null,
+        "region": null,
+        "country_code": "US",
+        "country_name": "United States",
+        "website": null,
+        "latitude": 38.7945952,
+        "longitude": -106.5348379
+      },
+      "decision": "unresolved",
+      "reason": "google_identity_or_location_ambiguous",
+      "method": "text_search_details",
+      "provider_place_id": "ChIJIUXA6F_ta4cR440zD4Bgqqo",
+      "proposed_address": "1855 29th St #1164, Boulder, CO 80301",
+      "validation": {
+        "accepted": false,
+        "reason": "google_identity_or_location_ambiguous",
+        "display_name": "Next Health in Boulder",
+        "name_similarity": 0.667,
+        "locality_match": false,
+        "country_match": null,
+        "website_domain_match": false,
+        "distance_km": 174.946
+      },
+      "google_details": {
+        "id": "ChIJIUXA6F_ta4cR440zD4Bgqqo",
+        "display_name": "Next Health in Boulder",
+        "formatted_address": "1855 29th St #1164, Boulder, CO 80301",
+        "website": "https://www.next-health.com/location/boulder-co",
+        "latitude": 40.0192646,
+        "longitude": -105.2564372,
+        "raw": {
+          "id": "ChIJIUXA6F_ta4cR440zD4Bgqqo",
+          "display_name": "Next Health in Boulder",
+          "formatted_address": "1855 29th St #1164, Boulder, CO 80301",
+          "website": "https://www.next-health.com/location/boulder-co",
+          "latitude": 40.0192646,
+          "longitude": -105.2564372
+        }
+      },
+      "estimated_cost_usd": 0.02
+    },
+    {
+      "location": {
+        "id": 2439,
+        "slug": "listings-in-health-medical-tourism-services",
+        "name": "Listings in Health & Medical Tourism Services",
+        "address": null,
+        "locality": null,
+        "region": null,
+        "country_code": "KR",
+        "country_name": "South Korea",
+        "website": null,
+        "latitude": 35.907757,
+        "longitude": 127.766922
+      },
+      "decision": "unresolved",
+      "reason": "google_identity_or_location_ambiguous",
+      "method": "text_search_details",
+      "provider_place_id": "ChIJ5_UsJzF_ezURD278Z5Xvakc",
+      "proposed_address": "390 Gangnam-daero, Gangnam District, Seoul",
+      "validation": {
+        "accepted": false,
+        "reason": "google_identity_or_location_ambiguous",
+        "display_name": "KOREA MEDICAL TOURISM COMPANY",
+        "name_similarity": 0.333,
+        "locality_match": false,
+        "country_match": null,
+        "website_domain_match": false,
+        "distance_km": 188.615
+      },
+      "google_details": {
+        "id": "ChIJ5_UsJzF_ezURD278Z5Xvakc",
+        "display_name": "KOREA MEDICAL TOURISM COMPANY",
+        "formatted_address": "390 Gangnam-daero, Gangnam District, Seoul",
+        "website": "http://www.koreabestdoctor.com/",
+        "latitude": 37.4976734,
+        "longitude": 127.02954880000001,
+        "raw": {
+          "id": "ChIJ5_UsJzF_ezURD278Z5Xvakc",
+          "display_name": "KOREA MEDICAL TOURISM COMPANY",
+          "formatted_address": "390 Gangnam-daero, Gangnam District, Seoul",
+          "website": "http://www.koreabestdoctor.com/",
+          "latitude": 37.4976734,
+          "longitude": 127.02954880000001
+        }
+      },
+      "estimated_cost_usd": 0.02
+    },
+    {
+      "location": {
+        "id": 3092,
+        "slug": "peptide-testosterone-semaglutide-sermorelin-therapy-clinic-new-hyde-park-2",
+        "name": "Peptide Testosterone Semaglutide Sermorelin Therapy Clinic",
+        "address": null,
+        "locality": "New Hyde Park",
+        "region": "NY",
+        "country_code": "US",
+        "country_name": "United States",
+        "website": "https://new-york.hrt-aa.com/",
+        "latitude": 40.7351018,
+        "longitude": -73.6879082
+      },
+      "decision": "unresolved",
+      "reason": "google_identity_or_location_ambiguous",
+      "method": "text_search_details",
+      "provider_place_id": "ChIJSWBKVySJwokRCei0hnHIoew",
+      "proposed_address": "54-44 Little Neck Pkwy Apt 1a, Little Neck, NY 11362",
+      "validation": {
+        "accepted": false,
+        "reason": "google_identity_or_location_ambiguous",
+        "display_name": "Regenerative Health NY",
+        "name_similarity": 0,
+        "locality_match": false,
+        "country_match": null,
+        "website_domain_match": false,
+        "distance_km": 4.638
+      },
+      "google_details": {
+        "id": "ChIJSWBKVySJwokRCei0hnHIoew",
+        "display_name": "Regenerative Health NY",
+        "formatted_address": "54-44 Little Neck Pkwy Apt 1a, Little Neck, NY 11362",
+        "website": "https://www.regenerativehealthny.com/",
+        "latitude": 40.7656932,
+        "longitude": -73.7253322,
+        "raw": {
+          "id": "ChIJSWBKVySJwokRCei0hnHIoew",
+          "display_name": "Regenerative Health NY",
+          "formatted_address": "54-44 Little Neck Pkwy Apt 1a, Little Neck, NY 11362",
+          "website": "https://www.regenerativehealthny.com/",
+          "latitude": 40.7656932,
+          "longitude": -73.7253322
+        }
+      },
+      "estimated_cost_usd": 0.02
+    },
+    {
+      "location": {
+        "id": 4111,
+        "slug": "eterna-health-glendale",
+        "name": "Eterna Health",
+        "address": null,
+        "locality": "Glendale",
+        "region": "AZ",
+        "country_code": "US",
+        "country_name": "United States",
+        "website": "https://eterna.health/",
+        "latitude": 34.1463674,
+        "longitude": -118.2488703
+      },
+      "decision": "unresolved",
+      "reason": "reviewed_google_false_positive",
+      "method": "text_search_details",
+      "provider_place_id": "ChIJowOykrppK4cRtPuSLEkluxY",
+      "proposed_address": "Inside Fitness 1 Gym, 4316 W Bell Rd, Glendale, AZ 85308",
+      "validation": {
+        "accepted": false,
+        "reason": "reviewed_google_false_positive",
+        "display_name": "Eterna BioTech",
+        "name_similarity": 0.667,
+        "locality_match": true,
+        "country_match": null,
+        "website_domain_match": false,
+        "distance_km": 565.367,
+        "review_rationale": "False positive: Glendale, Arizona business does not match the Glendale, California coordinates"
+      },
+      "google_details": {
+        "id": "ChIJowOykrppK4cRtPuSLEkluxY",
+        "display_name": "Eterna BioTech",
+        "formatted_address": "Inside Fitness 1 Gym, 4316 W Bell Rd, Glendale, AZ 85308",
+        "website": "https://www.eternabiotech.com/",
+        "latitude": 33.640711800000005,
+        "longitude": -112.1529882,
+        "raw": {
+          "id": "ChIJowOykrppK4cRtPuSLEkluxY",
+          "display_name": "Eterna BioTech",
+          "formatted_address": "Inside Fitness 1 Gym, 4316 W Bell Rd, Glendale, AZ 85308",
+          "website": "https://www.eternabiotech.com/",
+          "latitude": 33.640711800000005,
+          "longitude": -112.1529882
+        }
+      },
+      "estimated_cost_usd": 0.02
+    },
+    {
+      "location": {
+        "id": 9110,
+        "slug": "lone-star-iv-medics-austin",
+        "name": "Lone Star IV Medics",
+        "address": null,
+        "locality": "Austin",
+        "region": "TX",
+        "country_code": "US",
+        "country_name": "United States",
+        "website": "https://lonestarivmedics.com/",
+        "latitude": 30.3892409,
+        "longitude": -97.9638458
+      },
+      "decision": "unresolved",
+      "reason": "google_text_search_no_result",
+      "method": null,
+      "provider_place_id": null,
+      "proposed_address": null,
+      "validation": null,
+      "google_details": null,
+      "estimated_cost_usd": 0
+    },
+    {
+      "location": {
+        "id": 9112,
+        "slug": "drip-hydration-austin",
+        "name": "Drip Hydration",
+        "address": null,
+        "locality": "Austin",
+        "region": "TX",
+        "country_code": "US",
+        "country_name": "United States",
+        "website": "https://driphydration.com/coverage-areas/austin/",
+        "latitude": 30.267153,
+        "longitude": -97.7430608
+      },
+      "decision": "unresolved",
+      "reason": "google_identity_or_location_ambiguous",
+      "method": "text_search_details",
+      "provider_place_id": "ChIJC2U6mtW1RIYRwSWUGZqCElQ",
+      "proposed_address": "2110 S Lamar Blvd Ste F, Austin, TX 78704",
+      "validation": {
+        "accepted": false,
+        "reason": "google_identity_or_location_ambiguous",
+        "display_name": "Hydrate IV Bar",
+        "name_similarity": 0,
+        "locality_match": true,
+        "country_match": null,
+        "website_domain_match": false,
+        "distance_km": 3.434
+      },
+      "google_details": {
+        "id": "ChIJC2U6mtW1RIYRwSWUGZqCElQ",
+        "display_name": "Hydrate IV Bar",
+        "formatted_address": "2110 S Lamar Blvd Ste F, Austin, TX 78704",
+        "website": "https://hydrateivbar.com/locations/austin-south-lamar/?utm_campaign=gmb",
+        "latitude": 30.2483031,
+        "longitude": -97.77137979999999,
+        "raw": {
+          "id": "ChIJC2U6mtW1RIYRwSWUGZqCElQ",
+          "display_name": "Hydrate IV Bar",
+          "formatted_address": "2110 S Lamar Blvd Ste F, Austin, TX 78704",
+          "website": "https://hydrateivbar.com/locations/austin-south-lamar/?utm_campaign=gmb",
+          "latitude": 30.2483031,
+          "longitude": -97.77137979999999
+        }
+      },
+      "estimated_cost_usd": 0.02
+    },
+    {
+      "location": {
+        "id": 9154,
+        "slug": "lone-star-iv-medics-the-woodlands",
+        "name": "Lone Star IV Medics",
+        "address": null,
+        "locality": "The Woodlands",
+        "region": "TX",
+        "country_code": "US",
+        "country_name": "United States",
+        "website": "https://lonestarivmedics.com/",
+        "latitude": 30.1657654,
+        "longitude": -95.46113199999999
+      },
+      "decision": "unresolved",
+      "reason": "google_identity_or_location_ambiguous",
+      "method": "text_search_details",
+      "provider_place_id": "ChIJaUltqmYwR4YROT2qtsyxCio",
+      "proposed_address": "7901 Research Forest Dr #200, The Woodlands, TX 77382",
+      "validation": {
+        "accepted": false,
+        "reason": "google_identity_or_location_ambiguous",
+        "display_name": "Intra-V",
+        "name_similarity": 0,
+        "locality_match": true,
+        "country_match": null,
+        "website_domain_match": false,
+        "distance_km": 7.907
+      },
+      "google_details": {
+        "id": "ChIJaUltqmYwR4YROT2qtsyxCio",
+        "display_name": "Intra-V",
+        "formatted_address": "7901 Research Forest Dr #200, The Woodlands, TX 77382",
+        "website": "https://www.intra-v.com/the-woodlands-location/?utm_source=local&utm_medium=organic&utm_content=GMB",
+        "latitude": 30.207623,
+        "longitude": -95.5276351,
+        "raw": {
+          "id": "ChIJaUltqmYwR4YROT2qtsyxCio",
+          "display_name": "Intra-V",
+          "formatted_address": "7901 Research Forest Dr #200, The Woodlands, TX 77382",
+          "website": "https://www.intra-v.com/the-woodlands-location/?utm_source=local&utm_medium=organic&utm_content=GMB",
+          "latitude": 30.207623,
+          "longitude": -95.5276351
+        }
+      },
+      "estimated_cost_usd": 0.02
+    },
+    {
+      "location": {
+        "id": 9190,
+        "slug": "halo-precision-diagnostics-denver",
+        "name": "HALO Precision Diagnostics",
+        "address": null,
+        "locality": "Denver",
+        "region": "CO",
+        "country_code": "US",
+        "country_name": "United States",
+        "website": "https://www.halodx.com/",
+        "latitude": 39.7392358,
+        "longitude": -104.990251
+      },
+      "decision": "unresolved",
+      "reason": "google_text_search_no_result",
+      "method": null,
+      "provider_place_id": null,
+      "proposed_address": null,
+      "validation": null,
+      "google_details": null,
+      "estimated_cost_usd": 0
+    },
+    {
+      "location": {
+        "id": 9246,
+        "slug": "hbot-austin",
+        "name": "HBOT Austin",
+        "address": null,
+        "locality": "Austin",
+        "region": "TX",
+        "country_code": "US",
+        "country_name": "United States",
+        "website": "https://hbotaustin.com/",
+        "latitude": 30.267153,
+        "longitude": -97.7430608
+      },
+      "decision": "unresolved",
+      "reason": "google_identity_or_location_ambiguous",
+      "method": "text_search_details",
+      "provider_place_id": "ChIJV0UlnFE1W4YRkD5WT9MpCoo",
+      "proposed_address": "5656 Bee Caves Rd C-103, West Lake Hills, TX 78746",
+      "validation": {
+        "accepted": false,
+        "reason": "google_identity_or_location_ambiguous",
+        "display_name": "ATX Hyperbarics - West Lake Hills",
+        "name_similarity": 0,
+        "locality_match": false,
+        "country_match": null,
+        "website_domain_match": false,
+        "distance_km": 8.448
+      },
+      "google_details": {
+        "id": "ChIJV0UlnFE1W4YRkD5WT9MpCoo",
+        "display_name": "ATX Hyperbarics - West Lake Hills",
+        "formatted_address": "5656 Bee Caves Rd C-103, West Lake Hills, TX 78746",
+        "website": "https://atxhyperbarics.com/",
+        "latitude": 30.2953147,
+        "longitude": -97.82477589999999,
+        "raw": {
+          "id": "ChIJV0UlnFE1W4YRkD5WT9MpCoo",
+          "display_name": "ATX Hyperbarics - West Lake Hills",
+          "formatted_address": "5656 Bee Caves Rd C-103, West Lake Hills, TX 78746",
+          "website": "https://atxhyperbarics.com/",
+          "latitude": 30.2953147,
+          "longitude": -97.82477589999999
+        }
+      },
+      "estimated_cost_usd": 0.02
+    },
+    {
+      "location": {
+        "id": 9306,
+        "slug": "active-cryo-spa-boulder",
+        "name": "Active Cryo Spa",
+        "address": null,
+        "locality": "Boulder",
+        "region": "CO",
+        "country_code": "US",
+        "country_name": "United States",
+        "website": "https://www.activecryospa.com/cryotherapy-boulder-co/",
+        "latitude": 40.0189728,
+        "longitude": -105.2747406
+      },
+      "decision": "unresolved",
+      "reason": "google_identity_or_location_ambiguous",
+      "method": "text_search_details",
+      "provider_place_id": "ChIJK_fZ2NV1bIcRUk8R6nMqImU",
+      "proposed_address": "14613 Orchard Pkwy #200, Westminster, CO 80023",
+      "validation": {
+        "accepted": false,
+        "reason": "google_identity_or_location_ambiguous",
+        "display_name": "iCRYO - IV Drip, Peptides, Body Sculpting, Red Light & more",
+        "name_similarity": 0,
+        "locality_match": false,
+        "country_match": null,
+        "website_domain_match": false,
+        "distance_km": 24.762
+      },
+      "google_details": {
+        "id": "ChIJK_fZ2NV1bIcRUk8R6nMqImU",
+        "display_name": "iCRYO - IV Drip, Peptides, Body Sculpting, Red Light & more",
+        "formatted_address": "14613 Orchard Pkwy #200, Westminster, CO 80023",
+        "website": "https://icryo-westminster.com/",
+        "latitude": 39.9614919,
+        "longitude": -104.993933,
+        "raw": {
+          "id": "ChIJK_fZ2NV1bIcRUk8R6nMqImU",
+          "display_name": "iCRYO - IV Drip, Peptides, Body Sculpting, Red Light & more",
+          "formatted_address": "14613 Orchard Pkwy #200, Westminster, CO 80023",
+          "website": "https://icryo-westminster.com/",
+          "latitude": 39.9614919,
+          "longitude": -104.993933
+        }
+      },
+      "estimated_cost_usd": 0.02
+    },
+    {
+      "location": {
+        "id": 9363,
+        "slug": "bodyspec-phoenix",
+        "name": "BodySpec",
+        "address": null,
+        "locality": "Phoenix",
+        "region": "AZ",
+        "country_code": "US",
+        "country_name": "United States",
+        "website": "https://www.bodyspec.com/",
+        "latitude": 33.4482948,
+        "longitude": -112.0725488
+      },
+      "decision": "unresolved",
+      "reason": "google_identity_or_location_ambiguous",
+      "method": "text_search_details",
+      "provider_place_id": "ChIJySMUBLZvK4cRSJZyg3I1CDk",
+      "proposed_address": "706 E Bell Rd Ste 123, Phoenix, AZ 85022",
+      "validation": {
+        "accepted": false,
+        "reason": "google_identity_or_location_ambiguous",
+        "display_name": "DexaFit North Phoenix",
+        "name_similarity": 0,
+        "locality_match": true,
+        "country_match": null,
+        "website_domain_match": false,
+        "distance_km": 21.525
+      },
+      "google_details": {
+        "id": "ChIJySMUBLZvK4cRSJZyg3I1CDk",
+        "display_name": "DexaFit North Phoenix",
+        "formatted_address": "706 E Bell Rd Ste 123, Phoenix, AZ 85022",
+        "website": "https://www.phoenix.dexafit.com/north-phoenix",
+        "latitude": 33.6417456,
+        "longitude": -112.0640289,
+        "raw": {
+          "id": "ChIJySMUBLZvK4cRSJZyg3I1CDk",
+          "display_name": "DexaFit North Phoenix",
+          "formatted_address": "706 E Bell Rd Ste 123, Phoenix, AZ 85022",
+          "website": "https://www.phoenix.dexafit.com/north-phoenix",
+          "latitude": 33.6417456,
+          "longitude": -112.0640289
+        }
+      },
+      "estimated_cost_usd": 0.02
+    },
+    {
+      "location": {
+        "id": 9391,
+        "slug": "testosterone-hgh-therapy-prp-and-anti-aging-clinic-prp-and-anti-aging-clinic-clinic-davie-blvd-fort-lauderdale",
+        "name": "Testosterone, HGH Therapy, PRP and Anti-Aging Clinic",
+        "address": null,
+        "locality": "PRP and Anti-Aging Clinic Clinic Davie Blvd Fort Lauderdale",
+        "region": "FL",
+        "country_code": "US",
+        "country_name": "United States",
+        "website": null,
+        "latitude": 26.1067947,
+        "longitude": -80.1690135
+      },
+      "decision": "unresolved",
+      "reason": "google_identity_or_location_ambiguous",
+      "method": "text_search_details",
+      "provider_place_id": "ChIJjzexW2IA2YgRtZ3kIrOpTrA",
+      "proposed_address": "2307 W Broward Blvd Ste 101, Fort Lauderdale, FL 33312",
+      "validation": {
+        "accepted": false,
+        "reason": "google_identity_or_location_ambiguous",
+        "display_name": "Rejuvchip",
+        "name_similarity": 0,
+        "locality_match": false,
+        "country_match": null,
+        "website_domain_match": false,
+        "distance_km": 1.785
+      },
+      "google_details": {
+        "id": "ChIJjzexW2IA2YgRtZ3kIrOpTrA",
+        "display_name": "Rejuvchip",
+        "formatted_address": "2307 W Broward Blvd Ste 101, Fort Lauderdale, FL 33312",
+        "website": "http://www.rejuvchip.com/",
+        "latitude": 26.122301399999998,
+        "longitude": -80.1736512,
+        "raw": {
+          "id": "ChIJjzexW2IA2YgRtZ3kIrOpTrA",
+          "display_name": "Rejuvchip",
+          "formatted_address": "2307 W Broward Blvd Ste 101, Fort Lauderdale, FL 33312",
+          "website": "http://www.rejuvchip.com/",
+          "latitude": 26.122301399999998,
+          "longitude": -80.1736512
+        }
+      },
+      "estimated_cost_usd": 0.02
+    },
+    {
+      "location": {
+        "id": 9404,
+        "slug": "serenegy-express-relief-center-miami",
+        "name": "Serenegy Express Relief Center",
+        "address": null,
+        "locality": "Miami",
+        "region": "FL",
+        "country_code": "US",
+        "country_name": "United States",
+        "website": null,
+        "latitude": 25.7616798,
+        "longitude": -80.1917902
+      },
+      "decision": "unresolved",
+      "reason": "google_identity_or_location_ambiguous",
+      "method": "text_search_details",
+      "provider_place_id": "ChIJfb6ojsq32YgR4ZHmV9u6KWU",
+      "proposed_address": "2970 Coral Wy, Miami, FL 33145",
+      "validation": {
+        "accepted": false,
+        "reason": "google_identity_or_location_ambiguous",
+        "display_name": "Centner Wellness Gables",
+        "name_similarity": 0,
+        "locality_match": true,
+        "country_match": null,
+        "website_domain_match": false,
+        "distance_km": 5.182
+      },
+      "google_details": {
+        "id": "ChIJfb6ojsq32YgR4ZHmV9u6KWU",
+        "display_name": "Centner Wellness Gables",
+        "formatted_address": "2970 Coral Wy, Miami, FL 33145",
+        "website": "http://coralgables.centnerwellness.com/",
+        "latitude": 25.750073399999998,
+        "longitude": -80.24190829999999,
+        "raw": {
+          "id": "ChIJfb6ojsq32YgR4ZHmV9u6KWU",
+          "display_name": "Centner Wellness Gables",
+          "formatted_address": "2970 Coral Wy, Miami, FL 33145",
+          "website": "http://coralgables.centnerwellness.com/",
+          "latitude": 25.750073399999998,
+          "longitude": -80.24190829999999
+        }
+      },
+      "estimated_cost_usd": 0.02
+    },
+    {
+      "location": {
+        "id": 9432,
+        "slug": "vivir-wellness-sports-spa-holistic-center-n-university-dr-pembroke-pines",
+        "name": "ViViré Wellness Sports Spa & Holistic Center",
+        "address": null,
+        "locality": "N University Dr Pembroke Pines",
+        "region": "FL",
+        "country_code": "US",
+        "country_name": "United States",
+        "website": null,
+        "latitude": 26.0212719,
+        "longitude": -80.2485205
+      },
+      "decision": "unresolved",
+      "reason": "google_identity_or_location_ambiguous",
+      "method": "text_search_details",
+      "provider_place_id": "ChIJgQblXoCp2YgRsTQyL38s3eA",
+      "proposed_address": "1900 N University Dr Ste 107, Pembroke Pines, FL 33024",
+      "validation": {
+        "accepted": false,
+        "reason": "google_identity_or_location_ambiguous",
+        "display_name": "Vitality Bliss Medical Spa & Wellness – Pembroke Pines",
+        "name_similarity": 0,
+        "locality_match": false,
+        "country_match": null,
+        "website_domain_match": false,
+        "distance_km": 0.499
+      },
+      "google_details": {
+        "id": "ChIJgQblXoCp2YgRsTQyL38s3eA",
+        "display_name": "Vitality Bliss Medical Spa & Wellness – Pembroke Pines",
+        "formatted_address": "1900 N University Dr Ste 107, Pembroke Pines, FL 33024",
+        "website": "https://www.vitalitybhw.com/",
+        "latitude": 26.025708899999998,
+        "longitude": -80.24929399999999,
+        "raw": {
+          "id": "ChIJgQblXoCp2YgRsTQyL38s3eA",
+          "display_name": "Vitality Bliss Medical Spa & Wellness – Pembroke Pines",
+          "formatted_address": "1900 N University Dr Ste 107, Pembroke Pines, FL 33024",
+          "website": "https://www.vitalitybhw.com/",
+          "latitude": 26.025708899999998,
+          "longitude": -80.24929399999999
+        }
+      },
+      "estimated_cost_usd": 0.02
+    },
+    {
+      "location": {
+        "id": 9447,
+        "slug": "siluet-center-street-miami",
+        "name": "Siluet Center",
+        "address": null,
+        "locality": "Street Miami",
+        "region": "FL",
+        "country_code": "US",
+        "country_name": "United States",
+        "website": null,
+        "latitude": 25.7348269,
+        "longitude": -80.2386778
+      },
+      "decision": "unresolved",
+      "reason": "google_identity_or_location_ambiguous",
+      "method": "text_search_details",
+      "provider_place_id": "ChIJ3R0i6_y42YgRcxwaL6rtSNE",
+      "proposed_address": "8396 SW 8th St 1st floor, Miami, FL 33144",
+      "validation": {
+        "accepted": false,
+        "reason": "google_identity_or_location_ambiguous",
+        "display_name": "Xiluet Plastic Surgery",
+        "name_similarity": 0,
+        "locality_match": false,
+        "country_match": null,
+        "website_domain_match": false,
+        "distance_km": 9.741
+      },
+      "google_details": {
+        "id": "ChIJ3R0i6_y42YgRcxwaL6rtSNE",
+        "display_name": "Xiluet Plastic Surgery",
+        "formatted_address": "8396 SW 8th St 1st floor, Miami, FL 33144",
+        "website": null,
+        "latitude": 25.761631899999998,
+        "longitude": -80.33127669999999,
+        "raw": {
+          "id": "ChIJ3R0i6_y42YgRcxwaL6rtSNE",
+          "display_name": "Xiluet Plastic Surgery",
+          "formatted_address": "8396 SW 8th St 1st floor, Miami, FL 33144",
+          "website": null,
+          "latitude": 25.761631899999998,
+          "longitude": -80.33127669999999
+        }
+      },
+      "estimated_cost_usd": 0.02
+    },
+    {
+      "location": {
+        "id": 13794,
+        "slug": "remedy-rocks-ibiza",
+        "name": "Remedy Rocks",
+        "address": null,
+        "locality": "Ibiza",
+        "region": null,
+        "country_code": "ES",
+        "country_name": "Spain",
+        "website": "https://remedyrocks.com/",
+        "latitude": 38.9743901,
+        "longitude": 1.4197463
+      },
+      "decision": "unresolved",
+      "reason": "google_identity_or_location_ambiguous",
+      "method": "text_search_details",
+      "provider_place_id": "ChIJNVWBNhA5mRIRx7VL80Hx4mQ",
+      "proposed_address": "Carrer de la Vénda des Poble, 15, 07814 Santa Gertrudis de Fruitera, Illes Balears",
+      "validation": {
+        "accepted": false,
+        "reason": "google_identity_or_location_ambiguous",
+        "display_name": "BHQ Ibiza",
+        "name_similarity": 0,
+        "locality_match": false,
+        "country_match": null,
+        "website_domain_match": false,
+        "distance_km": 2.719
+      },
+      "google_details": {
+        "id": "ChIJNVWBNhA5mRIRx7VL80Hx4mQ",
+        "display_name": "BHQ Ibiza",
+        "formatted_address": "Carrer de la Vénda des Poble, 15, 07814 Santa Gertrudis de Fruitera, Illes Balears",
+        "website": "http://www.bhqibiza.com/",
+        "latitude": 38.998119599999995,
+        "longitude": 1.4273213,
+        "raw": {
+          "id": "ChIJNVWBNhA5mRIRx7VL80Hx4mQ",
+          "display_name": "BHQ Ibiza",
+          "formatted_address": "Carrer de la Vénda des Poble, 15, 07814 Santa Gertrudis de Fruitera, Illes Balears",
+          "website": "http://www.bhqibiza.com/",
+          "latitude": 38.998119599999995,
+          "longitude": 1.4273213
+        }
+      },
+      "estimated_cost_usd": 0.02
+    },
+    {
+      "location": {
+        "id": 14167,
+        "slug": "sleeping-hyperbaric-health-n-healing-fort-collins",
+        "name": "Sleeping Hyperbaric Health’n Healing",
+        "address": null,
+        "locality": "Fort Collins",
+        "region": "Colorado",
+        "country_code": null,
+        "country_name": null,
+        "website": "https://sleepinghyperbarichealthnhealing.com",
+        "latitude": 40.5871782,
+        "longitude": -105.0770113
+      },
+      "decision": "unresolved",
+      "reason": "google_text_search_no_result",
+      "method": null,
+      "provider_place_id": null,
+      "proposed_address": null,
+      "validation": null,
+      "google_details": null,
+      "estimated_cost_usd": 0
+    },
+    {
+      "location": {
+        "id": 14282,
+        "slug": "manor-medical-center-hbot-tel-aviv",
+        "name": "Manor Medical Center — HBOT",
+        "address": null,
+        "locality": "Tel Aviv",
+        "region": null,
+        "country_code": "IL",
+        "country_name": "Israel",
+        "website": "https://manormedicalgroup.com/en/innovations/hyperbaric-oxygen-therapy",
+        "latitude": 32.0853,
+        "longitude": 34.7818
+      },
+      "decision": "unresolved",
+      "reason": "google_identity_or_location_ambiguous",
+      "method": "text_search_details",
+      "provider_place_id": "ChIJZZ79bIZMHRURenWe6Y318tA",
+      "proposed_address": "Kaufmann St 6, Tel Aviv-Yafo, 6801298",
+      "validation": {
+        "accepted": false,
+        "reason": "google_identity_or_location_ambiguous",
+        "display_name": "תל אביב מדיקל סנטר Tel Aviv Medical Center",
+        "name_similarity": 0,
+        "locality_match": true,
+        "country_match": null,
+        "website_domain_match": false,
+        "distance_km": 2.985
+      },
+      "google_details": {
+        "id": "ChIJZZ79bIZMHRURenWe6Y318tA",
+        "display_name": "תל אביב מדיקל סנטר Tel Aviv Medical Center",
+        "formatted_address": "Kaufmann St 6, Tel Aviv-Yafo, 6801298",
+        "website": "https://tlvmed.co.il/",
+        "latitude": 32.0640381,
+        "longitude": 34.762454399999996,
+        "raw": {
+          "id": "ChIJZZ79bIZMHRURenWe6Y318tA",
+          "display_name": "תל אביב מדיקל סנטר Tel Aviv Medical Center",
+          "formatted_address": "Kaufmann St 6, Tel Aviv-Yafo, 6801298",
+          "website": "https://tlvmed.co.il/",
+          "latitude": 32.0640381,
+          "longitude": 34.762454399999996
+        }
+      },
+      "estimated_cost_usd": 0.02
+    },
+    {
+      "location": {
+        "id": 14288,
+        "slug": "oxyterapia-warsaw",
+        "name": "OxyTerapia",
+        "address": null,
+        "locality": "Warsaw",
+        "region": null,
+        "country_code": "PL",
+        "country_name": "Poland",
+        "website": "https://www.oxyterapia.pl",
+        "latitude": 52.2319581,
+        "longitude": 21.0067249
+      },
+      "decision": "unresolved",
+      "reason": "google_identity_or_location_ambiguous",
+      "method": "text_search_details",
+      "provider_place_id": "ChIJEe2kfJfLHkcRtNOkFi5hOhE",
+      "proposed_address": "Zygmunta Słomińskiego 19, 00-195 Warszawa",
+      "validation": {
+        "accepted": false,
+        "reason": "google_identity_or_location_ambiguous",
+        "display_name": "OXIMA Tlenoterapia hiperbaryczna Komora Hiperbaryczna",
+        "name_similarity": 0,
+        "locality_match": false,
+        "country_match": null,
+        "website_domain_match": false,
+        "distance_km": 2.944
+      },
+      "google_details": {
+        "id": "ChIJEe2kfJfLHkcRtNOkFi5hOhE",
+        "display_name": "OXIMA Tlenoterapia hiperbaryczna Komora Hiperbaryczna",
+        "formatted_address": "Zygmunta Słomińskiego 19, 00-195 Warszawa",
+        "website": "http://www.oxima.pl/",
+        "latitude": 52.255023699999995,
+        "longitude": 20.985498399999997,
+        "raw": {
+          "id": "ChIJEe2kfJfLHkcRtNOkFi5hOhE",
+          "display_name": "OXIMA Tlenoterapia hiperbaryczna Komora Hiperbaryczna",
+          "formatted_address": "Zygmunta Słomińskiego 19, 00-195 Warszawa",
+          "website": "http://www.oxima.pl/",
+          "latitude": 52.255023699999995,
+          "longitude": 20.985498399999997
+        }
+      },
+      "estimated_cost_usd": 0.02
+    }
+  ]
+}

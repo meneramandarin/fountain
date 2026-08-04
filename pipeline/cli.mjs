@@ -6,6 +6,22 @@ import process from "node:process";
 import { fileURLToPath, pathToFileURL } from "node:url";
 
 import { getTaskDefinition } from "./config/tasks.mjs";
+import {
+  buildCaliforniaCoverageQueries,
+  CALIFORNIA_COVERAGE_CAMPAIGN,
+} from "./config/california-coverage.mjs";
+import {
+  buildSouthFloridaCoverageQueries,
+  SOUTH_FLORIDA_COVERAGE_CAMPAIGN,
+} from "./config/south-florida-coverage.mjs";
+import {
+  buildNorthAmericaMetroCoverageQueries,
+  NORTH_AMERICA_METRO_COVERAGE_CAMPAIGN,
+} from "./config/north-america-metro-coverage.mjs";
+import {
+  buildInternationalMetroCoverageQueries,
+  INTERNATIONAL_METRO_COVERAGE_CAMPAIGN,
+} from "./config/international-metro-coverage.mjs";
 import { inspectCityIndex, refreshCityIndex } from "./lib/city-index.mjs";
 import {
   buildEnrichmentEnqueuePlan,
@@ -78,6 +94,44 @@ import {
 import { loadLegitimacyStage3ProposalData } from "./lib/legitimacy-stage3-proposal.mjs";
 import { executeMigrationSql, loadMigrationFile } from "./lib/migrations.mjs";
 import { createOpenRouterAgentWebSearch } from "./lib/openrouter-web-search.mjs";
+import {
+  PLACE_DISCOVERY_DEFAULT_CONCURRENCY,
+  PLACE_DISCOVERY_DEFAULT_MODEL,
+  runPlaceDiscovery,
+} from "./lib/place-discovery.mjs";
+import {
+  PLACE_RECONCILE_DEFAULT_CONCURRENCY,
+  reconcileDiscoveredPlaces,
+} from "./lib/place-reconcile.mjs";
+import {
+  PLACE_RESCUE_DEFAULT_BATCH_SIZE,
+  PLACE_RESCUE_DEFAULT_CONCURRENCY,
+  PLACE_RESCUE_DEFAULT_MODEL,
+  rescueHeldPlaces,
+} from "./lib/place-rescue.mjs";
+import {
+  PLACE_FORENSICS_RESCUE_DEFAULT_CONCURRENCY,
+  rescueAddressesFromOfficialSites,
+} from "./lib/place-forensics-rescue.mjs";
+import {
+  createRenderedSiteForensics,
+  RENDERED_SITE_FORENSICS_MARKER,
+} from "./lib/rendered-site-forensics.mjs";
+import { promoteDiscoveredPlaces } from "./lib/place-promotion.mjs";
+import {
+  CHAIN_EXPANSION_DEFAULT_CONCURRENCY,
+  CHAIN_EXPANSION_DEFAULT_MODEL,
+  expandDiscoveredChains,
+} from "./lib/chain-expansion.mjs";
+import {
+  PLACE_VERIFICATION_DEFAULT_CONCURRENCY,
+  verifyDiscoveredPlaces,
+} from "./lib/place-verification.mjs";
+import {
+  OFFICIAL_CHAIN_SYNC_CAMPAIGN,
+  OFFICIAL_CHAIN_SYNC_DEFAULT_CONCURRENCY,
+  syncOfficialChains,
+} from "./lib/official-chain-sync.mjs";
 import { recomputeOfferingDisplay } from "./lib/offering-display.mjs";
 import {
   OFFERING_TRANSLATION_BATCH_SIZE,
@@ -171,7 +225,14 @@ export function parseCliArgs(argv) {
     const key = camelCaseFlag(equals === -1 ? arg.slice(2) : arg.slice(2, equals));
     if (seenFlags.has(key)) throw new Error(`--${flagCase(key)} may only be provided once.`);
     seenFlags.add(key);
-    if (["apply", "dryRun"].includes(key)) {
+    if ([
+      "apply",
+      "dryRun",
+      "googleFallback",
+      "heldRescueOnly",
+      "addressUnverifiedOnly",
+      "rendered",
+    ].includes(key)) {
       if (equals !== -1) throw new Error(`${arg.slice(0, equals)} does not accept a value.`);
       parsed[key] = true;
       continue;
@@ -218,6 +279,40 @@ export function validateCommandArgs(parsed) {
     "taxonomy-present": new Set(["model", "batchSize", "concurrency", "limit", "budget", "apply", "dryRun"]),
     "offering-display": new Set(["locationId", "apply", "dryRun"]),
     "offering-translate": new Set(["locationId", "model", "verificationModel", "batchSize", "concurrency", "limit", "budget", "apply", "dryRun"]),
+    prospect: new Set(["campaign", "coverage", "market", "model", "concurrency", "limit", "budget", "apply", "dryRun"]),
+    "prospect-sync-chains": new Set(["campaign", "concurrency", "apply", "dryRun"]),
+    "prospect-reconcile": new Set([
+      "campaign",
+      "concurrency",
+      "limit",
+      "googleFallback",
+      "apply",
+      "dryRun",
+    ]),
+    "prospect-rescue": new Set([
+      "campaign",
+      "model",
+      "concurrency",
+      "batchSize",
+      "limit",
+      "budget",
+      "heldRescueOnly",
+      "addressUnverifiedOnly",
+      "apply",
+      "dryRun",
+    ]),
+    "prospect-forensics": new Set([
+      "campaign",
+      "concurrency",
+      "limit",
+      "marker",
+      "rendered",
+      "apply",
+      "dryRun",
+    ]),
+    "prospect-promote": new Set(["campaign", "limit", "apply", "dryRun"]),
+    "prospect-expand-chains": new Set(["campaign", "model", "concurrency", "limit", "budget", "apply", "dryRun"]),
+    "prospect-verify": new Set(["campaign", "concurrency", "limit", "apply", "dryRun"]),
   };
   const allowed = allowedByCommand[parsed.command];
   if (!allowed) throw new Error(`Unknown command: ${parsed.command}\n${usage()}`);
@@ -272,6 +367,22 @@ async function dispatchCommand(parsed, run) {
       return runOfferingDisplay(parsed, run);
     case "offering-translate":
       return runOfferingTranslate(parsed, run);
+    case "prospect":
+      return runProspect(parsed, run);
+    case "prospect-sync-chains":
+      return runProspectSyncChains(parsed, run);
+    case "prospect-reconcile":
+      return runProspectReconcile(parsed, run);
+    case "prospect-rescue":
+      return runProspectRescue(parsed, run);
+    case "prospect-forensics":
+      return runProspectForensics(parsed, run);
+    case "prospect-promote":
+      return runProspectPromote(parsed, run);
+    case "prospect-expand-chains":
+      return runProspectExpandChains(parsed, run);
+    case "prospect-verify":
+      return runProspectVerify(parsed, run);
     default:
       throw new Error(`Unknown command: ${parsed.command}\n${usage()}`);
   }
@@ -360,6 +471,305 @@ export async function runEnqueue(parsed, run, operations = {}) {
     status: "completed",
     counts: { selected: result.selectedCount, inserted: result.insertedCount },
     result: { dryRun: false, taskType, entityType, ...result },
+  };
+}
+
+export async function runProspect(parsed, run, operations = {}) {
+  const coverage = resolveCoverage(parsed.coverage);
+  const campaign = parsed.campaign || coverage.campaign;
+  const market = parsed.market == null ? null : String(parsed.market).trim();
+  const model = parsed.model || PLACE_DISCOVERY_DEFAULT_MODEL;
+  const concurrency = parsed.concurrency == null
+    ? PLACE_DISCOVERY_DEFAULT_CONCURRENCY
+    : positiveInteger(parsed.concurrency, "--concurrency");
+  const limit = optionalPositiveInteger(parsed.limit, "--limit");
+  const allQueries = coverage.buildQueries();
+  const queries = market == null
+    ? allQueries
+    : allQueries.filter((item) => item.market.toLowerCase() === market.toLowerCase());
+  if (queries.length === 0) {
+    throw new Error(`Unknown ${coverage.label} coverage market: ${market}`);
+  }
+  const result = await (operations.runPlaceDiscovery || runPlaceDiscovery)({
+    campaign,
+    queries,
+    runId: run.id,
+    apply: !run.dry_run,
+    model,
+    concurrency,
+    limit,
+    budgetUsd: run.budget_usd == null ? null : Number(run.budget_usd),
+  }, operations);
+  return {
+    status: result.budget_exhausted
+      ? "budget_exhausted"
+      : result.failed_queries > 0
+        ? "failed"
+        : "completed",
+    counts: {
+      planned_queries: Number(result.planned_queries || 0),
+      completed_queries: Number(result.completed_queries || 0),
+      failed_queries: Number(result.failed_queries || 0),
+      candidates_returned: Number(result.candidates_returned || 0),
+      candidates_inserted_or_updated: Number(result.candidates_inserted_or_updated || 0),
+      needs_review: Number(result.needs_review || 0),
+      skipped_for_budget: Number(result.skipped_for_budget || 0),
+    },
+    result: {
+      dryRun: Boolean(run.dry_run),
+      campaign,
+      coverage: coverage.slug,
+      ...result,
+    },
+  };
+}
+
+export async function runProspectSyncChains(parsed, run, operations = {}) {
+  const campaign = parsed.campaign || OFFICIAL_CHAIN_SYNC_CAMPAIGN;
+  const concurrency = parsed.concurrency == null
+    ? OFFICIAL_CHAIN_SYNC_DEFAULT_CONCURRENCY
+    : positiveInteger(parsed.concurrency, "--concurrency");
+  const result = await (operations.syncOfficialChains || syncOfficialChains)({
+    campaign,
+    runId: run.id,
+    apply: !run.dry_run,
+    concurrency,
+  }, operations);
+  return {
+    status: "completed",
+    counts: {
+      chains: Number(result.chains || 0),
+      candidates: Number(result.candidates || 0),
+      candidates_inserted_or_updated: Number(result.candidates_inserted_or_updated || 0),
+    },
+    result: {
+      dryRun: Boolean(run.dry_run),
+      campaign,
+      concurrency,
+      ...result,
+    },
+  };
+}
+
+export async function runProspectReconcile(parsed, run, operations = {}) {
+  const campaign = parsed.campaign || CALIFORNIA_COVERAGE_CAMPAIGN;
+  const concurrency = parsed.concurrency == null
+    ? PLACE_RECONCILE_DEFAULT_CONCURRENCY
+    : positiveInteger(parsed.concurrency, "--concurrency");
+  const limit = optionalPositiveInteger(parsed.limit, "--limit");
+  const googleFallback = Boolean(parsed.googleFallback);
+  const result = await (operations.reconcileDiscoveredPlaces || reconcileDiscoveredPlaces)({
+    campaign,
+    runId: run.id,
+    apply: !run.dry_run,
+    concurrency,
+    limit,
+    googleFallback,
+  }, operations);
+  return {
+    status: "completed",
+    counts: {
+      selected: Number(result.selected || 0),
+      geocoded: Number(result.geocoded || 0),
+      geocode_no_match: Number(result.geocode_no_match || 0),
+      geocode_errors: Number(result.geocode_errors || 0),
+      existing_matches: Number(result.existing_matches || 0),
+      matcher_reviews: Number(result.matcher_reviews || 0),
+      ready: Number(result.ready || 0),
+      needs_review: Number(result.needs_review || 0),
+    },
+    result: {
+      dryRun: Boolean(run.dry_run),
+      campaign,
+      concurrency,
+      googleFallback,
+      ...result,
+    },
+  };
+}
+
+export async function runProspectRescue(parsed, run, operations = {}) {
+  const campaign = required(parsed.campaign, "--campaign");
+  const model = parsed.model || PLACE_RESCUE_DEFAULT_MODEL;
+  const concurrency = parsed.concurrency == null
+    ? PLACE_RESCUE_DEFAULT_CONCURRENCY
+    : positiveInteger(parsed.concurrency, "--concurrency");
+  const batchSize = parsed.batchSize == null
+    ? PLACE_RESCUE_DEFAULT_BATCH_SIZE
+    : positiveInteger(parsed.batchSize, "--batch-size");
+  const limit = optionalPositiveInteger(parsed.limit, "--limit");
+  const result = await (operations.rescueHeldPlaces || rescueHeldPlaces)({
+    campaign,
+    runId: run.id,
+    apply: !run.dry_run,
+    model,
+    concurrency,
+    batchSize,
+    limit,
+    heldRescueOnly: Boolean(parsed.heldRescueOnly),
+    addressUnverifiedOnly: Boolean(parsed.addressUnverifiedOnly),
+    budgetUsd: run.budget_usd == null ? null : Number(run.budget_usd),
+  }, operations);
+  return {
+    status: result.budget_exhausted
+      ? "budget_exhausted"
+      : result.failed_queries > 0
+        ? "failed"
+        : "completed",
+    counts: {
+      candidates: Number(result.candidates || 0),
+      planned_queries: Number(result.planned_queries || 0),
+      completed_queries: Number(result.completed_queries || 0),
+      failed_queries: Number(result.failed_queries || 0),
+      skipped_for_budget: Number(result.skipped_for_budget || 0),
+      rescued_proposals: Number(result.rescued_proposals || 0),
+      inserted_or_updated: Number(result.inserted_or_updated || 0),
+      unresolved_sources: Number(result.unresolved_sources || 0),
+    },
+    result: {
+      dryRun: Boolean(run.dry_run),
+      campaign,
+      model,
+      concurrency,
+      batch_size: batchSize,
+      held_rescue_only: Boolean(parsed.heldRescueOnly),
+      address_unverified_only: Boolean(parsed.addressUnverifiedOnly),
+      ...result,
+    },
+  };
+}
+
+export async function runProspectForensics(parsed, run, operations = {}) {
+  const campaign = required(parsed.campaign, "--campaign");
+  const concurrency = parsed.concurrency == null
+    ? PLACE_FORENSICS_RESCUE_DEFAULT_CONCURRENCY
+    : positiveInteger(parsed.concurrency, "--concurrency");
+  const limit = optionalPositiveInteger(parsed.limit, "--limit");
+  const rendered = Boolean(parsed.rendered);
+  const marker = parsed.marker || (rendered ? RENDERED_SITE_FORENSICS_MARKER : undefined);
+  const inspectOfficialSite = rendered
+    ? (operations.inspectOfficialSite || createRenderedSiteForensics())
+    : operations.inspectOfficialSite;
+  const result = await (
+    operations.rescueAddressesFromOfficialSites || rescueAddressesFromOfficialSites
+  )({
+    campaign,
+    runId: run.id,
+    apply: !run.dry_run,
+    concurrency,
+    limit,
+    ...(marker ? { marker } : {}),
+  }, {
+    ...operations,
+    ...(inspectOfficialSite ? { inspectOfficialSite } : {}),
+  });
+  return {
+    status: "completed",
+    counts: {
+      selected: Number(result.selected || 0),
+      accepted: Number(result.accepted || 0),
+      corrected: Number(result.corrected || 0),
+      confirmed: Number(result.confirmed || 0),
+      ambiguous: Number(result.ambiguous || 0),
+      no_structured_address: Number(result.no_structured_address || 0),
+    },
+    result: {
+      dryRun: Boolean(run.dry_run),
+      campaign,
+      concurrency,
+      rendered,
+      ...result,
+    },
+  };
+}
+
+export async function runProspectPromote(parsed, run, operations = {}) {
+  const campaign = parsed.campaign || CALIFORNIA_COVERAGE_CAMPAIGN;
+  const limit = optionalPositiveInteger(parsed.limit, "--limit");
+  const result = await (operations.promoteDiscoveredPlaces || promoteDiscoveredPlaces)({
+    campaign,
+    runId: run.id,
+    apply: !run.dry_run,
+    limit,
+  }, operations);
+  return {
+    status: "completed",
+    counts: {
+      selected: Number(result.selected || 0),
+      promoted: Number(result.promoted || 0),
+      existing_matches: Number(result.existing_matches || 0),
+      needs_review: Number(result.needs_review || 0),
+      offerings_inserted: Number(result.offerings_inserted || 0),
+    },
+    result: {
+      dryRun: Boolean(run.dry_run),
+      campaign,
+      ...result,
+    },
+  };
+}
+
+export async function runProspectExpandChains(parsed, run, operations = {}) {
+  const campaign = parsed.campaign || CALIFORNIA_COVERAGE_CAMPAIGN;
+  const model = parsed.model || CHAIN_EXPANSION_DEFAULT_MODEL;
+  const concurrency = parsed.concurrency == null
+    ? CHAIN_EXPANSION_DEFAULT_CONCURRENCY
+    : positiveInteger(parsed.concurrency, "--concurrency");
+  const limit = optionalPositiveInteger(parsed.limit, "--limit");
+  const result = await (operations.expandDiscoveredChains || expandDiscoveredChains)({
+    campaign,
+    runId: run.id,
+    apply: !run.dry_run,
+    model,
+    concurrency,
+    limit,
+  }, operations);
+  return {
+    status: result.failed_queries > 0 ? "failed" : "completed",
+    counts: {
+      chains: Number(result.chains || 0),
+      planned_queries: Number(result.planned_queries || 0),
+      completed_queries: Number(result.completed_queries || 0),
+      failed_queries: Number(result.failed_queries || 0),
+      candidates_returned: Number(result.candidates_returned || 0),
+      needs_review: Number(result.needs_review || 0),
+    },
+    result: {
+      dryRun: Boolean(run.dry_run),
+      campaign,
+      ...result,
+    },
+  };
+}
+
+export async function runProspectVerify(parsed, run, operations = {}) {
+  const campaign = parsed.campaign || CALIFORNIA_COVERAGE_CAMPAIGN;
+  const concurrency = parsed.concurrency == null
+    ? PLACE_VERIFICATION_DEFAULT_CONCURRENCY
+    : positiveInteger(parsed.concurrency, "--concurrency");
+  const limit = optionalPositiveInteger(parsed.limit, "--limit");
+  const result = await (operations.verifyDiscoveredPlaces || verifyDiscoveredPlaces)({
+    campaign,
+    apply: !run.dry_run,
+    concurrency,
+    limit,
+  }, operations);
+  return {
+    status: "completed",
+    counts: {
+      selected: Number(result.selected || 0),
+      address_verified: Number(result.address_verified || 0),
+      treatment_verified: Number(result.treatment_verified || 0),
+      fully_verified: Number(result.fully_verified || 0),
+      needs_review: Number(result.needs_review || 0),
+      pages_ok: Number(result.pages_ok || 0),
+    },
+    result: {
+      dryRun: Boolean(run.dry_run),
+      campaign,
+      concurrency,
+      ...result,
+    },
   };
 }
 
@@ -1841,14 +2251,59 @@ function nonnegativeNumber(value, flag) {
   return parsed;
 }
 
+function resolveCoverage(value) {
+  const slug = String(value || "california").trim().toLowerCase();
+  const plans = {
+    california: {
+      slug: "california",
+      label: "California",
+      campaign: CALIFORNIA_COVERAGE_CAMPAIGN,
+      buildQueries: buildCaliforniaCoverageQueries,
+    },
+    "south-florida": {
+      slug: "south-florida",
+      label: "South Florida",
+      campaign: SOUTH_FLORIDA_COVERAGE_CAMPAIGN,
+      buildQueries: buildSouthFloridaCoverageQueries,
+    },
+    "north-america-metros": {
+      slug: "north-america-metros",
+      label: "North America metro",
+      campaign: NORTH_AMERICA_METRO_COVERAGE_CAMPAIGN,
+      buildQueries: buildNorthAmericaMetroCoverageQueries,
+    },
+    "international-metros": {
+      slug: "international-metros",
+      label: "International metro",
+      campaign: INTERNATIONAL_METRO_COVERAGE_CAMPAIGN,
+      buildQueries: buildInternationalMetroCoverageQueries,
+    },
+  };
+  const plan = plans[slug];
+  if (!plan) {
+    throw new Error(
+      `Unknown coverage plan: ${value}. Expected california, south-florida, north-america-metros, or international-metros.`,
+    );
+  }
+  return plan;
+}
+
 function usage() {
   return [
     "Usage: node pipeline/cli.mjs <command> [options]",
-    "Commands: enqueue, drain, report, suppress, stage3, redemption, final-report, migrate, census, maintain, taxonomy-present, offering-display, offering-translate",
+    "Commands: enqueue, drain, report, suppress, stage3, redemption, final-report, migrate, census, maintain, taxonomy-present, offering-display, offering-translate, prospect, prospect-sync-chains, prospect-expand-chains, prospect-rescue, prospect-forensics, prospect-verify, prospect-reconcile, prospect-promote",
     "Final closeout: final-report --runs-file <selection.json> [--before <json>] [--after <json>] [--menu-prices-before <json>] [--output <md>] [--apply]",
     "Taxonomy presentation: taxonomy-present [--model <slug>] [--batch-size <n>] [--concurrency <n>] [--limit <n>] [--budget <usd>] [--apply]",
     "Offering display: offering-display [--location-id <id>] [--apply]",
     "Offering translation: offering-translate [--location-id <id>] [--model <slug>] [--verification-model <slug>] [--batch-size <n>] [--concurrency <n>] [--limit <n>] [--budget <usd>] [--apply]",
+    "Agent discovery: prospect [--coverage <california|south-florida|north-america-metros|international-metros>] [--campaign <name>] [--market <name>] [--model <slug>] [--concurrency <n>] [--limit <n>] [--budget <usd>] [--apply]",
+    "Official chain sync: prospect-sync-chains [--campaign <name>] [--concurrency <n>] [--apply]",
+    "Chain expansion: prospect-expand-chains [--campaign <name>] [--model <slug>] [--concurrency <n>] [--limit <n>] [--budget <usd>] [--apply]",
+    "Held-candidate rescue: prospect-rescue --campaign <name> [--model <slug>] [--concurrency <n>] [--batch-size <n>] [--limit <n>] [--budget <usd>] [--apply]",
+    "Official address forensics: prospect-forensics --campaign <name> [--rendered] [--marker <json-key>] [--concurrency <n>] [--limit <n>] [--apply]",
+    "Official-site verification: prospect-verify [--campaign <name>] [--concurrency <n>] [--limit <n>] [--apply]",
+    "Agent reconciliation: prospect-reconcile [--campaign <name>] [--concurrency <n>] [--limit <n>] [--google-fallback] [--apply]",
+    "Agent promotion: prospect-promote [--campaign <name>] [--limit <n>] [--apply]",
     "Maintenance: regen-structure-doc, refresh-city-index",
     "Persistent side effects require --apply; dry-run is the default.",
   ].join("\n");

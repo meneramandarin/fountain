@@ -12,7 +12,12 @@
     "taxonomy:present": "node pipeline/cli.mjs taxonomy-present",
     "taxonomy:review": "node scripts/review-taxonomy-mappings.mjs",
     "offerings:translate": "node pipeline/cli.mjs offering-translate",
-    "offerings:display": "node pipeline/cli.mjs offering-display"
+    "offerings:display": "node pipeline/cli.mjs offering-display",
+    "search-demand:prepare": "node analysis/search-demand/cli.mjs prepare",
+    "search-demand:fetch": "node analysis/search-demand/cli.mjs fetch",
+    "search-demand:analyze": "node analysis/search-demand/cli.mjs analyze",
+    "search-demand:analyze-semrush": "node analysis/search-demand/cli.mjs analyze-semrush",
+    "search-demand:report": "node analysis/search-demand/generate-market-report.mjs"
   },
   "dependencies": {
     "@vercel/blob": "2.5.0",
