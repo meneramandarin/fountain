@@ -4,16 +4,21 @@ import Link from "next/link";
 import { cache } from "react";
 import { LandingFooter } from "@/components/landing-footer";
 import { LandingScrollHeader } from "@/components/landing-scroll-header";
+import { getTreatmentIndexClinicCount } from "@/lib/queries";
 import { getTreatmentHubs } from "@/lib/treatment-hubs";
 import styles from "./treatments.module.css";
 
 export const revalidate = 86_400;
 
 const loadTreatmentHubs = cache(getTreatmentHubs);
+const loadTreatmentIndexClinicCount = cache(getTreatmentIndexClinicCount);
 
 export async function generateMetadata(): Promise<Metadata> {
-  const hubs = (await loadTreatmentHubs()).filter((hub) => hub.totalCities > 0);
-  const clinicCount = hubs.reduce((total, hub) => total + hub.totalLocations, 0);
+  const [allHubs, clinicCount] = await Promise.all([
+    loadTreatmentHubs(),
+    loadTreatmentIndexClinicCount(),
+  ]);
+  const hubs = allHubs.filter((hub) => hub.totalCities > 0);
   const cityCount = new Set(
     hubs.flatMap((hub) =>
       hub.cities.map((city) => [city.city, city.region, city.countryCode].join("|")),
@@ -50,10 +55,13 @@ const chapters = [
 ] as const;
 
 export default async function TreatmentsPage() {
-  const hubs = (await loadTreatmentHubs())
+  const [allHubs, clinicCount] = await Promise.all([
+    loadTreatmentHubs(),
+    loadTreatmentIndexClinicCount(),
+  ]);
+  const hubs = allHubs
     .filter((hub) => hub.totalCities > 0)
     .sort((a, b) => a.treatment.name.localeCompare(b.treatment.name));
-  const clinicCount = hubs.reduce((total, hub) => total + hub.totalLocations, 0);
   const cityCount = new Set(
     hubs.flatMap((hub) =>
       hub.cities.map((city) => [city.city, city.region, city.countryCode].join("|")),
