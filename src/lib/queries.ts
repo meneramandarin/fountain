@@ -496,6 +496,19 @@ export async function getTreatmentCatalog(minimumLocations = 1): Promise<Treatme
   }));
 }
 
+export async function getTreatmentIndexClinicCount() {
+  const result = await row<{ count: number }>(`
+    SELECT COUNT(DISTINCT l.id) AS count
+    FROM locations l
+    JOIN offerings o
+      ON o.location_id = l.id
+     AND ${activeOfferingCondition("o")}
+    WHERE ${activeEntityCondition("l")}
+      AND COALESCE(l.is_virtual, false) = false
+  `);
+  return Number(result?.count || 0);
+}
+
 export async function getEligibleTreatmentCities(
   minimumLocations = 1,
 ): Promise<TreatmentCityCount[]> {
