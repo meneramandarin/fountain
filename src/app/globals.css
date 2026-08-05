@@ -3341,7 +3341,8 @@ input[type="search"]::-webkit-search-cancel-button:hover {
 
 .treatment-row span,
 .result-photo-tags span,
-.landing-featured-photo-tags span {
+.landing-featured-photo-tags span,
+.listing-chain-treatments span {
   border-radius: var(--radius-pill);
   border: 0.5px solid rgba(30, 26, 15, 0.10);
   background: var(--landing-card);
@@ -3349,14 +3350,16 @@ input[type="search"]::-webkit-search-cancel-button:hover {
 }
 
 .result-photo-tags span,
-.landing-featured-photo-tags span {
+.landing-featured-photo-tags span,
+.listing-chain-treatments span {
   border-color: var(--landing-gold-deep);
   background: var(--landing-gold-deep);
   color: var(--canvas);
 }
 
 .result-photo-tags span,
-.landing-featured-photo-tags span {
+.landing-featured-photo-tags span,
+.listing-chain-treatments span {
   max-width: 100%;
   overflow: hidden;
   padding: 4px 8px;
@@ -4567,21 +4570,6 @@ input[type="search"]::-webkit-search-cancel-button:hover {
   display: flex;
   flex-wrap: wrap;
   gap: 5px;
-}
-
-.listing-chain-treatments span {
-  max-width: 100%;
-  overflow: hidden;
-  padding: 3px 7px;
-  border: 0.5px solid rgba(30, 26, 15, 0.10);
-  border-radius: var(--radius-pill);
-  background: var(--landing-card);
-  color: rgba(30, 26, 15, 0.72);
-  font-family: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
-  font-size: var(--type-micro);
-  line-height: 1.2;
-  text-overflow: ellipsis;
-  white-space: nowrap;
 }
 
 .listing-row-list {
