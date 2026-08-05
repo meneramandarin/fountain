@@ -50,6 +50,7 @@ type OfferingRef = {
   treatment?: string | null;
   domain?: string | null;
 };
+type OpeningHour = { day: string; open: string; close: string };
 type ChainLocationRef = {
   id: number;
   slug?: string | null;
@@ -96,6 +97,8 @@ export type LocationDetailRecord = {
   email?: string | null;
   website?: string | null;
   external_website_href?: string | null;
+  opening_hours?: OpeningHour[] | null;
+  opening_hours_note?: string | null;
   rating?: number | null;
   review_count?: number | null;
   offerings?: OfferingRef[];
@@ -537,6 +540,10 @@ function LocationTreatmentsAndDetails({ data }: { data: LocationDetailRecord }) 
                 </a>
               ) : null}
             </div>
+            <OpeningHours
+              hours={data.opening_hours}
+              note={data.opening_hours_note}
+            />
           </div>
           {website ? (
             <OutboundClinicLink
@@ -551,6 +558,39 @@ function LocationTreatmentsAndDetails({ data }: { data: LocationDetailRecord }) 
         </aside>
       </div>
     </section>
+  );
+}
+
+function OpeningHours({
+  hours,
+  note,
+}: {
+  hours?: OpeningHour[] | null;
+  note?: string | null;
+}) {
+  if (!hours?.length && !note) {
+    return null;
+  }
+
+  return (
+    <div className="clinic-opening-hours" aria-labelledby="clinic-opening-hours-title">
+      <div className="clinic-opening-hours-heading">
+        <Clock3 size={17} aria-hidden="true" />
+        <span id="clinic-opening-hours-title">Opening hours</span>
+      </div>
+      {hours?.length ? (
+        <dl>
+          {hours.map((entry) => (
+            <div key={entry.day}>
+              <dt>{entry.day}</dt>
+              <dd>{entry.open} – {entry.close}</dd>
+            </div>
+          ))}
+        </dl>
+      ) : (
+        <p className="clinic-opening-hours-note">{note}</p>
+      )}
+    </div>
   );
 }
 
