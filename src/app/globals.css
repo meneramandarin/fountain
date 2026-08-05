@@ -4789,6 +4789,7 @@ input[type="search"]::-webkit-search-cancel-button:hover {
   color: rgba(30, 26, 15, 0.66);
   font-size: var(--type-caption);
   line-height: 1.55;
+  white-space: pre-line;
 }
 
 .clinic-treatment-more {
@@ -4910,6 +4911,60 @@ input[type="search"]::-webkit-search-cancel-button:hover {
 .clinic-details-facts a:hover {
   text-decoration: underline;
   text-underline-offset: 3px;
+}
+
+.clinic-opening-hours {
+  display: grid;
+  gap: 12px;
+  margin-top: 22px;
+  padding-top: 22px;
+  border-top: 1px solid rgba(30, 26, 15, 0.1);
+}
+
+.clinic-opening-hours-heading {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--landing-fg);
+  font-size: var(--type-caption);
+  font-weight: 700;
+}
+
+.clinic-opening-hours-heading svg {
+  color: var(--landing-gold-deep);
+}
+
+.clinic-opening-hours dl {
+  display: grid;
+  gap: 7px;
+  margin: 0;
+  color: rgba(30, 26, 15, 0.68);
+  font-size: var(--type-caption);
+}
+
+.clinic-opening-hours dl > div {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.clinic-opening-hours dt,
+.clinic-opening-hours dd {
+  margin: 0;
+}
+
+.clinic-opening-hours dt {
+  font-weight: 650;
+}
+
+.clinic-opening-hours dd {
+  text-align: right;
+}
+
+.clinic-opening-hours-note {
+  margin: 0;
+  color: rgba(30, 26, 15, 0.68);
+  font-size: var(--type-caption);
 }
 
 .clinic-details-cta {
