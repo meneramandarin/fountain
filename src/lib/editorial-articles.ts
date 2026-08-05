@@ -146,6 +146,30 @@ export const editorialArticles: EditorialArticle[] = [
       },
     },
   },
+  {
+    slug: "healthspan-vs-lifespan.html",
+    bodySource: "healthspan-vs-lifespan.html",
+    title: "The Ten Years Nobody Plans For",
+    heroImage: "/domains/Biologicalage.avif",
+    standfirst:
+      "Lifespan tells you how many years you get. Healthspan tells you how many of those years are actually yours. In the United States the two numbers are drifting apart by more than a decade, and closing that gap, not simply extending the first number, is what a growing wing of functional medicine is built to do.",
+    description:
+      "Lifespan and healthspan are drifting apart by more than a decade in the US. Here is what the research says actually closes the gap, and how to find a functional medicine clinic built around doing it.",
+    byline: "The Fountain Editors",
+    updated: "2026-08-05",
+    updatedLabel: "5 August 2026",
+    providerRails: {
+      "functional-health-providers": {
+        title: "Functional medicine & longevity-focused clinics",
+        dynamicTreatmentId: 43,
+        dynamicTreatmentNames: ["Functional medicine"],
+        cta: {
+          label: "Browse functional medicine providers on Fountain",
+          href: "/directory?kind=locations&treatment_id=43",
+        },
+      },
+    },
+  },
 ];
 
 export function getEditorialArticle(slug: string) {
