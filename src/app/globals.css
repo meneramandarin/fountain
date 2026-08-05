@@ -1995,6 +1995,29 @@ input[type="search"]::-webkit-search-cancel-button:hover {
   text-transform: uppercase;
 }
 
+.editorial-page .figure {
+  margin: 34px 0 38px;
+  padding: 26px 22px 20px;
+  border: 1px solid var(--article-line);
+  border-radius: var(--radius-panel);
+  background: var(--article-paper-deep);
+}
+
+.editorial-page .figure svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.editorial-page .figure-cap {
+  margin: 16px 0 0;
+  color: var(--article-ink-soft);
+  font-family: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  font-size: var(--type-caption);
+  line-height: 1.55;
+  letter-spacing: 0.01em;
+}
+
 .editorial-page .voice {
   display: block;
   margin: 34px 0;
