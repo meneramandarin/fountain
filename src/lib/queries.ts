@@ -1120,7 +1120,8 @@ async function hydrateLandingDirectoryCards(
       AND ${activeImageCondition("images")}
       AND blob_url IS NOT NULL
       AND blob_url != ''
-  `,
+    ORDER BY (image_kind = 'logo') DESC, updated_at DESC NULLS LAST, id DESC
+    `,
     ids,
   );
   const imageMap = new Map<number, ImageCandidate>();
@@ -1934,6 +1935,7 @@ async function hydrateLocationRows(results: AnyRow[]) {
         AND ${activeImageCondition("images")}
         AND blob_url IS NOT NULL
         AND blob_url != ''
+      ORDER BY (image_kind = 'logo') DESC, updated_at DESC NULLS LAST, id DESC
     `,
       ids,
     );
@@ -2493,7 +2495,7 @@ export async function getLocationDetail(ref: number | string) {
       AND ${activeImageCondition("images")}
       AND blob_url IS NOT NULL
       AND blob_url != ''
-    ORDER BY updated_at DESC NULLS LAST, id DESC
+    ORDER BY (image_kind = 'logo') DESC, updated_at DESC NULLS LAST, id DESC
     LIMIT 8
   `,
     [id],
