@@ -3,6 +3,7 @@ import { LandingScrollHeader } from "@/components/landing-scroll-header";
 import type { RelatedTreatmentSearches } from "@/lib/queries";
 import {
   Building2,
+  Clock3,
   ExternalLink,
   Globe,
   Mail,
@@ -44,6 +45,8 @@ type OfferingRef = {
   price_max_amount?: number | null;
   price_currency?: string | null;
   price_context?: string | null;
+  duration_minutes?: number | null;
+  description?: string | null;
   treatment?: string | null;
   domain?: string | null;
 };
@@ -488,15 +491,9 @@ function LocationTreatmentsAndDetails({ data }: { data: LocationDetailRecord }) 
           {data.offerings_note ? <p className="clinic-treatments-note">{data.offerings_note}</p> : null}
           {treatments.length ? (
             <div className="clinic-treatment-list">
-              {treatments.slice(0, 4).map((offering, index) => {
-                const { primary } = getOfferingLabels(offering);
-                return (
-                  <div className="clinic-treatment-card" key={`${offering.raw_name || offering.treatment}-${index}`}>
-                    <span>{primary}</span>
-                    <strong>{offering.price_amount == null ? "Price on request" : formatOfferingPrice(offering)}</strong>
-                  </div>
-                );
-              })}
+              {treatments.slice(0, 4).map((offering, index) => (
+                <TreatmentCard offering={offering} key={`${offering.raw_name || offering.treatment}-${index}`} />
+              ))}
               {treatments.length > 4 ? (
                 <details className="clinic-treatment-more">
                   <summary>
@@ -504,15 +501,9 @@ function LocationTreatmentsAndDetails({ data }: { data: LocationDetailRecord }) 
                     <span className="clinic-treatment-more-close">See less</span>
                   </summary>
                   <div className="clinic-treatment-more-list">
-                    {treatments.slice(4).map((offering, index) => {
-                      const { primary } = getOfferingLabels(offering);
-                      return (
-                        <div className="clinic-treatment-card" key={`${offering.raw_name || offering.treatment}-${index + 4}`}>
-                          <span>{primary}</span>
-                          <strong>{offering.price_amount == null ? "Price on request" : formatOfferingPrice(offering)}</strong>
-                        </div>
-                      );
-                    })}
+                    {treatments.slice(4).map((offering, index) => (
+                      <TreatmentCard offering={offering} key={`${offering.raw_name || offering.treatment}-${index + 4}`} />
+                    ))}
                   </div>
                 </details>
               ) : null}
@@ -560,6 +551,32 @@ function LocationTreatmentsAndDetails({ data }: { data: LocationDetailRecord }) 
         </aside>
       </div>
     </section>
+  );
+}
+
+function TreatmentCard({ offering }: { offering: OfferingRef }) {
+  const { primary } = getOfferingLabels(offering);
+  const duration = Number(offering.duration_minutes);
+  const hasDuration = Number.isFinite(duration) && duration > 0;
+
+  return (
+    <article className="clinic-treatment-card">
+      <div className="clinic-treatment-card-heading">
+        <h3>{primary}</h3>
+        <strong>{offering.price_amount == null ? "Price on request" : formatOfferingPrice(offering)}</strong>
+      </div>
+      {hasDuration || offering.description ? (
+        <div className="clinic-treatment-card-details">
+          {hasDuration ? (
+            <span className="clinic-treatment-duration">
+              <Clock3 size={15} aria-hidden="true" />
+              {duration} min
+            </span>
+          ) : null}
+          {offering.description ? <p>{offering.description}</p> : null}
+        </div>
+      ) : null}
+    </article>
   );
 }
 

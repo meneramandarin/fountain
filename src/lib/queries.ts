@@ -2427,7 +2427,7 @@ export async function getLocationDetail(ref: number | string) {
                THEN translation.english_text
              ELSE o.raw_name
            END AS raw_name,
-           o.price_amount, o.price_currency,
+           o.price_amount, o.price_currency, o.duration_minutes, o.description,
            t.canonical_name AS treatment, t.category AS domain
     FROM offerings o
     LEFT JOIN treatments t ON t.id = o.treatment_id
@@ -2440,8 +2440,7 @@ export async function getLocationDetail(ref: number | string) {
         WHERE suppression.offering_id = o.id
           AND suppression.active
       )
-    ORDER BY (t.category IS NULL), t.category, t.canonical_name,
-             COALESCE(translation.english_text, o.raw_name)
+    ORDER BY (o.price_amount IS NULL), o.id
   `,
     [id],
   );
