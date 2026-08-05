@@ -473,7 +473,9 @@ function LocationMain({ data }: { data: LocationDetailRecord }) {
 }
 
 function LocationTreatmentsAndDetails({ data }: { data: LocationDetailRecord }) {
-  const treatments = data.offerings || [];
+  const treatments = [...(data.offerings || [])].sort(
+    (first, second) => Number(first.price_amount == null) - Number(second.price_amount == null),
+  );
   const clinicName = data.name || data.org_name || "Clinic";
   const address = locationDisplayAddress(data);
   const website = data.website ? `/go/${data.slug || data.id}` : null;
