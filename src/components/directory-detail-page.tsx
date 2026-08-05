@@ -5,7 +5,9 @@ import {
   Building2,
   ExternalLink,
   Globe,
+  Mail,
   MapPin,
+  Phone,
   Star,
   Stethoscope,
 } from "lucide-react";
@@ -17,9 +19,9 @@ import { formatLocationPlace } from "@/lib/location-display";
 import { SplitDirectorySearch } from "@/components/split-directory-search";
 import { getOfferingLabels } from "@/lib/offering-labels";
 import { formatLocationAddress } from "@/lib/location-address";
-import { BookingRequestForm } from "@/components/booking-request-form";
 import { ListingShareButton } from "@/components/listing-share-button";
 import { ListingLocationMap } from "@/components/listing-location-map";
+import { OutboundClinicLink } from "@/components/outbound-clinic-link";
 import {
   ClinicianLicenseVerification,
   type ClinicianLicenseVerificationData,
@@ -188,22 +190,7 @@ export function DirectoryDetailPage(props: DetailProps) {
       </section>
 
       {props.kind === "locations" ? (
-        <BookingRequestForm
-          locationId={props.data.id}
-          locationSlug={props.data.slug}
-          locationName={props.data.name || props.data.org_name || "this clinic"}
-          locationAddress={locationDisplayAddress(props.data)}
-          clinicTimezone={props.data.timezone}
-          services={(props.data.offerings || []).map((offering, index) => ({
-            serviceId: `${props.data.id}-treatment-${index}`,
-            name: getOfferingLabels(offering).primary,
-            category: offering.domain || null,
-            priceAmount: offering.price_amount ?? null,
-            priceMaxAmount: offering.price_max_amount ?? null,
-            priceCurrency: offering.price_currency || null,
-            priceContext: offering.price_context || null,
-          }))}
-        />
+        <LocationTreatmentsAndDetails data={props.data} />
       ) : null}
 
       <div className={`listing-detail-layout${props.kind === "locations" ? " listing-detail-layout-location" : ""}`} id="listing-details">
@@ -482,6 +469,95 @@ function LocationMain({ data }: { data: LocationDetailRecord }) {
       <ReviewList reviews={data.reviews || []} />
       <ExternalReviewList groups={data.external_reviews || []} anchorId={!data.reviews?.length} />
     </>
+  );
+}
+
+function LocationTreatmentsAndDetails({ data }: { data: LocationDetailRecord }) {
+  const treatments = data.offerings || [];
+  const clinicName = data.name || data.org_name || "Clinic";
+  const address = locationDisplayAddress(data);
+  const website = data.website ? `/go/${data.slug || data.id}` : null;
+
+  return (
+    <section className="clinic-details-section" aria-labelledby="clinic-treatments-title">
+      <div className="clinic-details-workspace">
+        <div className="clinic-treatments">
+          <h2 id="clinic-treatments-title">Treatments</h2>
+          {data.offerings_note ? <p className="clinic-treatments-note">{data.offerings_note}</p> : null}
+          {treatments.length ? (
+            <div className="clinic-treatment-list">
+              {treatments.slice(0, 4).map((offering, index) => {
+                const { primary } = getOfferingLabels(offering);
+                return (
+                  <div className="clinic-treatment-card" key={`${offering.raw_name || offering.treatment}-${index}`}>
+                    <span>{primary}</span>
+                    <strong>{offering.price_amount == null ? "Price on request" : formatOfferingPrice(offering)}</strong>
+                  </div>
+                );
+              })}
+              {treatments.length > 4 ? (
+                <details className="clinic-treatment-more">
+                  <summary>
+                    <span className="clinic-treatment-more-open">See all</span>
+                    <span className="clinic-treatment-more-close">See less</span>
+                  </summary>
+                  <div className="clinic-treatment-more-list">
+                    {treatments.slice(4).map((offering, index) => {
+                      const { primary } = getOfferingLabels(offering);
+                      return (
+                        <div className="clinic-treatment-card" key={`${offering.raw_name || offering.treatment}-${index + 4}`}>
+                          <span>{primary}</span>
+                          <strong>{offering.price_amount == null ? "Price on request" : formatOfferingPrice(offering)}</strong>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </details>
+              ) : null}
+            </div>
+          ) : (
+            <p className="clinic-treatments-empty">Contact the clinic for its current treatment list and pricing.</p>
+          )}
+        </div>
+
+        <aside className="clinic-details-card" aria-labelledby="clinic-details-title">
+          <div>
+            <p className="clinic-details-eyebrow" id="clinic-details-title">Clinic Details</p>
+            <h3>{clinicName}</h3>
+            <div className="clinic-details-facts">
+              {address ? (
+                <span>
+                  <MapPin size={17} aria-hidden="true" />
+                  {address}
+                </span>
+              ) : null}
+              {data.phone ? (
+                <a href={`tel:${data.phone}`}>
+                  <Phone size={17} aria-hidden="true" />
+                  {data.phone}
+                </a>
+              ) : null}
+              {data.email ? (
+                <a href={`mailto:${data.email}`}>
+                  <Mail size={17} aria-hidden="true" />
+                  {data.email}
+                </a>
+              ) : null}
+            </div>
+          </div>
+          {website ? (
+            <OutboundClinicLink
+              className="clinic-details-cta"
+              href={website}
+              locationId={data.id}
+              locationSlug={data.slug}
+            >
+              Request appointment
+            </OutboundClinicLink>
+          ) : null}
+        </aside>
+      </div>
+    </section>
   );
 }
 
@@ -865,6 +941,15 @@ function formatPrice(amount?: number | null, currency?: string | null) {
     return `${trimmedCurrency}${formatted}`;
   }
   return `${formatted} ${trimmedCurrency}`;
+}
+
+function formatOfferingPrice(offering: OfferingRef) {
+  const low = formatPrice(offering.price_amount, offering.price_currency);
+  if (!low || offering.price_max_amount == null || offering.price_max_amount === offering.price_amount) {
+    return low || "";
+  }
+  const high = formatPrice(offering.price_max_amount, offering.price_currency);
+  return high ? `${low}–${high}` : low;
 }
 
 function reviewField(value: string | number | null | undefined, key: string): string | null {
