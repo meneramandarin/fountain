@@ -5,6 +5,7 @@ import {
   type TreatmentCityCount,
 } from "@/lib/treatment-pages";
 import type { ClinicianLicenseVerificationData } from "@/components/clinician-license-verification";
+import { orderTreatmentChips, type TreatmentChipWithId } from "@/lib/treatment-chip-order";
 
 export const PAGE_SIZE = 18;
 
@@ -1644,15 +1645,7 @@ export async function getTreatmentLocationLandingData(params: {
     [params.treatmentId, params.treatmentId, ...filterValues, resultLimit],
   );
 
-  await hydrateLocationRows(results);
-  for (const result of results) {
-    const treatments = (result.treatments as Array<{ name: string; domain: string }> | undefined) || [];
-    const target = treatments.find((treatment) => treatment.name === params.treatmentName);
-    result.treatments = [
-      target || { name: params.treatmentName, domain: "" },
-      ...treatments.filter((treatment) => treatment.name !== params.treatmentName),
-    ].slice(0, 6);
-  }
+  await hydrateLocationRows(results, [params.treatmentId]);
 
   const priceRows = await rows<{
     currency: string | null;
@@ -1770,7 +1763,7 @@ export async function searchLocations(params: DirectoryParams, page = 0) {
     [...queryValues, ...(defaultOrder?.values || []), PAGE_SIZE, page * PAGE_SIZE],
   );
 
-  await hydrateLocationRows(results);
+  await hydrateLocationRows(results, params.treatment_ids);
   return { results, total, page, page_size: PAGE_SIZE };
 }
 
@@ -1826,7 +1819,7 @@ async function searchLocationsByMapBounds(
     page,
     preferTreatmentRating: Boolean(params.treatment_ids?.length),
   });
-  await hydrateLocationRows(payload.results);
+  await hydrateLocationRows(payload.results, params.treatment_ids);
   return { ...payload, mode: "map_bounds" as const, effective_radius: null };
 }
 
@@ -1875,7 +1868,7 @@ async function searchLocationsByCountry(params: DirectoryParams, countryCode: st
   `,
     [...queryValues, PAGE_SIZE, page * PAGE_SIZE],
   );
-  await hydrateLocationRows(results);
+  await hydrateLocationRows(results, params.treatment_ids);
   const searchedCountry = params.city_label || params.city_country || countryCode;
   return {
     results,
@@ -1889,13 +1882,13 @@ async function searchLocationsByCountry(params: DirectoryParams, countryCode: st
   };
 }
 
-async function hydrateLocationRows(results: AnyRow[]) {
+async function hydrateLocationRows(results: AnyRow[], preferredTreatmentIds: readonly number[] = []) {
   const ids = results.map((result) => result.id as number);
   if (ids.length) {
     const marks = placeholders(ids.length);
-    const treatments = await rows<{ lid: number; name: string; domain: string }>(
+    const treatments = await rows<{ lid: number } & TreatmentChipWithId>(
       `
-      SELECT o.location_id AS lid, t.canonical_name AS name, t.category AS domain
+      SELECT o.location_id AS lid, t.id, t.canonical_name AS name, t.category AS domain
       FROM offerings o
       JOIN treatments t ON t.id = o.treatment_id
       WHERE o.location_id IN (${marks})
@@ -1915,11 +1908,11 @@ async function hydrateLocationRows(results: AnyRow[]) {
     `,
       ids,
     );
-    const treatmentMap = new Map<number, { name: string; domain: string }[]>();
+    const treatmentMap = new Map<number, TreatmentChipWithId[]>();
     const tagMap = new Map<number, { facet: string; value: string }[]>();
     for (const treatment of treatments) {
       const list = treatmentMap.get(treatment.lid) || [];
-      list.push({ name: treatment.name, domain: treatment.domain });
+      list.push({ id: treatment.id, name: treatment.name, domain: treatment.domain });
       treatmentMap.set(treatment.lid, list);
     }
     for (const tag of tags) {
@@ -1949,7 +1942,7 @@ async function hydrateLocationRows(results: AnyRow[]) {
     const verificationMap = await locationClinicianLicenseVerificationMap(ids);
     for (const result of results) {
       const id = result.id as number;
-      result.treatments = (treatmentMap.get(id) || []).slice(0, 6);
+      result.treatments = orderTreatmentChips(treatmentMap.get(id) || [], preferredTreatmentIds);
       result.tags = tagMap.get(id) || [];
       result.image = imageMap.get(id)?.blob_url || null;
       result.image_kind = imageMap.get(id)?.image_kind || null;
@@ -2028,7 +2021,7 @@ async function searchLocationsByCityRadius(params: DirectoryParams, latitude: nu
       cityTotal = payload.total;
     }
     if (payload.total >= 5) {
-      await hydrateLocationRows(payload.results);
+      await hydrateLocationRows(payload.results, params.treatment_ids);
       return {
         ...payload,
         mode: radius === 25 ? "exact_radius" as const : "expanded_radius" as const,
@@ -2048,7 +2041,7 @@ async function searchLocationsByCityRadius(params: DirectoryParams, latitude: nu
         countryCode,
         preferTreatmentRating: Boolean(params.treatment_ids?.length),
       });
-      await hydrateLocationRows(payload.results);
+      await hydrateLocationRows(payload.results, params.treatment_ids);
       return {
         ...payload,
         mode: "country_fallback" as const,
@@ -2065,7 +2058,7 @@ async function searchLocationsByCityRadius(params: DirectoryParams, latitude: nu
         radius: 500,
         preferTreatmentRating: Boolean(params.treatment_ids?.length),
       });
-      await hydrateLocationRows(payload.results);
+      await hydrateLocationRows(payload.results, params.treatment_ids);
       return {
         ...payload,
         mode: payload.total ? "cross_border" as const : "empty" as const,
@@ -2078,7 +2071,7 @@ async function searchLocationsByCityRadius(params: DirectoryParams, latitude: nu
   }
 
   if (lastRadiusPayload) {
-    await hydrateLocationRows(lastRadiusPayload.results);
+    await hydrateLocationRows(lastRadiusPayload.results, params.treatment_ids);
     return {
       ...lastRadiusPayload,
       mode: lastRadiusPayload.total ? "expanded_radius" as const : "empty" as const,
