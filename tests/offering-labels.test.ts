@@ -44,4 +44,16 @@ describe("offering labels", () => {
     expect(getOfferingLabels({ raw_name: "NAD+ IV Therapy", treatment: "NAD+ IV therapy" }))
       .toEqual({ primary: "NAD+ IV Therapy", secondary: null });
   });
+
+  test("collapses exact repeated extractor breadcrumbs in the display label", () => {
+    expect(getOfferingLabels({ raw_name: "Kybella - Kybella", treatment: "Kybella" }))
+      .toEqual({ primary: "Kybella", secondary: null });
+    expect(getOfferingLabels({ raw_name: "Myers' Cocktail – Myers' Cocktail" }))
+      .toEqual({ primary: "Myers' Cocktail", secondary: null });
+  });
+
+  test("preserves genuinely different variants around a separator", () => {
+    expect(getOfferingLabels({ raw_name: "Botox - Botox, Xeomin, Dysport" }))
+      .toEqual({ primary: "Botox - Botox, Xeomin, Dysport", secondary: null });
+  });
 });

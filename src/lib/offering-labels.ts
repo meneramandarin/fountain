@@ -14,8 +14,19 @@ export type OfferingLabelInput = {
 export function getOfferingLabels(offering: OfferingLabelInput) {
   const rawName = offering.raw_name?.trim();
   const treatment = offering.treatment?.trim();
-  const primary = capitalizeOfferingLabel(rawName || treatment || "Offering");
+  const primary = capitalizeOfferingLabel(cleanRepeatedLabel(rawName || treatment || "Offering"));
   return { primary, secondary: null };
+}
+
+function cleanRepeatedLabel(value: string) {
+  const parts = value.split(/\s+(?:-|–|—)\s+/u).map((part) => part.trim()).filter(Boolean);
+  if (parts.length < 2) return value;
+  const normalized = parts.map((part) => part
+    .toLocaleLowerCase()
+    .replace(/[®™℠]/gu, "")
+    .replace(/[^a-z0-9+%]+/gu, " ")
+    .trim());
+  return normalized.every((part) => part === normalized[0]) ? parts[0] : value;
 }
 
 function capitalizeOfferingLabel(value: string) {

@@ -11,6 +11,7 @@ import {
 import { trackClinicClick } from "@/lib/clinic-click-analytics";
 import { locationHref } from "@/lib/directory-urls";
 import { formatLocationPlace } from "@/lib/location-display";
+import { formatPrice } from "@/lib/format-price";
 
 export type DirectoryLocationCardData = {
   id: number;
@@ -35,33 +36,6 @@ export type DirectoryLocationCardData = {
 
 function imageSource(src: string) {
   return src;
-}
-
-function formatPrice(amount?: number | null, currency?: string | null) {
-  if (amount == null || !Number.isFinite(Number(amount))) {
-    return null;
-  }
-
-  const value = Number(amount);
-  const trimmedCurrency = currency?.trim();
-  const maximumFractionDigits = Number.isInteger(value) ? 0 : 2;
-
-  if (trimmedCurrency && /^[A-Z]{3}$/.test(trimmedCurrency)) {
-    return new Intl.NumberFormat("en", {
-      style: "currency",
-      currency: trimmedCurrency,
-      maximumFractionDigits,
-    }).format(value);
-  }
-
-  const formatted = value.toLocaleString("en", { maximumFractionDigits });
-  if (!trimmedCurrency) {
-    return formatted;
-  }
-  if (/^[^\dA-Za-z\s]+$/.test(trimmedCurrency)) {
-    return `${trimmedCurrency}${formatted}`;
-  }
-  return `${formatted} ${trimmedCurrency}`;
 }
 
 export function DirectoryLocationCard({
@@ -93,7 +67,7 @@ export function DirectoryLocationCard({
   const mobileService = result.tags?.find(
     (tag) => tag.facet === "care_model" && tag.value.toLowerCase() === "mobile service",
   );
-  const price = formatPrice(result.min_price_amount, result.min_price_currency);
+  const price = formatPrice(result.min_price_amount, result.min_price_currency, result.country_code);
 
   return (
     <Link
