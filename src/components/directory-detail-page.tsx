@@ -816,6 +816,13 @@ function ChainLocationCard({ location }: { location: ChainLocationRef }) {
             {Number(location.rating).toFixed(1)}
           </span>
         ) : null}
+        {treatments.length ? (
+          <span className="listing-chain-treatments">
+            {treatments.map((treatment) => (
+              <span key={`${location.id}-${treatment.name}`}>{treatment.name}</span>
+            ))}
+          </span>
+        ) : null}
       </span>
       <span className="listing-chain-body">
         <b>{location.name || location.org_name || "Unnamed location"}</b>
@@ -832,13 +839,6 @@ function ChainLocationCard({ location }: { location: ChainLocationRef }) {
             </span>
           ) : null}
         </span>
-        {treatments.length ? (
-          <span className="listing-chain-treatments">
-            {treatments.map((treatment) => (
-              <span key={`${location.id}-${treatment.name}`}>{treatment.name}</span>
-            ))}
-          </span>
-        ) : null}
       </span>
     </Link>
   );
