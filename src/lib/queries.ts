@@ -227,7 +227,22 @@ function activeEntityCondition(alias: string) {
 }
 
 function activeOfferingCondition(alias: string) {
-  return isPostgres() ? `${alias}.status = 'active' AND ${alias}.deleted_at IS NULL` : "1=1";
+  return isPostgres()
+    ? `${alias}.status = 'active' AND ${alias}.deleted_at IS NULL
+       AND NOT EXISTS (
+         SELECT 1 FROM offering_display_suppressions active_suppression
+         WHERE active_suppression.offering_id = ${alias}.id
+           AND active_suppression.active
+       )`
+    : "1=1";
+}
+
+function comparableOfferingPriceCondition(alias: string) {
+  return isPostgres()
+    ? `${alias}.price_amount > 0
+       AND COALESCE(NULLIF(TRIM(${alias}.price_unit), ''), 'service') IN ('service', 'session', 'visit')
+       AND COALESCE(NULLIF(TRIM(${alias}.price_audience), ''), 'retail') = 'retail'`
+    : `${alias}.price_amount > 0`;
 }
 
 function activeImageCondition(alias: string) {
@@ -669,7 +684,7 @@ export async function getTreatmentLandingData(treatment: Pick<TreatmentCatalogIt
       FROM offerings o
       JOIN locations l ON l.id = o.location_id
       WHERE o.treatment_id = ?
-        AND o.price_amount > 0
+        AND ${comparableOfferingPriceCondition("o")}
         AND ${activeOfferingCondition("o")}
         AND ${activeEntityCondition("l")}
         AND COALESCE(l.is_virtual, false) = false
@@ -1172,7 +1187,7 @@ async function hydrateLandingDirectoryCards(
       o.price_currency AS currency
     FROM offerings o
     WHERE o.location_id IN (${featuredMarks})
-      AND o.price_amount > 0
+      AND ${comparableOfferingPriceCondition("o")}
       AND ${activeOfferingCondition("o")}
     ORDER BY o.location_id, o.price_amount ASC
   `,
@@ -1613,7 +1628,7 @@ export async function getTreatmentLocationLandingData(params: {
         FROM offerings treatment_o
         WHERE treatment_o.location_id = l.id
           AND treatment_o.treatment_id = ?
-          AND treatment_o.price_amount > 0
+          AND ${comparableOfferingPriceCondition("treatment_o")}
           AND ${activeOfferingCondition("treatment_o")}
         ORDER BY treatment_o.price_amount ASC
         LIMIT 1
@@ -1623,7 +1638,7 @@ export async function getTreatmentLocationLandingData(params: {
         FROM offerings treatment_o
         WHERE treatment_o.location_id = l.id
           AND treatment_o.treatment_id = ?
-          AND treatment_o.price_amount > 0
+          AND ${comparableOfferingPriceCondition("treatment_o")}
           AND ${activeOfferingCondition("treatment_o")}
         ORDER BY treatment_o.price_amount ASC
         LIMIT 1
@@ -1664,7 +1679,7 @@ export async function getTreatmentLocationLandingData(params: {
     FROM offerings o
     JOIN locations l ON l.id = o.location_id
     WHERE o.treatment_id = ?
-      AND o.price_amount > 0
+      AND ${comparableOfferingPriceCondition("o")}
       AND ${activeOfferingCondition("o")}
       AND ${activeEntityCondition("l")}
       AND COALESCE(l.is_virtual, false) = false
@@ -1736,12 +1751,12 @@ export async function searchLocations(params: DirectoryParams, page = 0) {
            (
              SELECT MIN(o.price_amount)
              FROM offerings o
-             WHERE o.location_id = l.id AND o.price_amount IS NOT NULL AND ${activeOfferingCondition("o")}
+             WHERE o.location_id = l.id AND ${comparableOfferingPriceCondition("o")} AND ${activeOfferingCondition("o")}
            ) AS min_price_amount,
            (
              SELECT o.price_currency
              FROM offerings o
-             WHERE o.location_id = l.id AND o.price_amount IS NOT NULL AND ${activeOfferingCondition("o")}
+             WHERE o.location_id = l.id AND ${comparableOfferingPriceCondition("o")} AND ${activeOfferingCondition("o")}
              ORDER BY o.price_amount ASC
              LIMIT 1
            ) AS min_price_currency
@@ -1846,12 +1861,12 @@ async function searchLocationsByCountry(params: DirectoryParams, countryCode: st
            (
              SELECT MIN(o.price_amount)
              FROM offerings o
-             WHERE o.location_id = l.id AND o.price_amount IS NOT NULL AND ${activeOfferingCondition("o")}
+             WHERE o.location_id = l.id AND ${comparableOfferingPriceCondition("o")} AND ${activeOfferingCondition("o")}
            ) AS min_price_amount,
            (
              SELECT o.price_currency
              FROM offerings o
-             WHERE o.location_id = l.id AND o.price_amount IS NOT NULL AND ${activeOfferingCondition("o")}
+             WHERE o.location_id = l.id AND ${comparableOfferingPriceCondition("o")} AND ${activeOfferingCondition("o")}
              ORDER BY o.price_amount ASC
              LIMIT 1
            ) AS min_price_currency
@@ -2198,12 +2213,12 @@ async function locationPayloadFromWhere({
            (
              SELECT MIN(o.price_amount)
              FROM offerings o
-             WHERE o.location_id = l.id AND o.price_amount IS NOT NULL AND ${activeOfferingCondition("o")}
+             WHERE o.location_id = l.id AND ${comparableOfferingPriceCondition("o")} AND ${activeOfferingCondition("o")}
            ) AS min_price_amount,
            (
              SELECT o.price_currency
              FROM offerings o
-             WHERE o.location_id = l.id AND o.price_amount IS NOT NULL AND ${activeOfferingCondition("o")}
+             WHERE o.location_id = l.id AND ${comparableOfferingPriceCondition("o")} AND ${activeOfferingCondition("o")}
              ORDER BY o.price_amount ASC
              LIMIT 1
            ) AS min_price_currency
@@ -2522,14 +2537,14 @@ async function getOtherOrganizationLocations(location: AnyRow) {
              SELECT MIN(o.price_amount)
              FROM offerings o
              WHERE o.location_id = sibling.id
-               AND o.price_amount IS NOT NULL
+               AND ${comparableOfferingPriceCondition("o")}
                AND ${activeOfferingCondition("o")}
            ) AS min_price_amount,
            (
              SELECT o.price_currency
              FROM offerings o
              WHERE o.location_id = sibling.id
-               AND o.price_amount IS NOT NULL
+               AND ${comparableOfferingPriceCondition("o")}
                AND ${activeOfferingCondition("o")}
              ORDER BY o.price_amount ASC
              LIMIT 1
