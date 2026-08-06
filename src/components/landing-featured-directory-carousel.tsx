@@ -7,6 +7,7 @@ import { useId, useRef } from "react";
 import { trackClinicClick } from "@/lib/clinic-click-analytics";
 import { locationHref } from "@/lib/directory-urls";
 import { formatLocationPlace } from "@/lib/location-display";
+import { formatPrice } from "@/lib/format-price";
 import type { LandingFeaturedDirectoryCard } from "@/lib/queries";
 import { ClinicianLicenseVerification } from "@/components/clinician-license-verification";
 
@@ -19,27 +20,6 @@ type LandingFeaturedDirectoryCarouselProps = {
 
 function imageSource(src: string) {
   return src;
-}
-
-function formatPrice(amount: number | null, currency: string | null) {
-  if (amount == null || !Number.isFinite(Number(amount))) return null;
-
-  const value = Number(amount);
-  const code = currency?.trim();
-  const maximumFractionDigits = Number.isInteger(value) ? 0 : 2;
-
-  if (code && /^[A-Z]{3}$/.test(code)) {
-    return new Intl.NumberFormat("en", {
-      style: "currency",
-      currency: code,
-      maximumFractionDigits,
-    }).format(value);
-  }
-
-  const formatted = value.toLocaleString("en", { maximumFractionDigits });
-  if (!code) return formatted;
-  if (/^[^\dA-Za-z\s]+$/.test(code)) return `${code}${formatted}`;
-  return `${formatted} ${code}`;
 }
 
 export function LandingFeaturedDirectoryCarousel({
@@ -92,7 +72,7 @@ export function LandingFeaturedDirectoryCarousel({
           });
           const previewTreatments = card.treatments.slice(0, 3);
           const isContainedGraphic = card.image_kind === "text_graphic" || card.image_kind === "logo";
-          const price = formatPrice(card.min_price_amount, card.min_price_currency);
+          const price = formatPrice(card.min_price_amount, card.min_price_currency, card.country_code);
 
           return (
             <Link

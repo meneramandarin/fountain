@@ -980,8 +980,14 @@ function TagPills({ tags }: { tags: Tag[] }) {
 }
 
 function getImageSources(images: ImageRef[]) {
+  const seen = new Set<string>();
   return images
-    .filter((image): image is ImageRef & { blob_url: string } => Boolean(image.blob_url))
+    .filter((image): image is ImageRef & { blob_url: string } => {
+      const source = image.blob_url?.trim();
+      if (!source || seen.has(source)) return false;
+      seen.add(source);
+      return true;
+    })
     .slice(0, 5);
 }
 
