@@ -40,7 +40,7 @@ const exploreItems: LandingExploreItem[] = [
   { label: "Muscle Recovery", image: "/domains/musclerecovery.webp", href: searchHref("Muscle Recovery") },
   { label: "Regenerative Medicine", image: "/domains/regenerativehealth.png", href: searchHref("Regenerative Medicine") },
   { label: "Cognitive Health", image: "/domains/cognitivehealth.jpg", href: searchHref("Cognitive Health") },
-  { label: "Biological Age", image: "/domains/Biologicalage.avif", href: searchHref("Biological Age") },
+  { label: "The Ten Years Nobody Plans For", image: "/domains/Biologicalage.avif", href: "/healthspan-vs-lifespan.html" },
 ];
 
 const fallbackNearMeLocalities = ["New York", "Brooklyn", "Long Island City", "Jackson Heights", "Rego Park", "Staten Island"];
