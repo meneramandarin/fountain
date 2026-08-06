@@ -2530,9 +2530,25 @@ async function getOtherOrganizationLocations(location: AnyRow) {
            sibling.region,
            sibling.country_code,
            sibling.country_name,
+           sibling.latitude,
+           sibling.longitude,
            sibling_google_reviews.rating,
            sibling_google_reviews.review_count,
            org.canonical_name AS org_name,
+           CASE
+             WHEN current_location.latitude BETWEEN -90 AND 90
+              AND current_location.longitude BETWEEN -180 AND 180
+              AND sibling.latitude BETWEEN -90 AND 90
+              AND sibling.longitude BETWEEN -180 AND 180
+             THEN 3958.7613 * 2 * asin(
+               sqrt(
+                 power(sin(radians((sibling.latitude - current_location.latitude) / 2)), 2)
+                 + cos(radians(current_location.latitude)) * cos(radians(sibling.latitude))
+                 * power(sin(radians((sibling.longitude - current_location.longitude) / 2)), 2)
+               )
+             )
+             ELSE NULL
+           END AS distance_miles,
            (
              SELECT MIN(o.price_amount)
              FROM offerings o
@@ -2550,12 +2566,26 @@ async function getOtherOrganizationLocations(location: AnyRow) {
              LIMIT 1
            ) AS min_price_currency
     FROM locations sibling
+    JOIN locations current_location ON current_location.id = ?
     LEFT JOIN organizations org ON org.id = sibling.org_id
     ${googleReviewMatchJoin("sibling_google_reviews", "sibling")}
-    WHERE sibling.org_id = ?
-      AND sibling.id <> ?
+    WHERE sibling.org_id = current_location.org_id
+      AND sibling.id <> current_location.id
       AND ${activeEntityCondition("sibling")}
     ORDER BY
+      distance_miles ASC NULLS LAST,
+      CASE
+        WHEN sibling.country_code = current_location.country_code
+         AND NULLIF(TRIM(sibling.locality), '') IS NOT NULL
+         AND ${trimLower("sibling.locality")} = ${trimLower("current_location.locality")}
+          THEN 0
+        WHEN sibling.country_code = current_location.country_code
+         AND NULLIF(TRIM(sibling.region), '') IS NOT NULL
+         AND ${trimLower("sibling.region")} = ${trimLower("current_location.region")}
+          THEN 1
+        WHEN sibling.country_code = current_location.country_code THEN 2
+        ELSE 3
+      END,
       (sibling_google_reviews.review_count IS NULL),
       sibling_google_reviews.review_count DESC,
       (sibling_google_reviews.rating IS NULL),
@@ -2564,7 +2594,7 @@ async function getOtherOrganizationLocations(location: AnyRow) {
       ${orderNoCase("sibling.name")}
     LIMIT 12
   `,
-    [orgId, locationId],
+    [locationId],
   );
 
   await hydrateLocationRows(siblings);
