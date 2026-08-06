@@ -2422,7 +2422,9 @@ export async function getLocationDetail(ref: number | string) {
                THEN translation.english_text
              ELSE o.raw_name
            END AS raw_name,
-           o.price_amount, o.price_currency, o.duration_minutes, o.description,
+           o.price_amount, o.price_max_amount, o.price_currency,
+           o.price_type, o.price_unit, o.price_context, o.price_audience,
+           o.duration_minutes, o.description,
            t.canonical_name AS treatment, t.category AS domain
     FROM offerings o
     LEFT JOIN treatments t ON t.id = o.treatment_id
