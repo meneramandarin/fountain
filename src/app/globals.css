@@ -1149,7 +1149,7 @@ input[type="search"]::-webkit-search-cancel-button:hover {
   justify-content: space-between;
   gap: 18px;
   padding: 0 clamp(28px, 5vw, 72px);
-  margin-bottom: 0;
+  margin-bottom: 12px;
 }
 
 .landing-featured-header h2 {
