@@ -20,6 +20,8 @@ import { formatLocationPlace } from "@/lib/location-display";
 import { SplitDirectorySearch } from "@/components/split-directory-search";
 import { getOfferingLabels } from "@/lib/offering-labels";
 import { formatLocationAddress } from "@/lib/location-address";
+import { formatPrice } from "@/lib/format-price";
+import { formatOfferingPrice } from "@/lib/offering-price";
 import { ListingShareButton } from "@/components/listing-share-button";
 import { ListingLocationMap } from "@/components/listing-location-map";
 import { OutboundClinicLink } from "@/components/outbound-clinic-link";
@@ -44,7 +46,10 @@ type OfferingRef = {
   price_amount?: number | null;
   price_max_amount?: number | null;
   price_currency?: string | null;
+  price_type?: string | null;
+  price_unit?: string | null;
   price_context?: string | null;
+  price_audience?: string | null;
   duration_minutes?: number | null;
   description?: string | null;
   treatment?: string | null;
@@ -495,7 +500,7 @@ function LocationTreatmentsAndDetails({ data }: { data: LocationDetailRecord }) 
           {treatments.length ? (
             <div className="clinic-treatment-list">
               {treatments.slice(0, 4).map((offering, index) => (
-                <TreatmentCard offering={offering} key={`${offering.raw_name || offering.treatment}-${index}`} />
+                <TreatmentCard offering={offering} countryCode={data.country_code} key={`${offering.raw_name || offering.treatment}-${index}`} />
               ))}
               {treatments.length > 4 ? (
                 <details className="clinic-treatment-more">
@@ -505,7 +510,7 @@ function LocationTreatmentsAndDetails({ data }: { data: LocationDetailRecord }) 
                   </summary>
                   <div className="clinic-treatment-more-list">
                     {treatments.slice(4).map((offering, index) => (
-                      <TreatmentCard offering={offering} key={`${offering.raw_name || offering.treatment}-${index + 4}`} />
+                      <TreatmentCard offering={offering} countryCode={data.country_code} key={`${offering.raw_name || offering.treatment}-${index + 4}`} />
                     ))}
                   </div>
                 </details>
@@ -572,6 +577,16 @@ function OpeningHours({
     return null;
   }
 
+  const hoursByDay = Array.from(
+    (hours || []).reduce((grouped, entry) => {
+      const periods = grouped.get(entry.day) || [];
+      periods.push(`${entry.open} – ${entry.close}`);
+      grouped.set(entry.day, periods);
+      return grouped;
+    }, new Map<string, string[]>()),
+    ([day, periods]) => ({ day, periods }),
+  );
+
   return (
     <div className="clinic-opening-hours" aria-labelledby="clinic-opening-hours-title">
       <div className="clinic-opening-hours-heading">
@@ -580,21 +595,20 @@ function OpeningHours({
       </div>
       {hours?.length ? (
         <dl>
-          {hours.map((entry) => (
+          {hoursByDay.map((entry) => (
             <div key={entry.day}>
               <dt>{entry.day}</dt>
-              <dd>{entry.open} – {entry.close}</dd>
+              <dd>{entry.periods.join(", ")}</dd>
             </div>
           ))}
         </dl>
-      ) : (
-        <p className="clinic-opening-hours-note">{note}</p>
-      )}
+      ) : null}
+      {note ? <p className="clinic-opening-hours-note">{note}</p> : null}
     </div>
   );
 }
 
-function TreatmentCard({ offering }: { offering: OfferingRef }) {
+function TreatmentCard({ offering, countryCode }: { offering: OfferingRef; countryCode?: string | null }) {
   const { primary } = getOfferingLabels(offering);
   const duration = Number(offering.duration_minutes);
   const hasDuration = Number.isFinite(duration) && duration > 0;
@@ -603,7 +617,7 @@ function TreatmentCard({ offering }: { offering: OfferingRef }) {
     <article className="clinic-treatment-card">
       <div className="clinic-treatment-card-heading">
         <h3>{primary}</h3>
-        <strong>{offering.price_amount == null ? "Price on request" : formatOfferingPrice(offering)}</strong>
+        <strong>{formatOfferingPrice(offering, countryCode)}</strong>
       </div>
       {hasDuration || offering.description ? (
         <div className="clinic-treatment-card-details">
@@ -775,7 +789,7 @@ function ChainLocationCard({ location }: { location: ChainLocationRef }) {
     countryName: location.country_name,
   });
   const isContainedGraphic = location.image_kind === "text_graphic" || location.image_kind === "logo";
-  const price = formatPrice(location.min_price_amount, location.min_price_currency);
+  const price = formatPrice(location.min_price_amount, location.min_price_currency, location.country_code);
   const treatments = (location.treatments || []).slice(0, 3);
 
   return (
@@ -973,42 +987,6 @@ function getImageSources(images: ImageRef[]) {
 
 function imageSource(src: string) {
   return src;
-}
-
-function formatPrice(amount?: number | null, currency?: string | null) {
-  if (amount == null || !Number.isFinite(Number(amount))) {
-    return null;
-  }
-
-  const value = Number(amount);
-  const trimmedCurrency = currency?.trim();
-  const maximumFractionDigits = Number.isInteger(value) ? 0 : 2;
-
-  if (trimmedCurrency && /^[A-Z]{3}$/.test(trimmedCurrency)) {
-    return new Intl.NumberFormat("en", {
-      style: "currency",
-      currency: trimmedCurrency,
-      maximumFractionDigits,
-    }).format(value);
-  }
-
-  const formatted = value.toLocaleString("en", { maximumFractionDigits });
-  if (!trimmedCurrency) {
-    return formatted;
-  }
-  if (/^[^\dA-Za-z\s]+$/.test(trimmedCurrency)) {
-    return `${trimmedCurrency}${formatted}`;
-  }
-  return `${formatted} ${trimmedCurrency}`;
-}
-
-function formatOfferingPrice(offering: OfferingRef) {
-  const low = formatPrice(offering.price_amount, offering.price_currency);
-  if (!low || offering.price_max_amount == null || offering.price_max_amount === offering.price_amount) {
-    return low || "";
-  }
-  const high = formatPrice(offering.price_max_amount, offering.price_currency);
-  return high ? `${low}–${high}` : low;
 }
 
 function reviewField(value: string | number | null | undefined, key: string): string | null {
