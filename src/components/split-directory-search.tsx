@@ -325,7 +325,7 @@ export function SplitDirectorySearch({
             onFocus={() => setActiveField("what")}
             type="search"
             aria-label="Search treatments"
-            placeholder="Treatments"
+            placeholder="Treatments or clinics"
             autoComplete="off"
             autoCorrect="off"
             spellCheck={false}
