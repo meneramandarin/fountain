@@ -170,6 +170,36 @@ export const editorialArticles: EditorialArticle[] = [
       },
     },
   },
+  {
+    slug: "occult-longevity-treatments.html",
+    bodySource: "occult-longevity-treatments.html",
+    title: "The Most Occult Longevity Treatments Currently Available",
+    heroImage: "/domains/longevitytreatments.png",
+    standfirst:
+      "Longevity medicine has a far-end menu of high-cost, low-certainty procedures that can look compelling and strange at the same time. Here is what this frontier looks like from the clinic side, and where to treat it as research rather than a shortcut.",
+    description:
+      "A guided look at the rare, high-variance longevity procedures clinics are offering now, and how to decide what is real science, what is theater, and who should be accountable if you do it.",
+    byline: "The Fountain Editors",
+    published: "2026-08-08",
+    publishedLabel: "8 August 2026",
+    updated: "2026-08-08",
+    updatedLabel: "8 August 2026",
+    providerRails: {
+      "occult-longevity-clinics": {
+        title: "Where the frontier is practiced openly",
+        locationSlugs: [
+          "humanaut-health-austin-2",
+          "stem-cells-specialist-ny-new-york-city",
+          "holistic-bio-spa-puerto-vallarta",
+          "miskawaan-health-group-bangkok",
+        ],
+        cta: {
+          label: "Browse all treatments on Fountain",
+          href: "/treatments",
+        },
+      },
+    },
+  },
 ];
 
 export function getEditorialArticle(slug: string) {

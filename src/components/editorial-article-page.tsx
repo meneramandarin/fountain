@@ -193,7 +193,9 @@ export async function EditorialArticlePage({ article }: { article: EditorialArti
           <span>
             {article.publishedLabel ? (
               <>
-                Published <b>{article.publishedLabel}</b> · Updated <b>{article.updatedLabel}</b>
+                Published <b>{article.publishedLabel}</b>
+                {article.updatedLabel !== article.publishedLabel ? <span> · Updated </span> : null}
+                {article.updatedLabel !== article.publishedLabel ? <b>{article.updatedLabel}</b> : null}
               </>
             ) : (
               <b>{article.updatedLabel}</b>
