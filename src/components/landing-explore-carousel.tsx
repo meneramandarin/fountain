@@ -147,6 +147,8 @@ export function LandingExploreCarousel({ items }: LandingExploreCarouselProps) {
                     alt=""
                     fill
                     sizes="(max-width: 640px) 74vw, (max-width: 980px) 39vw, 325px"
+                    quality={100}
+                    unoptimized
                   />
                 </span>
                 <span className="landing-explore-caption">{item.label}</span>

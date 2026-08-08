@@ -112,6 +112,17 @@ describe("image harvest task", () => {
     });
   });
 
+  test("recognizes logo tokens separated by URL underscores", () => {
+    const html = '<meta property="og:image" content="/assets/BlueHorizontal_Clinic_Logo-1.webp">';
+    expect(extractImageCandidates(html, "https://clinic.example/", { limit: 2 }))
+      .toEqual([{ 
+        url: "https://clinic.example/assets/BlueHorizontal_Clinic_Logo-1.webp",
+        source: "og_image",
+        alt: null,
+        image_kind: "logo",
+      }]);
+  });
+
   test("prefers lazy-loaded real assets and preserves a positive logo signal across duplicates", () => {
     const html = `
       <img src="data:image/svg+xml,%3Csvg/%3E"
