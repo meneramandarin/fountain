@@ -36,6 +36,36 @@ export type EditorialArticle = {
 
 export const editorialArticles: EditorialArticle[] = [
   {
+    slug: "clinic-spa-merge.html",
+    bodySource: "clinic-spa-merge.html",
+    title: "The Clinic and the Spa Are Merging",
+    heroImage: "/domains/aman-japan-longevity.jpg",
+    standfirst:
+      "The same address now offers a hydrafacial, a testosterone panel, a GLP-1 refill and a vial of your own spun blood. It looks like a category error. It is closer to a homecoming.",
+    description:
+      "Facials, testosterone, GLP-1s, PRP and bloodwork now share an address. Where beauty ends and medicine begins is a sharper line than the décor suggests.",
+    byline: "The Fountain Editors",
+    published: "2026-08-08",
+    publishedLabel: "8 August 2026",
+    updated: "2026-08-08",
+    updatedLabel: "8 August 2026",
+    providerRails: {
+      "clinic-spa-merge-clinics": {
+        title: "Clinics that do both",
+        locationSlugs: [
+          "ubliss-medical-aesthetics-med-spa-usa",
+          "juventee-fort-lee",
+          "skin-vitality-society-amarillo",
+          "neuage-health-and-wellness-ladue-st-louis",
+        ],
+        cta: {
+          label: "Browse med spas on Fountain",
+          href: "/directory?kind=locations&treatment_id=38",
+        },
+      },
+    },
+  },
+  {
     slug: "peptide-regulation.html",
     bodySource: "peptide-regulation.html",
     title: "The Grey Market Comes In From the Cold",
