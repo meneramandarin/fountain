@@ -34,12 +34,15 @@ async function safeLandingSection<T>(label: string, load: () => Promise<T[]>) {
 const exploreItems: LandingExploreItem[] = [
   { label: "The Grey Zone - Peptides, Reclassified", image: "/domains/peptides.webp", href: "/peptide-regulation.html" },
   { label: "On Microdosing GLP-1s", image: "/domains/microdosing.png", href: "/glp1-microdosing.html" },
+  {
+    label: "The Most Occult Longevity Treatments Currently Available",
+    image: "/domains/longevitytreatments.png",
+    href: "/occult-longevity-treatments.html",
+  },
   { label: "Your Biological Age Is a Marketing Number", image: "/domains/epigeneticage.jpg", href: "/biological-age.html" },
   { label: "Explore Metabolic Health", image: "/domains/nutrition.jpg", href: searchHref("Metabolic Health") },
   { label: "Menopause, Optional", image: "/domains/ovarian health.jpg", href: "/ovarian-longevity.html" },
   { label: "Muscle Recovery", image: "/domains/musclerecovery.webp", href: searchHref("Muscle Recovery") },
-  { label: "Regenerative Medicine", image: "/domains/regenerativehealth.png", href: searchHref("Regenerative Medicine") },
-  { label: "Cognitive Health", image: "/domains/cognitivehealth.jpg", href: searchHref("Cognitive Health") },
   { label: "The Ten Years Nobody Plans For", image: "/domains/Biologicalage.avif", href: "/healthspan-vs-lifespan.html" },
 ];
 

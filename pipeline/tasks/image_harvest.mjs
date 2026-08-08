@@ -42,7 +42,7 @@ const MAX_LOGO_HORIZONTAL_RATIO = 16;
 const MAX_LOGO_VERTICAL_RATIO = 6;
 const JUNK_URL_PATTERN = /(?:^data:|\.(?:ico|gif)(?:$|[?#])|favicon|sprite|tracking|pixel|placeholder|blank|transparent|loader|spinner|icon|badge|googleadservices|doubleclick|pagead|analytics|\/maps\/|maps\.gstatic|maps\.google|googleapis\.com\/maps|khms|\/vt\/lyrs=)/iu;
 const JUNK_ALT_PATTERN = /\b(?:icon|favicon|placeholder|sprite|tracking pixel)\b/iu;
-const LOGO_SIGNAL_PATTERN = /\b(?:logo|brandmark|wordmark)\b/iu;
+const LOGO_SIGNAL_PATTERN = /(?:^|[^a-z0-9])(?:logo|brandmark|wordmark)(?:[^a-z0-9]|$)/iu;
 
 export const IMAGE_HARVEST_LOAD_SQL = `
   SELECT
