@@ -65,9 +65,6 @@ export function LandingFooter() {
             <li>
               <a href="mailto:hello@fountain.clinic">Claim Your Listing</a>
             </li>
-            <li>
-              <a href="mailto:hello@fountain.clinic">Advertise With Us</a>
-            </li>
           </ul>
         </div>
         <div>
