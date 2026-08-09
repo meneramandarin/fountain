@@ -34,6 +34,12 @@ export type EditorialArticle = {
   providerRails?: Record<string, EditorialProviderRail>;
 };
 
+export const editorialBasePath = "/blog";
+
+export function editorialArticlePath(slug: string) {
+  return `${editorialBasePath}/${slug}`;
+}
+
 export const editorialArticles: EditorialArticle[] = [
   {
     slug: "clinic-spa-merge.html",

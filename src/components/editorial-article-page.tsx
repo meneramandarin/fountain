@@ -8,6 +8,7 @@ import { EditorialProviderRail } from "@/components/editorial-provider-rail";
 import { EditorialShareButton } from "@/components/editorial-share-button";
 import { MenopauseDelayCalculator } from "@/components/menopause-delay-calculator";
 import type { EditorialArticle } from "@/lib/editorial-articles";
+import { editorialArticlePath } from "@/lib/editorial-articles";
 import { getLocationDetail, searchLocations } from "@/lib/queries";
 import { siteUrl } from "@/lib/site";
 
@@ -168,7 +169,7 @@ export async function EditorialArticlePage({ article }: { article: EditorialArti
     loadArticleBodyHtml(article.bodySource),
     loadDynamicRailCards(article),
   ]);
-  const articleUrl = new URL(`/${article.slug}`, siteUrl).toString();
+  const articleUrl = new URL(editorialArticlePath(article.slug), siteUrl).toString();
 
   return (
     <main className="editorial-page">
