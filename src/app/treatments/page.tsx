@@ -5,7 +5,7 @@ import { cache } from "react";
 import { LandingFooter } from "@/components/landing-footer";
 import { LandingScrollHeader } from "@/components/landing-scroll-header";
 import { getTreatmentIndexClinicCount } from "@/lib/queries";
-import { getTreatmentHubs } from "@/lib/treatment-hubs";
+import { getTreatmentHubs, prepareTreatmentIndexHubs } from "@/lib/treatment-hubs";
 import styles from "./treatments.module.css";
 
 export const revalidate = 86_400;
@@ -18,7 +18,7 @@ export async function generateMetadata(): Promise<Metadata> {
     loadTreatmentHubs(),
     loadTreatmentIndexClinicCount(),
   ]);
-  const hubs = allHubs.filter((hub) => hub.totalCities > 0);
+  const hubs = prepareTreatmentIndexHubs(allHubs);
   const cityCount = new Set(
     hubs.flatMap((hub) =>
       hub.cities.map((city) => [city.city, city.region, city.countryCode].join("|")),
@@ -59,9 +59,7 @@ export default async function TreatmentsPage() {
     loadTreatmentHubs(),
     loadTreatmentIndexClinicCount(),
   ]);
-  const hubs = allHubs
-    .filter((hub) => hub.totalCities > 0)
-    .sort((a, b) => a.treatment.name.localeCompare(b.treatment.name));
+  const hubs = prepareTreatmentIndexHubs(allHubs);
   const cityCount = new Set(
     hubs.flatMap((hub) =>
       hub.cities.map((city) => [city.city, city.region, city.countryCode].join("|")),

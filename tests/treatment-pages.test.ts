@@ -1,6 +1,6 @@
 import { describe, expect, test } from "vitest";
 import { buildSitemap } from "../src/app/sitemap";
-import { buildTreatmentHubs } from "../src/lib/treatment-hubs";
+import { buildTreatmentHubs, prepareTreatmentIndexHubs } from "../src/lib/treatment-hubs";
 import {
   isTreatmentPageIndexable,
   treatmentHref,
@@ -93,5 +93,43 @@ describe("treatment pages", () => {
     expect(hub.href).toBe("/treatments/dexa-scan");
     expect(hub.totalLocations).toBe(16);
     expect(hub.totalCities).toBe(2);
+  });
+
+  test("keeps treatments with no eligible locations available to the index", () => {
+    const treatments: TreatmentCatalogItem[] = [
+      {
+        id: 3,
+        name: "DEXA scan",
+        category: "Measure",
+        locationCount: 1,
+      },
+      {
+        id: 64,
+        name: "Vestibular rehabilitation therapy",
+        category: "Recover",
+        locationCount: 0,
+      },
+    ];
+
+    const hubs = prepareTreatmentIndexHubs(buildTreatmentHubs(treatments, [{
+      treatmentId: 3,
+      city: "Austin",
+      region: "TX",
+      countryCode: "US",
+      countryName: "United States",
+      latitude: 30.2672,
+      longitude: -97.7431,
+      locationCount: 1,
+    }]));
+
+    expect(hubs.map((hub) => hub.treatment.name)).toEqual([
+      "DEXA scan",
+      "Vestibular rehabilitation therapy",
+    ]);
+    expect(hubs[1]).toMatchObject({
+      href: "/treatments/vestibular-rehabilitation-therapy",
+      totalLocations: 0,
+      totalCities: 0,
+    });
   });
 });
