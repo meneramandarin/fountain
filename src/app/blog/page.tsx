@@ -11,7 +11,7 @@ import { siteDescription, siteName } from "@/lib/site";
 const CONTENT_ROOT = path.join(process.cwd(), "src/content/editorial");
 
 export const metadata: Metadata = {
-  title: `Editorial Blog | ${siteName}`,
+  title: `Fountain Journal | ${siteName}`,
   description: siteDescription,
 };
 
@@ -53,37 +53,60 @@ const featuredExcerpt = featured ? await getFeaturedExcerpt(featured.bodySource)
     <main className="editorial-page blog-page">
       <LandingScrollHeader alwaysVisible />
 
-      <section className="blog-hero">
+      <section className="blog-journal-hero">
         <div className="wrap">
+          <header className="blog-journal-masthead">
+            <span className="blog-journal-eyebrow">Fountain Journal</span>
+            <h1>On the pursuit of a longer life</h1>
+            <p>Ideas, evidence, and dispatches from the evolving world of longevity care.</p>
+          </header>
           {featured ? (
-            <Link href={editorialArticlePath(featured.slug)} className="blog-featured-link">
-              <article className="blog-featured-card">
-                <div className="blog-featured-visual">
-                  <Image src={featured.heroImage} alt="" fill priority sizes="(min-width: 1000px) 760px, 95vw" />
-                  <h1 className="blog-featured-title">{featured.title}</h1>
+            <Link href={editorialArticlePath(featured.slug)} className="blog-journal-feature-link">
+              <article className="blog-journal-feature">
+                <div className="blog-journal-feature-copy">
+                  <span className="blog-journal-feature-label">Featured story</span>
+                  <h2>{featured.title}</h2>
+                  <p>{featuredExcerpt || featured.standfirst}</p>
+                  <span className="blog-journal-cta">Read the story <span aria-hidden="true">→</span></span>
                 </div>
-                <p className="blog-featured-excerpt">{featuredExcerpt || featured.standfirst}</p>
-                <span className="blog-featured-cta">READ ARTICLE</span>
+                <div className="blog-journal-feature-image">
+                  <Image src={featured.heroImage} alt="" fill priority quality={100} unoptimized sizes="(max-width: 760px) 82vw, 360px" />
+                </div>
               </article>
             </Link>
           ) : null}
         </div>
       </section>
 
-      <div className="wrap">
-        <h2 className="blog-list-heading">All Posts</h2>
-        <p className="standfirst">Editorial coverage of treatments, clinics, and longevity care.</p>
-        <ul className="blog-post-list">
+      <section className="wrap blog-journal-index">
+        <header className="blog-journal-index-header">
+          <span>Browse the journal</span>
+          <h2>Latest stories</h2>
+        </header>
+        <ul className="blog-journal-grid">
           {otherArticles.map((article) => (
             <li key={article.slug}>
               <Link href={editorialArticlePath(article.slug)}>
-                <strong>{article.title}</strong>
-                <p>{article.standfirst}</p>
+                <span className="blog-journal-card-image">
+                  <Image
+                    src={article.heroImage}
+                    alt=""
+                    fill
+                    quality={100}
+                    unoptimized
+                    sizes="(max-width: 640px) 88vw, (max-width: 900px) 44vw, 390px"
+                  />
+                </span>
+                <span className="blog-journal-card-copy">
+                  <strong>{article.title}</strong>
+                  <p>{article.standfirst}</p>
+                  <span className="blog-journal-card-cta">Read article <span aria-hidden="true">→</span></span>
+                </span>
               </Link>
             </li>
           ))}
         </ul>
-      </div>
+      </section>
       <LandingFooter />
     </main>
   );

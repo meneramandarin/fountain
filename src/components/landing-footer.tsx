@@ -69,7 +69,7 @@ export function LandingFooter() {
               <Link href="/treatments">The Longevity Index</Link>
             </li>
             <li>
-              <Link href="/blog">Blog</Link>
+              <Link href="/blog">Fountain Journal</Link>
             </li>
           </ul>
         </div>
