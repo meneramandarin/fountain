@@ -35,7 +35,9 @@ export async function getTreatmentHub(slug: string) {
 }
 
 export function prepareTreatmentIndexHubs(hubs: TreatmentHub[]) {
-  return [...hubs].sort((a, b) => a.treatment.name.localeCompare(b.treatment.name));
+  return hubs
+    .filter((hub) => hub.totalCities > 0)
+    .sort((a, b) => a.treatment.name.localeCompare(b.treatment.name));
 }
 
 export async function getTreatmentCityPage(treatmentSlugValue: string, citySlugValue: string) {
