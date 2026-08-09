@@ -34,6 +34,10 @@ export async function getTreatmentHub(slug: string) {
   return (await getTreatmentHubs()).find((hub) => treatmentSlug(hub.treatment.name) === slug) || null;
 }
 
+export function prepareTreatmentIndexHubs(hubs: TreatmentHub[]) {
+  return [...hubs].sort((a, b) => a.treatment.name.localeCompare(b.treatment.name));
+}
+
 export async function getTreatmentCityPage(treatmentSlugValue: string, citySlugValue: string) {
   const [hub, places] = await Promise.all([
     getTreatmentHub(treatmentSlugValue),
