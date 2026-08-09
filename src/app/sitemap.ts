@@ -34,7 +34,7 @@ export function buildSitemap(hubs: TreatmentHub[] = []): MetadataRoute.Sitemap {
       priority: 0.85,
     },
     {
-      url: new URL("/blog", siteUrl).toString(),
+      url: new URL("/journal", siteUrl).toString(),
       lastModified: now,
       changeFrequency: "weekly" as const,
       priority: 0.9,
@@ -56,4 +56,3 @@ export function buildSitemap(hubs: TreatmentHub[] = []): MetadataRoute.Sitemap {
     })),
   ];
 }
-

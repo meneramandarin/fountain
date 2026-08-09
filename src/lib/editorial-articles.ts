@@ -34,7 +34,7 @@ export type EditorialArticle = {
   providerRails?: Record<string, EditorialProviderRail>;
 };
 
-export const editorialBasePath = "/blog";
+export const editorialBasePath = "/journal";
 
 export function editorialArticlePath(slug: string) {
   return `${editorialBasePath}/${slug}`;
