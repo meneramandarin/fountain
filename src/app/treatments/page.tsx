@@ -8,7 +8,10 @@ import { getTreatmentIndexClinicCount } from "@/lib/queries";
 import { getTreatmentHubs, prepareTreatmentIndexHubs } from "@/lib/treatment-hubs";
 import styles from "./treatments.module.css";
 
-export const revalidate = 86_400;
+// Treatment supply changes throughout the day as provider menus are reconciled.
+// Keep the public index close to the canonical catalog instead of serving a
+// day-old treatment count after data-only updates.
+export const revalidate = 300;
 
 const loadTreatmentHubs = cache(getTreatmentHubs);
 const loadTreatmentIndexClinicCount = cache(getTreatmentIndexClinicCount);
