@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { DM_Serif_Display, DM_Serif_Text, Geist, Geist_Mono } from "next/font/google";
 import { GoogleAnalytics } from "@/components/google-analytics";
+import { LogoBackgroundSampler } from "@/components/logo-background-sampler";
 import { ogImage, siteDescription, siteName, siteUrl } from "@/lib/site";
 import "./globals.css";
 
@@ -74,6 +75,7 @@ export default function RootLayout({
     >
       <body>
         <GoogleAnalytics measurementId={gaMeasurementId} />
+        <LogoBackgroundSampler />
         {children}
       </body>
     </html>

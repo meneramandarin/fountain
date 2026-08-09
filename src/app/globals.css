@@ -4493,6 +4493,11 @@ input[type="search"]::-webkit-search-cancel-button:hover {
 .image-frame-text-graphic {
   isolation: isolate;
   background: rgba(247, 240, 225, 0.9);
+  transition: background-color 180ms ease;
+}
+
+.image-frame-text-graphic.has-sampled-background {
+  background: var(--image-edge-color);
 }
 
 .image-frame-text-graphic .image-frame-backdrop {
@@ -4501,6 +4506,11 @@ input[type="search"]::-webkit-search-cancel-button:hover {
   filter: blur(18px) brightness(0.82);
   transform: scale(1.12);
   opacity: 0.72;
+  transition: opacity 180ms ease;
+}
+
+.image-frame-text-graphic.has-sampled-background .image-frame-backdrop {
+  opacity: 0;
 }
 
 .image-frame-text-graphic .image-frame-content {
