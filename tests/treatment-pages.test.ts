@@ -95,7 +95,7 @@ describe("treatment pages", () => {
     expect(hub.totalCities).toBe(2);
   });
 
-  test("keeps treatments with no eligible locations available to the index", () => {
+  test("keeps treatments with no eligible locations off the public index", () => {
     const treatments: TreatmentCatalogItem[] = [
       {
         id: 3,
@@ -122,14 +122,6 @@ describe("treatment pages", () => {
       locationCount: 1,
     }]));
 
-    expect(hubs.map((hub) => hub.treatment.name)).toEqual([
-      "DEXA scan",
-      "Vestibular rehabilitation therapy",
-    ]);
-    expect(hubs[1]).toMatchObject({
-      href: "/treatments/vestibular-rehabilitation-therapy",
-      totalLocations: 0,
-      totalCities: 0,
-    });
+    expect(hubs.map((hub) => hub.treatment.name)).toEqual(["DEXA scan"]);
   });
 });
