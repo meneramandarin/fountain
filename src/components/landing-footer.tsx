@@ -57,13 +57,19 @@ export function LandingFooter() {
       <div className="footer-wordmark">fountain</div>
       <div className="footer-columns">
         <div>
-          <h4>For Providers</h4>
+          <h4>DISCOVER</h4>
           <ul>
             <li>
               <a href="mailto:hello@fountain.clinic">List Your Clinic</a>
             </li>
             <li>
               <a href="mailto:hello@fountain.clinic">Claim Your Listing</a>
+            </li>
+            <li>
+              <Link href="/treatments">The Longevity Index</Link>
+            </li>
+            <li>
+              <Link href="/blog">Blog</Link>
             </li>
           </ul>
         </div>

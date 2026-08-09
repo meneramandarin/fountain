@@ -1,5 +1,6 @@
 import type { MetadataRoute } from "next";
 import { fixedTreatmentLocationPages } from "@/lib/fixed-treatment-location-pages";
+import { editorialArticles, editorialArticlePath } from "@/lib/editorial-articles";
 import { getTreatmentHubs, type TreatmentHub } from "@/lib/treatment-hubs";
 import { siteUrl } from "@/lib/site";
 
@@ -29,9 +30,20 @@ export function buildSitemap(hubs: TreatmentHub[] = []): MetadataRoute.Sitemap {
     {
       url: new URL("/treatments", siteUrl).toString(),
       lastModified: now,
-      changeFrequency: "weekly",
+      changeFrequency: "weekly" as const,
       priority: 0.85,
     },
+    {
+      url: new URL("/blog", siteUrl).toString(),
+      lastModified: now,
+      changeFrequency: "weekly" as const,
+      priority: 0.9,
+    },
+    ...editorialArticles.map((article) => ({
+      url: new URL(editorialArticlePath(article.slug), siteUrl).toString(),
+      changeFrequency: "weekly" as const,
+      priority: 0.8,
+    })),
     ...hubs.filter((hub) => hub.totalCities > 0).map((hub) => ({
       url: new URL(hub.href, siteUrl).toString(),
       changeFrequency: "weekly" as const,
@@ -44,3 +56,4 @@ export function buildSitemap(hubs: TreatmentHub[] = []): MetadataRoute.Sitemap {
     })),
   ];
 }
+

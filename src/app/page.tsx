@@ -9,6 +9,7 @@ import { LandingScrollHeader } from "@/components/landing-scroll-header";
 import { LandingTopbar } from "@/components/landing-topbar";
 import { SplitDirectorySearch } from "@/components/split-directory-search";
 import { fixedTreatmentLocationPages } from "@/lib/fixed-treatment-location-pages";
+import { editorialArticlePath } from "@/lib/editorial-articles";
 import {
   getLandingTreatmentDirectoryCards,
   getTreatmentCatalog,
@@ -32,17 +33,33 @@ async function safeLandingSection<T>(label: string, load: () => Promise<T[]>) {
 }
 
 const exploreItems: LandingExploreItem[] = [
-  { label: "The Grey Zone - Peptides, Reclassified", image: "/domains/peptides.webp", href: "/peptide-regulation.html" },
-  { label: "On Microdosing GLP-1s", image: "/domains/microdosing.png", href: "/glp1-microdosing.html" },
-  { label: "The Clinic and the Spa Are Merging", image: "/domains/aman-japan-longevity.jpg", href: "/clinic-spa-merge.html" },
+  {
+    label: "The Grey Zone - Peptides, Reclassified",
+    image: "/domains/peptides.webp",
+    href: editorialArticlePath("peptide-regulation.html"),
+  },
+  {
+    label: "On Microdosing GLP-1s",
+    image: "/domains/microdosing.png",
+    href: editorialArticlePath("glp1-microdosing.html"),
+  },
+  {
+    label: "The Clinic and the Spa Are Merging",
+    image: "/domains/aman-japan-longevity.jpg",
+    href: editorialArticlePath("clinic-spa-merge.html"),
+  },
   {
     label: "The Most Occult Longevity Treatments Currently Available",
     image: "/domains/longevitytreatments.png",
-    href: "/occult-longevity-treatments.html",
+    href: editorialArticlePath("occult-longevity-treatments.html"),
   },
-  { label: "Your Biological Age Is a Marketing Number", image: "/domains/epigeneticage.jpg", href: "/biological-age.html" },
-  { label: "Menopause, Optional", image: "/domains/ovarian health.jpg", href: "/ovarian-longevity.html" },
-  { label: "The Ten Years Nobody Plans For", image: "/domains/Biologicalage.avif", href: "/healthspan-vs-lifespan.html" },
+  { label: "Your Biological Age Is a Marketing Number", image: "/domains/epigeneticage.jpg", href: editorialArticlePath("biological-age.html") },
+  { label: "Menopause, Optional", image: "/domains/ovarian health.jpg", href: editorialArticlePath("ovarian-longevity.html") },
+  {
+    label: "The Ten Years Nobody Plans For",
+    image: "/domains/Biologicalage.avif",
+    href: editorialArticlePath("healthspan-vs-lifespan.html"),
+  },
 ];
 
 const fallbackNearMeLocalities = ["New York", "Brooklyn", "Long Island City", "Jackson Heights", "Rego Park", "Staten Island"];

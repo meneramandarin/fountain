@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { EditorialArticlePage } from "@/components/editorial-article-page";
-import { editorialArticles, getEditorialArticle } from "@/lib/editorial-articles";
-import { siteName } from "@/lib/site";
+import { editorialArticles, editorialArticlePath, getEditorialArticle } from "@/lib/editorial-articles";
+import { siteName, siteUrl } from "@/lib/site";
 
 type ArticleRouteProps = {
   params: Promise<{
@@ -24,11 +24,14 @@ export async function generateMetadata({ params }: ArticleRouteProps): Promise<M
     return {};
   }
 
+  const canonicalPath = editorialArticlePath(article.slug);
+  const articleUrl = new URL(canonicalPath, siteUrl).toString();
+
   return {
     title: article.title,
     description: article.description,
     alternates: {
-      canonical: `/${article.slug}`,
+      canonical: canonicalPath,
     },
     openGraph: {
       type: "article",
@@ -37,7 +40,7 @@ export async function generateMetadata({ params }: ArticleRouteProps): Promise<M
       description: article.description,
       publishedTime: article.published ?? article.updated,
       modifiedTime: article.updated,
-      url: `/${article.slug}`,
+      url: articleUrl,
     },
   };
 }
