@@ -126,8 +126,6 @@ export default async function HomePage() {
         </blockquote>
       </section>
 
-      <LandingExploreCarousel items={exploreItems} />
-
       <LandingSeoDiscovery
         treatments={treatments}
         locationPages={fixedTreatmentLocationPages.map((page) => ({
@@ -137,6 +135,8 @@ export default async function HomePage() {
           city: page.city.city,
         }))}
       />
+
+      <LandingExploreCarousel items={exploreItems} />
 
       <LandingFooter />
     </main>

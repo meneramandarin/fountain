@@ -70,7 +70,7 @@ export function LandingSeoDiscovery({ treatments, locationPages }: LandingSeoDis
       >
         <div className="discover-card">
           <h2 id="explore-by-location-title">Explore by location</h2>
-          <p>Browse treatment guides available by city</p>
+          <p>Browse treatment guides available by city.</p>
 
           <div
             className="location-search-columns"
