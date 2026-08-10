@@ -15,6 +15,7 @@ import {
 import Image from "next/image";
 import Link from "next/link";
 import { BackPillLink } from "@/components/back-pill-link";
+import { DirectoryResultsBackLink } from "@/components/directory-results-back-link";
 import { locationHref } from "@/lib/directory-urls";
 import { formatLocationPlace } from "@/lib/location-display";
 import { SplitDirectorySearch } from "@/components/split-directory-search";
@@ -175,8 +176,6 @@ export function DirectoryDetailPage(props: DetailProps) {
             data={props.data}
             title={title}
             subtitle={subtitle}
-            showBackLink={props.showBackLink}
-            backHref={props.backHref}
           />
         ) : (
           <div className="listing-detail-hero-grid">
@@ -231,14 +230,10 @@ function LocationHero({
   data,
   title,
   subtitle,
-  showBackLink,
-  backHref,
 }: {
   data: LocationDetailRecord;
   title: string;
   subtitle: string;
-  showBackLink?: boolean;
-  backHref?: string;
 }) {
   const rating = data.rating ? Number(data.rating) : null;
   const reviewCount = Number(data.review_count || 0);
@@ -248,11 +243,7 @@ function LocationHero({
   return (
     <div className="listing-location-heading">
       <div className="listing-location-heading-copy">
-        {showBackLink ? (
-          <BackPillLink href={backHref || "/directory?kind=locations"} tone="light">
-            Back to results
-          </BackPillLink>
-        ) : null}
+        <DirectoryResultsBackLink destinationPath={locationHref(data)} />
         <div className="listing-location-title-row">
           <h1>{title}</h1>
         </div>

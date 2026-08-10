@@ -9,8 +9,7 @@ const crawlExclusions = [
   "/api/",
   "/docs/",
   "/go/",
-  "/*?_rsc=",
-  "/*?from=",
+  "/*?*_rsc=",
 ];
 
 export default function robots(): MetadataRoute.Robots {

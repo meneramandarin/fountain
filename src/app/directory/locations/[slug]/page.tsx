@@ -6,7 +6,7 @@ import { getLocationDetail, getRelatedTreatmentSearches } from "@/lib/queries";
 import { formatLocationPlace } from "@/lib/location-display";
 import { ogImage, siteDescription } from "@/lib/site";
 import type { Metadata } from "next";
-import { notFound, redirect } from "next/navigation";
+import { notFound, permanentRedirect } from "next/navigation";
 
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
@@ -61,9 +61,9 @@ export default async function LocationDetailRoute({ params, searchParams }: Loca
   if (!location) {
     notFound();
   }
-  if (location.slug && slug !== location.slug) {
-    const suffix = queryValue(query, "from") === "search" ? "?from=search" : "";
-    redirect(`/directory/locations/${location.slug}${suffix}`);
+  const canonicalSlug = location.slug || String(location.id);
+  if (slug !== canonicalSlug || queryValue(query, "from")) {
+    permanentRedirect(`/directory/locations/${canonicalSlug}`);
   }
 
   const relatedSearches = await getRelatedTreatmentSearches({
@@ -78,7 +78,6 @@ export default async function LocationDetailRoute({ params, searchParams }: Loca
       kind="locations"
       data={location}
       relatedSearches={relatedSearches}
-      showBackLink={queryValue(query, "from") === "search"}
     />
   );
 }
