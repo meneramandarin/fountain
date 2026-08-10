@@ -1,23 +1,35 @@
 import type { MetadataRoute } from "next";
 import { fixedTreatmentLocationPages } from "@/lib/fixed-treatment-location-pages";
 import { editorialArticles, editorialArticlePath } from "@/lib/editorial-articles";
+import { getSitemapLocations, type SitemapLocation } from "@/lib/queries";
 import { getTreatmentHubs, type TreatmentHub } from "@/lib/treatment-hubs";
 import { siteUrl } from "@/lib/site";
 
 export const revalidate = 86_400;
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  let hubs: TreatmentHub[] = [];
-  try {
-    hubs = await getTreatmentHubs();
-  } catch (error) {
-    console.error("[sitemap] treatment catalog failed", error);
+  const [hubResult, locationResult] = await Promise.allSettled([
+    getTreatmentHubs(),
+    getSitemapLocations(),
+  ]);
+
+  if (hubResult.status === "rejected") {
+    console.error("[sitemap] treatment catalog failed", hubResult.reason);
+  }
+  if (locationResult.status === "rejected") {
+    console.error("[sitemap] location catalog failed", locationResult.reason);
   }
 
-  return buildSitemap(hubs);
+  return buildSitemap(
+    hubResult.status === "fulfilled" ? hubResult.value : [],
+    locationResult.status === "fulfilled" ? locationResult.value : [],
+  );
 }
 
-export function buildSitemap(hubs: TreatmentHub[] = []): MetadataRoute.Sitemap {
+export function buildSitemap(
+  hubs: TreatmentHub[] = [],
+  locations: SitemapLocation[] = [],
+): MetadataRoute.Sitemap {
   const now = new Date();
 
   return [
@@ -39,6 +51,22 @@ export function buildSitemap(hubs: TreatmentHub[] = []): MetadataRoute.Sitemap {
       changeFrequency: "weekly" as const,
       priority: 0.9,
     },
+    {
+      url: new URL("/directory", siteUrl).toString(),
+      lastModified: now,
+      changeFrequency: "daily" as const,
+      priority: 0.9,
+    },
+    {
+      url: new URL("/privacy-policy", siteUrl).toString(),
+      changeFrequency: "yearly" as const,
+      priority: 0.2,
+    },
+    {
+      url: new URL("/terms-of-service", siteUrl).toString(),
+      changeFrequency: "yearly" as const,
+      priority: 0.2,
+    },
     ...editorialArticles.map((article) => ({
       url: new URL(editorialArticlePath(article.slug), siteUrl).toString(),
       changeFrequency: "weekly" as const,
@@ -53,6 +81,12 @@ export function buildSitemap(hubs: TreatmentHub[] = []): MetadataRoute.Sitemap {
       url: new URL(page.href, siteUrl).toString(),
       changeFrequency: "weekly" as const,
       priority: 0.8,
+    })),
+    ...locations.map((location) => ({
+      url: new URL(`/directory/locations/${location.slug}`, siteUrl).toString(),
+      ...(location.updated_at ? { lastModified: location.updated_at } : {}),
+      changeFrequency: "weekly" as const,
+      priority: 0.7,
     })),
   ];
 }

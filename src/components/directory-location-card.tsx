@@ -72,7 +72,8 @@ export function DirectoryLocationCard({
   return (
     <Link
       className="result-card"
-      href={href || (from ? `${locationHref(result)}?from=${encodeURIComponent(from)}` : locationHref(result))}
+      href={href || (from === "search" ? `${locationHref(result)}?from=search` : locationHref(result))}
+      prefetch={false}
       onClick={() => {
         trackClinicClick({
           locationId: result.id,

@@ -66,10 +66,10 @@ export function LandingFooter() {
               <a href="mailto:hello@fountain.clinic">Claim Your Listing</a>
             </li>
             <li>
-              <Link href="/treatments">The Longevity Index</Link>
+              <Link href="/treatments" prefetch={false}>The Longevity Index</Link>
             </li>
             <li>
-              <Link href="/journal">Fountain Journal</Link>
+              <Link href="/journal" prefetch={false}>Fountain Journal</Link>
             </li>
           </ul>
         </div>
@@ -77,10 +77,10 @@ export function LandingFooter() {
           <h4>Company</h4>
           <ul>
             <li>
-              <Link href="/privacy-policy">Privacy Policy</Link>
+              <Link href="/privacy-policy" prefetch={false}>Privacy Policy</Link>
             </li>
             <li>
-              <Link href="/terms-of-service">Terms of Service</Link>
+              <Link href="/terms-of-service" prefetch={false}>Terms of Service</Link>
             </li>
             <li>
               <a href="/fountain-wordmark.png" target="_blank" rel="noreferrer">Wordmark</a>
