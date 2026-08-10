@@ -5,6 +5,7 @@ import {
 import { getLocationDetail, getRelatedTreatmentSearches } from "@/lib/queries";
 import { formatLocationPlace } from "@/lib/location-display";
 import { ogImage, siteDescription } from "@/lib/site";
+import { isSitemapLocationIndexable } from "@/lib/sitemap-indexability";
 import type { Metadata } from "next";
 import { notFound, permanentRedirect } from "next/navigation";
 
@@ -32,6 +33,15 @@ export async function generateMetadata({ params }: LocationPageProps): Promise<M
   });
   const description = place ? `${title} in ${place}. ${siteDescription}` : siteDescription;
   const canonicalPath = `/directory/locations/${location.slug || location.id}`;
+  const indexable = isSitemapLocationIndexable({
+    slug: location.slug || String(location.id),
+    title,
+    hasPlace: Boolean(location.address?.trim() || location.locality?.trim()),
+    hasContact: Boolean(location.phone?.trim() || location.email?.trim() || location.website?.trim()),
+    hasOffering: Boolean(location.offerings?.length),
+    hasImage: Boolean(location.images?.length),
+    hasHours: Boolean(location.opening_hours || location.opening_hours_note?.trim()),
+  });
 
   return {
     title,
@@ -39,6 +49,7 @@ export async function generateMetadata({ params }: LocationPageProps): Promise<M
     alternates: {
       canonical: canonicalPath,
     },
+    robots: { index: indexable, follow: true },
     openGraph: {
       title,
       description,
