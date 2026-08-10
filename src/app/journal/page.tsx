@@ -6,13 +6,31 @@ import path from "node:path";
 import { LandingFooter } from "@/components/landing-footer";
 import { LandingScrollHeader } from "@/components/landing-scroll-header";
 import { editorialArticles, editorialArticlePath } from "@/lib/editorial-articles";
-import { siteDescription, siteName } from "@/lib/site";
+import { ogImage, siteDescription, siteName } from "@/lib/site";
 
 const CONTENT_ROOT = path.join(process.cwd(), "src/content/editorial");
+const journalTitle = `Fountain Journal | ${siteName}`;
 
 export const metadata: Metadata = {
-  title: `Fountain Journal | ${siteName}`,
+  title: { absolute: journalTitle },
   description: siteDescription,
+  alternates: {
+    canonical: "/journal",
+  },
+  openGraph: {
+    type: "website",
+    url: "/journal",
+    siteName,
+    title: journalTitle,
+    description: siteDescription,
+    images: [ogImage],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: journalTitle,
+    description: siteDescription,
+    images: [ogImage.url],
+  },
 };
 
 function excerptFromHtml(source: string, wordLimit = 50) {

@@ -6,6 +6,7 @@ import {
 } from "@/lib/treatment-pages";
 import type { ClinicianLicenseVerificationData } from "@/components/clinician-license-verification";
 import { orderTreatmentChips, type TreatmentChipWithId } from "@/lib/treatment-chip-order";
+import { isSitemapLocationIndexable } from "@/lib/sitemap-indexability";
 
 export const PAGE_SIZE = 18;
 
@@ -53,6 +54,15 @@ export type SearchKind = "locations" | "practitioners";
 export type SitemapLocation = {
   slug: string;
   updated_at: Date | string | null;
+};
+
+type SitemapLocationCandidate = SitemapLocation & {
+  title: string | null;
+  has_place: boolean;
+  has_contact: boolean;
+  has_offering: boolean;
+  has_image: boolean;
+  has_hours: boolean;
 };
 
 // No UX-facing cap on how many treatments a user can combine — this only guards
@@ -282,16 +292,62 @@ function locationSlugSelect(alias: string) {
 }
 
 export async function getSitemapLocations() {
-  return rows<SitemapLocation>(
+  const candidates = await rows<SitemapLocationCandidate>(
     `
-    SELECT slug, updated_at
-    FROM locations
-    WHERE ${activeEntityCondition("locations")}
-      AND slug IS NOT NULL
-      AND TRIM(slug) != ''
-    ORDER BY id
+    WITH visible_offering_locations AS (
+      SELECT DISTINCT offering.location_id
+      FROM offerings offering
+      WHERE ${activeOfferingCondition("offering")}
+    ),
+    active_image_locations AS (
+      SELECT DISTINCT image.entity_id AS location_id
+      FROM images image
+      WHERE image.entity_type = 'location'
+        AND ${activeImageCondition("image")}
+        AND image.blob_url IS NOT NULL
+        AND image.blob_url != ''
+    )
+    SELECT
+      location.slug,
+      location.updated_at,
+      COALESCE(NULLIF(TRIM(location.name), ''), NULLIF(TRIM(org.canonical_name), '')) AS title,
+      (
+        NULLIF(TRIM(location.address), '') IS NOT NULL
+        OR NULLIF(TRIM(location.locality), '') IS NOT NULL
+      ) AS has_place,
+      (
+        NULLIF(TRIM(location.phone), '') IS NOT NULL
+        OR NULLIF(TRIM(location.email), '') IS NOT NULL
+        OR NULLIF(TRIM(location.website), '') IS NOT NULL
+      ) AS has_contact,
+      visible_offering.location_id IS NOT NULL AS has_offering,
+      active_image.location_id IS NOT NULL AS has_image,
+      (
+        location.opening_hours IS NOT NULL
+        OR NULLIF(TRIM(location.opening_hours_note), '') IS NOT NULL
+      ) AS has_hours
+    FROM locations location
+    LEFT JOIN organizations org ON org.id = location.org_id
+    LEFT JOIN visible_offering_locations visible_offering ON visible_offering.location_id = location.id
+    LEFT JOIN active_image_locations active_image ON active_image.location_id = location.id
+    WHERE ${activeEntityCondition("location")}
+      AND location.slug IS NOT NULL
+      AND TRIM(location.slug) != ''
+    ORDER BY location.id
   `,
   );
+
+  return candidates
+    .filter((candidate) => isSitemapLocationIndexable({
+      slug: candidate.slug,
+      title: candidate.title,
+      hasPlace: candidate.has_place,
+      hasContact: candidate.has_contact,
+      hasOffering: candidate.has_offering,
+      hasImage: candidate.has_image,
+      hasHours: candidate.has_hours,
+    }))
+    .map(({ slug, updated_at }) => ({ slug, updated_at }));
 }
 
 function practitionerSlugSelect(alias: string) {

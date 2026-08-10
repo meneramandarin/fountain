@@ -1,5 +1,5 @@
 import { describe, expect, test } from "vitest";
-import { buildSitemap } from "../src/app/sitemap";
+import { buildSitemap, revalidate as sitemapRevalidate } from "../src/app/sitemap";
 import { buildTreatmentHubs, prepareTreatmentIndexHubs } from "../src/lib/treatment-hubs";
 import {
   isTreatmentPageIndexable,
@@ -65,6 +65,10 @@ describe("treatment pages", () => {
     expect(listingEntries[0].lastModified).toBe(updatedAt);
     expect(listingEntries[1]).not.toHaveProperty("lastModified");
     expect(listingEntries.every((entry) => !entry.url.includes("?"))).toBe(true);
+  });
+
+  test("refreshes the directory sitemap within an hour", () => {
+    expect(sitemapRevalidate).toBe(3_600);
   });
 
   test("builds hubs only from linkable city-index rows and sorts by location count", () => {
