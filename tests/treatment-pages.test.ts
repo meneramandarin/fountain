@@ -24,7 +24,7 @@ describe("treatment pages", () => {
     expect(isTreatmentPageIndexable(1)).toBe(true);
   });
 
-  test("adds live treatment hubs but no unrelated surface types to the sitemap", () => {
+  test("adds live treatment hubs and indexable top-level pages to the sitemap", () => {
     const treatment: TreatmentCatalogItem = {
       id: 20,
       name: "Peptide therapy",
@@ -45,8 +45,26 @@ describe("treatment pages", () => {
 
     expect(urls).toContain("/treatments");
     expect(urls).toContain("/treatments/peptide-therapy");
-    expect(urls).not.toContain("/directory");
-    expect(urls).not.toContain("/privacy-policy");
+    expect(urls).toContain("/directory");
+    expect(urls).toContain("/privacy-policy");
+    expect(urls).toContain("/terms-of-service");
+  });
+
+  test("adds clean listing URLs with their own update timestamps", () => {
+    const updatedAt = new Date("2026-08-01T12:00:00Z");
+    const entries = buildSitemap([], [
+      { slug: "example-clinic-austin", updated_at: updatedAt },
+      { slug: "example-clinic-seattle", updated_at: null },
+    ]);
+    const listingEntries = entries.filter((entry) => entry.url.includes("/directory/locations/"));
+
+    expect(listingEntries).toHaveLength(2);
+    expect(new URL(listingEntries[0].url).pathname).toBe(
+      "/directory/locations/example-clinic-austin",
+    );
+    expect(listingEntries[0].lastModified).toBe(updatedAt);
+    expect(listingEntries[1]).not.toHaveProperty("lastModified");
+    expect(listingEntries.every((entry) => !entry.url.includes("?"))).toBe(true);
   });
 
   test("builds hubs only from linkable city-index rows and sorts by location count", () => {

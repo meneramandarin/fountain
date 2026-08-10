@@ -56,6 +56,7 @@ type OfferingRef = {
   domain?: string | null;
 };
 type OpeningHour = { day: string; open: string; close: string };
+type OpeningHours = OpeningHour[] | Record<string, Array<Omit<OpeningHour, "day">>>;
 type ChainLocationRef = {
   id: number;
   slug?: string | null;
@@ -102,7 +103,7 @@ export type LocationDetailRecord = {
   email?: string | null;
   website?: string | null;
   external_website_href?: string | null;
-  opening_hours?: OpeningHour[] | null;
+  opening_hours?: OpeningHours | null;
   opening_hours_note?: string | null;
   rating?: number | null;
   review_count?: number | null;
@@ -159,7 +160,7 @@ export function DirectoryDetailPage(props: DetailProps) {
       <section className={`listing-detail-hero${props.kind === "locations" ? " listing-detail-location-hero" : ""}`}>
         {props.kind === "practitioners" ? (
           <header className="directory-topbar listing-detail-topbar">
-            <Link className="landing-brand directory-brand" href="/">
+            <Link className="landing-brand directory-brand" href="/" prefetch={false}>
               fountain
             </Link>
             <SplitDirectorySearch className="listing-detail-search" compact />
@@ -570,15 +571,16 @@ function OpeningHours({
   hours,
   note,
 }: {
-  hours?: OpeningHour[] | null;
+  hours?: OpeningHours | null;
   note?: string | null;
 }) {
-  if (!hours?.length && !note) {
+  const normalizedHours = normalizeOpeningHours(hours);
+  if (!normalizedHours.length && !note) {
     return null;
   }
 
   const hoursByDay = Array.from(
-    (hours || []).reduce((grouped, entry) => {
+    normalizedHours.reduce((grouped, entry) => {
       const periods = grouped.get(entry.day) || [];
       periods.push(`${entry.open} – ${entry.close}`);
       grouped.set(entry.day, periods);
@@ -593,7 +595,7 @@ function OpeningHours({
         <Clock3 size={17} aria-hidden="true" />
         <span id="clinic-opening-hours-title">Opening hours</span>
       </div>
-      {hours?.length ? (
+      {normalizedHours.length ? (
         <dl>
           {hoursByDay.map((entry) => (
             <div key={entry.day}>
@@ -605,6 +607,25 @@ function OpeningHours({
       ) : null}
       {note ? <p className="clinic-opening-hours-note">{note}</p> : null}
     </div>
+  );
+}
+
+export function normalizeOpeningHours(hours?: OpeningHours | null): OpeningHour[] {
+  if (Array.isArray(hours)) {
+    return hours;
+  }
+  if (!hours || typeof hours !== "object") {
+    return [];
+  }
+
+  return Object.entries(hours).flatMap(([day, periods]) =>
+    Array.isArray(periods)
+      ? periods.map((period) => ({
+          day: day.charAt(0).toUpperCase() + day.slice(1),
+          open: period.open,
+          close: period.close,
+        }))
+      : [],
   );
 }
 
@@ -712,7 +733,7 @@ function PractitionerContact({ data }: { data: PractitionerDetailRecord }) {
         })].filter(Boolean).join(", ")}</span> : null}
       </div>
       {affiliation?.id ? (
-        <Link className="listing-primary-action" href={locationHref({ id: affiliation.id, slug: affiliation.slug })}>
+        <Link className="listing-primary-action" href={locationHref({ id: affiliation.id, slug: affiliation.slug })} prefetch={false}>
           View clinic
         </Link>
       ) : null}
@@ -793,7 +814,7 @@ function ChainLocationCard({ location }: { location: ChainLocationRef }) {
   const treatments = (location.treatments || []).slice(0, 3);
 
   return (
-    <Link className="listing-chain-card" href={locationHref(location)}>
+    <Link className="listing-chain-card" href={locationHref(location)} prefetch={false}>
       <span className={`listing-chain-photo${isContainedGraphic ? " image-frame-text-graphic" : ""}`}>
         {location.image ? (
           <>

@@ -50,6 +50,11 @@ function usableImageSource(image: ImageCandidate) {
 
 export type SearchKind = "locations" | "practitioners";
 
+export type SitemapLocation = {
+  slug: string;
+  updated_at: Date | string | null;
+};
+
 // No UX-facing cap on how many treatments a user can combine — this only guards
 // against a pathological number of ids showing up in a crafted query string.
 export const MAX_TREATMENT_FILTERS = 25;
@@ -274,6 +279,19 @@ function googleReviewMatchJoin(alias = "google_reviews", locationAlias = "l") {
 
 function locationSlugSelect(alias: string) {
   return isPostgres() ? `${alias}.slug` : `CAST(${alias}.id AS TEXT)`;
+}
+
+export async function getSitemapLocations() {
+  return rows<SitemapLocation>(
+    `
+    SELECT slug, updated_at
+    FROM locations
+    WHERE ${activeEntityCondition("locations")}
+      AND slug IS NOT NULL
+      AND TRIM(slug) != ''
+    ORDER BY id
+  `,
+  );
 }
 
 function practitionerSlugSelect(alias: string) {

@@ -5,7 +5,13 @@ import {
 } from "@/lib/crawler-policy";
 import { siteUrl } from "@/lib/site";
 
-const privatePaths = ["/api/", "/docs/", "/go/"];
+const crawlExclusions = [
+  "/api/",
+  "/docs/",
+  "/go/",
+  "/*?_rsc=",
+  "/*?from=",
+];
 
 export default function robots(): MetadataRoute.Robots {
   return {
@@ -13,7 +19,7 @@ export default function robots(): MetadataRoute.Robots {
       ...discoveryCrawlerUserAgents.map((userAgent) => ({
         userAgent,
         allow: "/",
-        disallow: privatePaths,
+        disallow: crawlExclusions,
       })),
       ...trainingAndCollectionCrawlerUserAgents.map((userAgent) => ({
         userAgent,
@@ -26,7 +32,7 @@ export default function robots(): MetadataRoute.Robots {
       {
         userAgent: "*",
         allow: "/",
-        disallow: privatePaths,
+        disallow: crawlExclusions,
         crawlDelay: 10,
       },
     ],
