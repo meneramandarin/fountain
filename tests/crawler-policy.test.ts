@@ -42,6 +42,26 @@ describe("crawler lanes", () => {
     }
   });
 
+  test("permanently redirects query-bearing location pages to their cacheable canonical URL", async () => {
+    const response = await proxy(
+      new NextRequest("https://fountain.clinic/directory/locations/example-clinic?from=search&utm_source=test"),
+    );
+
+    expect(response.status).toBe(308);
+    expect(response.headers.get("location")).toBe(
+      "https://fountain.clinic/directory/locations/example-clinic",
+    );
+  });
+
+  test("does not intercept Next.js RSC navigation for cached location pages", async () => {
+    const response = await proxy(
+      new NextRequest("https://fountain.clinic/directory/locations/example-clinic?_rsc=abc123"),
+    );
+
+    expect(response.status).toBe(200);
+    expect(response.headers.get("location")).toBeNull();
+  });
+
   test("publishes separate robots rules for discovery and training crawlers", () => {
     const rules = robots().rules;
     const groups = Array.isArray(rules) ? rules : [rules];

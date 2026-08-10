@@ -4,22 +4,32 @@ import {
 } from "@/components/directory-detail-page";
 import { getLocationDetail, getRelatedTreatmentSearches } from "@/lib/queries";
 import { formatLocationPlace } from "@/lib/location-display";
+import { buildLocationStructuredData, serializeStructuredData } from "@/lib/location-structured-data";
 import { ogImage, siteDescription } from "@/lib/site";
 import { isSitemapLocationIndexable } from "@/lib/sitemap-indexability";
 import type { Metadata } from "next";
 import { notFound, permanentRedirect } from "next/navigation";
+import { cache } from "react";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 3_600;
+export const dynamicParams = true;
 export const runtime = "nodejs";
+
+export function generateStaticParams() {
+  return [];
+}
 
 type LocationPageProps = {
   params: Promise<{ slug: string }>;
-  searchParams: Promise<Record<string, string | string[] | undefined>>;
 };
+
+const loadLocation = cache(async (slug: string) =>
+  (await getLocationDetail(slug)) as LocationDetailRecord | null,
+);
 
 export async function generateMetadata({ params }: LocationPageProps): Promise<Metadata> {
   const { slug } = await params;
-  const location = (await getLocationDetail(slug)) as LocationDetailRecord | null;
+  const location = await loadLocation(slug);
   if (!location) {
     return {};
   }
@@ -33,15 +43,7 @@ export async function generateMetadata({ params }: LocationPageProps): Promise<M
   });
   const description = place ? `${title} in ${place}. ${siteDescription}` : siteDescription;
   const canonicalPath = `/directory/locations/${location.slug || location.id}`;
-  const indexable = isSitemapLocationIndexable({
-    slug: location.slug || String(location.id),
-    title,
-    hasPlace: Boolean(location.address?.trim() || location.locality?.trim()),
-    hasContact: Boolean(location.phone?.trim() || location.email?.trim() || location.website?.trim()),
-    hasOffering: Boolean(location.offerings?.length),
-    hasImage: Boolean(location.images?.length),
-    hasHours: Boolean(location.opening_hours || location.opening_hours_note?.trim()),
-  });
+  const indexable = isLocationDetailIndexable(location);
 
   return {
     title,
@@ -65,15 +67,14 @@ export async function generateMetadata({ params }: LocationPageProps): Promise<M
   };
 }
 
-export default async function LocationDetailRoute({ params, searchParams }: LocationPageProps) {
+export default async function LocationDetailRoute({ params }: LocationPageProps) {
   const { slug } = await params;
-  const query = await searchParams;
-  const location = (await getLocationDetail(slug)) as LocationDetailRecord | null;
+  const location = await loadLocation(slug);
   if (!location) {
     notFound();
   }
   const canonicalSlug = location.slug || String(location.id);
-  if (slug !== canonicalSlug || queryValue(query, "from")) {
+  if (slug !== canonicalSlug) {
     permanentRedirect(`/directory/locations/${canonicalSlug}`);
   }
 
@@ -84,16 +85,35 @@ export default async function LocationDetailRoute({ params, searchParams }: Loca
     region: location.region,
   });
 
+  const structuredData = isLocationDetailIndexable(location)
+    ? buildLocationStructuredData(location)
+    : null;
+
   return (
-    <DirectoryDetailPage
-      kind="locations"
-      data={location}
-      relatedSearches={relatedSearches}
-    />
+    <>
+      <DirectoryDetailPage
+        kind="locations"
+        data={location}
+        relatedSearches={relatedSearches}
+      />
+      {structuredData ? (
+        <script
+          dangerouslySetInnerHTML={{ __html: serializeStructuredData(structuredData) }}
+          type="application/ld+json"
+        />
+      ) : null}
+    </>
   );
 }
 
-function queryValue(params: Record<string, string | string[] | undefined>, key: string) {
-  const raw = params[key];
-  return Array.isArray(raw) ? raw[0] || "" : raw || "";
+function isLocationDetailIndexable(location: LocationDetailRecord) {
+  return isSitemapLocationIndexable({
+    slug: location.slug || String(location.id),
+    title: location.name || location.org_name,
+    hasPlace: Boolean(location.address?.trim() || location.locality?.trim()),
+    hasContact: Boolean(location.phone?.trim() || location.email?.trim() || location.website?.trim()),
+    hasOffering: Boolean(location.offerings?.length),
+    hasImage: Boolean(location.images?.length),
+    hasHours: Boolean(location.opening_hours || location.opening_hours_note?.trim()),
+  });
 }
