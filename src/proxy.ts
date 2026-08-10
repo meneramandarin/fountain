@@ -12,6 +12,15 @@ export function proxy(request: NextRequest) {
     return blockedResponse(request, 403, "Request blocked");
   }
 
+  if (isLocationDetailPath(pathname) && request.nextUrl.searchParams.has("from")) {
+    const canonicalUrl = request.nextUrl.clone();
+    canonicalUrl.search = "";
+    return NextResponse.redirect(canonicalUrl, {
+      status: 308,
+      headers: { "Cache-Control": "public, max-age=86400" },
+    });
+  }
+
   const treatmentLocation = treatmentLocationPath(pathname);
   if (
     treatmentLocation
@@ -70,6 +79,10 @@ function treatmentLocationPath(pathname: string) {
     return null;
   }
   return { treatmentSlug: match[1], placeSlug: match[2] };
+}
+
+function isLocationDetailPath(pathname: string) {
+  return /^\/directory\/locations\/[^/]+\/?$/.test(pathname);
 }
 
 function getRouteKind(pathname: string): RouteKind {
