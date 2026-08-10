@@ -516,7 +516,7 @@ function PractitionerResult({ result }: { result: PractitionerResultRow }) {
     .map((part) => part[0]?.toUpperCase())
     .join("");
   return (
-    <Link className="result-card practitioner-card" href={`${practitionerHref(result)}?from=search`}>
+    <Link className="result-card practitioner-card" href={practitionerHref(result)}>
       <span className="practitioner-avatar-band">
         <span className="practitioner-avatar">
           {result.image && !imageFailed ? (
