@@ -5,7 +5,9 @@ import { getSitemapLocations, type SitemapLocation } from "@/lib/queries";
 import { getTreatmentHubs, type TreatmentHub } from "@/lib/treatment-hubs";
 import { siteUrl } from "@/lib/site";
 
-export const revalidate = 86_400;
+// Directory records change throughout the day. Keep retired listings from
+// lingering in the sitemap for a full day after a lifecycle update.
+export const revalidate = 3_600;
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const [hubResult, locationResult] = await Promise.allSettled([
