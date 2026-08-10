@@ -10,6 +10,7 @@ import {
 } from "@/components/clinician-license-verification";
 import { trackClinicClick } from "@/lib/clinic-click-analytics";
 import { locationHref } from "@/lib/directory-urls";
+import { rememberDirectoryReturn } from "@/lib/directory-return-navigation";
 import { formatLocationPlace } from "@/lib/location-display";
 import { formatPrice } from "@/lib/format-price";
 
@@ -68,13 +69,17 @@ export function DirectoryLocationCard({
     (tag) => tag.facet === "care_model" && tag.value.toLowerCase() === "mobile service",
   );
   const price = formatPrice(result.min_price_amount, result.min_price_currency, result.country_code);
+  const destinationHref = href || locationHref(result);
 
   return (
     <Link
       className="result-card"
-      href={href || (from === "search" ? `${locationHref(result)}?from=search` : locationHref(result))}
+      href={destinationHref}
       prefetch={false}
       onClick={() => {
+        if (from === "search") {
+          rememberDirectoryReturn(destinationHref);
+        }
         trackClinicClick({
           locationId: result.id,
           locationSlug: result.slug,
