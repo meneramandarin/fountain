@@ -82,7 +82,7 @@ export function LandingScrollHeader({
       ].filter(Boolean).join(" ")}
       aria-label="Site header"
     >
-      <Link className="landing-brand landing-scroll-brand" href="/">
+      <Link className="landing-brand landing-scroll-brand" href="/" prefetch={false}>
         fountain
       </Link>
       <SplitDirectorySearch

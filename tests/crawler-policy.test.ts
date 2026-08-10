@@ -53,11 +53,11 @@ describe("crawler lanes", () => {
 
     expect(perplexity).toMatchObject({
       allow: "/",
-      disallow: ["/api/", "/docs/", "/go/"],
+      disallow: ["/api/", "/docs/", "/go/", "/*?_rsc=", "/*?from="],
     });
     expect(petal).toMatchObject({
       allow: "/",
-      disallow: ["/api/", "/docs/", "/go/"],
+      disallow: ["/api/", "/docs/", "/go/", "/*?_rsc=", "/*?from="],
     });
     expect(gptBot).toMatchObject({ disallow: "/" });
   });

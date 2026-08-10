@@ -79,6 +79,7 @@ export function LandingFeaturedDirectoryCarousel({
               className="landing-featured-card"
               href={locationHref(card)}
               key={card.id}
+              prefetch={false}
               onClick={() => {
                 trackClinicClick({
                   locationId: card.id,
