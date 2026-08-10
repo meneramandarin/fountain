@@ -1,5 +1,6 @@
 import { describe, expect, test } from "vitest";
 import { buildSitemap, revalidate as sitemapRevalidate } from "../src/app/sitemap";
+import { editorialArticles, editorialArticlePath } from "../src/lib/editorial-articles";
 import { buildTreatmentHubs, prepareTreatmentIndexHubs } from "../src/lib/treatment-hubs";
 import {
   isTreatmentPageIndexable,
@@ -65,6 +66,19 @@ describe("treatment pages", () => {
     expect(listingEntries[0].lastModified).toBe(updatedAt);
     expect(listingEntries[1]).not.toHaveProperty("lastModified");
     expect(listingEntries.every((entry) => !entry.url.includes("?"))).toBe(true);
+  });
+
+  test("publishes only accurate modification dates and omits ignored hints", () => {
+    const entries = buildSitemap();
+    const homepage = entries.find((entry) => new URL(entry.url).pathname === "/");
+    const [article] = editorialArticles;
+    const articleEntry = entries.find(
+      (entry) => new URL(entry.url).pathname === editorialArticlePath(article.slug),
+    );
+
+    expect(homepage).not.toHaveProperty("lastModified");
+    expect(articleEntry?.lastModified).toBe(article.updated);
+    expect(entries.every((entry) => !("changeFrequency" in entry) && !("priority" in entry))).toBe(true);
   });
 
   test("refreshes the directory sitemap within an hour", () => {
