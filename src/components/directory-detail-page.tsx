@@ -143,12 +143,14 @@ export function DirectoryDetailPage(props: DetailProps) {
       : props.data.full_name || "Directory record";
   const subtitle =
     props.kind === "locations"
-      ? formatLocationPlace({
-          locality: props.data.locality,
-          region: props.data.region,
-          countryCode: props.data.country_code,
-          countryName: props.data.country_name,
-        })
+      ? props.data.is_virtual
+        ? ""
+        : formatLocationPlace({
+            locality: props.data.locality,
+            region: props.data.region,
+            countryCode: props.data.country_code,
+            countryName: props.data.country_name,
+          })
       : [props.data.primary_specialty, props.data.years_experience ? `${props.data.years_experience} years experience` : ""]
           .filter(Boolean)
           .join(" · ");
@@ -247,14 +249,17 @@ function LocationHero({
         <DirectoryResultsBackLink destinationPath={locationHref(data)} />
         <div className="listing-location-title-row">
           <h1>{title}</h1>
+        </div>
+        <div className="listing-location-meta">
           {data.is_virtual ? (
             <span className="listing-location-virtual-badge">
               <Globe size={15} aria-hidden="true" />
               Virtual
             </span>
           ) : null}
-        </div>
-        <div className="listing-location-meta">
+          {data.is_virtual && (data.clinician_license_verification || rating || reviewCount || subtitle) ? (
+            <i aria-hidden="true">·</i>
+          ) : null}
           <ClinicianLicenseVerification verification={data.clinician_license_verification} />
           {data.clinician_license_verification && rating ? <i aria-hidden="true">·</i> : null}
           {rating ? (
@@ -533,7 +538,12 @@ function LocationTreatmentsAndDetails({ data }: { data: LocationDetailRecord }) 
             <p className="clinic-details-eyebrow" id="clinic-details-title">Clinic Details</p>
             <h3>{clinicName}</h3>
             <div className="clinic-details-facts">
-              {address ? (
+              {data.is_virtual ? (
+                <span>
+                  <Globe size={17} aria-hidden="true" />
+                  Virtual
+                </span>
+              ) : address ? (
                 <span>
                   <MapPin size={17} aria-hidden="true" />
                   {address}

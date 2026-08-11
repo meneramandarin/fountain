@@ -4497,10 +4497,6 @@ input[type="search"]::-webkit-search-cancel-button:hover {
   flex: 0 0 auto;
   align-items: center;
   gap: 6px;
-  padding: 6px 10px;
-  border: 1px solid rgba(139, 104, 47, 0.28);
-  border-radius: var(--radius-round);
-  background: rgba(195, 157, 96, 0.12);
   color: var(--landing-gold-deep);
   font-family: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
   font-size: var(--type-label);
