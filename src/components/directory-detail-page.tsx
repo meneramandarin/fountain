@@ -95,6 +95,7 @@ export type LocationDetailRecord = {
   region?: string | null;
   country_code?: string | null;
   country_name?: string | null;
+  is_virtual?: boolean | null;
   address?: string | null;
   postal_code?: string | null;
   latitude?: number | null;
@@ -246,6 +247,12 @@ function LocationHero({
         <DirectoryResultsBackLink destinationPath={locationHref(data)} />
         <div className="listing-location-title-row">
           <h1>{title}</h1>
+          {data.is_virtual ? (
+            <span className="listing-location-virtual-badge">
+              <Globe size={15} aria-hidden="true" />
+              Virtual
+            </span>
+          ) : null}
         </div>
         <div className="listing-location-meta">
           <ClinicianLicenseVerification verification={data.clinician_license_verification} />
@@ -351,6 +358,10 @@ function LocationMapSection({
   title: string;
   subtitle: string;
 }) {
+  if (data.is_virtual) {
+    return null;
+  }
+
   const latitude = Number(data.latitude);
   const longitude = Number(data.longitude);
   if (!Number.isFinite(latitude) || !Number.isFinite(longitude)) {
@@ -395,6 +406,10 @@ function locationDirectionsHref(
   title: string,
   subtitle: string,
 ) {
+  if (data.is_virtual) {
+    return null;
+  }
+
   const query = locationDisplayAddress(data) || [title, subtitle].filter(Boolean).join(", ");
   return query
     ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query)}`
