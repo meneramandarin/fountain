@@ -63,11 +63,13 @@ const exploreItems: LandingExploreItem[] = [
 ];
 
 const fallbackNearMeLocalities = ["New York", "Brooklyn", "Long Island City", "Jackson Heights", "Rego Park", "Staten Island"];
-const mriTreatmentId = 1;
+const hyperbaricTreatmentId = 27;
+const peptideTreatmentId = 20;
+const botoxTreatmentId = 34;
 
 export default async function HomePage() {
   const visitorLocation = landingVisitorLocation(await headers());
-  const [dexaCards, ivCards, mriCards, treatments] = await Promise.all([
+  const [dexaCards, ivCards, recoverCards, regenerateCards, rejuvenateCards, treatments] = await Promise.all([
     safeLandingSection("DEXA scan cards", () =>
       getLandingTreatmentDirectoryCards("DEXA scan", 10, {
         countryCode: "US",
@@ -84,8 +86,24 @@ export default async function HomePage() {
         visitor: visitorLocation,
       }),
     ),
-    safeLandingSection("MRI cards", () =>
-      getLandingTreatmentDirectoryCards(mriTreatmentId, 10, {
+    safeLandingSection("hyperbaric oxygen cards", () =>
+      getLandingTreatmentDirectoryCards(hyperbaricTreatmentId, 10, {
+        countryCode: "US",
+        localities: fallbackNearMeLocalities,
+        requireImage: false,
+        visitor: visitorLocation,
+      }),
+    ),
+    safeLandingSection("peptide therapy cards", () =>
+      getLandingTreatmentDirectoryCards(peptideTreatmentId, 10, {
+        countryCode: "US",
+        localities: fallbackNearMeLocalities,
+        requireImage: false,
+        visitor: visitorLocation,
+      }),
+    ),
+    safeLandingSection("botox cards", () =>
+      getLandingTreatmentDirectoryCards(botoxTreatmentId, 10, {
         countryCode: "US",
         localities: fallbackNearMeLocalities,
         requireImage: false,
@@ -114,23 +132,47 @@ export default async function HomePage() {
 
       <LandingFeaturedDirectoryCarousel
         cards={dexaCards}
-        title="Book a DEXA Scan Today"
+        eyebrow="Measure"
+        title="Know exactly what you’re made of"
+        subtitle="Full-body DEXA scans measure bone density, muscle, and fat in one visit."
         treatmentName="DEXA scan"
         clinicCategory="Measure"
       />
 
       <LandingFeaturedDirectoryCarousel
         cards={ivCards}
-        title="IV Drip Clinics Near Me"
+        eyebrow="Optimize"
+        title="Hydration and energy, on demand"
+        subtitle="IV drip clinics for hydration, energy, and immunity, near you."
         treatmentName="IV Infusions"
         clinicCategory="Optimize"
       />
 
       <LandingFeaturedDirectoryCarousel
-        cards={mriCards}
-        title="Get an MRI Scan in Your Area"
-        treatmentName="MRI"
-        clinicCategory="Measure"
+        cards={recoverCards}
+        eyebrow="Recover"
+        title="More oxygen, faster healing"
+        subtitle="Hyperbaric oxygen therapy pushes oxygen deep into tissue to speed recovery and repair."
+        treatmentName="Hyperbaric oxygen therapy"
+        clinicCategory="Recover"
+      />
+
+      <LandingFeaturedDirectoryCarousel
+        cards={regenerateCards}
+        eyebrow="Regenerate"
+        title="Rebuild from the inside out"
+        subtitle="Peptide therapy signals your body to repair tissue, build muscle, and recover faster."
+        treatmentName="Peptide therapy"
+        clinicCategory="Regenerate"
+      />
+
+      <LandingFeaturedDirectoryCarousel
+        cards={rejuvenateCards}
+        eyebrow="Rejuvenate"
+        title="Small changes, visible results"
+        subtitle="Botox and other rejuvenation treatments to soften lines without surgery."
+        treatmentName="Botox"
+        clinicCategory="Rejuvenate"
       />
 
       <section className="landing-banner" aria-hidden="true">
