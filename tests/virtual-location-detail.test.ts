@@ -21,11 +21,19 @@ function renderLocation(overrides: Partial<LocationDetailRecord> = {}) {
 }
 
 describe("virtual location detail", () => {
-  test("labels virtual listings and omits directions and the map", () => {
+  test("labels virtual listings in the metadata row and omits physical location details", () => {
     const markup = renderLocation({ is_virtual: true });
+    const metadataIndex = markup.indexOf("listing-location-meta");
+    const virtualBadgeIndex = markup.indexOf("listing-location-virtual-badge");
+    const clinicFactsStart = markup.indexOf("clinic-details-facts");
+    const clinicFactsEnd = markup.indexOf("</div>", clinicFactsStart);
+    const clinicFacts = markup.slice(clinicFactsStart, clinicFactsEnd);
 
-    expect(markup).toContain("listing-location-virtual-badge");
+    expect(virtualBadgeIndex).toBeGreaterThan(metadataIndex);
     expect(markup).toContain("Virtual");
+    expect(clinicFacts).toContain("Virtual");
+    expect(clinicFacts).not.toContain("Austin");
+    expect(markup).not.toContain("Austin, TX");
     expect(markup).not.toContain("Get directions");
     expect(markup).not.toContain("listing-location-map-section");
   });
@@ -34,6 +42,7 @@ describe("virtual location detail", () => {
     const markup = renderLocation({ is_virtual: false });
 
     expect(markup).not.toContain("listing-location-virtual-badge");
+    expect(markup).toContain("Austin, TX");
     expect(markup).toContain("Get directions");
     expect(markup).toContain("listing-location-map-section");
   });
