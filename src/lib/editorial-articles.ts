@@ -131,17 +131,20 @@ export const editorialArticles: EditorialArticle[] = [
     description:
       "Epigenetic clocks are real tools, but the consumer biological-age number is noisier than the dashboard suggests.",
     byline: "The Fountain Editors",
-    updated: "2026-07-07",
-    updatedLabel: "7 July 2026",
+    updated: "2026-08-10",
+    updatedLabel: "10 August 2026",
     providerRails: {
       "biological-age-providers": {
-        title: "Biological age & advanced diagnostics",
+        title: "Biological age tests",
         cardFrom: "search",
         locationSlugs: [
-          "craft-body-scan-nashville",
-          "bodyspec-chicago",
-          "austin-medical-partners",
-          "human-longevity-inc-san-diego-2",
+          "elysium-index-biological-age-test",
+          "mydnage-blood-biological-age-test",
+          "trudiagnostic",
+          "trume-labs-truage-explorer",
+          "agemeter-functional-biological-age-platform",
+          "glycanage-biological-age-test",
+          "edifice-health-iage-inflammatory-age-test",
         ],
         dynamicTreatmentNames: ["Epigenetic age clock"],
         cta: {
