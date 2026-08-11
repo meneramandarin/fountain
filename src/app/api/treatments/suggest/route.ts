@@ -1,11 +1,12 @@
 import { getTreatmentCatalog } from "@/lib/queries";
+import { hyperbaricOxygenTherapy } from "@/lib/treatment-pages";
 import { NextRequest, NextResponse } from "next/server";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
 const defaultSuggestions = [
-  { label: "HBOT", canonicalName: "Hyperbaric oxygen therapy" },
+  { label: hyperbaricOxygenTherapy.name, canonicalName: hyperbaricOxygenTherapy.name },
   { label: "DEXA", canonicalName: "DEXA scan" },
   { label: "VO2Max", canonicalName: "VO2 max test" },
   { label: "IV Therapy", canonicalName: "IV Infusions" },
@@ -17,7 +18,11 @@ export async function GET(request: NextRequest) {
   const treatments = await getTreatmentCatalog(0);
   const treatmentsByName = new Map(treatments.map((treatment) => [treatment.name, treatment]));
   const curatedSuggestions = defaultSuggestions.flatMap(({ label, canonicalName }) => {
-    const treatment = treatmentsByName.get(canonicalName);
+    const treatment = treatmentsByName.get(canonicalName) || (
+      canonicalName === hyperbaricOxygenTherapy.name
+        ? treatmentsByName.get(hyperbaricOxygenTherapy.legacyName)
+        : undefined
+    );
     return treatment ? [{
       id: treatment.id,
       label,

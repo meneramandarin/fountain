@@ -10,6 +10,8 @@ const DATA = path.join(ROOT, "output");
 const REPORT_DIR = path.resolve("output/pdf");
 const HTML_PATH = path.join(DATA, "fountain-us-market-opportunity-report-2026.html");
 const PDF_PATH = path.join(REPORT_DIR, "fountain-us-market-opportunity-report-2026.pdf");
+const HBOT_TOPIC = "Hyperbaric oxygen therapy (HBOT)";
+const LEGACY_HBOT_TOPIC = "Hyperbaric oxygen therapy";
 
 const summary = JSON.parse(await readFile(path.join(DATA, "market-study-summary.json"), "utf8"));
 const opportunities = await csv("market-study-topic-opportunities.csv");
@@ -19,7 +21,7 @@ const inventory = await csv("market-study-treatment-inventory.csv");
 
 const markets = summary.markets.map((row) => numeric(row));
 const categories = summary.categories.map((row) => numeric(row));
-const opps = opportunities.map((row) => numeric(row));
+const opps = opportunities.map((row) => canonicalTopicRow(numeric(row)));
 const supply = supplyRows.map((row) => numeric(row));
 const keywords = keywordRows.map((row) => numeric(row));
 const sfSupply = supply.find((row) => row.market === "san-francisco-bay") || {};
@@ -41,7 +43,7 @@ const marketOrder = markets.map((row) => row.market);
 const selectedTopics = [
   "DEXA scan", "Full-body MRI", "Botox", "Hair restoration", "IV Infusions",
   "Functional medicine", "Medical weight loss", "Hormone optimization",
-  "Microneedling", "Laser hair removal", "Hyperbaric oxygen therapy", "Red light therapy",
+  "Microneedling", "Laser hair removal", HBOT_TOPIC, "Red light therapy",
 ];
 
 const recommendations = [
@@ -214,7 +216,7 @@ playPage("IV therapy", "Las Vegas is the standout local test", "IV Infusions", [
 playPage("Medical weight loss", "Recurring care with strong Houston whitespace", "Medical weight loss", ["houston", "tampa-bay", "new-york", "los-angeles", "las-vegas", "miami"]);
 playPage("Functional medicine", "A supply-development opportunity first", "Functional medicine", ["new-york", "los-angeles", "austin", "houston", "denver-boulder", "chicago"]);
 playPage("Hormone care", "Segment broad demand, TRT, and menopause care", "Hormone optimization", ["miami", "houston", "tampa-bay", "dallas-fort-worth", "denver-boulder", "los-angeles"]);
-playPage("Recovery stack", "Use organic comparison content before broad paid scale", "Hyperbaric oxygen therapy", ["san-diego", "new-york", "houston", "las-vegas", "los-angeles", "miami"]);
+playPage("Recovery stack", "Use organic comparison content before broad paid scale", HBOT_TOPIC, ["san-diego", "new-york", "houston", "las-vegas", "los-angeles", "miami"]);
 
 recommendations.forEach((rec, index) => recommendationPage(rec, index));
 
@@ -392,7 +394,8 @@ function roadmap() {
 }
 
 function shortMarket(name) { return name.replace("Miami / South Florida","Miami").replace("Dallas / Fort Worth","Dallas").replace("Scottsdale / Phoenix","Scottsdale").replace("Denver / Boulder","Denver").replace("New York City","NYC"); }
-function shortTopic(topic) { return topic.replace("Hyperbaric oxygen therapy","HBOT").replace("Medical weight loss","Weight loss").replace("Hormone optimization","Hormones").replace("Laser hair removal","Laser hair"); }
+function canonicalTopicRow(row) { return row.topic === LEGACY_HBOT_TOPIC ? { ...row, topic: HBOT_TOPIC } : row; }
+function shortTopic(topic) { return topic.replace(HBOT_TOPIC,"HBOT").replace("Medical weight loss","Weight loss").replace("Hormone optimization","Hormones").replace("Laser hair removal","Laser hair"); }
 function median(values) { if (!values.length) return 0; const x=[...values].sort((a,b)=>a-b); return x.length%2?x[(x.length-1)/2]:(x[x.length/2-1]+x[x.length/2])/2; }
 
 function styles() { return `

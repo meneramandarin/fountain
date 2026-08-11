@@ -1,3 +1,5 @@
+import { hyperbaricOxygenTherapy } from "@/lib/treatment-pages";
+
 type TreatmentLike = {
   id: number;
   name: string;
@@ -6,12 +8,8 @@ type TreatmentLike = {
 
 const popularTreatmentExclusions = new Set(["Botox", "Dermal fillers", "Med spa", "IV nutrient therapy", "Shockwave therapy"]);
 
-const popularTreatmentLabelOverrides: Record<string, string> = {
-  "Hyperbaric oxygen therapy": "HBOT",
-};
-
 export function popularTreatmentLabel(name: string) {
-  return popularTreatmentLabelOverrides[name] || name;
+  return name === hyperbaricOxygenTherapy.legacyName ? hyperbaricOxygenTherapy.name : name;
 }
 
 export function getPopularTreatments<Treatment extends TreatmentLike>(treatments: Treatment[], limit = 12) {

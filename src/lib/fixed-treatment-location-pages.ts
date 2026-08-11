@@ -1,3 +1,5 @@
+import { hyperbaricOxygenTherapy } from "@/lib/treatment-pages";
+
 export type FixedTreatmentLocationTreatment = {
   id: number;
   name: string;
@@ -21,7 +23,7 @@ export const fixedTreatmentLocationTreatments = [
   { id: 3, name: "DEXA scan", slug: "dexa-scan" },
   { id: 8, name: "VO2 max test", slug: "vo2-max-test" },
   { id: 74, name: "IV Infusions", slug: "iv-infusions" },
-  { id: 27, name: "Hyperbaric oxygen therapy", slug: "hyperbaric-oxygen-therapy" },
+  hyperbaricOxygenTherapy,
   { id: 1, name: "Full-body MRI", slug: "full-body-mri" },
 ] as const satisfies readonly FixedTreatmentLocationTreatment[];
 
