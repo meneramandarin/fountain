@@ -30,6 +30,10 @@ import {
   ClinicianLicenseVerification,
   type ClinicianLicenseVerificationData,
 } from "@/components/clinician-license-verification";
+import {
+  LocationRegulatoryVerification,
+  type LocationRegulatoryVerificationData,
+} from "@/components/location-regulatory-verification";
 
 type Tag = { facet: string; value: string };
 type ImageRef = { blob_url?: string | null; alt?: string | null; image_kind?: string | null };
@@ -117,6 +121,7 @@ export type LocationDetailRecord = {
   other_locations?: ChainLocationRef[];
   tags?: Tag[];
   clinician_license_verification?: ClinicianLicenseVerificationData | null;
+  regulatory_verifications?: LocationRegulatoryVerificationData[] | null;
 };
 
 export type PractitionerDetailRecord = {
@@ -242,6 +247,7 @@ function LocationHero({
   const reviewCount = Number(data.review_count || 0);
   const directionsHref = locationDirectionsHref(data, title, subtitle);
   const images = getImageSources(data.images || []);
+  const hasRegulatoryVerification = Boolean(data.regulatory_verifications?.length);
 
   return (
     <div className="listing-location-heading">
@@ -257,11 +263,13 @@ function LocationHero({
               Virtual
             </span>
           ) : null}
-          {data.is_virtual && (data.clinician_license_verification || rating || reviewCount || subtitle) ? (
+          {data.is_virtual && (data.clinician_license_verification || hasRegulatoryVerification || rating || reviewCount || subtitle) ? (
             <i aria-hidden="true">·</i>
           ) : null}
           <ClinicianLicenseVerification verification={data.clinician_license_verification} />
-          {data.clinician_license_verification && rating ? <i aria-hidden="true">·</i> : null}
+          {data.clinician_license_verification && hasRegulatoryVerification ? <i aria-hidden="true">·</i> : null}
+          <LocationRegulatoryVerification verifications={data.regulatory_verifications} />
+          {(data.clinician_license_verification || hasRegulatoryVerification) && rating ? <i aria-hidden="true">·</i> : null}
           {rating ? (
             <span className="listing-location-rating">
               <b>{rating.toFixed(1)}</b>

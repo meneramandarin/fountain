@@ -73,6 +73,7 @@ function locationDetailToDirectoryCard(location: LocationDetailCardSource): Dire
     region: location.region,
     country_name: location.country_name,
     clinician_license_verification: location.clinician_license_verification,
+    regulatory_verifications: location.regulatory_verifications,
     rating: location.rating,
     review_count: location.review_count,
     min_price_amount: minPrice?.price_amount ?? null,
