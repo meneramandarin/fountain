@@ -48,7 +48,17 @@ describe("LocationRegulatoryVerification", () => {
 
     expect(markup).toContain("DHA facility licence verified");
     expect(markup).toContain("active Dubai Medical Registry");
+    expect(markup).not.toContain("MOHAP health-advertisement licence");
+    expect(markup.match(/clinician-license-icon/g)).toHaveLength(1);
+  });
+
+  it("still renders a compact MOHAP indicator when no DHA licence is available", () => {
+    const markup = renderToStaticMarkup(
+      createElement(LocationRegulatoryVerification, { verifications: [mohap], compact: true }),
+    );
+
     expect(markup).toContain("MOHAP health-advertisement licence");
+    expect(markup.match(/clinician-license-icon/g)).toHaveLength(1);
   });
 
   it("renders nothing without evidence", () => {
