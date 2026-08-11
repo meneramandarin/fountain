@@ -1748,7 +1748,7 @@ input[type="search"]::-webkit-search-cancel-button:hover {
   overflow-x: auto;
   padding-top: 24px;
   padding-bottom: 8px;
-  border-top: 1px solid rgba(30, 26, 15, 0.16);
+  border-top: 1px solid rgba(255, 255, 255, 0.16);
   scroll-padding-inline: 2px;
 }
 
@@ -1758,7 +1758,7 @@ input[type="search"]::-webkit-search-cancel-button:hover {
 
 .location-search-column h3 {
   margin: 0 0 14px;
-  color: var(--landing-fg);
+  color: #ffffff;
   font-family: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
   font-size: var(--type-body);
   font-weight: 700;
