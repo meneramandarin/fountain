@@ -55,7 +55,7 @@ export const metadata: Metadata = {
     images: [ogImage.url],
   },
   icons: {
-    icon: "/icon",
+    icon: "/icon.png",
   },
   robots: {
     index: true,
