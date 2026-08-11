@@ -13,15 +13,19 @@ export default function Icon() {
       <div
         style={{
           alignItems: "center",
-          background: "#ffffff",
+          background: "#c39d60",
+          color: "#000000",
           display: "flex",
-          fontSize: 48,
+          fontFamily: "Georgia, serif",
+          fontSize: 54,
+          fontWeight: 700,
           height: "100%",
           justifyContent: "center",
+          lineHeight: 1,
           width: "100%",
         }}
       >
-        ⛲
+        f
       </div>
     ),
     size,
