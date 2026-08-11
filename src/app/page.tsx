@@ -63,6 +63,7 @@ const exploreItems: LandingExploreItem[] = [
 ];
 
 const fallbackNearMeLocalities = ["New York", "Brooklyn", "Long Island City", "Jackson Heights", "Rego Park", "Staten Island"];
+const mriTreatmentId = 1;
 
 export default async function HomePage() {
   const visitorLocation = landingVisitorLocation(await headers());
@@ -83,8 +84,8 @@ export default async function HomePage() {
         visitor: visitorLocation,
       }),
     ),
-    safeLandingSection("full-body MRI cards", () =>
-      getLandingTreatmentDirectoryCards("Full-body MRI", 10, {
+    safeLandingSection("MRI cards", () =>
+      getLandingTreatmentDirectoryCards(mriTreatmentId, 10, {
         countryCode: "US",
         localities: fallbackNearMeLocalities,
         requireImage: false,
@@ -128,7 +129,7 @@ export default async function HomePage() {
       <LandingFeaturedDirectoryCarousel
         cards={mriCards}
         title="Get an MRI Scan in Your Area"
-        treatmentName="Full-body MRI"
+        treatmentName="MRI"
         clinicCategory="Measure"
       />
 
