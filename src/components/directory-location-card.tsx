@@ -47,6 +47,7 @@ export function DirectoryLocationCard({
   treatmentName,
   resultPosition,
   onActiveChange,
+  showImageTreatmentTags = false,
 }: {
   result: DirectoryLocationCardData;
   from?: string;
@@ -55,6 +56,7 @@ export function DirectoryLocationCard({
   treatmentName?: string | null;
   resultPosition?: number | null;
   onActiveChange?: (id: number | null) => void;
+  showImageTreatmentTags?: boolean;
 }) {
   const [imageFailed, setImageFailed] = useState(false);
   const isContainedGraphic = result.image_kind === "text_graphic" || result.image_kind === "logo";
@@ -70,6 +72,7 @@ export function DirectoryLocationCard({
   );
   const price = formatPrice(result.min_price_amount, result.min_price_currency, result.country_code);
   const destinationHref = href || locationHref(result);
+  const imageTreatmentTags = (result.treatments || []).slice(0, 3);
   const tagsLine = [
     mobileService ? "Mobile service" : type?.value,
     ...(result.treatments || []).map((treatment) => treatment.name),
@@ -120,6 +123,13 @@ export function DirectoryLocationCard({
           <span className="result-rating-badge">
             <Star size={11} aria-hidden="true" />
             {Number(result.rating).toFixed(1)}
+          </span>
+        ) : null}
+        {showImageTreatmentTags && imageTreatmentTags.length ? (
+          <span className="landing-result-photo-tags" aria-hidden="true">
+            {imageTreatmentTags.map((treatment) => (
+              <span key={`${result.id}-photo-${treatment.name}`}>{treatment.name}</span>
+            ))}
           </span>
         ) : null}
       </span>
