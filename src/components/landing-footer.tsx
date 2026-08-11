@@ -57,7 +57,7 @@ export function LandingFooter() {
       <div className="footer-wordmark">fountain</div>
       <div className="footer-columns">
         <div>
-          <h4>DISCOVER</h4>
+          <h4>Discover</h4>
           <ul>
             <li>
               <a href="mailto:hello@fountain.clinic">List Your Clinic</a>
@@ -89,7 +89,7 @@ export function LandingFooter() {
         </div>
         <div className="footer-newsletter">
           <div className="footer-newsletter-section">
-            <p className="footer-newsletter-eyebrow">STAY IN TOUCH</p>
+            <p className="footer-newsletter-eyebrow">Stay in touch</p>
             <div className="footer-social">
               <a href="https://instagram.com/onthepursuitofalongerlife" target="_blank" rel="noreferrer" aria-label="Instagram" className="footer-social-link">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
