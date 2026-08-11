@@ -45,7 +45,7 @@ export function LocationRegulatoryVerification({
           title="DHA facility licence verified"
         />
       ) : null}
-      {mohap ? (
+      {mohap && (!compact || !dha) ? (
         <LicenseVerificationBadge
           accessibleLabel={`MOHAP health-advertisement licence ${mohap.credential_number} is disclosed on the facility's official website. This is not a facility licence${compact ? "" : ". View the disclosure."}`}
           compact={compact}
