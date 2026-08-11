@@ -1421,8 +1421,7 @@ input[type="search"]::-webkit-search-cancel-button:hover {
   border-top: 1px solid rgba(30, 26, 15, 0.12);
 }
 
-.landing-featured-card-arrow,
-.result-card-arrow {
+.landing-featured-card-arrow {
   display: grid;
   flex: 0 0 auto;
   place-items: center;
@@ -3615,12 +3614,31 @@ input[type="search"]::-webkit-search-cancel-button:hover {
   transform: translateY(-3px);
 }
 
+.result-card:not(.practitioner-card) {
+  overflow: visible;
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+}
+
+.result-card:not(.practitioner-card):hover {
+  border-color: transparent;
+  box-shadow: none;
+  transform: none;
+}
+
 .result-photo {
   position: relative;
   overflow: hidden;
-  aspect-ratio: 4 / 2.7;
+  aspect-ratio: 4 / 3.3;
   flex: 0 0 auto;
+  border-radius: var(--radius-card);
   background: var(--listing-card);
+  transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.result-card:hover .result-photo {
+  transform: scale(1.045);
 }
 
 .result-photo img {
@@ -3639,16 +3657,16 @@ input[type="search"]::-webkit-search-cancel-button:hover {
 
 .result-rating-badge {
   position: absolute;
-  top: 10px;
-  right: 10px;
+  left: 10px;
+  bottom: 10px;
   display: inline-flex;
   align-items: center;
   gap: 4px;
-  padding: 4px 8px;
+  padding: 5px 9px;
   border-radius: var(--radius-pill);
-  background: var(--canvas);
-  box-shadow: var(--elevation-chip);
-  color: var(--landing-fg);
+  background: rgba(30, 26, 15, 0.5);
+  backdrop-filter: blur(6px);
+  color: white;
   font-family: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
   font-size: var(--type-caption);
   font-weight: 600;
@@ -3659,24 +3677,11 @@ input[type="search"]::-webkit-search-cancel-button:hover {
   fill: var(--landing-gold-deep);
 }
 
-.result-photo-tags {
-  position: absolute;
-  right: 10px;
-  bottom: 10px;
-  left: 10px;
-  z-index: 1;
-  display: flex;
-  align-items: flex-end;
-  flex-wrap: wrap;
-  gap: 5px;
-  pointer-events: none;
-}
-
 .result-body {
   display: flex;
   flex: 1;
   flex-direction: column;
-  gap: 12px;
+  gap: 10px;
   padding: 18px 18px 16px;
 }
 
@@ -3720,20 +3725,27 @@ input[type="search"]::-webkit-search-cancel-button:hover {
   font-size: var(--type-label);
 }
 
-.result-card-footer {
+.result-meta-row {
   display: flex;
-  min-height: 48px;
   align-items: center;
-  justify-content: space-between;
-  gap: 14px;
+  gap: 7px;
   margin-top: auto;
-  padding-top: 14px;
-  border-top: 1px solid rgba(30, 26, 15, 0.12);
+  padding-top: 10px;
+  border-top: 1px solid rgba(30, 26, 15, 0.1);
+  color: var(--landing-fg);
+  font-family: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  font-size: var(--type-label);
+  font-weight: 500;
 }
 
-.result-card-arrow {
-  width: 32px;
-  height: 32px;
+.result-meta-row .muted {
+  color: rgba(30, 26, 15, 0.55);
+  font-weight: 400;
+}
+
+.result-meta-row .result-meta-dot {
+  color: var(--landing-line);
+  font-style: normal;
 }
 
 .listing-price-reviews {
@@ -3758,37 +3770,32 @@ input[type="search"]::-webkit-search-cancel-button:hover {
 }
 
 .treatment-row {
-  display: none;
+  display: block;
+  overflow: hidden;
+  color: rgba(30, 26, 15, 0.5);
+  font-family: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  font-size: var(--type-caption);
+  line-height: 1.3;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
-.treatment-row span,
 .drawer-tags span {
   padding: 3px 7px;
   font-family: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
   font-size: var(--type-caption);
-}
-
-.treatment-row span,
-.result-photo-tags span,
-.landing-featured-photo-tags span,
-.listing-chain-treatments span {
   border-radius: var(--radius-pill);
   border: 0.5px solid rgba(30, 26, 15, 0.10);
   background: var(--landing-card);
   color: rgba(30, 26, 15, 0.72);
 }
 
-.result-photo-tags span,
 .landing-featured-photo-tags span,
 .listing-chain-treatments span {
+  border-radius: var(--radius-pill);
   border-color: var(--landing-gold-deep);
   background: var(--landing-gold-deep);
   color: var(--canvas);
-}
-
-.result-photo-tags span,
-.landing-featured-photo-tags span,
-.listing-chain-treatments span {
   max-width: 100%;
   overflow: hidden;
   padding: 4px 8px;

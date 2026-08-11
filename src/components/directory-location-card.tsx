@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowRight, MapPin, Star } from "lucide-react";
+import { MapPin, Star } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
@@ -70,6 +70,10 @@ export function DirectoryLocationCard({
   );
   const price = formatPrice(result.min_price_amount, result.min_price_currency, result.country_code);
   const destinationHref = href || locationHref(result);
+  const tagsLine = [
+    mobileService ? "Mobile service" : type?.value,
+    ...(result.treatments || []).map((treatment) => treatment.name),
+  ].filter(Boolean).slice(0, 3).join(" · ");
 
   return (
     <Link
@@ -114,15 +118,8 @@ export function DirectoryLocationCard({
         )}
         {result.rating ? (
           <span className="result-rating-badge">
-            <Star size={12} aria-hidden="true" />
+            <Star size={11} aria-hidden="true" />
             {Number(result.rating).toFixed(1)}
-          </span>
-        ) : null}
-        {result.treatments?.length ? (
-          <span className="result-photo-tags" aria-hidden="true">
-            {result.treatments.slice(0, 3).map((treatment) => (
-              <span key={`${result.id}-photo-${treatment.name}`}>{treatment.name}</span>
-            ))}
           </span>
         ) : null}
       </span>
@@ -133,29 +130,24 @@ export function DirectoryLocationCard({
             <ClinicianLicenseVerification verification={result.clinician_license_verification} compact />
           </span>
           <small>
-            <MapPin size={14} aria-hidden="true" />
+            <MapPin size={13} aria-hidden="true" />
             {place || "Location unavailable"}
           </small>
         </span>
-        <span className="result-card-footer">
-          <span className="result-side">
-            {mobileService ? <em>Mobile service</em> : type ? <em>{type.value}</em> : null}
-            {price || result.review_count ? (
-              <span className="listing-price-reviews">
-                {price ? <small>From {price}</small> : null}
-                {price && result.review_count ? <i aria-hidden="true">·</i> : null}
-                {result.review_count ? <small>{Number(result.review_count).toLocaleString()} reviews</small> : null}
-              </span>
+        {tagsLine ? <span className="treatment-row">{tagsLine}</span> : null}
+        {price || result.review_count || result.distance_miles != null ? (
+          <span className="result-meta-row">
+            {price ? <span>From {price}</span> : null}
+            {price && result.review_count ? <i className="result-meta-dot" aria-hidden="true">·</i> : null}
+            {result.review_count ? <span className="muted">{Number(result.review_count).toLocaleString()} reviews</span> : null}
+            {result.distance_miles != null ? (
+              <>
+                {price || result.review_count ? <i className="result-meta-dot" aria-hidden="true">·</i> : null}
+                <span className="muted">{formatDistance(result.distance_miles)} away</span>
+              </>
             ) : null}
-            {result.distance_miles != null ? <small>{formatDistance(result.distance_miles)} away</small> : null}
           </span>
-          <span className="result-card-arrow" aria-hidden="true"><ArrowRight size={16} /></span>
-        </span>
-        <span className="treatment-row">
-          {(result.treatments || []).slice(0, 3).map((treatment) => (
-            <span key={`${result.id}-${treatment.name}`}>{treatment.name}</span>
-          ))}
-        </span>
+        ) : null}
       </span>
     </Link>
   );
