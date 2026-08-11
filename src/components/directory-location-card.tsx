@@ -135,19 +135,20 @@ export function DirectoryLocationCard({
           </small>
         </span>
         {tagsLine ? <span className="treatment-row">{tagsLine}</span> : null}
-        {price || result.review_count || result.distance_miles != null ? (
-          <span className="result-meta-row">
-            {price ? <span>From {price}</span> : null}
-            {price && result.review_count ? <i className="result-meta-dot" aria-hidden="true">·</i> : null}
-            {result.review_count ? <span className="muted">{Number(result.review_count).toLocaleString()} reviews</span> : null}
-            {result.distance_miles != null ? (
-              <>
-                {price || result.review_count ? <i className="result-meta-dot" aria-hidden="true">·</i> : null}
-                <span className="muted">{formatDistance(result.distance_miles)} away</span>
-              </>
-            ) : null}
-          </span>
-        ) : null}
+        <span className="result-meta-row">
+          {price ? <span>From {price}</span> : null}
+          {price && result.review_count ? <i className="result-meta-dot" aria-hidden="true">·</i> : null}
+          {result.review_count ? <span className="muted">{Number(result.review_count).toLocaleString()} reviews</span> : null}
+          {result.distance_miles != null ? (
+            <>
+              {price || result.review_count ? <i className="result-meta-dot" aria-hidden="true">·</i> : null}
+              <span className="muted">{formatDistance(result.distance_miles)} away</span>
+            </>
+          ) : null}
+          {!price && !result.review_count && result.distance_miles == null ? (
+            <span className="muted">View details</span>
+          ) : null}
+        </span>
       </span>
     </Link>
   );
