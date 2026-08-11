@@ -13,7 +13,9 @@ import { ClinicianLicenseVerification } from "@/components/clinician-license-ver
 
 type LandingFeaturedDirectoryCarouselProps = {
   cards: LandingFeaturedDirectoryCard[];
+  eyebrow: string;
   title: string;
+  subtitle: string;
   treatmentName: string;
   clinicCategory: string;
 };
@@ -24,7 +26,9 @@ function imageSource(src: string) {
 
 export function LandingFeaturedDirectoryCarousel({
   cards,
+  eyebrow,
   title,
+  subtitle,
   treatmentName,
   clinicCategory,
 }: LandingFeaturedDirectoryCarouselProps) {
@@ -51,7 +55,11 @@ export function LandingFeaturedDirectoryCarousel({
   return (
     <section className="landing-featured" aria-labelledby={titleId}>
       <div className="landing-featured-header">
-        <h2 id={titleId}>{title}</h2>
+        <div className="landing-featured-heading">
+          <p className="landing-featured-eyebrow">{eyebrow}</p>
+          <h2 id={titleId}>{title}</h2>
+          <p className="landing-featured-subtitle">{subtitle}</p>
+        </div>
         <div className="landing-featured-controls" role="group" aria-label={`${title} carousel controls`}>
           <button type="button" onClick={() => scrollRail(-1)} aria-label="Scroll left">
             <ArrowLeft size={18} aria-hidden="true" />
