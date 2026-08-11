@@ -19,13 +19,16 @@ import { DirectoryResultsBackLink } from "@/components/directory-results-back-li
 import { locationHref } from "@/lib/directory-urls";
 import { formatLocationPlace } from "@/lib/location-display";
 import { SplitDirectorySearch } from "@/components/split-directory-search";
-import { getOfferingLabels } from "@/lib/offering-labels";
 import { formatLocationAddress } from "@/lib/location-address";
 import { formatPrice } from "@/lib/format-price";
-import { formatOfferingPrice } from "@/lib/offering-price";
 import { ListingShareButton } from "@/components/listing-share-button";
 import { ListingLocationMap } from "@/components/listing-location-map";
 import { OutboundClinicLink } from "@/components/outbound-clinic-link";
+import {
+  TreatmentCard,
+  TreatmentMenu,
+  type OfferingRef,
+} from "@/components/treatment-menu";
 import {
   ClinicianLicenseVerification,
   type ClinicianLicenseVerificationData,
@@ -45,20 +48,6 @@ type ExternalReviewGroup = {
   rating?: number | null;
   review_count?: number | null;
   reviews?: ReviewRef[];
-};
-type OfferingRef = {
-  raw_name?: string | null;
-  price_amount?: number | null;
-  price_max_amount?: number | null;
-  price_currency?: string | null;
-  price_type?: string | null;
-  price_unit?: string | null;
-  price_context?: string | null;
-  price_audience?: string | null;
-  duration_minutes?: number | null;
-  description?: string | null;
-  treatment?: string | null;
-  domain?: string | null;
 };
 type OpeningHour = { day: string; open: string; close: string };
 type OpeningHours = OpeningHour[] | Record<string, Array<Omit<OpeningHour, "day">>>;
@@ -518,24 +507,15 @@ function LocationTreatmentsAndDetails({ data }: { data: LocationDetailRecord }) 
           <h2 id="clinic-treatments-title">Treatments</h2>
           {data.offerings_note ? <p className="clinic-treatments-note">{data.offerings_note}</p> : null}
           {treatments.length ? (
-            <div className="clinic-treatment-list">
-              {treatments.slice(0, 4).map((offering, index) => (
-                <TreatmentCard offering={offering} countryCode={data.country_code} key={`${offering.raw_name || offering.treatment}-${index}`} />
-              ))}
-              {treatments.length > 4 ? (
-                <details className="clinic-treatment-more">
-                  <summary>
-                    <span className="clinic-treatment-more-open">See all</span>
-                    <span className="clinic-treatment-more-close">See less</span>
-                  </summary>
-                  <div className="clinic-treatment-more-list">
-                    {treatments.slice(4).map((offering, index) => (
-                      <TreatmentCard offering={offering} countryCode={data.country_code} key={`${offering.raw_name || offering.treatment}-${index + 4}`} />
-                    ))}
-                  </div>
-                </details>
-              ) : null}
-            </div>
+            treatments.length > 4 ? (
+              <TreatmentMenu offerings={treatments} countryCode={data.country_code} />
+            ) : (
+              <div className="clinic-treatment-list">
+                {treatments.map((offering, index) => (
+                  <TreatmentCard offering={offering} countryCode={data.country_code} key={`${offering.raw_name || offering.treatment}-${index}`} />
+                ))}
+              </div>
+            )
           ) : (
             <p className="clinic-treatments-empty">Contact the clinic for its current treatment list and pricing.</p>
           )}
@@ -650,32 +630,6 @@ export function normalizeOpeningHours(hours?: OpeningHours | null): OpeningHour[
           close: period.close,
         }))
       : [],
-  );
-}
-
-function TreatmentCard({ offering, countryCode }: { offering: OfferingRef; countryCode?: string | null }) {
-  const { primary } = getOfferingLabels(offering);
-  const duration = Number(offering.duration_minutes);
-  const hasDuration = Number.isFinite(duration) && duration > 0;
-
-  return (
-    <article className="clinic-treatment-card">
-      <div className="clinic-treatment-card-heading">
-        <h3>{primary}</h3>
-        <strong>{formatOfferingPrice(offering, countryCode)}</strong>
-      </div>
-      {hasDuration || offering.description ? (
-        <div className="clinic-treatment-card-details">
-          {hasDuration ? (
-            <span className="clinic-treatment-duration">
-              <Clock3 size={15} aria-hidden="true" />
-              {duration} min
-            </span>
-          ) : null}
-          {offering.description ? <p>{offering.description}</p> : null}
-        </div>
-      ) : null}
-    </article>
   );
 }
 

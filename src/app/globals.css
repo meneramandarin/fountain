@@ -5281,6 +5281,62 @@ input[type="search"]::-webkit-search-cancel-button:hover {
   gap: 11px;
 }
 
+.clinic-treatment-tabs {
+  display: flex;
+  gap: clamp(20px, 3vw, 32px);
+  margin: -10px 0 18px;
+  overflow-x: auto;
+  border-bottom: 1px solid rgba(30, 26, 15, 0.13);
+  scrollbar-width: none;
+}
+
+.clinic-treatment-tabs::-webkit-scrollbar {
+  display: none;
+}
+
+.clinic-treatment-tabs button {
+  position: relative;
+  flex: 0 0 auto;
+  padding: 0 0 12px;
+  border: 0;
+  background: transparent;
+  color: rgba(30, 26, 15, 0.52);
+  cursor: pointer;
+  font: inherit;
+  font-size: var(--type-label);
+  font-weight: 650;
+  transition: color 0.15s ease;
+}
+
+.clinic-treatment-tabs button::after {
+  position: absolute;
+  right: 0;
+  bottom: -1px;
+  left: 0;
+  height: 2px;
+  background: transparent;
+  content: "";
+  transition: background 0.15s ease;
+}
+
+.clinic-treatment-tabs button:hover {
+  color: var(--landing-fg);
+}
+
+.clinic-treatment-tabs button[aria-selected="true"] {
+  color: var(--landing-fg);
+}
+
+.clinic-treatment-tabs button[aria-selected="true"]::after {
+  background: var(--landing-gold-deep);
+}
+
+.clinic-treatment-tabs button:focus-visible {
+  border-radius: 3px;
+  outline: 2px solid var(--landing-gold-deep);
+  outline-offset: 4px;
+}
+
 .clinic-treatment-card {
   min-height: 106px;
   padding: 22px;
@@ -5339,58 +5395,6 @@ input[type="search"]::-webkit-search-cancel-button:hover {
   font-size: var(--type-caption);
   line-height: 1.55;
   white-space: pre-line;
-}
-
-.clinic-treatment-more {
-  display: grid;
-}
-
-.clinic-treatment-more > summary {
-  justify-self: center;
-  min-height: 38px;
-  margin-top: 7px;
-  padding: 8px 20px;
-  border: 1px solid rgba(30, 26, 15, 0.2);
-  border-radius: var(--radius-pill);
-  background: white;
-  color: var(--landing-fg);
-  cursor: pointer;
-  font-size: var(--type-caption);
-  font-weight: 700;
-  list-style: none;
-  transition: border-color 0.15s ease, background 0.15s ease;
-}
-
-.clinic-treatment-more > summary::-webkit-details-marker {
-  display: none;
-}
-
-.clinic-treatment-more > summary:hover {
-  border-color: rgba(30, 26, 15, 0.42);
-  background: var(--landing-parchment-soft);
-}
-
-.clinic-treatment-more-close {
-  display: none;
-}
-
-.clinic-treatment-more[open] .clinic-treatment-more-open {
-  display: none;
-}
-
-.clinic-treatment-more[open] .clinic-treatment-more-close {
-  display: inline;
-}
-
-.clinic-treatment-more[open] > summary {
-  order: 2;
-}
-
-.clinic-treatment-more-list {
-  order: 1;
-  display: grid;
-  gap: 11px;
-  margin-top: 11px;
 }
 
 .clinic-details-card {
