@@ -1,4 +1,10 @@
+import { readFile } from "node:fs/promises";
+import path from "node:path";
 import { ImageResponse } from "next/og";
+
+const dmSerifDisplay = readFile(
+  path.join(process.cwd(), "src/assets/fonts/DMSerifDisplay-Regular.ttf"),
+);
 
 export const size = {
   width: 64,
@@ -7,7 +13,9 @@ export const size = {
 
 export const contentType = "image/png";
 
-export default function Icon() {
+export default async function Icon() {
+  const dmSerifDisplayData = await dmSerifDisplay;
+
   return new ImageResponse(
     (
       <div
@@ -16,9 +24,9 @@ export default function Icon() {
           background: "#c39d60",
           color: "#000000",
           display: "flex",
-          fontFamily: "Georgia, serif",
+          fontFamily: "DM Serif Display",
           fontSize: 54,
-          fontWeight: 700,
+          fontWeight: 400,
           height: "100%",
           justifyContent: "center",
           lineHeight: 1,
@@ -28,6 +36,16 @@ export default function Icon() {
         f
       </div>
     ),
-    size,
+    {
+      ...size,
+      fonts: [
+        {
+          name: "DM Serif Display",
+          data: dmSerifDisplayData,
+          style: "normal",
+          weight: 400,
+        },
+      ],
+    },
   );
 }
