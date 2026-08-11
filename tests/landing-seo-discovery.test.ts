@@ -4,6 +4,7 @@ import { describe, expect, test } from "vitest";
 import { LandingSeoDiscovery } from "../src/components/landing-seo-discovery";
 import { fixedTreatmentLocationPages } from "../src/lib/fixed-treatment-location-pages";
 import {
+  hyperbaricOxygenTherapy,
   treatmentHref,
   type TreatmentCatalogItem,
 } from "../src/lib/treatment-pages";
@@ -23,7 +24,7 @@ const treatments: TreatmentCatalogItem[] = [
   },
   {
     id: 3,
-    name: "Hyperbaric oxygen therapy",
+    name: hyperbaricOxygenTherapy.name,
     category: "Recovery & performance",
     locationCount: 30,
   },
@@ -85,6 +86,7 @@ describe("landing SEO discovery", () => {
     expect(markup).not.toContain("currently available by city");
     expect(markup).not.toContain("/directory?");
     expect(markup).toContain("/treatments/dexa-scan\"");
+    expect(markup).toContain("Hyperbaric oxygen therapy (HBOT)");
     expect(markup).not.toContain("eyebrow");
   });
 

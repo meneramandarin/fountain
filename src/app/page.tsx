@@ -15,6 +15,7 @@ import {
   getTreatmentCatalog,
   type VisitorLocationParams,
 } from "@/lib/queries";
+import { hyperbaricOxygenTherapy } from "@/lib/treatment-pages";
 
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
@@ -63,7 +64,6 @@ const exploreItems: LandingExploreItem[] = [
 ];
 
 const fallbackNearMeLocalities = ["New York", "Brooklyn", "Long Island City", "Jackson Heights", "Rego Park", "Staten Island"];
-const hyperbaricTreatmentId = 27;
 const peptideTreatmentId = 20;
 const botoxTreatmentId = 34;
 
@@ -87,7 +87,7 @@ export default async function HomePage() {
       }),
     ),
     safeLandingSection("hyperbaric oxygen cards", () =>
-      getLandingTreatmentDirectoryCards(hyperbaricTreatmentId, 10, {
+      getLandingTreatmentDirectoryCards(hyperbaricOxygenTherapy.id, 10, {
         countryCode: "US",
         localities: fallbackNearMeLocalities,
         requireImage: false,
@@ -152,8 +152,8 @@ export default async function HomePage() {
         cards={recoverCards}
         eyebrow="Recover"
         title="More oxygen, faster healing"
-        subtitle="Hyperbaric oxygen therapy pushes oxygen deep into tissue to speed recovery and repair."
-        treatmentName="Hyperbaric oxygen therapy"
+        subtitle="Hyperbaric oxygen therapy (HBOT) pushes oxygen deep into tissue to speed recovery and repair."
+        treatmentName={hyperbaricOxygenTherapy.name}
         clinicCategory="Recover"
       />
 

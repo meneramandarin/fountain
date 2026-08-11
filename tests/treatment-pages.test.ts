@@ -1,8 +1,10 @@
 import { describe, expect, test } from "vitest";
 import { buildSitemap, revalidate as sitemapRevalidate } from "../src/app/sitemap";
 import { editorialArticles, editorialArticlePath } from "../src/lib/editorial-articles";
+import { popularTreatmentLabel } from "../src/lib/popular-treatments";
 import { buildTreatmentHubs, prepareTreatmentIndexHubs } from "../src/lib/treatment-hubs";
 import {
+  hyperbaricOxygenTherapy,
   isTreatmentPageIndexable,
   treatmentHref,
   treatmentSlug,
@@ -14,10 +16,16 @@ describe("treatment pages", () => {
     expect(treatmentSlug("Menopause hormone therapy (HRT)")).toBe("menopause-hormone-therapy-hrt");
     expect(treatmentSlug("NAD+ IV therapy")).toBe("nad-iv-therapy");
     expect(treatmentSlug("Emtone®")).toBe("emtone");
+    expect(treatmentSlug(hyperbaricOxygenTherapy.name)).toBe("hyperbaric-oxygen-therapy");
   });
 
   test("builds clean treatment hub links", () => {
     expect(treatmentHref({ name: "NAD+ IV therapy" })).toBe("/treatments/nad-iv-therapy");
+    expect(treatmentHref(hyperbaricOxygenTherapy)).toBe("/treatments/hyperbaric-oxygen-therapy");
+  });
+
+  test("expands the legacy HBOT tag label", () => {
+    expect(popularTreatmentLabel(hyperbaricOxygenTherapy.legacyName)).toBe(hyperbaricOxygenTherapy.name);
   });
 
   test("keeps treatment pages out of the index when no city passes the threshold", () => {

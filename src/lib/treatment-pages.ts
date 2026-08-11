@@ -18,7 +18,18 @@ export type TreatmentCityCount = {
 
 export type CityIndexPlace = Omit<TreatmentCityCount, "treatmentId" | "locationCount">;
 
+export const hyperbaricOxygenTherapy = {
+  id: 27,
+  name: "Hyperbaric oxygen therapy (HBOT)",
+  legacyName: "Hyperbaric oxygen therapy",
+  slug: "hyperbaric-oxygen-therapy",
+} as const;
+
 export function treatmentSlug(name: string) {
+  if (name === hyperbaricOxygenTherapy.name || name === hyperbaricOxygenTherapy.legacyName) {
+    return hyperbaricOxygenTherapy.slug;
+  }
+
   return name
     .normalize("NFKD")
     .toLocaleLowerCase("en-US")
