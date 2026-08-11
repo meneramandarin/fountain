@@ -1431,6 +1431,12 @@ input[type="search"]::-webkit-search-cancel-button:hover {
   background: #f1f9f6;
 }
 
+.license-verification-group {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
 .landing-featured-main small,
 .landing-featured-meta small {
   display: inline-flex;
@@ -4455,7 +4461,8 @@ input[type="search"]::-webkit-search-cancel-button:hover {
   min-width: 0;
 }
 
-.listing-location-meta > .clinician-license-badge {
+.listing-location-meta > .clinician-license-badge,
+.listing-location-meta .license-verification-group > .clinician-license-badge {
   padding: 0;
   border: 0;
   border-radius: 0;
@@ -4467,7 +4474,8 @@ input[type="search"]::-webkit-search-cancel-button:hover {
   text-decoration: none;
 }
 
-.listing-location-meta > .clinician-license-badge:hover {
+.listing-location-meta > .clinician-license-badge:hover,
+.listing-location-meta .license-verification-group > .clinician-license-badge:hover {
   background: transparent;
   text-decoration: underline;
 }

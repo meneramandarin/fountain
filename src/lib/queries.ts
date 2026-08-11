@@ -5,6 +5,7 @@ import {
   type TreatmentCityCount,
 } from "@/lib/treatment-pages";
 import type { ClinicianLicenseVerificationData } from "@/components/clinician-license-verification";
+import type { LocationRegulatoryVerificationData } from "@/components/location-regulatory-verification";
 import { orderTreatmentChips, type TreatmentChipWithId } from "@/lib/treatment-chip-order";
 import { isSitemapLocationIndexable } from "@/lib/sitemap-indexability";
 
@@ -145,6 +146,7 @@ export type LandingFeaturedDirectoryCard = {
   tags: { facet: string; value: string }[];
   treatments: { name: string; domain: string }[];
   clinician_license_verification: ClinicianLicenseVerificationData | null;
+  regulatory_verifications: LocationRegulatoryVerificationData[];
 };
 
 export type TreatmentLocationLandingResult = {
@@ -1284,7 +1286,10 @@ async function hydrateLandingDirectoryCards(
 
   const priceMap = new Map(prices.map((price) => [price.lid, price]));
 
-  const verificationMap = await locationClinicianLicenseVerificationMap(featuredIds);
+  const [verificationMap, regulatoryVerificationMap] = await Promise.all([
+    locationClinicianLicenseVerificationMap(featuredIds),
+    locationRegulatoryVerificationMap(featuredIds),
+  ]);
 
   return featured.map((card) => {
     const id = card.id as number;
@@ -1306,6 +1311,7 @@ async function hydrateLandingDirectoryCards(
       tags: tagMap.get(id) || [],
       treatments: (treatmentMap.get(id) || []).slice(0, 3),
       clinician_license_verification: verificationMap.get(id) || null,
+      regulatory_verifications: regulatoryVerificationMap.get(id) || [],
     };
   });
 }
@@ -2028,7 +2034,10 @@ async function hydrateLocationRows(results: AnyRow[], preferredTreatmentIds: rea
         imageMap.set(image.lid, image);
       }
     }
-    const verificationMap = await locationClinicianLicenseVerificationMap(ids);
+    const [verificationMap, regulatoryVerificationMap] = await Promise.all([
+      locationClinicianLicenseVerificationMap(ids),
+      locationRegulatoryVerificationMap(ids),
+    ]);
     for (const result of results) {
       const id = result.id as number;
       result.treatments = orderTreatmentChips(treatmentMap.get(id) || [], preferredTreatmentIds);
@@ -2036,6 +2045,7 @@ async function hydrateLocationRows(results: AnyRow[], preferredTreatmentIds: rea
       result.image = imageMap.get(id)?.blob_url || null;
       result.image_kind = imageMap.get(id)?.image_kind || null;
       result.clinician_license_verification = verificationMap.get(id) || null;
+      result.regulatory_verifications = regulatoryVerificationMap.get(id) || [];
     }
   }
 }
@@ -2086,6 +2096,45 @@ async function locationClinicianLicenseVerificationMap(ids: number[]) {
 
   for (const verification of verificationRows) {
     verificationMap.set(verification.lid, verification);
+  }
+  return verificationMap;
+}
+
+async function locationRegulatoryVerificationMap(ids: number[]) {
+  const verificationMap = new Map<number, LocationRegulatoryVerificationData[]>();
+  if (!ids.length) {
+    return verificationMap;
+  }
+
+  const verificationRows = await rows<{ lid: number } & LocationRegulatoryVerificationData>(
+    `
+    SELECT verification.location_id AS lid,
+           verification.authority_code,
+           verification.verification_kind,
+           verification.credential_number,
+           verification.credential_status,
+           verification.authority_name,
+           verification.evidence_level,
+           verification.source_url,
+           verification.verified_at::text
+    FROM location_regulatory_verifications verification
+    JOIN locations location ON location.id = verification.location_id
+    WHERE verification.location_id IN (${placeholders(ids.length)})
+      AND verification.verification_status IN ('verified', 'disclosed')
+      AND verification.next_review_at > CURRENT_TIMESTAMP
+      AND location.country_code = 'AE'
+      AND ${activeEntityCondition("location")}
+    ORDER BY verification.location_id,
+             CASE verification.authority_code WHEN 'DHA' THEN 0 ELSE 1 END,
+             verification.verified_at DESC
+  `,
+    ids,
+  );
+
+  for (const verification of verificationRows) {
+    const list = verificationMap.get(verification.lid) || [];
+    list.push(verification);
+    verificationMap.set(verification.lid, list);
   }
   return verificationMap;
 }
@@ -2566,7 +2615,12 @@ export async function getLocationDetail(ref: number | string) {
   );
   location.external_reviews = await getExternalReviewGroups(id);
   location.other_locations = await getOtherOrganizationLocations(location);
-  location.clinician_license_verification = (await locationClinicianLicenseVerificationMap([id])).get(id) || null;
+  const [clinicianVerificationMap, regulatoryVerificationMap] = await Promise.all([
+    locationClinicianLicenseVerificationMap([id]),
+    locationRegulatoryVerificationMap([id]),
+  ]);
+  location.clinician_license_verification = clinicianVerificationMap.get(id) || null;
+  location.regulatory_verifications = regulatoryVerificationMap.get(id) || [];
   const locationImages = await rows<{
     blob_url: string | null;
     alt: string | null;

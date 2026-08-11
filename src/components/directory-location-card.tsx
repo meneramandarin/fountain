@@ -8,6 +8,10 @@ import {
   ClinicianLicenseVerification,
   type ClinicianLicenseVerificationData,
 } from "@/components/clinician-license-verification";
+import {
+  LocationRegulatoryVerification,
+  type LocationRegulatoryVerificationData,
+} from "@/components/location-regulatory-verification";
 import { trackClinicClick } from "@/lib/clinic-click-analytics";
 import { locationHref } from "@/lib/directory-urls";
 import { rememberDirectoryReturn } from "@/lib/directory-return-navigation";
@@ -33,6 +37,7 @@ export type DirectoryLocationCardData = {
   image_kind?: string | null;
   distance_miles?: number | null;
   clinician_license_verification?: ClinicianLicenseVerificationData | null;
+  regulatory_verifications?: LocationRegulatoryVerificationData[] | null;
 };
 
 function imageSource(src: string) {
@@ -138,6 +143,7 @@ export function DirectoryLocationCard({
           <span className="result-title-row">
             <b>{result.name || result.org_name || "Unnamed location"}</b>
             <ClinicianLicenseVerification verification={result.clinician_license_verification} compact />
+            <LocationRegulatoryVerification verifications={result.regulatory_verifications} compact />
           </span>
           <small>
             <MapPin size={13} aria-hidden="true" />

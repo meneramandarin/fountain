@@ -1,0 +1,73 @@
+{
+  "generated_at": "2026-08-10T18:00:00-07:00",
+  "scope": {
+    "active_dubai_locations_reviewed": 46,
+    "dha_registry_facilities_available": 5831,
+    "dha_verified_locations": 22,
+    "mohap_advertisement_licence_disclosures": 6,
+    "locations_with_any_regulatory_evidence": 23,
+    "locations_without_confident_regulatory_evidence": 23
+  },
+  "methodology": {
+    "dha": "Compared every active Dubai directory record against the complete Dubai Medical Registry facility set, then accepted only matches supported by a distinctive legal or brand name plus official website, address, or locality evidence. DHA describes the registry as containing facilities with an active registration or licence.",
+    "mohap": "Recorded health-advertisement licence numbers displayed on current official facility websites. These are first-party disclosures because MOHAP does not expose a comparable public credential-status lookup. They are not treated as facility licences.",
+    "review_interval_days": 90
+  },
+  "sources": {
+    "dha_registry": "https://www.dha.gov.ae/sheryan/wps/portal/home/medical-directory",
+    "dha_registry_scope": "https://www.dha.gov.ae/en/uploads/022022/health_regulation_5-12-192022212804.pdf",
+    "dha_health_regulation": "https://www.dha.gov.ae/en/dubai-health-licensing-system-shreyan",
+    "mohap_health_advertisement_service": "https://mohap.gov.ae/en/w/issue-license-/-renew-license-for-a-health-advertisement"
+  },
+  "dha_verified_location_ids": [
+    2060,
+    2453,
+    2476,
+    2483,
+    2551,
+    13434,
+    13436,
+    13626,
+    14093,
+    14249,
+    14260,
+    14326,
+    14412,
+    15934,
+    15945,
+    15947,
+    16022,
+    16034,
+    16044,
+    16067,
+    16096,
+    16222
+  ],
+  "mohap_disclosed_location_ids": [14249, 14412, 15934, 15937, 15947, 16096],
+  "no_confident_dha_match": [
+    { "id": 2112, "name": "Prenuvo Clinic - Dubai, UAE", "reason": "No matching active registry facility; directory address is currently a Vancouver address." },
+    { "id": 2479, "name": "Body Brilliant", "reason": "No Dubai healthcare-facility match; record represents a multi-city wellness brand." },
+    { "id": 2540, "name": "meta[bolic]", "reason": "Only a weak name-similar registry candidate and no official website or address evidence." },
+    { "id": 13408, "name": "Biocure", "reason": "No distinctive active registry match." },
+    { "id": 13551, "name": "Rejuven8 Wellness Club", "reason": "No healthcare-facility record matched the hotel or club location." },
+    { "id": 13713, "name": "Oxygenome", "reason": "No exact facility or official-website match in the registry." },
+    { "id": 13715, "name": "O3 Wellness Center", "reason": "No exact facility or official-website match in the registry." },
+    { "id": 13860, "name": "RESYNC", "reason": "No distinctive active registry match." },
+    { "id": 13862, "name": "Tajmeels Clinic", "reason": "No exact registry match under the displayed brand." },
+    { "id": 13925, "name": "DP World's Aviv Clinics Dubai", "reason": "No registry facility could be tied confidently to this displayed brand and address." },
+    { "id": 14127, "name": "Hyperbaric oxygen chamber", "reason": "Generic listing name with no website and no defensible facility match." },
+    { "id": 14134, "name": "Innovative Healing Systems Clinic", "reason": "No exact registry facility tied to the listed website and unit." },
+    { "id": 14156, "name": "German Hospital Dubai — HBOT", "reason": "Displayed name conflicts with the linked provider site; facility identity requires correction before a badge is safe." },
+    { "id": 14244, "name": "The Brain & Performance Centre", "reason": "No registry facility could be tied confidently to this displayed brand." },
+    { "id": 15604, "name": "Towers Rotana", "reason": "Hotel fitness listing; no healthcare-facility registry match." },
+    { "id": 15937, "name": "DNA Health & Wellness Clinic", "reason": "The registry has DNA facilities at DIFC and Alserkal Avenue, but not the listed Al Manara address." },
+    { "id": 16020, "name": "NVC Medical Center", "reason": "No exact registry or official-website match." },
+    { "id": 16046, "name": "Zarya Wellness Health Club", "reason": "No healthcare-facility registry match." },
+    { "id": 16051, "name": "Nour Clinic", "reason": "No exact registry or official-website match." },
+    { "id": 16053, "name": "Sidra Healthcare", "reason": "Registry candidate is a home-healthcare entity and could not be tied to the listed clinic address." },
+    { "id": 16057, "name": "DIFC | Formation - Biohacking Studio and Longevity Clinic", "reason": "No healthcare-facility registry match for the studio brand." },
+    { "id": 16064, "name": "Dr. Rhea Kotecha Clinic", "reason": "Practitioner-branded listing inside another facility; no separate facility identity was established." },
+    { "id": 16210, "name": "VivDrip", "reason": "No exact registry facility tied to the brand and Opus address." },
+    { "id": 16214, "name": "Medilife Global", "reason": "No address and no registry facility tied confidently to this brand." }
+  ]
+}
