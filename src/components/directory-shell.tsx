@@ -11,6 +11,10 @@ import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { practitionerHref } from "@/lib/directory-urls";
 import { formatLocationPlace } from "@/lib/location-display";
+import {
+  directorySearchResultsHeading,
+  treatmentLocationResultsHeading,
+} from "@/lib/treatment-location-metadata";
 
 type Kind = "locations" | "practitioners";
 
@@ -40,6 +44,17 @@ export type SearchPayload = {
   searched_city?: string | null;
   searched_country?: string | null;
   city_total?: number | null;
+  treatment_price_summaries?: Array<{
+    currency: string | null;
+    minimum: number;
+    offeringCount: number;
+    locationCount: number;
+  }>;
+  resolved_treatment?: {
+    id: number;
+    name: string;
+    category: string;
+  };
 };
 
 type SearchMode = "exact_radius" | "expanded_radius" | "country_fallback" | "country_search" | "cross_border" | "empty" | "map_bounds";
@@ -165,6 +180,27 @@ export function DirectoryShell({
     }
     return { latitude: visitorLocation.latitude, longitude: visitorLocation.longitude };
   }, [state, visitorLocation]);
+  const priceSummaries = payload.treatment_price_summaries
+    ?? initialPayload.treatment_price_summaries;
+  const activeTreatmentLabel = payload.resolved_treatment?.name
+    || (state.treatment_ids.length ? initialTreatmentLabel : undefined);
+  const activeTreatmentCategory = payload.resolved_treatment?.category
+    || (state.treatment_ids.length ? initialTreatmentCategory : undefined);
+  const treatmentResultsHeading = searchHeading
+    ? treatmentLocationResultsHeading({
+        total: payload.total,
+        treatmentLabel: searchHeading.treatmentLabel,
+        cityLabel: searchHeading.cityLabel,
+        priceSummaries,
+      })
+    : null;
+  const queryResultsHeading = !searchHeading && (state.q.trim() || activeTreatmentLabel)
+    ? directorySearchResultsHeading({
+        total: payload.total,
+        query: state.q.trim() || activeTreatmentLabel!,
+        priceSummaries,
+      })
+    : null;
 
   useEffect(() => {
     if (queryString === initialQueryString.current) {
@@ -287,7 +323,7 @@ export function DirectoryShell({
     <main className="directory-shell">
       <LandingScrollHeader
         alwaysVisible
-        initialWhat={initialTreatmentLabel || state.q}
+        initialWhat={state.q || initialTreatmentLabel}
         initialTreatmentId={state.treatment_ids.length === 1 ? state.treatment_ids[0] : undefined}
         initialWhere={state.city_label || state.locality}
         initialCityCountry={state.city_country}
@@ -305,13 +341,16 @@ export function DirectoryShell({
           <div className="resultbar">
             {searchHeading ? (
               <h1>
-                {searchHeading.treatmentLabel}
-                {searchHeading.cityLabel ? ` in ${searchHeading.cityLabel}` : ""} · {payload.total.toLocaleString()} results
+                {treatmentResultsHeading
+                  || `${searchHeading.treatmentLabel} · ${payload.total.toLocaleString()} results`}
               </h1>
             ) : (
-              <span>
-                {loading ? "Searching..." : `${payload.total.toLocaleString()} Result${payload.total === 1 ? "" : "s"}`}
-              </span>
+              <h1>
+                {loading
+                  ? "Searching..."
+                  : queryResultsHeading
+                    || `${payload.total.toLocaleString()} result${payload.total === 1 ? "" : "s"}`}
+              </h1>
             )}
             {loading ? <Loader2 className="spin" size={18} aria-hidden="true" /> : null}
           </div>
@@ -326,8 +365,8 @@ export function DirectoryShell({
                     key={result.id}
                     result={result as LocationResultRow}
                     showDistance={shouldShowDistance(payload)}
-                    clinicCategory={initialTreatmentCategory}
-                    treatmentName={initialTreatmentLabel}
+                    clinicCategory={activeTreatmentCategory}
+                    treatmentName={activeTreatmentLabel}
                     resultPosition={(payload.page || 0) * payload.page_size + index + 1}
                     onActiveChange={setActiveLocationId}
                   />

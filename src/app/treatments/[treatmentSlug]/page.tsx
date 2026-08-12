@@ -5,6 +5,7 @@ import { DirectoryShell, type DirectoryState, type SearchPayload } from "@/compo
 import { directoryParamsFromState } from "@/lib/directory-search-state";
 import { getTreatmentCatalog, searchLocations } from "@/lib/queries";
 import { siteUrl } from "@/lib/site";
+import { treatmentLocationDescription } from "@/lib/treatment-location-metadata";
 import { treatmentHref, treatmentSlug } from "@/lib/treatment-pages";
 
 export const revalidate = 86_400;
@@ -39,7 +40,9 @@ const loadTreatmentPage = cache(async (slug: string) => {
     care_model: "",
     page: 0,
   };
-  const payload = await searchLocations(directoryParamsFromState(state), state.page);
+  const payload = await searchLocations(directoryParamsFromState(state), state.page, {
+    includeTreatmentPriceSummaries: true,
+  }) as SearchPayload;
   return { treatment, state, payload };
 });
 
@@ -50,7 +53,11 @@ export async function generateMetadata({ params }: TreatmentPageProps): Promise<
   }
 
   const title = `${page.treatment.name} Clinics & Locations | Fountain`;
-  const description = `${page.payload.total.toLocaleString()} locations for ${page.treatment.name} are listed on Fountain.`;
+  const description = treatmentLocationDescription({
+    total: page.payload.total,
+    treatment: page.treatment.name,
+    priceSummaries: page.payload.treatment_price_summaries,
+  });
   const canonical = treatmentHref(page.treatment);
 
   return {
