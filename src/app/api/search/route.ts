@@ -11,6 +11,6 @@ export async function GET(request: Request) {
   }
   const params = parseDirectoryParams(url.searchParams);
   const page = Math.max(0, Number.parseInt(url.searchParams.get("page") || "0", 10) || 0);
-  const payload = await searchLocations(params, page);
+  const payload = await searchLocations(params, page, { includeTreatmentPriceSummaries: true });
   return NextResponse.json(payload);
 }

@@ -6,6 +6,7 @@ import { directoryParamsFromState } from "@/lib/directory-search-state";
 import { cityLabel, getTreatmentCityPage } from "@/lib/treatment-hubs";
 import { searchLocations } from "@/lib/queries";
 import { ogImage, siteName, siteUrl } from "@/lib/site";
+import { treatmentLocationDescription } from "@/lib/treatment-location-metadata";
 
 export const revalidate = 86_400;
 export const dynamicParams = true;
@@ -43,7 +44,11 @@ const loadSearchPage = cache(async (treatmentSlug: string, placeSlug: string) =>
     care_model: "",
     page: 0,
   };
-  const payload = await searchLocations(directoryParamsFromState(state), state.page);
+  const payload = await searchLocations(
+    directoryParamsFromState(state),
+    state.page,
+    { includeTreatmentPriceSummaries: true },
+  ) as SearchPayload;
   return { ...resolved, cityLabel: label, state, payload };
 });
 
@@ -56,7 +61,12 @@ export async function generateMetadata({ params }: TreatmentLocationRouteProps):
 
   const treatment = page.hub.treatment.name;
   const title = `${treatment} in ${page.cityLabel}`;
-  const description = `${page.payload.total.toLocaleString()} locations for ${treatment} are listed in ${page.cityLabel}.`;
+  const description = treatmentLocationDescription({
+    total: page.payload.total,
+    treatment,
+    cityLabel: page.cityLabel,
+    priceSummaries: page.payload.treatment_price_summaries,
+  });
   const canonical = page.city.href;
 
   return {
