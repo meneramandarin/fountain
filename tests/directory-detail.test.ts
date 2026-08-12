@@ -7,13 +7,36 @@ describe("directory detail", () => {
       monday: [{ open: "07:00", close: "17:00" }],
       sunday: [],
     })).toEqual([
-      { day: "Monday", open: "07:00", close: "17:00" },
+      { day: "Monday", periods: ["07:00 – 17:00"] },
+      { day: "Tuesday", periods: ["Closed"] },
+      { day: "Wednesday", periods: ["Closed"] },
+      { day: "Thursday", periods: ["Closed"] },
+      { day: "Friday", periods: ["Closed"] },
+      { day: "Saturday", periods: ["Closed"] },
+      { day: "Sunday", periods: ["Closed"] },
     ]);
   });
 
-  test("accepts array-shaped opening hours unchanged", () => {
-    const hours = [{ day: "Monday", open: "09:00", close: "17:00" }];
-    expect(normalizeOpeningHours(hours)).toBe(hours);
+  test("renders explicit closed days as standard rows", () => {
+    expect(normalizeOpeningHours([
+      { day: "Monday", open: "09:00", close: "17:00" },
+      { day: "Saturday", closed: true },
+      { day: "Sunday", closed: true },
+    ])).toEqual([
+      { day: "Monday", periods: ["09:00 – 17:00"] },
+      { day: "Tuesday", periods: ["Closed"] },
+      { day: "Wednesday", periods: ["Closed"] },
+      { day: "Thursday", periods: ["Closed"] },
+      { day: "Friday", periods: ["Closed"] },
+      { day: "Saturday", periods: ["Closed"] },
+      { day: "Sunday", periods: ["Closed"] },
+    ]);
+  });
+
+  test("renders appointment-only days without a prose note", () => {
+    expect(normalizeOpeningHours([
+      { day: "Monday", by_appointment_only: true },
+    ])[0]).toEqual({ day: "Monday", periods: ["By appointment only"] });
   });
 
   test("treats JSON null opening hours as empty", () => {

@@ -49,8 +49,18 @@ type ExternalReviewGroup = {
   review_count?: number | null;
   reviews?: ReviewRef[];
 };
-type OpeningHour = { day: string; open: string; close: string };
-type OpeningHours = OpeningHour[] | Record<string, Array<Omit<OpeningHour, "day">>>;
+type OpeningHourValue = {
+  day?: string | null;
+  open?: string | null;
+  close?: string | null;
+  opens?: string | null;
+  closes?: string | null;
+  closed?: boolean | string | null;
+  by_appointment?: boolean | string | null;
+  by_appointment_only?: boolean | string | null;
+};
+type OpeningHours = OpeningHourValue[] | Record<string, OpeningHourValue[]>;
+type OpeningHoursByDay = Array<{ day: string; periods: string[] }>;
 type ChainLocationRef = {
   id: number;
   slug?: string | null;
@@ -550,10 +560,7 @@ function LocationTreatmentsAndDetails({ data }: { data: LocationDetailRecord }) 
                 </a>
               ) : null}
             </div>
-            <OpeningHours
-              hours={data.opening_hours}
-              note={data.opening_hours_note}
-            />
+            <OpeningHours hours={data.opening_hours} />
           </div>
           {website ? (
             <OutboundClinicLink
@@ -571,27 +578,11 @@ function LocationTreatmentsAndDetails({ data }: { data: LocationDetailRecord }) 
   );
 }
 
-function OpeningHours({
-  hours,
-  note,
-}: {
-  hours?: OpeningHours | null;
-  note?: string | null;
-}) {
+function OpeningHours({ hours }: { hours?: OpeningHours | null }) {
   const normalizedHours = normalizeOpeningHours(hours);
-  if (!normalizedHours.length && !note) {
+  if (!normalizedHours.length) {
     return null;
   }
-
-  const hoursByDay = Array.from(
-    normalizedHours.reduce((grouped, entry) => {
-      const periods = grouped.get(entry.day) || [];
-      periods.push(`${entry.open} – ${entry.close}`);
-      grouped.set(entry.day, periods);
-      return grouped;
-    }, new Map<string, string[]>()),
-    ([day, periods]) => ({ day, periods }),
-  );
 
   return (
     <div className="clinic-opening-hours" aria-labelledby="clinic-opening-hours-title">
@@ -599,38 +590,117 @@ function OpeningHours({
         <Clock3 size={17} aria-hidden="true" />
         <span id="clinic-opening-hours-title">Opening hours</span>
       </div>
-      {normalizedHours.length ? (
-        <dl>
-          {hoursByDay.map((entry) => (
-            <div key={entry.day}>
-              <dt>{entry.day}</dt>
-              <dd>{entry.periods.join(", ")}</dd>
-            </div>
-          ))}
-        </dl>
-      ) : null}
-      {note ? <p className="clinic-opening-hours-note">{note}</p> : null}
+      <dl>
+        {normalizedHours.map((entry) => (
+          <div key={entry.day}>
+            <dt>{entry.day}</dt>
+            <dd>{entry.periods.join(", ")}</dd>
+          </div>
+        ))}
+      </dl>
     </div>
   );
 }
 
-export function normalizeOpeningHours(hours?: OpeningHours | null): OpeningHour[] {
-  if (Array.isArray(hours)) {
-    return hours;
+export function normalizeOpeningHours(
+  hours?: OpeningHours | null,
+): OpeningHoursByDay {
+  const dayStates = collectOpeningHoursState(hours);
+  const hasRenderableHours = Array.from(dayStates.values()).some(
+    (state) => state.times.length || state.hasByAppointment || state.hasClosed,
+  );
+  if (!hasRenderableHours) {
+    return [];
   }
+
+  return WEEKDAY_ORDER.map((day) => {
+    const state = dayStates.get(day);
+    const periods: string[] = [...(state?.times || [])];
+    if (!periods.length) {
+      periods.push(state?.hasByAppointment ? "By appointment only" : "Closed");
+    }
+    return { day, periods };
+  });
+}
+
+const WEEKDAY_ORDER = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"] as const;
+const DAY_ALIASES = new Map([
+  ["monday", "Monday"], ["mon", "Monday"],
+  ["tuesday", "Tuesday"], ["tue", "Tuesday"],
+  ["wednesday", "Wednesday"], ["wed", "Wednesday"],
+  ["thursday", "Thursday"], ["thu", "Thursday"], ["thurs", "Thursday"],
+  ["friday", "Friday"], ["fri", "Friday"],
+  ["saturday", "Saturday"], ["sat", "Saturday"],
+  ["sunday", "Sunday"], ["sun", "Sunday"],
+]);
+
+function collectOpeningHoursState(hours?: OpeningHours | null) {
+  const states = new Map<
+    string,
+    { times: string[]; hasClosed: boolean; hasByAppointment: boolean }
+  >();
+
+  for (const { day, entry } of extractOpeningHoursEntries(hours)) {
+    const state = states.get(day) || { times: [], hasClosed: false, hasByAppointment: false };
+    const open = normalizeHour(entry.open ?? entry.opens);
+    const close = normalizeHour(entry.close ?? entry.closes);
+
+    if (asBoolean(entry.closed)) {
+      state.hasClosed = true;
+    } else if (asBoolean(entry.by_appointment_only ?? entry.by_appointment)) {
+      state.hasByAppointment = true;
+    } else if (isIdentifiedHour(open) && isIdentifiedHour(close)) {
+      state.times.push(`${open} – ${close}`);
+    }
+
+    states.set(day, state);
+  }
+
+  return states;
+}
+
+function extractOpeningHoursEntries(hours?: OpeningHours | null) {
+  if (Array.isArray(hours)) {
+    return hours
+      .map((period) => {
+        const day = normalizeDay(period.day || "");
+        return day ? { day, entry: period } : null;
+      })
+      .filter((entry): entry is { day: string; entry: OpeningHourValue } => Boolean(entry));
+  }
+
   if (!hours || typeof hours !== "object") {
     return [];
   }
 
-  return Object.entries(hours).flatMap(([day, periods]) =>
-    Array.isArray(periods)
-      ? periods.map((period) => ({
-          day: day.charAt(0).toUpperCase() + day.slice(1),
-          open: period.open,
-          close: period.close,
-        }))
-      : [],
+  return Object.entries(hours).flatMap(([dayKey, periods]) => {
+    const day = normalizeDay(dayKey);
+    return day && Array.isArray(periods)
+      ? periods.map((entry) => ({ day, entry }))
+      : [];
+  });
+}
+
+function asBoolean(value: unknown) {
+  return typeof value === "boolean"
+    ? value
+    : typeof value === "string" && value.toLowerCase() === "true";
+}
+
+function isIdentifiedHour(value: string | null): value is string {
+  return Boolean(
+    value && !["unidentified", "unknown", "not provided", "n/a", "null"].includes(value.toLowerCase()),
   );
+}
+
+function normalizeHour(value: unknown) {
+  return typeof value === "string" && value.trim() ? value.trim() : null;
+}
+
+function normalizeDay(value: string) {
+  const normalized = value.trim().toLowerCase().replace(/[.\s]+/g, "");
+  const withoutPlural = normalized.endsWith("s") ? normalized.slice(0, -1) : normalized;
+  return DAY_ALIASES.get(withoutPlural) || DAY_ALIASES.get(normalized) || null;
 }
 
 function PractitionerMain({ data }: { data: PractitionerDetailRecord }) {
