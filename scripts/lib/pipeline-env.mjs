@@ -5,6 +5,7 @@ import process from "node:process";
 
 export const REPO_ROOT = path.resolve(path.dirname(new URL(import.meta.url).pathname), "..", "..");
 export const ENV_LOCAL_PATH = path.join(REPO_ROOT, ".env.local");
+export const OPENROUTER_DISABLED_PATH = path.join(REPO_ROOT, "config", "openrouter.disabled");
 
 const loaded = [];
 
@@ -22,6 +23,7 @@ export function getDatabaseUrl() {
 }
 
 export function getOpenRouterApiKey() {
+  if (existsSync(OPENROUTER_DISABLED_PATH)) return "";
   return firstNonEmpty("OPENROUTER_API_KEY");
 }
 
@@ -41,6 +43,9 @@ export function requirePipelineCredentials(requirements = {}) {
     missing.push("GOOGLE_PLACES_API_KEY or GOOGLE_MAPS_API_KEY or GOOGLE_API_KEY");
   }
   if (missing.length) {
+    if (requirements.llm && existsSync(OPENROUTER_DISABLED_PATH)) {
+      throw new Error(`OpenRouter is disabled by ${OPENROUTER_DISABLED_PATH}; refusing external LLM calls.`);
+    }
     throw new Error(`Missing required pipeline credential(s) in ${ENV_LOCAL_PATH}: ${missing.join("; ")}`);
   }
   return {
@@ -66,6 +71,9 @@ export function assertEnvLocalGitignored() {
 export async function verifyOpenRouterOneToken({ model = "openai/gpt-4o-mini" } = {}) {
   const apiKey = getOpenRouterApiKey();
   if (!apiKey) {
+    if (existsSync(OPENROUTER_DISABLED_PATH)) {
+      throw new Error(`OpenRouter is disabled by ${OPENROUTER_DISABLED_PATH}; refusing test call.`);
+    }
     throw new Error(`Missing OPENROUTER_API_KEY in ${ENV_LOCAL_PATH}; refusing LLM test call.`);
   }
   const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {

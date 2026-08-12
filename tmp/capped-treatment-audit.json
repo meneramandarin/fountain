@@ -1,0 +1,3502 @@
+{
+  "generated_at": "2026-08-12T04:20:28.009Z",
+  "input": "tmp/capped-treatment-resolutions.jsonl",
+  "output": "tmp/capped-treatment-resolutions-audited.jsonl",
+  "resolved_terms": 41405,
+  "resolved_occurrences": 94160,
+  "existing_treatments": 102,
+  "approved_new_families": 149,
+  "used_new_families": 149,
+  "resulting_total_treatments": 251,
+  "hard_maximum_if_every_family_is_used": 251,
+  "counts_by_kind": {
+    "existing": 18008,
+    "new": 16151,
+    "non_service": 7246
+  },
+  "counts_by_category": {
+    "Measure": 3542,
+    "Optimize": 10286,
+    "Out of scope": 7246,
+    "Recover": 13030,
+    "Regenerate": 1274,
+    "Rejuvenate": 6027
+  },
+  "deterministic_overrides": {
+    "access_pass": 15,
+    "administrative_onboarding": 3,
+    "allergy_treatment": 4,
+    "animal_care_out_of_scope": 43,
+    "b12_injection": 63,
+    "beauty_service": 192,
+    "cancer_treatment": 153,
+    "car_t_cancer_treatment": 14,
+    "chemical_peel": 9,
+    "chiropractic_technique": 5,
+    "class_iv_laser": 11,
+    "commerce_or_fee": 36,
+    "ct": 24,
+    "dental_out_of_scope": 109,
+    "diagnostic_imaging": 26,
+    "electrical_muscle_stimulation": 8,
+    "ent_care": 39,
+    "erectile_dysfunction": 97,
+    "exercise_class": 66,
+    "facility_label": 5,
+    "foundational_functional_care": 1,
+    "gemstone_gua_sha": 1,
+    "general_medical_care": 25,
+    "general_pain": 421,
+    "generic_facial": 745,
+    "glutathione_supplementation": 36,
+    "hair_medication": 16,
+    "halotherapy": 11,
+    "hbot": 54,
+    "infusion_provider_catalog": 449,
+    "iv_infusion": 1071,
+    "kidney_care": 30,
+    "light_therapy": 109,
+    "lipotropic_injection": 37,
+    "massage": 415,
+    "maternal_care": 55,
+    "membership_or_buyout": 728,
+    "mental_health_condition": 157,
+    "mental_health_service": 177,
+    "microchanneling": 9,
+    "mole_removal": 16,
+    "mri": 45,
+    "neurodiagnostic_testing": 43,
+    "neurological_care": 33,
+    "neurological_condition": 78,
+    "nutrition_plan": 8,
+    "ophthalmic_surgery": 8,
+    "ophthalmology": 89,
+    "orthopedic_surgery": 30,
+    "pediatric_primary_care": 27,
+    "peptide_blend": 43,
+    "pet_scan": 14,
+    "physical_exam": 9,
+    "physical_therapy": 53,
+    "pigmentation_treatment": 7,
+    "postural_screening": 4,
+    "pregnancy_care": 6,
+    "regenerative_cell_therapy": 55,
+    "reproductive_care": 5,
+    "retail_recovery_blend": 1,
+    "rife_frequency": 3,
+    "sleep_apnea_evaluation": 2,
+    "sound_healing": 49,
+    "stem_cell_therapy": 91,
+    "substance_use_treatment": 88,
+    "supplement_injection": 103,
+    "weight_loss_medication": 10,
+    "womens_health": 137,
+    "womens_reproductive_care": 30,
+    "wound_care": 68
+  },
+  "most_used_targets": [
+    {
+      "target": "Non-service",
+      "occurrences": 10999
+    },
+    {
+      "target": "IV Infusions",
+      "occurrences": 6812
+    },
+    {
+      "target": "Pain management",
+      "occurrences": 6482
+    },
+    {
+      "target": "Skin Care",
+      "occurrences": 2661
+    },
+    {
+      "target": "Functional medicine",
+      "occurrences": 2339
+    },
+    {
+      "target": "Supplementation",
+      "occurrences": 2310
+    },
+    {
+      "target": "Physical therapy",
+      "occurrences": 2008
+    },
+    {
+      "target": "Primary Care Services",
+      "occurrences": 1863
+    },
+    {
+      "target": "Psychotherapy",
+      "occurrences": 1831
+    },
+    {
+      "target": "Erectile dysfunction treatment",
+      "occurrences": 1623
+    },
+    {
+      "target": "Orthopedic care",
+      "occurrences": 1521
+    },
+    {
+      "target": "Aesthetic medicine",
+      "occurrences": 1164
+    },
+    {
+      "target": "Hair restoration",
+      "occurrences": 1158
+    },
+    {
+      "target": "Wellness And Performance",
+      "occurrences": 1011
+    },
+    {
+      "target": "General laboratory testing",
+      "occurrences": 1006
+    },
+    {
+      "target": "Massage therapy",
+      "occurrences": 984
+    },
+    {
+      "target": "Women's health",
+      "occurrences": 965
+    },
+    {
+      "target": "Medical weight loss",
+      "occurrences": 926
+    },
+    {
+      "target": "Regenerative medicine",
+      "occurrences": 925
+    },
+    {
+      "target": "General surgery",
+      "occurrences": 845
+    },
+    {
+      "target": "B12 Injections",
+      "occurrences": 840
+    },
+    {
+      "target": "Sports medicine",
+      "occurrences": 720
+    },
+    {
+      "target": "Endocrine therapy",
+      "occurrences": 701
+    },
+    {
+      "target": "Sexual health",
+      "occurrences": 694
+    },
+    {
+      "target": "Physical examination",
+      "occurrences": 689
+    },
+    {
+      "target": "Beauty treatment",
+      "occurrences": 661
+    },
+    {
+      "target": "Nerve block",
+      "occurrences": 648
+    },
+    {
+      "target": "Podiatry",
+      "occurrences": 618
+    },
+    {
+      "target": "Telehealth Services",
+      "occurrences": 582
+    },
+    {
+      "target": "Orthopedic surgery",
+      "occurrences": 549
+    },
+    {
+      "target": "Medication management",
+      "occurrences": 530
+    },
+    {
+      "target": "Chronic disease management",
+      "occurrences": 527
+    },
+    {
+      "target": "Body contouring",
+      "occurrences": 523
+    },
+    {
+      "target": "Personalized nutrition",
+      "occurrences": 515
+    },
+    {
+      "target": "Trigger point therapy",
+      "occurrences": 502
+    },
+    {
+      "target": "Cardiovascular care",
+      "occurrences": 501
+    },
+    {
+      "target": "Cancer treatment",
+      "occurrences": 491
+    },
+    {
+      "target": "Spine care",
+      "occurrences": 478
+    },
+    {
+      "target": "Wound care",
+      "occurrences": 465
+    },
+    {
+      "target": "Fertility treatment",
+      "occurrences": 457
+    },
+    {
+      "target": "Occupational therapy",
+      "occurrences": 451
+    },
+    {
+      "target": "Ultrasound imaging",
+      "occurrences": 439
+    },
+    {
+      "target": "Peptide therapy",
+      "occurrences": 435
+    },
+    {
+      "target": "PRP therapy",
+      "occurrences": 428
+    },
+    {
+      "target": "Spine surgery",
+      "occurrences": 425
+    },
+    {
+      "target": "Plastic surgery",
+      "occurrences": 421
+    },
+    {
+      "target": "Sauna and infrared",
+      "occurrences": 419
+    },
+    {
+      "target": "Acne treatment",
+      "occurrences": 418
+    },
+    {
+      "target": "Urgent care",
+      "occurrences": 418
+    },
+    {
+      "target": "Joint replacement",
+      "occurrences": 406
+    },
+    {
+      "target": "Exercise programming",
+      "occurrences": 403
+    },
+    {
+      "target": "Chiropractic care",
+      "occurrences": 393
+    },
+    {
+      "target": "Hormone optimization",
+      "occurrences": 386
+    },
+    {
+      "target": "Laser skin resurfacing",
+      "occurrences": 376
+    },
+    {
+      "target": "Orthotics",
+      "occurrences": 374
+    },
+    {
+      "target": "Laser Skin Rejuvenation",
+      "occurrences": 372
+    },
+    {
+      "target": "Substance use treatment",
+      "occurrences": 347
+    },
+    {
+      "target": "Vaccination",
+      "occurrences": 344
+    },
+    {
+      "target": "Orthobiologics",
+      "occurrences": 343
+    },
+    {
+      "target": "Stem cell therapy",
+      "occurrences": 337
+    },
+    {
+      "target": "Neuropathy treatment",
+      "occurrences": 336
+    },
+    {
+      "target": "Allergy treatment",
+      "occurrences": 330
+    },
+    {
+      "target": "Red light therapy",
+      "occurrences": 327
+    },
+    {
+      "target": "Breast surgery",
+      "occurrences": 319
+    },
+    {
+      "target": "Botox",
+      "occurrences": 318
+    },
+    {
+      "target": "Spinal decompression",
+      "occurrences": 316
+    },
+    {
+      "target": "Strength And Conditioning",
+      "occurrences": 316
+    },
+    {
+      "target": "Cold Laser Therapy",
+      "occurrences": 309
+    },
+    {
+      "target": "Dermal fillers",
+      "occurrences": 305
+    },
+    {
+      "target": "Radiofrequency ablation",
+      "occurrences": 304
+    },
+    {
+      "target": "Cancer screening",
+      "occurrences": 299
+    },
+    {
+      "target": "Epidural steroid injection",
+      "occurrences": 298
+    },
+    {
+      "target": "Compression therapy",
+      "occurrences": 297
+    },
+    {
+      "target": "Advanced blood panel",
+      "occurrences": 294
+    },
+    {
+      "target": "Skin tightening",
+      "occurrences": 292
+    },
+    {
+      "target": "Neurological care",
+      "occurrences": 286
+    },
+    {
+      "target": "Pregnancy Care",
+      "occurrences": 283
+    },
+    {
+      "target": "MRI",
+      "occurrences": 282
+    },
+    {
+      "target": "Neurodiagnostic testing",
+      "occurrences": 282
+    },
+    {
+      "target": "Health coaching",
+      "occurrences": 281
+    },
+    {
+      "target": "Lipotropic injections",
+      "occurrences": 270
+    },
+    {
+      "target": "Neurological rehabilitation",
+      "occurrences": 261
+    },
+    {
+      "target": "Preventive Care",
+      "occurrences": 254
+    },
+    {
+      "target": "Infectious disease testing",
+      "occurrences": 249
+    },
+    {
+      "target": "Chemical peel",
+      "occurrences": 247
+    },
+    {
+      "target": "Naturopathic Medicine",
+      "occurrences": 246
+    },
+    {
+      "target": "Psoriasis treatment",
+      "occurrences": 242
+    },
+    {
+      "target": "Anti Aging",
+      "occurrences": 240
+    },
+    {
+      "target": "Speech therapy",
+      "occurrences": 240
+    },
+    {
+      "target": "Prolotherapy",
+      "occurrences": 234
+    },
+    {
+      "target": "Pigmentation treatment",
+      "occurrences": 225
+    },
+    {
+      "target": "Eczema treatment",
+      "occurrences": 222
+    },
+    {
+      "target": "Gastroenterology",
+      "occurrences": 222
+    },
+    {
+      "target": "Diabetes management",
+      "occurrences": 220
+    },
+    {
+      "target": "Pulmonology",
+      "occurrences": 217
+    },
+    {
+      "target": "Mammography",
+      "occurrences": 215
+    },
+    {
+      "target": "Urology",
+      "occurrences": 214
+    },
+    {
+      "target": "Cupping therapy",
+      "occurrences": 211
+    },
+    {
+      "target": "X-ray",
+      "occurrences": 211
+    },
+    {
+      "target": "Advanced biomarker panel",
+      "occurrences": 209
+    }
+  ],
+  "low_confidence_count": 9847,
+  "low_confidence_high_impact": [
+    {
+      "term": "MANUAL THERAPY",
+      "target": "Physical therapy",
+      "confidence": 0.58,
+      "occurrences": 122
+    },
+    {
+      "term": "Cardiovascular",
+      "target": "Cardiovascular care",
+      "confidence": 0.62,
+      "occurrences": 112
+    },
+    {
+      "term": "Food as Medicine",
+      "target": "Personalized nutrition",
+      "confidence": 0.67,
+      "occurrences": 112
+    },
+    {
+      "term": "hormones and regenerative",
+      "target": "Non-service",
+      "confidence": 0.65,
+      "occurrences": 103
+    },
+    {
+      "term": "PEDIATRICS",
+      "target": "Primary Care Services",
+      "confidence": 0.65,
+      "occurrences": 95
+    },
+    {
+      "term": "DERMATOLOGY",
+      "target": "Skin Care",
+      "confidence": 0.62,
+      "occurrences": 86
+    },
+    {
+      "term": "LONGEVITY",
+      "target": "Anti Aging",
+      "confidence": 0.55,
+      "occurrences": 80
+    },
+    {
+      "term": "Biohacking",
+      "target": "Wellness And Performance",
+      "confidence": 0.54,
+      "occurrences": 79
+    },
+    {
+      "term": "aesthetic management",
+      "target": "Aesthetic medicine",
+      "confidence": 0.55,
+      "occurrences": 69
+    },
+    {
+      "term": "Rheumatology",
+      "target": "Chronic disease management",
+      "confidence": 0.55,
+      "occurrences": 57
+    },
+    {
+      "term": "Peak Performance",
+      "target": "B12 Injections",
+      "confidence": 0.55,
+      "occurrences": 50
+    },
+    {
+      "term": "Complete Microbiome Panel",
+      "target": "General laboratory testing",
+      "confidence": 0.62,
+      "occurrences": 47
+    },
+    {
+      "term": "Custom Injections",
+      "target": "B12 Injections",
+      "confidence": 0.62,
+      "occurrences": 47
+    },
+    {
+      "term": "Epic Energy",
+      "target": "B12 Injections",
+      "confidence": 0.62,
+      "occurrences": 47
+    },
+    {
+      "term": "Food Sensitivity Panels",
+      "target": "Allergy testing",
+      "confidence": 0.65,
+      "occurrences": 47
+    },
+    {
+      "term": "Magic Mojo",
+      "target": "Lipotropic injections",
+      "confidence": 0.6,
+      "occurrences": 47
+    },
+    {
+      "term": "Nutrient Assessment Panel",
+      "target": "Advanced biomarker panel",
+      "confidence": 0.65,
+      "occurrences": 47
+    },
+    {
+      "term": "KINESIO TAPING",
+      "target": "Physical therapy",
+      "confidence": 0.64,
+      "occurrences": 44
+    },
+    {
+      "term": "WORKERS’ COMPENSATION",
+      "target": "Non-service",
+      "confidence": 0.65,
+      "occurrences": 44
+    },
+    {
+      "term": "KYPHOPLASTY",
+      "target": "Spine surgery",
+      "confidence": 0.58,
+      "occurrences": 42
+    },
+    {
+      "term": "REHABILITATION",
+      "target": "Physical therapy",
+      "confidence": 0.68,
+      "occurrences": 39
+    },
+    {
+      "term": "Injection Assistance & Home Care by a Registered Nurse",
+      "target": "Health Consultant",
+      "confidence": 0.55,
+      "occurrences": 37
+    },
+    {
+      "term": "Alternative medicine practitioner",
+      "target": "Naturopathic Medicine",
+      "confidence": 0.55,
+      "occurrences": 35
+    },
+    {
+      "term": "Holistic medicine practitioner",
+      "target": "Naturopathic Medicine",
+      "confidence": 0.62,
+      "occurrences": 35
+    },
+    {
+      "term": "Neurosurgery",
+      "target": "Spine surgery",
+      "confidence": 0.55,
+      "occurrences": 31
+    },
+    {
+      "term": "Physical Medicine & Rehabilitation",
+      "target": "Sports medicine",
+      "confidence": 0.65,
+      "occurrences": 31
+    },
+    {
+      "term": "KNEE",
+      "target": "Orthopedic care",
+      "confidence": 0.62,
+      "occurrences": 28
+    },
+    {
+      "term": "LASER TREATMENTS",
+      "target": "Laser Skin Rejuvenation",
+      "confidence": 0.63,
+      "occurrences": 28
+    },
+    {
+      "term": "Complimentary 15 Minute Consultation",
+      "target": "Non-service",
+      "confidence": 0.69,
+      "occurrences": 27
+    },
+    {
+      "term": "SHOULDER",
+      "target": "Orthopedic care",
+      "confidence": 0.58,
+      "occurrences": 27
+    },
+    {
+      "term": "HIP",
+      "target": "Orthopedic care",
+      "confidence": 0.58,
+      "occurrences": 26
+    },
+    {
+      "term": "Carpal Tunnel Syndrome Treatment",
+      "target": "Orthopedic care",
+      "confidence": 0.62,
+      "occurrences": 24
+    },
+    {
+      "term": "Sacroiliac Joint Injection",
+      "target": "Nerve block",
+      "confidence": 0.58,
+      "occurrences": 24
+    },
+    {
+      "term": "Athletic Training",
+      "target": "Sports medicine",
+      "confidence": 0.66,
+      "occurrences": 23
+    },
+    {
+      "term": "DETOX",
+      "target": "Functional medicine",
+      "confidence": 0.4,
+      "occurrences": 23
+    },
+    {
+      "term": "Plantar Fasciitis",
+      "target": "Podiatry",
+      "confidence": 0.55,
+      "occurrences": 23
+    },
+    {
+      "term": "Ultrasound Therapy",
+      "target": "Physical therapy",
+      "confidence": 0.52,
+      "occurrences": 23
+    },
+    {
+      "term": "Sports Injuries Treatment",
+      "target": "Sports medicine",
+      "confidence": 0.62,
+      "occurrences": 22
+    },
+    {
+      "term": "THERAPEUTIC ULTRASOUND",
+      "target": "Physical therapy",
+      "confidence": 0.55,
+      "occurrences": 22
+    },
+    {
+      "term": "DIAGNOSTIC TESTING",
+      "target": "Advanced biomarker panel",
+      "confidence": 0.62,
+      "occurrences": 21
+    },
+    {
+      "term": "Niagen (NR) IM Shots",
+      "target": "Supplementation",
+      "confidence": 0.55,
+      "occurrences": 21
+    },
+    {
+      "term": "VISCOSUPPLEMENTATION",
+      "target": "Orthopedic care",
+      "confidence": 0.68,
+      "occurrences": 21
+    },
+    {
+      "term": "JOINT MOBILIZATION",
+      "target": "Physical therapy",
+      "confidence": 0.62,
+      "occurrences": 20
+    },
+    {
+      "term": "L-Arginine Injection",
+      "target": "Supplementation",
+      "confidence": 0.62,
+      "occurrences": 20
+    },
+    {
+      "term": "Wrinkle Treatment",
+      "target": "Aesthetic medicine",
+      "confidence": 0.55,
+      "occurrences": 20
+    },
+    {
+      "term": "OCCUPATIONAL HEALTH",
+      "target": "Dot Physicals",
+      "confidence": 0.55,
+      "occurrences": 19
+    },
+    {
+      "term": "Discography",
+      "target": "Pain management",
+      "confidence": 0.5,
+      "occurrences": 19
+    },
+    {
+      "term": "Infectious Disease",
+      "target": "Primary Care Services",
+      "confidence": 0.45,
+      "occurrences": 19
+    },
+    {
+      "term": "Hematology",
+      "target": "Non-service",
+      "confidence": 0.65,
+      "occurrences": 18
+    },
+    {
+      "term": "PHYSICAL MEDICINE",
+      "target": "Pain management",
+      "confidence": 0.55,
+      "occurrences": 18
+    },
+    {
+      "term": "ULTRASOUND GUIDED INJECTIONS",
+      "target": "Pain management",
+      "confidence": 0.65,
+      "occurrences": 18
+    },
+    {
+      "term": "Audiology",
+      "target": "Hearing evaluation",
+      "confidence": 0.65,
+      "occurrences": 17
+    },
+    {
+      "term": "Injection Therapy",
+      "target": "Pain management",
+      "confidence": 0.65,
+      "occurrences": 17
+    },
+    {
+      "term": "Prescription Retinoids",
+      "target": "Acne treatment",
+      "confidence": 0.62,
+      "occurrences": 16
+    },
+    {
+      "term": "Prescription Retinoids - Every 3 months",
+      "target": "Acne treatment",
+      "confidence": 0.62,
+      "occurrences": 16
+    },
+    {
+      "term": "SPINE",
+      "target": "Spine care",
+      "confidence": 0.62,
+      "occurrences": 16
+    },
+    {
+      "term": "SPORTS INJURY",
+      "target": "Sports medicine",
+      "confidence": 0.58,
+      "occurrences": 16
+    },
+    {
+      "term": "Wrinkle Treatment Bundle",
+      "target": "Botox",
+      "confidence": 0.62,
+      "occurrences": 16
+    },
+    {
+      "term": "Wrinkle Treatment Bundle - 3x Wrinkle Treatments",
+      "target": "Botox",
+      "confidence": 0.62,
+      "occurrences": 16
+    },
+    {
+      "term": "Wrinkle Treatment Bundle - 3x Wrinkle Treatments, 3 treatments",
+      "target": "Botox",
+      "confidence": 0.62,
+      "occurrences": 16
+    },
+    {
+      "term": "ADHD",
+      "target": "Medication management",
+      "confidence": 0.45,
+      "occurrences": 16
+    },
+    {
+      "term": "Athlete's Foot Treatment",
+      "target": "Podiatry",
+      "confidence": 0.65,
+      "occurrences": 16
+    },
+    {
+      "term": "Fall Prevention",
+      "target": "Balance Therapy",
+      "confidence": 0.65,
+      "occurrences": 16
+    },
+    {
+      "term": "Initial Evaluation and Consultation",
+      "target": "Non-service",
+      "confidence": 0.65,
+      "occurrences": 16
+    },
+    {
+      "term": "Inpatient Rehabilitation",
+      "target": "Neurological rehabilitation",
+      "confidence": 0.55,
+      "occurrences": 16
+    },
+    {
+      "term": "MINIMALLY INVASIVE SURGERY",
+      "target": "General surgery",
+      "confidence": 0.6,
+      "occurrences": 16
+    },
+    {
+      "term": "Elbow",
+      "target": "Orthopedic care",
+      "confidence": 0.55,
+      "occurrences": 15
+    },
+    {
+      "term": "Focused Scan (Standalone) - ~30 minutes",
+      "target": "MRI",
+      "confidence": 0.55,
+      "occurrences": 15
+    },
+    {
+      "term": "HCG Therapy",
+      "target": "Hormone optimization",
+      "confidence": 0.65,
+      "occurrences": 15
+    },
+    {
+      "term": "Health Education",
+      "target": "Health coaching",
+      "confidence": 0.55,
+      "occurrences": 15
+    },
+    {
+      "term": "Injury Prevention",
+      "target": "Sports medicine",
+      "confidence": 0.58,
+      "occurrences": 15
+    },
+    {
+      "term": "Neural Therapy",
+      "target": "Trigger point therapy",
+      "confidence": 0.65,
+      "occurrences": 15
+    },
+    {
+      "term": "Occupational Medicine",
+      "target": "Primary Care Services",
+      "confidence": 0.55,
+      "occurrences": 15
+    },
+    {
+      "term": "Whole Body Scan (Standalone) - ~50 minutes",
+      "target": "MRI",
+      "confidence": 0.55,
+      "occurrences": 15
+    },
+    {
+      "term": "WORK INJURIES",
+      "target": "Occupational therapy",
+      "confidence": 0.58,
+      "occurrences": 15
+    },
+    {
+      "term": "Work Injury Treatment",
+      "target": "Occupational therapy",
+      "confidence": 0.6,
+      "occurrences": 15
+    },
+    {
+      "term": "Auto Accident Injury Treatment",
+      "target": "Chiropractic care",
+      "confidence": 0.65,
+      "occurrences": 14
+    },
+    {
+      "term": "Breast Health",
+      "target": "Women's health",
+      "confidence": 0.65,
+      "occurrences": 14
+    },
+    {
+      "term": "INITIAL EVALUATION (60 MIN)",
+      "target": "Non-service",
+      "confidence": 0.6,
+      "occurrences": 14
+    },
+    {
+      "term": "Methylene Blue",
+      "target": "Supplementation",
+      "confidence": 0.55,
+      "occurrences": 14
+    },
+    {
+      "term": "12 hour nursing care at home",
+      "target": "Primary Care Services",
+      "confidence": 0.45,
+      "occurrences": 14
+    },
+    {
+      "term": "Remote Therapeutic Monitoring",
+      "target": "Telehealth Services",
+      "confidence": 0.65,
+      "occurrences": 14
+    },
+    {
+      "term": "Skilled Nursing",
+      "target": "Primary Care Services",
+      "confidence": 0.42,
+      "occurrences": 14
+    },
+    {
+      "term": "Bone Marrow Aspirate",
+      "target": "Stem cell therapy",
+      "confidence": 0.6,
+      "occurrences": 13
+    },
+    {
+      "term": "Gout Treatment",
+      "target": "Chronic disease management",
+      "confidence": 0.66,
+      "occurrences": 13
+    },
+    {
+      "term": "Initial Visit",
+      "target": "Non-service",
+      "confidence": 0.6,
+      "occurrences": 13
+    },
+    {
+      "term": "Interventional Radiology",
+      "target": "General surgery",
+      "confidence": 0.52,
+      "occurrences": 13
+    },
+    {
+      "term": "Kinesiology Taping",
+      "target": "Sports Rehabilitation",
+      "confidence": 0.55,
+      "occurrences": 13
+    },
+    {
+      "term": "MiraDry",
+      "target": "Aesthetic medicine",
+      "confidence": 0.55,
+      "occurrences": 13
+    },
+    {
+      "term": "New Patient Consultation",
+      "target": "Non-service",
+      "confidence": 0.62,
+      "occurrences": 13
+    },
+    {
+      "term": "Specialty Care",
+      "target": "Non-service",
+      "confidence": 0.68,
+      "occurrences": 13
+    },
+    {
+      "term": "Ear, Nose & Throat",
+      "target": "Primary Care Services",
+      "confidence": 0.45,
+      "occurrences": 12
+    },
+    {
+      "term": "Frozen Shoulder Treatment",
+      "target": "Orthopedic care",
+      "confidence": 0.65,
+      "occurrences": 12
+    },
+    {
+      "term": "Home Health",
+      "target": "Primary Care Services",
+      "confidence": 0.55,
+      "occurrences": 12
+    },
+    {
+      "term": "Injury Screenings",
+      "target": "Physical examination",
+      "confidence": 0.65,
+      "occurrences": 12
+    },
+    {
+      "term": "Knee Treatment",
+      "target": "Pain management",
+      "confidence": 0.65,
+      "occurrences": 12
+    },
+    {
+      "term": "Plantar Wart Treatment",
+      "target": "Skin Care",
+      "confidence": 0.65,
+      "occurrences": 12
+    },
+    {
+      "term": "Rehabilitation Services",
+      "target": "Physical therapy",
+      "confidence": 0.65,
+      "occurrences": 12
+    },
+    {
+      "term": "REHABILITATION THERAPY",
+      "target": "Physical therapy",
+      "confidence": 0.65,
+      "occurrences": 12
+    },
+    {
+      "term": "STROKE",
+      "target": "Stroke rehabilitation",
+      "confidence": 0.6,
+      "occurrences": 12
+    },
+    {
+      "term": "Abdominal Pain Treatment",
+      "target": "Primary Care Services",
+      "confidence": 0.65,
+      "occurrences": 11
+    },
+    {
+      "term": "AlterG Anti Gravity Treadmill",
+      "target": "Physical therapy",
+      "confidence": 0.65,
+      "occurrences": 11
+    },
+    {
+      "term": "Ankle Sprain Treatment",
+      "target": "Orthopedic care",
+      "confidence": 0.65,
+      "occurrences": 11
+    },
+    {
+      "term": "AUTO ACCIDENT CARE",
+      "target": "Chiropractic care",
+      "confidence": 0.55,
+      "occurrences": 11
+    },
+    {
+      "term": "Bio Charger",
+      "target": "PEMF therapy",
+      "confidence": 0.55,
+      "occurrences": 11
+    },
+    {
+      "term": "DISCSEEL® Procedure",
+      "target": "Spine care",
+      "confidence": 0.58,
+      "occurrences": 11
+    },
+    {
+      "term": "Full Body SCAN",
+      "target": "Executive health checkup",
+      "confidence": 0.45,
+      "occurrences": 11
+    },
+    {
+      "term": "Genetic Counseling",
+      "target": "Genetic testing",
+      "confidence": 0.55,
+      "occurrences": 11
+    },
+    {
+      "term": "HYDROTHERAPY",
+      "target": "Aquatic therapy",
+      "confidence": 0.6,
+      "occurrences": 11
+    },
+    {
+      "term": "Hyperhidrosis Treatment",
+      "target": "Aesthetic medicine",
+      "confidence": 0.62,
+      "occurrences": 11
+    },
+    {
+      "term": "Low-Dose Naltrexone (LDN) Therapy",
+      "target": "Medication management",
+      "confidence": 0.64,
+      "occurrences": 11
+    },
+    {
+      "term": "Medical Dermatology",
+      "target": "Skin Care",
+      "confidence": 0.65,
+      "occurrences": 11
+    },
+    {
+      "term": "Orthopedics & Sports Medicine",
+      "target": "Orthopedic care",
+      "confidence": 0.68,
+      "occurrences": 11
+    },
+    {
+      "term": "Osteopath",
+      "target": "Osteopathic manipulation",
+      "confidence": 0.66,
+      "occurrences": 11
+    },
+    {
+      "term": "Osteoporosis Treatment",
+      "target": "Women's health",
+      "confidence": 0.58,
+      "occurrences": 11
+    },
+    {
+      "term": "Robotic Surgery",
+      "target": "General surgery",
+      "confidence": 0.6,
+      "occurrences": 11
+    },
+    {
+      "term": "Targeted Therapy",
+      "target": "Chemotherapy",
+      "confidence": 0.5,
+      "occurrences": 11
+    },
+    {
+      "term": "Whiplash",
+      "target": "Pain management",
+      "confidence": 0.66,
+      "occurrences": 11
+    },
+    {
+      "term": "Cancer Support Care",
+      "target": "Palliative care",
+      "confidence": 0.55,
+      "occurrences": 10
+    },
+    {
+      "term": "Cartilage Restoration",
+      "target": "Orthopedic care",
+      "confidence": 0.6,
+      "occurrences": 10
+    },
+    {
+      "term": "Chronic Fatigue Treatment",
+      "target": "Functional medicine",
+      "confidence": 0.55,
+      "occurrences": 10
+    },
+    {
+      "term": "Corporate Wellness",
+      "target": "Wellness And Performance",
+      "confidence": 0.55,
+      "occurrences": 10
+    },
+    {
+      "term": "Corticosteroid Injections",
+      "target": "Pain management",
+      "confidence": 0.6,
+      "occurrences": 10
+    },
+    {
+      "term": "EYE CARE",
+      "target": "Eye examination",
+      "confidence": 0.55,
+      "occurrences": 10
+    },
+    {
+      "term": "FOLLOW-UP VISIT (45 MIN)",
+      "target": "Health Consultant",
+      "confidence": 0.5,
+      "occurrences": 10
+    },
+    {
+      "term": "Free Assessment and Consult",
+      "target": "Body composition analysis",
+      "confidence": 0.55,
+      "occurrences": 10
+    },
+    {
+      "term": "Geriatric Care",
+      "target": "Primary Care Services",
+      "confidence": 0.65,
+      "occurrences": 10
+    },
+    {
+      "term": "Gua Sha",
+      "target": "Soft Tissue Mobilization",
+      "confidence": 0.65,
+      "occurrences": 10
+    },
+    {
+      "term": "Health Strategy Session",
+      "target": "Health coaching",
+      "confidence": 0.65,
+      "occurrences": 10
+    },
+    {
+      "term": "HERNIATED DISC",
+      "target": "Spine care",
+      "confidence": 0.6,
+      "occurrences": 10
+    },
+    {
+      "term": "House Calls",
+      "target": "Primary Care Services",
+      "confidence": 0.65,
+      "occurrences": 10
+    },
+    {
+      "term": "Intramuscular Shots",
+      "target": "Supplementation",
+      "confidence": 0.55,
+      "occurrences": 10
+    },
+    {
+      "term": "Intro Tour & Cell Health Analysis",
+      "target": "Body composition analysis",
+      "confidence": 0.55,
+      "occurrences": 10
+    },
+    {
+      "term": "Juliet Laser Rejuvenation",
+      "target": "Women's health",
+      "confidence": 0.65,
+      "occurrences": 10
+    },
+    {
+      "term": "Lipedema Treatment",
+      "target": "Vascular surgery",
+      "confidence": 0.45,
+      "occurrences": 10
+    },
+    {
+      "term": "Metabolic Trainer",
+      "target": "Wellness And Performance",
+      "confidence": 0.55,
+      "occurrences": 10
+    },
+    {
+      "term": "Prosthetics - Lower Limb",
+      "target": "Orthotics",
+      "confidence": 0.55,
+      "occurrences": 10
+    },
+    {
+      "term": "Prosthetics - Upper Limb",
+      "target": "Orthotics",
+      "confidence": 0.55,
+      "occurrences": 10
+    },
+    {
+      "term": "Runners Protocol",
+      "target": "Exercise programming",
+      "confidence": 0.65,
+      "occurrences": 10
+    },
+    {
+      "term": "Stress Management",
+      "target": "Health coaching",
+      "confidence": 0.6,
+      "occurrences": 10
+    },
+    {
+      "term": "The Energy Protocol",
+      "target": "Wellness And Performance",
+      "confidence": 0.5,
+      "occurrences": 10
+    },
+    {
+      "term": "Dermatology visit",
+      "target": "Skin Care",
+      "confidence": 0.55,
+      "occurrences": 10
+    },
+    {
+      "term": "Wasabi 30",
+      "target": "Wellness And Performance",
+      "confidence": 0.35,
+      "occurrences": 10
+    },
+    {
+      "term": "Wasabi Demo",
+      "target": "Wellness And Performance",
+      "confidence": 0.35,
+      "occurrences": 10
+    },
+    {
+      "term": "AI Movement Trainer",
+      "target": "Exercise programming",
+      "confidence": 0.68,
+      "occurrences": 10
+    },
+    {
+      "term": "ATHLETIC PERFORMANCE",
+      "target": "Wellness And Performance",
+      "confidence": 0.68,
+      "occurrences": 10
+    },
+    {
+      "term": "Anesthesiology",
+      "target": "Non-service",
+      "confidence": 0.55,
+      "occurrences": 9
+    },
+    {
+      "term": "Aromatherapy",
+      "target": "Massage therapy",
+      "confidence": 0.45,
+      "occurrences": 9
+    },
+    {
+      "term": "AUTO ACCIDENTS",
+      "target": "Pain management",
+      "confidence": 0.65,
+      "occurrences": 9
+    },
+    {
+      "term": "B-Complex Injection",
+      "target": "B12 Injections",
+      "confidence": 0.55,
+      "occurrences": 9
+    },
+    {
+      "term": "Biologics",
+      "target": "Orthobiologics",
+      "confidence": 0.55,
+      "occurrences": 9
+    },
+    {
+      "term": "Cerebral Palsy",
+      "target": "Neurological rehabilitation",
+      "confidence": 0.6,
+      "occurrences": 9
+    },
+    {
+      "term": "Cognitive Performance Plan",
+      "target": "Wellness And Performance",
+      "confidence": 0.55,
+      "occurrences": 9
+    },
+    {
+      "term": "Diagnostics",
+      "target": "General laboratory testing",
+      "confidence": 0.45,
+      "occurrences": 9
+    },
+    {
+      "term": "DIZZINESS",
+      "target": "Vestibular Therapy",
+      "confidence": 0.65,
+      "occurrences": 9
+    },
+    {
+      "term": "Electroanalgesic Therapy",
+      "target": "Electrical muscle stimulation",
+      "confidence": 0.65,
+      "occurrences": 9
+    },
+    {
+      "term": "Fitness and Wellness",
+      "target": "Wellness And Performance",
+      "confidence": 0.65,
+      "occurrences": 9
+    },
+    {
+      "term": "Foreign Body Removal",
+      "target": "Foot and ankle surgery",
+      "confidence": 0.65,
+      "occurrences": 9
+    },
+    {
+      "term": "Fountain of Youth",
+      "target": "Anti Aging",
+      "confidence": 0.6,
+      "occurrences": 9
+    },
+    {
+      "term": "Grooming",
+      "target": "Beauty treatment",
+      "confidence": 0.65,
+      "occurrences": 9
+    },
+    {
+      "term": "Hospital Medicine",
+      "target": "Primary Care Services",
+      "confidence": 0.45,
+      "occurrences": 9
+    },
+    {
+      "term": "Hospitalists",
+      "target": "Non-service",
+      "confidence": 0.55,
+      "occurrences": 9
+    },
+    {
+      "term": "Hybrid Care",
+      "target": "Telehealth Services",
+      "confidence": 0.45,
+      "occurrences": 9
+    },
+    {
+      "term": "Inpatient Therapy",
+      "target": "Individual Therapy",
+      "confidence": 0.55,
+      "occurrences": 9
+    },
+    {
+      "term": "Iontophoresis",
+      "target": "Physical therapy",
+      "confidence": 0.55,
+      "occurrences": 9
+    },
+    {
+      "term": "Medicine 4.0",
+      "target": "Wellness And Performance",
+      "confidence": 0.6,
+      "occurrences": 9
+    },
+    {
+      "term": "Movement Disorders",
+      "target": "Neurological rehabilitation",
+      "confidence": 0.55,
+      "occurrences": 9
+    },
+    {
+      "term": "Nerve Hydrodissection",
+      "target": "Pain management",
+      "confidence": 0.65,
+      "occurrences": 9
+    },
+    {
+      "term": "NEUROMODULATION",
+      "target": "Peripheral nerve stimulation",
+      "confidence": 0.6,
+      "occurrences": 9
+    },
+    {
+      "term": "Neurostimulation",
+      "target": "Peripheral nerve stimulation",
+      "confidence": 0.55,
+      "occurrences": 9
+    },
+    {
+      "term": "Offsite or Home Care Visit - Non-Member - per visit",
+      "target": "Primary Care Services",
+      "confidence": 0.55,
+      "occurrences": 9
+    },
+    {
+      "term": "Outpatient Therapy",
+      "target": "Physical therapy",
+      "confidence": 0.65,
+      "occurrences": 9
+    },
+    {
+      "term": "Pediatrics - Prosthetics",
+      "target": "Non-service",
+      "confidence": 0.55,
+      "occurrences": 9
+    },
+    {
+      "term": "Posture Correction",
+      "target": "Chiropractic care",
+      "confidence": 0.56,
+      "occurrences": 9
+    },
+    {
+      "term": "Prosthetics - Sockets, Liners, & Accessories",
+      "target": "Non-service",
+      "confidence": 0.62,
+      "occurrences": 9
+    },
+    {
+      "term": "Rashes Treatment",
+      "target": "Skin Care",
+      "confidence": 0.67,
+      "occurrences": 9
+    },
+    {
+      "term": "Rheumatoid Arthritis Treatment",
+      "target": "Medication management",
+      "confidence": 0.52,
+      "occurrences": 9
+    },
+    {
+      "term": "Shoulder Treatment",
+      "target": "Orthopedic care",
+      "confidence": 0.68,
+      "occurrences": 9
+    },
+    {
+      "term": "Skin Infections Treatment",
+      "target": "Skin Care",
+      "confidence": 0.6,
+      "occurrences": 9
+    },
+    {
+      "term": "Spiritual Care",
+      "target": "Non-service",
+      "confidence": 0.54,
+      "occurrences": 9
+    },
+    {
+      "term": "Taurine Injection",
+      "target": "Supplementation",
+      "confidence": 0.66,
+      "occurrences": 9
+    },
+    {
+      "term": "The Men's Package",
+      "target": "Non-service",
+      "confidence": 0.68,
+      "occurrences": 9
+    },
+    {
+      "term": "The Wedding Package",
+      "target": "Non-service",
+      "confidence": 0.62,
+      "occurrences": 9
+    },
+    {
+      "term": "Trauma",
+      "target": "Trauma therapy",
+      "confidence": 0.55,
+      "occurrences": 9
+    },
+    {
+      "term": "Travel Medicine",
+      "target": "Primary Care Services",
+      "confidence": 0.62,
+      "occurrences": 9
+    },
+    {
+      "term": "Cysts Treatment",
+      "target": "Dermatologic surgery",
+      "confidence": 0.64,
+      "occurrences": 8
+    },
+    {
+      "term": "Digestive & Metabolic Support",
+      "target": "Functional medicine",
+      "confidence": 0.65,
+      "occurrences": 8
+    },
+    {
+      "term": "Ear Candling",
+      "target": "Beauty treatment",
+      "confidence": 0.55,
+      "occurrences": 8
+    },
+    {
+      "term": "Endosphere Body - 45 Minutes, 1 Session",
+      "target": "Cellulite Reduction",
+      "confidence": 0.62,
+      "occurrences": 8
+    },
+    {
+      "term": "Executive SCAN",
+      "target": "Executive health checkup",
+      "confidence": 0.62,
+      "occurrences": 8
+    },
+    {
+      "term": "Geriatric Medicine",
+      "target": "Primary Care Services",
+      "confidence": 0.6,
+      "occurrences": 8
+    },
+    {
+      "term": "HEALTH & WELLNESS",
+      "target": "Wellness And Performance",
+      "confidence": 0.55,
+      "occurrences": 8
+    },
+    {
+      "term": "Herpes Treatment",
+      "target": "Infectious disease testing",
+      "confidence": 0.5,
+      "occurrences": 8
+    },
+    {
+      "term": "Hylenex (Filler Dissolver)",
+      "target": "Aesthetic medicine",
+      "confidence": 0.6,
+      "occurrences": 8
+    },
+    {
+      "term": "Imaging & Radiology",
+      "target": "Non-service",
+      "confidence": 0.55,
+      "occurrences": 8
+    },
+    {
+      "term": "INJECTIONS",
+      "target": "Aesthetic medicine",
+      "confidence": 0.45,
+      "occurrences": 8
+    },
+    {
+      "term": "Latisse",
+      "target": "Beauty treatment",
+      "confidence": 0.65,
+      "occurrences": 8
+    },
+    {
+      "term": "Meditation",
+      "target": "Wellness And Performance",
+      "confidence": 0.45,
+      "occurrences": 8
+    },
+    {
+      "term": "Metabolic Health",
+      "target": "Medical weight loss",
+      "confidence": 0.55,
+      "occurrences": 8
+    },
+    {
+      "term": "Military",
+      "target": "Non-service",
+      "confidence": 0.65,
+      "occurrences": 8
+    },
+    {
+      "term": "Molluscum Contagiosum Treatment",
+      "target": "Skin Care",
+      "confidence": 0.62,
+      "occurrences": 8
+    },
+    {
+      "term": "NEUROLOGICAL DISORDERS",
+      "target": "Neurological rehabilitation",
+      "confidence": 0.45,
+      "occurrences": 8
+    },
+    {
+      "term": "NUTRITION RESPONSE TESTING",
+      "target": "Personalized nutrition",
+      "confidence": 0.62,
+      "occurrences": 8
+    },
+    {
+      "term": "Pediatric Services",
+      "target": "Primary Care Services",
+      "confidence": 0.55,
+      "occurrences": 8
+    },
+    {
+      "term": "Allergy & Immune Optimization",
+      "target": "Allergy treatment",
+      "confidence": 0.66,
+      "occurrences": 8
+    },
+    {
+      "term": "Amniotic Membrane Therapy",
+      "target": "Regenerative medicine",
+      "confidence": 0.68,
+      "occurrences": 8
+    },
+    {
+      "term": "Applied Kinesiology",
+      "target": "Chiropractic care",
+      "confidence": 0.56,
+      "occurrences": 8
+    },
+    {
+      "term": "AUTO AND PERSONAL INJURY",
+      "target": "Chiropractic care",
+      "confidence": 0.5,
+      "occurrences": 8
+    },
+    {
+      "term": "Cartilage Repair",
+      "target": "Orthopedic surgery",
+      "confidence": 0.65,
+      "occurrences": 8
+    },
+    {
+      "term": "Comprehensive SCAN",
+      "target": "MRI",
+      "confidence": 0.42,
+      "occurrences": 8
+    },
+    {
+      "term": "Compression Stockings",
+      "target": "Compression therapy",
+      "confidence": 0.66,
+      "occurrences": 8
+    },
+    {
+      "term": "CORE",
+      "target": "Non-service",
+      "confidence": 0.5,
+      "occurrences": 8
+    },
+    {
+      "term": "Core SCAN",
+      "target": "MRI",
+      "confidence": 0.42,
+      "occurrences": 8
+    },
+    {
+      "term": "Second Opinions",
+      "target": "Health Consultant",
+      "confidence": 0.55,
+      "occurrences": 8
+    },
+    {
+      "term": "STRETCH THERAPY",
+      "target": "Sports Recovery",
+      "confidence": 0.6,
+      "occurrences": 8
+    },
+    {
+      "term": "Transplant",
+      "target": "General surgery",
+      "confidence": 0.45,
+      "occurrences": 8
+    },
+    {
+      "term": "Vision Care",
+      "target": "Eye examination",
+      "confidence": 0.65,
+      "occurrences": 8
+    },
+    {
+      "term": "Warts",
+      "target": "Skin Care",
+      "confidence": 0.65,
+      "occurrences": 8
+    },
+    {
+      "term": "Cancer Rehabilitation",
+      "target": "Neurological rehabilitation",
+      "confidence": 0.55,
+      "occurrences": 7
+    },
+    {
+      "term": "Cardiothoracic Surgery",
+      "target": "General surgery",
+      "confidence": 0.6,
+      "occurrences": 7
+    },
+    {
+      "term": "Carpal Tunnel Syndrome Evaluation and Treatment",
+      "target": "Orthopedic care",
+      "confidence": 0.65,
+      "occurrences": 7
+    },
+    {
+      "term": "Donor Sperm, Eggs, & Embryos",
+      "target": "Fertility treatment",
+      "confidence": 0.65,
+      "occurrences": 7
+    },
+    {
+      "term": "Dream Analysis",
+      "target": "Psychotherapy",
+      "confidence": 0.65,
+      "occurrences": 7
+    },
+    {
+      "term": "Enhanced Screening",
+      "target": "Executive health checkup",
+      "confidence": 0.55,
+      "occurrences": 7
+    },
+    {
+      "term": "Food Poisoning",
+      "target": "Urgent care",
+      "confidence": 0.55,
+      "occurrences": 7
+    },
+    {
+      "term": "Heart & Lung Scan",
+      "target": "CT",
+      "confidence": 0.65,
+      "occurrences": 7
+    },
+    {
+      "term": "Hemophilia Therapy",
+      "target": "Chronic disease management",
+      "confidence": 0.55,
+      "occurrences": 7
+    },
+    {
+      "term": "Hidradenitis Suppurativa Treatment",
+      "target": "Skin Care",
+      "confidence": 0.65,
+      "occurrences": 7
+    },
+    {
+      "term": "High Cholesterol",
+      "target": "Cardiometabolic testing",
+      "confidence": 0.65,
+      "occurrences": 7
+    },
+    {
+      "term": "IM Injections",
+      "target": "Supplementation",
+      "confidence": 0.55,
+      "occurrences": 7
+    },
+    {
+      "term": "Intersegmental Traction",
+      "target": "Chiropractic care",
+      "confidence": 0.65,
+      "occurrences": 7
+    },
+    {
+      "term": "Knee On Trac",
+      "target": "Orthopedic care",
+      "confidence": 0.65,
+      "occurrences": 7
+    },
+    {
+      "term": "Lab Decoder",
+      "target": "Health Consultant",
+      "confidence": 0.65,
+      "occurrences": 7
+    },
+    {
+      "term": "Laser Therapy First Time Client Offer",
+      "target": "Cold Laser Therapy",
+      "confidence": 0.65,
+      "occurrences": 7
+    },
+    {
+      "term": "Lifestyle Medicine",
+      "target": "Health coaching",
+      "confidence": 0.6,
+      "occurrences": 7
+    },
+    {
+      "term": "Lumbar Discography",
+      "target": "Neurodiagnostic testing",
+      "confidence": 0.55,
+      "occurrences": 7
+    },
+    {
+      "term": "Motor Vehicle Accidents",
+      "target": "Chiropractic care",
+      "confidence": 0.55,
+      "occurrences": 7
+    },
+    {
+      "term": "Neonatal Intensive Care (NICU)",
+      "target": "Emergency care",
+      "confidence": 0.55,
+      "occurrences": 7
+    },
+    {
+      "term": "Neurological Disorders Treatment",
+      "target": "Neurological rehabilitation",
+      "confidence": 0.55,
+      "occurrences": 7
+    },
+    {
+      "term": "Neuromodulation Treatments",
+      "target": "Transcranial magnetic stimulation",
+      "confidence": 0.45,
+      "occurrences": 7
+    },
+    {
+      "term": "Osteoporosis",
+      "target": "Chronic disease management",
+      "confidence": 0.55,
+      "occurrences": 7
+    },
+    {
+      "term": "Phlebotomy",
+      "target": "General laboratory testing",
+      "confidence": 0.68,
+      "occurrences": 7
+    },
+    {
+      "term": "Q-REstrain",
+      "target": "Functional medicine",
+      "confidence": 0.45,
+      "occurrences": 7
+    },
+    {
+      "term": "Renuva",
+      "target": "Aesthetic medicine",
+      "confidence": 0.5,
+      "occurrences": 7
+    },
+    {
+      "term": "Shingles Treatment",
+      "target": "Skin Care",
+      "confidence": 0.65,
+      "occurrences": 7
+    },
+    {
+      "term": "Stretching",
+      "target": "Exercise programming",
+      "confidence": 0.62,
+      "occurrences": 7
+    },
+    {
+      "term": "Therapy Session",
+      "target": "Psychotherapy",
+      "confidence": 0.55,
+      "occurrences": 7
+    },
+    {
+      "term": "Ultraviolet Blood Irradiation",
+      "target": "Ozone therapy",
+      "confidence": 0.45,
+      "occurrences": 7
+    },
+    {
+      "term": "Unlimited Hydrogen Therapy Only",
+      "target": "Non-service",
+      "confidence": 0.6,
+      "occurrences": 7
+    },
+    {
+      "term": "Vibration Plate Therapy",
+      "target": "Sports Recovery",
+      "confidence": 0.62,
+      "occurrences": 7
+    },
+    {
+      "term": "Vitamin B",
+      "target": "B12 Injections",
+      "confidence": 0.55,
+      "occurrences": 7
+    },
+    {
+      "term": "Work Related Injuries Treatment",
+      "target": "Sports medicine",
+      "confidence": 0.55,
+      "occurrences": 7
+    },
+    {
+      "term": "24-Hour Concerning Lesion Appointment",
+      "target": "Skin Care",
+      "confidence": 0.65,
+      "occurrences": 7
+    },
+    {
+      "term": "Alpha-1 Therapy",
+      "target": "Pulmonology",
+      "confidence": 0.65,
+      "occurrences": 7
+    },
+    {
+      "term": "Anti-Inflammatory Therapy",
+      "target": "Functional medicine",
+      "confidence": 0.45,
+      "occurrences": 7
+    },
+    {
+      "term": "Arthritis & Rheumatology",
+      "target": "Chronic disease management",
+      "confidence": 0.65,
+      "occurrences": 7
+    },
+    {
+      "term": "AUTO INJURIES",
+      "target": "Pain management",
+      "confidence": 0.65,
+      "occurrences": 7
+    },
+    {
+      "term": "B6 Injection",
+      "target": "Supplementation",
+      "confidence": 0.58,
+      "occurrences": 7
+    },
+    {
+      "term": "BioCharger Session",
+      "target": "PEMF therapy",
+      "confidence": 0.45,
+      "occurrences": 7
+    },
+    {
+      "term": "Bone Health Clinic",
+      "target": "Orthopedic care",
+      "confidence": 0.62,
+      "occurrences": 7
+    },
+    {
+      "term": "Breast Imaging",
+      "target": "Mammography",
+      "confidence": 0.55,
+      "occurrences": 7
+    },
+    {
+      "term": "Ankle",
+      "target": "Orthopedic care",
+      "confidence": 0.65,
+      "occurrences": 6
+    },
+    {
+      "term": "Applied Behavior Analysis",
+      "target": "Psychotherapy",
+      "confidence": 0.65,
+      "occurrences": 6
+    },
+    {
+      "term": "Autism",
+      "target": "Psychotherapy",
+      "confidence": 0.55,
+      "occurrences": 6
+    },
+    {
+      "term": "Autism Services",
+      "target": "Psychotherapy",
+      "confidence": 0.58,
+      "occurrences": 6
+    },
+    {
+      "term": "Brain Health Therapies",
+      "target": "Wellness And Performance",
+      "confidence": 0.62,
+      "occurrences": 6
+    },
+    {
+      "term": "Brain Surgery",
+      "target": "General surgery",
+      "confidence": 0.55,
+      "occurrences": 6
+    },
+    {
+      "term": "Diagnostic Services",
+      "target": "General laboratory testing",
+      "confidence": 0.55,
+      "occurrences": 6
+    },
+    {
+      "term": "Ear Nose Throat",
+      "target": "Primary Care Services",
+      "confidence": 0.55,
+      "occurrences": 6
+    },
+    {
+      "term": "Ergonomics",
+      "target": "Occupational therapy",
+      "confidence": 0.62,
+      "occurrences": 6
+    },
+    {
+      "term": "Erythema Infectiosum (Fifth Disease) Treatment",
+      "target": "Primary Care Services",
+      "confidence": 0.55,
+      "occurrences": 6
+    },
+    {
+      "term": "Folliculitis Treatment",
+      "target": "Skin Care",
+      "confidence": 0.58,
+      "occurrences": 6
+    },
+    {
+      "term": "Foot and Ankle Pain",
+      "target": "Pain management",
+      "confidence": 0.65,
+      "occurrences": 6
+    },
+    {
+      "term": "Furuncles (Boils) Treatment",
+      "target": "Skin Care",
+      "confidence": 0.55,
+      "occurrences": 6
+    },
+    {
+      "term": "Geriatrics",
+      "target": "Primary Care Services",
+      "confidence": 0.6,
+      "occurrences": 6
+    },
+    {
+      "term": "Golfer's Elbow Treatment",
+      "target": "Regenerative medicine",
+      "confidence": 0.62,
+      "occurrences": 6
+    },
+    {
+      "term": "Hives Evaluation & Treatment",
+      "target": "Allergy treatment",
+      "confidence": 0.64,
+      "occurrences": 6
+    },
+    {
+      "term": "Hyperhidrosis Evaluation & Treatment",
+      "target": "Aesthetic medicine",
+      "confidence": 0.58,
+      "occurrences": 6
+    },
+    {
+      "term": "Hyperhidrosis (Excessive Sweating) Treatment",
+      "target": "Aesthetic medicine",
+      "confidence": 0.52,
+      "occurrences": 6
+    },
+    {
+      "term": "Hypoxic-Ischemic Brain Injury",
+      "target": "Neurological rehabilitation",
+      "confidence": 0.5,
+      "occurrences": 6
+    },
+    {
+      "term": "Impetigo Treatment",
+      "target": "Skin Care",
+      "confidence": 0.55,
+      "occurrences": 6
+    },
+    {
+      "term": "Ingrown Hair Evaluation & Treatment",
+      "target": "Skin Care",
+      "confidence": 0.55,
+      "occurrences": 6
+    },
+    {
+      "term": "INJURIES",
+      "target": "Sports medicine",
+      "confidence": 0.58,
+      "occurrences": 6
+    },
+    {
+      "term": "Injury Treatment",
+      "target": "Sports medicine",
+      "confidence": 0.58,
+      "occurrences": 6
+    },
+    {
+      "term": "Intra-lesion Steroid Injections",
+      "target": "Aesthetic medicine",
+      "confidence": 0.62,
+      "occurrences": 6
+    },
+    {
+      "term": "Itchy Skin Evaluation & Treatment",
+      "target": "Skin Care",
+      "confidence": 0.55,
+      "occurrences": 6
+    },
+    {
+      "term": "Kidney Transplant",
+      "target": "General surgery",
+      "confidence": 0.55,
+      "occurrences": 6
+    },
+    {
+      "term": "L-Carnitine",
+      "target": "Supplementation",
+      "confidence": 0.62,
+      "occurrences": 6
+    },
+    {
+      "term": "Lice Treatment",
+      "target": "Primary Care Services",
+      "confidence": 0.55,
+      "occurrences": 6
+    },
+    {
+      "term": "Long COVID Treatment",
+      "target": "Functional medicine",
+      "confidence": 0.62,
+      "occurrences": 6
+    },
+    {
+      "term": "Long-Term Care",
+      "target": "Primary Care Services",
+      "confidence": 0.5,
+      "occurrences": 6
+    },
+    {
+      "term": "Lymphoma Treatment",
+      "target": "Chemotherapy",
+      "confidence": 0.55,
+      "occurrences": 6
+    },
+    {
+      "term": "Medical Imaging",
+      "target": "Non-service",
+      "confidence": 0.55,
+      "occurrences": 6
+    },
+    {
+      "term": "Molecular Hydrogen Therapy",
+      "target": "Wellness And Performance",
+      "confidence": 0.45,
+      "occurrences": 6
+    },
+    {
+      "term": "Motivational Interviewing",
+      "target": "Psychotherapy",
+      "confidence": 0.65,
+      "occurrences": 6
+    },
+    {
+      "term": "Nail Conditions Treatment",
+      "target": "Podiatry",
+      "confidence": 0.55,
+      "occurrences": 6
+    },
+    {
+      "term": "NBUVB Phototherapy",
+      "target": "Laser Skin Rejuvenation",
+      "confidence": 0.5,
+      "occurrences": 6
+    },
+    {
+      "term": "NeuralChek + BrainTap Brain Health Assessment",
+      "target": "Cognitive assessment",
+      "confidence": 0.55,
+      "occurrences": 6
+    },
+    {
+      "term": "Neurology & Neurosurgery",
+      "target": "Neurological rehabilitation",
+      "confidence": 0.45,
+      "occurrences": 6
+    },
+    {
+      "term": "Neurosciences",
+      "target": "Non-service",
+      "confidence": 0.6,
+      "occurrences": 6
+    },
+    {
+      "term": "IHHT package of 11 sessions (10 + 1)",
+      "target": "Wellness And Performance",
+      "confidence": 0.45,
+      "occurrences": 6
+    },
+    {
+      "term": "IHHT package of 5 sessions (4 + 1)",
+      "target": "Wellness And Performance",
+      "confidence": 0.45,
+      "occurrences": 6
+    },
+    {
+      "term": "PALLAS Laser Photodynamic Therapy (PDT)",
+      "target": "Laser Skin Rejuvenation",
+      "confidence": 0.55,
+      "occurrences": 6
+    },
+    {
+      "term": "PARENT TRAINING",
+      "target": "Psychotherapy",
+      "confidence": 0.5,
+      "occurrences": 6
+    },
+    {
+      "term": "Pediatric Blisters Treatment",
+      "target": "Skin Care",
+      "confidence": 0.6,
+      "occurrences": 6
+    },
+    {
+      "term": "Pediatric Dermatology",
+      "target": "Skin Care",
+      "confidence": 0.65,
+      "occurrences": 6
+    },
+    {
+      "term": "Pediatric Seborrheic Dermatitis (Cradle Cap) Treatment",
+      "target": "Skin Care",
+      "confidence": 0.65,
+      "occurrences": 6
+    },
+    {
+      "term": "Pediatric Sunburn Treatment",
+      "target": "Skin Care",
+      "confidence": 0.65,
+      "occurrences": 6
+    },
+    {
+      "term": "Pediatric Warts Treatment",
+      "target": "Skin Care",
+      "confidence": 0.6,
+      "occurrences": 6
+    },
+    {
+      "term": "Personal Injury Care",
+      "target": "Sports medicine",
+      "confidence": 0.55,
+      "occurrences": 6
+    },
+    {
+      "term": "Physiatry",
+      "target": "Pain management",
+      "confidence": 0.65,
+      "occurrences": 6
+    },
+    {
+      "term": "Pityriasis Rosea Treatment",
+      "target": "Skin Care",
+      "confidence": 0.6,
+      "occurrences": 6
+    },
+    {
+      "term": "Plasma IQ",
+      "target": "Skin tightening",
+      "confidence": 0.6,
+      "occurrences": 6
+    },
+    {
+      "term": "Pregnancy Testing",
+      "target": "Prenatal screening",
+      "confidence": 0.6,
+      "occurrences": 6
+    },
+    {
+      "term": "Pruritis (Itching) Treatment",
+      "target": "Skin Care",
+      "confidence": 0.6,
+      "occurrences": 6
+    },
+    {
+      "term": "Psychological Testing",
+      "target": "Cognitive assessment",
+      "confidence": 0.6,
+      "occurrences": 6
+    },
+    {
+      "term": "Radiology (Imaging)",
+      "target": "Non-service",
+      "confidence": 0.55,
+      "occurrences": 6
+    },
+    {
+      "term": "IHHT discovery session",
+      "target": "Wellness And Performance",
+      "confidence": 0.55,
+      "occurrences": 6
+    },
+    {
+      "term": "Social Work",
+      "target": "Psychotherapy",
+      "confidence": 0.55,
+      "occurrences": 6
+    },
+    {
+      "term": "SOCIAL WORK SERVICES",
+      "target": "Psychotherapy",
+      "confidence": 0.55,
+      "occurrences": 6
+    },
+    {
+      "term": "THERMOGRAPHY",
+      "target": "Physical examination",
+      "confidence": 0.45,
+      "occurrences": 6
+    },
+    {
+      "term": "THETA CHAMBER",
+      "target": "Wellness And Performance",
+      "confidence": 0.6,
+      "occurrences": 6
+    },
+    {
+      "term": "Ultrasound Guided Procedures",
+      "target": "Pain management",
+      "confidence": 0.65,
+      "occurrences": 6
+    },
+    {
+      "term": "V Lift™",
+      "target": "Aesthetic medicine",
+      "confidence": 0.65,
+      "occurrences": 6
+    },
+    {
+      "term": "Varicose Vein Treatment",
+      "target": "Sclerotherapy",
+      "confidence": 0.65,
+      "occurrences": 6
+    },
+    {
+      "term": "Wellness Programs",
+      "target": "Wellness And Performance",
+      "confidence": 0.65,
+      "occurrences": 6
+    },
+    {
+      "term": "Wellness Services",
+      "target": "Wellness And Performance",
+      "confidence": 0.6,
+      "occurrences": 6
+    },
+    {
+      "term": "WHOLE BODY VIBRATION",
+      "target": "Wellness And Performance",
+      "confidence": 0.65,
+      "occurrences": 6
+    },
+    {
+      "term": "Work Injuries Treatment",
+      "target": "Orthopedic care",
+      "confidence": 0.65,
+      "occurrences": 6
+    },
+    {
+      "term": "WORK-RELATED INJURIES",
+      "target": "Orthopedic care",
+      "confidence": 0.65,
+      "occurrences": 6
+    },
+    {
+      "term": "Workers' Comp",
+      "target": "Non-service",
+      "confidence": 0.65,
+      "occurrences": 6
+    },
+    {
+      "term": "all-pro",
+      "target": "Non-service",
+      "confidence": 0.55,
+      "occurrences": 5
+    },
+    {
+      "term": "Alzheimer's Disease",
+      "target": "Chronic disease management",
+      "confidence": 0.55,
+      "occurrences": 5
+    },
+    {
+      "term": "Ankylosing Spondylitis Treatment",
+      "target": "Orthopedic care",
+      "confidence": 0.62,
+      "occurrences": 5
+    },
+    {
+      "term": "Anodyne Therapy",
+      "target": "Red light therapy",
+      "confidence": 0.58,
+      "occurrences": 5
+    },
+    {
+      "term": "Anti-Infectives",
+      "target": "Medication management",
+      "confidence": 0.62,
+      "occurrences": 5
+    },
+    {
+      "term": "Assisted Stretching",
+      "target": "Sports Recovery",
+      "confidence": 0.65,
+      "occurrences": 5
+    },
+    {
+      "term": "Athletic Training Services",
+      "target": "Sports medicine",
+      "confidence": 0.62,
+      "occurrences": 5
+    },
+    {
+      "term": "Autism Treatment",
+      "target": "Neurological rehabilitation",
+      "confidence": 0.45,
+      "occurrences": 5
+    },
+    {
+      "term": "Auto Injury Relief",
+      "target": "Pain management",
+      "confidence": 0.68,
+      "occurrences": 5
+    },
+    {
+      "term": "BioCharger",
+      "target": "PEMF therapy",
+      "confidence": 0.65,
+      "occurrences": 5
+    },
+    {
+      "term": "BODYQ",
+      "target": "Body composition analysis",
+      "confidence": 0.45,
+      "occurrences": 5
+    },
+    {
+      "term": "bPulse Therapy",
+      "target": "PEMF therapy",
+      "confidence": 0.45,
+      "occurrences": 5
+    },
+    {
+      "term": "90 MIN CACAO CEREMONY",
+      "target": "Sound Healing",
+      "confidence": 0.5,
+      "occurrences": 5
+    },
+    {
+      "term": "Cancer Services",
+      "target": "Chemotherapy",
+      "confidence": 0.45,
+      "occurrences": 5
+    },
+    {
+      "term": "Car Accident Injuries",
+      "target": "Physical therapy",
+      "confidence": 0.65,
+      "occurrences": 5
+    },
+    {
+      "term": "Complete Blood Cleanse",
+      "target": "Therapeutic plasma exchange",
+      "confidence": 0.55,
+      "occurrences": 5
+    },
+    {
+      "term": "COSMETICS",
+      "target": "Aesthetic medicine",
+      "confidence": 0.55,
+      "occurrences": 5
+    },
+    {
+      "term": "DEMENTIA",
+      "target": "Chronic disease management",
+      "confidence": 0.52,
+      "occurrences": 5
+    },
+    {
+      "term": "Drug & Alcohol Testing",
+      "target": "General laboratory testing",
+      "confidence": 0.62,
+      "occurrences": 5
+    },
+    {
+      "term": "Ear Wax Removal",
+      "target": "Primary Care Services",
+      "confidence": 0.55,
+      "occurrences": 5
+    },
+    {
+      "term": "Elbow Treatment",
+      "target": "Orthopedic care",
+      "confidence": 0.62,
+      "occurrences": 5
+    },
+    {
+      "term": "Endospheres Therapy",
+      "target": "Cellulite Reduction",
+      "confidence": 0.68,
+      "occurrences": 5
+    },
+    {
+      "term": "EPILEPSY",
+      "target": "Medication management",
+      "confidence": 0.45,
+      "occurrences": 5
+    },
+    {
+      "term": "Ergonomics and Biomechanics Training",
+      "target": "Exercise programming",
+      "confidence": 0.62,
+      "occurrences": 5
+    },
+    {
+      "term": "Established, level 2",
+      "target": "Skin Care",
+      "confidence": 0.66,
+      "occurrences": 5
+    },
+    {
+      "term": "Established, level 3",
+      "target": "Skin Care",
+      "confidence": 0.66,
+      "occurrences": 5
+    },
+    {
+      "term": "Established, level 4",
+      "target": "Skin Care",
+      "confidence": 0.66,
+      "occurrences": 5
+    },
+    {
+      "term": "Fertility Support",
+      "target": "Fertility treatment",
+      "confidence": 0.64,
+      "occurrences": 5
+    },
+    {
+      "term": "Foot & Ankle Pain Relief",
+      "target": "Pain management",
+      "confidence": 0.68,
+      "occurrences": 5
+    },
+    {
+      "term": "Gout",
+      "target": "Chronic disease management",
+      "confidence": 0.52,
+      "occurrences": 5
+    },
+    {
+      "term": "Grip Strength Test",
+      "target": "Functional capacity evaluation",
+      "confidence": 0.55,
+      "occurrences": 5
+    },
+    {
+      "term": "Hand Pain",
+      "target": "Orthopedic care",
+      "confidence": 0.64,
+      "occurrences": 5
+    },
+    {
+      "term": "Healing Touch",
+      "target": "Reiki therapy",
+      "confidence": 0.65,
+      "occurrences": 5
+    },
+    {
+      "term": "Home Health Care",
+      "target": "Primary Care Services",
+      "confidence": 0.55,
+      "occurrences": 5
+    },
+    {
+      "term": "Immunity Boost",
+      "target": "IV Infusions",
+      "confidence": 0.62,
+      "occurrences": 5
+    },
+    {
+      "term": "Initial Assessment",
+      "target": "Non-service",
+      "confidence": 0.62,
+      "occurrences": 5
+    },
+    {
+      "term": "Injection Services",
+      "target": "Supplementation",
+      "confidence": 0.45,
+      "occurrences": 5
+    },
+    {
+      "term": "Ionic Foot Bath",
+      "target": "Wellness And Performance",
+      "confidence": 0.45,
+      "occurrences": 5
+    },
+    {
+      "term": "Ionic Foot Detox",
+      "target": "Wellness And Performance",
+      "confidence": 0.45,
+      "occurrences": 5
+    },
+    {
+      "term": "Laceration Repair",
+      "target": "Wound care",
+      "confidence": 0.55,
+      "occurrences": 5
+    },
+    {
+      "term": "Lifestyle Changes",
+      "target": "Health coaching",
+      "confidence": 0.55,
+      "occurrences": 5
+    },
+    {
+      "term": "Liver Care",
+      "target": "Gastroenterology",
+      "confidence": 0.6,
+      "occurrences": 5
+    },
+    {
+      "term": "Liver Detox",
+      "target": "Wellness And Performance",
+      "confidence": 0.5,
+      "occurrences": 5
+    },
+    {
+      "term": "Long COVID",
+      "target": "Primary Care Services",
+      "confidence": 0.65,
+      "occurrences": 5
+    },
+    {
+      "term": "Lupus Treatment",
+      "target": "Chronic disease management",
+      "confidence": 0.6,
+      "occurrences": 5
+    },
+    {
+      "term": "Medical Marijuana Certification",
+      "target": "Medication management",
+      "confidence": 0.65,
+      "occurrences": 5
+    },
+    {
+      "term": "Memory Care",
+      "target": "Chronic disease management",
+      "confidence": 0.55,
+      "occurrences": 5
+    },
+    {
+      "term": "MILD",
+      "target": "Spine care",
+      "confidence": 0.55,
+      "occurrences": 5
+    },
+    {
+      "term": "Motor Vehicle Accident Injuries Treatment",
+      "target": "Sports medicine",
+      "confidence": 0.55,
+      "occurrences": 5
+    },
+    {
+      "term": "New, level 2",
+      "target": "Skin Care",
+      "confidence": 0.65,
+      "occurrences": 5
+    },
+    {
+      "term": "New, level 3",
+      "target": "Skin Care",
+      "confidence": 0.65,
+      "occurrences": 5
+    },
+    {
+      "term": "New, level 4",
+      "target": "Skin Care",
+      "confidence": 0.65,
+      "occurrences": 5
+    },
+    {
+      "term": "NEW PATIENT APPOINTMENT",
+      "target": "Non-service",
+      "confidence": 0.6,
+      "occurrences": 5
+    },
+    {
+      "term": "NURSING",
+      "target": "Primary Care Services",
+      "confidence": 0.5,
+      "occurrences": 5
+    },
+    {
+      "term": "Nursing Services",
+      "target": "Primary Care Services",
+      "confidence": 0.5,
+      "occurrences": 5
+    },
+    {
+      "term": "SportsRAC Training",
+      "target": "Strength And Conditioning",
+      "confidence": 0.6,
+      "occurrences": 5
+    },
+    {
+      "term": "SuperHuman Protocol",
+      "target": "Wellness And Performance",
+      "confidence": 0.6,
+      "occurrences": 5
+    },
+    {
+      "term": "Supportive Medicine",
+      "target": "Palliative care",
+      "confidence": 0.65,
+      "occurrences": 5
+    },
+    {
+      "term": "Taping",
+      "target": "Physical therapy",
+      "confidence": 0.65,
+      "occurrences": 5
+    },
+    {
+      "term": "Therapeutic Phlebotomy",
+      "target": "General surgery",
+      "confidence": 0.55,
+      "occurrences": 5
+    },
+    {
+      "term": "UPNEEQ",
+      "target": "Blepharoplasty",
+      "confidence": 0.55,
+      "occurrences": 5
+    },
+    {
+      "term": "Urinary Incontinence Treatment",
+      "target": "Pelvic floor therapy",
+      "confidence": 0.65,
+      "occurrences": 5
+    },
+    {
+      "term": "Vascular Services",
+      "target": "Cardiovascular care",
+      "confidence": 0.65,
+      "occurrences": 5
+    },
+    {
+      "term": "Virtual Reality Therapy",
+      "target": "Psychotherapy",
+      "confidence": 0.65,
+      "occurrences": 5
+    },
+    {
+      "term": "Wellness Injections",
+      "target": "B12 Injections",
+      "confidence": 0.55,
+      "occurrences": 5
+    },
+    {
+      "term": "Zofran Injection",
+      "target": "Medication management",
+      "confidence": 0.65,
+      "occurrences": 5
+    },
+    {
+      "term": "Occupational Health Services",
+      "target": "Preventive Care",
+      "confidence": 0.55,
+      "occurrences": 5
+    },
+    {
+      "term": "Pediatric Dermatology Consultation",
+      "target": "Skin Care",
+      "confidence": 0.58,
+      "occurrences": 5
+    },
+    {
+      "term": "Percussion Therapy",
+      "target": "Massage therapy",
+      "confidence": 0.6,
+      "occurrences": 5
+    },
+    {
+      "term": "Peripheral / Cranial Nerve Procedures",
+      "target": "Pain management",
+      "confidence": 0.6,
+      "occurrences": 5
+    },
+    {
+      "term": "Photodynamic Therapy",
+      "target": "IV Infusions",
+      "confidence": 0.45,
+      "occurrences": 5
+    },
+    {
+      "term": "Presidential Body SCAN",
+      "target": "CT",
+      "confidence": 0.6,
+      "occurrences": 5
+    },
+    {
+      "term": "PSYCHIATRIST",
+      "target": "Medication management",
+      "confidence": 0.58,
+      "occurrences": 5
+    },
+    {
+      "term": "Psychological Assessment",
+      "target": "Cognitive assessment",
+      "confidence": 0.6,
+      "occurrences": 5
+    },
+    {
+      "term": "Pulse Assessment",
+      "target": "Non-service",
+      "confidence": 0.55,
+      "occurrences": 5
+    },
+    {
+      "term": "Rash Treatment",
+      "target": "Skin Care",
+      "confidence": 0.65,
+      "occurrences": 5
+    },
+    {
+      "term": "Root Canal Treatment",
+      "target": "Non-service",
+      "confidence": 0.45,
+      "occurrences": 5
+    },
+    {
+      "term": "Salt Therapy",
+      "target": "Pulmonology",
+      "confidence": 0.45,
+      "occurrences": 5
+    },
+    {
+      "term": "School Based Services",
+      "target": "Non-service",
+      "confidence": 0.65,
+      "occurrences": 5
+    },
+    {
+      "term": "Senior Care",
+      "target": "Primary Care Services",
+      "confidence": 0.65,
+      "occurrences": 5
+    },
+    {
+      "term": "Senior Health",
+      "target": "Primary Care Services",
+      "confidence": 0.65,
+      "occurrences": 5
+    },
+    {
+      "term": "Shiftwave",
+      "target": "Sound Healing",
+      "confidence": 0.45,
+      "occurrences": 5
+    },
+    {
+      "term": "Shoulder Labral Tear Treatment",
+      "target": "Orthobiologics",
+      "confidence": 0.65,
+      "occurrences": 5
+    },
+    {
+      "term": "Sinus Cocktail",
+      "target": "Primary Care Services",
+      "confidence": 0.55,
+      "occurrences": 5
+    },
+    {
+      "term": "Athletes Foot",
+      "target": "Podiatry",
+      "confidence": 0.62,
+      "occurrences": 4
+    },
+    {
+      "term": "Autoimmune Diseases",
+      "target": "Functional medicine",
+      "confidence": 0.55,
+      "occurrences": 4
+    },
+    {
+      "term": "BIOCHARGER® NG",
+      "target": "Wellness And Performance",
+      "confidence": 0.5,
+      "occurrences": 4
+    },
+    {
+      "term": "Biologic Treatments",
+      "target": "Regenerative medicine",
+      "confidence": 0.58,
+      "occurrences": 4
+    },
+    {
+      "term": "Bloodwork, diagnostics, and x-rays",
+      "target": "General laboratory testing",
+      "confidence": 0.62,
+      "occurrences": 4
+    },
+    {
+      "term": "Bone Health",
+      "target": "Preventive Care",
+      "confidence": 0.62,
+      "occurrences": 4
+    },
+    {
+      "term": "Bone Marrow Transplant",
+      "target": "Stem cell therapy",
+      "confidence": 0.6,
+      "occurrences": 4
+    },
+    {
+      "term": "Breast Cancer",
+      "target": "Skin cancer treatment",
+      "confidence": 0.55,
+      "occurrences": 4
+    },
+    {
+      "term": "Breathwork Class",
+      "target": "Wellness And Performance",
+      "confidence": 0.55,
+      "occurrences": 4
+    },
+    {
+      "term": "Cancer Treatments",
+      "target": "Chemotherapy",
+      "confidence": 0.42,
+      "occurrences": 4
+    },
+    {
+      "term": "Caregiver support",
+      "target": "Health Consultant",
+      "confidence": 0.55,
+      "occurrences": 4
+    },
+    {
+      "term": "CheckLab Humanitas",
+      "target": "Executive health checkup",
+      "confidence": 0.55,
+      "occurrences": 4
+    },
+    {
+      "term": "Children's Health",
+      "target": "Primary Care Services",
+      "confidence": 0.55,
+      "occurrences": 4
+    },
+    {
+      "term": "Chronic Fatigue Diagnosis",
+      "target": "Functional medicine",
+      "confidence": 0.55,
+      "occurrences": 4
+    },
+    {
+      "term": "COMMUNITY SUPPORT",
+      "target": "Non-service",
+      "confidence": 0.6,
+      "occurrences": 4
+    },
+    {
+      "term": "Comprehensive Evaluation and Treatment (First Visit)",
+      "target": "Primary Care Services",
+      "confidence": 0.55,
+      "occurrences": 4
+    },
+    {
+      "term": "Abdomen and Pelvis Screening",
+      "target": "Ultrasound imaging",
+      "confidence": 0.55,
+      "occurrences": 4
+    },
+    {
+      "term": "ACL Injury Prevention",
+      "target": "Physical therapy",
+      "confidence": 0.6,
+      "occurrences": 4
+    },
+    {
+      "term": "Actinic Keratoses",
+      "target": "Dermatologic surgery",
+      "confidence": 0.65,
+      "occurrences": 4
+    },
+    {
+      "term": "Actinic Keratosis Treatment",
+      "target": "Dermatologic surgery",
+      "confidence": 0.65,
+      "occurrences": 4
+    },
+    {
+      "term": "ADHD Diagnosis",
+      "target": "Cognitive assessment",
+      "confidence": 0.65,
+      "occurrences": 4
+    },
+    {
+      "term": "Anesthesia",
+      "target": "Non-service",
+      "confidence": 0.65,
+      "occurrences": 4
+    },
+    {
+      "term": "COUPLES",
+      "target": "Couples therapy",
+      "confidence": 0.65,
+      "occurrences": 4
+    },
+    {
+      "term": "Cubital Tunnel Syndrome Treatment",
+      "target": "Orthopedic care",
+      "confidence": 0.65,
+      "occurrences": 4
+    },
+    {
+      "term": "Cystorectocele Repair",
+      "target": "General surgery",
+      "confidence": 0.55,
+      "occurrences": 4
+    },
+    {
+      "term": "Daytime hospitalization",
+      "target": "Palliative care",
+      "confidence": 0.55,
+      "occurrences": 4
+    },
+    {
+      "term": "Deep Brain Stimulation",
+      "target": "Neurological rehabilitation",
+      "confidence": 0.55,
+      "occurrences": 4
+    },
+    {
+      "term": "Developmental Delay",
+      "target": "Neurological rehabilitation",
+      "confidence": 0.5,
+      "occurrences": 4
+    },
+    {
+      "term": "DISCSEEL",
+      "target": "Spine care",
+      "confidence": 0.65,
+      "occurrences": 4
+    },
+    {
+      "term": "Dizziness Diagnosis",
+      "target": "Vestibular Therapy",
+      "confidence": 0.65,
+      "occurrences": 4
+    },
+    {
+      "term": "Dry Eye Treatment",
+      "target": "Eye examination",
+      "confidence": 0.55,
+      "occurrences": 4
+    },
+    {
+      "term": "Duo 60 Minute Sessions - 10 Sessions",
+      "target": "Personal Trainer",
+      "confidence": 0.45,
+      "occurrences": 4
+    },
+    {
+      "term": "Education & Day Treatment",
+      "target": "Group Therapy",
+      "confidence": 0.5,
+      "occurrences": 4
+    },
+    {
+      "term": "Elbow Issues Treatment",
+      "target": "Orthopedic care",
+      "confidence": 0.65,
+      "occurrences": 4
+    },
+    {
+      "term": "Electroconvulsive Therapy (ECT)",
+      "target": "Medication management",
+      "confidence": 0.4,
+      "occurrences": 4
+    },
+    {
+      "term": "Electrophysiology",
+      "target": "Cardiovascular care",
+      "confidence": 0.65,
+      "occurrences": 4
+    },
+    {
+      "term": "Emotional Health",
+      "target": "Psychotherapy",
+      "confidence": 0.65,
+      "occurrences": 4
+    },
+    {
+      "term": "Energy Booster",
+      "target": "B12 Injections",
+      "confidence": 0.45,
+      "occurrences": 4
+    },
+    {
+      "term": "Environmental Toxicant Exposure Testing",
+      "target": "Advanced biomarker panel",
+      "confidence": 0.6,
+      "occurrences": 4
+    },
+    {
+      "term": "Ergonomic Assessments",
+      "target": "Occupational therapy",
+      "confidence": 0.65,
+      "occurrences": 4
+    },
+    {
+      "term": "Executive Blood Cleanse",
+      "target": "Therapeutic plasma exchange",
+      "confidence": 0.65,
+      "occurrences": 4
+    },
+    {
+      "term": "Fat Transfer For Pain",
+      "target": "Pain management",
+      "confidence": 0.6,
+      "occurrences": 4
+    },
+    {
+      "term": "FDA Clinical Trial Treatments",
+      "target": "Non-service",
+      "confidence": 0.55,
+      "occurrences": 4
+    },
+    {
+      "term": "Fever Treatment",
+      "target": "Primary Care Services",
+      "confidence": 0.65,
+      "occurrences": 4
+    },
+    {
+      "term": "Foot Issues Treatment",
+      "target": "Podiatry",
+      "confidence": 0.68,
+      "occurrences": 4
+    },
+    {
+      "term": "Frozen Shoulder",
+      "target": "Pain management",
+      "confidence": 0.57,
+      "occurrences": 4
+    },
+    {
+      "term": "Full mouth exams",
+      "target": "Eye examination",
+      "confidence": 0.62,
+      "occurrences": 4
+    },
+    {
+      "term": "Golf Performance",
+      "target": "Wellness And Performance",
+      "confidence": 0.63,
+      "occurrences": 4
+    },
+    {
+      "term": "Hand & Upper Extremity",
+      "target": "Orthopedic care",
+      "confidence": 0.58,
+      "occurrences": 4
+    },
+    {
+      "term": "Hand Issues Treatment",
+      "target": "Orthopedic care",
+      "confidence": 0.68,
+      "occurrences": 4
+    },
+    {
+      "term": "Head Spa",
+      "target": "Skin Care",
+      "confidence": 0.68,
+      "occurrences": 4
+    },
+    {
+      "term": "Health & Rehabilitation",
+      "target": "Physical therapy",
+      "confidence": 0.62,
+      "occurrences": 4
+    },
+    {
+      "term": "Hip Issues Treatment",
+      "target": "Orthopedic care",
+      "confidence": 0.68,
+      "occurrences": 4
+    },
+    {
+      "term": "Holistic Life Strategy Session - 30 minutes",
+      "target": "Health coaching",
+      "confidence": 0.65,
+      "occurrences": 4
+    },
+    {
+      "term": "Human Cellular Tissue",
+      "target": "Stem cell therapy",
+      "confidence": 0.68,
+      "occurrences": 4
+    },
+    {
+      "term": "Hybrid Procedures",
+      "target": "Non-service",
+      "confidence": 0.62,
+      "occurrences": 4
+    },
+    {
+      "term": "Hydrogen Inhalation Therapy",
+      "target": "Wellness And Performance",
+      "confidence": 0.45,
+      "occurrences": 4
+    },
+    {
+      "term": "Hydrogen Therapy",
+      "target": "Wellness And Performance",
+      "confidence": 0.45,
+      "occurrences": 4
+    },
+    {
+      "term": "Hyperhidrosis",
+      "target": "Aesthetic medicine",
+      "confidence": 0.65,
+      "occurrences": 4
+    },
+    {
+      "term": "IM Shots",
+      "target": "Supplementation",
+      "confidence": 0.65,
+      "occurrences": 4
+    },
+    {
+      "term": "In-Home Supports",
+      "target": "Non-service",
+      "confidence": 0.6,
+      "occurrences": 4
+    },
+    {
+      "term": "Industrial Medicine",
+      "target": "Dot Physicals",
+      "confidence": 0.55,
+      "occurrences": 4
+    },
+    {
+      "term": "Industrial Rehab",
+      "target": "Occupational therapy",
+      "confidence": 0.62,
+      "occurrences": 4
+    },
+    {
+      "term": "Inpatient Medically Complex Care and Skilled Nursing Programs",
+      "target": "Chronic disease management",
+      "confidence": 0.55,
+      "occurrences": 4
+    },
+    {
+      "term": "Integrative Dermatology",
+      "target": "Skin Care",
+      "confidence": 0.55,
+      "occurrences": 4
+    },
+    {
+      "term": "Joint Health",
+      "target": "Orthopedic care",
+      "confidence": 0.62,
+      "occurrences": 4
+    },
+    {
+      "term": "Lean Shot",
+      "target": "B12 Injections",
+      "confidence": 0.58,
+      "occurrences": 4
+    },
+    {
+      "term": "LIPS",
+      "target": "Dermal fillers",
+      "confidence": 0.45,
+      "occurrences": 4
+    },
+    {
+      "term": "Lumbar Puncture",
+      "target": "Neurodiagnostic testing",
+      "confidence": 0.55,
+      "occurrences": 4
+    },
+    {
+      "term": "Lung Cancer",
+      "target": "Chemotherapy",
+      "confidence": 0.5,
+      "occurrences": 4
+    },
+    {
+      "term": "Medical Grade Skin Care",
+      "target": "Skin Care",
+      "confidence": 0.68,
+      "occurrences": 4
+    },
+    {
+      "term": "Medications",
+      "target": "Medication management",
+      "confidence": 0.58,
+      "occurrences": 4
+    },
+    {
+      "term": "Metatarsalgia Treatment",
+      "target": "Podiatry",
+      "confidence": 0.67,
+      "occurrences": 4
+    },
+    {
+      "term": "Mindfulness",
+      "target": "Psychotherapy",
+      "confidence": 0.55,
+      "occurrences": 4
+    },
+    {
+      "term": "Minimally Invasive Procedures",
+      "target": "General surgery",
+      "confidence": 0.5,
+      "occurrences": 4
+    },
+    {
+      "term": "Mistletoe Therapy",
+      "target": "Functional medicine",
+      "confidence": 0.6,
+      "occurrences": 4
+    },
+    {
+      "term": "Mood Disorders",
+      "target": "Psychotherapy",
+      "confidence": 0.67,
+      "occurrences": 4
+    },
+    {
+      "term": "NAD+ Injection",
+      "target": "Peptide therapy",
+      "confidence": 0.56,
+      "occurrences": 4
+    },
+    {
+      "term": "NAD+ 100 mg Injection - Package of 5",
+      "target": "Peptide therapy",
+      "confidence": 0.56,
+      "occurrences": 4
+    },
+    {
+      "term": "NAD+ Nasal Spray",
+      "target": "Supplementation",
+      "confidence": 0.62,
+      "occurrences": 4
+    },
+    {
+      "term": "Narrowband UVB",
+      "target": "Psoriasis treatment",
+      "confidence": 0.55,
+      "occurrences": 4
+    },
+    {
+      "term": "Neurological Conditions",
+      "target": "Neurological rehabilitation",
+      "confidence": 0.55,
+      "occurrences": 4
+    },
+    {
+      "term": "Neurological Consultation",
+      "target": "Primary Care Services",
+      "confidence": 0.52,
+      "occurrences": 4
+    },
+    {
+      "term": "Neuroma Treatment",
+      "target": "Podiatry",
+      "confidence": 0.68,
+      "occurrences": 4
+    },
+    {
+      "term": "NeuroScan",
+      "target": "Neurodiagnostic testing",
+      "confidence": 0.62,
+      "occurrences": 4
+    }
+  ]
+}
