@@ -52,17 +52,18 @@ export default async function DirectoryPage({ searchParams }: DirectoryPageProps
   const treatmentId = initialState.treatment_ids.length === 1
     ? Number.parseInt(initialState.treatment_ids[0], 10)
     : NaN;
-  const [initialPayload, initialTreatment] = await Promise.all([
-    searchLocations(initialParams, initialState.page),
+  const [payload, initialTreatment] = await Promise.all([
+    searchLocations(initialParams, initialState.page, { includeTreatmentPriceSummaries: true }),
     Number.isFinite(treatmentId) ? getTreatmentTrackingContextById(treatmentId) : null,
   ]);
+  const initialPayload = payload as SearchPayload;
   return (
     <DirectoryShell
       key={stateKey(initialState)}
-      initialPayload={initialPayload as SearchPayload}
+      initialPayload={initialPayload}
       initialState={initialState}
-      initialTreatmentLabel={initialTreatment?.name}
-      initialTreatmentCategory={initialTreatment?.category}
+      initialTreatmentLabel={initialTreatment?.name || initialPayload.resolved_treatment?.name}
+      initialTreatmentCategory={initialTreatment?.category || initialPayload.resolved_treatment?.category}
     />
   );
 }
