@@ -92,6 +92,16 @@ export type DirectoryParams = {
   visitor?: VisitorLocationParams;
 };
 
+type SearchLocationsOptions = {
+  includeTreatmentPriceSummaries?: boolean;
+};
+
+export type ResolvedTreatmentSearch = {
+  id: number;
+  name: string;
+  category: string;
+};
+
 export type VisitorLocationParams = {
   country?: string;
   region?: string;
@@ -176,6 +186,13 @@ export type TreatmentLocationLandingData = {
     offeringCount: number;
     locationCount: number;
   }>;
+};
+
+export type TreatmentSearchPriceSummary = {
+  currency: string | null;
+  minimum: number;
+  offeringCount: number;
+  locationCount: number;
 };
 
 export type TreatmentLandingData = {
@@ -1778,19 +1795,45 @@ export async function getTreatmentLocationLandingData(params: {
   };
 }
 
-export async function searchLocations(params: DirectoryParams, page = 0) {
+export async function searchLocations(
+  params: DirectoryParams,
+  page = 0,
+  options: SearchLocationsOptions = {},
+) {
+  const resolvedTreatment = params.treatment_ids?.length
+    ? null
+    : await resolveTreatmentSearchQuery(params.q);
+  const effectiveParams = resolvedTreatment
+    ? { ...params, q: undefined, treatment_ids: [resolvedTreatment.id] }
+    : params;
+  const payload = await searchLocationsWithParams(effectiveParams, page, {
+    ...options,
+    includeTreatmentPriceSummaries:
+      options.includeTreatmentPriceSummaries || Boolean(resolvedTreatment),
+  });
+
+  return resolvedTreatment
+    ? { ...payload, resolved_treatment: resolvedTreatment }
+    : payload;
+}
+
+async function searchLocationsWithParams(
+  params: DirectoryParams,
+  page: number,
+  options: SearchLocationsOptions,
+) {
   if (hasMapBounds(params)) {
-    return searchLocationsByMapBounds(params, page);
+    return searchLocationsByMapBounds(params, page, options);
   }
   const selectedCountryCode = normalizedCountryCode(params.city_country || params.country);
   if (params.place_type === "country" && selectedCountryCode) {
-    return searchLocationsByCountry(params, selectedCountryCode, page);
+    return searchLocationsByCountry(params, selectedCountryCode, page, options);
   }
 
   const cityLatitude = finiteCoordinate(params.city_lat);
   const cityLongitude = finiteCoordinate(params.city_lng);
   if (cityLatitude !== undefined && cityLongitude !== undefined) {
-    return searchLocationsByCityRadius(params, cityLatitude, cityLongitude, page);
+    return searchLocationsByCityRadius(params, cityLatitude, cityLongitude, page, options);
   }
 
   const match = ftsMatch(params.q);
@@ -1853,7 +1896,69 @@ export async function searchLocations(params: DirectoryParams, page = 0) {
   );
 
   await hydrateLocationRows(results, params.treatment_ids);
-  return { results, total, page, page_size: PAGE_SIZE };
+  const treatmentPriceSummaries = options.includeTreatmentPriceSummaries
+    ? await treatmentSearchPriceSummaries({
+        matchJoin,
+        where: clause ? [clause.replace(/^\s*WHERE\s+/i, "")] : [],
+        values: queryValues,
+        treatmentIds: params.treatment_ids || [],
+      })
+    : [];
+  return {
+    results,
+    total,
+    page,
+    page_size: PAGE_SIZE,
+    treatment_price_summaries: treatmentPriceSummaries,
+  };
+}
+
+async function resolveTreatmentSearchQuery(query?: string | null): Promise<ResolvedTreatmentSearch | null> {
+  const value = query?.trim();
+  if (!value) {
+    return null;
+  }
+
+  const matches = await rows<{
+    id: number;
+    name: string;
+    category: string | null;
+    canonical_match: boolean;
+  }>(
+    `
+    WITH normalized_query AS (
+      SELECT fountain_raw.normalize_treatment_term(?) AS term
+    )
+    SELECT
+      treatment.id,
+      treatment.canonical_name AS name,
+      treatment.category,
+      BOOL_OR(
+        fountain_raw.normalize_treatment_term(treatment.canonical_name) = normalized_query.term
+      ) AS canonical_match
+    FROM treatments treatment
+    CROSS JOIN normalized_query
+    LEFT JOIN fountain_raw.treatment_aliases alias
+      ON alias.treatment_id = treatment.id
+     AND alias.mapping_status = 'active'
+     AND alias.alias_normalized = normalized_query.term
+    WHERE fountain_raw.normalize_treatment_term(treatment.canonical_name) = normalized_query.term
+       OR alias.id IS NOT NULL
+    GROUP BY treatment.id, treatment.canonical_name, treatment.category
+    ORDER BY canonical_match DESC, treatment.id
+  `,
+    [value],
+  );
+
+  const canonicalMatch = matches.find((match) => match.canonical_match);
+  const match = canonicalMatch || (matches.length === 1 ? matches[0] : null);
+  return match
+    ? {
+        id: Number(match.id),
+        name: match.name,
+        category: match.category?.trim() || "Uncategorized",
+      }
+    : null;
 }
 
 function hasMapBounds(params: DirectoryParams): params is DirectoryParams & {
@@ -1870,6 +1975,7 @@ function hasMapBounds(params: DirectoryParams): params is DirectoryParams & {
 async function searchLocationsByMapBounds(
   params: DirectoryParams & { map_north: number; map_south: number; map_east: number; map_west: number },
   page: number,
+  options: SearchLocationsOptions,
 ) {
   const match = ftsMatch(params.q);
   const matchJoin = match ? searchMatchJoin("l", "location") : "";
@@ -1907,12 +2013,18 @@ async function searchLocationsByMapBounds(
     values: queryValues,
     page,
     preferTreatmentRating: Boolean(params.treatment_ids?.length),
+    treatmentIds: options.includeTreatmentPriceSummaries ? params.treatment_ids : undefined,
   });
   await hydrateLocationRows(payload.results, params.treatment_ids);
   return { ...payload, mode: "map_bounds" as const, effective_radius: null };
 }
 
-async function searchLocationsByCountry(params: DirectoryParams, countryCode: string, page: number) {
+async function searchLocationsByCountry(
+  params: DirectoryParams,
+  countryCode: string,
+  page: number,
+  options: SearchLocationsOptions,
+) {
   const match = ftsMatch(params.q);
   const matchJoin = match ? searchMatchJoin("l", "location") : "";
   const filteredParams: DirectoryParams = {
@@ -1958,6 +2070,14 @@ async function searchLocationsByCountry(params: DirectoryParams, countryCode: st
     [...queryValues, PAGE_SIZE, page * PAGE_SIZE],
   );
   await hydrateLocationRows(results, params.treatment_ids);
+  const treatmentPriceSummaries = options.includeTreatmentPriceSummaries
+    ? await treatmentSearchPriceSummaries({
+        matchJoin,
+        where: clause ? [clause.replace(/^\s*WHERE\s+/i, "")] : [],
+        values: queryValues,
+        treatmentIds: params.treatment_ids || [],
+      })
+    : [];
   const searchedCountry = params.city_label || params.city_country || countryCode;
   return {
     results,
@@ -1968,6 +2088,7 @@ async function searchLocationsByCountry(params: DirectoryParams, countryCode: st
     effective_radius: null,
     searched_city: null,
     searched_country: searchedCountry,
+    treatment_price_summaries: treatmentPriceSummaries,
   };
 }
 
@@ -2028,7 +2149,10 @@ async function hydrateLocationRows(results: AnyRow[], preferredTreatmentIds: rea
         imageMap.set(image.lid, image);
       }
     }
-    const verificationMap = await locationClinicianLicenseVerificationMap(ids);
+    const [verificationMap, treatmentPriceMap] = await Promise.all([
+      locationClinicianLicenseVerificationMap(ids),
+      locationTreatmentPriceMap(ids, preferredTreatmentIds),
+    ]);
     for (const result of results) {
       const id = result.id as number;
       result.treatments = orderTreatmentChips(treatmentMap.get(id) || [], preferredTreatmentIds);
@@ -2036,8 +2160,51 @@ async function hydrateLocationRows(results: AnyRow[], preferredTreatmentIds: rea
       result.image = imageMap.get(id)?.blob_url || null;
       result.image_kind = imageMap.get(id)?.image_kind || null;
       result.clinician_license_verification = verificationMap.get(id) || null;
+      if (preferredTreatmentIds.length) {
+        const treatmentPrice = treatmentPriceMap.get(id);
+        result.min_price_amount = treatmentPrice?.amount ?? null;
+        result.min_price_currency = treatmentPrice?.currency ?? null;
+      }
     }
   }
+}
+
+async function locationTreatmentPriceMap(
+  locationIds: readonly number[],
+  treatmentIds: readonly number[],
+) {
+  const priceMap = new Map<number, { amount: number; currency: string | null }>();
+  if (!locationIds.length || !treatmentIds.length) {
+    return priceMap;
+  }
+
+  const priceRows = await rows<{
+    lid: number;
+    amount: number;
+    currency: string | null;
+  }>(
+    `
+    SELECT DISTINCT ON (offering.location_id)
+      offering.location_id AS lid,
+      offering.price_amount AS amount,
+      UPPER(NULLIF(TRIM(offering.price_currency), '')) AS currency
+    FROM offerings offering
+    WHERE offering.location_id IN (${placeholders(locationIds.length)})
+      AND offering.treatment_id IN (${placeholders(treatmentIds.length)})
+      AND ${comparableOfferingPriceCondition("offering")}
+      AND ${activeOfferingCondition("offering")}
+    ORDER BY offering.location_id, offering.price_amount ASC, offering.id ASC
+  `,
+    [...locationIds, ...treatmentIds],
+  );
+
+  for (const price of priceRows) {
+    priceMap.set(Number(price.lid), {
+      amount: Number(price.amount),
+      currency: price.currency,
+    });
+  }
+  return priceMap;
 }
 
 async function locationClinicianLicenseVerificationMap(ids: number[]) {
@@ -2092,7 +2259,13 @@ async function locationClinicianLicenseVerificationMap(ids: number[]) {
 
 type RadiusSearchMode = "exact_radius" | "expanded_radius" | "country_fallback" | "country_search" | "cross_border" | "empty";
 
-async function searchLocationsByCityRadius(params: DirectoryParams, latitude: number, longitude: number, page: number) {
+async function searchLocationsByCityRadius(
+  params: DirectoryParams,
+  latitude: number,
+  longitude: number,
+  page: number,
+  options: SearchLocationsOptions,
+) {
   await warnRadiusCoordinateExclusions();
   const countryCode = normalizedCountryCode(params.city_country || params.country);
   const radii = [25, 50, 100];
@@ -2104,7 +2277,15 @@ async function searchLocationsByCityRadius(params: DirectoryParams, latitude: nu
   let cityTotal: number | null = null;
 
   for (const radius of radii) {
-    const payload = await radiusLocationPayload(params, latitude, longitude, radius, countryCode, page);
+    const payload = await radiusLocationPayload(
+      params,
+      latitude,
+      longitude,
+      radius,
+      countryCode,
+      page,
+      options,
+    );
     lastRadiusPayload = payload;
     if (radius === 25) {
       cityTotal = payload.total;
@@ -2129,6 +2310,7 @@ async function searchLocationsByCityRadius(params: DirectoryParams, latitude: nu
         mode: "country_fallback",
         countryCode,
         preferTreatmentRating: Boolean(params.treatment_ids?.length),
+        treatmentIds: options.includeTreatmentPriceSummaries ? params.treatment_ids : undefined,
       });
       await hydrateLocationRows(payload.results, params.treatment_ids);
       return {
@@ -2146,6 +2328,7 @@ async function searchLocationsByCityRadius(params: DirectoryParams, latitude: nu
         mode: "cross_border",
         radius: 500,
         preferTreatmentRating: Boolean(params.treatment_ids?.length),
+        treatmentIds: options.includeTreatmentPriceSummaries ? params.treatment_ids : undefined,
       });
       await hydrateLocationRows(payload.results, params.treatment_ids);
       return {
@@ -2193,6 +2376,7 @@ async function radiusLocationPayload(
   radius: number,
   countryCode: string | undefined,
   page: number,
+  options: SearchLocationsOptions,
 ) {
   const match = ftsMatch(params.q);
   const matchJoin = match ? searchMatchJoin("l", "location") : "";
@@ -2217,6 +2401,7 @@ async function radiusLocationPayload(
     values: queryValues,
     page,
     preferTreatmentRating: Boolean(params.treatment_ids?.length),
+    treatmentIds: options.includeTreatmentPriceSummaries ? params.treatment_ids : undefined,
   });
 }
 
@@ -2224,7 +2409,13 @@ async function fallbackLocationPayload(
   latitude: number,
   longitude: number,
   page: number,
-  options: { mode: Exclude<RadiusSearchMode, "exact_radius" | "expanded_radius" | "empty">; countryCode?: string; radius?: number; preferTreatmentRating?: boolean },
+  options: {
+    mode: Exclude<RadiusSearchMode, "exact_radius" | "expanded_radius" | "empty">;
+    countryCode?: string;
+    radius?: number;
+    preferTreatmentRating?: boolean;
+    treatmentIds?: readonly number[];
+  },
 ) {
   const where = [
     activeEntityCondition("l"),
@@ -2253,6 +2444,7 @@ async function fallbackLocationPayload(
     values,
     page,
     preferTreatmentRating: options.preferTreatmentRating,
+    treatmentIds: options.treatmentIds,
   });
 }
 
@@ -2264,6 +2456,7 @@ async function locationPayloadFromWhere({
   values,
   page,
   preferTreatmentRating = false,
+  treatmentIds = [],
 }: {
   latitude: number;
   longitude: number;
@@ -2272,6 +2465,7 @@ async function locationPayloadFromWhere({
   values: unknown[];
   page: number;
   preferTreatmentRating?: boolean;
+  treatmentIds?: readonly number[];
 }) {
   const clause = where.length ? `WHERE ${where.join(" AND ")}` : "";
   const total = (await row<{ count: number }>(
@@ -2308,7 +2502,69 @@ async function locationPayloadFromWhere({
   `,
     [latitude, latitude, longitude, ...values, PAGE_SIZE, page * PAGE_SIZE],
   );
-  return { results, total, page, page_size: PAGE_SIZE };
+  const treatmentPriceSummaries = await treatmentSearchPriceSummaries({
+    matchJoin,
+    where,
+    values,
+    treatmentIds,
+  });
+  return {
+    results,
+    total,
+    page,
+    page_size: PAGE_SIZE,
+    treatment_price_summaries: treatmentPriceSummaries,
+  };
+}
+
+async function treatmentSearchPriceSummaries({
+  matchJoin,
+  where,
+  values,
+  treatmentIds,
+}: {
+  matchJoin: string;
+  where: string[];
+  values: unknown[];
+  treatmentIds: readonly number[];
+}): Promise<TreatmentSearchPriceSummary[]> {
+  if (!treatmentIds.length) {
+    return [];
+  }
+
+  const locationClause = where.length ? `WHERE ${where.join(" AND ")}` : "";
+  const offeringConjunction = locationClause ? "AND" : "WHERE";
+  const priceRows = await rows<{
+    currency: string | null;
+    minimum: number;
+    offering_count: number;
+    location_count: number;
+  }>(
+    `
+    SELECT
+      UPPER(NULLIF(TRIM(o.price_currency), '')) AS currency,
+      MIN(o.price_amount) AS minimum,
+      COUNT(*) AS offering_count,
+      COUNT(DISTINCT l.id) AS location_count
+    FROM locations l
+    ${matchJoin}
+    JOIN offerings o ON o.location_id = l.id
+    ${locationClause}
+      ${offeringConjunction} o.treatment_id IN (${placeholders(treatmentIds.length)})
+      AND ${comparableOfferingPriceCondition("o")}
+      AND ${activeOfferingCondition("o")}
+    GROUP BY UPPER(NULLIF(TRIM(o.price_currency), ''))
+    ORDER BY offering_count DESC, currency
+  `,
+    [...values, ...treatmentIds],
+  );
+
+  return priceRows.map((price) => ({
+    currency: price.currency,
+    minimum: Number(price.minimum),
+    offeringCount: Number(price.offering_count),
+    locationCount: Number(price.location_count),
+  }));
 }
 
 function treatmentRatingOrder() {
