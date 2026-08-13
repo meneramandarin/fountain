@@ -574,6 +574,9 @@ export function normalizeMenuTerm(input) {
   const withoutPrices = String(input || "")
     .replace(/(?:[$€£¥]|\b(?:USD|EUR|GBP|CAD|AUD|NZD|CHF|AED|SGD|JPY|MXN)\b)\s*[\d,.]+/giu, " ");
   return normalizeName(withoutPrices)
+    .replace(/\b(bpc|aod|cjc|tb|pt)(?=\d)/gu, "$1 ")
+    .replace(/\bmotsc\b/gu, "mots c")
+    .replace(/\bghkcu\b/gu, "ghk cu")
     .replace(/\bintravenous\b/gu, "iv")
     .replace(/\bnad plus\b/gu, "nad")
     .replace(/\bglp 1\b/gu, "glp 1")

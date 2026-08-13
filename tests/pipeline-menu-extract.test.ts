@@ -61,6 +61,9 @@ describe("menu extraction task", () => {
       .toBe("nad iv therapy");
     expect(normalizeMenuTerm("Platelet-Rich Plasma $750"))
       .toBe("platelet rich plasma");
+    expect(normalizeMenuTerm("BPC-157")).toBe("bpc 157");
+    expect(normalizeMenuTerm("BPC157®")).toBe("bpc 157");
+    expect(normalizeMenuTerm("MRI 1.5T")).toBe("mri 1 5t");
 
     const map = buildTreatmentMap([
       { treatment_id: 10, term: "IV Therapy", normalized_term: "iv therapy" },

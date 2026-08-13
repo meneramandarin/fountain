@@ -163,12 +163,6 @@ import {
 import { loadRunReport, writeRunReport } from "./lib/report.mjs";
 import { getRun, getRunSpend, isBudgetExhausted, withRun } from "./lib/runs.mjs";
 import { DEFAULT_SCHEMAS, regenerateStructureDocument } from "./lib/structure-doc.mjs";
-import {
-  runTaxonomyPresentationClassification,
-  TAXONOMY_PRESENTATION_DEFAULT_BATCH_SIZE,
-  TAXONOMY_PRESENTATION_DEFAULT_CONCURRENCY,
-  TAXONOMY_PRESENTATION_DEFAULT_MODEL,
-} from "./lib/taxonomy-presentation.mjs";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 export const DEFAULT_DRAIN_CONCURRENCY = 24;
@@ -276,7 +270,6 @@ export function validateCommandArgs(parsed) {
     migrate: new Set(["file", "apply", "dryRun"]),
     census: new Set(["scope", "apply", "dryRun"]),
     maintain: new Set(["schema", "output", "apply", "dryRun"]),
-    "taxonomy-present": new Set(["model", "batchSize", "concurrency", "limit", "budget", "apply", "dryRun"]),
     "offering-display": new Set(["locationId", "apply", "dryRun"]),
     "offering-translate": new Set(["locationId", "model", "verificationModel", "batchSize", "concurrency", "limit", "budget", "apply", "dryRun"]),
     prospect: new Set(["campaign", "coverage", "market", "model", "concurrency", "limit", "budget", "apply", "dryRun"]),
@@ -361,8 +354,6 @@ async function dispatchCommand(parsed, run) {
       return runMaintenance(parsed, run);
     case "census":
       return runCensus(parsed, run);
-    case "taxonomy-present":
-      return runTaxonomyPresent(parsed, run);
     case "offering-display":
       return runOfferingDisplay(parsed, run);
     case "offering-translate":
@@ -1875,58 +1866,6 @@ export async function runMigrate(parsed, run, operations = {}) {
   };
 }
 
-export async function runTaxonomyPresent(parsed, run, operations = {}) {
-  const model = parsed.model || TAXONOMY_PRESENTATION_DEFAULT_MODEL;
-  const batchSize = parsed.batchSize == null
-    ? TAXONOMY_PRESENTATION_DEFAULT_BATCH_SIZE
-    : positiveInteger(parsed.batchSize, "--batch-size");
-  const limit = parsed.limit == null ? 100_000 : positiveInteger(parsed.limit, "--limit");
-  const concurrency = parsed.concurrency == null
-    ? TAXONOMY_PRESENTATION_DEFAULT_CONCURRENCY
-    : positiveInteger(parsed.concurrency, "--concurrency");
-  const budgetUsd = parsed.budget == null ? null : nonnegativeNumber(parsed.budget, "--budget");
-  const execute = operations.runTaxonomyPresentationClassification || runTaxonomyPresentationClassification;
-  const outcome = await execute({
-    runId: run.id,
-    apply: !run.dry_run,
-    model,
-    batchSize,
-    concurrency,
-    limit,
-    budgetUsd,
-    query: operations.query || dbQuery,
-    ...(operations.llmClient ? { llmClient: operations.llmClient } : {}),
-    getSpend: operations.getRunSpend || ((runId) => getRunSpend(runId)),
-    onProgress: operations.onProgress || ((progress) => {
-      console.error(
-        `taxonomy-present batch ${progress.completedBatches}/${progress.totalBatches}; classified ${progress.classified}`,
-      );
-    }),
-  });
-  return {
-    status: outcome.budget_exhausted ? "budget_exhausted" : "completed",
-    counts: {
-      pending: outcome.pending,
-      deterministic: outcome.deterministic,
-      llm_terms: outcome.llm_terms,
-      llm_batches: outcome.llm_batches,
-      completed_batches: outcome.completed_batches || 0,
-      written: outcome.written,
-      needs_review: outcome.summary?.needs_review || 0,
-    },
-    result: {
-      dryRun: run.dry_run,
-      model,
-      batchSize,
-      concurrency,
-      limit,
-      budgetUsd,
-      budget_exhausted: outcome.budget_exhausted,
-      summary: outcome.summary || null,
-    },
-  };
-}
-
 export async function runOfferingDisplay(parsed, run, operations = {}) {
   const locationId = parsed.locationId == null
     ? null
@@ -2116,9 +2055,6 @@ function validateCampaignOptions(parsed) {
     }
   }
 
-  if (parsed.command === "taxonomy-present" && parsed.apply && parsed.budget == null) {
-    throw new Error("taxonomy-present --apply requires an explicit --budget.");
-  }
   if (parsed.command === "offering-translate" && parsed.apply && parsed.budget == null) {
     throw new Error("offering-translate --apply requires an explicit --budget.");
   }
@@ -2291,9 +2227,8 @@ function resolveCoverage(value) {
 function usage() {
   return [
     "Usage: node pipeline/cli.mjs <command> [options]",
-    "Commands: enqueue, drain, report, suppress, stage3, redemption, final-report, migrate, census, maintain, taxonomy-present, offering-display, offering-translate, prospect, prospect-sync-chains, prospect-expand-chains, prospect-rescue, prospect-forensics, prospect-verify, prospect-reconcile, prospect-promote",
+    "Commands: enqueue, drain, report, suppress, stage3, redemption, final-report, migrate, census, maintain, offering-display, offering-translate, prospect, prospect-sync-chains, prospect-expand-chains, prospect-rescue, prospect-forensics, prospect-verify, prospect-reconcile, prospect-promote",
     "Final closeout: final-report --runs-file <selection.json> [--before <json>] [--after <json>] [--menu-prices-before <json>] [--output <md>] [--apply]",
-    "Taxonomy presentation: taxonomy-present [--model <slug>] [--batch-size <n>] [--concurrency <n>] [--limit <n>] [--budget <usd>] [--apply]",
     "Offering display: offering-display [--location-id <id>] [--apply]",
     "Offering translation: offering-translate [--location-id <id>] [--model <slug>] [--verification-model <slug>] [--batch-size <n>] [--concurrency <n>] [--limit <n>] [--budget <usd>] [--apply]",
     "Agent discovery: prospect [--coverage <california|south-florida|north-america-metros|international-metros>] [--campaign <name>] [--market <name>] [--model <slug>] [--concurrency <n>] [--limit <n>] [--budget <usd>] [--apply]",

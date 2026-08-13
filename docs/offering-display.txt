@@ -11,12 +11,8 @@ Rules
    the strongest source. Differently priced copies remain visible and are
    reported as price conflicts.
 2. An unpriced exact duplicate is suppressed when a priced copy exists.
-3. A source marked offering_granularity=summary is suppressed only when a
-   stronger same-treatment menu or direct-service sibling exists.
-4. Distinct priced services sharing a canonical treatment remain visible.
-
-Source granularity currently marks bioedge_clinics as summary, clinic_websites
-as direct_service, and menu_enrichment sources as menu_item.
+3. Distinct services sharing a canonical treatment remain visible. A shared
+   treatment family is never evidence that two clinic menu rows are duplicates.
 
 Preview all locations:
 

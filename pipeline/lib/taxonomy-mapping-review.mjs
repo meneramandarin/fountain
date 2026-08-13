@@ -1,5 +1,5 @@
 import { createLlmClient } from "./llm.mjs";
-import { normalizeTaxonomyTerm } from "./taxonomy-presentation.mjs";
+import { normalizeTaxonomyTerm } from "./taxonomy-term.mjs";
 
 export const TAXONOMY_MAPPING_REVIEW_MODEL = "openai/gpt-5.5";
 export const TAXONOMY_MAPPING_REVIEW_PROMPT_VERSION = "taxonomy-mapping-review-v1";
@@ -65,25 +65,12 @@ export async function loadSuspectMappings(query, { limit = 100_000 } = {}) {
         alias.alias_normalized AS term_normalized,
         (array_agg(alias.alias_text ORDER BY length(alias.alias_text), alias.alias_text))[1] AS display_term,
         array_agg(alias.id ORDER BY alias.id)::integer[] AS alias_ids,
-        count(*)::integer AS alias_rows,
-        presentation.confidence AS screening_confidence,
-        presentation.rationale AS screening_rationale
+        count(*)::integer AS alias_rows
       FROM fountain_raw.treatment_aliases alias
       JOIN fountain.treatments treatment ON treatment.id = alias.treatment_id
-      LEFT JOIN fountain.treatment_term_presentations presentation
-        ON presentation.treatment_id = alias.treatment_id
-       AND presentation.term_normalized = alias.alias_normalized
       WHERE alias.mapping_reviewed_at IS NULL
-        AND (
-          alias.mapping_status = 'needs_review'
-          OR (
-            alias.mapping_status = 'active'
-            AND presentation.relationship_type = 'suspect'
-            AND presentation.mapping_valid = false
-          )
-        )
-      GROUP BY alias.treatment_id, treatment.canonical_name, alias.alias_normalized,
-               presentation.confidence, presentation.rationale
+        AND alias.mapping_status = 'needs_review'
+      GROUP BY alias.treatment_id, treatment.canonical_name, alias.alias_normalized
       ORDER BY alias.treatment_id, alias.alias_normalized
       LIMIT $1
     `, [limit]),
@@ -95,8 +82,6 @@ export async function loadSuspectMappings(query, { limit = 100_000 } = {}) {
     term_normalized: row.term_normalized,
     display_term: row.display_term,
     alias_ids: row.alias_ids.map(Number),
-    screening_confidence: Number(row.screening_confidence),
-    screening_rationale: row.screening_rationale,
     offering_ids: [],
     examples: [],
   }));

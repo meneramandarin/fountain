@@ -1,4 +1,5 @@
-import { getTreatmentCatalog } from "@/lib/queries";
+import { getTreatmentCatalog, getTreatmentSynonyms } from "@/lib/queries";
+import { normalizeTreatmentSearchTerm } from "@/lib/search-query";
 import { hyperbaricOxygenTherapy } from "@/lib/treatment-pages";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -10,12 +11,15 @@ const defaultSuggestions = [
   { label: "DEXA", canonicalName: "DEXA scan" },
   { label: "VO2Max", canonicalName: "VO2 max test" },
   { label: "IV Therapy", canonicalName: "IV Infusions" },
-  { label: "Full-body MRI", canonicalName: "Full-body MRI" },
+  { label: "MRI", canonicalName: "MRI" },
 ];
 
 export async function GET(request: NextRequest) {
-  const query = request.nextUrl.searchParams.get("q")?.trim().toLocaleLowerCase("en-US") || "";
-  const treatments = await getTreatmentCatalog(0);
+  const query = normalizeTreatmentSearchTerm(request.nextUrl.searchParams.get("q"));
+  const [treatments, synonyms] = await Promise.all([
+    getTreatmentCatalog(0),
+    getTreatmentSynonyms(),
+  ]);
   const treatmentsByName = new Map(treatments.map((treatment) => [treatment.name, treatment]));
   const curatedSuggestions = defaultSuggestions.flatMap(({ label, canonicalName }) => {
     const treatment = treatmentsByName.get(canonicalName) || (
@@ -36,15 +40,30 @@ export async function GET(request: NextRequest) {
   }
 
   const matchingAliases = curatedSuggestions.filter((suggestion) =>
-    suggestion.label.toLocaleLowerCase("en-US").includes(query),
+    normalizeTreatmentSearchTerm(suggestion.label).includes(query),
   );
   const matchedIds = new Set(matchingAliases.map((suggestion) => suggestion.id));
+  const matchingSynonymRows = synonyms
+    .filter((synonym) => normalizeTreatmentSearchTerm(synonym.synonym).includes(query))
+    .flatMap((synonym) => {
+      const treatment = treatments.find((candidate) => candidate.id === synonym.treatmentId);
+      return treatment && !matchedIds.has(treatment.id) ? [{
+        id: treatment.id,
+        label: treatment.name,
+        category: treatment.category,
+        locationCount: treatment.locationCount,
+      }] : [];
+    });
+  const matchingSynonyms = [...new Map(
+    matchingSynonymRows.map((suggestion) => [suggestion.id, suggestion]),
+  ).values()];
+  for (const suggestion of matchingSynonyms) matchedIds.add(suggestion.id);
   const matchingTreatments = treatments
-    .filter((treatment) => treatment.name.toLocaleLowerCase("en-US").includes(query))
+    .filter((treatment) => normalizeTreatmentSearchTerm(treatment.name).includes(query))
     .filter((treatment) => !matchedIds.has(treatment.id))
     .sort((a, b) => {
-      const aName = a.name.toLocaleLowerCase("en-US");
-      const bName = b.name.toLocaleLowerCase("en-US");
+      const aName = normalizeTreatmentSearchTerm(a.name);
+      const bName = normalizeTreatmentSearchTerm(b.name);
       const aStartsWithQuery = aName.startsWith(query);
       const bStartsWithQuery = bName.startsWith(query);
       if (aStartsWithQuery !== bStartsWithQuery) {
@@ -58,7 +77,7 @@ export async function GET(request: NextRequest) {
       category: treatment.category,
       locationCount: treatment.locationCount,
     }));
-  const suggestions = [...matchingAliases, ...matchingTreatments].slice(0, 8);
+  const suggestions = [...matchingAliases, ...matchingSynonyms, ...matchingTreatments].slice(0, 8);
 
   return NextResponse.json({ suggestions });
 }
