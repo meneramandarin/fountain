@@ -1,6 +1,6 @@
 import { normalizeName } from "./matcher.mjs";
 
-export const OFFERING_DISPLAY_RULE_VERSION = "offering-display-v2";
+export const OFFERING_DISPLAY_RULE_VERSION = "offering-display-v4";
 
 export const LOAD_OFFERING_DISPLAY_ROWS_SQL = `
   SELECT
@@ -17,11 +17,8 @@ export const LOAD_OFFERING_DISPLAY_ROWS_SQL = `
     offering.verification_status,
     offering.owner_account_id,
     offering.created_at,
-    offering.updated_at,
-    source.slug AS source_slug,
-    COALESCE(source.offering_granularity, 'unknown') AS source_granularity
+    offering.updated_at
   FROM fountain.offerings offering
-  LEFT JOIN fountain.sources source ON source.id = offering.source_id
   WHERE offering.status = 'active'
     AND offering.deleted_at IS NULL
     AND ($1::integer IS NULL OR offering.location_id = $1)
@@ -47,6 +44,7 @@ const APPLY_OFFERING_DISPLAY_DECISIONS_SQL = `
     SET active = false,
         updated_at = now()
     WHERE suppression.active
+      AND suppression.rule_version LIKE 'offering-display-%'
       AND suppression.location_id IN (SELECT location_id FROM selected_locations)
       AND NOT EXISTS (
         SELECT 1 FROM input_decisions decision
@@ -141,29 +139,6 @@ export function resolveOfferingDisplay(rows) {
       }
     }
 
-    const visible = locationRows.filter((row) => !suppressed.has(row.id));
-    for (const row of visible) {
-      if (effectiveGranularity(row) !== "summary") continue;
-      // A null taxonomy ID means "not classified", not "same treatment".
-      // Never use it to collapse semantically unrelated summary offerings.
-      if (row.treatment_id == null) continue;
-      const strongerSiblings = visible.filter((candidate) => (
-        candidate.id !== row.id
-        && candidate.treatment_id === row.treatment_id
-        && effectiveGranularity(candidate) !== "summary"
-        && hasStrongerEvidence(candidate)
-      ));
-      if (!strongerSiblings.length) continue;
-      const winner = bestOffering(strongerSiblings);
-      suppress(row, winner, "legacy_summary_shadow", suppressed, {
-        source_slug: row.source_slug,
-        source_granularity: effectiveGranularity(row),
-        winner_source_slug: winner.source_slug,
-        winner_granularity: effectiveGranularity(winner),
-        same_treatment_id: row.treatment_id,
-      });
-    }
-
     decisions.push(...suppressed.values());
   }
 
@@ -256,31 +231,10 @@ function offeringScore(row) {
     agent_verified: 200,
     unverified: 0,
   }[row.verification_status] || 0;
-  const granularity = {
-    direct_service: 500,
-    menu_item: 400,
-    unknown: 100,
-    summary: 0,
-  }[effectiveGranularity(row)] || 0;
   return verification
-    + granularity
     + (row.owner_account_id ? 300 : 0)
     + (hasExplicitPrice(row) ? 100 : 0)
     + (row.source_offer_url ? 50 : 0);
-}
-
-function effectiveGranularity(row) {
-  if (row.source_granularity && row.source_granularity !== "unknown") return row.source_granularity;
-  if (row.owner_account_id || ["owner", "manual"].includes(row.data_origin)) return "direct_service";
-  if (row.data_origin === "scraped" && row.source_offer_url) return "direct_service";
-  return "unknown";
-}
-
-function hasStrongerEvidence(row) {
-  return hasExplicitPrice(row)
-    || Boolean(row.source_offer_url)
-    || ["menu_item", "direct_service"].includes(effectiveGranularity(row))
-    || ["owner_verified", "human_verified"].includes(row.verification_status);
 }
 
 function hasExplicitPrice(row) {
@@ -294,7 +248,6 @@ function priceSignature(row) {
 
 function decisionPriority(reason) {
   return {
-    legacy_summary_shadow: 3,
     duplicate_unpriced_shadow: 2,
     duplicate_same_term: 1,
   }[reason] || 0;

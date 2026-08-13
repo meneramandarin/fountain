@@ -279,10 +279,10 @@ export function isMobileServiceCandidate(candidate) {
 async function ensureAgentDiscoverySource({ campaign }, { query }) {
   const source = await query(
     `
-      INSERT INTO fountain.sources (id, slug, trust_weight, offering_granularity)
+      INSERT INTO fountain.sources (id, slug, trust_weight)
       VALUES (
         nextval(pg_get_serial_sequence('fountain.sources', 'id'))::integer,
-        $1, 0.85, 'menu_item'
+        $1, 0.85
       )
       ON CONFLICT (slug) DO UPDATE SET trust_weight = EXCLUDED.trust_weight
       RETURNING id
@@ -561,11 +561,11 @@ async function enqueueNewLocationEnrichment(tx, {
   }
 }
 
-function candidateOfferings(candidate, { treatmentMap }) {
+export function candidateOfferings(candidate, { treatmentMap }) {
   const trustOfficialPrices = isOfficialChainSync(candidate);
-  const combined = [];
+  const extractedOfferings = [];
   for (const offering of candidate.offerings || []) {
-    combined.push({
+    extractedOfferings.push({
       raw_name: offering.name,
       price_amount: trustOfficialPrices ? numberOrNull(offering.price_amount) : null,
       price_currency: trustOfficialPrices && numberOrNull(offering.price_amount) != null
@@ -574,16 +574,8 @@ function candidateOfferings(candidate, { treatmentMap }) {
       source_url: offering.source_url || candidate.website || candidate.evidence_urls?.[0],
     });
   }
-  for (const rawName of candidate.matched_treatments || []) {
-    combined.push({
-      raw_name: rawName,
-      price_amount: null,
-      price_currency: null,
-      source_url: candidate.evidence_urls?.[0] || candidate.website,
-    });
-  }
   const unique = new Map();
-  for (const item of combined) {
+  for (const item of extractedOfferings) {
     const normalized = normalizeMenuTerm(item.raw_name);
     if (!normalized || unique.has(normalized)) continue;
     const mapping = treatmentMap.get(normalized);

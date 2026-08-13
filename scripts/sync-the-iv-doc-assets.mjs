@@ -438,19 +438,16 @@ async function ensureOfficialMenuSource() {
       INSERT INTO fountain.sources (
         id,
         slug,
-        trust_weight,
-        offering_granularity
+        trust_weight
       )
       VALUES (
         nextval('fountain.sources_id_seq'),
         $1,
-        1.0,
-        'menu_item'
+        1.0
       )
       ON CONFLICT (slug)
       DO UPDATE SET
-        trust_weight = EXCLUDED.trust_weight,
-        offering_granularity = EXCLUDED.offering_granularity
+        trust_weight = EXCLUDED.trust_weight
       RETURNING id
     `,
     [OFFICIAL_MENU_SOURCE_SLUG],

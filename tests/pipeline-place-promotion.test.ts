@@ -2,6 +2,7 @@ import { describe, expect, test, vi } from "vitest";
 
 // @ts-expect-error The pipeline is intentionally implemented as native .mjs.
 import {
+  candidateOfferings,
   isMobileServiceCandidate,
   isNonOfficialWebsite,
   isQaDistinctLocationReviewed,
@@ -9,6 +10,24 @@ import {
 } from "../pipeline/lib/place-promotion.mjs";
 
 describe("place discovery promotion", () => {
+  test("does not manufacture menu rows from discovery-family evidence", () => {
+    const treatmentMap = new Map([
+      ["bpc 157", { status: "mapped", treatment_id: 101 }],
+      ["peptide therapy", { status: "mapped", treatment_id: 20 }],
+    ]);
+    const offerings = candidateOfferings({
+      website: "https://clinic.example",
+      matched_treatments: ["Peptide therapy"],
+      offerings: [{ name: "BPC-157", source_url: "https://clinic.example/menu" }],
+    }, { treatmentMap });
+
+    expect(offerings).toEqual([
+      expect.objectContaining({ raw_name: "BPC-157", treatment_id: 101 }),
+    ]);
+    expect(offerings.map((offering: { raw_name: string }) => offering.raw_name))
+      .not.toContain("Peptide therapy");
+  });
+
   test("dry-run previews only ready, unpromoted candidates", async () => {
     const query = vi.fn(async () => ({
       rows: [{

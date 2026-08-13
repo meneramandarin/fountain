@@ -35,7 +35,9 @@ describe("treatment-aware directory search pricing", () => {
     expect(payload.treatment_price_summaries?.some(
       (summary) => summary.currency === "USD" && summary.minimum > 0,
     )).toBe(true);
-    expect(payload.results.every((result) => result.treatments?.[0]?.name === "MRI")).toBe(true);
+    expect(payload.results.every((result) => result.treatments?.some(
+      (treatment) => treatment.name === "MRI" || treatment.name === "Whole-body MRI",
+    ))).toBe(true);
 
     const genericPrices = await rows<{ lid: number; amount: number }>(
       `

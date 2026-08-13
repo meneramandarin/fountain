@@ -6,11 +6,9 @@ import * as displayModule from "../pipeline/lib/offering-display.mjs";
 const { normalizeOfferingTerm, resolveOfferingDisplay } = displayModule;
 
 describe("offering display resolution", () => {
-  test("suppresses a legacy summary when stronger same-treatment evidence exists", () => {
+  test("does not collapse distinct names merely because they share a treatment", () => {
     const result = resolveOfferingDisplay([
       offering(1, "NAD+ Therapy", {
-        source_slug: "bioedge_clinics",
-        source_granularity: "summary",
       }),
       offering(2, "NAD+", {
         price_amount: 250,
@@ -20,35 +18,24 @@ describe("offering display resolution", () => {
       }),
     ]);
 
-    expect(result.decisions).toEqual([
-      expect.objectContaining({
-        offering_id: 1,
-        winner_offering_id: 2,
-        reason: "legacy_summary_shadow",
-      }),
-    ]);
+    expect(result.decisions).toEqual([]);
   });
 
   test("keeps distinct priced menu variants sharing one canonical treatment", () => {
     const result = resolveOfferingDisplay([
       offering(1, "IV Therapy", {
-        source_slug: "bioedge_clinics",
-        source_granularity: "summary",
       }),
-      offering(2, "Hangover IV Drip", { price_amount: 280, source_granularity: "menu_item" }),
-      offering(3, "Vitamin C IV Therapy", { price_amount: 250, source_granularity: "menu_item" }),
+      offering(2, "Hangover IV Drip", { price_amount: 280 }),
+      offering(3, "Vitamin C IV Therapy", { price_amount: 250 }),
     ]);
 
-    expect(result.decisions).toEqual([
-      expect.objectContaining({ offering_id: 1, reason: "legacy_summary_shadow" }),
-    ]);
+    expect(result.decisions).toEqual([]);
   });
 
   test("collapses normalized same-term same-price duplicates to the stronger source", () => {
     const result = resolveOfferingDisplay([
       offering(10, "Myers' Cocktail", {
         price_amount: 300,
-        source_granularity: "menu_item",
       }),
       offering(11, "Myers’ Cocktail", {
         price_amount: 300,
@@ -69,8 +56,8 @@ describe("offering display resolution", () => {
 
   test("keeps conflicting explicit prices visible for review", () => {
     const result = resolveOfferingDisplay([
-      offering(20, "NAD+ IV Therapy", { price_amount: 500, source_granularity: "menu_item" }),
-      offering(21, "NAD+ IV Therapy", { price_amount: 600, source_granularity: "direct_service" }),
+      offering(20, "NAD+ IV Therapy", { price_amount: 500 }),
+      offering(21, "NAD+ IV Therapy", { price_amount: 600 }),
     ]);
 
     expect(result.decisions).toEqual([]);
@@ -79,11 +66,10 @@ describe("offering display resolution", () => {
     ]);
   });
 
-  test("retains a legacy summary when it is the only evidence for its treatment", () => {
+  test("retains differently named rows across different treatments", () => {
     const result = resolveOfferingDisplay([
       offering(30, "Peptide Therapy", {
         treatment_id: 20,
-        source_granularity: "summary",
       }),
       offering(31, "NAD+", {
         treatment_id: 22,
@@ -98,10 +84,9 @@ describe("offering display resolution", () => {
 
   test("deduplicates unmapped offerings without requiring taxonomy", () => {
     const result = resolveOfferingDisplay([
-      offering(40, "Brain Tap", { treatment_id: null, source_granularity: "menu_item" }),
+      offering(40, "Brain Tap", { treatment_id: null }),
       offering(41, "Brain-Tap", {
         treatment_id: null,
-        source_granularity: "direct_service",
         source_offer_url: "https://clinic.example/braintap",
       }),
     ]);
@@ -115,12 +100,11 @@ describe("offering display resolution", () => {
     ]);
   });
 
-  test("does not treat unrelated unmapped summaries as one treatment", () => {
+  test("does not treat unrelated unmapped rows as one treatment", () => {
     const result = resolveOfferingDisplay([
-      offering(50, "Brain health", { treatment_id: null, source_granularity: "summary" }),
+      offering(50, "Brain health", { treatment_id: null }),
       offering(51, "Deuterium-depleted water", {
         treatment_id: null,
-        source_granularity: "direct_service",
       }),
     ]);
 
@@ -138,8 +122,6 @@ function offering(id: number, rawName: string, overrides: Record<string, unknown
     price_currency: "USD",
     source_offer_url: null,
     source_id: null,
-    source_slug: null,
-    source_granularity: "unknown",
     status: "active",
     data_origin: "imported",
     verification_status: "unverified",

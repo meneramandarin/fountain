@@ -8,6 +8,7 @@ import {
 import type { ClinicianLicenseVerificationData } from "@/components/clinician-license-verification";
 import type { LocationRegulatoryVerificationData } from "@/components/location-regulatory-verification";
 import { orderTreatmentChips, type TreatmentChipWithId } from "@/lib/treatment-chip-order";
+import { normalizeTreatmentSearchTerm } from "@/lib/search-query";
 import { isSitemapLocationIndexable } from "@/lib/sitemap-indexability";
 
 export const PAGE_SIZE = 18;
@@ -237,6 +238,17 @@ function ftsMatch(query?: string | null) {
 
 function placeholders(count: number) {
   return Array.from({ length: count }, () => "?").join(",");
+}
+
+function treatmentTreeCondition(treatmentExpression: string) {
+  return isPostgres()
+    ? `${treatmentExpression} IN (SELECT id FROM fountain.treatment_descendants(?))`
+    : `${treatmentExpression} = ?`;
+}
+
+function treatmentTreesCondition(treatmentExpression: string, count: number) {
+  return Array.from({ length: count }, () => treatmentTreeCondition(treatmentExpression))
+    .join(" OR ");
 }
 
 function orderNoCase(expression: string) {
@@ -575,6 +587,12 @@ export async function getStats(): Promise<Stats> {
 }
 
 export async function getTreatmentCatalog(minimumLocations = 1): Promise<TreatmentCatalogItem[]> {
+  const offeringJoin = isPostgres()
+    ? `
+      LEFT JOIN LATERAL fountain.treatment_descendants(t.id) descendant ON true
+      LEFT JOIN offerings o ON o.treatment_id = descendant.id AND ${activeOfferingCondition("o")}
+    `
+    : `LEFT JOIN offerings o ON o.treatment_id = t.id AND ${activeOfferingCondition("o")}`;
   const treatments = await rows<{
     id: number;
     name: string;
@@ -588,7 +606,7 @@ export async function getTreatmentCatalog(minimumLocations = 1): Promise<Treatme
       t.category,
       COUNT(DISTINCT l.id) AS location_count
     FROM treatments t
-    LEFT JOIN offerings o ON o.treatment_id = t.id AND ${activeOfferingCondition("o")}
+    ${offeringJoin}
     LEFT JOIN locations l ON l.id = o.location_id AND ${activeEntityCondition("l")}
     WHERE COALESCE(l.is_virtual, false) = false
     GROUP BY t.id, t.canonical_name, t.category
@@ -627,6 +645,21 @@ export async function getTreatmentRouteItem(slug: string): Promise<TreatmentCata
     : null;
 }
 
+export async function getTreatmentSynonyms() {
+  if (!isPostgres()) {
+    return [] as Array<{ treatmentId: number; synonym: string }>;
+  }
+  const synonyms = await rows<{ treatment_id: number; synonym: string }>(`
+    SELECT treatment_id, synonym
+    FROM treatment_synonyms
+    ORDER BY treatment_id, id
+  `);
+  return synonyms.map((synonym) => ({
+    treatmentId: Number(synonym.treatment_id),
+    synonym: synonym.synonym,
+  }));
+}
+
 export async function getTreatmentIndexClinicCount() {
   const result = await row<{ count: number }>(`
     SELECT COUNT(DISTINCT l.id) AS count
@@ -643,6 +676,14 @@ export async function getTreatmentIndexClinicCount() {
 export async function getEligibleTreatmentCities(
   minimumLocations = 1,
 ): Promise<TreatmentCityCount[]> {
+  const treatmentSupply = isPostgres()
+    ? `
+      FROM treatments root_treatment
+      JOIN LATERAL fountain.treatment_descendants(root_treatment.id) descendant ON true
+      JOIN offerings o ON o.treatment_id = descendant.id
+    `
+    : `FROM offerings o`;
+  const selectedTreatmentId = isPostgres() ? "root_treatment.id" : "o.treatment_id";
   const cities = await rows<{
     treatment_id: number;
     city: string;
@@ -655,7 +696,7 @@ export async function getEligibleTreatmentCities(
   }>(
     `
     SELECT
-      o.treatment_id,
+      ${selectedTreatmentId} AS treatment_id,
       ci.city,
       ci.region,
       ci.country_code,
@@ -663,14 +704,14 @@ export async function getEligibleTreatmentCities(
       ci.latitude,
       ci.longitude,
       COUNT(DISTINCT l.id) AS location_count
-    FROM offerings o
+    ${treatmentSupply}
     JOIN locations l ON l.id = o.location_id AND ${activeEntityCondition("l")}
     JOIN city_index ci
       ON ${trimLower("ci.city")} = ${trimLower("l.locality")}
       AND ci.country_code = l.country_code
     WHERE ${activeOfferingCondition("o")}
       AND COALESCE(l.is_virtual, false) = false
-    GROUP BY o.treatment_id, ci.city, ci.region, ci.country_code, ci.country_name, ci.latitude, ci.longitude
+    GROUP BY ${selectedTreatmentId}, ci.city, ci.region, ci.country_code, ci.country_name, ci.latitude, ci.longitude
     HAVING COUNT(DISTINCT l.id) >= ?
     ORDER BY location_count DESC, ${orderNoCase("ci.city")}
   `,
@@ -783,7 +824,7 @@ export async function getTreatmentLandingData(treatment: Pick<TreatmentCatalogIt
         COUNT(DISTINCT l.country_code) AS total_countries
       FROM offerings o
       JOIN locations l ON l.id = o.location_id
-      WHERE o.treatment_id = ?
+      WHERE ${treatmentTreeCondition("o.treatment_id")}
         AND ${activeOfferingCondition("o")}
         AND ${activeEntityCondition("l")}
         AND COALESCE(l.is_virtual, false) = false
@@ -806,7 +847,7 @@ export async function getTreatmentLandingData(treatment: Pick<TreatmentCatalogIt
         COUNT(DISTINCT l.id) AS location_count
       FROM offerings o
       JOIN locations l ON l.id = o.location_id
-      WHERE o.treatment_id = ?
+      WHERE ${treatmentTreeCondition("o.treatment_id")}
         AND ${activeOfferingCondition("o")}
         AND ${activeEntityCondition("l")}
         AND COALESCE(l.is_virtual, false) = false
@@ -836,7 +877,7 @@ export async function getTreatmentLandingData(treatment: Pick<TreatmentCatalogIt
         COUNT(DISTINCT l.id) AS location_count
       FROM offerings o
       JOIN locations l ON l.id = o.location_id
-      WHERE o.treatment_id = ?
+      WHERE ${treatmentTreeCondition("o.treatment_id")}
         AND ${comparableOfferingPriceCondition("o")}
         AND ${activeOfferingCondition("o")}
         AND ${activeEntityCondition("l")}
@@ -1125,7 +1166,7 @@ export async function getLandingTreatmentDirectoryCards(
     return [];
   }
 
-  const filters: string[] = ["o.treatment_id = ?"];
+  const filters: string[] = [treatmentTreeCondition("o.treatment_id")];
   const values: unknown[] = [treatment.id];
   const visitorCountry = normalizedCountryCode(options.visitor?.country);
   const visitorRegion = normalizedLocationText(options.visitor?.region);
@@ -1501,7 +1542,13 @@ function locationWhere(params: DirectoryParams, options: { includeText?: boolean
     values.push(params.locality);
   }
   for (const treatmentId of params.treatment_ids || []) {
-    where.push(`EXISTS (SELECT 1 FROM offerings o WHERE o.location_id = l.id AND o.treatment_id = ? AND ${activeOfferingCondition("o")})`);
+    where.push(`EXISTS (
+      SELECT 1
+      FROM offerings o
+      WHERE o.location_id = l.id
+        AND ${treatmentTreeCondition("o.treatment_id")}
+        AND ${activeOfferingCondition("o")}
+    )`);
     values.push(treatmentId);
   }
   for (const [facet, key] of [
@@ -1754,7 +1801,7 @@ export async function getTreatmentLocationLandingData(params: {
       SELECT 1
       FROM offerings matching_o
       WHERE matching_o.location_id = l.id
-        AND matching_o.treatment_id = ?
+        AND ${treatmentTreeCondition("matching_o.treatment_id")}
         AND ${activeOfferingCondition("matching_o")}
     )
   `;
@@ -1784,7 +1831,7 @@ export async function getTreatmentLocationLandingData(params: {
         SELECT treatment_o.price_amount
         FROM offerings treatment_o
         WHERE treatment_o.location_id = l.id
-          AND treatment_o.treatment_id = ?
+          AND ${treatmentTreeCondition("treatment_o.treatment_id")}
           AND ${comparableOfferingPriceCondition("treatment_o")}
           AND ${activeOfferingCondition("treatment_o")}
         ORDER BY treatment_o.price_amount ASC
@@ -1794,7 +1841,7 @@ export async function getTreatmentLocationLandingData(params: {
         SELECT treatment_o.price_currency
         FROM offerings treatment_o
         WHERE treatment_o.location_id = l.id
-          AND treatment_o.treatment_id = ?
+          AND ${treatmentTreeCondition("treatment_o.treatment_id")}
           AND ${comparableOfferingPriceCondition("treatment_o")}
           AND ${activeOfferingCondition("treatment_o")}
         ORDER BY treatment_o.price_amount ASC
@@ -1835,7 +1882,7 @@ export async function getTreatmentLocationLandingData(params: {
       COUNT(DISTINCT l.id) AS location_count
     FROM offerings o
     JOIN locations l ON l.id = o.location_id
-    WHERE o.treatment_id = ?
+    WHERE ${treatmentTreeCondition("o.treatment_id")}
       AND ${comparableOfferingPriceCondition("o")}
       AND ${activeOfferingCondition("o")}
       AND ${activeEntityCondition("l")}
@@ -1997,39 +2044,47 @@ async function resolveTreatmentSearchQuery(query?: string | null): Promise<Resol
     return null;
   }
 
-  const matches = await rows<{
+  const candidates = await rows<{
     id: number;
     name: string;
     category: string | null;
-    canonical_match: boolean;
+    synonym: string | null;
   }>(
-    `
-    WITH normalized_query AS (
-      SELECT fountain_raw.normalize_treatment_term(?) AS term
-    )
-    SELECT
-      treatment.id,
-      treatment.canonical_name AS name,
-      treatment.category,
-      BOOL_OR(
-        fountain_raw.normalize_treatment_term(treatment.canonical_name) = normalized_query.term
-      ) AS canonical_match
-    FROM treatments treatment
-    CROSS JOIN normalized_query
-    LEFT JOIN fountain_raw.treatment_aliases alias
-      ON alias.treatment_id = treatment.id
-     AND alias.mapping_status = 'active'
-     AND alias.alias_normalized = normalized_query.term
-    WHERE fountain_raw.normalize_treatment_term(treatment.canonical_name) = normalized_query.term
-       OR alias.id IS NOT NULL
-    GROUP BY treatment.id, treatment.canonical_name, treatment.category
-    ORDER BY canonical_match DESC, treatment.id
-  `,
-    [value],
+    isPostgres()
+      ? `
+        SELECT treatment.id, treatment.canonical_name AS name,
+               treatment.category, synonym.synonym
+        FROM treatments treatment
+        LEFT JOIN treatment_synonyms synonym ON synonym.treatment_id = treatment.id
+        ORDER BY treatment.id, synonym.id
+      `
+      : `
+        SELECT treatment.id, treatment.canonical_name AS name,
+               treatment.category, NULL AS synonym
+        FROM treatments treatment
+        ORDER BY treatment.id
+      `,
   );
-
-  const canonicalMatch = matches.find((match) => match.canonical_match);
-  const match = canonicalMatch || (matches.length === 1 ? matches[0] : null);
+  const normalizedQuery = normalizeTreatmentSearchTerm(value);
+  const uniqueTreatments = new Map(candidates.map((candidate) => [Number(candidate.id), candidate]));
+  const canonicalMatches = [...uniqueTreatments.values()].filter((candidate) =>
+    normalizeTreatmentSearchTerm(candidate.name) === normalizedQuery,
+  );
+  const synonymMatches = candidates.filter((candidate) =>
+    candidate.synonym && normalizeTreatmentSearchTerm(candidate.synonym) === normalizedQuery,
+  );
+  const exactMatches = canonicalMatches.length ? canonicalMatches : uniqueByTreatment(synonymMatches);
+  const prefixMatches = exactMatches.length
+    ? []
+    : uniqueByTreatment(candidates.filter((candidate) => {
+        const canonical = normalizeTreatmentSearchTerm(candidate.name);
+        const synonym = normalizeTreatmentSearchTerm(candidate.synonym);
+        return canonical.startsWith(`${normalizedQuery} `)
+          || synonym.startsWith(`${normalizedQuery} `);
+      }));
+  const match = exactMatches.length === 1
+    ? exactMatches[0]
+    : prefixMatches.length === 1 ? prefixMatches[0] : null;
   return match
     ? {
         id: Number(match.id),
@@ -2037,6 +2092,10 @@ async function resolveTreatmentSearchQuery(query?: string | null): Promise<Resol
         category: match.category?.trim() || "Uncategorized",
       }
     : null;
+}
+
+function uniqueByTreatment<T extends { id: number }>(matches: T[]) {
+  return [...new Map(matches.map((match) => [Number(match.id), match])).values()];
 }
 
 async function treatmentSearchContextById(id: number): Promise<ResolvedTreatmentSearch | null> {
@@ -2190,6 +2249,7 @@ async function searchLocationsByCountry(
 async function hydrateLocationRows(results: AnyRow[], preferredTreatmentIds: readonly number[] = []) {
   const ids = results.map((result) => result.id as number);
   if (ids.length) {
+    const preferredChipTreatmentIds = await expandedTreatmentIds(preferredTreatmentIds);
     const marks = placeholders(ids.length);
     const [treatments, tags, images, verificationMap, regulatoryVerificationMap, treatmentPriceMap] = await Promise.all([
       rows<{ lid: number } & TreatmentChipWithId>(
@@ -2255,7 +2315,7 @@ async function hydrateLocationRows(results: AnyRow[], preferredTreatmentIds: rea
     }
     for (const result of results) {
       const id = result.id as number;
-      result.treatments = orderTreatmentChips(treatmentMap.get(id) || [], preferredTreatmentIds);
+      result.treatments = orderTreatmentChips(treatmentMap.get(id) || [], preferredChipTreatmentIds);
       result.tags = tagMap.get(id) || [];
       result.image = imageMap.get(id)?.blob_url || null;
       result.image_kind = imageMap.get(id)?.image_kind || null;
@@ -2268,6 +2328,17 @@ async function hydrateLocationRows(results: AnyRow[], preferredTreatmentIds: rea
       }
     }
   }
+}
+
+async function expandedTreatmentIds(treatmentIds: readonly number[]) {
+  if (!treatmentIds.length || !isPostgres()) return [...treatmentIds];
+  const descendants = await rows<{ id: number }>(`
+    SELECT descendant.id
+    FROM unnest(?::integer[]) WITH ORDINALITY root(id, position)
+    CROSS JOIN LATERAL fountain.treatment_descendants(root.id) descendant
+    ORDER BY root.position, (descendant.id = root.id) DESC, descendant.id
+  `, [[...treatmentIds]]);
+  return descendants.map((descendant) => Number(descendant.id));
 }
 
 async function locationTreatmentPriceMap(
@@ -2291,7 +2362,7 @@ async function locationTreatmentPriceMap(
       UPPER(NULLIF(TRIM(offering.price_currency), '')) AS currency
     FROM offerings offering
     WHERE offering.location_id IN (${placeholders(locationIds.length)})
-      AND offering.treatment_id IN (${placeholders(treatmentIds.length)})
+      AND (${treatmentTreesCondition("offering.treatment_id", treatmentIds.length)})
       AND ${comparableOfferingPriceCondition("offering")}
       AND ${activeOfferingCondition("offering")}
     ORDER BY offering.location_id, offering.price_amount ASC, offering.id ASC
@@ -2729,7 +2800,7 @@ async function treatmentSearchPriceSummaries({
     ${matchJoin}
     JOIN offerings o ON o.location_id = l.id
     ${locationClause}
-      ${offeringConjunction} o.treatment_id IN (${placeholders(treatmentIds.length)})
+      ${offeringConjunction} (${treatmentTreesCondition("o.treatment_id", treatmentIds.length)})
       AND ${comparableOfferingPriceCondition("o")}
       AND ${activeOfferingCondition("o")}
     GROUP BY UPPER(NULLIF(TRIM(o.price_currency), ''))
@@ -2821,7 +2892,7 @@ export async function searchPractitioners(params: DirectoryParams, page = 0) {
           AND ${activeEntityCondition("a")}
           AND ${activeEntityCondition("l")}
           AND ${activeOfferingCondition("o")}
-          AND o.treatment_id = ?
+          AND ${treatmentTreeCondition("o.treatment_id")}
       )
     `);
     values.push(treatmentId);
