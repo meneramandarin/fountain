@@ -1,10 +1,17 @@
-import { isFixedTreatmentLocationPage } from "@/lib/fixed-treatment-location-pages";
-import { getCityIndexPlaces, getEligibleTreatmentCities, getTreatmentCatalog } from "@/lib/queries";
+import { findFixedTreatmentLocationPage, isFixedTreatmentLocationPage } from "@/lib/fixed-treatment-location-pages";
+import {
+  getCityIndexPlace,
+  getCityIndexPlaces,
+  getEligibleTreatmentCities,
+  getTreatmentCatalog,
+  getTreatmentRouteItem,
+} from "@/lib/queries";
 import {
   treatmentCityHref,
   treatmentCitySlug,
   treatmentHref,
   treatmentSlug,
+  type CityIndexPlace,
   type TreatmentCatalogItem,
   type TreatmentCityCount,
 } from "@/lib/treatment-pages";
@@ -41,16 +48,28 @@ export function prepareTreatmentIndexHubs(hubs: TreatmentHub[]) {
 }
 
 export async function getTreatmentCityPage(treatmentSlugValue: string, citySlugValue: string) {
-  const [hub, places] = await Promise.all([
-    getTreatmentHub(treatmentSlugValue),
+  const fixedPage = findFixedTreatmentLocationPage(treatmentSlugValue, citySlugValue);
+  if (fixedPage) {
+    const [treatment, place] = await Promise.all([
+      getTreatmentRouteItem(treatmentSlugValue),
+      getCityIndexPlace({
+        city: fixedPage.city.city,
+        region: fixedPage.city.region,
+        countryCode: fixedPage.city.countryCode,
+      }),
+    ]);
+    if (!treatment || !place || treatment.id !== fixedPage.treatment.id) {
+      return null;
+    }
+    return treatmentCityPageResult(treatment, place, true, fixedPage.href);
+  }
+
+  const [treatment, places] = await Promise.all([
+    getTreatmentRouteItem(treatmentSlugValue),
     getCityIndexPlaces(),
   ]);
-  if (!hub) {
+  if (!treatment) {
     return null;
-  }
-  const countedCity = hub.cities.find((candidate) => treatmentCitySlug(candidate) === citySlugValue);
-  if (countedCity) {
-    return { hub, city: countedCity };
   }
 
   const place = places.find((candidate) =>
@@ -60,15 +79,33 @@ export async function getTreatmentCityPage(treatmentSlugValue: string, citySlugV
     return null;
   }
 
-  const indexable = isFixedTreatmentLocationPage(hub.treatment.id, citySlugValue);
+  return treatmentCityPageResult(
+    treatment,
+    place,
+    false,
+    directoryTreatmentCityHref(treatment, place),
+  );
+}
+
+function treatmentCityPageResult(
+  treatment: TreatmentCatalogItem,
+  place: CityIndexPlace,
+  indexable: boolean,
+  href: string,
+) {
   const city: TreatmentHubCity = {
     ...place,
-    treatmentId: hub.treatment.id,
+    treatmentId: treatment.id,
     locationCount: 0,
     indexable,
-    href: indexable
-      ? treatmentCityHref(hub.treatment, place)
-      : directoryTreatmentCityHref(hub.treatment, place),
+    href,
+  };
+  const hub: TreatmentHub = {
+    treatment,
+    href: treatmentHref(treatment),
+    cities: [city],
+    totalLocations: 0,
+    totalCities: 1,
   };
   return { hub, city };
 }

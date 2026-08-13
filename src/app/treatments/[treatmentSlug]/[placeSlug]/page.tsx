@@ -4,6 +4,7 @@ import { cache } from "react";
 import { DirectoryShell, type DirectoryState, type SearchPayload } from "@/components/directory-shell";
 import { directoryParamsFromState } from "@/lib/directory-search-state";
 import { cityLabel, getTreatmentCityPage } from "@/lib/treatment-hubs";
+import { fixedTreatmentLocationPages } from "@/lib/fixed-treatment-location-pages";
 import { searchLocations } from "@/lib/queries";
 import { ogImage, siteName, siteUrl } from "@/lib/site";
 import { treatmentLocationDescription } from "@/lib/treatment-location-metadata";
@@ -12,7 +13,10 @@ export const revalidate = 86_400;
 export const dynamicParams = true;
 
 export function generateStaticParams() {
-  return [];
+  return fixedTreatmentLocationPages.map((page) => ({
+    treatmentSlug: page.treatment.slug,
+    placeSlug: page.city.slug,
+  }));
 }
 
 type TreatmentLocationRouteProps = {

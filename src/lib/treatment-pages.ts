@@ -18,6 +18,13 @@ export type TreatmentCityCount = {
 
 export type CityIndexPlace = Omit<TreatmentCityCount, "treatmentId" | "locationCount">;
 
+export type HomepageTreatmentGroup = {
+  category: string;
+  treatments: TreatmentCatalogItem[];
+};
+
+export const homepageTreatmentsPerCategory = 4;
+
 export const hyperbaricOxygenTherapy = {
   id: 27,
   name: "Hyperbaric oxygen therapy (HBOT)",
@@ -57,4 +64,23 @@ export function treatmentCityHref(
 
 export function isTreatmentPageIndexable(cityCount: number) {
   return cityCount > 0;
+}
+
+export function homepageTreatmentGroups(
+  treatments: TreatmentCatalogItem[],
+  perCategory = homepageTreatmentsPerCategory,
+): HomepageTreatmentGroup[] {
+  const groups = new Map<string, TreatmentCatalogItem[]>();
+  for (const treatment of treatments) {
+    const group = groups.get(treatment.category) || [];
+    if (group.length < perCategory) {
+      group.push(treatment);
+    }
+    groups.set(treatment.category, group);
+  }
+
+  return Array.from(groups, ([category, group]) => ({
+    category,
+    treatments: group,
+  })).sort((a, b) => a.category.localeCompare(b.category));
 }

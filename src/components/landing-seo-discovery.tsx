@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { dexaScanExtraCities } from "@/lib/fixed-treatment-location-pages";
 import {
+  homepageTreatmentGroups,
   treatmentHref,
   type TreatmentCatalogItem,
 } from "@/lib/treatment-pages";
@@ -10,8 +11,6 @@ const moreCitiesGroupLabel = "More US cities";
 const moreCitiesLabels = new Set(
   dexaScanExtraCities.map((city) => `${city.city}, ${city.region}`),
 );
-
-const homepageTreatmentsPerCategory = 4;
 
 export type TreatmentLocationDiscoveryLink = {
   href: string;
@@ -27,7 +26,7 @@ type LandingSeoDiscoveryProps = {
 
 export function LandingSeoDiscovery({ treatments, locationPages }: LandingSeoDiscoveryProps) {
   const cityGroups = groupByCity(locationPages);
-  const treatmentGroups = groupTopTreatments(treatments);
+  const treatmentGroups = homepageTreatmentGroups(treatments);
 
   return (
     <>
@@ -39,7 +38,7 @@ export function LandingSeoDiscovery({ treatments, locationPages }: LandingSeoDis
           <h2 id="explore-treatments-title">Explore treatments</h2>
           <p>
             Browse popular treatments or{" "}
-            <Link className={styles.directoryLink} href="/treatments">
+            <Link className={styles.directoryLink} href="/treatments" prefetch={false}>
               view all treatments here.
             </Link>
           </p>
@@ -53,7 +52,7 @@ export function LandingSeoDiscovery({ treatments, locationPages }: LandingSeoDis
                 <h3>{group.category}</h3>
                 <div className="location-search-links">
                   {group.treatments.map((treatment) => (
-                    <Link href={treatmentHref(treatment)} key={treatment.id}>
+                    <Link href={treatmentHref(treatment)} key={treatment.id} prefetch={false}>
                       {treatment.name}
                     </Link>
                   ))}
@@ -84,6 +83,7 @@ export function LandingSeoDiscovery({ treatments, locationPages }: LandingSeoDis
                     <Link
                       href={page.href}
                       key={page.href}
+                      prefetch={false}
                     >
                       {page.treatmentLabel} in {page.city}
                     </Link>
@@ -123,20 +123,4 @@ function groupByCity(pages: TreatmentLocationDiscoveryLink[]): CityGroup[] {
     result.push({ slug: moreCitiesGroupLabel, label: moreCitiesGroupLabel, pages: moreCities });
   }
   return result;
-}
-
-function groupTopTreatments(treatments: TreatmentCatalogItem[]) {
-  const groups = new Map<string, TreatmentCatalogItem[]>();
-  for (const treatment of treatments) {
-    const group = groups.get(treatment.category) || [];
-    if (group.length < homepageTreatmentsPerCategory) {
-      group.push(treatment);
-    }
-    groups.set(treatment.category, group);
-  }
-
-  return Array.from(groups, ([category, group]) => ({
-    category,
-    treatments: group,
-  })).sort((a, b) => a.category.localeCompare(b.category));
 }

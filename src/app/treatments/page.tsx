@@ -115,7 +115,7 @@ export default async function TreatmentsPage() {
                 <ul className={styles.treatmentList}>
                   {categoryHubs.map((hub) => (
                     <li key={hub.treatment.id}>
-                      <Link href={hub.href}>
+                      <Link href={hub.href} prefetch={false}>
                         <span>{hub.treatment.name}</span>
                         <small>
                           {hub.totalLocations.toLocaleString()} {hub.totalLocations === 1 ? "location" : "locations"}
