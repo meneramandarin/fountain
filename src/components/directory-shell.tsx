@@ -7,7 +7,6 @@ import { DirectoryMap } from "@/components/directory-map";
 import { ArrowLeft, ArrowRight, Loader2, MapPin, Stethoscope } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { practitionerHref } from "@/lib/directory-urls";
 import { formatLocationPlace } from "@/lib/location-display";
@@ -121,7 +120,6 @@ export function DirectoryShell({
     cityLabel?: string;
   };
 }) {
-  const router = useRouter();
   const [state, setState] = useState<DirectoryState>(seededState);
   const [payload, setPayload] = useState<SearchPayload>(initialPayload);
   const [loading, setLoading] = useState(false);
@@ -167,7 +165,7 @@ export function DirectoryShell({
     }
     return params.toString();
   }, [state, visitorLocation, mapBounds]);
-  const initialQueryString = useRef(queryString);
+  const loadedQueryStringRef = useRef(queryString);
   const mapFocusLocation = useMemo(() => {
     if (
       !usesPersonalizedDefaultSort(state)
@@ -180,12 +178,17 @@ export function DirectoryShell({
     }
     return { latitude: visitorLocation.latitude, longitude: visitorLocation.longitude };
   }, [state, visitorLocation]);
-  const priceSummaries = payload.treatment_price_summaries
-    ?? initialPayload.treatment_price_summaries;
-  const activeTreatmentLabel = payload.resolved_treatment?.name
-    || (state.treatment_ids.length ? initialTreatmentLabel : undefined);
-  const activeTreatmentCategory = payload.resolved_treatment?.category
-    || (state.treatment_ids.length ? initialTreatmentCategory : undefined);
+  const priceSummaries = payload.treatment_price_summaries;
+  const payloadTreatmentMatchesState = Boolean(
+    payload.resolved_treatment
+      && (!state.treatment_ids.length || state.treatment_ids.includes(String(payload.resolved_treatment.id))),
+  );
+  const initialTreatmentMatchesState = state.treatment_ids.length > 0
+    && state.treatment_ids.join(",") === seededState.treatment_ids.join(",");
+  const activeTreatmentLabel = (payloadTreatmentMatchesState ? payload.resolved_treatment?.name : undefined)
+    || (initialTreatmentMatchesState ? initialTreatmentLabel : undefined);
+  const activeTreatmentCategory = (payloadTreatmentMatchesState ? payload.resolved_treatment?.category : undefined)
+    || (initialTreatmentMatchesState ? initialTreatmentCategory : undefined);
   const treatmentResultsHeading = searchHeading
     ? treatmentLocationResultsHeading({
         total: payload.total,
@@ -203,7 +206,7 @@ export function DirectoryShell({
     : null;
 
   useEffect(() => {
-    if (queryString === initialQueryString.current) {
+    if (queryString === loadedQueryStringRef.current) {
       return;
     }
     searchRequestRef.current?.abort();
@@ -217,7 +220,10 @@ export function DirectoryShell({
         }
         return response.json();
       })
-      .then((data: SearchPayload) => setPayload(data))
+      .then((data: SearchPayload) => {
+        loadedQueryStringRef.current = queryString;
+        setPayload(data);
+      })
       .catch((error) => {
         if (error.name !== "AbortError") {
           setPayload({ results: [], total: 0, page: 0, page_size: 18 });
@@ -228,6 +234,22 @@ export function DirectoryShell({
       });
     return () => controller.abort();
   }, [queryString]);
+
+  useEffect(() => {
+    const restoreDirectoryState = () => {
+      if (!isDirectoryPath(window.location.pathname)) return;
+      setLoading(true);
+      setMapBounds(null);
+      setPayload((current) => ({
+        ...current,
+        resolved_treatment: undefined,
+        treatment_price_summaries: undefined,
+      }));
+      setState(directoryStateFromUrlSearchParams(new URLSearchParams(window.location.search)));
+    };
+    window.addEventListener("popstate", restoreDirectoryState);
+    return () => window.removeEventListener("popstate", restoreDirectoryState);
+  }, []);
 
   const searchMapBounds = useCallback((bounds: MapBounds) => {
     if (state.kind !== "locations") return;
@@ -266,18 +288,21 @@ export function DirectoryShell({
     return () => controller.abort();
   }, []);
 
-  const updateState = useCallback((patch: Partial<DirectoryState>) => {
-    setLoading(true);
-    setState((current) => ({ ...current, ...patch, page: patch.page ?? 0 }));
-  }, []);
-
   const changePage = useCallback((page: number) => {
     const resultsTop = resultsRef.current?.getBoundingClientRect().top;
     if (typeof resultsTop === "number") {
       window.scrollTo({ top: Math.max(0, window.scrollY + resultsTop - 90), behavior: "smooth" });
     }
-    updateState({ page });
-  }, [updateState]);
+    const nextState = { ...state, page };
+    const href = directoryHrefFromState(nextState);
+    if (!isDirectoryPath(window.location.pathname)) {
+      window.location.assign(href);
+      return;
+    }
+    setLoading(true);
+    window.history.pushState(null, "", href);
+    setState(nextState);
+  }, [state]);
 
   const submitSearch = useCallback((payload: { what: string; treatment_id?: string; city_label: string; city_country: string; place_type?: string; city_lat?: number; city_lng?: number }) => {
     const isCountry = payload.place_type === "country" && payload.city_country;
@@ -294,36 +319,28 @@ export function DirectoryShell({
       city_lng: isCountry ? undefined : payload.city_lng,
       treatment_ids: payload.treatment_id ? [payload.treatment_id] : [],
     };
-    const params = new URLSearchParams();
-    params.set("kind", nextState.kind);
-    if (nextState.treatment_ids.length) {
-      params.set("treatment_id", nextState.treatment_ids.join(","));
-    } else if (nextState.q) {
-      params.set("q", nextState.q);
+    const href = directoryHrefFromState(nextState);
+    if (!isDirectoryPath(window.location.pathname)) {
+      window.location.assign(href);
+      return;
     }
-    if (isCountry) {
-      params.set("country", nextState.country);
-      params.set("city_label", nextState.city_label);
-      params.set("city_country", nextState.city_country);
-      params.set("place_type", "country");
-    } else if (nextState.city_lat != null && nextState.city_lng != null) {
-      params.set("city_label", nextState.city_label);
-      params.set("city_country", nextState.city_country);
-      params.set("city_lat", String(nextState.city_lat));
-      params.set("city_lng", String(nextState.city_lng));
-    }
-
     setLoading(true);
     setMapBounds(null);
+    setPayload((current) => ({
+      ...current,
+      resolved_treatment: undefined,
+      treatment_price_summaries: undefined,
+    }));
+    window.history.pushState(null, "", href);
     setState(nextState);
-    router.push(`/directory?${params.toString()}`);
-  }, [router, state.kind]);
+  }, [state.kind]);
 
   return (
     <main className="directory-shell">
       <LandingScrollHeader
+        key={directorySearchControlKey(state, activeTreatmentLabel, activeTreatmentCategory)}
         alwaysVisible
-        initialWhat={state.q || initialTreatmentLabel}
+        initialWhat={state.q || activeTreatmentLabel}
         initialTreatmentId={state.treatment_ids.length === 1 ? state.treatment_ids[0] : undefined}
         initialWhere={state.city_label || state.locality}
         initialCityCountry={state.city_country}
@@ -392,8 +409,8 @@ export function DirectoryShell({
               locations={payload.results as LocationResultRow[]}
               activeLocationId={activeLocationId}
               focusLocation={mapFocusLocation}
-              clinicCategory={initialTreatmentCategory}
-              treatmentName={initialTreatmentLabel}
+              clinicCategory={activeTreatmentCategory}
+              treatmentName={activeTreatmentLabel}
               onBoundsChange={searchMapBounds}
             />
           </aside>
@@ -421,6 +438,77 @@ function emptyState(): DirectoryState {
     care_model: "",
     page: 0,
   };
+}
+
+function directoryStateFromUrlSearchParams(params: URLSearchParams): DirectoryState {
+  const kind = params.get("kind") === "practitioners" ? "practitioners" : "locations";
+  const treatmentIds = (params.get("treatment_id") || "")
+    .split(",")
+    .map((value) => value.trim())
+    .filter(Boolean)
+    .slice(0, 25);
+  const page = Number.parseInt(params.get("page") || "0", 10);
+  return {
+    kind,
+    q: params.get("q") || "",
+    country: params.get("country") || "",
+    locality: params.get("locality") || "",
+    city_label: params.get("city_label") || "",
+    city_country: params.get("city_country") || "",
+    place_type: params.get("place_type") || "",
+    city_lat: finiteSearchNumber(params.get("city_lat")),
+    city_lng: finiteSearchNumber(params.get("city_lng")),
+    treatment_ids: treatmentIds,
+    entity_type: params.get("entity_type") || "",
+    care_model: params.get("care_model") || "",
+    page: Number.isFinite(page) && page > 0 ? page : 0,
+  };
+}
+
+function directoryHrefFromState(state: DirectoryState) {
+  const params = new URLSearchParams();
+  params.set("kind", state.kind);
+  for (const key of ["q", "country", "locality", "city_label", "city_country", "place_type", "entity_type", "care_model"] as const) {
+    if (state[key]) params.set(key, state[key]);
+  }
+  if (typeof state.city_lat === "number" && Number.isFinite(state.city_lat)) {
+    params.set("city_lat", String(state.city_lat));
+  }
+  if (typeof state.city_lng === "number" && Number.isFinite(state.city_lng)) {
+    params.set("city_lng", String(state.city_lng));
+  }
+  if (state.treatment_ids.length) params.set("treatment_id", state.treatment_ids.join(","));
+  if (state.page) params.set("page", String(state.page));
+  return `/directory?${params.toString()}`;
+}
+
+function isDirectoryPath(pathname: string) {
+  return pathname === "/directory" || pathname === "/directory/";
+}
+
+function directorySearchControlKey(
+  state: DirectoryState,
+  treatmentLabel?: string,
+  treatmentCategory?: string,
+) {
+  return JSON.stringify([
+    state.kind,
+    state.q,
+    state.city_label,
+    state.city_country,
+    state.place_type,
+    state.city_lat,
+    state.city_lng,
+    state.treatment_ids.join(","),
+    treatmentLabel,
+    treatmentCategory,
+  ]);
+}
+
+function finiteSearchNumber(value: string | null) {
+  if (!value) return undefined;
+  const parsed = Number(value);
+  return Number.isFinite(parsed) ? parsed : undefined;
 }
 
 function usesPersonalizedDefaultSort(state: DirectoryState) {

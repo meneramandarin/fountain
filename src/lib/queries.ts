@@ -1806,9 +1806,23 @@ export async function searchLocations(
   page = 0,
   options: SearchLocationsOptions = {},
 ) {
-  const resolvedTreatment = params.treatment_ids?.length
-    ? null
-    : await resolveTreatmentSearchQuery(params.q);
+  const selectedTreatmentId = params.treatment_ids?.length === 1
+    ? params.treatment_ids[0]
+    : null;
+  if (selectedTreatmentId != null) {
+    const [payload, resolvedTreatment] = await Promise.all([
+      searchLocationsWithParams(params, page, {
+        ...options,
+        includeTreatmentPriceSummaries: true,
+      }),
+      treatmentSearchContextById(selectedTreatmentId),
+    ]);
+    return resolvedTreatment
+      ? { ...payload, resolved_treatment: resolvedTreatment }
+      : payload;
+  }
+
+  const resolvedTreatment = await resolveTreatmentSearchQuery(params.q);
   const effectiveParams = resolvedTreatment
     ? { ...params, q: undefined, treatment_ids: [resolvedTreatment.id] }
     : params;
@@ -1859,13 +1873,12 @@ async function searchLocationsWithParams(
     : match
     ? `${locationDirectoryCompletenessRank()} ASC, search_match.fts_rank ASC, (google_reviews.rating IS NULL), google_reviews.rating DESC, (google_reviews.review_count IS NULL), google_reviews.review_count DESC, ${orderNoCase("l.name")}`
     : `${locationDirectoryCompletenessRank()} ASC, (google_reviews.review_count IS NULL), google_reviews.review_count DESC, ${orderNoCase("l.name")}`);
-  const total =
-    (await row<{ count: number }>(
-    `SELECT COUNT(*) AS count FROM locations l${matchJoin}${clause}`,
-    queryValues,
-    ))?.count || 0;
-  const results = await rows<AnyRow>(
-    `
+  const [totalRow, results, treatmentPriceSummaries] = await Promise.all([
+    row<{ count: number }>(
+      `SELECT COUNT(*) AS count FROM locations l${matchJoin}${clause}`,
+      queryValues,
+    ),
+    rows<AnyRow>(`
     SELECT l.id, ${locationSlugSelect("l")} AS slug, l.name, l.locality, l.region, l.country_code, l.country_name, l.latitude, l.longitude,
            l.website, google_reviews.rating, google_reviews.review_count, org.canonical_name AS org_name,
            COALESCE(image_flags.has_image, false) AS has_image,
@@ -1897,22 +1910,21 @@ async function searchLocationsWithParams(
     ${clause}
     ORDER BY ${orderBy}
     LIMIT ? OFFSET ?
-  `,
-    [...queryValues, ...(defaultOrder?.values || []), PAGE_SIZE, page * PAGE_SIZE],
-  );
+    `, [...queryValues, ...(defaultOrder?.values || []), PAGE_SIZE, page * PAGE_SIZE]),
+    options.includeTreatmentPriceSummaries
+      ? treatmentSearchPriceSummaries({
+          matchJoin,
+          where: clause ? [clause.replace(/^\s*WHERE\s+/i, "")] : [],
+          values: queryValues,
+          treatmentIds: params.treatment_ids || [],
+        })
+      : Promise.resolve([]),
+  ]);
 
   await hydrateLocationRows(results, params.treatment_ids);
-  const treatmentPriceSummaries = options.includeTreatmentPriceSummaries
-    ? await treatmentSearchPriceSummaries({
-        matchJoin,
-        where: clause ? [clause.replace(/^\s*WHERE\s+/i, "")] : [],
-        values: queryValues,
-        treatmentIds: params.treatment_ids || [],
-      })
-    : [];
   return {
     results,
-    total,
+    total: totalRow?.count || 0,
     page,
     page_size: PAGE_SIZE,
     treatment_price_summaries: treatmentPriceSummaries,
@@ -1963,6 +1975,24 @@ async function resolveTreatmentSearchQuery(query?: string | null): Promise<Resol
         id: Number(match.id),
         name: match.name,
         category: match.category?.trim() || "Uncategorized",
+      }
+    : null;
+}
+
+async function treatmentSearchContextById(id: number): Promise<ResolvedTreatmentSearch | null> {
+  const treatment = await row<{
+    id: number;
+    name: string;
+    category: string | null;
+  }>(
+    "SELECT id, canonical_name AS name, category FROM treatments WHERE id = ?",
+    [id],
+  );
+  return treatment
+    ? {
+        id: Number(treatment.id),
+        name: treatment.name,
+        category: treatment.category?.trim() || "Uncategorized",
       }
     : null;
 }
@@ -2042,12 +2072,12 @@ async function searchLocationsByCountry(
   };
   const { clause, values } = locationWhere(filteredParams, { includeText: !match });
   const queryValues = match ? searchMatchValues(match, values) : values;
-  const total = (await row<{ count: number }>(
-    `SELECT COUNT(*) AS count FROM locations l${matchJoin}${clause}`,
-    queryValues,
-  ))?.count || 0;
-  const results = await rows<AnyRow>(
-    `
+  const [totalRow, results, treatmentPriceSummaries] = await Promise.all([
+    row<{ count: number }>(
+      `SELECT COUNT(*) AS count FROM locations l${matchJoin}${clause}`,
+      queryValues,
+    ),
+    rows<AnyRow>(`
     SELECT l.id, ${locationSlugSelect("l")} AS slug, l.name, l.locality, l.region, l.country_code, l.country_name, l.latitude, l.longitude,
            l.website, google_reviews.rating, google_reviews.review_count, org.canonical_name AS org_name,
            (
@@ -2072,22 +2102,21 @@ async function searchLocationsByCountry(
       ${(params.treatment_ids || []).length ? treatmentRatingOrder() : `${locationDirectoryCompletenessRank()} ASC, (google_reviews.rating IS NULL), google_reviews.rating DESC, (google_reviews.review_count IS NULL), google_reviews.review_count DESC`},
       ${orderNoCase("l.name")}
     LIMIT ? OFFSET ?
-  `,
-    [...queryValues, PAGE_SIZE, page * PAGE_SIZE],
-  );
+    `, [...queryValues, PAGE_SIZE, page * PAGE_SIZE]),
+    options.includeTreatmentPriceSummaries
+      ? treatmentSearchPriceSummaries({
+          matchJoin,
+          where: clause ? [clause.replace(/^\s*WHERE\s+/i, "")] : [],
+          values: queryValues,
+          treatmentIds: params.treatment_ids || [],
+        })
+      : Promise.resolve([]),
+  ]);
   await hydrateLocationRows(results, params.treatment_ids);
-  const treatmentPriceSummaries = options.includeTreatmentPriceSummaries
-    ? await treatmentSearchPriceSummaries({
-        matchJoin,
-        where: clause ? [clause.replace(/^\s*WHERE\s+/i, "")] : [],
-        values: queryValues,
-        treatmentIds: params.treatment_ids || [],
-      })
-    : [];
   const searchedCountry = params.city_label || params.city_country || countryCode;
   return {
     results,
-    total,
+    total: totalRow?.count || 0,
     page,
     page_size: PAGE_SIZE,
     mode: "country_search" as const,
@@ -2102,28 +2131,49 @@ async function hydrateLocationRows(results: AnyRow[], preferredTreatmentIds: rea
   const ids = results.map((result) => result.id as number);
   if (ids.length) {
     const marks = placeholders(ids.length);
-    const treatments = await rows<{ lid: number } & TreatmentChipWithId>(
-      `
-      SELECT o.location_id AS lid, t.id, t.canonical_name AS name, t.category AS domain
-      FROM offerings o
-      JOIN treatments t ON t.id = o.treatment_id
-      WHERE o.location_id IN (${marks})
-        AND ${activeOfferingCondition("o")}
-      GROUP BY o.location_id, t.id, t.canonical_name, t.category
-    `,
-      ids,
-    );
-    const tags = await rows<{ lid: number; facet: string; value: string }>(
-      `
-      SELECT et.entity_id AS lid, tg.facet AS facet, tg.value AS value
-      FROM entity_tags et
-      JOIN tags tg ON tg.id = et.tag_id
-      WHERE et.entity_type = 'location'
-        AND et.entity_id IN (${marks})
-        AND ${consumerTagFacetCondition("tg")}
-    `,
-      ids,
-    );
+    const [treatments, tags, images, verificationMap, regulatoryVerificationMap, treatmentPriceMap] = await Promise.all([
+      rows<{ lid: number } & TreatmentChipWithId>(
+        `
+        SELECT o.location_id AS lid, t.id, t.canonical_name AS name, t.category AS domain
+        FROM offerings o
+        JOIN treatments t ON t.id = o.treatment_id
+        WHERE o.location_id IN (${marks})
+          AND ${activeOfferingCondition("o")}
+        GROUP BY o.location_id, t.id, t.canonical_name, t.category
+      `,
+        ids,
+      ),
+      rows<{ lid: number; facet: string; value: string }>(
+        `
+        SELECT et.entity_id AS lid, tg.facet AS facet, tg.value AS value
+        FROM entity_tags et
+        JOIN tags tg ON tg.id = et.tag_id
+        WHERE et.entity_type = 'location'
+          AND et.entity_id IN (${marks})
+          AND ${consumerTagFacetCondition("tg")}
+      `,
+        ids,
+      ),
+      rows<{ lid: number } & ImageCandidate>(
+        `
+        SELECT entity_id AS lid, blob_url, image_kind
+        FROM images
+        WHERE entity_type = 'location' AND entity_id IN (${marks})
+          AND ${activeImageCondition("images")}
+          AND blob_url IS NOT NULL
+          AND blob_url != ''
+        ORDER BY (image_kind = 'logo') DESC, updated_at DESC NULLS LAST, id DESC
+      `,
+        ids,
+      ),
+      results.some((result) => result.country_code === "US")
+        ? locationClinicianLicenseVerificationMap(ids)
+        : Promise.resolve(new Map<number, ClinicianLicenseVerificationData>()),
+      results.some((result) => result.country_code === "AE")
+        ? locationRegulatoryVerificationMap(ids)
+        : Promise.resolve(new Map<number, LocationRegulatoryVerificationData[]>()),
+      locationTreatmentPriceMap(ids, preferredTreatmentIds),
+    ]);
     const treatmentMap = new Map<number, TreatmentChipWithId[]>();
     const tagMap = new Map<number, { facet: string; value: string }[]>();
     for (const treatment of treatments) {
@@ -2136,18 +2186,6 @@ async function hydrateLocationRows(results: AnyRow[], preferredTreatmentIds: rea
       list.push({ facet: tag.facet, value: tag.value });
       tagMap.set(tag.lid, list);
     }
-    const images = await rows<{ lid: number } & ImageCandidate>(
-      `
-      SELECT entity_id AS lid, blob_url, image_kind
-      FROM images
-      WHERE entity_type = 'location' AND entity_id IN (${marks})
-        AND ${activeImageCondition("images")}
-        AND blob_url IS NOT NULL
-        AND blob_url != ''
-      ORDER BY (image_kind = 'logo') DESC, updated_at DESC NULLS LAST, id DESC
-    `,
-      ids,
-    );
     const imageMap = new Map<number, ImageCandidate>();
     for (const image of images) {
       const src = usableImageSource(image);
@@ -2155,11 +2193,6 @@ async function hydrateLocationRows(results: AnyRow[], preferredTreatmentIds: rea
         imageMap.set(image.lid, image);
       }
     }
-    const [verificationMap, regulatoryVerificationMap, treatmentPriceMap] = await Promise.all([
-      locationClinicianLicenseVerificationMap(ids),
-      locationRegulatoryVerificationMap(ids),
-      locationTreatmentPriceMap(ids, preferredTreatmentIds),
-    ]);
     for (const result of results) {
       const id = result.id as number;
       result.treatments = orderTreatmentChips(treatmentMap.get(id) || [], preferredTreatmentIds);
@@ -2313,45 +2346,39 @@ async function searchLocationsByCityRadius(
   page: number,
   options: SearchLocationsOptions,
 ) {
-  await warnRadiusCoordinateExclusions();
   const countryCode = normalizedCountryCode(params.city_country || params.country);
-  const radii = [25, 50, 100];
-  let lastRadiusPayload: Awaited<ReturnType<typeof radiusLocationPayload>> | null = null;
-  // The exact-radius (25mi) count, kept separately from whichever wider radius
-  // ends up supplying the padded result set, so the "no clinics" banner can
-  // tell "genuinely zero in this city" apart from "a few in this city, padded
-  // with nearby listings to reach a fuller page."
-  let cityTotal: number | null = null;
+  const radii = [25, 50, 100] as const;
+  const [radiusTotals, countryTotal] = await Promise.all([
+    radiusLocationTotals(params, latitude, longitude, countryCode),
+    countryCode ? activeLocationCountryCount(countryCode) : Promise.resolve(null),
+    warnRadiusCoordinateExclusions(),
+  ]);
+  const cityTotal = radiusTotals[0];
+  const selectedRadius = radii.find((_, index) => radiusTotals[index] >= 5);
 
-  for (const radius of radii) {
+  if (selectedRadius) {
     const payload = await radiusLocationPayload(
       params,
       latitude,
       longitude,
-      radius,
+      selectedRadius,
       countryCode,
       page,
       options,
+      radiusTotals[radii.indexOf(selectedRadius)],
     );
-    lastRadiusPayload = payload;
-    if (radius === 25) {
-      cityTotal = payload.total;
-    }
-    if (payload.total >= 5) {
-      await hydrateLocationRows(payload.results, params.treatment_ids);
-      return {
-        ...payload,
-        mode: radius === 25 ? "exact_radius" as const : "expanded_radius" as const,
-        effective_radius: radius,
-        searched_city: params.city_label || null,
-        searched_country: countryCode || null,
-        city_total: cityTotal,
-      };
-    }
+    await hydrateLocationRows(payload.results, params.treatment_ids);
+    return {
+      ...payload,
+      mode: selectedRadius === 25 ? "exact_radius" as const : "expanded_radius" as const,
+      effective_radius: selectedRadius,
+      searched_city: params.city_label || null,
+      searched_country: countryCode || null,
+      city_total: cityTotal,
+    };
   }
 
-  if (countryCode) {
-    const countryTotal = await activeLocationCountryCount(countryCode);
+  if (countryCode && countryTotal != null) {
     if (countryTotal <= 10 && countryTotal > 0) {
       const payload = await fallbackLocationPayload(latitude, longitude, page, {
         mode: "country_fallback",
@@ -2389,12 +2416,23 @@ async function searchLocationsByCityRadius(
     }
   }
 
-  if (lastRadiusPayload) {
-    await hydrateLocationRows(lastRadiusPayload.results, params.treatment_ids);
+  const widestRadiusTotal = radiusTotals[radiusTotals.length - 1];
+  if (widestRadiusTotal > 0) {
+    const payload = await radiusLocationPayload(
+      params,
+      latitude,
+      longitude,
+      100,
+      countryCode,
+      page,
+      options,
+      widestRadiusTotal,
+    );
+    await hydrateLocationRows(payload.results, params.treatment_ids);
     return {
-      ...lastRadiusPayload,
-      mode: lastRadiusPayload.total ? "expanded_radius" as const : "empty" as const,
-      effective_radius: lastRadiusPayload.total ? 100 : null,
+      ...payload,
+      mode: "expanded_radius" as const,
+      effective_radius: 100,
       searched_city: params.city_label || null,
       searched_country: countryCode || null,
       city_total: cityTotal,
@@ -2416,14 +2454,12 @@ function radiusBox(latitude: number, longitude: number, radiusMiles: number) {
   };
 }
 
-async function radiusLocationPayload(
+function radiusLocationScope(
   params: DirectoryParams,
   latitude: number,
   longitude: number,
   radius: number,
   countryCode: string | undefined,
-  page: number,
-  options: SearchLocationsOptions,
 ) {
   const match = ftsMatch(params.q);
   const matchJoin = match ? searchMatchJoin("l", "location") : "";
@@ -2440,15 +2476,53 @@ async function radiusLocationPayload(
   queryValues.push(box.minLng, box.maxLng);
   where.push(`${distanceMilesExpression()} <= ?`);
   queryValues.push(latitude, latitude, longitude, radius);
+  return { matchJoin, where, values: queryValues };
+}
+
+async function radiusLocationTotals(
+  params: DirectoryParams,
+  latitude: number,
+  longitude: number,
+  countryCode: string | undefined,
+) {
+  const scope = radiusLocationScope(params, latitude, longitude, 100, countryCode);
+  const clause = scope.where.length ? `WHERE ${scope.where.join(" AND ")}` : "";
+  const totals = await row<{ radius_25: number; radius_50: number; radius_100: number }>(
+    `
+      WITH candidates AS (
+        SELECT (${distanceMilesExpression()}) AS distance_miles
+        FROM locations l${scope.matchJoin}
+        ${clause}
+      )
+      SELECT COUNT(*) FILTER (WHERE distance_miles <= 25) AS radius_25,
+             COUNT(*) FILTER (WHERE distance_miles <= 50) AS radius_50,
+             COUNT(*) AS radius_100
+      FROM candidates
+    `,
+    [latitude, latitude, longitude, ...scope.values],
+  );
+  return [totals?.radius_25 || 0, totals?.radius_50 || 0, totals?.radius_100 || 0] as const;
+}
+
+async function radiusLocationPayload(
+  params: DirectoryParams,
+  latitude: number,
+  longitude: number,
+  radius: number,
+  countryCode: string | undefined,
+  page: number,
+  options: SearchLocationsOptions,
+  knownTotal?: number,
+) {
+  const scope = radiusLocationScope(params, latitude, longitude, radius, countryCode);
   return locationPayloadFromWhere({
     latitude,
     longitude,
-    matchJoin,
-    where,
-    values: queryValues,
+    ...scope,
     page,
     preferTreatmentRating: Boolean(params.treatment_ids?.length),
     treatmentIds: options.includeTreatmentPriceSummaries ? params.treatment_ids : undefined,
+    knownTotal,
   });
 }
 
@@ -2504,6 +2578,7 @@ async function locationPayloadFromWhere({
   page,
   preferTreatmentRating = false,
   treatmentIds = [],
+  knownTotal,
 }: {
   latitude: number;
   longitude: number;
@@ -2513,15 +2588,18 @@ async function locationPayloadFromWhere({
   page: number;
   preferTreatmentRating?: boolean;
   treatmentIds?: readonly number[];
+  knownTotal?: number;
 }) {
   const clause = where.length ? `WHERE ${where.join(" AND ")}` : "";
-  const total = (await row<{ count: number }>(
-    `SELECT COUNT(*) AS count FROM locations l${matchJoin} ${clause}`,
-    values,
-  ))?.count || 0;
   const distanceSql = distanceMilesExpression();
-  const results = await rows<AnyRow>(
-    `
+  const [totalRow, results, treatmentPriceSummaries] = await Promise.all([
+    knownTotal == null
+      ? row<{ count: number }>(
+          `SELECT COUNT(*) AS count FROM locations l${matchJoin} ${clause}`,
+          values,
+        )
+      : Promise.resolve({ count: knownTotal }),
+    rows<AnyRow>(`
     SELECT l.id, ${locationSlugSelect("l")} AS slug, l.name, l.locality, l.region, l.country_code, l.country_name, l.latitude, l.longitude,
            l.website, google_reviews.rating, google_reviews.review_count, org.canonical_name AS org_name,
            (${distanceSql}) AS distance_miles,
@@ -2546,18 +2624,12 @@ async function locationPayloadFromWhere({
     ORDER BY ${preferTreatmentRating ? treatmentRatingOrder() : `${locationDirectoryCompletenessRank()} ASC, distance_miles ASC, (google_reviews.rating IS NULL), google_reviews.rating DESC, (google_reviews.review_count IS NULL), google_reviews.review_count DESC`},
       ${orderNoCase("l.name")}
     LIMIT ? OFFSET ?
-  `,
-    [latitude, latitude, longitude, ...values, PAGE_SIZE, page * PAGE_SIZE],
-  );
-  const treatmentPriceSummaries = await treatmentSearchPriceSummaries({
-    matchJoin,
-    where,
-    values,
-    treatmentIds,
-  });
+  `, [latitude, latitude, longitude, ...values, PAGE_SIZE, page * PAGE_SIZE]),
+    treatmentSearchPriceSummaries({ matchJoin, where, values, treatmentIds }),
+  ]);
   return {
     results,
-    total,
+    total: totalRow?.count || 0,
     page,
     page_size: PAGE_SIZE,
     treatment_price_summaries: treatmentPriceSummaries,

@@ -5,6 +5,7 @@ const { Pool, types } = pg;
 types.setTypeParser(20, (value) => Number(value));
 
 let postgresPool: pg.Pool | null = null;
+let postgresSearchPathMode: Promise<"direct" | "transaction"> | null = null;
 let loggedBackend = false;
 
 function postgresConnectionString() {
@@ -98,7 +99,12 @@ export async function row<T extends Record<string, unknown>>(sql: string, params
 }
 
 async function queryPostgres(sql: string, params: unknown[]) {
-  const client = await getPostgresPool().connect();
+  const pool = getPostgresPool();
+  if (await getPostgresSearchPathMode(pool) === "direct") {
+    return pool.query(sql, params);
+  }
+
+  const client = await pool.connect();
 
   try {
     await client.query("BEGIN");
@@ -116,6 +122,21 @@ async function queryPostgres(sql: string, params: unknown[]) {
   } finally {
     client.release();
   }
+}
+
+function getPostgresSearchPathMode(pool: pg.Pool) {
+  if (!postgresSearchPathMode) {
+    postgresSearchPathMode = pool
+      .query<{ schemas: string[] }>("SELECT current_schemas(false) AS schemas")
+      .then((result) => (
+        result.rows[0]?.schemas.includes(postgresSchema()) ? "direct" : "transaction"
+      ))
+      .catch((error) => {
+        postgresSearchPathMode = null;
+        throw error;
+      });
+  }
+  return postgresSearchPathMode;
 }
 
 function toPostgresQuery(sql: string) {
