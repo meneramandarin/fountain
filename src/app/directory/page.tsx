@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { DirectoryShell, type DirectoryState, type SearchPayload } from "@/components/directory-shell";
 import { directoryParamsFromState, directoryStateFromSearchParams } from "@/lib/directory-search-state";
-import { getTreatmentTrackingContextById, searchLocations } from "@/lib/queries";
+import { searchLocations } from "@/lib/queries";
 import { ogImage, siteDescription } from "@/lib/site";
 import { redirect } from "next/navigation";
 
@@ -49,21 +49,15 @@ export default async function DirectoryPage({ searchParams }: DirectoryPageProps
   }
   const initialState = directoryStateFromSearchParams(params);
   const initialParams = directoryParamsFromState(initialState);
-  const treatmentId = initialState.treatment_ids.length === 1
-    ? Number.parseInt(initialState.treatment_ids[0], 10)
-    : NaN;
-  const [payload, initialTreatment] = await Promise.all([
-    searchLocations(initialParams, initialState.page, { includeTreatmentPriceSummaries: true }),
-    Number.isFinite(treatmentId) ? getTreatmentTrackingContextById(treatmentId) : null,
-  ]);
+  const payload = await searchLocations(initialParams, initialState.page, { includeTreatmentPriceSummaries: true });
   const initialPayload = payload as SearchPayload;
   return (
     <DirectoryShell
       key={stateKey(initialState)}
       initialPayload={initialPayload}
       initialState={initialState}
-      initialTreatmentLabel={initialTreatment?.name || initialPayload.resolved_treatment?.name}
-      initialTreatmentCategory={initialTreatment?.category || initialPayload.resolved_treatment?.category}
+      initialTreatmentLabel={initialPayload.resolved_treatment?.name}
+      initialTreatmentCategory={initialPayload.resolved_treatment?.category}
     />
   );
 }
