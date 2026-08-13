@@ -1,5 +1,6 @@
 import { hasTable, isPostgres, row, rows } from "@/lib/db";
 import {
+  treatmentSlug,
   type CityIndexPlace,
   type TreatmentCatalogItem,
   type TreatmentCityCount,
@@ -605,6 +606,27 @@ export async function getTreatmentCatalog(minimumLocations = 1): Promise<Treatme
   }));
 }
 
+export async function getTreatmentRouteItem(slug: string): Promise<TreatmentCatalogItem | null> {
+  const treatments = await rows<{
+    id: number;
+    name: string;
+    category: string | null;
+  }>(`
+    SELECT id, canonical_name AS name, category
+    FROM treatments
+    ORDER BY ${orderNoCase("canonical_name")}
+  `);
+  const treatment = treatments.find((candidate) => treatmentSlug(candidate.name) === slug);
+  return treatment
+    ? {
+        id: Number(treatment.id),
+        name: treatment.name,
+        category: treatment.category?.trim() || "Other treatments",
+        locationCount: 0,
+      }
+    : null;
+}
+
 export async function getTreatmentIndexClinicCount() {
   const result = await row<{ count: number }>(`
     SELECT COUNT(DISTINCT l.id) AS count
@@ -689,6 +711,44 @@ export async function getCityIndexPlaces(): Promise<CityIndexPlace[]> {
     latitude: Number(place.latitude),
     longitude: Number(place.longitude),
   }));
+}
+
+export async function getCityIndexPlace(params: {
+  city: string;
+  region: string | null;
+  countryCode: string;
+}): Promise<CityIndexPlace | null> {
+  const place = await row<{
+    city: string;
+    region: string | null;
+    country_code: string;
+    country_name: string | null;
+    latitude: number;
+    longitude: number;
+  }>(
+    `
+      SELECT city, region, country_code, country_name, latitude, longitude
+      FROM city_index
+      WHERE ${equalsNoCase("city")}
+        AND country_code = ?
+        AND (
+          (region IS NULL AND CAST(? AS TEXT) IS NULL)
+          OR ${equalsNoCase("region")}
+        )
+      LIMIT 1
+    `,
+    [params.city, params.countryCode, params.region, params.region],
+  );
+  return place
+    ? {
+        city: place.city,
+        region: place.region,
+        countryCode: place.country_code,
+        countryName: place.country_name,
+        latitude: Number(place.latitude),
+        longitude: Number(place.longitude),
+      }
+    : null;
 }
 
 export async function getTreatmentNameById(id: number) {

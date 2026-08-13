@@ -3,16 +3,19 @@ import { notFound } from "next/navigation";
 import { cache } from "react";
 import { DirectoryShell, type DirectoryState, type SearchPayload } from "@/components/directory-shell";
 import { directoryParamsFromState } from "@/lib/directory-search-state";
-import { getTreatmentCatalog, searchLocations } from "@/lib/queries";
+import { getTreatmentCatalog, getTreatmentRouteItem, searchLocations } from "@/lib/queries";
 import { siteUrl } from "@/lib/site";
 import { treatmentLocationDescription } from "@/lib/treatment-location-metadata";
-import { treatmentHref, treatmentSlug } from "@/lib/treatment-pages";
+import { homepageTreatmentGroups, treatmentHref, treatmentSlug } from "@/lib/treatment-pages";
 
 export const revalidate = 86_400;
 export const dynamicParams = true;
 
-export function generateStaticParams() {
-  return [];
+export async function generateStaticParams() {
+  const treatments = await getTreatmentCatalog();
+  return homepageTreatmentGroups(treatments)
+    .flatMap((group) => group.treatments)
+    .map((treatment) => ({ treatmentSlug: treatmentSlug(treatment.name) }));
 }
 
 type TreatmentPageProps = {
@@ -20,7 +23,7 @@ type TreatmentPageProps = {
 };
 
 const loadTreatmentPage = cache(async (slug: string) => {
-  const treatment = (await getTreatmentCatalog(0)).find((candidate) => treatmentSlug(candidate.name) === slug);
+  const treatment = await getTreatmentRouteItem(slug);
   if (!treatment) {
     return null;
   }

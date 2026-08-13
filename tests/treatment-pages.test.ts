@@ -5,6 +5,7 @@ import { popularTreatmentLabel } from "../src/lib/popular-treatments";
 import { buildTreatmentHubs, prepareTreatmentIndexHubs } from "../src/lib/treatment-hubs";
 import {
   hyperbaricOxygenTherapy,
+  homepageTreatmentGroups,
   isTreatmentPageIndexable,
   treatmentHref,
   treatmentSlug,
@@ -22,6 +23,20 @@ describe("treatment pages", () => {
   test("builds clean treatment hub links", () => {
     expect(treatmentHref({ name: "NAD+ IV therapy" })).toBe("/treatments/nad-iv-therapy");
     expect(treatmentHref(hyperbaricOxygenTherapy)).toBe("/treatments/hyperbaric-oxygen-therapy");
+  });
+
+  test("selects the same four treatments per category for discovery and prerendering", () => {
+    const treatments = Array.from({ length: 6 }, (_, index) => ({
+      id: index + 1,
+      name: `Treatment ${index + 1}`,
+      category: index < 5 ? "Measure" : "Recover",
+      locationCount: 10 - index,
+    }));
+
+    expect(homepageTreatmentGroups(treatments)).toEqual([
+      { category: "Measure", treatments: treatments.slice(0, 4) },
+      { category: "Recover", treatments: treatments.slice(5) },
+    ]);
   });
 
   test("expands the legacy HBOT tag label", () => {
