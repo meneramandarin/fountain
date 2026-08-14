@@ -1,8 +1,11 @@
+import type { TreatmentFdaRegulatoryStatus } from "@/lib/treatment-regulatory-status";
+
 export type TreatmentCatalogItem = {
   id: number;
   name: string;
   category: string;
   locationCount: number;
+  fdaRegulatoryStatus?: TreatmentFdaRegulatoryStatus;
 };
 
 export type TreatmentCityCount = {

@@ -3644,6 +3644,130 @@ input[type="search"]::-webkit-search-cancel-button:hover {
   line-height: 1.1;
 }
 
+.resultbar > h1 {
+  font-size: var(--type-heading);
+}
+
+.treatment-meta-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 10px 14px;
+  margin: 6px 0 16px;
+}
+
+.treatment-regulatory-status {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  max-width: 420px;
+}
+
+.treatment-badge {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: 7px;
+  padding: 7px 12px;
+  border: 1px solid rgba(195, 157, 96, 0.42);
+  border-radius: var(--radius-pill);
+  background: rgba(195, 157, 96, 0.14);
+  color: #70552d;
+  font-family: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  font-size: var(--type-caption);
+  font-weight: 650;
+  line-height: 1.2;
+  text-decoration: none;
+  transition: border-color 0.15s ease, background-color 0.15s ease;
+}
+
+.treatment-badge:hover,
+.treatment-badge:focus-visible {
+  border-color: rgba(195, 157, 96, 0.72);
+  background: rgba(195, 157, 96, 0.2);
+}
+
+.treatment-badge > svg {
+  flex: 0 0 auto;
+}
+
+.treatment-badge > small {
+  color: rgba(112, 85, 45, 0.72);
+  font-weight: 500;
+}
+
+.treatment-badge > small::before {
+  content: "· ";
+}
+
+.treatment-source-records {
+  margin: -4px 0 20px;
+  font-family: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+}
+
+.treatment-meta-row > .treatment-source-records {
+  flex: 0 0 100%;
+}
+
+.treatment-source-records > summary {
+  width: fit-content;
+  padding: 4px 0;
+  color: rgba(30, 26, 15, 0.5);
+  cursor: pointer;
+  font-size: var(--type-micro);
+  font-weight: 650;
+}
+
+.treatment-source-record-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 24px;
+  padding: 4px 0 16px;
+}
+
+.treatment-source-record-grid h3 {
+  margin: 0 0 7px;
+  color: rgba(30, 26, 15, 0.52);
+  font-size: var(--type-micro);
+  font-weight: 650;
+  text-transform: uppercase;
+}
+
+.treatment-source-record-grid ul {
+  display: grid;
+  gap: 5px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.treatment-source-record-grid a {
+  display: grid;
+  gap: 2px;
+  padding: 5px 0;
+  color: var(--landing-fg);
+  text-decoration: none;
+}
+
+.treatment-source-record-grid strong {
+  overflow: hidden;
+  font-size: var(--type-caption);
+  line-height: 1.35;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.treatment-source-record-grid span {
+  color: rgba(30, 26, 15, 0.54);
+  font-size: var(--type-micro);
+  line-height: 1.35;
+}
+
+.treatment-source-record-grid a:hover strong,
+.treatment-source-record-grid a:focus-visible strong {
+  text-decoration: underline;
+}
+
 .directory-search-banner {
   margin-bottom: 12px;
   padding: 12px 14px;
@@ -3673,56 +3797,87 @@ input[type="search"]::-webkit-search-cancel-button:hover {
 }
 
 .result-card {
+  position: relative;
   width: 100%;
   height: 100%;
   display: flex;
   flex-direction: column;
   padding: 0;
   overflow: hidden;
-  background: var(--listing-card);
-  border: 1px solid var(--landing-line);
-  border-radius: var(--radius-card);
+  background: white;
+  border: 1px solid rgba(35, 22, 33, 0.12);
+  border-radius: 20px;
+  box-shadow: 0 12px 32px rgba(30, 26, 15, 0.05);
   color: var(--landing-fg);
   font-family: var(--font-dm-serif-text), serif;
   text-align: left;
-  transition: border-color 0.15s ease, box-shadow 0.15s ease, transform 0.15s ease;
+  transition: border-color 180ms ease, box-shadow 180ms ease, transform 180ms ease;
+}
+
+.result-card-link {
+  display: flex;
+  width: 100%;
+  flex: 1 1 auto;
+  flex-direction: column;
+  color: inherit;
 }
 
 .result-card:hover {
-  border-color: rgba(35, 22, 33, 0.22);
-  box-shadow: var(--elevation-raised);
-  transform: translateY(-3px);
+  border-color: rgba(121, 87, 32, 0.35);
+  box-shadow: 0 18px 40px rgba(30, 26, 15, 0.11);
+  transform: translateY(-4px);
 }
 
-.result-card:not(.practitioner-card) {
-  overflow: visible;
-  background: transparent;
-  border: 0;
-  border-radius: 0;
+.result-save-button {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  z-index: 3;
+  display: inline-grid;
+  width: 34px;
+  height: 34px;
+  padding: 0;
+  place-items: center;
+  border: 1px solid rgba(255, 255, 255, 0.55);
+  border-radius: var(--radius-round);
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 4px 14px rgba(30, 26, 15, 0.14);
+  color: var(--landing-fg);
+  cursor: pointer;
+  transition: background-color 150ms ease, color 150ms ease, transform 150ms ease;
 }
 
-.result-card:not(.practitioner-card):hover {
-  border-color: transparent;
-  box-shadow: none;
-  transform: none;
+.result-save-button:hover,
+.result-save-button:focus-visible {
+  transform: translateY(-1px);
+}
+
+.result-save-button:focus-visible {
+  outline: 2px solid white;
+  outline-offset: 2px;
+}
+
+.result-save-button.is-saved {
+  background: var(--landing-fg);
+  color: #f2cc84;
 }
 
 .result-photo {
   position: relative;
+  width: 100%;
   overflow: hidden;
-  aspect-ratio: 4 / 3.3;
+  aspect-ratio: 4 / 2.8;
   flex: 0 0 auto;
-  border-radius: var(--radius-card);
   background: var(--listing-card);
-  transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
-}
-
-.result-card:hover .result-photo {
-  transform: scale(1.045);
 }
 
 .result-photo img {
   object-fit: cover;
+  transition: transform 450ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.result-card:hover .result-photo > img:not(.image-frame-backdrop):not(.image-frame-content) {
+  transform: scale(1.04);
 }
 
 .result-photo-fallback {
@@ -3735,41 +3890,44 @@ input[type="search"]::-webkit-search-cancel-button:hover {
     linear-gradient(145deg, #b8a78f, #d8cdb9);
 }
 
-.result-rating-badge {
-  position: absolute;
-  z-index: 2;
-  left: 10px;
-  bottom: 10px;
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  padding: 5px 9px;
-  border-radius: var(--radius-pill);
-  background: rgba(30, 26, 15, 0.5);
-  backdrop-filter: blur(6px);
-  color: white;
-  font-family: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
-  font-size: var(--type-caption);
-  font-weight: 600;
-}
-
-.result-rating-badge svg {
-  color: var(--landing-gold-deep);
-  fill: var(--landing-gold-deep);
-}
-
 .result-body {
   display: flex;
   flex: 1;
   flex-direction: column;
+  padding: 18px;
+  font-family: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+}
+
+.result-card-topline {
+  display: flex;
+  min-height: 16px;
+  align-items: center;
+  justify-content: space-between;
   gap: 10px;
-  padding: 18px 18px 16px;
+  margin-bottom: 9px;
+  color: rgba(30, 26, 15, 0.5);
+  font-size: var(--type-micro);
+  font-weight: 650;
+}
+
+.result-card-rating {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  margin-left: auto;
+  color: #684c20;
+}
+
+.result-card-rating i {
+  color: rgba(30, 26, 15, 0.43);
+  font-style: normal;
+  font-weight: 500;
 }
 
 .result-main {
   display: grid;
   min-width: 0;
-  gap: 5px;
+  gap: 7px;
 }
 
 .result-main b {
@@ -3780,9 +3938,9 @@ input[type="search"]::-webkit-search-cancel-button:hover {
   -webkit-line-clamp: 2;
   line-clamp: 2;
   font-family: var(--font-dm-serif-display), serif;
-  font-size: var(--type-reading);
+  font-size: 21px;
   font-weight: 400;
-  line-height: 1.28;
+  line-height: 1.1;
 }
 
 .result-main small,
@@ -3793,6 +3951,7 @@ input[type="search"]::-webkit-search-cancel-button:hover {
   min-width: 0;
   color: rgba(30, 26, 15, 0.62);
   font-family: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  font-size: var(--type-micro);
 }
 
 .result-side {
@@ -3809,24 +3968,27 @@ input[type="search"]::-webkit-search-cancel-button:hover {
 .result-meta-row {
   display: flex;
   align-items: center;
-  gap: 7px;
+  flex-wrap: wrap;
+  gap: 7px 12px;
   margin-top: auto;
-  padding-top: 10px;
-  border-top: 1px solid rgba(30, 26, 15, 0.1);
+  padding-top: 15px;
+  border-top: 1px solid rgba(35, 22, 33, 0.09);
   color: var(--landing-fg);
   font-family: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
-  font-size: var(--type-label);
+  font-size: var(--type-micro);
   font-weight: 500;
+}
+
+.result-price {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-weight: 750;
 }
 
 .result-meta-row .muted {
   color: rgba(30, 26, 15, 0.55);
   font-weight: 400;
-}
-
-.result-meta-row .result-meta-dot {
-  color: var(--landing-line);
-  font-style: normal;
 }
 
 .listing-price-reviews {
@@ -3850,15 +4012,24 @@ input[type="search"]::-webkit-search-cancel-button:hover {
   font-size: var(--type-caption);
 }
 
-.treatment-row {
-  display: block;
-  overflow: hidden;
-  color: rgba(30, 26, 15, 0.5);
-  font-family: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
-  font-size: var(--type-caption);
-  line-height: 1.3;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+.result-treatment-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 16px 0 17px;
+}
+
+.result-treatment-tags > span {
+  display: inline-flex;
+  min-height: 25px;
+  align-items: center;
+  padding: 5px 8px;
+  border-radius: var(--radius-pill);
+  background: var(--landing-card);
+  color: #674c24;
+  font-size: 9px;
+  font-weight: 650;
+  line-height: 1.2;
 }
 
 .drawer-tags span {
@@ -5397,6 +5568,31 @@ input[type="search"]::-webkit-search-cancel-button:hover {
   white-space: pre-line;
 }
 
+.clinic-treatment-source-facts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 14px;
+}
+
+.clinic-treatment-source-facts a,
+.clinic-treatment-regulatory-status {
+  color: rgba(30, 26, 15, 0.62);
+  font-size: var(--type-micro);
+  font-weight: 650;
+  line-height: 1.35;
+  text-decoration: underline;
+  text-decoration-color: rgba(30, 26, 15, 0.24);
+  text-underline-offset: 3px;
+}
+
+.clinic-treatment-regulatory-status:hover,
+.clinic-treatment-regulatory-status:focus-visible,
+.clinic-treatment-source-facts a:hover,
+.clinic-treatment-source-facts a:focus-visible {
+  color: var(--landing-fg);
+  text-decoration-color: currentColor;
+}
+
 .clinic-details-card {
   position: sticky;
   top: 24px;
@@ -6597,6 +6793,24 @@ input[type="search"]::-webkit-search-cancel-button:hover {
 
   .directory-layout {
     padding-top: 138px;
+  }
+
+  .treatment-badge {
+    width: 100%;
+    flex-wrap: wrap;
+  }
+
+  .treatment-badge > small {
+    flex-basis: 100%;
+    margin-left: 22px;
+  }
+
+  .treatment-badge > small::before {
+    content: "";
+  }
+
+  .treatment-source-record-grid {
+    grid-template-columns: 1fr;
   }
 
   .editorial-page {

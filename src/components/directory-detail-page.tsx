@@ -37,6 +37,7 @@ import {
   LocationRegulatoryVerification,
   type LocationRegulatoryVerificationData,
 } from "@/components/location-regulatory-verification";
+import type { TreatmentExternalDataByName } from "@/lib/treatment-external-data";
 
 type Tag = { facet: string; value: string };
 type ImageRef = { blob_url?: string | null; alt?: string | null; image_kind?: string | null };
@@ -137,7 +138,7 @@ export type PractitionerDetailRecord = {
 };
 
 type DetailProps =
-  | { kind: "locations"; data: LocationDetailRecord; relatedSearches?: RelatedTreatmentSearches | null; showBackLink?: boolean; backHref?: string }
+  | { kind: "locations"; data: LocationDetailRecord; relatedSearches?: RelatedTreatmentSearches | null; treatmentExternalData?: TreatmentExternalDataByName; showBackLink?: boolean; backHref?: string }
   | { kind: "practitioners"; data: PractitionerDetailRecord; relatedSearches?: RelatedTreatmentSearches | null; showBackLink?: boolean; backHref?: string };
 
 export function DirectoryDetailPage(props: DetailProps) {
@@ -208,7 +209,10 @@ export function DirectoryDetailPage(props: DetailProps) {
       </section>
 
       {props.kind === "locations" ? (
-        <LocationTreatmentsAndDetails data={props.data} />
+        <LocationTreatmentsAndDetails
+          data={props.data}
+          treatmentExternalData={props.treatmentExternalData}
+        />
       ) : null}
 
       <div className={`listing-detail-layout${props.kind === "locations" ? " listing-detail-layout-location" : ""}`} id="listing-details">
@@ -502,7 +506,13 @@ function LocationMain({ data }: { data: LocationDetailRecord }) {
   );
 }
 
-function LocationTreatmentsAndDetails({ data }: { data: LocationDetailRecord }) {
+function LocationTreatmentsAndDetails({
+  data,
+  treatmentExternalData,
+}: {
+  data: LocationDetailRecord;
+  treatmentExternalData?: TreatmentExternalDataByName;
+}) {
   const treatments = [...(data.offerings || [])].sort(
     (first, second) => Number(first.price_amount == null) - Number(second.price_amount == null),
   );
@@ -518,11 +528,20 @@ function LocationTreatmentsAndDetails({ data }: { data: LocationDetailRecord }) 
           {data.offerings_note ? <p className="clinic-treatments-note">{data.offerings_note}</p> : null}
           {treatments.length ? (
             treatments.length > 4 ? (
-              <TreatmentMenu offerings={treatments} countryCode={data.country_code} />
+              <TreatmentMenu
+                offerings={treatments}
+                countryCode={data.country_code}
+                treatmentExternalData={treatmentExternalData}
+              />
             ) : (
               <div className="clinic-treatment-list">
                 {treatments.map((offering, index) => (
-                  <TreatmentCard offering={offering} countryCode={data.country_code} key={`${offering.raw_name || offering.treatment}-${index}`} />
+                  <TreatmentCard
+                    offering={offering}
+                    countryCode={data.country_code}
+                    externalData={offering.treatment ? treatmentExternalData?.[offering.treatment] : undefined}
+                    key={`${offering.raw_name || offering.treatment}-${index}`}
+                  />
                 ))}
               </div>
             )

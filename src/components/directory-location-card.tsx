@@ -1,9 +1,9 @@
 "use client";
 
-import { MapPin, Star } from "lucide-react";
+import { Bookmark, CircleDollarSign, MapPin, Star } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useSyncExternalStore } from "react";
 import {
   ClinicianLicenseVerification,
   type ClinicianLicenseVerificationData,
@@ -44,6 +44,9 @@ function imageSource(src: string) {
   return src;
 }
 
+const savedLocationsStorageKey = "fountain.saved-location-ids";
+const savedLocationsChangedEvent = "fountain:saved-locations-changed";
+
 export function DirectoryLocationCard({
   result,
   from = "search",
@@ -52,7 +55,6 @@ export function DirectoryLocationCard({
   treatmentName,
   resultPosition,
   onActiveChange,
-  showImageTreatmentTags = false,
 }: {
   result: DirectoryLocationCardData;
   from?: string;
@@ -61,9 +63,13 @@ export function DirectoryLocationCard({
   treatmentName?: string | null;
   resultPosition?: number | null;
   onActiveChange?: (id: number | null) => void;
-  showImageTreatmentTags?: boolean;
 }) {
   const [imageFailed, setImageFailed] = useState(false);
+  const saved = useSyncExternalStore(
+    subscribeToSavedLocations,
+    () => readSavedLocationIds().includes(result.id),
+    () => false,
+  );
   const isContainedGraphic = result.image_kind === "text_graphic" || result.image_kind === "logo";
   const place = formatLocationPlace({
     locality: result.locality,
@@ -77,99 +83,157 @@ export function DirectoryLocationCard({
   );
   const price = formatPrice(result.min_price_amount, result.min_price_currency, result.country_code);
   const destinationHref = href || locationHref(result);
-  const imageTreatmentTags = (result.treatments || []).slice(0, 3);
-  const tagsLine = [
-    mobileService ? "Mobile service" : type?.value,
-    ...(result.treatments || []).map((treatment) => treatment.name),
-  ].filter(Boolean).slice(0, 3).join(" · ");
+  const entityLabel = mobileService ? "Mobile service" : type?.value;
+  const treatmentTags = [...new Set((result.treatments || []).map((treatment) => treatment.name))].slice(0, 3);
+  const rating = Number(result.rating || 0);
+  const reviewCount = Number(result.review_count || 0);
+  const locationLine = [
+    place || "Location unavailable",
+    result.distance_miles != null ? formatDistance(result.distance_miles) : null,
+  ].filter(Boolean).join(" · ");
+
+  function toggleSaved() {
+    const nextSaved = !saved;
+    const ids = new Set(readSavedLocationIds());
+    if (nextSaved) {
+      ids.add(result.id);
+    } else {
+      ids.delete(result.id);
+    }
+    writeSavedLocationIds([...ids]);
+  }
 
   return (
-    <Link
+    <article
       className="result-card"
-      href={destinationHref}
-      prefetch={false}
-      onClick={() => {
-        if (from === "search") {
-          rememberDirectoryReturn(destinationHref);
-        }
-        trackClinicClick({
-          locationId: result.id,
-          locationSlug: result.slug,
-          treatments: result.treatments,
-          clinicCategory,
-          treatmentName,
-          clickSurface: from || "clinic_card",
-          resultPosition,
-        });
-      }}
       onMouseEnter={() => onActiveChange?.(result.id)}
       onMouseLeave={() => onActiveChange?.(null)}
       onFocus={() => onActiveChange?.(result.id)}
       onBlur={() => onActiveChange?.(null)}
     >
-      <span className={`result-photo${isContainedGraphic ? " image-frame-text-graphic" : ""}`}>
-        {result.image && !imageFailed ? (
-          <>
-            {isContainedGraphic ? <Image className="image-frame-backdrop" src={imageSource(result.image)} alt="" fill unoptimized aria-hidden="true" sizes="100vw" /> : null}
-            <Image
-              className={isContainedGraphic ? "image-frame-content" : undefined}
-              src={imageSource(result.image)}
-              alt=""
-              fill
-              unoptimized
-              sizes="(max-width: 640px) 92vw, (max-width: 980px) 46vw, 360px"
-              onError={() => setImageFailed(true)}
-            />
-          </>
-        ) : (
-          <span className="result-photo-fallback listing-image-fallback" aria-hidden="true" />
-        )}
-        {result.rating ? (
-          <span className="result-rating-badge">
-            <Star size={11} aria-hidden="true" />
-            {Number(result.rating).toFixed(1)}
-          </span>
-        ) : null}
-        {showImageTreatmentTags && imageTreatmentTags.length ? (
-          <span className="landing-result-photo-tags" aria-hidden="true">
-            {imageTreatmentTags.map((treatment) => (
-              <span key={`${result.id}-photo-${treatment.name}`}>{treatment.name}</span>
-            ))}
-          </span>
-        ) : null}
-      </span>
-      <span className="result-body">
-        <span className="result-main">
-          <span className="result-title-row">
-            <b>{result.name || result.org_name || "Unnamed location"}</b>
-            <ClinicianLicenseVerification verification={result.clinician_license_verification} compact />
-            <LocationRegulatoryVerification verifications={result.regulatory_verifications} compact />
-          </span>
-          <small>
-            <MapPin size={13} aria-hidden="true" />
-            {place || "Location unavailable"}
-          </small>
-        </span>
-        {tagsLine ? <span className="treatment-row">{tagsLine}</span> : null}
-        <span className="result-meta-row">
-          {price ? <span>From {price}</span> : null}
-          {price && result.review_count ? <i className="result-meta-dot" aria-hidden="true">·</i> : null}
-          {result.review_count ? <span className="muted">{Number(result.review_count).toLocaleString()} reviews</span> : null}
-          {result.distance_miles != null ? (
+      <Link
+        className="result-card-link"
+        href={destinationHref}
+        prefetch={false}
+        onClick={() => {
+          if (from === "search") {
+            rememberDirectoryReturn(destinationHref);
+          }
+          trackClinicClick({
+            locationId: result.id,
+            locationSlug: result.slug,
+            treatments: result.treatments,
+            clinicCategory,
+            treatmentName,
+            clickSurface: from || "clinic_card",
+            resultPosition,
+          });
+        }}
+      >
+        <span className={`result-photo${isContainedGraphic ? " image-frame-text-graphic" : ""}`}>
+          {result.image && !imageFailed ? (
             <>
-              {price || result.review_count ? <i className="result-meta-dot" aria-hidden="true">·</i> : null}
-              <span className="muted">{formatDistance(result.distance_miles)} away</span>
+              {isContainedGraphic ? <Image className="image-frame-backdrop" src={imageSource(result.image)} alt="" fill unoptimized aria-hidden="true" sizes="100vw" /> : null}
+              <Image
+                className={isContainedGraphic ? "image-frame-content" : undefined}
+                src={imageSource(result.image)}
+                alt=""
+                fill
+                unoptimized
+                sizes="(max-width: 640px) 92vw, (max-width: 980px) 46vw, 360px"
+                onError={() => setImageFailed(true)}
+              />
             </>
-          ) : null}
-          {!price && !result.review_count && result.distance_miles == null ? (
-            <span className="muted">View details</span>
-          ) : null}
+          ) : (
+            <span className="result-photo-fallback listing-image-fallback" aria-hidden="true" />
+          )}
         </span>
-      </span>
-    </Link>
+        <span className="result-body">
+          {entityLabel || rating > 0 ? (
+            <span className="result-card-topline">
+              {entityLabel ? <span>{entityLabel}</span> : null}
+              {rating > 0 ? (
+                <span className="result-card-rating">
+                  <Star size={13} fill="currentColor" aria-hidden="true" />
+                  {rating.toFixed(1)}
+                  {reviewCount > 0 ? <i>({reviewCount.toLocaleString()})</i> : null}
+                </span>
+              ) : null}
+            </span>
+          ) : null}
+          <span className="result-main">
+            <span className="result-title-row">
+              <b>{result.name || result.org_name || "Unnamed location"}</b>
+              <ClinicianLicenseVerification verification={result.clinician_license_verification} compact />
+              <LocationRegulatoryVerification verifications={result.regulatory_verifications} compact />
+            </span>
+            <small>
+              <MapPin size={13} aria-hidden="true" />
+              {locationLine}
+            </small>
+          </span>
+          {treatmentTags.length ? (
+            <span className="result-treatment-tags">
+              {treatmentTags.map((tag) => <span key={`${result.id}-${tag}`}>{tag}</span>)}
+            </span>
+          ) : null}
+          <span className="result-meta-row">
+            {price ? (
+              <span className="result-price">
+                <CircleDollarSign size={15} aria-hidden="true" />
+                From {price}
+              </span>
+            ) : <span className="muted">View details</span>}
+            {rating <= 0 && reviewCount > 0 ? (
+              <span className="muted">{reviewCount.toLocaleString()} reviews</span>
+            ) : null}
+          </span>
+        </span>
+      </Link>
+      <button
+        className={`result-save-button${saved ? " is-saved" : ""}`}
+        type="button"
+        onClick={toggleSaved}
+        aria-label={saved ? `Remove ${result.name || result.org_name || "location"} from saved` : `Save ${result.name || result.org_name || "location"}`}
+        aria-pressed={saved}
+      >
+        <Bookmark size={17} fill={saved ? "currentColor" : "none"} aria-hidden="true" />
+      </button>
+    </article>
   );
 }
 
+function readSavedLocationIds() {
+  if (typeof window === "undefined") return [];
+  try {
+    const value = JSON.parse(window.localStorage.getItem(savedLocationsStorageKey) || "[]");
+    return Array.isArray(value) ? value.filter((id): id is number => Number.isInteger(id)) : [];
+  } catch {
+    return [];
+  }
+}
+
+function writeSavedLocationIds(ids: number[]) {
+  try {
+    window.localStorage.setItem(savedLocationsStorageKey, JSON.stringify(ids));
+    window.dispatchEvent(new Event(savedLocationsChangedEvent));
+  } catch {
+    // Saving remains a progressive enhancement when local storage is unavailable.
+  }
+}
+
+function subscribeToSavedLocations(onStoreChange: () => void) {
+  const handleStorage = (event: StorageEvent) => {
+    if (event.key === savedLocationsStorageKey) onStoreChange();
+  };
+  window.addEventListener("storage", handleStorage);
+  window.addEventListener(savedLocationsChangedEvent, onStoreChange);
+  return () => {
+    window.removeEventListener("storage", handleStorage);
+    window.removeEventListener(savedLocationsChangedEvent, onStoreChange);
+  };
+}
+
 function formatDistance(distance: number) {
-  return `${Math.max(0, Math.round(distance)).toLocaleString()} mi`;
+  return `${Math.max(0, Math.round(distance)).toLocaleString()} mi away`;
 }

@@ -5,10 +5,11 @@ import { DirectoryShell, type DirectoryState, type SearchPayload } from "@/compo
 import { directoryParamsFromState } from "@/lib/directory-search-state";
 import { getTreatmentCatalog, getTreatmentRouteItem, searchLocations } from "@/lib/queries";
 import { siteUrl } from "@/lib/site";
+import { getTreatmentExternalData } from "@/lib/treatment-external-data";
 import { treatmentLocationDescription } from "@/lib/treatment-location-metadata";
 import { homepageTreatmentGroups, treatmentHref, treatmentSlug } from "@/lib/treatment-pages";
 
-export const revalidate = 86_400;
+export const revalidate = 21_600;
 export const dynamicParams = true;
 
 export async function generateStaticParams() {
@@ -77,6 +78,7 @@ export default async function TreatmentPage({ params }: TreatmentPageProps) {
   if (!page) {
     notFound();
   }
+  const treatmentExternalData = await getTreatmentExternalData(page.treatment.name);
 
   return (
     <>
@@ -87,6 +89,8 @@ export default async function TreatmentPage({ params }: TreatmentPageProps) {
         initialTreatmentLabel={page.treatment.name}
         initialTreatmentCategory={page.treatment.category}
         searchHeading={{ treatmentLabel: page.treatment.name }}
+        treatmentFdaRegulatoryStatus={page.treatment.fdaRegulatoryStatus}
+        treatmentExternalData={treatmentExternalData}
       />
       <script
         dangerouslySetInnerHTML={{ __html: breadcrumbStructuredData(page.treatment.name, treatmentHref(page.treatment)) }}

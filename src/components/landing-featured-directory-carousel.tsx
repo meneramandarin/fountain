@@ -69,7 +69,6 @@ export function LandingFeaturedDirectoryCarousel({
             treatmentName={treatmentName}
             clinicCategory={clinicCategory}
             resultPosition={index + 1}
-            showImageTreatmentTags
           />
         ))}
       </div>

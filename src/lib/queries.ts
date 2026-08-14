@@ -597,6 +597,7 @@ export async function getTreatmentCatalog(minimumLocations = 1): Promise<Treatme
     id: number;
     name: string;
     category: string | null;
+    fda_regulatory_status: NonNullable<TreatmentCatalogItem["fdaRegulatoryStatus"]>;
     location_count: number;
   }>(
     `
@@ -604,12 +605,13 @@ export async function getTreatmentCatalog(minimumLocations = 1): Promise<Treatme
       t.id,
       t.canonical_name AS name,
       t.category,
+      t.fda_regulatory_status,
       COUNT(DISTINCT l.id) AS location_count
     FROM treatments t
     ${offeringJoin}
     LEFT JOIN locations l ON l.id = o.location_id AND ${activeEntityCondition("l")}
     WHERE COALESCE(l.is_virtual, false) = false
-    GROUP BY t.id, t.canonical_name, t.category
+    GROUP BY t.id, t.canonical_name, t.category, t.fda_regulatory_status
     HAVING COUNT(DISTINCT l.id) >= ?
     ORDER BY location_count DESC, ${orderNoCase("t.canonical_name")}
   `,
@@ -621,6 +623,7 @@ export async function getTreatmentCatalog(minimumLocations = 1): Promise<Treatme
     name: treatment.name,
     category: treatment.category?.trim() || "Other treatments",
     locationCount: Number(treatment.location_count),
+    fdaRegulatoryStatus: treatment.fda_regulatory_status,
   }));
 }
 
@@ -629,8 +632,9 @@ export async function getTreatmentRouteItem(slug: string): Promise<TreatmentCata
     id: number;
     name: string;
     category: string | null;
+    fda_regulatory_status: NonNullable<TreatmentCatalogItem["fdaRegulatoryStatus"]>;
   }>(`
-    SELECT id, canonical_name AS name, category
+    SELECT id, canonical_name AS name, category, fda_regulatory_status
     FROM treatments
     ORDER BY ${orderNoCase("canonical_name")}
   `);
@@ -641,6 +645,7 @@ export async function getTreatmentRouteItem(slug: string): Promise<TreatmentCata
         name: treatment.name,
         category: treatment.category?.trim() || "Other treatments",
         locationCount: 0,
+        fdaRegulatoryStatus: treatment.fda_regulatory_status,
       }
     : null;
 }
@@ -3091,7 +3096,9 @@ export async function getLocationDetail(ref: number | string) {
            o.price_amount, o.price_max_amount, o.price_currency,
            o.price_type, o.price_unit, o.price_context, o.price_audience,
            o.duration_minutes, o.description,
-           t.canonical_name AS treatment, t.category AS domain
+           t.canonical_name AS treatment,
+           t.fda_regulatory_status AS fda_regulatory_status,
+           t.category AS domain
     FROM offerings o
     LEFT JOIN treatments t ON t.id = o.treatment_id
     LEFT JOIN offering_term_translations translation ON translation.source_text = o.raw_name
