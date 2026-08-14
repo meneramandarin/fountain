@@ -38,7 +38,7 @@ export function LandingSeoDiscovery({ treatments, locationPages }: LandingSeoDis
           <h2 id="explore-treatments-title">Explore treatments</h2>
           <p>
             Browse popular treatments or{" "}
-            <Link className={styles.directoryLink} href="/treatments" prefetch={false}>
+            <Link className={styles.directoryLink} href="/treatments">
               view all treatments here.
             </Link>
           </p>

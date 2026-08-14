@@ -673,6 +673,77 @@ export async function getTreatmentIndexClinicCount() {
   return Number(result?.count || 0);
 }
 
+export async function getTreatmentIndexData() {
+  const [treatments, clinicCount, cityCountRow] = await Promise.all([
+    rows<{
+      id: number;
+      name: string;
+      category: string | null;
+      location_count: number;
+    }>(`
+      WITH RECURSIVE treatment_tree(root_id, id, visited) AS (
+        SELECT treatment.id, treatment.id, ARRAY[treatment.id]
+        FROM treatments treatment
+        UNION ALL
+        SELECT treatment_tree.root_id, child.id, treatment_tree.visited || child.id
+        FROM treatment_tree
+        JOIN treatments child ON child.parent_treatment_id = treatment_tree.id
+        WHERE NOT child.id = ANY(treatment_tree.visited)
+      )
+      SELECT
+        root.id,
+        root.canonical_name AS name,
+        root.category,
+        COUNT(DISTINCT location.id) AS location_count
+      FROM treatments root
+      JOIN treatment_tree ON treatment_tree.root_id = root.id
+      JOIN offerings offering
+        ON offering.treatment_id = treatment_tree.id
+       AND ${activeOfferingCondition("offering")}
+      JOIN locations location
+        ON location.id = offering.location_id
+       AND ${activeEntityCondition("location")}
+      WHERE COALESCE(location.is_virtual, false) = false
+        AND EXISTS (
+          SELECT 1
+          FROM city_index city
+          WHERE ${trimLower("city.city")} = ${trimLower("location.locality")}
+            AND city.country_code = location.country_code
+        )
+      GROUP BY root.id, root.canonical_name, root.category
+      ORDER BY ${orderNoCase("root.canonical_name")}
+    `),
+    getTreatmentIndexClinicCount(),
+    row<{ count: number }>(`
+      SELECT COUNT(*) AS count
+      FROM (
+        SELECT city.city, city.region, city.country_code
+        FROM offerings offering
+        JOIN locations location
+          ON location.id = offering.location_id
+         AND ${activeEntityCondition("location")}
+        JOIN city_index city
+          ON ${trimLower("city.city")} = ${trimLower("location.locality")}
+         AND city.country_code = location.country_code
+        WHERE ${activeOfferingCondition("offering")}
+          AND COALESCE(location.is_virtual, false) = false
+        GROUP BY city.city, city.region, city.country_code
+      ) eligible_cities
+    `),
+  ]);
+
+  return {
+    treatments: treatments.map((treatment) => ({
+      id: Number(treatment.id),
+      name: treatment.name,
+      category: treatment.category?.trim() || "Other treatments",
+      locationCount: Number(treatment.location_count),
+    })),
+    clinicCount,
+    cityCount: Number(cityCountRow?.count || 0),
+  };
+}
+
 export async function getEligibleTreatmentCities(
   minimumLocations = 1,
 ): Promise<TreatmentCityCount[]> {

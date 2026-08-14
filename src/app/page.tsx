@@ -176,7 +176,7 @@ export default async function HomePage() {
       />
 
       <section className="landing-banner" aria-hidden="true">
-        <Image src="/fountainofyouth.jpg" alt="" fill sizes="100vw" />
+        <Image src="/fountainofyouth.webp" alt="" fill sizes="100vw" unoptimized />
       </section>
 
       <section className="landing-quote" aria-label="Health quote">
