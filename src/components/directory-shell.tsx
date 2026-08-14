@@ -4,6 +4,8 @@ import { LandingFooter } from "@/components/landing-footer";
 import { LandingScrollHeader } from "@/components/landing-scroll-header";
 import { DirectoryLocationCard, type DirectoryLocationCardData } from "@/components/directory-location-card";
 import { DirectoryMap } from "@/components/directory-map";
+import { TreatmentExternalData } from "@/components/treatment-external-data";
+import { TreatmentRegulatoryStatus } from "@/components/treatment-regulatory-status";
 import { ArrowLeft, ArrowRight, Loader2, MapPin, Stethoscope } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -14,6 +16,8 @@ import {
   directorySearchResultsHeading,
   treatmentLocationResultsHeading,
 } from "@/lib/treatment-location-metadata";
+import type { TreatmentExternalData as TreatmentExternalDataRecord } from "@/lib/treatment-external-data";
+import type { TreatmentFdaRegulatoryStatus } from "@/lib/treatment-regulatory-status";
 
 type Kind = "locations" | "practitioners";
 
@@ -109,6 +113,8 @@ export function DirectoryShell({
   initialTreatmentLabel,
   initialTreatmentCategory,
   searchHeading,
+  treatmentExternalData,
+  treatmentFdaRegulatoryStatus,
 }: {
   initialPayload: SearchPayload;
   initialState: DirectoryState;
@@ -119,6 +125,8 @@ export function DirectoryShell({
     treatmentHref?: string;
     cityLabel?: string;
   };
+  treatmentExternalData?: TreatmentExternalDataRecord | null;
+  treatmentFdaRegulatoryStatus?: TreatmentFdaRegulatoryStatus | null;
 }) {
   const [state, setState] = useState<DirectoryState>(seededState);
   const [payload, setPayload] = useState<SearchPayload>(initialPayload);
@@ -189,6 +197,8 @@ export function DirectoryShell({
     || (initialTreatmentMatchesState ? initialTreatmentLabel : undefined);
   const activeTreatmentCategory = (payloadTreatmentMatchesState ? payload.resolved_treatment?.category : undefined)
     || (initialTreatmentMatchesState ? initialTreatmentCategory : undefined);
+  const showInitialTreatmentMetadata = initialTreatmentMatchesState
+    && activeTreatmentLabel === initialTreatmentLabel;
   const treatmentResultsHeading = searchHeading
     ? treatmentLocationResultsHeading({
         total: payload.total,
@@ -371,6 +381,21 @@ export function DirectoryShell({
             )}
             {loading ? <Loader2 className="spin" size={18} aria-hidden="true" /> : null}
           </div>
+
+          {showInitialTreatmentMetadata && ((activeTreatmentLabel && treatmentFdaRegulatoryStatus) || treatmentExternalData) ? (
+            <div className="treatment-meta-row">
+              {activeTreatmentLabel && treatmentFdaRegulatoryStatus ? (
+                <TreatmentRegulatoryStatus
+                  status={treatmentFdaRegulatoryStatus}
+                  treatmentName={activeTreatmentLabel}
+                />
+              ) : null}
+
+              {treatmentExternalData ? (
+                <TreatmentExternalData data={treatmentExternalData} />
+              ) : null}
+            </div>
+          ) : null}
 
           <div className="result-list">
             {!loading && !payload.results.length ? (

@@ -12,6 +12,7 @@
     "taxonomy:review": "node scripts/review-taxonomy-mappings.mjs",
     "offerings:translate": "node pipeline/cli.mjs offering-translate",
     "offerings:display": "node pipeline/cli.mjs offering-display",
+    "treatments:fda-status": "node --env-file=.env.local scripts/refresh-treatment-fda-statuses.mjs",
     "search-demand:prepare": "node analysis/search-demand/cli.mjs prepare",
     "search-demand:fetch": "node analysis/search-demand/cli.mjs fetch",
     "search-demand:analyze": "node analysis/search-demand/cli.mjs analyze",

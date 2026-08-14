@@ -7,9 +7,10 @@ import { cityLabel, getTreatmentCityPage } from "@/lib/treatment-hubs";
 import { fixedTreatmentLocationPages } from "@/lib/fixed-treatment-location-pages";
 import { searchLocations } from "@/lib/queries";
 import { ogImage, siteName, siteUrl } from "@/lib/site";
+import { getTreatmentExternalData } from "@/lib/treatment-external-data";
 import { treatmentLocationDescription } from "@/lib/treatment-location-metadata";
 
-export const revalidate = 86_400;
+export const revalidate = 21_600;
 export const dynamicParams = true;
 
 export function generateStaticParams() {
@@ -102,6 +103,7 @@ export default async function TreatmentLocationPage({ params }: TreatmentLocatio
   }
 
   const treatment = page.hub.treatment.name;
+  const treatmentExternalData = await getTreatmentExternalData(treatment);
   return (
     <>
       <DirectoryShell
@@ -115,6 +117,8 @@ export default async function TreatmentLocationPage({ params }: TreatmentLocatio
           treatmentHref: page.hub.href,
           cityLabel: page.cityLabel,
         }}
+        treatmentFdaRegulatoryStatus={page.hub.treatment.fdaRegulatoryStatus}
+        treatmentExternalData={treatmentExternalData}
       />
       <script
         dangerouslySetInnerHTML={{ __html: breadcrumbStructuredData(page.hub.href, page.city.href, treatment, page.cityLabel) }}

@@ -29,7 +29,11 @@ export function proxy(request: NextRequest) {
     return resolveTreatmentLocationRedirect(request, treatmentLocation);
   }
 
-  if (routeKind.startsWith("api") && !isLikelySameOriginApiRequest(request)) {
+  if (
+    routeKind.startsWith("api")
+    && !isLikelySameOriginApiRequest(request)
+    && !isAuthorizedCronRequest(request)
+  ) {
     return blockedResponse(
       request,
       403,
@@ -46,6 +50,15 @@ export function proxy(request: NextRequest) {
   }
 
   return response;
+}
+
+function isAuthorizedCronRequest(request: NextRequest) {
+  const secret = process.env.CRON_SECRET;
+  return Boolean(
+    secret
+    && request.nextUrl.pathname === "/api/internal/treatment-fda-status"
+    && request.headers.get("authorization") === `Bearer ${secret}`
+  );
 }
 
 async function resolveTreatmentLocationRedirect(

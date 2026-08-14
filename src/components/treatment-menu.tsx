@@ -4,6 +4,16 @@ import { getOfferingLabels } from "@/lib/offering-labels";
 import { formatOfferingPrice } from "@/lib/offering-price";
 import { Clock3 } from "lucide-react";
 import { useId, useMemo, useRef, useState, type KeyboardEvent } from "react";
+import { TreatmentExternalData } from "@/components/treatment-external-data";
+import { TreatmentRegulatoryStatus } from "@/components/treatment-regulatory-status";
+import type {
+  TreatmentExternalData as TreatmentExternalDataRecord,
+  TreatmentExternalDataByName,
+} from "@/lib/treatment-external-data";
+import {
+  visibleTreatmentFdaMenuStatus,
+  type TreatmentFdaRegulatoryStatus,
+} from "@/lib/treatment-regulatory-status";
 
 export type OfferingRef = {
   raw_name?: string | null;
@@ -17,6 +27,7 @@ export type OfferingRef = {
   duration_minutes?: number | null;
   description?: string | null;
   treatment?: string | null;
+  fda_regulatory_status?: TreatmentFdaRegulatoryStatus | null;
   domain?: string | null;
 };
 
@@ -55,9 +66,11 @@ export function groupOfferingsByCategory(offerings: OfferingRef[]): TreatmentMen
 export function TreatmentMenu({
   offerings,
   countryCode,
+  treatmentExternalData,
 }: {
   offerings: OfferingRef[];
   countryCode?: string | null;
+  treatmentExternalData?: TreatmentExternalDataByName;
 }) {
   const groups = useMemo(() => groupOfferingsByCategory(offerings), [offerings]);
   const [activeCategory, setActiveCategory] = useState<MenuCategory>(groups[0]?.category || "Other");
@@ -125,6 +138,7 @@ export function TreatmentMenu({
               <TreatmentCard
                 offering={offering}
                 countryCode={countryCode}
+                externalData={offering.treatment ? treatmentExternalData?.[offering.treatment] : undefined}
                 key={`${offering.raw_name || offering.treatment}-${originalIndex}`}
               />
             ))}
@@ -138,13 +152,20 @@ export function TreatmentMenu({
 export function TreatmentCard({
   offering,
   countryCode,
+  externalData,
 }: {
   offering: OfferingRef;
   countryCode?: string | null;
+  externalData?: TreatmentExternalDataRecord;
 }) {
   const { primary } = getOfferingLabels(offering);
   const duration = Number(offering.duration_minutes);
   const hasDuration = Number.isFinite(duration) && duration > 0;
+  const description = offering.description
+    ?.replace(/\\[nr]|\r?\n/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+  const regulatoryStatus = visibleTreatmentFdaMenuStatus(offering.fda_regulatory_status);
 
   return (
     <article className="clinic-treatment-card">
@@ -152,7 +173,7 @@ export function TreatmentCard({
         <h3>{primary}</h3>
         <strong>{formatOfferingPrice(offering, countryCode)}</strong>
       </div>
-      {hasDuration || offering.description ? (
+      {hasDuration || description || externalData || regulatoryStatus ? (
         <div className="clinic-treatment-card-details">
           {hasDuration ? (
             <span className="clinic-treatment-duration">
@@ -160,7 +181,15 @@ export function TreatmentCard({
               {duration} min
             </span>
           ) : null}
-          {offering.description ? <p>{offering.description}</p> : null}
+          {description ? <p>{description}</p> : null}
+          {regulatoryStatus && offering.treatment ? (
+            <TreatmentRegulatoryStatus
+              status={regulatoryStatus}
+              treatmentName={offering.treatment}
+              variant="menu"
+            />
+          ) : null}
+          {externalData ? <TreatmentExternalData data={externalData} variant="menu" /> : null}
         </div>
       ) : null}
     </article>

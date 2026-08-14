@@ -7,6 +7,7 @@ import { formatLocationPlace } from "@/lib/location-display";
 import { buildLocationStructuredData, serializeStructuredData } from "@/lib/location-structured-data";
 import { ogImage, siteDescription } from "@/lib/site";
 import { isSitemapLocationIndexable } from "@/lib/sitemap-indexability";
+import { getTreatmentExternalDataForNames } from "@/lib/treatment-external-data";
 import type { Metadata } from "next";
 import { notFound, permanentRedirect } from "next/navigation";
 import { cache } from "react";
@@ -78,12 +79,17 @@ export default async function LocationDetailRoute({ params }: LocationPageProps)
     permanentRedirect(`/directory/locations/${canonicalSlug}`);
   }
 
-  const relatedSearches = await getRelatedTreatmentSearches({
-    countryCode: location.country_code,
-    countryName: location.country_name,
-    locality: location.locality,
-    region: location.region,
-  });
+  const [relatedSearches, treatmentExternalData] = await Promise.all([
+    getRelatedTreatmentSearches({
+      countryCode: location.country_code,
+      countryName: location.country_name,
+      locality: location.locality,
+      region: location.region,
+    }),
+    getTreatmentExternalDataForNames(
+      (location.offerings || []).map((offering) => offering.treatment),
+    ),
+  ]);
 
   const structuredData = isLocationDetailIndexable(location)
     ? buildLocationStructuredData(location)
@@ -95,6 +101,7 @@ export default async function LocationDetailRoute({ params }: LocationPageProps)
         kind="locations"
         data={location}
         relatedSearches={relatedSearches}
+        treatmentExternalData={treatmentExternalData}
       />
       {structuredData ? (
         <script
