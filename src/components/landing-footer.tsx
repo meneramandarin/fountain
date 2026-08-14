@@ -66,7 +66,7 @@ export function LandingFooter() {
               <a href="mailto:hello@fountain.clinic">Claim Your Listing</a>
             </li>
             <li>
-              <Link href="/treatments" prefetch={false}>The Longevity Index</Link>
+              <Link href="/treatments">The Longevity Index</Link>
             </li>
             <li>
               <Link href="/journal" prefetch={false}>Fountain Journal</Link>

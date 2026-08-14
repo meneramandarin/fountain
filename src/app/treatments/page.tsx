@@ -4,8 +4,8 @@ import Link from "next/link";
 import { cache } from "react";
 import { LandingFooter } from "@/components/landing-footer";
 import { LandingScrollHeader } from "@/components/landing-scroll-header";
-import { getTreatmentIndexClinicCount } from "@/lib/queries";
-import { getTreatmentHubs, prepareTreatmentIndexHubs } from "@/lib/treatment-hubs";
+import { getTreatmentIndexData } from "@/lib/queries";
+import { treatmentHref } from "@/lib/treatment-pages";
 import styles from "./treatments.module.css";
 
 // Treatment supply changes throughout the day as provider menus are reconciled.
@@ -13,23 +13,13 @@ import styles from "./treatments.module.css";
 // day-old treatment count after data-only updates.
 export const revalidate = 300;
 
-const loadTreatmentHubs = cache(getTreatmentHubs);
-const loadTreatmentIndexClinicCount = cache(getTreatmentIndexClinicCount);
+const loadTreatmentIndexData = cache(getTreatmentIndexData);
 
 export async function generateMetadata(): Promise<Metadata> {
-  const [allHubs, clinicCount] = await Promise.all([
-    loadTreatmentHubs(),
-    loadTreatmentIndexClinicCount(),
-  ]);
-  const hubs = prepareTreatmentIndexHubs(allHubs);
-  const cityCount = new Set(
-    hubs.flatMap((hub) =>
-      hub.cities.map((city) => [city.city, city.region, city.countryCode].join("|")),
-    ),
-  ).size;
+  const { treatments, clinicCount, cityCount } = await loadTreatmentIndexData();
   const title = "The Fountain Index — Longevity Treatments | Fountain";
   const description =
-    `A catalogue of the longevity arts: ${hubs.length.toLocaleString()} treatments ` +
+    `A catalogue of the longevity arts: ${treatments.length.toLocaleString()} treatments ` +
     `across ${clinicCount.toLocaleString()} clinics in ${cityCount.toLocaleString()} cities. ` +
     "Compare locations and prices for DEXA scans, HBOT, peptides, and more.";
 
@@ -58,16 +48,7 @@ const chapters = [
 ] as const;
 
 export default async function TreatmentsPage() {
-  const [allHubs, clinicCount] = await Promise.all([
-    loadTreatmentHubs(),
-    loadTreatmentIndexClinicCount(),
-  ]);
-  const hubs = prepareTreatmentIndexHubs(allHubs);
-  const cityCount = new Set(
-    hubs.flatMap((hub) =>
-      hub.cities.map((city) => [city.city, city.region, city.countryCode].join("|")),
-    ),
-  ).size;
+  const { treatments, clinicCount, cityCount } = await loadTreatmentIndexData();
 
   return (
     <main className={styles.page}>
@@ -75,7 +56,7 @@ export default async function TreatmentsPage() {
       <header className={styles.masthead}>
         <Image
           className={styles.heroImage}
-          src="/treatments-index-hero.png?v=3"
+          src="/treatments-index-hero.webp"
           alt=""
           fill
           priority
@@ -85,7 +66,7 @@ export default async function TreatmentsPage() {
         <h1 className={styles.visuallyHidden}>The Fountain Index</h1>
         <div className={styles.heroCopy}>
           <p className={styles.mastheadDek}>
-            Everything you can presently do for a longer life — {hubs.length.toLocaleString()} treatments across{" "}
+            Everything you can presently do for a longer life — {treatments.length.toLocaleString()} treatments across{" "}
             {clinicCount.toLocaleString()} clinics in {cityCount.toLocaleString()} cities.
           </p>
         </div>
@@ -94,9 +75,9 @@ export default async function TreatmentsPage() {
       <div className={styles.index}>
         <div className={styles.categoryList}>
           {chapters.map((chapter) => {
-            const categoryHubs = hubs.filter((hub) => hub.treatment.category === chapter.category);
+            const categoryTreatments = treatments.filter((treatment) => treatment.category === chapter.category);
 
-            if (categoryHubs.length === 0) {
+            if (categoryTreatments.length === 0) {
               return null;
             }
 
@@ -113,12 +94,12 @@ export default async function TreatmentsPage() {
                 </div>
 
                 <ul className={styles.treatmentList}>
-                  {categoryHubs.map((hub) => (
-                    <li key={hub.treatment.id}>
-                      <Link href={hub.href} prefetch={false}>
-                        <span>{hub.treatment.name}</span>
+                  {categoryTreatments.map((treatment) => (
+                    <li key={treatment.id}>
+                      <Link href={treatmentHref(treatment)} prefetch={false}>
+                        <span>{treatment.name}</span>
                         <small>
-                          {hub.totalLocations.toLocaleString()} {hub.totalLocations === 1 ? "location" : "locations"}
+                          {treatment.locationCount.toLocaleString()} {treatment.locationCount === 1 ? "location" : "locations"}
                         </small>
                       </Link>
                     </li>
@@ -149,21 +130,21 @@ function ChapterIcon({ src }: { src: string }) {
 }
 
 function IconMeasure() {
-  return <ChapterIcon src="/category%20icons/Measure.png" />;
+  return <ChapterIcon src="/category%20icons/Measure.webp" />;
 }
 
 function IconOptimize() {
-  return <ChapterIcon src="/category%20icons/Optimize.png" />;
+  return <ChapterIcon src="/category%20icons/Optimize.webp" />;
 }
 
 function IconRecover() {
-  return <ChapterIcon src="/category%20icons/Recover.png" />;
+  return <ChapterIcon src="/category%20icons/Recover.webp" />;
 }
 
 function IconRegenerate() {
-  return <ChapterIcon src="/category%20icons/Regenerate.png" />;
+  return <ChapterIcon src="/category%20icons/Regenerate.webp" />;
 }
 
 function IconRejuvenate() {
-  return <ChapterIcon src="/category%20icons/Rejuvenate.png?v=rotated-90" />;
+  return <ChapterIcon src="/category%20icons/Rejuvenate.webp" />;
 }
