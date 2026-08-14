@@ -41,8 +41,8 @@ export const treatmentFdaRegulatoryStatusCopy: Record<TreatmentFdaRegulatoryStat
     menuVisible: true,
   },
   cleared_or_approved_device: {
-    heading: "FDA-cleared or approved device found",
-    menu: "FDA-cleared or approved device found",
+    heading: "FDA-cleared or approved device records found",
+    menu: "FDA-cleared or approved device records found",
     sourceUrl: "https://www.fda.gov/medical-devices/device-approvals-denials-and-clearances/510k-clearances",
     tone: "positive",
     visible: true,

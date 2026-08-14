@@ -6,6 +6,11 @@ import {
   treatmentFdaRegulatoryStatuses,
   treatmentFdaRegulatoryStatusCopy,
 } from "../src/lib/treatment-regulatory-status";
+// @ts-expect-error The refresh job is an ESM JavaScript script without declarations.
+import {
+  classifyDevice,
+  treatmentDeviceQueries,
+} from "../scripts/refresh-treatment-fda-statuses.mjs";
 
 describe("treatment FDA regulatory status", () => {
   test("has one bounded copy definition for every allowed database code", () => {
@@ -51,5 +56,62 @@ describe("treatment FDA regulatory status", () => {
 
     expect(html).toContain("Historical FDA drug approval");
     expect(html).toContain("/treatments/sermorelin");
+  });
+
+  test.each([
+    ["Body composition analysis", "MNW"],
+    ["Colonoscopy", "FDF"],
+    ["Compression therapy", "JOW"],
+    ["CT", "JAK"],
+    ["DEXA scan", "KGI"],
+    ["Dialysis", "KDI"],
+    ["Echocardiography", "DXK"],
+    ["Electrical muscle stimulation", "IPF"],
+    ["Electrocardiography", "DPS"],
+    ["Endoscopy", "GCQ"],
+    ["Fluoroscopy", "JAA"],
+    ["Hyperbaric oxygen therapy", "CBF"],
+    ["Mammography", "MUE"],
+    ["Microneedling", "QAI"],
+    ["MRI", "LNH"],
+    ["Nuclear medicine imaging", "JWM"],
+    ["Peripheral nerve stimulation", "GZF"],
+    ["PET scan", "KPS"],
+    ["Pulmonary function testing", "BZG"],
+    ["Sleep study", "OLV"],
+    ["Spinal cord stimulation", "GZB"],
+    ["Transcranial magnetic stimulation", "OBP"],
+    ["Ultrasound imaging", "IYO"],
+    ["VO2 max test", "BZL"],
+    ["Whole-body MRI", "LNH"],
+    ["X-ray", "KPR"],
+  ])("matches %s through its exact FDA device product code", async (treatmentName, productCode) => {
+    const query = treatmentDeviceQueries.get(treatmentName);
+    const requestedUrls: URL[] = [];
+    const status = await classifyDevice(query, async (url: URL) => {
+      requestedUrls.push(url);
+      return url.pathname.endsWith("/510k.json") ? { results: [{}] } : null;
+    });
+
+    expect(status).toBe("cleared_or_approved_device");
+    expect(requestedUrls).toHaveLength(2);
+    expect(requestedUrls[1].pathname).toBe("/device/510k.json");
+    expect(requestedUrls[1].searchParams.get("search")).toBe(`product_code:\"${productCode}\"`);
+  });
+
+  test("shows device records on the treatment page and mini menu", () => {
+    const pageHtml = renderToStaticMarkup(createElement(TreatmentRegulatoryStatus, {
+      status: "cleared_or_approved_device",
+      treatmentName: "DEXA scan",
+    }));
+    const menuHtml = renderToStaticMarkup(createElement(TreatmentRegulatoryStatus, {
+      status: "cleared_or_approved_device",
+      treatmentName: "Hyperbaric oxygen therapy",
+      variant: "menu",
+    }));
+
+    expect(pageHtml).toContain("FDA-cleared or approved device records found");
+    expect(menuHtml).toContain("FDA-cleared or approved device records found");
+    expect(menuHtml).toContain("/treatments/hyperbaric-oxygen-therapy");
   });
 });
