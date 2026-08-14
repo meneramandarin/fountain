@@ -3,7 +3,6 @@ import { headers } from "next/headers";
 import { LandingExploreCarousel, type LandingExploreItem } from "@/components/landing-explore-carousel";
 import { LandingFeaturedDirectoryCarousel } from "@/components/landing-featured-directory-carousel";
 import { LandingFooter } from "@/components/landing-footer";
-import { LandingGeoHeading } from "@/components/landing-geo-heading";
 import { LandingSeoDiscovery } from "@/components/landing-seo-discovery";
 import { LandingScrollHeader } from "@/components/landing-scroll-header";
 import { LandingTopbar } from "@/components/landing-topbar";
@@ -121,8 +120,10 @@ export default async function HomePage() {
         <LandingTopbar />
 
         <div className="landing-hero-copy">
-          <h1 id="landing-hero-title">The pursuit of a longer life starts here.</h1>
-          <LandingGeoHeading initialCity={visitorLocation?.city} />
+          <h1 id="landing-hero-title">Your Personal Longevity Concierge</h1>
+          <h2>
+            Explore the evolving world of longevity care, from emerging treatments to the practitioners and clinics behind them.
+          </h2>
         </div>
 
         <div className="landing-hero-search">
