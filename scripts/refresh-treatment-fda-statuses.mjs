@@ -53,8 +53,34 @@ const drugQueries = new Map(Object.entries({
   "Xeomin": ["INCOBOTULINUMTOXINA"],
 }));
 
-const deviceQueries = new Map(Object.entries({
-  "Skinvive": ["SKINVIVE"],
+export const treatmentDeviceQueries = new Map(Object.entries({
+  "Body composition analysis": { productCodes: ["MNW"] },
+  "Colonoscopy": { productCodes: ["FDF"] },
+  "Compression therapy": { productCodes: ["JOW"] },
+  "CT": { productCodes: ["JAK"] },
+  "DEXA scan": { productCodes: ["KGI"] },
+  "Dialysis": { productCodes: ["KDI", "FKP"] },
+  "Echocardiography": { productCodes: ["DXK"] },
+  "Electrical muscle stimulation": { productCodes: ["IPF"] },
+  "Electrocardiography": { productCodes: ["DPS"] },
+  "Endoscopy": { productCodes: ["GCQ", "GCP", "GCM", "GDB"] },
+  "Fluoroscopy": { productCodes: ["JAA", "RCC", "OWB"] },
+  "Hyperbaric oxygen therapy": { productCodes: ["CBF"] },
+  "Mammography": { productCodes: ["MUE", "IZH"] },
+  "Microneedling": { productCodes: ["QAI"] },
+  "MRI": { productCodes: ["LNH"] },
+  "Nuclear medicine imaging": { productCodes: ["JWM", "KPS"] },
+  "Peripheral nerve stimulation": { productCodes: ["GZF", "NHI", "KOI"] },
+  "PET scan": { productCodes: ["KPS"] },
+  "Pulmonary function testing": { productCodes: ["BZG"] },
+  "Skinvive": { names: ["SKINVIVE"] },
+  "Sleep study": { productCodes: ["OLV", "OLZ"] },
+  "Spinal cord stimulation": { productCodes: ["GZB"] },
+  "Transcranial magnetic stimulation": { productCodes: ["OBP", "QCI", "OKP"] },
+  "Ultrasound imaging": { productCodes: ["IYO", "IYN"] },
+  "VO2 max test": { productCodes: ["BZL", "BZC", "BTY"] },
+  "Whole-body MRI": { productCodes: ["LNH"] },
+  "X-ray": { productCodes: ["KPR", "IZL"] },
 }));
 
 const requiredDrugRoutes = new Map(Object.entries({
@@ -355,8 +381,8 @@ export async function refreshTreatmentFdaStatuses({
     await runWithConcurrency([...drugQueries], 4, async ([name, terms]) => {
       statuses.set(name, await classifyDrug(name, terms));
     });
-    await runWithConcurrency([...deviceQueries], 3, async ([name, terms]) => {
-      statuses.set(name, await classifyDevice(terms));
+    await runWithConcurrency([...treatmentDeviceQueries], 3, async ([name, query]) => {
+      statuses.set(name, await classifyDevice(query));
     });
 
     for (const name of treatments) {
@@ -450,20 +476,37 @@ async function classifyDrug(name, terms) {
   return "not_determined";
 }
 
-async function classifyDevice(terms) {
-  for (const term of terms) {
+export async function classifyDevice({ names = [], productCodes = [] }, fetchJson = fetchOpenFda) {
+  for (const productCode of productCodes) {
+    const escapedCode = productCode.replaceAll('"', '\\\"');
+    const pmaUrl = new URL("https://api.fda.gov/device/pma.json");
+    pmaUrl.searchParams.set("search", `product_code:\"${escapedCode}\"`);
+    pmaUrl.searchParams.set("limit", "1");
+    addApiKey(pmaUrl);
+    const pma = await fetchJson(pmaUrl);
+    if (pma?.results?.length) return "cleared_or_approved_device";
+
+    const clearanceUrl = new URL("https://api.fda.gov/device/510k.json");
+    clearanceUrl.searchParams.set("search", `product_code:\"${escapedCode}\"`);
+    clearanceUrl.searchParams.set("limit", "1");
+    addApiKey(clearanceUrl);
+    const clearance = await fetchJson(clearanceUrl);
+    if (clearance?.results?.length) return "cleared_or_approved_device";
+  }
+
+  for (const term of names) {
     const pmaUrl = new URL("https://api.fda.gov/device/pma.json");
     pmaUrl.searchParams.set("search", `trade_name:\"${term.replaceAll('"', '\\\"')}\"`);
-    pmaUrl.searchParams.set("limit", "100");
+    pmaUrl.searchParams.set("limit", "1");
     addApiKey(pmaUrl);
-    const pma = await fetchOpenFda(pmaUrl);
+    const pma = await fetchJson(pmaUrl);
     if (pma?.results?.length) return "cleared_or_approved_device";
 
     const clearanceUrl = new URL("https://api.fda.gov/device/510k.json");
     clearanceUrl.searchParams.set("search", `device_name:\"${term.replaceAll('"', '\\\"')}\"`);
-    clearanceUrl.searchParams.set("limit", "100");
+    clearanceUrl.searchParams.set("limit", "1");
     addApiKey(clearanceUrl);
-    const clearance = await fetchOpenFda(clearanceUrl);
+    const clearance = await fetchJson(clearanceUrl);
     if (clearance?.results?.length) return "cleared_or_approved_device";
   }
   return "device_specific";
