@@ -1,5 +1,8 @@
 import Link from "next/link";
-import { dexaScanExtraCities } from "@/lib/fixed-treatment-location-pages";
+import {
+  dexaScanExtraCities,
+  hyperbaricOxygenTherapyExtraCities,
+} from "@/lib/fixed-treatment-location-pages";
 import {
   homepageTreatmentGroups,
   treatmentHref,
@@ -9,7 +12,8 @@ import styles from "./landing-seo-discovery.module.css";
 
 const moreCitiesGroupLabel = "More US cities";
 const moreCitiesLabels = new Set(
-  dexaScanExtraCities.map((city) => `${city.city}, ${city.region}`),
+  [...dexaScanExtraCities, ...hyperbaricOxygenTherapyExtraCities]
+    .map((city) => `${city.city}, ${city.region}`),
 );
 
 export type TreatmentLocationDiscoveryLink = {

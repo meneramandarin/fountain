@@ -99,7 +99,7 @@ describe("landing SEO discovery", () => {
     expect(markup).not.toContain("cityShortcuts");
   });
 
-  test("keeps the shared default cities intact and groups the extra DEXA cities under More US cities", () => {
+  test("keeps the shared default cities intact and groups extra city guides under More US cities", () => {
     const markup = renderDiscovery();
 
     for (const city of ["New York, NY", "Los Angeles, CA", "San Francisco, CA", "Miami, FL", "Denver, CO", "Austin, TX"]) {
@@ -115,6 +115,12 @@ describe("landing SEO discovery", () => {
     for (const city of ["Houston", "San Diego", "Chicago", "Las Vegas"]) {
       expect(moreCitiesSection).toContain(`DEXA scan in ${city}`);
     }
+    expect(moreCitiesSection).toContain(
+      "Hyperbaric oxygen therapy (HBOT) in Scottsdale / Phoenix",
+    );
+    expect(moreCitiesSection).toContain(
+      'href="/treatments/hyperbaric-oxygen-therapy/scottsdale-phoenix-az"',
+    );
     expect(markup.indexOf(">Miami, FL<")).toBeLessThan(markup.indexOf(">More US cities<"));
   });
 });

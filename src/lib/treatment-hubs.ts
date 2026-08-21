@@ -53,7 +53,7 @@ export async function getTreatmentCityPage(treatmentSlugValue: string, citySlugV
     const [treatment, place] = await Promise.all([
       getTreatmentRouteItem(treatmentSlugValue),
       getCityIndexPlace({
-        city: fixedPage.city.city,
+        city: fixedPage.city.searchCity || fixedPage.city.city,
         region: fixedPage.city.region,
         countryCode: fixedPage.city.countryCode,
       }),
@@ -61,7 +61,17 @@ export async function getTreatmentCityPage(treatmentSlugValue: string, citySlugV
     if (!treatment || !place || treatment.id !== fixedPage.treatment.id) {
       return null;
     }
-    return treatmentCityPageResult(treatment, place, true, fixedPage.href);
+    return treatmentCityPageResult(
+      treatment,
+      {
+        ...place,
+        city: fixedPage.city.city,
+        region: fixedPage.city.region,
+        countryCode: fixedPage.city.countryCode,
+      },
+      true,
+      fixedPage.href,
+    );
   }
 
   const [treatment, places] = await Promise.all([
