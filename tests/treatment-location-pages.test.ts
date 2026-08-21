@@ -16,9 +16,9 @@ const treatment: TreatmentCatalogItem = {
 };
 
 describe("treatment location pages", () => {
-  test("routes DEXA scan to the shared default cities plus its extra measured-demand cities", () => {
-    expect(fixedTreatmentLocationPages).toHaveLength(34);
-    expect(new Set(fixedTreatmentLocationPages.map((page) => page.href)).size).toBe(34);
+  test("routes every fixed treatment to the shared cities and DEXA to its extra measured-demand cities", () => {
+    expect(fixedTreatmentLocationPages).toHaveLength(40);
+    expect(new Set(fixedTreatmentLocationPages.map((page) => page.href)).size).toBe(40);
 
     const defaultCitySlugs = fixedTreatmentLocationCities.map((city) => city.slug);
 
