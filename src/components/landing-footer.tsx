@@ -98,7 +98,7 @@ export function LandingFooter() {
                   <circle cx="17.2" cy="6.8" r="0.6" fill="currentColor" stroke="none" />
                 </svg>
               </a>
-              <a href="https://www.linkedin.com/company/playbyear/" target="_blank" rel="noreferrer" aria-label="LinkedIn" className="footer-social-link">
+              <a href="https://www.linkedin.com/company/fountain-clinic-directory" target="_blank" rel="noreferrer" aria-label="LinkedIn" className="footer-social-link">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
                   <rect x="3" y="3" width="18" height="18" rx="3" />
                   <line x1="7.5" y1="10.5" x2="7.5" y2="16.5" />
