@@ -11,6 +11,7 @@ export type FixedTreatmentLocationCity = {
   region: string;
   countryCode: "US";
   slug: string;
+  searchCity?: string;
 };
 
 export type FixedTreatmentLocationPage = {
@@ -41,14 +42,26 @@ const houston = { city: "Houston", region: "TX", countryCode: "US", slug: "houst
 const sanDiego = { city: "San Diego", region: "CA", countryCode: "US", slug: "san-diego-ca" } as const;
 const chicago = { city: "Chicago", region: "IL", countryCode: "US", slug: "chicago-il" } as const;
 const lasVegas = { city: "Las Vegas", region: "NV", countryCode: "US", slug: "las-vegas-nv" } as const;
+const scottsdalePhoenix = {
+  city: "Scottsdale / Phoenix",
+  region: "AZ",
+  countryCode: "US",
+  slug: "scottsdale-phoenix-az",
+  searchCity: "Scottsdale",
+} as const;
 
 // DEXA scan additionally covers the extra measured-demand cities from the Aug
 // 2026 market-opportunity study (Houston, San Diego, Chicago, Las Vegas), on
 // top of the shared default six every fixed treatment gets.
 export const dexaScanExtraCities = [houston, sanDiego, chicago, lasVegas] as const;
+export const hyperbaricOxygenTherapyExtraCities = [scottsdalePhoenix] as const;
 
 const citiesByTreatmentSlug: Record<string, readonly FixedTreatmentLocationCity[]> = {
   "dexa-scan": [...fixedTreatmentLocationCities, ...dexaScanExtraCities],
+  "hyperbaric-oxygen-therapy": [
+    ...fixedTreatmentLocationCities,
+    ...hyperbaricOxygenTherapyExtraCities,
+  ],
 };
 
 export const fixedTreatmentLocationPages: readonly FixedTreatmentLocationPage[] =

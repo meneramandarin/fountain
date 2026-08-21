@@ -16,9 +16,9 @@ const treatment: TreatmentCatalogItem = {
 };
 
 describe("treatment location pages", () => {
-  test("routes every fixed treatment to the shared cities and DEXA to its extra measured-demand cities", () => {
-    expect(fixedTreatmentLocationPages).toHaveLength(40);
-    expect(new Set(fixedTreatmentLocationPages.map((page) => page.href)).size).toBe(40);
+  test("routes every fixed treatment to the shared cities and selected treatments to extra cities", () => {
+    expect(fixedTreatmentLocationPages).toHaveLength(41);
+    expect(new Set(fixedTreatmentLocationPages.map((page) => page.href)).size).toBe(41);
 
     const defaultCitySlugs = fixedTreatmentLocationCities.map((city) => city.slug);
 
@@ -33,8 +33,16 @@ describe("treatment location pages", () => {
       "las-vegas-nv",
     ]);
 
+    const hyperbaricCitySlugs = fixedTreatmentLocationPages
+      .filter((page) => page.treatment.slug === "hyperbaric-oxygen-therapy")
+      .map((page) => page.city.slug);
+    expect(hyperbaricCitySlugs).toEqual([
+      ...defaultCitySlugs,
+      "scottsdale-phoenix-az",
+    ]);
+
     for (const treatment of fixedTreatmentLocationTreatments) {
-      if (treatment.slug === "dexa-scan") continue;
+      if (["dexa-scan", "hyperbaric-oxygen-therapy"].includes(treatment.slug)) continue;
       const citySlugs = fixedTreatmentLocationPages
         .filter((page) => page.treatment.slug === treatment.slug)
         .map((page) => page.city.slug);
