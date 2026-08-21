@@ -4,6 +4,7 @@ import { beforeAll, describe, expect, test } from "vitest";
 
 type LocationResult = {
   id: number;
+  slug?: string | null;
   name: string;
   min_price_amount?: number | null;
   min_price_currency?: string | null;
@@ -87,6 +88,26 @@ describe("treatment-aware directory search pricing", () => {
     expect(Number(sameClinic?.min_price_amount)).toBe(
       genericPriceMap.get(treatmentSpecificResult!.id),
     );
+  });
+
+  test("uses the lowest treatment package price when no single-session price is published", async () => {
+    const { searchLocations } = await import("../src/lib/queries");
+    const payload = await searchLocations({
+      kind: "locations",
+      city_label: "Miami, FL, USA",
+      city_country: "US",
+      city_lat: 25.7780177815125,
+      city_lng: -80.22303400337935,
+      treatment_ids: [28],
+    }, 0, {
+      includeTreatmentPriceSummaries: true,
+    }) as TreatmentSearchPayload;
+
+    const coralGables = payload.results.find((result) => result.slug === "coral-gables");
+
+    expect(coralGables).toBeTruthy();
+    expect(coralGables?.min_price_amount).toBe(203);
+    expect(coralGables?.min_price_currency).toBe("USD");
   });
 });
 

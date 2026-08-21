@@ -292,6 +292,23 @@ function comparableOfferingPriceCondition(alias: string) {
     : `${alias}.price_amount > 0`;
 }
 
+function treatmentCardPriceCondition(alias: string) {
+  return isPostgres()
+    ? `${alias}.price_amount > 0
+       AND COALESCE(NULLIF(TRIM(${alias}.price_unit), ''), 'service') IN ('service', 'session', 'visit', 'package')
+       AND COALESCE(NULLIF(TRIM(${alias}.price_audience), ''), 'retail') = 'retail'`
+    : `${alias}.price_amount > 0`;
+}
+
+function treatmentCardPriceUnitOrder(alias: string) {
+  return isPostgres()
+    ? `CASE
+         WHEN COALESCE(NULLIF(TRIM(${alias}.price_unit), ''), 'service') IN ('service', 'session', 'visit') THEN 0
+         ELSE 1
+       END`
+    : "0";
+}
+
 function activeImageCondition(alias: string) {
   return isPostgres() ? `${alias}.status = 'active' AND ${alias}.deleted_at IS NULL` : "1=1";
 }
@@ -1908,9 +1925,9 @@ export async function getTreatmentLocationLandingData(params: {
         FROM offerings treatment_o
         WHERE treatment_o.location_id = l.id
           AND ${treatmentTreeCondition("treatment_o.treatment_id")}
-          AND ${comparableOfferingPriceCondition("treatment_o")}
+          AND ${treatmentCardPriceCondition("treatment_o")}
           AND ${activeOfferingCondition("treatment_o")}
-        ORDER BY treatment_o.price_amount ASC
+        ORDER BY ${treatmentCardPriceUnitOrder("treatment_o")}, treatment_o.price_amount ASC, treatment_o.id ASC
         LIMIT 1
       ) AS min_price_amount,
       (
@@ -1918,9 +1935,9 @@ export async function getTreatmentLocationLandingData(params: {
         FROM offerings treatment_o
         WHERE treatment_o.location_id = l.id
           AND ${treatmentTreeCondition("treatment_o.treatment_id")}
-          AND ${comparableOfferingPriceCondition("treatment_o")}
+          AND ${treatmentCardPriceCondition("treatment_o")}
           AND ${activeOfferingCondition("treatment_o")}
-        ORDER BY treatment_o.price_amount ASC
+        ORDER BY ${treatmentCardPriceUnitOrder("treatment_o")}, treatment_o.price_amount ASC, treatment_o.id ASC
         LIMIT 1
       ) AS min_price_currency
     FROM locations l
@@ -2439,9 +2456,12 @@ async function locationTreatmentPriceMap(
     FROM offerings offering
     WHERE offering.location_id IN (${placeholders(locationIds.length)})
       AND (${treatmentTreesCondition("offering.treatment_id", treatmentIds.length)})
-      AND ${comparableOfferingPriceCondition("offering")}
+      AND ${treatmentCardPriceCondition("offering")}
       AND ${activeOfferingCondition("offering")}
-    ORDER BY offering.location_id, offering.price_amount ASC, offering.id ASC
+    ORDER BY offering.location_id,
+             ${treatmentCardPriceUnitOrder("offering")},
+             offering.price_amount ASC,
+             offering.id ASC
   `,
     [...locationIds, ...treatmentIds],
   );
