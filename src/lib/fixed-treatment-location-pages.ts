@@ -24,6 +24,7 @@ export const fixedTreatmentLocationTreatments = [
   { id: 8, name: "VO2 max test", slug: "vo2-max-test" },
   { id: 74, name: "IV Infusions", slug: "iv-infusions" },
   hyperbaricOxygenTherapy,
+  { id: 28, name: "Cryotherapy", slug: "cryotherapy" },
   { id: 1, name: "Full-body MRI", slug: "full-body-mri" },
 ] as const satisfies readonly FixedTreatmentLocationTreatment[];
 

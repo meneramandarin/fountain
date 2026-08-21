@@ -62,7 +62,7 @@ describe("landing SEO discovery", () => {
       const href = `href="${page.href}"`;
       expect(markup.split(href)).toHaveLength(2);
     }
-    expect(markup.match(/href="\/treatments\/[^\"]+\/[^\"]+"/g)).toHaveLength(34);
+    expect(markup.match(/href="\/treatments\/[^\"]+\/[^\"]+"/g)).toHaveLength(locationPages.length);
   });
 
   test("links every displayed treatment to its clean hub", () => {
@@ -104,6 +104,10 @@ describe("landing SEO discovery", () => {
 
     for (const city of ["New York, NY", "Los Angeles, CA", "San Francisco, CA", "Miami, FL", "Denver, CO", "Austin, TX"]) {
       expect(markup).toContain(`>${city}<`);
+    }
+
+    for (const city of ["New York", "Los Angeles", "San Francisco", "Miami", "Denver", "Austin"]) {
+      expect(markup).toContain(`Cryotherapy in ${city}`);
     }
     expect(markup).toContain(">More US cities<");
 
