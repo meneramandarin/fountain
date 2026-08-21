@@ -4,7 +4,6 @@ import { LandingFooter } from "@/components/landing-footer";
 import { LandingScrollHeader } from "@/components/landing-scroll-header";
 import { DirectoryLocationCard, type DirectoryLocationCardData } from "@/components/directory-location-card";
 import { DirectoryMap } from "@/components/directory-map";
-import { HbotComparisonGuide } from "@/components/hbot-comparison-guide";
 import { ArrowLeft, ArrowRight, Loader2, MapPin, Stethoscope } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -355,11 +354,6 @@ export function DirectoryShell({
             )}
             {loading ? <Loader2 className="spin" size={18} aria-hidden="true" /> : null}
           </div>
-
-          {activeTreatmentLabel === "Hyperbaric oxygen therapy"
-            && searchHeading?.cityLabel === "Miami, FL" ? (
-              <HbotComparisonGuide />
-            ) : null}
 
           <div className="result-list">
             {!loading && !payload.results.length ? (
