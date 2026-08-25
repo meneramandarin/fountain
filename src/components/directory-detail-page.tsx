@@ -138,7 +138,7 @@ export type PractitionerDetailRecord = {
 };
 
 type DetailProps =
-  | { kind: "locations"; data: LocationDetailRecord; relatedSearches?: RelatedTreatmentSearches | null; treatmentExternalData?: TreatmentExternalDataByName; showBackLink?: boolean; backHref?: string }
+  | { kind: "locations"; data: LocationDetailRecord; relatedSearches?: RelatedTreatmentSearches | null; treatmentExternalData?: TreatmentExternalDataByName; focusedTreatment?: string; showBackLink?: boolean; backHref?: string }
   | { kind: "practitioners"; data: PractitionerDetailRecord; relatedSearches?: RelatedTreatmentSearches | null; showBackLink?: boolean; backHref?: string };
 
 export function DirectoryDetailPage(props: DetailProps) {
@@ -211,6 +211,7 @@ export function DirectoryDetailPage(props: DetailProps) {
       {props.kind === "locations" ? (
         <LocationTreatmentsAndDetails
           data={props.data}
+          focusedTreatment={props.focusedTreatment}
           treatmentExternalData={props.treatmentExternalData}
         />
       ) : null}
@@ -508,14 +509,16 @@ function LocationMain({ data }: { data: LocationDetailRecord }) {
 
 function LocationTreatmentsAndDetails({
   data,
+  focusedTreatment,
   treatmentExternalData,
 }: {
   data: LocationDetailRecord;
+  focusedTreatment?: string;
   treatmentExternalData?: TreatmentExternalDataByName;
 }) {
-  const treatments = [...(data.offerings || [])].sort(
+  const treatments = moveFocusedTreatmentFirst([...(data.offerings || [])].sort(
     (first, second) => Number(first.price_amount == null) - Number(second.price_amount == null),
-  );
+  ), focusedTreatment);
   const clinicName = data.name || data.org_name || "Clinic";
   const address = locationDisplayAddress(data);
   const website = data.website ? `/go/${data.slug || data.id}` : null;
@@ -531,6 +534,8 @@ function LocationTreatmentsAndDetails({
               <TreatmentMenu
                 offerings={treatments}
                 countryCode={data.country_code}
+                focusedTreatment={focusedTreatment}
+                key={focusedTreatment || "default-treatment-menu"}
                 treatmentExternalData={treatmentExternalData}
               />
             ) : (
@@ -595,6 +600,40 @@ function LocationTreatmentsAndDetails({
       </div>
     </section>
   );
+}
+
+function moveFocusedTreatmentFirst(
+  offerings: OfferingRef[],
+  focusedTreatment?: string,
+) {
+  const focusedIndex = offerings.findIndex((offering) =>
+    offeringMatchesTreatment(offering, focusedTreatment),
+  );
+  if (focusedIndex <= 0) {
+    return offerings;
+  }
+
+  return [
+    offerings[focusedIndex],
+    ...offerings.slice(0, focusedIndex),
+    ...offerings.slice(focusedIndex + 1),
+  ];
+}
+
+function offeringMatchesTreatment(
+  offering: OfferingRef,
+  focusedTreatment?: string,
+) {
+  const focused = normalizeTreatmentName(focusedTreatment);
+  if (!focused) {
+    return false;
+  }
+  return [offering.treatment, offering.raw_name]
+    .some((name) => normalizeTreatmentName(name) === focused);
+}
+
+function normalizeTreatmentName(value?: string | null) {
+  return value?.trim().toLocaleLowerCase().replace(/\s+/g, " ") || "";
 }
 
 function OpeningHours({ hours }: { hours?: OpeningHours | null }) {

@@ -231,7 +231,7 @@ function createPopupContent(
 ) {
   const card = document.createElement("a");
   card.className = "directory-map-popup-card";
-  card.href = locationHref(location);
+  card.href = locationHref(location, { treatment: context.treatmentName });
   card.addEventListener("click", () => {
     trackClinicClick({
       locationId: location.id,

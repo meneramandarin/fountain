@@ -82,7 +82,7 @@ export function DirectoryLocationCard({
     (tag) => tag.facet === "care_model" && tag.value.toLowerCase() === "mobile service",
   );
   const price = formatPrice(result.min_price_amount, result.min_price_currency, result.country_code);
-  const destinationHref = href || locationHref(result);
+  const destinationHref = href || locationHref(result, { treatment: treatmentName });
   const entityLabel = mobileService ? "Mobile service" : type?.value;
   const treatmentTags = [...new Set((result.treatments || []).map((treatment) => treatment.name))].slice(0, 3);
   const rating = Number(result.rating || 0);
