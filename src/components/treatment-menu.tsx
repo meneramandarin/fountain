@@ -52,7 +52,9 @@ export function groupOfferingsByCategory(offerings: OfferingRef[]): TreatmentMen
   const groups = new Map<MenuCategory, GroupedOffering[]>();
 
   offerings.forEach((offering, originalIndex) => {
-    const category = normalizeTreatmentCategory(offering.domain);
+    const category = isMembershipOffering(offering)
+      ? "Other"
+      : normalizeTreatmentCategory(offering.domain);
     const group = groups.get(category) || [];
     group.push({ offering, originalIndex });
     groups.set(category, group);
@@ -199,4 +201,12 @@ export function TreatmentCard({
 function normalizeTreatmentCategory(category?: string | null): MenuCategory {
   const value = category?.trim().toLocaleLowerCase();
   return treatmentCategoryOrder.find((candidate) => candidate.toLocaleLowerCase() === value) || "Other";
+}
+
+function isMembershipOffering(offering: OfferingRef) {
+  const membershipMetadata = [offering.raw_name, offering.price_context]
+    .filter(Boolean)
+    .join(" ");
+
+  return /\bmemberships?\b/i.test(membershipMetadata);
 }
