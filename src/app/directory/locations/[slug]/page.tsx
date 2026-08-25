@@ -2,6 +2,7 @@ import {
   DirectoryDetailPage,
   type LocationDetailRecord,
 } from "@/components/directory-detail-page";
+import { locationHref } from "@/lib/directory-urls";
 import { getLocationDetail, getRelatedTreatmentSearches } from "@/lib/queries";
 import { formatLocationPlace } from "@/lib/location-display";
 import { buildLocationStructuredData, serializeStructuredData } from "@/lib/location-structured-data";
@@ -22,6 +23,7 @@ export function generateStaticParams() {
 
 type LocationPageProps = {
   params: Promise<{ slug: string }>;
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
 };
 
 const loadLocation = cache(async (slug: string) =>
@@ -68,15 +70,16 @@ export async function generateMetadata({ params }: LocationPageProps): Promise<M
   };
 }
 
-export default async function LocationDetailRoute({ params }: LocationPageProps) {
+export default async function LocationDetailRoute({ params, searchParams }: LocationPageProps) {
   const { slug } = await params;
+  const focusedTreatment = treatmentFromSearchParams(await searchParams);
   const location = await loadLocation(slug);
   if (!location) {
     notFound();
   }
   const canonicalSlug = location.slug || String(location.id);
   if (slug !== canonicalSlug) {
-    permanentRedirect(`/directory/locations/${canonicalSlug}`);
+    permanentRedirect(locationHref(location, { treatment: focusedTreatment }));
   }
 
   const [relatedSearches, treatmentExternalData] = await Promise.all([
@@ -100,6 +103,7 @@ export default async function LocationDetailRoute({ params }: LocationPageProps)
       <DirectoryDetailPage
         kind="locations"
         data={location}
+        focusedTreatment={focusedTreatment}
         relatedSearches={relatedSearches}
         treatmentExternalData={treatmentExternalData}
       />
@@ -111,6 +115,14 @@ export default async function LocationDetailRoute({ params }: LocationPageProps)
       ) : null}
     </>
   );
+}
+
+function treatmentFromSearchParams(
+  params: Record<string, string | string[] | undefined>,
+) {
+  const raw = params.treatment;
+  const value = (Array.isArray(raw) ? raw[0] : raw)?.trim();
+  return value ? value.slice(0, 160) : undefined;
 }
 
 function isLocationDetailIndexable(location: LocationDetailRecord) {

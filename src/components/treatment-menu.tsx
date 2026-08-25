@@ -48,7 +48,10 @@ export type TreatmentMenuGroup = {
   offerings: GroupedOffering[];
 };
 
-export function groupOfferingsByCategory(offerings: OfferingRef[]): TreatmentMenuGroup[] {
+export function groupOfferingsByCategory(
+  offerings: OfferingRef[],
+  focusedTreatment?: string,
+): TreatmentMenuGroup[] {
   const groups = new Map<MenuCategory, GroupedOffering[]>();
 
   offerings.forEach((offering, originalIndex) => {
@@ -62,20 +65,31 @@ export function groupOfferingsByCategory(offerings: OfferingRef[]): TreatmentMen
 
   return [...treatmentCategoryOrder, "Other" as const]
     .filter((category) => groups.has(category))
-    .map((category) => ({ category, offerings: groups.get(category) || [] }));
+    .map((category) => ({
+      category,
+      offerings: moveFocusedOfferingFirst(groups.get(category) || [], focusedTreatment),
+    }));
 }
 
 export function TreatmentMenu({
   offerings,
   countryCode,
+  focusedTreatment,
   treatmentExternalData,
 }: {
   offerings: OfferingRef[];
   countryCode?: string | null;
+  focusedTreatment?: string;
   treatmentExternalData?: TreatmentExternalDataByName;
 }) {
-  const groups = useMemo(() => groupOfferingsByCategory(offerings), [offerings]);
-  const [activeCategory, setActiveCategory] = useState<MenuCategory>(groups[0]?.category || "Other");
+  const groups = useMemo(
+    () => groupOfferingsByCategory(offerings, focusedTreatment),
+    [offerings, focusedTreatment],
+  );
+  const focusedCategory = focusedTreatmentCategory(groups, focusedTreatment);
+  const [activeCategory, setActiveCategory] = useState<MenuCategory>(
+    focusedCategory || groups[0]?.category || "Other",
+  );
   const tabListId = useId();
   const tabRefs = useRef<Array<HTMLButtonElement | null>>([]);
 
@@ -209,4 +223,47 @@ function isMembershipOffering(offering: OfferingRef) {
     .join(" ");
 
   return /\bmemberships?\b/i.test(membershipMetadata);
+}
+
+function focusedTreatmentCategory(
+  groups: TreatmentMenuGroup[],
+  focusedTreatment?: string,
+) {
+  return groups.find((group) => group.offerings.some(({ offering }) =>
+    offeringMatchesTreatment(offering, focusedTreatment),
+  ))?.category;
+}
+
+function moveFocusedOfferingFirst(
+  offerings: GroupedOffering[],
+  focusedTreatment?: string,
+) {
+  const focusedIndex = offerings.findIndex(({ offering }) =>
+    offeringMatchesTreatment(offering, focusedTreatment),
+  );
+  if (focusedIndex <= 0) {
+    return offerings;
+  }
+
+  return [
+    offerings[focusedIndex],
+    ...offerings.slice(0, focusedIndex),
+    ...offerings.slice(focusedIndex + 1),
+  ];
+}
+
+function offeringMatchesTreatment(
+  offering: OfferingRef,
+  focusedTreatment?: string,
+) {
+  const focused = normalizeTreatmentName(focusedTreatment);
+  if (!focused) {
+    return false;
+  }
+  return [offering.treatment, offering.raw_name]
+    .some((name) => normalizeTreatmentName(name) === focused);
+}
+
+function normalizeTreatmentName(value?: string | null) {
+  return value?.trim().toLocaleLowerCase().replace(/\s+/g, " ") || "";
 }
