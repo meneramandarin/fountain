@@ -38,6 +38,38 @@ describe("treatment menu categories", () => {
     expect(groups[2].offerings.map(({ offering }) => offering.raw_name)).toEqual(["Red light", "Cryotherapy"]);
   });
 
+  test("groups membership plans under Other without changing ordinary monthly protocols", () => {
+    const groups = groupOfferingsByCategory([
+      {
+        raw_name: "Core Membership",
+        domain: "Optimize",
+        price_unit: "month",
+        price_context: "Official monthly membership price.",
+      },
+      {
+        raw_name: "BHL Access Pass",
+        domain: "Optimize",
+        price_unit: "month",
+        price_context: "Published monthly membership price.",
+      },
+      {
+        raw_name: "Longevity Protocol - 4 Sessions per Month",
+        domain: "Recover",
+        price_unit: "month",
+        price_context: "Official monthly HBOT protocol price.",
+      },
+    ]);
+
+    expect(groups.map((group) => group.category)).toEqual(["Recover", "Other"]);
+    expect(groups[0].offerings.map(({ offering }) => offering.raw_name)).toEqual([
+      "Longevity Protocol - 4 Sessions per Month",
+    ]);
+    expect(groups[1].offerings.map(({ offering }) => offering.raw_name)).toEqual([
+      "Core Membership",
+      "BHL Access Pass",
+    ]);
+  });
+
   test("renders category tabs only when a listing has more than four menu items", () => {
     const largeMenu = renderLocation(offerings);
     const smallMenu = renderLocation(offerings.slice(0, 4));
