@@ -25,8 +25,7 @@ import { ListingShareButton } from "@/components/listing-share-button";
 import { ListingLocationMap } from "@/components/listing-location-map";
 import { OutboundClinicLink } from "@/components/outbound-clinic-link";
 import {
-  TreatmentCard,
-  TreatmentMenu,
+  FocusedTreatmentOfferings,
   type OfferingRef,
 } from "@/components/treatment-menu";
 import {
@@ -138,7 +137,7 @@ export type PractitionerDetailRecord = {
 };
 
 type DetailProps =
-  | { kind: "locations"; data: LocationDetailRecord; relatedSearches?: RelatedTreatmentSearches | null; treatmentExternalData?: TreatmentExternalDataByName; focusedTreatment?: string; showBackLink?: boolean; backHref?: string }
+  | { kind: "locations"; data: LocationDetailRecord; relatedSearches?: RelatedTreatmentSearches | null; treatmentExternalData?: TreatmentExternalDataByName; showBackLink?: boolean; backHref?: string }
   | { kind: "practitioners"; data: PractitionerDetailRecord; relatedSearches?: RelatedTreatmentSearches | null; showBackLink?: boolean; backHref?: string };
 
 export function DirectoryDetailPage(props: DetailProps) {
@@ -211,7 +210,6 @@ export function DirectoryDetailPage(props: DetailProps) {
       {props.kind === "locations" ? (
         <LocationTreatmentsAndDetails
           data={props.data}
-          focusedTreatment={props.focusedTreatment}
           treatmentExternalData={props.treatmentExternalData}
         />
       ) : null}
@@ -509,16 +507,12 @@ function LocationMain({ data }: { data: LocationDetailRecord }) {
 
 function LocationTreatmentsAndDetails({
   data,
-  focusedTreatment,
   treatmentExternalData,
 }: {
   data: LocationDetailRecord;
-  focusedTreatment?: string;
   treatmentExternalData?: TreatmentExternalDataByName;
 }) {
-  const treatments = moveFocusedTreatmentFirst([...(data.offerings || [])].sort(
-    (first, second) => Number(first.price_amount == null) - Number(second.price_amount == null),
-  ), focusedTreatment);
+  const treatments = data.offerings || [];
   const clinicName = data.name || data.org_name || "Clinic";
   const address = locationDisplayAddress(data);
   const website = data.website ? `/go/${data.slug || data.id}` : null;
@@ -530,26 +524,11 @@ function LocationTreatmentsAndDetails({
           <h2 id="clinic-treatments-title">Treatments</h2>
           {data.offerings_note ? <p className="clinic-treatments-note">{data.offerings_note}</p> : null}
           {treatments.length ? (
-            treatments.length > 4 ? (
-              <TreatmentMenu
-                offerings={treatments}
-                countryCode={data.country_code}
-                focusedTreatment={focusedTreatment}
-                key={focusedTreatment || "default-treatment-menu"}
-                treatmentExternalData={treatmentExternalData}
-              />
-            ) : (
-              <div className="clinic-treatment-list">
-                {treatments.map((offering, index) => (
-                  <TreatmentCard
-                    offering={offering}
-                    countryCode={data.country_code}
-                    externalData={offering.treatment ? treatmentExternalData?.[offering.treatment] : undefined}
-                    key={`${offering.raw_name || offering.treatment}-${index}`}
-                  />
-                ))}
-              </div>
-            )
+            <FocusedTreatmentOfferings
+              offerings={treatments}
+              countryCode={data.country_code}
+              treatmentExternalData={treatmentExternalData}
+            />
           ) : (
             <p className="clinic-treatments-empty">Contact the clinic for its current treatment list and pricing.</p>
           )}
@@ -600,40 +579,6 @@ function LocationTreatmentsAndDetails({
       </div>
     </section>
   );
-}
-
-function moveFocusedTreatmentFirst(
-  offerings: OfferingRef[],
-  focusedTreatment?: string,
-) {
-  const focusedIndex = offerings.findIndex((offering) =>
-    offeringMatchesTreatment(offering, focusedTreatment),
-  );
-  if (focusedIndex <= 0) {
-    return offerings;
-  }
-
-  return [
-    offerings[focusedIndex],
-    ...offerings.slice(0, focusedIndex),
-    ...offerings.slice(focusedIndex + 1),
-  ];
-}
-
-function offeringMatchesTreatment(
-  offering: OfferingRef,
-  focusedTreatment?: string,
-) {
-  const focused = normalizeTreatmentName(focusedTreatment);
-  if (!focused) {
-    return false;
-  }
-  return [offering.treatment, offering.raw_name]
-    .some((name) => normalizeTreatmentName(name) === focused);
-}
-
-function normalizeTreatmentName(value?: string | null) {
-  return value?.trim().toLocaleLowerCase().replace(/\s+/g, " ") || "";
 }
 
 function OpeningHours({ hours }: { hours?: OpeningHours | null }) {
