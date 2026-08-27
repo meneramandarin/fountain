@@ -3,7 +3,8 @@
 import { getOfferingLabels } from "@/lib/offering-labels";
 import { formatOfferingPrice } from "@/lib/offering-price";
 import { Clock3 } from "lucide-react";
-import { useId, useMemo, useRef, useState, type KeyboardEvent } from "react";
+import { useSearchParams } from "next/navigation";
+import { Suspense, useId, useMemo, useRef, useState, type KeyboardEvent } from "react";
 import { TreatmentExternalData } from "@/components/treatment-external-data";
 import { TreatmentRegulatoryStatus } from "@/components/treatment-regulatory-status";
 import type {
@@ -47,6 +48,90 @@ export type TreatmentMenuGroup = {
   category: MenuCategory;
   offerings: GroupedOffering[];
 };
+
+type TreatmentOfferingsProps = {
+  offerings: OfferingRef[];
+  countryCode?: string | null;
+  focusedTreatment?: string;
+  treatmentExternalData?: TreatmentExternalDataByName;
+};
+
+export function FocusedTreatmentOfferings(
+  props: Omit<TreatmentOfferingsProps, "focusedTreatment">,
+) {
+  return (
+    <Suspense fallback={<TreatmentOfferings {...props} />}>
+      <TreatmentOfferingsFromSearchParams {...props} />
+    </Suspense>
+  );
+}
+
+function TreatmentOfferingsFromSearchParams(
+  props: Omit<TreatmentOfferingsProps, "focusedTreatment">,
+) {
+  const searchParams = useSearchParams();
+  const focusedTreatment = cleanFocusedTreatment(searchParams.get("treatment"));
+
+  return <TreatmentOfferings {...props} focusedTreatment={focusedTreatment} />;
+}
+
+export function TreatmentOfferings({
+  offerings,
+  countryCode,
+  focusedTreatment,
+  treatmentExternalData,
+}: TreatmentOfferingsProps) {
+  const orderedOfferings = useMemo(
+    () => orderOfferingsForDisplay(offerings, focusedTreatment),
+    [offerings, focusedTreatment],
+  );
+
+  if (orderedOfferings.length > 4) {
+    return (
+      <TreatmentMenu
+        offerings={orderedOfferings}
+        countryCode={countryCode}
+        focusedTreatment={focusedTreatment}
+        key={focusedTreatment || "default-treatment-menu"}
+        treatmentExternalData={treatmentExternalData}
+      />
+    );
+  }
+
+  return (
+    <div className="clinic-treatment-list">
+      {orderedOfferings.map((offering, index) => (
+        <TreatmentCard
+          offering={offering}
+          countryCode={countryCode}
+          externalData={offering.treatment ? treatmentExternalData?.[offering.treatment] : undefined}
+          key={`${offering.raw_name || offering.treatment}-${index}`}
+        />
+      ))}
+    </div>
+  );
+}
+
+export function orderOfferingsForDisplay(
+  offerings: OfferingRef[],
+  focusedTreatment?: string,
+) {
+  const ordered = [...offerings].sort(
+    (first, second) => Number(first.price_amount == null) - Number(second.price_amount == null),
+  );
+  const focusedIndex = ordered.findIndex((offering) =>
+    offeringMatchesTreatment(offering, focusedTreatment),
+  );
+  if (focusedIndex <= 0) {
+    return ordered;
+  }
+
+  return [
+    ordered[focusedIndex],
+    ...ordered.slice(0, focusedIndex),
+    ...ordered.slice(focusedIndex + 1),
+  ];
+}
 
 export function groupOfferingsByCategory(
   offerings: OfferingRef[],
@@ -266,4 +351,9 @@ function offeringMatchesTreatment(
 
 function normalizeTreatmentName(value?: string | null) {
   return value?.trim().toLocaleLowerCase().replace(/\s+/g, " ") || "";
+}
+
+function cleanFocusedTreatment(value: string | null) {
+  const focusedTreatment = value?.trim();
+  return focusedTreatment ? focusedTreatment.slice(0, 160) : undefined;
 }

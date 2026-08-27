@@ -1,12 +1,12 @@
 import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, test } from "vitest";
-import {
-  DirectoryDetailPage,
-  type LocationDetailRecord,
-} from "../src/components/directory-detail-page";
 import { locationHref } from "../src/lib/directory-urls";
-import { groupOfferingsByCategory } from "../src/components/treatment-menu";
+import {
+  groupOfferingsByCategory,
+  TreatmentOfferings,
+  type OfferingRef,
+} from "../src/components/treatment-menu";
 
 const offerings = [
   { raw_name: "Red light", domain: "Recover" },
@@ -17,16 +17,11 @@ const offerings = [
 ];
 
 function renderLocation(
-  menu: LocationDetailRecord["offerings"],
+  menu: OfferingRef[],
   focusedTreatment?: string,
 ) {
-  return renderToStaticMarkup(createElement(DirectoryDetailPage, {
-    kind: "locations",
-    data: {
-      id: 1,
-      name: "Example Clinic",
-      offerings: menu,
-    },
+  return renderToStaticMarkup(createElement(TreatmentOfferings, {
+    offerings: menu,
     focusedTreatment,
   }));
 }
