@@ -11,11 +11,15 @@ out/
 .env
 .env.*
 .env*.local
+!.env.example
 *.tsbuildinfo
 blob-cleanup-report*.json
 *-report-*.json
 *-checkpoint-*.json
 *.dry-run.*
+
+# Generated browser captures may contain credentials embedded in third-party URLs.
+/swarm-browser-output/
 
 # Local task prompts and generated reports
 *.md
