@@ -475,9 +475,10 @@ async function hasExternalReviewTables() {
   return hasExternalReviewTablesCache;
 }
 
-function providerName(provider: string) {
+export function providerName(provider: string) {
   switch (provider) {
     case "google":
+    case "google_places":
       return "Google";
     case "yelp":
       return "Yelp";

@@ -1,7 +1,11 @@
 import { describe, expect, test } from "vitest";
 import { normalizeOpeningHours } from "../src/components/directory-detail-page";
+import { providerName } from "../src/lib/queries";
 
 describe("directory detail", () => {
+  test("shows a readable source for Google Places reviews", () => {
+    expect(providerName("google_places")).toBe("Google");
+  });
   test("normalizes object-shaped opening hours used by live listings", () => {
     expect(normalizeOpeningHours({
       monday: [{ open: "07:00", close: "17:00" }],

@@ -954,9 +954,7 @@ function ExternalReviewList({ groups, anchorId }: { groups: ExternalReviewGroup[
         {visible.map((group) => (
           <div className="external-review-group" key={group.provider}>
             <div className="external-review-source">
-              {group.provider.toLowerCase() !== "google" ? (
-                <span className="external-review-source-name">{group.provider_name}</span>
-              ) : null}
+              <span className="external-review-source-name">{group.provider_name}</span>
               {group.rating ? (
                 <span className="external-review-source-rating">
                   <b>{Number(group.rating).toFixed(1)}</b>
